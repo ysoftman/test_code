@@ -1,11 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// URL 인코딩/디코딩
+// URL 인코딩/디코딩 .CPP
 ////////////////////////////////////////////////////////////////////////////////////
-#include <stdio.h>
-#include <string>
-
-using namespace std;
+#include "EncURL.h"
 
 // 16진수 문자값을 10진수 문자값으로 변환
 char hex2int(char input)
@@ -116,24 +113,5 @@ string URLDecoding(char *pIn)
 	}
 
 	return result;
-}
-
-int main()
-{
-	//char *pInput = "한글 qwer 1234 QWER !@#$";
-	char szInput[100] = "한글 qwer 1234 QWER !@#$";
-	char *pInput = szInput;
-
-	string Result;
-	
-	fprintf(stdout, "input = %s\n", pInput);
-	
-	Result = URLEncoding(pInput);
-	fprintf(stdout, "[URL Encoding] = %s\n", Result.c_str());
-	
-	Result = URLDecoding((char*)Result.c_str());
-	fprintf(stdout, "[URL Decoding] = %s\n", Result.c_str());
-
-	return 0;
 }
 
