@@ -25,7 +25,7 @@ char hex2int(char input)
 	{
 		return input - 'a' + 10;
 	}
-	return NULL;
+	return 0;
 }
 
 // 10진수 문자값을 16진수 문자값으로 변환
@@ -38,14 +38,14 @@ char int2hex(char input)
 // URL 인코딩 한다.
 string URLEncoding(char *pIn)
 {
-	if (pIn == NULL)
+	if (pIn == 0)
 	{
-		return NULL;
+		return 0;
 	}
 
 	string result;
-	char temp = NULL;
-	while (*pIn != NULL)
+	char temp = 0;
+	while (*pIn != 0)
 	{
 		temp = *pIn;
 		// ASCII 대소문자와 숫자인 경우만 그대로 저장
@@ -76,14 +76,14 @@ string URLEncoding(char *pIn)
 // URL 디코딩 한다.
 string URLDecoding(char *pIn)
 {
-	if (pIn == NULL)
+	if (pIn == 0)
 	{
-		return NULL;
+		return 0;
 	}
 
 	string result;
-	char temp = NULL;
-	while (*pIn != NULL)
+	char temp = 0;
+	while (*pIn != 0)
 	{
 		temp = *pIn;
 		// ASCII 대소문자와 숫자인 경우만 그대로 저장
@@ -101,7 +101,7 @@ string URLDecoding(char *pIn)
 		// % 로 시작되면 % 빼고 2자리 16진수 문자값을 10진수 문자값으로 변경하여 저장
 		else if (temp == '%')
 		{
-			char buf = NULL;
+			char buf = 0;
 			pIn++;
 			temp = *pIn;
 			buf = hex2int(temp);
@@ -118,9 +118,12 @@ string URLDecoding(char *pIn)
 	return result;
 }
 
-void main()
+int main()
 {
-	char *pInput = "한글 qwer 1234 QWER !@#$";
+	//char *pInput = "한글 qwer 1234 QWER !@#$";
+	char szInput[100] = "한글 qwer 1234 QWER !@#$";
+	char *pInput = szInput;
+
 	string Result;
 	
 	fprintf(stdout, "input = %s\n", pInput);
@@ -130,5 +133,7 @@ void main()
 	
 	Result = URLDecoding((char*)Result.c_str());
 	fprintf(stdout, "[URL Decoding] = %s\n", Result.c_str());
+
+	return 0;
 }
 
