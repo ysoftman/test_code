@@ -37,14 +37,14 @@ const MAX_PATH int32 = 260
 
 type PROCESSENTRY32 struct {
 	dwSize              uint32
-	cntUsage            uint32
+	cntUsage            uint32 // This member is no longer used and is always set to zero.
 	th32ProcessID       uint32
-	th32DefaultHeapID   uintptr
-	th32ModuleID        uint32
+	th32DefaultHeapID   uintptr // This member is no longer used and is always set to zero.
+	th32ModuleID        uint32  // This member is no longer used and is always set to zero.
 	cntThreads          uint32
 	th32ParentProcessID uint32
 	pcPriClassBase      int32
-	dwFlags             uint32
+	dwFlags             uint32 // This member is no longer used and is always set to zero.
 	szExeFile           [MAX_PATH]uint16
 }
 
@@ -75,22 +75,19 @@ var Process32Next = kernel.NewProc("Process32NextW")
 var CloseHandle = kernel.NewProc("CloseHandle")
 
 func main() {
+	// CPU Usage 임계값
+	Threshold := 10
+	for {
 
-	fmt.Println("Start simplePf...")
-
-	// 측정 결과를 저장할 파일
-	fp, err := os.Create("pf.log")
-	if err != nil {
-		// Fatal 은 os.Exit(1) 호출함
-		log.Fatal("fail to create log file.")
-		// Fatal 은 os.Exit(1) 호출함
-		//os.Exit(1)
+		CheckProcess(Threshold)
+		time.Sleep(time.Second*5)
 	}
-	defer fp.Close()
+}
 
-	//	fmt.Println("runtime version = ", runtime.Version())
-	fmt.Println("Num of CPUs = ", runtime.NumCPU())
+func CheckProcess(Threshold int) {
+	fmt.Printf("%v CheckProcess ... ", time.Now())
 
+	// 프로세스 스냅샷 핸들 생성하기
 	hProcessSnap, _, _ := CreateToolhelp32Snapshot.Call(uintptr(TH32CS_SNAPPROCESS), 0)
 	if hProcessSnap < 0 {
 		syscall.GetLastError()
@@ -99,6 +96,9 @@ func main() {
 		//os.Exit(1)
 	}
 	defer CloseHandle.Call(hProcessSnap)
+
+	// 프로세스 리스트
+	proclist := make([]PROCESSENTRY32, 0, 500)
 
 	var pi PROCESSENTRY32
 	// 사용하기 전 프로세스 정보가 담길 구조체 크기 설정해야함
@@ -116,55 +116,88 @@ func main() {
 		//os.Exit(1)
 	}
 
-	WriteLog(fp, pi)
+	proclist = append(proclist, pi)
 
 	for {
 		ret, _, _ = Process32Next.Call(hProcessSnap, uintptr(unsafe.Pointer(&pi)))
-		WriteLog(fp, pi)
 		if ret <= 0 {
-			fmt.Println("Finding Process Finished.")
+			fmt.Printf("Finding Process Finished ... ")
 			break
 		}
+		proclist = append(proclist, pi)
 	}
-	time.Sleep(3000000000)
+
+	fmt.Println("process cnt = ", len(proclist))
+	WriteLog(proclist)
+	// cntUsage 값은 더이상 사용할 수없다.
+	//	for i := range proclist {
+	//		//		fmt.Printf("pid=%d\tusage=%d\n", proclist[i].th32ProcessID, proclist[i].cntUsage)
+	//		if uint32(Threshold) < proclist[i].cntUsage {
+	//			WriteLog(proclist)
+	//			break
+	//		}
+	//	}
 }
 
-func WriteLog(fp *os.File, pi PROCESSENTRY32) (ret int32) {
+func WriteLog(proclist []PROCESSENTRY32) (ret int32) {
 
-	var pi_for_print PROCESSENTRY32_FOR_PRINT
-
-	pi_for_print.dwSize = pi.dwSize
-	pi_for_print.cntUsage = pi.cntUsage
-	pi_for_print.th32ProcessID = pi.th32ProcessID
-	pi_for_print.th32DefaultHeapID = pi.th32DefaultHeapID
-	pi_for_print.th32ModuleID = pi.th32ModuleID
-	pi_for_print.cntThreads = pi.cntThreads
-	pi_for_print.th32ParentProcessID = pi.th32ParentProcessID
-	pi_for_print.pcPriClassBase = pi.pcPriClassBase
-	pi_for_print.dwFlags = pi.dwFlags
-
-	// szExeFile 길이 파악
-	cnt := 0
-	for {
-		if pi.szExeFile[cnt] == 0 {
-			break
-		}
-		cnt++
+	// 측정 결과를 저장할 파일
+	fp, err := os.Create("pf.log")
+	if err != nil {
+		// Fatal 은 os.Exit(1) 호출함
+		log.Fatal("fail to create log file.")
+		// Fatal 은 os.Exit(1) 호출함
+		//os.Exit(1)
 	}
-	// UTF16 으로 문자열로 변환
-	pi_for_print.szExeFile = syscall.UTF16ToString(pi.szExeFile[:cnt])
+	defer fp.Close()
 
-	//	fmt.Printf("%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t\n",
-	//		pi_for_printdwSize, pi_for_printcntUsage, pi_for_printth32ProcessID, pi_for_printth32DefaultHeapID,
-	//		pi_for_printth32ModuleID, pi_for_printcntThreads, pi_for_printth32ParentProcessID,
-	//		pi_for_printpcPriClassBase, pi_for_printdwFlags, pi_for_printszExeFile)
-	//	fmt.Fprintf(fp, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t\n",
-	//		pi_for_printdwSize, pi_for_printcntUsage, pi_for_printth32ProcessID, pi_for_printth32DefaultHeapID,
-	//		pi_for_printth32ModuleID, pi_for_printcntThreads, pi_for_printth32ParentProcessID,
-	//		pi_for_printpcPriClassBase, pi_for_printdwFlags, pi_for_printszExeFile)
-	// %+v 를 사용하면 구조체 데이터를 한번에 프린트할 수 있음.
-	fmt.Printf("%+v\n", pi_for_print)
-	fmt.Fprintf(fp, "%+v\n", pi_for_print)
+	fmt.Println("TIME = ", time.Now())
+	fmt.Fprintln(fp, "TIME = ", time.Now())
+	fmt.Println("Num of CPUs = ", runtime.NumCPU())
+	fmt.Fprintln(fp, "Num of CPUs = ", runtime.NumCPU())
 
+	// cntUsage, th32DefaultHeapID, th32ModuleID, dwFlags  는 더이상 사용되지 않는다.
+
+	fmt.Printf("Size\tPID\tThreads\tPPID\tPri\tExeFile\n")
+	fmt.Fprintf(fp, "Size\tPID\tThreads\tPPID\tPri\tExeFile\n")
+
+	for idx := range proclist {
+		var pi_for_print PROCESSENTRY32_FOR_PRINT
+
+		pi_for_print.dwSize = proclist[idx].dwSize
+		pi_for_print.cntUsage = proclist[idx].cntUsage
+		pi_for_print.th32ProcessID = proclist[idx].th32ProcessID
+		pi_for_print.th32DefaultHeapID = proclist[idx].th32DefaultHeapID
+		pi_for_print.th32ModuleID = proclist[idx].th32ModuleID
+		pi_for_print.cntThreads = proclist[idx].cntThreads
+		pi_for_print.th32ParentProcessID = proclist[idx].th32ParentProcessID
+		pi_for_print.pcPriClassBase = proclist[idx].pcPriClassBase
+		pi_for_print.dwFlags = proclist[idx].dwFlags
+
+		// szExeFile 길이 파악
+		cnt := 0
+		for {
+			if proclist[idx].szExeFile[cnt] == 0 {
+				break
+			}
+			cnt++
+		}
+		// UTF16 으로 문자열로 변환
+		pi_for_print.szExeFile = syscall.UTF16ToString(proclist[idx].szExeFile[:cnt])
+
+		//	 %+v 를 사용하면 구조체 데이터를 한번에 프린트할 수 있음.
+		//	fmt.Printf("%+v\n", pi_for_print)
+		//	fmt.Fprintf(fp, "%+v\n", pi_for_print)
+
+		// 탭 간격 두는 방식으로 저장
+		fmt.Printf("%v\t%v\t%v\t%v\t%v\t%v\t\n",
+			pi_for_print.dwSize, pi_for_print.th32ProcessID,
+			pi_for_print.cntThreads, pi_for_print.th32ParentProcessID,
+			pi_for_print.pcPriClassBase, pi_for_print.szExeFile)
+		fmt.Fprintf(fp, "%v\t%v\t%v\t%v\t%v\t%v\t\n",
+			pi_for_print.dwSize, pi_for_print.th32ProcessID,
+			pi_for_print.cntThreads, pi_for_print.th32ParentProcessID,
+			pi_for_print.pcPriClassBase, pi_for_print.szExeFile)
+	}
 	return ret
 }
