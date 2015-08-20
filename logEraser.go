@@ -15,8 +15,8 @@ func main() {
 
 	// 로그 디렉토리 위치를 인자로 받기
 	if nArgs != 3 {
-		fmt.Printf("[Ex] ./log/path/ 에서 7일 이전 로그 삭제하는 경우(디폴트 10일)\n\n")
-		fmt.Printf("%v ./log/path/ 7 \n\n", os.Args[0])
+		fmt.Println("logEraser (https://github.com/ysoftman/logEraser.git)")
+		fmt.Println("ex) logEraser ./log/path/ 7      # ./log/path/ 에서 7일 이전 로그 삭제")
 		os.Exit(0)
 	}
 	targetpath := os.Args[1]
