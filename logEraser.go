@@ -44,8 +44,8 @@ func main() {
 
 		// 기간 경과한 대상 경로의 파일(디렉토리) 삭제
 		delpath := ""
-		//		if dirtime.Unix() < curtime.Unix() && curtime.Unix()-dirtime.Unix() < int64(diffsec) {
-		if value.ModTime().Unix() < curtime.Unix() && curtime.Unix()-value.ModTime().Unix() < int64(diffsec) {
+		//		if dirtime.Unix() < curtime.Unix() && curtime.Unix()-dirtime.Unix() > int64(diffsec) {
+		if value.ModTime().Unix() < curtime.Unix() && curtime.Unix()-value.ModTime().Unix() > int64(diffsec) {
 			delpath = targetpath + "/" + value.Name()
 			log.Println("delete directory... %v", delpath)
 			err := os.RemoveAll(delpath)
