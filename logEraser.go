@@ -47,7 +47,7 @@ func main() {
 		//		if dirtime.Unix() < curtime.Unix() && curtime.Unix()-dirtime.Unix() > int64(diffsec) {
 		if value.ModTime().Unix() < curtime.Unix() && curtime.Unix()-value.ModTime().Unix() > int64(diffsec) {
 			delpath = targetpath + "/" + value.Name()
-			log.Println("delete directory... %v", delpath)
+			log.Println("delete directory... ", delpath)
 			err := os.RemoveAll(delpath)
 			if err != nil {
 				log.Println(err.Error())
