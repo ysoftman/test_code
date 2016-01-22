@@ -1,0 +1,4 @@
+; 일반 자격 증명
+TERMSRV/10.10.10.1	ysoftman	qwer1234
+TERMSRV/10.10.10.2	ysoftman	qwer1234
+

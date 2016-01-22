@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ServerMon</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="YoonByoungHoon">YoonByoungHoon</string>
+    <string name="Button1">Button1</string>
+    <string name="Button2">Button2</string>
+    <string name="Button3">Button3</string>
+
+</resources>

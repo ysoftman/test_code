@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "string_tokenize_test", "string_tokenize_test.vcxproj", "{C3E83B5E-4E4C-4AD5-B598-5C3F4298B6DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3E83B5E-4E4C-4AD5-B598-5C3F4298B6DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C3E83B5E-4E4C-4AD5-B598-5C3F4298B6DE}.Debug|Win32.Build.0 = Debug|Win32
+		{C3E83B5E-4E4C-4AD5-B598-5C3F4298B6DE}.Release|Win32.ActiveCfg = Release|Win32
+		{C3E83B5E-4E4C-4AD5-B598-5C3F4298B6DE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

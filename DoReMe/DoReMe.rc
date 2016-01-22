@@ -1,0 +1,9 @@
+#include "DoReMe.h"
+
+IDR_WAVE_TI             WAVE    DISCARDABLE     "44936_digifishmusic_Solfege_Ti.wav"
+IDR_WAVE_DO             WAVE    DISCARDABLE     "44929_digifishmusic_Solfege_Do.wav"
+IDR_WAVE_FA             WAVE    DISCARDABLE     "44931_digifishmusic_Solfege_Fa.wav"
+IDR_WAVE_LA             WAVE    DISCARDABLE     "44932_digifishmusic_Solfege_La.wav"
+IDR_WAVE_ME             WAVE    DISCARDABLE     "44933_digifishmusic_Solfege_Me.wav"
+IDR_WAVE_RE             WAVE    DISCARDABLE     "44934_digifishmusic_Solfege_Re.wav"
+IDR_WAVE_SO             WAVE    DISCARDABLE     "44935_digifishmusic_Solfege_So.wav"

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cJSONTest", "cJSONTest.vcxproj", "{871C88A7-38BC-45B9-B49D-8F6138E93F45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{871C88A7-38BC-45B9-B49D-8F6138E93F45}.Debug|Win32.ActiveCfg = Debug|Win32
+		{871C88A7-38BC-45B9-B49D-8F6138E93F45}.Debug|Win32.Build.0 = Debug|Win32
+		{871C88A7-38BC-45B9-B49D-8F6138E93F45}.Release|Win32.ActiveCfg = Release|Win32
+		{871C88A7-38BC-45B9-B49D-8F6138E93F45}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

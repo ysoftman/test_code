@@ -1,0 +1,7 @@
+// protocol buffer test
+package pb_test;
+
+message UserInfo {
+	required string aaa = 1; 	// 필수
+	optional int32 bbb = 2; 	// 없을 수도 있음
+}

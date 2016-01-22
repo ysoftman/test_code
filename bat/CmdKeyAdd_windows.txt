@@ -1,0 +1,2 @@
+; 윈도우 자격 증명
+test.ysoftman.com	ysoftman\ysoftman	password123

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrawStructureCode", "DrawStructureCode.vcxproj", "{F2FD3923-6C10-4A58-9E66-0D159C916ED7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2FD3923-6C10-4A58-9E66-0D159C916ED7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F2FD3923-6C10-4A58-9E66-0D159C916ED7}.Debug|Win32.Build.0 = Debug|Win32
+		{F2FD3923-6C10-4A58-9E66-0D159C916ED7}.Release|Win32.ActiveCfg = Release|Win32
+		{F2FD3923-6C10-4A58-9E66-0D159C916ED7}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

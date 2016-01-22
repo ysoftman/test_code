@@ -1,0 +1,110 @@
+///////////////////////////////////////////////////////////
+// c_for_lua.cpp
+// ysoftman
+// Lua <-> C 연동 테스트
+#include "stdafx.h"
+#include "iostream"
+
+// 루아 설치했으면 include 와 lib 경로 추가(Windows 기준)
+// C:\Program Files (x86)\Lua\5.1\include
+// C:\Program Files (x86)\Lua\5.1\lib
+// lua lib 링크
+#pragma comment(lib , "lua5.1.lib")
+
+// lua(C 로 만들어짐) 헤더 include
+extern "C" {
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+}
+
+// 루아에서 호출 할 수 있는 함수(int funcname(lua_State* L) 형식이어야 한다)
+int DoSomethingForLua(lua_State *L)
+{
+	std::cout << "DoSomethingForLua() called." << std::endl;
+
+	// 루아에서 들어온 인자들 파악
+	int a = luaL_checkint(L, 1);
+	int b = luaL_checkint(L, 2);
+	int c = luaL_checkint(L, 3);
+
+	std::cout << "a = " << a << std::endl;
+	std::cout << "b = " << b << std::endl;
+	std::cout << "c = " << c << std::endl;
+
+	// 루아에 스택에 결과 넣기
+	lua_pushinteger(L, a+b+c);
+
+	// 루아에 리턴 개수 알리기
+	return 1;
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	std::cout << "c_for_lua test start..." << std::endl;
+
+	// 루아 state 생성
+	lua_State *L = lua_open();
+	// 루아 라이브러리 오픈
+	luaL_openlibs(L);
+
+	// 루아에서 C 함수를 호출 할 수 있도록 C 함수 등록
+	lua_register(L, "DoSomething", DoSomethingForLua);
+
+	// 루아 파일 실행
+	// luaL_dofile 은 luaL_loadfile(루아 로드) 와 lua_pcall(루아 초기화) 를 합친것
+	luaL_dofile(L, "lua_for_c.lua");
+
+
+	// 루아 스크립트의 myfunc1 함수 가져오기
+	lua_getglobal(L, "myfunc1");
+
+	// 루아 함수에 전달할 파라미터 스택에 넣기
+	lua_pushboolean(L, true);
+	lua_pushinteger(L, 99999);
+	lua_pushnumber(L, 123.456);
+	lua_pushstring(L, "string");
+	
+	std::cout << "---------------------------" << std::endl;
+	std::cout << "C --> Lua" << std::endl;
+	
+	// 루아 함수 호출
+	// 파라미터 4개를 전달하고 리턴 1개 받은
+	lua_call(L, 4, 1);
+
+	// 스택(minus indexing)에 쌓인 리턴 결과 파악
+	std::cout << "result from Lua = " << lua_tonumber(L, -1) << std::endl;
+	std::cout << "---------------------------" << std::endl;
+	
+	// pop 을 해주지 않으면 스택이 계속 쌓인다.
+	// 내부적으로 lua_settop 으로 스택 위치를 설정
+	lua_pop(L, 1);
+	
+	// 루아 스크립트의 myfunc2 함수 가져오기
+	lua_getglobal(L, "myfunc2");
+		
+	// 루아 함수에 전달할 파라미터 스택에 넣기
+	lua_pushnumber(L, 5);
+	lua_pushnumber(L, 5);
+	
+	std::cout << "---------------------------" << std::endl;
+	std::cout << "C --> Lua" << std::endl;
+	
+	// 루아 함수 호출
+	// 파라미터 2개를 전달하고 리턴 1개 받은
+	lua_call(L, 2, 1);
+
+	// 스택(minus indexing)에 쌓인 리턴 결과 파악
+	std::cout << "result from Lua = " << lua_tonumber(L, -1) << std::endl;
+	std::cout << "---------------------------" << std::endl;	
+	
+	// pop 을 해주지 않으면 스택이 계속 쌓인다.
+	// 내부적으로 lua_settop 으로 스택 위치를 설정
+	lua_pop(L, 1);
+
+	// 루아 state 제거
+	lua_close(L);
+
+	return 0;
+}
+

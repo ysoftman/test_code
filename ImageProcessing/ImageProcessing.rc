@@ -1,0 +1,81 @@
+#include "ImageProcessing.h"
+
+// 다른 rc 의 ICON 과 충돌발생하여 주석처리함
+//IDI_ImageProcessing         ICON                "ImageProcessing.ico"
+// Accelerator
+IDC_ImageProcessing ACCELERATORS MOVEABLE PURE 
+BEGIN
+    "A",            IDM_ABOUT,              VIRTKEY, ALT, NOINVERT
+    "I",            IDM_INPUT,              VIRTKEY, CONTROL, NOINVERT
+    VK_F4,          IDM_RESET,              VIRTKEY, NOINVERT
+    VK_F5,          IDM_APPLY,              VIRTKEY, NOINVERT
+END
+// Menu
+IDC_ImageProcessing MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Input Image(Original Image)(Ctrl+I)", IDM_INPUT
+        MENUITEM "Output Image(Image Copy)",    IDM_OUTPUT
+        MENUITEM "",                            ID_MENUITEM32804
+        , MENUBARBREAK
+        MENUITEM "Input Frame1 Image",          IDM_F1INPUT
+        MENUITEM "Input Frame2 Image",          IDM_F2INPUT
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+    POPUP "&Image Processing"
+    BEGIN
+        MENUITEM "LPF(Low Pass Filter)",        IDM_LPF
+        MENUITEM "HPF(High Pass Filter)",       IDM_HPF
+        MENUITEM "MF(Median Filter)",           IDM_MF
+        MENUITEM "HFEF(High Frequency Emphasis Filter)", IDM_HFEF
+        MENUITEM "Black Noise(Pepper Noise)",   IDM_BN
+        MENUITEM "White Noise(Salt Noise)",     IDM_WN
+        MENUITEM "BlackWhite Noise(Pepper and Salt Noise)", IDM_BWN
+        MENUITEM "Erosion",                     IDM_EROSION
+        MENUITEM "Dilation",                    IDM_DILATION
+        MENUITEM "Opening(Erosion→Dilation)",  IDM_OPENING
+        MENUITEM "Closing(Dilation→Erosion)",  IDM_CLOSING
+        MENUITEM "Binary Image",                IDM_BINARY
+        MENUITEM "Thinning(BinaryImage - Hit and Miss(BinaryImage,SE))", 
+                                                IDM_THINNING
+        MENUITEM "",                            ID_MENUITEM32790
+        , MENUBARBREAK
+        MENUITEM "DCT(Discrete Cosine Transform)", IDM_DCT
+        MENUITEM "Inverse DCT",                 IDM_IDCT
+        MENUITEM "HARDAMARD Transform",         IDM_HARDAMARD
+        MENUITEM "Inverse HARDAMARD Transform", IDM_IHARDAMARD
+        MENUITEM "Wavelet Transform",           IDM_WAVELET
+        MENUITEM "Inverse Wavelet Transform",   IDM_IWAVELET
+        MENUITEM "",                            ID_MENUITEM32798
+        , MENUBARBREAK
+        MENUITEM "DCT(For JPEG)",               IDM_DCT_JPEG
+        MENUITEM "Quantization(For JPEG)",      IDM_QUANTIZATION_JPEG
+        MENUITEM "Inverse Quantization(For JPEG)", IDM_IQUANTIZATION_JPEG
+        MENUITEM "Inverse DCT(For JPEG)",       IDM_IDCT_JPEG
+        MENUITEM "",                            ID_MENUITEM32802
+        , MENUBARBREAK
+        MENUITEM "Make Frame 1' (f1') -> motion compensation", IDM_MAKEF1_
+        MENUITEM "Make Frame 2  -  Frame 1' (f2 - f1')", IDM_MAKEF2F1_
+        MENUITEM "Make Result Frame (f2 - f1') + (f1')", IDM_MAKERF
+    END
+    MENUITEM "Apply Filter(F5)",            IDM_APPLY
+    MENUITEM "Reset(Close all window(F4))", IDM_RESET
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About ...(Alt+A)",           IDM_ABOUT
+    END
+END
+
+// Dialog
+IDD_ABOUTBOX DIALOG DISCARDABLE  22, 17, 209, 35
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "System"
+BEGIN
+    LTEXT           "ImageProcessing Version 1.0",IDC_STATIC_1,10,5,98,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2005",IDC_STATIC_2,10,20,99,8
+    DEFPUSHBUTTON   "OK",IDOK,135,5,66,23,WS_GROUP
+END
+

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "static_and_global_variable_test", "static_and_global_variable_test.vcxproj", "{AD7EFBCD-5152-4A85-B754-FDB84857ABA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD7EFBCD-5152-4A85-B754-FDB84857ABA9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD7EFBCD-5152-4A85-B754-FDB84857ABA9}.Debug|Win32.Build.0 = Debug|Win32
+		{AD7EFBCD-5152-4A85-B754-FDB84857ABA9}.Release|Win32.ActiveCfg = Release|Win32
+		{AD7EFBCD-5152-4A85-B754-FDB84857ABA9}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

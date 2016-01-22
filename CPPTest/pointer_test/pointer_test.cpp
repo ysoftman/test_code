@@ -1,0 +1,43 @@
+////////////////////////////////////////////////////////////////////////////////////
+// ysoftman
+// 포인터 테스트
+////////////////////////////////////////////////////////////////////////////////////
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// 메모리 할당후의 주소를 caller 의 포인터에게 전달해주기 위해 이중포인터 사용
+void MakeName(char **pName)
+{
+	*pName = (char*)malloc(100);
+	memset(*pName, 0, 100);
+	strncpy_s(*pName, 100, "ysoftman", strlen("ysoftman"));
+}
+
+void main()
+{
+	int arr[3] = {1,2,3};
+	int *ptr;
+	ptr = arr;
+	// 1차원 배열 포인터로 표현
+	printf("array[3] : arr[0]=%d, arr[1]=%d, arr[2]=%d\n", arr[0], arr[1], arr[2]);
+	printf("*ptr : ptr[0]=%d, ptr[1]=%d, ptr[2]=%d\n", ptr[0], ptr[1], ptr[2]);
+
+	// 2차원 배열 포인터로 표현
+	int arr2[2][3] = {1,2,3,4,5,6};
+	int (*ptr2)[3];
+	ptr2 = arr2;
+	printf("array2[2][3] : arr2[0][0]=%d, arr2[0][1]=%d, arr2[0][2]=%d, arr2[1][0]=%d, arr2[1][1]=%d, arr2[1][2]=%d\n", arr2[0][0], arr2[0][1], arr2[0][2], arr2[1][0], arr2[1][1], arr2[1][2]);
+	printf("(*ptr2)[3] : ptr2[0][0]=%d, ptr2[0][1]=%d, ptr2[0][2]=%d, ptr2[1][0]=%d, ptr2[1][1]=%d, ptr2[1][2]=%d\n", ptr2[0][0], ptr2[0][1], ptr2[0][2], ptr2[1][0], ptr2[1][1], ptr2[1][2]);
+
+	// 이중 포인터 사용하기
+	char *pName = NULL;
+	MakeName(&pName);
+	printf("pName : %s\n", pName);
+	if (pName != NULL)
+	{
+		free(pName);
+	}
+
+}
+

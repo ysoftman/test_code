@@ -1,0 +1,113 @@
+/*
+############################
+제  목 : OpenSSL 빌드
+작성자 : 윤병훈
+############################
+[윈도우 빌드]
+1. openssl-1.0.1c.tar.gz 압축 해제
+
+2. cd openssl-1.0.1c
+
+3. 콘솔창에서 VC++ 사용할 수 있도록 환경 설정
+   "c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat"
+
+4. perl 로 설정파일 만들기(perl 설치파일 http://downloads.activestate.com/ActivePerl/releases/)
+   win32 경우 ==> perl Configure VC-WIN32 --openssldir=C:\OpenSSL1.0.1
+   win64 경우 ==> perl Configure VC-WIN64A --openssldir=C:\OpenSSL1.0.1
+
+5. 컴파일 환경 설정 배치 실행
+   win32 경우 ==> ms\do_ms.bat
+   win64 경우 ==> ms\do_win64a.bat
+
+6. 빌드
+   .lib 빌드 ==> nmake -f ms\nt.mak install
+   .dll 빌드 ==> nmake -f ms\ntdll.mak install
+
+7. 결과 확인
+   include 파일 ==> C:\OpenSSL1.0.1\include\openssl
+   .lib(.dll) 파일 ==> C:\OpenSSL1.0.1\lib
+
+[리눅스 빌드]
+1. openssl-1.0.1c.tar.gz 압축 해제
+   tar zxvf openssl-1.0.1c.tar.gz
+
+2. cd openssl-1.0.1c
+
+3. 설정파일 만들기
+   ./config --openssldir=/home/ysoftman/openssl1.0.1
+
+4. 빌드 후 테스트
+   make && make test
+
+5. 설치
+   make install
+
+6. 결과 확인
+   include 파일 ==> /home/ysoftman/openssl1.0.1/include/openssl
+   .a 파일 ==> /home/ysoftman/openssl1.0.1/lib
+*/
+////////////////////////////////////////////////////////////////////////////////////
+// ysoftman
+// OpenSSL 테스트
+// 앞서 빌드된 경로에서 include 와 lib 사용
+// 프로젝트 설정에서 추가 포함디렉토리에 현재 디렉토리(.) 추가
+////////////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <string>
+
+#include <stdio.h>
+#include <string.h>
+
+#include "./openssl/ossl_typ.h"
+#include "./openssl/ssl.h"
+#include "./openssl/rsa.h"
+#include "./openssl/evp.h"
+#include "./openssl/bio.h"
+#include "./openssl/buffer.h"
+#include "./openssl/aes.h"
+#include "./openssl/rsa.h"
+#include "./openssl/rand.h"
+#include "./openssl/crypto.h"
+#include "./openssl/err.h"
+#include "./openssl/engine.h"
+#include "./openssl/sha.h"
+
+
+#if defined(_WIN32) || defined(_WIN64)
+#pragma comment(lib, "./openssl/lib/libeay32")
+#else // linux
+#pragma comment(lib, "libcrypto")
+#endif
+
+using namespace std;
+
+/**
+*	@brief			Crypto 클래스
+*	@author			윤병훈
+*	@param			None
+*	@return			None
+*/
+class Crypto
+{
+
+public:
+	Crypto();
+	~Crypto();
+
+
+	RSA* RSA_GenerateKey(int KeySize);
+	void RSA_Free(RSA *p);
+	char* RSA_EncryptPublic(RSA *rsa, char *pPlain);
+	char* RSA_DecryptPrivate(RSA *rsa, char *pBase64Cipher);
+
+
+	char* AES_CBC_Encrypt(const unsigned char *userKey, unsigned char *iv, string Plain);
+	string AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, char *pBase64Cipher);
+
+
+	char *Base64_Encoding(char *pInput, int Len);
+	char *Base64_Decoding(char *pInput, int Len);
+
+	int Base64_GetEncodeLength(int Len);
+
+};
