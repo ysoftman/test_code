@@ -1,6 +1,6 @@
 // author : ysoftman
 // encoding : utf-8
-// title : Infite Writer
+// title : Infinite Writer
 // desc : 디스크(USB)에 무한 쓰기 작업을 수행하는 스트레스 테스터 프로그램
 package main
 
