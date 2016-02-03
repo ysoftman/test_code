@@ -10,11 +10,11 @@ import "strconv"
 import "strings"
 
 func main() {
-	fmt.Println("[Usage] " + os.Args[0] + " +(-) sec file.smi")
-	fmt.Println("ex) forward 5sec to subtitle start time")
-	fmt.Println(os.Args[0] + " +5 file.smi")
-	fmt.Println("ex) backward 10sec to subtitle start time")
-	fmt.Println(os.Args[0] + " -10 file.smi")
+	fmt.Println("[Usage] " + os.Args[0] + " +(-) ms file.smi")
+	fmt.Println("ex) forward 5 sec to subtitle start time")
+	fmt.Println(os.Args[0] + " +5000 file.smi")
+	fmt.Println("ex) backward 10 sec to subtitle start time")
+	fmt.Println(os.Args[0] + " -10000 file.smi")
 
 	// 인자 개수 체크
 	cntArgs := len(os.Args)
@@ -41,15 +41,15 @@ func main() {
 
 	// 옵션 초 파악
 	NumString := string(byteTemp[1:])
-	Sec, _ := strconv.Atoi(NumString)
-	if Sec < 0 {
-		fmt.Println("Sec < 0")
+	MilliSec, _ := strconv.Atoi(NumString)
+	if MilliSec < 0 {
+		fmt.Println("MilliSec < 0")
 		os.Exit(1)
 	}
-	Sec = int(Sec)
+	MilliSec = int(MilliSec)
 	// for debug
 	fmt.Println("OpCode:", string(OpCode))
-	fmt.Println("Sec:", Sec)
+	fmt.Println("MilliSec:", MilliSec)
 
 	// 자막 파일 열기
 	SmiFile := os.Args[2]
@@ -107,15 +107,15 @@ func main() {
 		strTemp = strContents[:idx]
 		fmt.Println("time:", strTemp)
 
-		newSec, _ := strconv.Atoi(strTemp)
+		newMilliSec, _ := strconv.Atoi(strTemp)
 
 		if OpCode == '-' {
-			newSec -= Sec
+			newMilliSec -= MilliSec
 		} else {
-			newSec += Sec
+			newMilliSec += MilliSec
 		}
 
-		strTemp = strconv.Itoa(newSec)
+		strTemp = strconv.Itoa(newMilliSec)
 		fmt.Println("new-time:", strTemp)
 		// 새 시간값 기록
 		fpOutput.WriteString(strTemp)
