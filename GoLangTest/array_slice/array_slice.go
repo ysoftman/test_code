@@ -7,7 +7,9 @@ import "fmt"
 
 func main() {
 	// 배열
-	arTest1 := [5]int{11, 22, 33, 44, 55}
+	// arTest1 := [5]int{11, 22, 33, 44, 55}
+	// [...] 로 구체적 원소개수를 명시하지 않아도 된다.
+	arTest1 := [...]int{11, 22, 33, 44, 55}
 	arTest2 := []int{10, 20, 30}
 
 	fmt.Println("arTest1 len = ", len(arTest1), "arTest1 cap = ", cap(arTest1), "arTest1 = ", arTest1)
