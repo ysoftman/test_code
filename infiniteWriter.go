@@ -50,7 +50,7 @@ func main() {
 		// 더미 파일 생성
 		fpDummy, err := os.Create("dummyfile")
 		if err != nil {
-			fmt.Println("can't crate file")
+			fmt.Println("can't create file")
 			os.Exit(1)
 		}
 		fpDummy.Write(data)
