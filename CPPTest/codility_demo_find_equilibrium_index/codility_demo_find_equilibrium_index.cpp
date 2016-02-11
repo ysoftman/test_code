@@ -1,6 +1,7 @@
 // title : find_equilibrium_index
 // author : ysoftman
-// https://codility.com/c/run/demo23NSFC-WFE
+// 문제 : https://codility.com/c/run/demo23NSFC-WFE
+// 결과 : https://codility.com/demo/results/demo5WNNRP-Y8T
 // codility 데모 테스트 풀기
 
 #include <stdio.h>
