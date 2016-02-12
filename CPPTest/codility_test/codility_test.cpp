@@ -111,61 +111,46 @@ void StringTokenize(string str, vector<string> &tokens, string delimiter)
 
 int solution2(int N, string &S) {
 	// write your code in C++11 (g++ 4.8.2)
-	
-	int *pSeat = new int(10*N);
-	memset(pSeat, 0, sizeof(int)*10*N);
+	int *pSeat = new int[3*N];
+	memset(pSeat, 0, sizeof(int)*3*N);
 	vector<string> vecString;
 	StringTokenize(S, vecString, " ");
 
 	vector<string>::iterator iter;
 	for (iter = vecString.begin(); iter != vecString.end(); iter++)
 	{
-		int row = atoi((*iter).c_str()) - 1;
+		string str = *iter;
+		int row = atoi(&str[0]) - 1;
 		int col = 0;
-		if ( *(iter+1) == "A") {
+		if ( str[1] >= 'A' && str[1] <= 'C') {
 			col = 0;
 		}
-		else if ( *(iter+1) == "B") {
+
+		else if ( str[1] >= 'D' && str[1] <= 'G') {
 			col = 1;
 		}
-		else if ( *(iter+1) == "C") {
+
+		else if ( str[1] >= 'H' && str[1] <= 'K') {
 			col = 2;
 		}
 
-		else if ( *(iter+1) == "D") {
-			col = 3;
+		if (row < N && col < 3) {
+			pSeat[row*3+col] = 1;
 		}
-		else if ( *(iter+1) == "E") {
-			col = 4;
-		}
-		else if ( *(iter+1) == "F") {
-			col = 5;
-		}
-		else if ( *(iter+1) == "G") {
-			col = 6;
-		}
-
-		else if ( *(iter+1) == "H") {
-			col = 7;
-		}
-		else if ( *(iter+1) == "J") {
-			col = 8;
-		}
-		else if ( *(iter+1) == "K") {
-			col = 9;
-		}
-
-		pSeat[row*10+col] = 1;
 
 	}
 
 	/// do something
-
-
-	delete pSeat;
+	int cnt = 0;
+	for (int i=0; i<3*N; i++) {
+		if (pSeat[i] == 1) {
+			cnt++;
+		}
+	}
 	
+	delete pSeat;
 
-	return 0;
+	return (3*N) - cnt;
 }
 
 
@@ -223,7 +208,13 @@ int main() {
 
 
 	string input = "1A 2F 1C";
-	printf("%s\n", solution2(2, input));
+	printf("%d\n", solution2(2, input));
+
+	input = "1A 2F 1K";
+	printf("%d\n", solution2(2, input));
+	
+	input = "";
+	printf("%d\n", solution2(2, input));
 
 
 	int a = 213;
