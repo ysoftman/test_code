@@ -7,6 +7,7 @@ import "fmt"
 import "strings"
 import "strconv"
 import "math"
+import "sort"
 
 // InfoData : defibrillator 정보
 type InfoData *struct {
@@ -71,9 +72,9 @@ func main() {
 	fmt.Println("math.MaxFloat32:", math.MaxFloat32)
 	fmt.Println("math.Ceil(10.5):", math.Ceil(10.5))
 	fmt.Println("math.Floor(10.5):", math.Floor(10.5))
-    fmt.Println("15/10=", 15/10)
-    fmt.Println("float32(15)/float32(10)=", float32(15)/float32(10))
-    
+	fmt.Println("15/10=", 15/10)
+	fmt.Println("float32(15)/float32(10)=", float32(15)/float32(10))
+
 	number1 := "123456789"
 	out1, _ := strconv.Atoi(number1)
 	fmt.Println("number1:", out1)
@@ -84,6 +85,52 @@ func main() {
 
 	fmt.Println("number2(to float):", ConvertToFloat(number2))
 
+    
+    
+    num := 10
+    aaa := make([]int, num)
+    for i:=0; i<10; i++ {
+        aaa[i] = i*2
+    }
+    fmt.Println("aaa:",aaa)
+    
+    // 간단한 int sort
+    mynumlist := []int{2,3,6,45,6,246,1,12}
+	fmt.Println("before sort:",mynumlist)
+	sort.Ints(mynumlist)
+	fmt.Println("after sort:", mynumlist)
+    
+    // sort 인터페이스 사용
+	mylist := []MyData{{1}, {3}, {6}, {4}, {1}, {6}}
+	fmt.Println("before sort:", mylist)
+	sort.Sort(DataList(mylist))
+	fmt.Println("after sort:", mylist)
+}
+
+// MyData 내용
+type MyData struct {
+	num int
+}
+
+// DataList 내용
+type DataList []MyData
+
+// Less sort Less 인터페이스 구현
+func (receiver DataList) Less(a, b int) bool {
+	if receiver[a].num < receiver[b].num {
+		return true
+	}
+	return false
+}
+
+// Len sort Len 인터페이스 구현
+func (receiver DataList) Len() int {
+	return len(receiver)
+}
+
+// Swap sort Swap 인터페이스 구현
+func (receiver DataList) Swap(a, b int) {
+	receiver[a], receiver[b] = receiver[b], receiver[a]
 }
 
 // RemoveCommaAndAtoi : , 제거후 int 형으로 변환
@@ -110,11 +157,11 @@ func ConvertToFloat(str string) float32 {
 
 	// 소수점으로 만들기
 	out3 := float32(out2)
-    for out3 > 1 {
+	for out3 > 1 {
 		out3 = float32(out3) / float32(10)
-        // fmt.Println("out1:", out1, " out2:", out2, " out3:", out3)
+		// fmt.Println("out1:", out1, " out2:", out2, " out3:", out3)
 	}
-	
+
 	result += float32(out3)
 	return result
 }
