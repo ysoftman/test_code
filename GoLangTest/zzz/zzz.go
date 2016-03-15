@@ -75,36 +75,54 @@ func main() {
 	fmt.Println("15/10=", 15/10)
 	fmt.Println("float32(15)/float32(10)=", float32(15)/float32(10))
 
+	// 문자열 -> int 변환
 	number1 := "123456789"
 	out1, _ := strconv.Atoi(number1)
 	fmt.Println("number1:", out1)
+    out1, _ = strconv.Atoi(string(number1[0]))
+    fmt.Println("number1[0]:", out1)
 
+	// 문자열 -> float 변환
 	number2 := "12345,6789"
-
 	fmt.Println("number2:", RemoveCommaAndAtoi(number2))
-
 	fmt.Println("number2(to float):", ConvertToFloat(number2))
 
-    
-    
-    num := 10
-    aaa := make([]int, num)
-    for i:=0; i<10; i++ {
-        aaa[i] = i*2
-    }
-    fmt.Println("aaa:",aaa)
-    
-    // 간단한 int sort
-    mynumlist := []int{2,3,6,45,6,246,1,12}
-	fmt.Println("before sort:",mynumlist)
+	// sort 테스트
+	num := 10
+	aaa := make([]int, num)
+	for i := 0; i < 10; i++ {
+		aaa[i] = i * 2
+	}
+	fmt.Println("aaa:", aaa)
+
+	// 간단한 int sort
+	mynumlist := []int{2, 3, 6, 45, 6, 246, 1, 12}
+	fmt.Println("before sort:", mynumlist)
 	sort.Ints(mynumlist)
 	fmt.Println("after sort:", mynumlist)
-    
-    // sort 인터페이스 사용
+
+	// sort 인터페이스 사용
 	mylist := []MyData{{1}, {3}, {6}, {4}, {1}, {6}}
 	fmt.Println("before sort:", mylist)
 	sort.Sort(DataList(mylist))
 	fmt.Println("after sort:", mylist)
+
+	// 2차원 배열
+	width := 3
+	height := 3
+	var arr [][]int
+	arr = make([][]int, height)
+	for i := 0; i < height; i++ {
+		arr[i] = make([]int, width)
+	}
+	cnt := 0
+	for i := 0; i < height; i++ {
+		for j := 0; j < width; j++ {
+			arr[i][j] = cnt
+			cnt++
+		}
+	}
+	fmt.Println(arr)
 }
 
 // MyData 내용
