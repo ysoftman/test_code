@@ -79,8 +79,8 @@ func main() {
 	number1 := "123456789"
 	out1, _ := strconv.Atoi(number1)
 	fmt.Println("number1:", out1)
-    out1, _ = strconv.Atoi(string(number1[0]))
-    fmt.Println("number1[0]:", out1)
+	out1, _ = strconv.Atoi(string(number1[0]))
+	fmt.Println("number1[0]:", out1)
 
 	// 문자열 -> float 변환
 	number2 := "12345,6789"
@@ -123,6 +123,69 @@ func main() {
 		}
 	}
 	fmt.Println(arr)
+
+	// map 사용
+	var mymap map[int](string)
+	mymap = make(map[int]string)
+	mymap[10] = "number10"
+	mymap[20] = "number20"
+	fmt.Println(mymap)
+
+	// 노드 및 링크 정보를 저장
+	var node map[int]nodeinfo
+	node = make(map[int]nodeinfo)
+	// 노드에 링크 정보 추가
+	node[3] = nodeinfo{
+		"node",
+		[]int{1, 2},
+	}   
+	node[3] = nodeinfo{
+		"node",
+		append(node[3].links, 4),
+	}
+	node[1] = nodeinfo{
+        "node",
+        []int{3},
+    }
+	node[2] = nodeinfo{
+        "node",
+        []int{3},
+    }    
+	node[4] = nodeinfo{
+        "node",
+        []int{3},
+    }    
+	fmt.Println(node)
+	fmt.Println(node[3])
+    fmt.Println(node[1])
+	fmt.Println(node[2])
+    fmt.Println(node[4])
+    
+    // range 와 for ++ 차이
+    myarr := []int{1,2,3,4,5}
+    idx := 0
+    // idx 가 인덱스 범위까지 증가된다.
+    for idx = range myarr {
+    }
+    fmt.Println("for range:",idx)
+    // idx 가 인덱스 범위+1까지 증가된다.   
+    for idx = 0; idx<len(myarr); idx++ {
+    }
+    fmt.Println("for ++:",idx)
+
+    // map struct 포인터타입으로 사용
+    var node2 map[int]*nodeinfo
+	node2 = make(map[int]*nodeinfo)
+    node2[3] = &nodeinfo{}
+    node2[3].name = "aaa"
+    node2[3].links = []int{1,2}
+    fmt.Println("node2", node2)
+    fmt.Println("node2", node2[3])
+}
+
+type nodeinfo struct {
+	name string
+	links []int
 }
 
 // MyData 내용
