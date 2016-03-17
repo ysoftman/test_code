@@ -138,53 +138,67 @@ func main() {
 	node[3] = nodeinfo{
 		"node",
 		[]int{1, 2},
-	}   
+	}
 	node[3] = nodeinfo{
 		"node",
 		append(node[3].links, 4),
 	}
 	node[1] = nodeinfo{
-        "node",
-        []int{3},
-    }
+		"node",
+		[]int{3},
+	}
 	node[2] = nodeinfo{
-        "node",
-        []int{3},
-    }    
+		"node",
+		[]int{3},
+	}
 	node[4] = nodeinfo{
-        "node",
-        []int{3},
-    }    
+		"node",
+		[]int{3},
+	}
 	fmt.Println(node)
 	fmt.Println(node[3])
-    fmt.Println(node[1])
+	fmt.Println(node[1])
 	fmt.Println(node[2])
-    fmt.Println(node[4])
-    
-    // range 와 for ++ 차이
-    myarr := []int{1,2,3,4,5}
-    idx := 0
-    // idx 가 인덱스 범위까지 증가된다.
-    for idx = range myarr {
-    }
-    fmt.Println("for range:",idx)
-    // idx 가 인덱스 범위+1까지 증가된다.   
-    for idx = 0; idx<len(myarr); idx++ {
-    }
-    fmt.Println("for ++:",idx)
+	fmt.Println(node[4])
 
-    // map struct 포인터타입으로 사용
-    var node2 map[int]*nodeinfo
+	// range 와 for ++ 차이
+	myarr := []int{1, 2, 3, 4, 5}
+	idx := 0
+	// idx 가 인덱스 범위까지 증가된다.
+	for idx = range myarr {
+	}
+	fmt.Println("for range:", idx)
+	// idx 가 인덱스 범위+1까지 증가된다.
+	for idx = 0; idx < len(myarr); idx++ {
+	}
+	fmt.Println("for ++:", idx)
+
+	// map struct 포인터타입으로 사용
+	var node2 map[int]*nodeinfo
 	node2 = make(map[int]*nodeinfo)
-    node2[3] = &nodeinfo{}
-    node2[3].name = "aaa"
-    node2[3].links = []int{1,2}
-    fmt.Println("node2", node2)
-    fmt.Println("node2", node2[3])
+	node2[3] = &nodeinfo{}
+	node2[3].name = "aaa"
+	node2[3].links = []int{1, 2}
+	fmt.Println("node2", node2)
+	fmt.Println("node2", node2[3])
+
+	// float int 처리 테스트
+	op1 := 2
+	op2 := 5
+	fmt.Printf("op1:%v %f\n", op1, float32(op1))
+	fmt.Printf("op2:%v %f\n", op2, float32(op2))
+	fmt.Printf("op2-op1:%v %f\n", op2-op1, float32(op2-op1))
+	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2/op1))
+	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2)/float32(op1))
+	
+	floatResult := float32(myIntAbs(op1-op2))/2 + 0.5
+	fmt.Printf("floatResult:%f\n", floatResult)
+	intResult := int(float32(myIntAbs(op1-op2))/2 + 0.5)
+	fmt.Printf("intResult:%d\n", intResult)
 }
 
 type nodeinfo struct {
-	name string
+	name  string
 	links []int
 }
 
@@ -245,4 +259,12 @@ func ConvertToFloat(str string) float32 {
 
 	result += float32(out3)
 	return result
+}
+
+// myIntAbs : int 형 절대값 구하기
+func myIntAbs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
