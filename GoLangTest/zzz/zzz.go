@@ -143,7 +143,7 @@ func main() {
 	}
 	node[3] = nodeinfo{
 		"node",
-		append(node[3].links, 4),
+		append(node[3].node, 4),
 	}
 	node[1] = nodeinfo{
 		"node",
@@ -180,7 +180,7 @@ func main() {
 	node2 = make(map[int]*nodeinfo)
 	node2[3] = &nodeinfo{}
 	node2[3].name = "aaa"
-	node2[3].links = []int{1, 2}
+	node2[3].node = []int{1, 2}
 	fmt.Fprintln(os.Stderr, "node2", node2)
 	// fmt.Println("node2", node2)
 	fmt.Fprintln(os.Stderr, "node2[3]", node2[3])
@@ -211,11 +211,66 @@ func main() {
 		fmt.Println(iter.Value)
 	}
 
+	// 숫자스트링 파악 테스트
+	phonenumber := "0101234567"
+	for i := 0; i < len(phonenumber); i++ {
+		n, _ := strconv.Atoi(string(phonenumber[i]))
+		fmt.Println(n)
+	}
+
+	// 다중 링크 노드 테스트
+	var mynode nodeinfo2
+	mynode.num = 1
+	mynode.node = nil
+	// 새 노드를 링크로 추가
+	// mynode.node[0] = nodeinfo2{} --> index out of range 에러 발생!
+	// mynode.node[0] = nodeinfo2{1, nil} --> index out of range 에러 발생!
+	mynode.node = append(mynode.node, nodeinfo2{2, nil})
+	mynode.node = append(mynode.node, nodeinfo2{3, nil})
+	mynode.node[0].node = append(mynode.node[0].node, nodeinfo2{4, nil})
+	mynode.node[1].node = append(mynode.node[1].node, nodeinfo2{5, nil})
+	// mynode.node[1].node[0].node = append(mynode.node[1].node[0].node, nodeinfo2{6, nil})
+	AddChildNode(&mynode.node[1].node[0], 6)
+	AddChildNode(&mynode.node[1].node[0], 7)
+	// AddChildNode(&mynode.node[1].node[0].node[1], 8)
+	rootnode := mynode
+	// 노드변수(struct 포인터변수를 사용한다.)
+	mynode2 := &mynode.node[1].node[0].node[1]
+	AddChildNode(mynode2, 8)
+
+	fmt.Println(mynode)
+	nodecnt := 0
+	TraverseNode(&rootnode, &nodecnt, 0)
+	fmt.Println("rootnode total node cnt:", nodecnt)
+
+}
+
+// AddChildNode 자식 노드 추가
+func AddChildNode(parent *nodeinfo2, num int) {
+	parent.node = append(parent.node, nodeinfo2{num, nil})
+	fmt.Fprintf(os.Stderr, "add parent.node[%v].num:%v\n", len(parent.node)-1, parent.node[len(parent.node)-1].num)
+}
+
+// TraverseNode 노드 탐색
+func TraverseNode(node *nodeinfo2, cnt *int, depth int) {
+	for i := 0; i < len(node.node); i++ {
+		(*cnt)++
+		for j := 0; j < depth; j++ {
+			fmt.Fprintf(os.Stderr, "    ")
+		}
+		fmt.Fprintf(os.Stderr, "node[%v].num:%v\n", i, node.node[i].num)
+		TraverseNode(&node.node[i], cnt, depth+1)
+	}
+}
+
+type nodeinfo2 struct {
+	num  int
+	node []nodeinfo2
 }
 
 type nodeinfo struct {
-	name  string
-	links []int
+	name string
+	node []int
 }
 
 // MyData 내용
