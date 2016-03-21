@@ -8,6 +8,8 @@ import "strings"
 import "strconv"
 import "math"
 import "sort"
+import "os"
+import "container/list"
 
 // InfoData : defibrillator 정보
 type InfoData *struct {
@@ -102,10 +104,10 @@ func main() {
 	fmt.Println("after sort:", mynumlist)
 
 	// sort 인터페이스 사용
-	mylist := []MyData{{1}, {3}, {6}, {4}, {1}, {6}}
-	fmt.Println("before sort:", mylist)
-	sort.Sort(DataList(mylist))
-	fmt.Println("after sort:", mylist)
+	myarr := []MyData{{1}, {3}, {6}, {4}, {1}, {6}}
+	fmt.Println("before sort:", myarr)
+	sort.Sort(DataList(myarr))
+	fmt.Println("after sort:", myarr)
 
 	// 2차원 배열
 	width := 3
@@ -162,14 +164,14 @@ func main() {
 	fmt.Println(node[4])
 
 	// range 와 for ++ 차이
-	myarr := []int{1, 2, 3, 4, 5}
+	myarr2 := []int{1, 2, 3, 4, 5}
 	idx := 0
 	// idx 가 인덱스 범위까지 증가된다.
-	for idx = range myarr {
+	for idx = range myarr2 {
 	}
 	fmt.Println("for range:", idx)
 	// idx 가 인덱스 범위+1까지 증가된다.
-	for idx = 0; idx < len(myarr); idx++ {
+	for idx = 0; idx < len(myarr2); idx++ {
 	}
 	fmt.Println("for ++:", idx)
 
@@ -179,8 +181,10 @@ func main() {
 	node2[3] = &nodeinfo{}
 	node2[3].name = "aaa"
 	node2[3].links = []int{1, 2}
-	fmt.Println("node2", node2)
-	fmt.Println("node2", node2[3])
+	fmt.Fprintln(os.Stderr, "node2", node2)
+	// fmt.Println("node2", node2)
+	fmt.Fprintln(os.Stderr, "node2[3]", node2[3])
+	// fmt.Println("node2[3]", node2[3])
 
 	// float int 처리 테스트
 	op1 := 2
@@ -190,11 +194,23 @@ func main() {
 	fmt.Printf("op2-op1:%v %f\n", op2-op1, float32(op2-op1))
 	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2/op1))
 	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2)/float32(op1))
-	
+
 	floatResult := float32(myIntAbs(op1-op2))/2 + 0.5
 	fmt.Printf("floatResult:%f\n", floatResult)
 	intResult := int(float32(myIntAbs(op1-op2))/2 + 0.5)
 	fmt.Printf("intResult:%d\n", intResult)
+
+	// list 컨테이너 테스트
+	mylist := list.New()
+	mylist.PushBack("aaa")
+	mylist.PushBack(111)
+	el := mylist.PushFront(123)
+	mylist.InsertBefore(222, el)
+	// fmt.Println(mylist)
+	for iter := mylist.Front(); iter != nil; iter = iter.Next() {
+		fmt.Println(iter.Value)
+	}
+
 }
 
 type nodeinfo struct {
