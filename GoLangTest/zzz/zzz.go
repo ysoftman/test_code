@@ -10,6 +10,7 @@ import "math"
 import "sort"
 import "os"
 import "container/list"
+import "bufio"
 
 // InfoData : defibrillator 정보
 type InfoData *struct {
@@ -242,6 +243,20 @@ func main() {
 	nodecnt := 0
 	TraverseNode(&rootnode, &nodecnt, 0)
 	fmt.Println("rootnode total node cnt:", nodecnt)
+
+	// bufio 스캐너 테스트
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Println("scanner watit intput ....")
+
+	// Scan 사용 후 Buffer 사용하면 panic 발생하니 Scan 사용전 Buffer() 설정하자
+	// Scan() 의 기본 버퍼는 MaxScanTokenSize = 64 * 1024 = 65535
+	// MaxScanTokenSize 이상 사용하려면 Buffer 로 버퍼 크기를 설정하자
+	buf := []byte{}
+	scanner.Buffer(buf, 100000)
+
+	// MaxScanTokenSize = 64 * 1024 가 기본
+	scanner.Scan()
+	fmt.Println("scanner.Text():", scanner.Text())
 
 }
 
