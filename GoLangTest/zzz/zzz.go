@@ -255,9 +255,12 @@ func main() {
 	scanner.Buffer(buf, 100000)
 
 	// MaxScanTokenSize = 64 * 1024 가 기본
-	scanner.Scan()
-	fmt.Println("scanner.Text():", scanner.Text())
+	// scanner.Scan()
+	// fmt.Println("scanner.Text():", scanner.Text())
 
+    bufstring := ""
+    fmt.Scanf("%s", &bufstring)
+    fmt.Println("fmt.Scan(buf):", bufstring)
 }
 
 // AddChildNode 자식 노드 추가
