@@ -27,24 +27,24 @@ func main() {
 	fmt.Println("arTest1[2:]", arTest1[2:])
 
 	// 배열의 일정 부분을 가져와 슬라이스 형태로 참조
-	fmt.Println("arTest3 := arTest1[2:]")
 	arTest3 := arTest1[2:]
 
 	fmt.Println("arTest3 len = ", len(arTest3), "arTest3 cap = ", cap(arTest3), "arTest3 = ", arTest3)
 
 	// make 로 슬라이스 만들기
 	// make 의 두번째 인자는 len, 세번째 인자는 cap 설정
-	fmt.Println("arTest4 := make([]int, 3, 5)")
 	arTest4 := make([]int, 3, 5)
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
 
 	// append 로 슬라이스에 추가하기
-	fmt.Println("arTest4 = append(arTest4, 1, 2, 3, 4, 5, 6, 7, 8, 9)")
 	arTest4 = append(arTest4, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
 
+	// append 로 element 삭제하기
+	arTest4 = append(arTest4[:3], arTest4[4:]...)
+	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
+
 	// 슬라이스 참조
-	fmt.Println("arTest5 := arTest3")
 	arTest5 := arTest3
 	fmt.Println("arTest5 len = ", len(arTest5), "arTest5 cap = ", cap(arTest5), "arTest4 = ", arTest5)
 	// 참조하고 있는 슬라이스가 변경되면 같이 변경된다
@@ -52,10 +52,8 @@ func main() {
 	fmt.Println("arTest5 len = ", len(arTest5), "arTest5 cap = ", cap(arTest5), "arTest4 = ", arTest5)
 
 	// 슬라이스 복사하기
-	fmt.Println("arTest6 := make([]int, 10, 10)")
 	arTest6 := make([]int, 10, 10)
 	// arTest6 의 cap 만큼 복사된다.
-	fmt.Println("copy(arTest6, arTest4)")
 	copy(arTest6, arTest4)
 	fmt.Println("arTest6 len = ", len(arTest6), "arTest6 cap = ", cap(arTest6), "arTest6 = ", arTest6)
 	// 슬라이스 복사(독립된 메모리공간)로 영향이 없다
