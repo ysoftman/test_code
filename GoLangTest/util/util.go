@@ -94,6 +94,29 @@ func FloatToString(f float64) string {
 	return str
 }
 
+// IsInfiniteDecimal 무한 소수 인지 체크
+func IsInfiniteDecimal(n int) bool {
+	// 참고 http://study.zum.com/book/13777
+	// 분모를 소인수 분해 했을대 2, 5외것이 있다면 무한 소수이다
+	var ele []int
+	i := 2
+	for n != 1 {
+		for n%i == 0 {
+			n = n / i
+			ele = append(ele, i)
+		}
+		i++
+	}
+	// fmt.Fprintln(os.Stderr, "ele:", ele)
+	for i := range ele {
+		// fmt.Fprintln(os.Stderr, ele[i])
+		if ele[i] != 2 && ele[i] != 5 {
+			return true
+		}
+	}
+	return false
+}
+
 // util 함수 테스트
 func main() {
 	fmt.Println("util test...")
@@ -151,4 +174,8 @@ func main() {
 	fmt.Printf("f1:%g\n", f1)
 	fmt.Printf("f1:%s\n", FloatToString(f1))
 
+	// 무한 소수 판단
+	for i := 1; i < 100; i++ {
+		fmt.Printf("1/%d IsInfiniteDecimal:%t\n", i, IsInfiniteDecimal(i))
+	}
 }
