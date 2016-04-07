@@ -85,6 +85,14 @@ func TraverseNode(node *NodeInfo, cnt *int, depth int) {
 	}
 }
 
+// FloatToString 부동 끝자리 0 으로 매워지는 부분 제거
+func FloatToString(f float64) string {
+	str := fmt.Sprintf("%f", f)
+	str = strings.TrimRight(str, "0")
+	str = strings.TrimRight(str, ".")
+
+	return str
+}
 
 // util 함수 테스트
 func main() {
@@ -134,4 +142,13 @@ func main() {
 	nodecnt := 0
 	TraverseNode(&rootnode, &nodecnt, 0)
 	fmt.Println("rootnode total node cnt:", nodecnt)
+
+	// 부동 끝자리 0 으로 매워지는 부분 제거
+	f1 := 1 / float64(25000)
+	fmt.Println("f1:", f1)
+	fmt.Printf("f1:%f\n", f1)
+	fmt.Printf("f1:%e\n", f1)
+	fmt.Printf("f1:%g\n", f1)
+	fmt.Printf("f1:%s\n", FloatToString(f1))
+
 }
