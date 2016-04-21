@@ -85,11 +85,6 @@ func main() {
 	out1, _ = strconv.Atoi(string(number1[0]))
 	fmt.Println("number1[0]:", out1)
 
-	// 문자열 -> float 변환
-	number2 := "12345,6789"
-	fmt.Println("number2:", RemoveCommaAndAtoi(number2))
-	fmt.Println("number2(to float):", ConvertToFloat(number2))
-
 	// sort 테스트
 	num := 10
 	aaa := make([]int, num)
@@ -196,11 +191,6 @@ func main() {
 	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2/op1))
 	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2)/float32(op1))
 
-	floatResult := float32(myIntAbs(op1-op2))/2 + 0.5
-	fmt.Printf("floatResult:%f\n", floatResult)
-	intResult := int(float32(myIntAbs(op1-op2))/2 + 0.5)
-	fmt.Printf("intResult:%d\n", intResult)
-
 	// list 컨테이너 테스트
 	mylist := list.New()
 	mylist.PushBack("aaa")
@@ -219,31 +209,6 @@ func main() {
 		fmt.Println(n)
 	}
 
-	// 다중 링크 노드 테스트
-	var mynode nodeinfo2
-	mynode.num = 1
-	mynode.node = nil
-	// 새 노드를 링크로 추가
-	// mynode.node[0] = nodeinfo2{} --> index out of range 에러 발생!
-	// mynode.node[0] = nodeinfo2{1, nil} --> index out of range 에러 발생!
-	mynode.node = append(mynode.node, nodeinfo2{2, nil})
-	mynode.node = append(mynode.node, nodeinfo2{3, nil})
-	mynode.node[0].node = append(mynode.node[0].node, nodeinfo2{4, nil})
-	mynode.node[1].node = append(mynode.node[1].node, nodeinfo2{5, nil})
-	// mynode.node[1].node[0].node = append(mynode.node[1].node[0].node, nodeinfo2{6, nil})
-	AddChildNode(&mynode.node[1].node[0], 6)
-	AddChildNode(&mynode.node[1].node[0], 7)
-	// AddChildNode(&mynode.node[1].node[0].node[1], 8)
-	rootnode := mynode
-	// 노드변수(struct 포인터변수를 사용한다.)
-	mynode2 := &mynode.node[1].node[0].node[1]
-	AddChildNode(mynode2, 8)
-
-	fmt.Println(mynode)
-	nodecnt := 0
-	TraverseNode(&rootnode, &nodecnt, 0)
-	fmt.Println("rootnode total node cnt:", nodecnt)
-
 	// bufio 스캐너 테스트
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("scanner watit intput ....")
@@ -258,32 +223,9 @@ func main() {
 	// scanner.Scan()
 	// fmt.Println("scanner.Text():", scanner.Text())
 
-    bufstring := ""
-    fmt.Scanf("%s", &bufstring)
-    fmt.Println("fmt.Scan(buf):", bufstring)
-}
-
-// AddChildNode 자식 노드 추가
-func AddChildNode(parent *nodeinfo2, num int) {
-	parent.node = append(parent.node, nodeinfo2{num, nil})
-	fmt.Fprintf(os.Stderr, "add parent.node[%v].num:%v\n", len(parent.node)-1, parent.node[len(parent.node)-1].num)
-}
-
-// TraverseNode 노드 탐색
-func TraverseNode(node *nodeinfo2, cnt *int, depth int) {
-	for i := 0; i < len(node.node); i++ {
-		(*cnt)++
-		for j := 0; j < depth; j++ {
-			fmt.Fprintf(os.Stderr, "    ")
-		}
-		fmt.Fprintf(os.Stderr, "node[%v].num:%v\n", i, node.node[i].num)
-		TraverseNode(&node.node[i], cnt, depth+1)
-	}
-}
-
-type nodeinfo2 struct {
-	num  int
-	node []nodeinfo2
+	bufstring := ""
+	fmt.Scanf("%s", &bufstring)
+	fmt.Println("fmt.Scan(buf):", bufstring)
 }
 
 type nodeinfo struct {
@@ -315,45 +257,4 @@ func (receiver DataList) Len() int {
 // Swap sort Swap 인터페이스 구현
 func (receiver DataList) Swap(a, b int) {
 	receiver[a], receiver[b] = receiver[b], receiver[a]
-}
-
-// RemoveCommaAndAtoi : , 제거후 int 형으로 변환
-func RemoveCommaAndAtoi(str string) int {
-	numberSplit := strings.Split(str, ",")
-	newnumber := ""
-	for _, value := range numberSplit {
-		newnumber += value
-	}
-	out, _ := strconv.Atoi(newnumber)
-	return out
-}
-
-// ConvertToFloat : , 를 소수점으로 계산해서 변환
-func ConvertToFloat(str string) float32 {
-	numberSplit := strings.Split(str, ",")
-	high := numberSplit[0]
-	low := numberSplit[1]
-
-	out1, _ := strconv.Atoi(high)
-	out2, _ := strconv.Atoi(low)
-	result := float32(0.0)
-	result += float32(out1)
-
-	// 소수점으로 만들기
-	out3 := float32(out2)
-	for out3 > 1 {
-		out3 = float32(out3) / float32(10)
-		// fmt.Println("out1:", out1, " out2:", out2, " out3:", out3)
-	}
-
-	result += float32(out3)
-	return result
-}
-
-// myIntAbs : int 형 절대값 구하기
-func myIntAbs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
 }
