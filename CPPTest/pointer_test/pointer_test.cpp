@@ -46,9 +46,10 @@ void main()
 	pInt = &num;
 	//int &refer = NULL;	// 레퍼런스변수는 NULL 초기화 할 수 없다.
 	int &refer = num;
-	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d\n", num, pInt, *pInt, &refer, refer);
+	int num2 = num;
+	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d num2:%d\n", num, pInt, *pInt, &refer, refer, num2);
 	num = 6789;
-	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d\n", num, pInt, *pInt, &refer, refer);
+	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d num2:%d\n", num, pInt, *pInt, &refer, refer, num2);
 
 }
 
