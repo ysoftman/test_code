@@ -39,5 +39,16 @@ void main()
 		free(pName);
 	}
 
+
+	// 포인터 변수오 레퍼런스 변수의 차이
+	int num = 12345;
+	int *pInt = NULL;
+	pInt = &num;
+	//int &refer = NULL;	// 레퍼런스변수는 NULL 초기화 할 수 없다.
+	int &refer = num;
+	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d\n", num, pInt, *pInt, &refer, refer);
+	num = 6789;
+	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d\n", num, pInt, *pInt, &refer, refer);
+
 }
 
