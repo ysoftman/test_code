@@ -31,10 +31,36 @@ void JsonReadTest(string strJSON);
 
 int main()
 {
+	// 테스트1
+	printf("test1---------------\n");
 	string result = JsonWriteTest();
 	JsonReadTest(result);
 
-	return 0;
+
+	// 테스트2
+	printf("test2---------------\n");
+	Json::Value root;
+	Json::Reader reader;
+	string strJSON = "{"
+		"\"Info\":" 
+		"{"
+		"\"num1\":999,"
+		"\"num2\":123456789,"
+		"\"str1\":\"ysoftman\""
+		"}"
+		"}";
+	printf("strJSON = %s\n", strJSON.c_str());
+	if (reader.parse(strJSON, root) == true)
+	{
+		Json::Value info = root["Info"];
+		if (info.isNull() == false)
+		{
+			__int64 num1 = info.get("num1",0).asInt();
+			__int64 num2 = info.get("num2",0).asInt();
+			string str1 = info.get("str1","").asString();
+			printf("num1=%lld, num2=%lld, str1=%s\n", num1, num2, str1.c_str());
+		}
+	}
 }
 
 string JsonWriteTest()
@@ -59,7 +85,7 @@ string JsonWriteTest()
 
 	Json::StyledWriter writer;
 	string strJSON = writer.write(root);
-	
+
 	cout << "JSON WriteTest" << endl << strJSON << endl;
 
 	return strJSON;
@@ -80,7 +106,7 @@ void JsonReadTest(string strJSON)
 
 	string name = root.get("이름", "defaultvalue").asString();
 	cout << "이름: " << name << endl;
-	
+
 	int age = root.get("나이", "defaultvalue").asInt();
 	cout << "나이: " << age << endl;
 
