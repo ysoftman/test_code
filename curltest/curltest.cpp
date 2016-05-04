@@ -2,6 +2,7 @@
 // ysoftman
 // libcurl 테스트
 //
+// [linux]
 // curl-7.21.3.tar.gz 을 다운받아 압축 해제 후 설치
 // wget http://curl.haxx.se/download/curl-7.21.3.tar.gz
 // tar zxvf curl-7.21.3.tar.gz
@@ -9,29 +10,45 @@
 // ./configure
 // make
 // sudo make install
+// 컴파일
+// gcc curltest.cc -lcurl -o curltest
+// 
+// [windows]
+// http://curl.haxx.se/download/curl-7.21.3.zip 다운로드 후 압축 풀기
+// cmake 에서 configure -> visual studio 11 2012 선택 -> generate
+// visual studio 로 빌드하기 (코드 생성 MT)
+// 헤더파일은 curl 소스의 include 사용
+// 참고
+// visual studio 에서 .c 대신 .cpp 확장자를 사용하도록 한다.
+// 실행시 zlib1.dll 관련 에러가 발생한다면 
+// 윈도우용 zlib 다운로드 http://gnuwin32.sourceforge.net/downlinks/zlib-bin-zip.php
+// 압축 해제 후 zlib1.dll 를 복사해서 사용해한다.
 //
 // curl 예제
 // http://curl.haxx.se/libcurl/c/example.html
 // http://www.joinc.co.kr/modules/moniwiki//wiki.php/Site/Web/documents/UsedCurl
-//
-// 컴파일
-// gcc curltest.cc -lcurl -o curltest
 ////////////////////////////////////////////////////////////////////////////////////
-#ifdef linux
 #include <stdio.h>
+
+#ifdef linux
 #include "/usr/local/include/curl/curl.h"
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+#include "include/curl/curl.h"
+#pragma comment(lib, "lib/libcurl_imp_mtd_2012.lib")
+#endif
 
 int main(int argc, char** argv)
 {
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage(example) : TestCURL www.naver.com\n");
+		fprintf(stderr, "Usage(example) : %s www.naver.com\n", argv[0]);
 		return 0;
 	}
 
 	CURL *curl;
 	CURLcode curlcode;
-
 
 	// 초기화
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -88,4 +105,4 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-#endif
+
