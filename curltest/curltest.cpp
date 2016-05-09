@@ -39,6 +39,28 @@
 #pragma comment(lib, "lib/libcurl_imp_mtd_2012.lib")
 #endif
 
+
+#define MAX_CURL_RESP_SIZE 8192
+
+struct CURL_DATA_INFO {
+	char szData[MAX_CURL_RESP_SIZE];
+	size_t size;
+	size_t pos;
+};
+
+// 응답 패킷 내용 쓰는 함수(콜백)
+static size_t WriteData(void *contents, size_t size, size_t nmemb, void *userdata)
+{
+	size_t realsize = size * nmemb;
+	struct CURL_DATA_INFO *mem = (struct CURL_DATA_INFO *)userdata;
+
+	// 여러번 콜백될 수 있어 기존 데이터에 이어붙인다.
+	memcpy((char*)mem->szData + mem->pos, contents, realsize);
+	mem->pos += realsize;
+
+	return realsize;
+}
+
 int main(int argc, char** argv)
 {
 	if (argc != 2)
@@ -63,20 +85,32 @@ int main(int argc, char** argv)
 	//curl_easy_setopt(curl, CURLOPT_URL, "http://www.naver.com");
 	curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
 	// 헤더와 바디 내용 출력 대상 설정
-	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, stderr);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
+	//curl_easy_setopt(curl, CURLOPT_WRITEHEADER, stderr);
+	//curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
+	CURL_DATA_INFO header;
+	header.size = 0;
+	header.pos = 0;
+	memset(header.szData, 0, sizeof(char)*MAX_CURL_RESP_SIZE);
+	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, WriteData);
+
+	CURL_DATA_INFO body;
+	body.size = 0;
+	body.pos = 0;
+	memset(body.szData, 0, sizeof(char)*MAX_CURL_RESP_SIZE);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, WriteData);
+
+
 	// id, pw 설정
 	//curl_easy_setopt(curl, CURLOPT_USERNAME, "ysoftman");
 	//curl_easy_setopt(curl, CURLOPT_PASSWORD, "qwer1234");
-	curl_easy_setopt(curl, CURLOPT_USERPWD, "ysoftman:qwer1234");
-	// 상세 정보 보기
+	//curl_easy_setopt(curl, CURLOPT_USERPWD, "ysoftman:qwer1234");
+	// 상세 정보 보기(콘솔에 request/body 관련 정보가 출력된다.)
 	//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 	// redirect 된 경우 해당 경로를 따라가도록 함
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 	// 타임아웃(second) 설정
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 10);
-	
-	
+
 	// 실행
 	curlcode = curl_easy_perform(curl);
 	if (curlcode != CURLE_OK)
@@ -96,6 +130,8 @@ int main(int argc, char** argv)
 		fprintf(stderr, "HttpResponseCode: %d\n", nHttpRespCode);
 		fprintf(stderr, "ContentType: %s\n", szContentType);
 		fprintf(stderr, "DownloadSize: %f (bytes)\n", dDownloadSize);
+		fprintf(stderr, "Response Header: %s\n", header.szData);
+		fprintf(stderr, "Response Body: %s\n", body.szData);
 	}
 
 	// context 제거
