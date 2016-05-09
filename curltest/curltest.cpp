@@ -53,6 +53,11 @@ static size_t WriteData(void *contents, size_t size, size_t nmemb, void *userdat
 {
 	size_t realsize = size * nmemb;
 	struct CURL_DATA_INFO *mem = (struct CURL_DATA_INFO *)userdata;
+	if (mem->pos+realsize >= MAX_CURL_RESP_SIZE)
+	{
+		fprintf(stderr, "buffer overflow\n");
+		return -1;
+	}
 
 	// 여러번 콜백될 수 있어 기존 데이터에 이어붙인다.
 	memcpy((char*)mem->szData + mem->pos, contents, realsize);
@@ -84,6 +89,11 @@ int main(int argc, char** argv)
 	// 대상 URL 설정
 	//curl_easy_setopt(curl, CURLOPT_URL, "http://www.naver.com");
 	curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
+
+	// 헤더와 바디 내용 쓰기 함수 설정
+	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, WriteData);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteData);
+
 	// 헤더와 바디 내용 출력 대상 설정
 	//curl_easy_setopt(curl, CURLOPT_WRITEHEADER, stderr);
 	//curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
@@ -91,14 +101,13 @@ int main(int argc, char** argv)
 	header.size = 0;
 	header.pos = 0;
 	memset(header.szData, 0, sizeof(char)*MAX_CURL_RESP_SIZE);
-	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, WriteData);
+	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, &header);
 
 	CURL_DATA_INFO body;
 	body.size = 0;
 	body.pos = 0;
 	memset(body.szData, 0, sizeof(char)*MAX_CURL_RESP_SIZE);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, WriteData);
-
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &body);
 
 	// id, pw 설정
 	//curl_easy_setopt(curl, CURLOPT_USERNAME, "ysoftman");
