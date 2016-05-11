@@ -24,11 +24,13 @@
 // 윈도우용 zlib 다운로드 http://gnuwin32.sourceforge.net/downlinks/zlib-bin-zip.php
 // 압축 해제 후 zlib1.dll 를 복사해서 사용해한다.
 //
-// curl 예제
+// curl 참고
+// https://curl.haxx.se/libcurl/c/getinmemory.html
 // http://curl.haxx.se/libcurl/c/example.html
 // http://www.joinc.co.kr/modules/moniwiki//wiki.php/Site/Web/documents/UsedCurl
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
+#include <stdlib.h>
 
 #ifdef linux
 #include "/usr/local/include/curl/curl.h"
@@ -40,12 +42,9 @@
 #endif
 
 
-#define MAX_CURL_RESP_SIZE 8192
-
 struct CURL_DATA_INFO {
-	char szData[MAX_CURL_RESP_SIZE];
+	char *pData;
 	size_t size;
-	size_t pos;
 };
 
 // 응답 패킷 내용 쓰는 함수(콜백)
@@ -53,15 +52,17 @@ static size_t WriteData(void *contents, size_t size, size_t nmemb, void *userdat
 {
 	size_t realsize = size * nmemb;
 	struct CURL_DATA_INFO *mem = (struct CURL_DATA_INFO *)userdata;
-	if (mem->pos+realsize >= MAX_CURL_RESP_SIZE)
-	{
-		fprintf(stderr, "buffer overflow\n");
-		return -1;
-	}
 
 	// 여러번 콜백될 수 있어 기존 데이터에 이어붙인다.
-	memcpy((char*)mem->szData + mem->pos, contents, realsize);
-	mem->pos += realsize;
+	mem->pData = (char*)realloc(mem->pData, mem->size + realsize + 1);
+	if(mem->pData == NULL) {
+		fprintf(stderr, "realloc failed\n");
+		return 0;
+	}
+
+	memcpy(&(mem->pData[mem->size]), contents, realsize);
+	mem->size += realsize;
+	mem->pData[mem->size] = 0;
 
 	return realsize;
 }
@@ -99,14 +100,12 @@ int main(int argc, char** argv)
 	//curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
 	CURL_DATA_INFO header;
 	header.size = 0;
-	header.pos = 0;
-	memset(header.szData, 0, sizeof(char)*MAX_CURL_RESP_SIZE);
+	header.pData = (char*)calloc(1, sizeof(char)*1);
 	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, &header);
 
 	CURL_DATA_INFO body;
 	body.size = 0;
-	body.pos = 0;
-	memset(body.szData, 0, sizeof(char)*MAX_CURL_RESP_SIZE);
+	body.pData = (char*)calloc(1, sizeof(char*)*1);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &body);
 
 	// id, pw 설정
@@ -139,14 +138,18 @@ int main(int argc, char** argv)
 		fprintf(stderr, "HttpResponseCode: %d\n", nHttpRespCode);
 		fprintf(stderr, "ContentType: %s\n", szContentType);
 		fprintf(stderr, "DownloadSize: %f (bytes)\n", dDownloadSize);
-		fprintf(stderr, "Response Header: %s\n", header.szData);
-		fprintf(stderr, "Response Body: %s\n", body.szData);
+		fprintf(stderr, "Response Header: %s\n", header.pData);
+		fprintf(stderr, "Response Body: %s\n", body.pData);
 	}
+
+	free(header.pData);
+	free(body.pData);
 
 	// context 제거
 	curl_easy_cleanup(curl);
 
 	curl_global_init(CURL_GLOBAL_ALL);
+
 
 	return 0;
 }
