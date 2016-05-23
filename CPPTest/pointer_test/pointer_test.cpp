@@ -23,12 +23,26 @@ void main()
 	printf("array[3] : arr[0]=%d, arr[1]=%d, arr[2]=%d\n", arr[0], arr[1], arr[2]);
 	printf("*ptr : ptr[0]=%d, ptr[1]=%d, ptr[2]=%d\n", ptr[0], ptr[1], ptr[2]);
 
+
 	// 2차원 배열 포인터로 표현
 	int arr2[2][3] = {1,2,3,4,5,6};
 	int (*ptr2)[3];
 	ptr2 = arr2;
 	printf("array2[2][3] : arr2[0][0]=%d, arr2[0][1]=%d, arr2[0][2]=%d, arr2[1][0]=%d, arr2[1][1]=%d, arr2[1][2]=%d\n", arr2[0][0], arr2[0][1], arr2[0][2], arr2[1][0], arr2[1][1], arr2[1][2]);
 	printf("(*ptr2)[3] : ptr2[0][0]=%d, ptr2[0][1]=%d, ptr2[0][2]=%d, ptr2[1][0]=%d, ptr2[1][1]=%d, ptr2[1][2]=%d\n", ptr2[0][0], ptr2[0][1], ptr2[0][2], ptr2[1][0], ptr2[1][1], ptr2[1][2]);
+
+
+	// 이중 포인터로 1차원 포인터 참조하기
+	int a = 10;
+	int *pp1 = NULL;
+	pp1 = &a;
+	int **pp2 = NULL;
+	pp2 = &pp1;
+	printf("pp1: %d\n", pp1);
+	printf("*pp1: %d\n", *pp1);
+	printf("pp2: %d\n", pp2);
+	printf("**pp2: %d\n", **pp2);
+
 
 	// 이중 포인터 사용하기
 	char *pName = NULL;
@@ -39,12 +53,11 @@ void main()
 		free(pName);
 	}
 
-
-	// 포인터 변수오 레퍼런스 변수의 차이
+	// 포인터 변수와 레퍼런스 변수의 차이
 	int num = 12345;
 	int *pInt = NULL;
 	pInt = &num;
-	//int &refer = NULL;	// 레퍼런스변수는 NULL 초기화 할 수 없다.
+	//int &refer = NULL;	// 레퍼런스변수는 NULL 초기화 할 수 없다.(항상 NULL 아닌 값을 가져야 한다.)
 	int &refer = num;
 	int num2 = num;
 	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d num2:%d\n", num, pInt, *pInt, &refer, refer, num2);
