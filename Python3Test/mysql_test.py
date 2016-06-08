@@ -48,7 +48,7 @@ def db_test():
 	cursor.execute(query)
 	print("query = %s" % query)
 	for out in cursor:
-		print("result = %s" % out[0])
+		print("name = %s , engine = %s , version = %s , row_foramt = %s , rows = %s " % (out[0], out[1], out[2], out[3], out[4]))
 
 
 	# 연결 종료
