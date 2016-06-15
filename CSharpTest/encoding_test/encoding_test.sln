@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpTest", "CSharpTest.csproj", "{EE4E12DB-CE2B-43A7-8308-71D4199E5B91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "encoding_test", "encoding_test.csproj", "{EE4E12DB-CE2B-43A7-8308-71D4199E5B91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

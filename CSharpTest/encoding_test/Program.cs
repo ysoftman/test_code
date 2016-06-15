@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text;	// Encoding
 using System.Threading.Tasks;
 
-namespace CSharpTest
+namespace EncodingTest
 {
     class Program
     {
