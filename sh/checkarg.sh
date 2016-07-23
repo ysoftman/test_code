@@ -17,3 +17,14 @@ then
 	echo "argv0 = $0"
 	echo "argv1 = $1"
 fi
+
+arg1=$1
+case $arg1 in
+	ysoftman)
+		echo "case"
+		echo "ysoftman";;
+	*)
+		echo "case"
+		echo "other(*)";;
+esac
+
