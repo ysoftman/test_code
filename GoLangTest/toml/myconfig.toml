@@ -1,0 +1,13 @@
+# toml test file
+Title = "toml test file"
+
+[zone1]
+Name = "ysoftman"
+Sex = "M"
+Age = 20
+
+[zone2]
+StringArray = [ "apple", "lemon", "mango" ]
+NumberArray = [ 2, 3, 7, 11, 13, 17, 19, 23 ]
+Pi = 3.141592
+Date = 2015-07-05T05:45:00Z
