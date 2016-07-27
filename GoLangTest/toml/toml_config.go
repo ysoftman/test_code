@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// go get github.com/BurntSushi/toml
 import "github.com/BurntSushi/toml"
 
 // Config : toml 을 저장할 자료 구조
