@@ -1,5 +1,5 @@
 #!/bin/sh
-#ysoftman
+# ysoftman
 value=$(pwd)
 echo $value
 value="this is sh script test..."
