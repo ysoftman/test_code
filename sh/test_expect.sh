@@ -1,4 +1,5 @@
 #!/usr/bin/expect 
+# ysoftman
 
 # 프로세스 실행
 spawn ssh -l ysoftman localhost

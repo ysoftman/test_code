@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ysfotman 
+# ysoftman 
 # 인자 처리 하기
 argc=$#
 
