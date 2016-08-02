@@ -29,6 +29,10 @@ func main() {
 	l4g.Error("Error")
 	l4g.Critical("Critical")
 
-	fmt.Println("end.")
+	// 로그 출력되기전에 프로그램이 끝나는것을 방지
+	// time.Sleep(1 * time.Second)
+	a := 0
+	fmt.Scanf("%d", &a)
 
+	fmt.Println("end.")
 }
