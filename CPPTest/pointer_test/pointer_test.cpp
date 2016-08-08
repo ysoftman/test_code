@@ -11,10 +11,12 @@ void MakeName(char **pName)
 {
 	*pName = (char*)malloc(100);
 	memset(*pName, 0, 100);
-	strncpy_s(*pName, 100, "ysoftman", strlen("ysoftman"));
+	// 윈도우에서만 사용 할 수 있어 주석 처리
+	// strncpy_s(*pName, 100, "ysoftman", strlen("ysoftman"));
+	strncpy(*pName, "ysoftman", strlen("ysoftman"));
 }
 
-void main()
+int main()
 {
 	int arr[3] = {1,2,3};
 	int *ptr;
@@ -38,9 +40,18 @@ void main()
 	pp1 = &a;
 	int **pp2 = NULL;
 	pp2 = &pp1;
-	printf("pp1: %d\n", pp1);
+	// a 변수의 주소값
+ 	printf("a:%p\n", &a);
+	// pp1 포인터 변수가 가르키는 a 변수의 주소값
+	printf("pp1: %p\n", pp1);
+	// pp1 포인터 변수 자체의 주소값
+	printf("pp1: %p\n", &pp1);
+	// pp1 포인터 변수가 가리키는 a 변수 주소에 저장되어 있는 값
 	printf("*pp1: %d\n", *pp1);
-	printf("pp2: %d\n", pp2);
+	// pp2 포인터 변수가 가르키는 pp1 포인터 주소 값
+	printf("pp2: %p\n", pp2);
+	// pp2 포인터 변수가 가르키는 pp1, pp1 포인터가 가르키는 a 변수 주소에 저장되어 있는 값
+	// pp2 -> pp1 -> a=10
 	printf("**pp2: %d\n", **pp2);
 
 
@@ -60,9 +71,10 @@ void main()
 	//int &refer = NULL;	// 레퍼런스변수는 NULL 초기화 할 수 없다.(항상 NULL 아닌 값을 가져야 한다.)
 	int &refer = num;
 	int num2 = num;
-	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d num2:%d\n", num, pInt, *pInt, &refer, refer, num2);
+	printf("num:%d pInt:%p *pInt:%d &refer:%p refer:%d num2:%d\n", num, pInt, *pInt, &refer, refer, num2);
 	num = 6789;
-	printf("num:%d pInt:%d *pInt:%d &refer:%d refer:%d num2:%d\n", num, pInt, *pInt, &refer, refer, num2);
+	printf("num:%d pInt:%p *pInt:%d &refer:%p refer:%d num2:%d\n", num, pInt, *pInt, &refer, refer, num2);
 
+	return 0;
 }
 
