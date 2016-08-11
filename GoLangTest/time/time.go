@@ -25,32 +25,33 @@ func main() {
 
 	// 현재 시간 파악
 	curtime := time.Now()
-	fmt.Println(curtime)
-	fmt.Println(curtime.Year())
-	fmt.Println(curtime.Month())
-	fmt.Println(curtime.Day())
+	fmt.Println("curtime:", curtime)
+	fmt.Println("curtime.Year():", curtime.Year())
+	fmt.Println("curtime.Month():", curtime.Month())
+	fmt.Println("curtime.Day():", curtime.Day())
 
 	// 현재로 부터 2달 20일 뒤 시간 파악
 	nexttime := curtime.AddDate(0, 2, 10)
-	fmt.Println(nexttime)
+	fmt.Println("Now()+2months+20days:", nexttime)
 
 	// 1초 표헌
-	fmt.Println(time.Second)
+	fmt.Println("time.Second:", time.Second)
 
-	fmt.Println(time.Now())
+	fmt.Println("time.Now():", time.Now())
 
-	// 3초 뒤 시간
+	// 3초 슬립
+	fmt.Println("Sleep 3 sec...")
 	time.Sleep(3 * time.Second)
 
-	fmt.Println(time.Now())
+	fmt.Println("time.Now():", time.Now())
 
 	// 1초를 duration 으로 표현(nanosec)
-	fmt.Println(time.Duration(1))
+	fmt.Println("time.Duration(1):", time.Duration(1))
 
 	// 날짜 설정
 	targetTime := time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local)
-	fmt.Println(targetTime)
-	fmt.Println(targetTime.Unix())
+	fmt.Println("targetTime:", targetTime)
+	fmt.Println("targetTime.Unix():", targetTime.Unix())
 
 	// constants
 	fmt.Println("ANSIC:", time.ANSIC)
@@ -63,4 +64,13 @@ func main() {
 	fmt.Println("Kitchen:", time.Kitchen)
 	fmt.Println("Stamp:", time.Stamp)
 
+	countDown()
+}
+
+func countDown() {
+	fmt.Println("Count Down")
+	for i := 100; i >= 0; i-- {
+		time.Sleep(1 * time.Second)
+		fmt.Println(i)
+	}
 }
