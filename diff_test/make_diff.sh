@@ -7,5 +7,5 @@
 /usr/bin/diff -urN a.c b.c
 
 # 참고
-# diff 결과를 파일로 만들고 /usb/bin/path 를 사용해서 원보파일에 변경을 적용할 수 있다.
+# diff 결과를 파일로 만들고 /usb/bin/patch 를 사용해서 원보파일에 변경을 적용할 수 있다.
 
