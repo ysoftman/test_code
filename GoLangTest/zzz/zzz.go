@@ -5,7 +5,7 @@ package main
 import "fmt"
 
 import "strings"
-import "strconv"
+
 import "math"
 import "sort"
 import "os"
@@ -145,15 +145,6 @@ func main() {
 	fmt.Fprintln(os.Stderr, "node2[3]", node2[3])
 	// fmt.Println("node2[3]", node2[3])
 
-	// float int 처리 테스트
-	op1 := 2
-	op2 := 5
-	fmt.Printf("op1:%v %f\n", op1, float32(op1))
-	fmt.Printf("op2:%v %f\n", op2, float32(op2))
-	fmt.Printf("op2-op1:%v %f\n", op2-op1, float32(op2-op1))
-	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2/op1))
-	fmt.Printf("op2/op1:%v %f\n", op2/op1, float32(op2)/float32(op1))
-
 	// list 컨테이너 테스트
 	mylist := list.New()
 	mylist.PushBack("aaa")
@@ -163,13 +154,6 @@ func main() {
 	// fmt.Println(mylist)
 	for iter := mylist.Front(); iter != nil; iter = iter.Next() {
 		fmt.Println(iter.Value)
-	}
-
-	// 숫자스트링 파악 테스트
-	phonenumber := "0101234567"
-	for i := 0; i < len(phonenumber); i++ {
-		n, _ := strconv.Atoi(string(phonenumber[i]))
-		fmt.Println(n)
 	}
 }
 
