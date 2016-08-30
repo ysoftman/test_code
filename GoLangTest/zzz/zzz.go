@@ -5,7 +5,7 @@ package main
 import "fmt"
 
 import "strings"
-import "strconv"
+
 import "math"
 import "sort"
 import "os"
@@ -134,18 +134,6 @@ func main() {
 	fmt.Println(node[2])
 	fmt.Println(node[4])
 
-	// range 와 for ++ 차이
-	myarr2 := []int{1, 2, 3, 4, 5}
-	idx := 0
-	// idx 가 인덱스 범위까지 증가된다.
-	for idx = range myarr2 {
-	}
-	fmt.Println("for range:", idx)
-	// idx 가 인덱스 범위+1까지 증가된다.
-	for idx = 0; idx < len(myarr2); idx++ {
-	}
-	fmt.Println("for ++:", idx)
-
 	// map struct 포인터타입으로 사용
 	var node2 map[int]*nodeinfo
 	node2 = make(map[int]*nodeinfo)
@@ -175,13 +163,6 @@ func main() {
 	// fmt.Println(mylist)
 	for iter := mylist.Front(); iter != nil; iter = iter.Next() {
 		fmt.Println(iter.Value)
-	}
-
-	// 숫자스트링 파악 테스트
-	phonenumber := "0101234567"
-	for i := 0; i < len(phonenumber); i++ {
-		n, _ := strconv.Atoi(string(phonenumber[i]))
-		fmt.Println(n)
 	}
 }
 
