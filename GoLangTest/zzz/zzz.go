@@ -78,13 +78,6 @@ func main() {
 	fmt.Println("15/10=", 15/10)
 	fmt.Println("float32(15)/float32(10)=", float32(15)/float32(10))
 
-	// 문자열 -> int 변환
-	number1 := "123456789"
-	out1, _ := strconv.Atoi(number1)
-	fmt.Println("number1:", out1)
-	out1, _ = strconv.Atoi(string(number1[0]))
-	fmt.Println("number1[0]:", out1)
-
 	// sort 테스트
 	num := 10
 	aaa := make([]int, num)
@@ -104,8 +97,6 @@ func main() {
 	fmt.Println("before sort:", myarr)
 	sort.Sort(DataList(myarr))
 	fmt.Println("after sort:", myarr)
-
-
 
 	// map 사용
 	var mymap map[int](string)
