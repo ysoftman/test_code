@@ -105,22 +105,7 @@ func main() {
 	sort.Sort(DataList(myarr))
 	fmt.Println("after sort:", myarr)
 
-	// 2차원 배열
-	width := 3
-	height := 3
-	var arr [][]int
-	arr = make([][]int, height)
-	for i := 0; i < height; i++ {
-		arr[i] = make([]int, width)
-	}
-	cnt := 0
-	for i := 0; i < height; i++ {
-		for j := 0; j < width; j++ {
-			arr[i][j] = cnt
-			cnt++
-		}
-	}
-	fmt.Println(arr)
+
 
 	// map 사용
 	var mymap map[int](string)
