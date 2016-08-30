@@ -77,13 +77,6 @@ func main() {
 	fmt.Println("15/10=", 15/10)
 	fmt.Println("float32(15)/float32(10)=", float32(15)/float32(10))
 
-	// map 사용
-	var mymap map[int](string)
-	mymap = make(map[int]string)
-	mymap[10] = "number10"
-	mymap[20] = "number20"
-	fmt.Println(mymap)
-
 	// 노드 및 링크 정보를 저장
 	var node map[int]nodeinfo
 	node = make(map[int]nodeinfo)
