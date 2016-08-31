@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 3.x
+# python version : 2.x 3.x
 # desc : 현재 경로에 각 파일명의 디렉토리 만들고 파일 복사하기
 
 
