@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 3.x
+# python version : 2.x 3.x
 # desc : 리스트 테스트
 
 #import os
