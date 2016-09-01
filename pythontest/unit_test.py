@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # author : ysoftman
 # title : unit test
-import sys
+#import sys
 import unittest
 
 # unittest.Test 를 상속받아 클래스 생성
