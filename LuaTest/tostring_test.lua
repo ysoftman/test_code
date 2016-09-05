@@ -9,8 +9,11 @@ function main()
 
 	local num = 123
 	print("num : " .. num)
-	print("num : " .. tonumber(num))
 	print("num : " .. tostring(num))
+
+	local str = "999"
+	print("str : " .. str)
+	print("str : " .. tonumber(str))
 end
 
 main()
