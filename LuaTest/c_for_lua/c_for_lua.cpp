@@ -16,6 +16,7 @@
 // tar zxf lua-5.3.3.tar.gz
 // cd lua-5.3.3
 // make macosx test
+// cd ..
 // g++ c_for_lua.cpp -L./lua-5.3.3/src -llua
 #endif
 
