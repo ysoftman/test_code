@@ -2,14 +2,23 @@
 // c_for_lua.cpp
 // ysoftman
 // Lua <-> C 연동 테스트
-#include "stdafx.h"
 #include "iostream"
 
+#ifdef _WIN32
 // 루아 설치했으면 include 와 lib 경로 추가(Windows 기준)
 // C:\Program Files (x86)\Lua\5.1\include
 // C:\Program Files (x86)\Lua\5.1\lib
 // lua lib 링크
 #pragma comment(lib , "lua5.1.lib")
+
+#elif __APPLE__
+// curl -R -O http://www.lua.org/ftp/lua-5.3.3.tar.gz
+// tar zxf lua-5.3.3.tar.gz
+// cd lua-5.3.3
+// make macosx test
+// cd ..
+// g++ c_for_lua.cpp -L./lua-5.3.3/src -llua
+#endif
 
 // lua(C 로 만들어짐) 헤더 include
 extern "C" {
@@ -39,12 +48,12 @@ int DoSomethingForLua(lua_State *L)
 	return 1;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
 	std::cout << "c_for_lua test start..." << std::endl;
 
 	// 루아 state 생성
-	lua_State *L = lua_open();
+	lua_State *L = luaL_newstate();
 	// 루아 라이브러리 오픈
 	luaL_openlibs(L);
 
