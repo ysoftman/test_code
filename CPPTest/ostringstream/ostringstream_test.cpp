@@ -14,7 +14,7 @@ int main()
     string str = ss.str();    
     cout << str << endl;
 
-    double b = 0.12345678912345678912346;
+    double b = 0.0000000000012345678912345678912346;
     ostringstream ss2;
     ss2 << "b:" << fixed << b;
     string str2 = ss2.str();    
