@@ -1,16 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// sizeof ÇÔ¼ö Á¦´ë·Î ¾Ë±â
+// sizeof í•¨ìˆ˜ ì œëŒ€ë¡œ ì•Œê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-
-void main()
+int main()
 {
 	int arr[5];
-
-	printf("%d %d %d", sizeof(arr), sizeof(arr[0]), sizeof(arr[5]));
+	printf("%lu %lu %lu\n", sizeof(arr), sizeof(arr[0]), sizeof(arr[5]));
+	return 0;
 }
-
