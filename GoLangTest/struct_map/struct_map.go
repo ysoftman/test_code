@@ -66,4 +66,17 @@ func main() {
 		fmt.Println("mapData3[", key, "] = ", value)
 	}
 
+	// Go 언어 map의 값이 struct 형일대 struct 의 field 값 설정 못하는 문제가 있다.
+	// 현재로선 struct 대신 *struct 으로 선언해서 사용한 경우에만 struct field 를 설정 할 수 있다.
+	// 해당 이슈(https://code.google.com/p/go/issues/detail?id=3117)가 아직 해결되지 않은 상태라고 한다.
+	// 자세한 내용은 http://egypt.silverkeytech.com/blogs/third-world/2013/8/you-cannot-assign-a-struct-field-off-map-directly
+	// mapData3[3].a = 10
+	mapData4 := make(map[int]*Data)
+	mapData4[0] = &Data{0, 0.0, "string0"}
+	mapData4[0].a = 10
+
+	for key, value := range mapData4 {
+		fmt.Println("mapData4[", key, "] = ", value)
+	}
+
 }
