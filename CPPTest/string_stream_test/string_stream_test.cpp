@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// string ½ºÆ®¸² »ç¿ë½Ã Ã¹¹øÂ° ¹ÙÀÌÆ®°¡ \t \n \r µî Æ¯¼ö¹®ÀÚÀÎ °æ¿ì ºüÁö´Â ¹®Á¦
+// string ìŠ¤íŠ¸ë¦¼ ì‚¬ìš©ì‹œ ì²«ë²ˆì§¸ ë°”ì´íŠ¸ê°€ \t \n \r ë“± íŠ¹ìˆ˜ë¬¸ìì¸ ê²½ìš° ë¹ ì§€ëŠ” ë¬¸ì œ
 ////////////////////////////////////////////////////////////////////////////////////
 #include <string>
 #include <ios>		// ios_base, ios
@@ -16,7 +16,7 @@ string getStringStream1(string str)
 	string strResult;
 	istringstream is(str);
 	stringbuf strBuf;
-	// Ã¹¹øÂ° ¹ÙÀÌÆ®°¡ \t \n \r µî Æ¯¼ö¹®ÀÚÀÎ °æ¿ì Á¦´ë·Î Ãâ·ÂµÇÁö ¾Ê´Â´Ù.
+	// ì²«ë²ˆì§¸ ë°”ì´íŠ¸ê°€ \t \n \r ë“± íŠ¹ìˆ˜ë¬¸ìì¸ ê²½ìš° ì œëŒ€ë¡œ ì¶œë ¥ë˜ì§€ ì•ŠëŠ”ë‹¤.
 	is >> &strBuf;
 	strResult = strBuf.str();
 	return strResult;
@@ -26,7 +26,7 @@ string getStringStream2(string str)
 {
 	string strResult;
 	istringstream iss(str);
-	// ¸ğµç ½ºÆ®¸²À» Á¤»óÀûÀ¸·Î Ãâ·ÂÇÑ´Ù.
+	// ëª¨ë“  ìŠ¤íŠ¸ë¦¼ì„ ì •ìƒì ìœ¼ë¡œ ì¶œë ¥í•œë‹¤.
 	iss.seekg(0, iss.end);
 	int size = (int)iss.tellg();
 	iss.seekg(0, iss.beg);
@@ -42,11 +42,11 @@ string getStringStream2(string str)
 
 int main()
 {
-	__int32 llMsgID = 231520362;
+	int llMsgID = 231520362;
 	string strIn;
 	string strOut;
 	
-	// ¹®Á¦°¡ ¾ø´Â °æ¿ì
+	// ë¬¸ì œê°€ ì—†ëŠ” ê²½ìš°
 	char szBuffer[5];
 	memset(szBuffer, 0, sizeof(szBuffer));
 	memcpy(szBuffer, &llMsgID, sizeof(llMsgID));
@@ -68,7 +68,7 @@ int main()
 	cout << endl;
 	cout << endl;
 
-	// \t \n \r µîÀ¸·Î ½ÃÀÛµÇ´Â °æ¿ì stirng ½ºÆ®¸²ÀÇ >> »ç¿ë½Ã Ã¹¹øÂ° ¹ÙÀÌÆ®°¡ ºüÁö´Â ¹®Á¦ ¹ß»ı
+	// \t \n \r ë“±ìœ¼ë¡œ ì‹œì‘ë˜ëŠ” ê²½ìš° stirng ìŠ¤íŠ¸ë¦¼ì˜ >> ì‚¬ìš©ì‹œ ì²«ë²ˆì§¸ ë°”ì´íŠ¸ê°€ ë¹ ì§€ëŠ” ë¬¸ì œ ë°œìƒ
 	char szBuffer2[5];
 	memset(szBuffer2, 0, sizeof(szBuffer2));
 	//szBuffer2[0] = '\t';
@@ -85,7 +85,7 @@ int main()
 		cout << (int)strIn[i] << "  ";
 	}
 	cout << endl;
-	strOut = getStringStream1(strIn);		// Ã¹¹øÂ° ¹ÙÀÌÆ® Á¦¿ÜµÊ
+	strOut = getStringStream1(strIn);		// ì²«ë²ˆì§¸ ë°”ì´íŠ¸ ì œì™¸ë¨
 	cout << "out: ";
 	for (unsigned int i=0; i<strOut.size(); ++i)
 	{
@@ -93,7 +93,7 @@ int main()
 	}
 	cout << endl;
 
-	strOut = getStringStream2(strIn);		// ¸ğµç ½ºÆ®¸² º¹»ç
+	strOut = getStringStream2(strIn);		// ëª¨ë“  ìŠ¤íŠ¸ë¦¼ ë³µì‚¬
 	cout << "out: ";
 	for (unsigned int i=0; i<strOut.size(); ++i)
 	{
