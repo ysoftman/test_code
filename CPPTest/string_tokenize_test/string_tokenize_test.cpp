@@ -1,19 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ¹®ÀÚ¿­ ÅäÅ«³ªÀÌÁî
+// ë¬¸ìì—´ í† í°ë‚˜ì´ì¦ˆ
 ////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
 
-//str				ÆÄ½ÌÇÒ ¹®ÀÚ¿­
-//tokens			ÅäÅ«À» ´ãÀ» º¤ÅÍ
-//delimiter			±¸ºĞÀÚ
+//str				íŒŒì‹±í•  ë¬¸ìì—´
+//tokens			í† í°ì„ ë‹´ì„ ë²¡í„°
+//delimiter			êµ¬ë¶„ì
 void StringTokenize(string str, vector<string> &tokens, string delimiter)
 {
-	// Ã³À½ ±¸ºĞÀÚ°¡ ÀÖÀ»°æ¿ìÀ» ´ëºñÇØ¼­
-	// find_first_not_of ´Â offset ºÎÅÍ ±¸ºĞÀÚ°¡ ¾Æ´Ñ ¹®ÀÚ°¡ Ã³À½ ³ª¿Â °÷À» Ã£´Â´Ù.
+	// ì²˜ìŒ êµ¬ë¶„ìê°€ ìˆì„ê²½ìš°ì„ ëŒ€ë¹„í•´ì„œ
+	// find_first_not_of ëŠ” offset ë¶€í„° êµ¬ë¶„ìê°€ ì•„ë‹Œ ë¬¸ìê°€ ì²˜ìŒ ë‚˜ì˜¨ ê³³ì„ ì°¾ëŠ”ë‹¤.
 	string::size_type frompos = str.find_first_not_of(delimiter, 0);
 	string::size_type topos = str.find_first_of(delimiter, frompos);
 	while (topos != string::npos)
@@ -23,7 +23,7 @@ void StringTokenize(string str, vector<string> &tokens, string delimiter)
 		frompos = str.find_first_not_of(delimiter, topos);
 		topos = str.find_first_of(delimiter, frompos);		
 	}
-	// ¸¶Áö¸·¿¡ ±¸ºĞÀÚ°¡ ¾øÀ»¶§´Â ÇöÀç±îÁöÀÇ frompos ºÎÅÍ ³¡±îÁö¸¦ ÇÏ³ªÀÇ ÅäÅ«À» º»´Ù.
+	// ë§ˆì§€ë§‰ì— êµ¬ë¶„ìê°€ ì—†ì„ë•ŒëŠ” í˜„ì¬ê¹Œì§€ì˜ frompos ë¶€í„° ëê¹Œì§€ë¥¼ í•˜ë‚˜ì˜ í† í°ì„ ë³¸ë‹¤.
 	if (frompos != string::npos)
 	{
 		tokens.push_back(str.substr(frompos, topos-frompos));
@@ -32,7 +32,7 @@ void StringTokenize(string str, vector<string> &tokens, string delimiter)
 
 int main()
 {
-	string strTest = "°¡³ª,´Ù¶ó¸¶¹Ù,»ç¾ÆÀÚ,Â÷Ä«Å¸ÆÄ,ÇÏ";
+	string strTest = "ê°€ë‚˜,ë‹¤ë¼ë§ˆë°”,ì‚¬ì•„ì,ì°¨ì¹´íƒ€íŒŒ,í•˜";
 	cout << strTest << endl;
 	vector<string> vecTokens;
 	vector<string>::iterator iter;
