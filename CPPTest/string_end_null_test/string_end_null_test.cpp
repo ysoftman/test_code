@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void main()
+int main()
 {
 	int len = 0;
 	char szBuffer[3];
@@ -28,6 +28,8 @@ void main()
 	szBuffer[2] = 'c';
 	len = strlen(szBuffer);
 	printf("%s = len(%d)\n", szBuffer, len);
+
+	return 0;
 }
 
 
