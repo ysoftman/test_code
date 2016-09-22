@@ -46,15 +46,15 @@ int main()
 
 	for (iter = vecAny.begin(); iter != vecAny.end(); iter++)
 	{
-		if ((*iter).type() == typeid(int))
+		if ((*iter).type().name() == typeid(int).name())
 		{
 			cout << any_cast<int>(*iter) << endl;
 		}
-		else if ((*iter).type() == typeid(string))
+		else if ((*iter).type().name() == typeid(string).name())
 		{
 			cout << any_cast<string>(*iter) << endl;
 		}
- 		else if ((*iter).type() == typeid(double))
+ 		else if ((*iter).type().name() == typeid(double).name())
 		{
 			cout << any_cast<double>(*iter) << endl;
 		}
