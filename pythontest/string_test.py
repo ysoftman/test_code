@@ -32,6 +32,7 @@ print str
 # 스트링 포맷팅
 data = {'first': 'bill', 'second': 'yoon'}
 print '{first} {second}'.format(**data)
+print "{first} {second}".format(**data)
 
 
 
