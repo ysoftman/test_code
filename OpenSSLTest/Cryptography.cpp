@@ -1,8 +1,8 @@
 #include "Cryptography.h"
 
 /**
-*	@brief					Crypto Å¬·¡½º »ı¼ºÀÚ
-*	@author					À±º´ÈÆ
+*	@brief					Crypto í´ë˜ìŠ¤ ìƒì„±ì
+*	@author					ìœ¤ë³‘í›ˆ
 *	@param					None
 *	@return					None
 */
@@ -11,20 +11,20 @@ Crypto::Crypto()
 }
 
 /**
-*	@brief					Crypto Å¬·¡½º ¼Ò¸êÀÚ
-*	@author					À±º´ÈÆ
+*	@brief					Crypto í´ë˜ìŠ¤ ì†Œë©¸ì
+*	@author					ìœ¤ë³‘í›ˆ
 *	@param					None
 *	@return					None
 */
 Crypto::~Crypto()
 {
-	// ÇöÀç ¾²·¹µåÀÇ Error Queue »èÁ¦
+	// í˜„ì¬ ì“°ë ˆë“œì˜ Error Queue ì‚­ì œ
 	ERR_remove_state(0);
-	// Errot String ÇØÁ¦
+	// Errot String í•´ì œ
 	ERR_free_strings();
-	// ENGIN »èÁ¦
+	// ENGIN ì‚­ì œ
 	ENGINE_cleanup();
-	// EVP »èÁ¦
+	// EVP ì‚­ì œ
 	EVP_cleanup();
 
 	//This function is used to cleanup application specific data and should be called before the application shuts down to avoid memory leaks.
@@ -33,8 +33,8 @@ Crypto::~Crypto()
 
 
 /**
-*	@brief						Crypto Å° ÇØÁ¦
-*	@author						À±º´ÈÆ
+*	@brief						Crypto í‚¤ í•´ì œ
+*	@author						ìœ¤ë³‘í›ˆ
 *	@param			p			RSA key
 *	@return						None
 */
@@ -48,26 +48,26 @@ void Crypto::RSA_Free(RSA *p)
 
 
 /**
-*	@brief						RSA Å° »ı¼ºÇÏ´Â ÇÔ¼ö
-*	@author						À±º´ÈÆ
-*	@param			KeySize		»ı¼ºÇÒ Å° »çÀÌÁî(ºñÆ®»çÀÌÁî·Î 512bit, 1024bit, 2048bit ...)
-*	@return						¼º°øÇÏ¸é RSA Å° ¸®ÅÏ
+*	@brief						RSA í‚¤ ìƒì„±í•˜ëŠ” í•¨ìˆ˜
+*	@author						ìœ¤ë³‘í›ˆ
+*	@param			KeySize		ìƒì„±í•  í‚¤ ì‚¬ì´ì¦ˆ(ë¹„íŠ¸ì‚¬ì´ì¦ˆë¡œ 512bit, 1024bit, 2048bit ...)
+*	@return						ì„±ê³µí•˜ë©´ RSA í‚¤ ë¦¬í„´
 */
 RSA* Crypto::RSA_GenerateKey(int KeySize)
 {
-	// Å° »ı¼ºÀ» À§ÇÑ ¾¾µå°ª »ı¼º
+	// í‚¤ ìƒì„±ì„ ìœ„í•œ ì”¨ë“œê°’ ìƒì„±
 	//const char seed[] = "2$#^B@$^B)@VM*@)#$^*C)MPTSVDMPSVCSPRM_^*X#^*V#*&#*&%)CF*";
 	//RAND_seed(seed, sizeof(seed));
 
-	// Å°»çÀÌÁî¿¡ µû¸¥ Å° »ı¼º
-	// µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ´Â Áö¼ö(exponent) °ªÀ¸·Î º¸Åë 3 17 65537 ÀÇ ¼Ò¼ö¸¦ »ç¿ëÇÑ´Ù.
+	// í‚¤ì‚¬ì´ì¦ˆì— ë”°ë¥¸ í‚¤ ìƒì„±
+	// ë‘ë²ˆì§¸ íŒŒë¼ë¯¸í„°ëŠ” ì§€ìˆ˜(exponent) ê°’ìœ¼ë¡œ ë³´í†µ 3 17 65537 ì˜ ì†Œìˆ˜ë¥¼ ì‚¬ìš©í•œë‹¤.
 	RSA *rsa = RSA_generate_key(KeySize, 17, NULL, NULL);
 	if (NULL == rsa)
 	{
 		return NULL;
 	}
 
-	// »ı¼ºµÈ Å°¸¦ Ã¼Å©
+	// ìƒì„±ëœ í‚¤ë¥¼ ì²´í¬
 	int ret = RSA_check_key(rsa);
 	if (ret != 1)
 	{
@@ -78,30 +78,30 @@ RSA* Crypto::RSA_GenerateKey(int KeySize)
 }
 
 /**
-*	@brief						RSA °ø°³Å°·Î ¾ÏÈ£È­
-*	@author						À±º´ÈÆ
-*	@param			rsa			rsa Å°
-*	@param			pPlain		¾ÏÈ£È­ÇÒ µ¥ÀÌÅÍ
-*	@return						¾ÏÈ£È­µÈ µ¥ÀÌÅÍ
+*	@brief						RSA ê³µê°œí‚¤ë¡œ ì•”í˜¸í™”
+*	@author						ìœ¤ë³‘í›ˆ
+*	@param			rsa			rsa í‚¤
+*	@param			pPlain		ì•”í˜¸í™”í•  ë°ì´í„°
+*	@return						ì•”í˜¸í™”ëœ ë°ì´í„°
 */
 char* Crypto::RSA_EncryptPublic(RSA *rsa, char *pPlain)
 {
-	// Å° »çÀÌÁî ÆÄ¾Ç(bit -> byte ·Î º¯È¯)
+	// í‚¤ ì‚¬ì´ì¦ˆ íŒŒì•…(bit -> byte ë¡œ ë³€í™˜)
 	int KeySize = RSA_size(rsa);
 
 	int PlainLen = strlen(pPlain);
 
-	// RSA_PKCS1_OAEP_PADDING »ç¿ë½Ã Æò¹®ÀÇ ÃÖ´ë Å©±â Ã¼Å©
+	// RSA_PKCS1_OAEP_PADDING ì‚¬ìš©ì‹œ í‰ë¬¸ì˜ ìµœëŒ€ í¬ê¸° ì²´í¬
 	if (PlainLen > KeySize - 41)
 	{
 		return NULL;
 	}
 
-	// ¾ÏÈ£°á°ú°¡ ÀúÁ¤µÉ ¹öÆÛ
+	// ì•”í˜¸ê²°ê³¼ê°€ ì €ì •ë  ë²„í¼
 	char *pBuffer = new char[KeySize];
 	memset(pBuffer, 0, sizeof(char)*KeySize);
 
-	// ¾ÏÈ£È­
+	// ì•”í˜¸í™”
 	int CipherLen = RSA_public_encrypt(PlainLen, reinterpret_cast<const unsigned char *>(pPlain), reinterpret_cast<unsigned char*>(pBuffer), rsa, RSA_PKCS1_OAEP_PADDING);
 
 	if (CipherLen <= 0)
@@ -112,7 +112,7 @@ char* Crypto::RSA_EncryptPublic(RSA *rsa, char *pPlain)
 		return NULL;
 	}
 
-	// ¹ÙÀÌÆ® ¹è¿­ Áß°£¿¡ '\0' °ªÀ» ¾ø¾Ö±â À§ÇØ¼­ Base64ÀÎÄÚµùÇÑ´Ù.
+	// ë°”ì´íŠ¸ ë°°ì—´ ì¤‘ê°„ì— '\0' ê°’ì„ ì—†ì• ê¸° ìœ„í•´ì„œ Base64ì¸ì½”ë”©í•œë‹¤.
 	char* pBase64Cipher = Base64_Encoding(pBuffer, CipherLen);
 	delete[] pBuffer;
 
@@ -121,15 +121,15 @@ char* Crypto::RSA_EncryptPublic(RSA *rsa, char *pPlain)
 
 
 /**
-*	@brief								RSA °³ÀÎÅ°·Î º¹È£È­
-*	@author								À±º´ÈÆ
-*	@param			rsa					rsa Å°
-*	@param			pBase64Cipher		¾ÏÈ£È­µÈ µ¥ÀÌÅÍ
-*	@return								º¹È£È­µÈ µ¥ÀÌÅÍ
+*	@brief								RSA ê°œì¸í‚¤ë¡œ ë³µí˜¸í™”
+*	@author								ìœ¤ë³‘í›ˆ
+*	@param			rsa					rsa í‚¤
+*	@param			pBase64Cipher		ì•”í˜¸í™”ëœ ë°ì´í„°
+*	@return								ë³µí˜¸í™”ëœ ë°ì´í„°
 */
 char* Crypto::RSA_DecryptPrivate(RSA *rsa, char *pBase64Cipher)
 {
-	// Å° »çÀÌÁî ÆÄ¾Ç
+	// í‚¤ ì‚¬ì´ì¦ˆ íŒŒì•…
 	int KeySize = RSA_size(rsa);
 
 	if (pBase64Cipher == NULL)
@@ -137,15 +137,15 @@ char* Crypto::RSA_DecryptPrivate(RSA *rsa, char *pBase64Cipher)
 		return "";
 	}
 
-	// Base64ÀÎÄÚµùÀº ¿ø·¡µ¥ÀÌÅÍº¸´Ù Å©´Ù.
+	// Base64ì¸ì½”ë”©ì€ ì›ë˜ë°ì´í„°ë³´ë‹¤ í¬ë‹¤.
 	int CipherBase64Len = strlen(pBase64Cipher);
-	// Base64 µğÄÚµùÇÑ´Ù.
+	// Base64 ë””ì½”ë”©í•œë‹¤.
 	char* pCipher = Base64_Decoding(pBase64Cipher, CipherBase64Len);
 	if (pCipher == NULL)
 	{
 		return NULL;
 	}
-	// pCipher ¿¡´Â '\0' °ªÀÌ Áß°£¿¡ Æ÷ÇÔµÉ ¼ö ÀÖ±â¶§¹®¿¡ strlenÀ¸·Î Å©±â¸¦ ÆÄ¾ÇÇÏ¸é ¾ÈµÈ´Ù.
+	// pCipher ì—ëŠ” '\0' ê°’ì´ ì¤‘ê°„ì— í¬í•¨ë  ìˆ˜ ìˆê¸°ë•Œë¬¸ì— strlenìœ¼ë¡œ í¬ê¸°ë¥¼ íŒŒì•…í•˜ë©´ ì•ˆëœë‹¤.
 	int CipherLen = 0;
 	for (int i=CipherBase64Len-1; i>=0; i--)
 	{
@@ -156,12 +156,12 @@ char* Crypto::RSA_DecryptPrivate(RSA *rsa, char *pBase64Cipher)
 		}
 	}
 
-	// º¹È£È­µÈ °á°ú°¡ ÀúÁ¤µÉ ¹öÆÛ
-	// Å°»çÀÌÁîº¸´Ù Å¬ ¼ö ¾ø±â¶§¹®¿¡
+	// ë³µí˜¸í™”ëœ ê²°ê³¼ê°€ ì €ì •ë  ë²„í¼
+	// í‚¤ì‚¬ì´ì¦ˆë³´ë‹¤ í´ ìˆ˜ ì—†ê¸°ë•Œë¬¸ì—
 	char *pBuffer = new char[KeySize];
 	memset(pBuffer, 0, sizeof(char)*KeySize);
 
-	// º¹È£È­
+	// ë³µí˜¸í™”
 	int PlainLen = RSA_private_decrypt(CipherLen, reinterpret_cast<const unsigned char *>(pCipher), reinterpret_cast<unsigned char*>(pBuffer), rsa, RSA_PKCS1_OAEP_PADDING);
 
 	delete[] pCipher;
@@ -179,12 +179,12 @@ char* Crypto::RSA_DecryptPrivate(RSA *rsa, char *pBase64Cipher)
 
 
 /**
-*	@brief							AES ¾ÏÈ£È­, 128bit(16byte) ºí·Ï ´ÜÀ§·Î ¾ÏÈ£È­ÇÑ´Ù.
-*	@author							À±º´ÈÆ
-*	@param			userKey			¾ÏÈ£È­¿¡ »ç¿ëÇÒ Å°(128bit, 192bit, 256bit Å©±â¸¦ °¡Áú ¼ö ÀÖ´Ù.)
-*	@param			iv				¾ÏÈ£È­¿¡ »ç¿ëÇÒ ÃÊ±â º¤ÅÍ
-*	@param			Plain			¾ÏÈ£È­ÇÒ µ¥ÀÌÅÍ
-*	@return							¾ÏÈ£È­µÈ µ¥ÀÌÅÍ
+*	@brief							AES ì•”í˜¸í™”, 128bit(16byte) ë¸”ë¡ ë‹¨ìœ„ë¡œ ì•”í˜¸í™”í•œë‹¤.
+*	@author							ìœ¤ë³‘í›ˆ
+*	@param			userKey			ì•”í˜¸í™”ì— ì‚¬ìš©í•  í‚¤(128bit, 192bit, 256bit í¬ê¸°ë¥¼ ê°€ì§ˆ ìˆ˜ ìˆë‹¤.)
+*	@param			iv				ì•”í˜¸í™”ì— ì‚¬ìš©í•  ì´ˆê¸° ë²¡í„°
+*	@param			Plain			ì•”í˜¸í™”í•  ë°ì´í„°
+*	@return							ì•”í˜¸í™”ëœ ë°ì´í„°
 */
 char* Crypto::AES_CBC_Encrypt(const unsigned char *userKey, unsigned char *iv, string Plain)
 {
@@ -193,10 +193,10 @@ char* Crypto::AES_CBC_Encrypt(const unsigned char *userKey, unsigned char *iv, s
 		return NULL;
 	}
 
-	// ÇÑ±ÛÀÇ °æ¿ì2¹ÙÀÌÆ®¸¦ Â÷ÁöÇÏ±â¶§¹®¿¡
-	// string ¹®ÀÚ¿­ ±æÀÌÀÇ 2¹è Å©±âÀÇ ¹ÙÀÌÆ®°¡ ÇÒ´çµÇ¾î¾ß ÇÑ´Ù.
-	// ¾ÏÈ£È­µÈ ¹®ÀÚ¿­Àº ÃÖ¼Ò 128bit(16byte) Å©±â¸¦ ¸Ş¸ğ¸® °ø°£ÀÌ ÇÊ¿äÇÏ´Ù.
-	// 16byte ÀÌÇÏÀÇ ¹®ÀÚ¿­¿¡ ´ëÇØ¼­µµ Ã³¸®ÇÒ ¼ö ÀÖµµ·Ï ±âº»ÀûÀ¸·Î 16byte ¸Ş¸ğ¸® °ø°£À» È®º¸ÇÏµµ·Ï ÇÑ´Ù.
+	// í•œê¸€ì˜ ê²½ìš°2ë°”ì´íŠ¸ë¥¼ ì°¨ì§€í•˜ê¸°ë•Œë¬¸ì—
+	// string ë¬¸ìì—´ ê¸¸ì´ì˜ 2ë°° í¬ê¸°ì˜ ë°”ì´íŠ¸ê°€ í• ë‹¹ë˜ì–´ì•¼ í•œë‹¤.
+	// ì•”í˜¸í™”ëœ ë¬¸ìì—´ì€ ìµœì†Œ 128bit(16byte) í¬ê¸°ë¥¼ ë©”ëª¨ë¦¬ ê³µê°„ì´ í•„ìš”í•˜ë‹¤.
+	// 16byte ì´í•˜ì˜ ë¬¸ìì—´ì— ëŒ€í•´ì„œë„ ì²˜ë¦¬í•  ìˆ˜ ìˆë„ë¡ ê¸°ë³¸ì ìœ¼ë¡œ 16byte ë©”ëª¨ë¦¬ ê³µê°„ì„ í™•ë³´í•˜ë„ë¡ í•œë‹¤.
 	int size = (Plain.length() * 2) + 16;
 	char *pPlain = new char[size];
 	char *pCipher = new char[size];
@@ -208,7 +208,7 @@ char* Crypto::AES_CBC_Encrypt(const unsigned char *userKey, unsigned char *iv, s
 
 
 	AES_KEY encKey;
-	// AES encryption key ¼³Á¤
+	// AES encryption key ì„¤ì •
 	if (AES_set_encrypt_key(userKey, 128, &encKey) < 0)
 	{
 		delete[] pPlain;
@@ -217,11 +217,11 @@ char* Crypto::AES_CBC_Encrypt(const unsigned char *userKey, unsigned char *iv, s
 		return NULL;
 	}
 
-	// 16bit ºí·°¸¸ Ã³¸®µÈ´Ù.
+	// 16bit ë¸”ëŸ­ë§Œ ì²˜ë¦¬ëœë‹¤.
 	//AES_encrypt(reinterpret_cast<const unsigned char *>(pPlain), reinterpret_cast<unsigned char *>(pCipher), &encKey);
-	// Cipher Block Chaining mode (¾ÏÈ£ ºí·° ¿¬¼â ¸ğµå)¾Æ·¡ ÇÔ¼ö¸¦ ¼öÇàÇÏ¸é iv °ªÀÌ º¯°æµÈ´Ù.
+	// Cipher Block Chaining mode (ì•”í˜¸ ë¸”ëŸ­ ì—°ì‡„ ëª¨ë“œ)ì•„ë˜ í•¨ìˆ˜ë¥¼ ìˆ˜í–‰í•˜ë©´ iv ê°’ì´ ë³€ê²½ëœë‹¤.
 	//AES_cbc_encrypt(reinterpret_cast<const unsigned char*>(pPlain), reinterpret_cast<unsigned char*>(pCipher), PlainLen, &encKey, iv, AES_ENCRYPT);
-	// pCipher ¿¡´Â '\0' °ªÀÌ Áß°£¿¡ Æ÷ÇÔµÉ ¼ö ÀÖ±â¶§¹®¿¡ strlenÀ¸·Î Å©±â¸¦ ÆÄ¾ÇÇÏ¸é ¾ÈµÈ´Ù.
+	// pCipher ì—ëŠ” '\0' ê°’ì´ ì¤‘ê°„ì— í¬í•¨ë  ìˆ˜ ìˆê¸°ë•Œë¬¸ì— strlenìœ¼ë¡œ í¬ê¸°ë¥¼ íŒŒì•…í•˜ë©´ ì•ˆëœë‹¤.
 	//int CipherLen = 0;
 	//for (int i=size-1; i>=0; i--)
 	//{
@@ -263,7 +263,7 @@ char* Crypto::AES_CBC_Encrypt(const unsigned char *userKey, unsigned char *iv, s
 	delete[] pPlain;
 
 
-	// ¹ÙÀÌÆ® ¹è¿­ Áß°£¿¡ '\0' °ªÀ» ¾ø¾Ö±â À§ÇØ¼­ Base64ÀÎÄÚµùÇÑ´Ù.
+	// ë°”ì´íŠ¸ ë°°ì—´ ì¤‘ê°„ì— '\0' ê°’ì„ ì—†ì• ê¸° ìœ„í•´ì„œ Base64ì¸ì½”ë”©í•œë‹¤.
 	char* pBase64Cipher = Base64_Encoding(pCipher, CipherLen);
 
 	delete[] pCipher;
@@ -274,12 +274,12 @@ char* Crypto::AES_CBC_Encrypt(const unsigned char *userKey, unsigned char *iv, s
 
 
 /**
-*	@brief							AES º¹È£È­, 128bit(16byte) ºí·Ï ´ÜÀ§·Î º¹È£È­ÇÑ´Ù.
-*	@author							À±º´ÈÆ
-*	@param			userKey			º¹È£È­¿¡ »ç¿ëÇÒ Å°(128bit, 192bit, 256bit Å©±â¸¦ °¡Áú ¼ö ÀÖ´Ù.)
-*	@param			iv				º¹È£È­¿¡ »ç¿ëÇÒ ÃÊ±â º¤ÅÍ
-*	@param			pBase64Cipher	º¹È£È­ÇÒ µ¥ÀÌÅÍ
-*	@return							º¹È£È­µÈ µ¥ÀÌÅÍ
+*	@brief							AES ë³µí˜¸í™”, 128bit(16byte) ë¸”ë¡ ë‹¨ìœ„ë¡œ ë³µí˜¸í™”í•œë‹¤.
+*	@author							ìœ¤ë³‘í›ˆ
+*	@param			userKey			ë³µí˜¸í™”ì— ì‚¬ìš©í•  í‚¤(128bit, 192bit, 256bit í¬ê¸°ë¥¼ ê°€ì§ˆ ìˆ˜ ìˆë‹¤.)
+*	@param			iv				ë³µí˜¸í™”ì— ì‚¬ìš©í•  ì´ˆê¸° ë²¡í„°
+*	@param			pBase64Cipher	ë³µí˜¸í™”í•  ë°ì´í„°
+*	@return							ë³µí˜¸í™”ëœ ë°ì´í„°
 */
 string Crypto::AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, char *pBase64Cipher)
 {
@@ -287,16 +287,16 @@ string Crypto::AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, 
 	{
 		return "";
 	}
-	// Base64ÀÎÄÚµùÀº ¿ø·¡µ¥ÀÌÅÍº¸´Ù Å©´Ù.
+	// Base64ì¸ì½”ë”©ì€ ì›ë˜ë°ì´í„°ë³´ë‹¤ í¬ë‹¤.
 	int CipherBase64Len = strlen(pBase64Cipher);
 
-	// Base64 µğÄÚµùÇÑ´Ù.
+	// Base64 ë””ì½”ë”©í•œë‹¤.
 	char* pCipher = Base64_Decoding(pBase64Cipher, CipherBase64Len);
 	if (pCipher == NULL)
 	{
 		return "";
 	}
-	// pCipher ¿¡´Â '\0' °ªÀÌ Áß°£¿¡ Æ÷ÇÔµÉ ¼ö ÀÖ±â¶§¹®¿¡ strlenÀ¸·Î Å©±â¸¦ ÆÄ¾ÇÇÏ¸é ¾ÈµÈ´Ù.
+	// pCipher ì—ëŠ” '\0' ê°’ì´ ì¤‘ê°„ì— í¬í•¨ë  ìˆ˜ ìˆê¸°ë•Œë¬¸ì— strlenìœ¼ë¡œ í¬ê¸°ë¥¼ íŒŒì•…í•˜ë©´ ì•ˆëœë‹¤.
 	int CipherLen = 0;
 	for (int i=CipherBase64Len-1; i>=0; i--)
 	{
@@ -307,14 +307,14 @@ string Crypto::AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, 
 		}
 	}
 
-	// ÇÑ±ÛÀÇ °æ¿ì2¹ÙÀÌÆ®¸¦ Â÷ÁöÇÏ±â¶§¹®¿¡
-	// string ¹®ÀÚ¿­ ±æÀÌÀÇ 2¹è Å©±âÀÇ ¹ÙÀÌÆ®°¡ ÇÒ´çµÇ¾î¾ß ÇÑ´Ù.
+	// í•œê¸€ì˜ ê²½ìš°2ë°”ì´íŠ¸ë¥¼ ì°¨ì§€í•˜ê¸°ë•Œë¬¸ì—
+	// string ë¬¸ìì—´ ê¸¸ì´ì˜ 2ë°° í¬ê¸°ì˜ ë°”ì´íŠ¸ê°€ í• ë‹¹ë˜ì–´ì•¼ í•œë‹¤.
 	int size = CipherLen * 2;
 	char *pPlain = new char[size];
 	memset(pPlain, 0, sizeof(char)*size);
 
 	AES_KEY decKey;
-	// AES encryption key ¼³Á¤
+	// AES encryption key ì„¤ì •
 	if (AES_set_decrypt_key(userKey, 128, &decKey) < 0)
 	{
 		delete[] pPlain;
@@ -323,9 +323,9 @@ string Crypto::AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, 
 		return "";
 	}
 
-	// 16bit ºí·°¸¸ Ã³¸®µÈ´Ù.
+	// 16bit ë¸”ëŸ­ë§Œ ì²˜ë¦¬ëœë‹¤.
 	//AES_decrypt(reinterpret_cast<const unsigned char *>(pCipher), reinterpret_cast<unsigned char *>(pPlain), &decKey);
-	// Cipher Block Chaining mode (¾ÏÈ£ ºí·° ¿¬¼â ¸ğµå)¾Æ·¡ ÇÔ¼ö¸¦ ¼öÇàÇÏ¸é iv °ªÀÌ º¯°æµÈ´Ù.
+	// Cipher Block Chaining mode (ì•”í˜¸ ë¸”ëŸ­ ì—°ì‡„ ëª¨ë“œ)ì•„ë˜ í•¨ìˆ˜ë¥¼ ìˆ˜í–‰í•˜ë©´ iv ê°’ì´ ë³€ê²½ëœë‹¤.
 	//AES_cbc_encrypt(reinterpret_cast<const unsigned char*>(pCipher), reinterpret_cast<unsigned char*>(pPlain), CipherLen, &decKey, iv, AES_DECRYPT);
 
 	EVP_CIPHER_CTX ctx;
@@ -373,11 +373,11 @@ string Crypto::AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, 
 }
 
 /**
-*	@brief							Base64Encoding ÇÏ±â
-*	@author							À±º´ÈÆ
-*	@param			pInput			ÀÔ·Â ¹®ÀÚ¿­
-*	@param			Len				ÀÔ·Â ¹®ÀÚ¿­ ±æÀÌ
-*	@return							Base64Encoding ¹®ÀÚ¿­
+*	@brief							Base64Encoding í•˜ê¸°
+*	@author							ìœ¤ë³‘í›ˆ
+*	@param			pInput			ì…ë ¥ ë¬¸ìì—´
+*	@param			Len				ì…ë ¥ ë¬¸ìì—´ ê¸¸ì´
+*	@return							Base64Encoding ë¬¸ìì—´
 */
 char *Crypto::Base64_Encoding(char *pInput, int Len)
 {
@@ -395,17 +395,17 @@ char *Crypto::Base64_Encoding(char *pInput, int Len)
 	{
 		return NULL;
 	}
-	// ÁÙ¹Ù²Ş¾øµµ·Ï ¼³Á¤
+	// ì¤„ë°”ê¿ˆì—†ë„ë¡ ì„¤ì •
 	BIO_set_flags(base64, BIO_FLAGS_BASE64_NO_NL);
 
-	// ¸Ş¸ğ¸® È®º¸
+	// ë©”ëª¨ë¦¬ í™•ë³´
 	bmem = BIO_new(BIO_s_mem());
 	if (!bmem)
 	{
 		return NULL;
 	}
 	bio = BIO_push(base64, bmem);
-	// base64ÀÎÄÚµùÇÏ±â
+	// base64ì¸ì½”ë”©í•˜ê¸°
 	if (BIO_write(bio, pInput, Len) < 0)
 	{
 		return NULL;
@@ -413,7 +413,7 @@ char *Crypto::Base64_Encoding(char *pInput, int Len)
 	BIO_flush(bio);
 	int len = BIO_get_mem_ptr(bio, &mem);
 
-	// base64ÀÎÄÚµùµÈ ¸Ş¸ğ¸®¿¡¼­ ¹öÆÛ·Î ÀĞ¾î µéÀÌ±â
+	// base64ì¸ì½”ë”©ëœ ë©”ëª¨ë¦¬ì—ì„œ ë²„í¼ë¡œ ì½ì–´ ë“¤ì´ê¸°
 	char *buffer = new char[mem->length+1];
 	memset(buffer, 0, sizeof(char)*(mem->length+1));
 	memcpy(buffer, mem->data, mem->length);
@@ -424,11 +424,11 @@ char *Crypto::Base64_Encoding(char *pInput, int Len)
 }
 
 /**
-*	@brief							Base64Decoding ÇÏ±â
-*	@author							À±º´ÈÆ
-*	@param			pInput			ÀÔ·Â ¹®ÀÚ¿­
-*	@param			Len				ÀÔ·Â ¹®ÀÚ¿­ ±æÀÌ
-*	@return							Base64Decoding ¹®ÀÚ¿­
+*	@brief							Base64Decoding í•˜ê¸°
+*	@author							ìœ¤ë³‘í›ˆ
+*	@param			pInput			ì…ë ¥ ë¬¸ìì—´
+*	@param			Len				ì…ë ¥ ë¬¸ìì—´ ê¸¸ì´
+*	@return							Base64Decoding ë¬¸ìì—´
 */
 char *Crypto::Base64_Decoding(char *pInput, int Len)
 {
@@ -445,20 +445,20 @@ char *Crypto::Base64_Decoding(char *pInput, int Len)
 	{
 		return NULL;
 	}
-	// ÁÙ¹Ù²Ş¾øµµ·Ï ¼³Á¤
+	// ì¤„ë°”ê¿ˆì—†ë„ë¡ ì„¤ì •
 	BIO_set_flags(base64, BIO_FLAGS_BASE64_NO_NL);
 
-	// ÀÔ·Â ¹®ÀÚ¿­ ¸Ş¸ğ¸® °ø°£À¸·Î ¿Å±â±â
+	// ì…ë ¥ ë¬¸ìì—´ ë©”ëª¨ë¦¬ ê³µê°„ìœ¼ë¡œ ì˜®ê¸°ê¸°
 	bmem = BIO_new_mem_buf(pInput, Len);
 	if (!bmem)
 	{
 		return NULL;
 	}
 
-	// base64µğÄÚµùÇÏ±â
+	// base64ë””ì½”ë”©í•˜ê¸°
 	bio = BIO_push(base64, bmem);
 
-	// base64ÀÎÄÚµùµÈ ¸Ş¸ğ¸®¿¡¼­ ¹öÆÛ·Î ÀĞ¾î µéÀÌ±â
+	// base64ì¸ì½”ë”©ëœ ë©”ëª¨ë¦¬ì—ì„œ ë²„í¼ë¡œ ì½ì–´ ë“¤ì´ê¸°
 	char *buffer = new char[Len];
 	memset(buffer, 0, sizeof(char)*Len);
 	BIO_read(bio, buffer, Len);
@@ -469,10 +469,10 @@ char *Crypto::Base64_Decoding(char *pInput, int Len)
 }
 
 /**
-*	@brief							Base64Encoding Å©±â ÆÄ¾ÇÇÏ±â
-*	@author							À±º´ÈÆ
-*	@param			Len				ÀÔ·Â ¹®ÀÚ¿­ ±æÀÌ
-*	@return							Base64Encoding Å©±â
+*	@brief							Base64Encoding í¬ê¸° íŒŒì•…í•˜ê¸°
+*	@author							ìœ¤ë³‘í›ˆ
+*	@param			Len				ì…ë ¥ ë¬¸ìì—´ ê¸¸ì´
+*	@return							Base64Encoding í¬ê¸°
 */
 int Crypto::Base64_GetEncodeLength(int Len)
 {
