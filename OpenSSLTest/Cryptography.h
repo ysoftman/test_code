@@ -1,56 +1,56 @@
 /*
 ############################
-Á¦  ¸ñ : OpenSSL ºôµå
-ÀÛ¼ºÀÚ : À±º´ÈÆ
+ì œ  ëª© : OpenSSL ë¹Œë“œ
+ì‘ì„±ì : ìœ¤ë³‘í›ˆ
 ############################
-[À©µµ¿ì ºôµå]
-1. openssl-1.0.1c.tar.gz ¾ĞÃà ÇØÁ¦
+[ìœˆë„ìš° ë¹Œë“œ]
+1. openssl-1.0.1c.tar.gz ì••ì¶• í•´ì œ
 
 2. cd openssl-1.0.1c
 
-3. ÄÜ¼ÖÃ¢¿¡¼­ VC++ »ç¿ëÇÒ ¼ö ÀÖµµ·Ï È¯°æ ¼³Á¤
+3. ì½˜ì†”ì°½ì—ì„œ VC++ ì‚¬ìš©í•  ìˆ˜ ìˆë„ë¡ í™˜ê²½ ì„¤ì •
    "c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat"
 
-4. perl ·Î ¼³Á¤ÆÄÀÏ ¸¸µé±â(perl ¼³Ä¡ÆÄÀÏ http://downloads.activestate.com/ActivePerl/releases/)
-   win32 °æ¿ì ==> perl Configure VC-WIN32 --openssldir=C:\OpenSSL1.0.1
-   win64 °æ¿ì ==> perl Configure VC-WIN64A --openssldir=C:\OpenSSL1.0.1
+4. perl ë¡œ ì„¤ì •íŒŒì¼ ë§Œë“¤ê¸°(perl ì„¤ì¹˜íŒŒì¼ http://downloads.activestate.com/ActivePerl/releases/)
+   win32 ê²½ìš° ==> perl Configure VC-WIN32 --openssldir=C:\OpenSSL1.0.1
+   win64 ê²½ìš° ==> perl Configure VC-WIN64A --openssldir=C:\OpenSSL1.0.1
 
-5. ÄÄÆÄÀÏ È¯°æ ¼³Á¤ ¹èÄ¡ ½ÇÇà
-   win32 °æ¿ì ==> ms\do_ms.bat
-   win64 °æ¿ì ==> ms\do_win64a.bat
+5. ì»´íŒŒì¼ í™˜ê²½ ì„¤ì • ë°°ì¹˜ ì‹¤í–‰
+   win32 ê²½ìš° ==> ms\do_ms.bat
+   win64 ê²½ìš° ==> ms\do_win64a.bat
 
-6. ºôµå
-   .lib ºôµå ==> nmake -f ms\nt.mak install
-   .dll ºôµå ==> nmake -f ms\ntdll.mak install
+6. ë¹Œë“œ
+   .lib ë¹Œë“œ ==> nmake -f ms\nt.mak install
+   .dll ë¹Œë“œ ==> nmake -f ms\ntdll.mak install
 
-7. °á°ú È®ÀÎ
-   include ÆÄÀÏ ==> C:\OpenSSL1.0.1\include\openssl
-   .lib(.dll) ÆÄÀÏ ==> C:\OpenSSL1.0.1\lib
+7. ê²°ê³¼ í™•ì¸
+   include íŒŒì¼ ==> C:\OpenSSL1.0.1\include\openssl
+   .lib(.dll) íŒŒì¼ ==> C:\OpenSSL1.0.1\lib
 
-[¸®´ª½º ºôµå]
-1. openssl-1.0.1c.tar.gz ¾ĞÃà ÇØÁ¦
+[ë¦¬ëˆ…ìŠ¤ ë¹Œë“œ]
+1. openssl-1.0.1c.tar.gz ì••ì¶• í•´ì œ
    tar zxvf openssl-1.0.1c.tar.gz
 
 2. cd openssl-1.0.1c
 
-3. ¼³Á¤ÆÄÀÏ ¸¸µé±â
+3. ì„¤ì •íŒŒì¼ ë§Œë“¤ê¸°
    ./config --openssldir=/home/ysoftman/openssl1.0.1
 
-4. ºôµå ÈÄ Å×½ºÆ®
+4. ë¹Œë“œ í›„ í…ŒìŠ¤íŠ¸
    make && make test
 
-5. ¼³Ä¡
+5. ì„¤ì¹˜
    make install
 
-6. °á°ú È®ÀÎ
-   include ÆÄÀÏ ==> /home/ysoftman/openssl1.0.1/include/openssl
-   .a ÆÄÀÏ ==> /home/ysoftman/openssl1.0.1/lib
+6. ê²°ê³¼ í™•ì¸
+   include íŒŒì¼ ==> /home/ysoftman/openssl1.0.1/include/openssl
+   .a íŒŒì¼ ==> /home/ysoftman/openssl1.0.1/lib
 */
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// OpenSSL Å×½ºÆ®
-// ¾Õ¼­ ºôµåµÈ °æ·Î¿¡¼­ include ¿Í lib »ç¿ë
-// ÇÁ·ÎÁ§Æ® ¼³Á¤¿¡¼­ Ãß°¡ Æ÷ÇÔµğ·ºÅä¸®¿¡ ÇöÀç µğ·ºÅä¸®(.) Ãß°¡
+// OpenSSL í…ŒìŠ¤íŠ¸
+// ì•ì„œ ë¹Œë“œëœ ê²½ë¡œì—ì„œ include ì™€ lib ì‚¬ìš©
+// í”„ë¡œì íŠ¸ ì„¤ì •ì—ì„œ ì¶”ê°€ í¬í•¨ë””ë ‰í† ë¦¬ì— í˜„ì¬ ë””ë ‰í† ë¦¬(.) ì¶”ê°€
 ////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
@@ -82,8 +82,8 @@
 using namespace std;
 
 /**
-*	@brief			Crypto Å¬·¡½º
-*	@author			À±º´ÈÆ
+*	@brief			Crypto í´ë˜ìŠ¤
+*	@author			ìœ¤ë³‘í›ˆ
 *	@param			None
 *	@return			None
 */
