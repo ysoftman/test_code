@@ -1,9 +1,0 @@
-# role : 대상 서버 명시
-- name: hello world by ansible
-  hosts: testhost
-  user: hanadmin
-  # task : 대상 서버에서 수행할 작업 명시
-  tasks:
-  - name: print hello
-    shell: echo "hello world" > ysoftman.txt
-

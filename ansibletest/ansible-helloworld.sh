@@ -1,3 +1,2 @@
 #!/bin/bash
-ansible-playbook -i host helloworld.yml
-
+ansible-playbook -i host myplaybook.yml -t helloworld -vv
