@@ -3,8 +3,8 @@
 int main()
 {
 	Crypto crypto;
-	// Base64 ÀÎÄÚµù/µğÄÚµù Å×½ºÆ®
-	char *pPlain = "Base64ÀÎÄÚµù/µğÄÚµù Å×½ºÆ®ÀÔ´Ï´Ù. ÀÌ ¹®ÀåÀÌ º¸ÀÌ¸é Base64ÀÎÄÚµù/µğÄÚµùÀÌ Á¤»óÀûÀÎ°ÍÀÔ´Ï´Ù.\n";
+	// Base64 ì¸ì½”ë”©/ë””ì½”ë”© í…ŒìŠ¤íŠ¸
+	char *pPlain = "Base64ì¸ì½”ë”©/ë””ì½”ë”© í…ŒìŠ¤íŠ¸ì…ë‹ˆë‹¤. ì´ ë¬¸ì¥ì´ ë³´ì´ë©´ Base64ì¸ì½”ë”©/ë””ì½”ë”©ì´ ì •ìƒì ì¸ê²ƒì…ë‹ˆë‹¤.\n";
 	char *base64 = crypto.Base64_Encoding(pPlain, strlen(pPlain));
 	if (base64 != NULL)
 	{
@@ -19,11 +19,11 @@ int main()
 	}
 
 
-	// RSA ¾ÏÈ£È­/º¹È£È­ Å×½ºÆ®
+	// RSA ì•”í˜¸í™”/ë³µí˜¸í™” í…ŒìŠ¤íŠ¸
 	RSA *rsa = crypto.RSA_GenerateKey(1024);
 
-	// RSA_PKCS1_OAEP_PADDING ÀÏ¶§ Æò¹®ÀÇ ±æÀÌ´Â keysize(1024bit(128byte)-41(byte)) º¸´Ù ÀÛ¾Æ¾ß ÇÑ´Ù
-	char *pCipher = crypto.RSA_EncryptPublic(rsa, "¾ÏÈ£(RSA) Å×½ºÆ®ÀÔ´Ï´Ù. ÀÌ ¹®ÀåÀÌ º¸ÀÌ¸é ¾ÏÈ£/º¹È£È­°¡ Á¤»óÀûÀÎ°ÍÀÔ´Ï´Ù.\n");
+	// RSA_PKCS1_OAEP_PADDING ì¼ë•Œ í‰ë¬¸ì˜ ê¸¸ì´ëŠ” keysize(1024bit(128byte)-41(byte)) ë³´ë‹¤ ì‘ì•„ì•¼ í•œë‹¤
+	char *pCipher = crypto.RSA_EncryptPublic(rsa, "ì•”í˜¸(RSA) í…ŒìŠ¤íŠ¸ì…ë‹ˆë‹¤. ì´ ë¬¸ì¥ì´ ë³´ì´ë©´ ì•”í˜¸/ë³µí˜¸í™”ê°€ ì •ìƒì ì¸ê²ƒì…ë‹ˆë‹¤.\n");
 	char *pPlain2 = crypto.RSA_DecryptPrivate(rsa, pCipher);
 	if (pCipher != NULL)
 	{
@@ -37,15 +37,15 @@ int main()
 	}			
 	crypto.RSA_Free(rsa);
 
-	const short	AES_LEN								= 16+1; // (16º¤ÅÍ + NULL terminated)
+	const short	AES_LEN								= 16+1; // (16ë²¡í„° + NULL terminated)
 	const unsigned char AES_Key[AES_LEN]			= "ysoftmanAesKey";
 	const unsigned char AES_InitialVector[AES_LEN]	= "abcdefghijklmnop";
 
-	// AES ¾ÏÈ£È­/º¹È£È­ Å×½ºÆ®
+	// AES ì•”í˜¸í™”/ë³µí˜¸í™” í…ŒìŠ¤íŠ¸
 	unsigned char iv[AES_LEN];
 	memcpy(iv, AES_InitialVector, AES_LEN);
-	char *pCipher2 = crypto.AES_CBC_Encrypt(AES_Key, iv, "¾ÏÈ£(AES) Å×½ºÆ®ÀÔ´Ï´Ù. ÀÌ ¹®ÀåÀÌ º¸ÀÌ¸é ¾ÏÈ£/º¹È£È­°¡ Á¤»óÀûÀÎ°ÍÀÔ´Ï´Ù.\n");
-	// iv ÇÑ¹ø »ç¿ëÇÏ¸é °ªÀÌ º¯ÇÏ°Ô µÈ´Ù.
+	char *pCipher2 = crypto.AES_CBC_Encrypt(AES_Key, iv, "ì•”í˜¸(AES) í…ŒìŠ¤íŠ¸ì…ë‹ˆë‹¤. ì´ ë¬¸ì¥ì´ ë³´ì´ë©´ ì•”í˜¸/ë³µí˜¸í™”ê°€ ì •ìƒì ì¸ê²ƒì…ë‹ˆë‹¤.\n");
+	// iv í•œë²ˆ ì‚¬ìš©í•˜ë©´ ê°’ì´ ë³€í•˜ê²Œ ëœë‹¤.
 	memset(iv, 0, sizeof(unsigned char)*AES_LEN);
 	memcpy(iv, AES_InitialVector, AES_LEN);
 	string result = crypto.AES_CBC_Decrypt(AES_Key, iv, pCipher2);
