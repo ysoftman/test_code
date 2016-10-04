@@ -1,0 +1,20 @@
+# role : 대상 서버 명시
+- name: hello world by ansible
+  hosts: testhost
+  user: hanadmin
+  # task : 대상 서버에서 수행할 작업 명시
+  tasks:
+  - name: print hello world
+    shell: echo "hello world" > helloworld.txt
+    tags: [ helloworld, myname ]
+  - name: current path
+    shell: pwd > pwd.txt
+    tags: mylocation
+  - name: who am i
+    shell: whoami > whoami.txt
+    tags: myname
+  - name: clear all files
+    shell: rm -fv helloworld.txt pwd.txt whoami.txt
+    tags: clearall
+
+    
