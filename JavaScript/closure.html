@@ -11,30 +11,56 @@
 
     <script>
 
+    
     // ysoftman
-    // 클로져 테스트
-    function sum(n1) {
+    // 클로져 테스트1 
+    function sum1(n1) {
         var temp = 5;
         console.log(n1, temp);
         // 내부함수(클로져)에서는 외부함수의 파라미터, 변수를 사용할 수 있다. 
-        function sum_inner(n2) {
+        function sum1closure(n2) {
             return n1 + temp + n2;
         }
-        return sum_inner(10);
+        return sum1closure(10);
     }
 
-    var test1 = sum(1);
+    var test1 = sum1(1);
     var out1 = "case1 : " + test1;
     console.log(out1);
+    document.getElementById("result").innerHTML = out1 +  "<BR>";
     
-    var test2 = sum(2);
-    // sum (외부함수) 리턴 후  sum_inner(내부함수) 가 호출된다.
-    var out2 = "case2 : " + test2;
+    ///////////////////////////////////////////////////////////////////////
+
+    // 클로져 테스트2
+    function sum2(n1) {
+        var temp = 5;
+        console.log(n1, temp);
+        // 내부함수(클로져)에서는 외부함수의 파라미터, 변수를 사용할 수 있다. 
+        function sum2closure(n2) {
+            temp++;
+            return n1 + temp + n2;
+        }
+        // sum2closure 호출하지 않고 함수 이름을 리턴 
+        return sum2closure;
+    } 
+    var test2 = sum2(1);
+   
+    // sum2 (외부함수) 리턴 후  sum2closure(내부함수) 가 호출된다.
+    // 지금부터는 sum2 호출하게 되면 sum2closure(내부함수)를 호출하게 된다.
+    // 그리고 외부함수의 변수는 유지되고 있다.
+    var r = test2(1);
+    out2 = "case2 : " + r;
     console.log(out2);
-    document.getElementById("result").innerHTML = 
-        out1 +  "<BR>" +
-        out2;
     
+    r = test2(1);
+    out2 = "case2 : " + r;
+    console.log(out2);
+    
+    r = test2(1);
+    out2 = "case2 : " + r;
+    console.log(out2);
+    document.getElementById("result").innerHTML = out1 +  "<BR>";
+
     </script>
 
 </body>
