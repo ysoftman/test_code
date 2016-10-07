@@ -1,0 +1,42 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    클로져 테스트
+    <div id="result">
+        aaa
+    </div>
+
+    <script>
+
+    // ysoftman
+    // 클로져 테스트
+    function sum(n1) {
+        var temp = 5;
+        console.log(n1, temp);
+        // 내부함수(클로져)에서는 외부함수의 파라미터, 변수를 사용할 수 있다. 
+        function sum_inner(n2) {
+            return n1 + temp + n2;
+        }
+        return sum_inner(10);
+    }
+
+    var test1 = sum(1);
+    var out1 = "case1 : " + test1;
+    console.log(out1);
+    
+    var test2 = sum(2);
+    // sum (외부함수) 리턴 후  sum_inner(내부함수) 가 호출된다.
+    var out2 = "case2 : " + test2;
+    console.log(out2);
+    document.getElementById("result").innerHTML = 
+        out1 +  "<BR>" +
+        out2;
+    
+    </script>
+
+</body>
+
+</html>
