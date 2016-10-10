@@ -35,6 +35,11 @@ def parse_json():
     for key, value in data['obj1'].items():
         print key, value
         
+    # file 로 쓰기
+    fp = file('data.json', 'wb')
+    json.dump(data, fp, indent=2)
+    fp.close()
+
 
 if __name__ == '__main__':
     parse_json()
