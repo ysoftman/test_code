@@ -6,6 +6,7 @@ package main
 import (
 	"crypto/md5"
 	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
 )
 
@@ -17,6 +18,8 @@ func main() {
 	// 해시값을 만들 데이터 설정
 	md5.Write(data)
 	fmt.Printf("md5 sum = %x\n", md5.Sum(nil))
+	// string 으로 변환
+	fmt.Printf("md5 sum = %s\n", hex.EncodeToString(md5.Sum(nil)))
 
 	// sha1 해시값 만들기
 	sha1 := sha1.New()
