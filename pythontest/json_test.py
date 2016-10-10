@@ -28,6 +28,14 @@ def parse_json():
     print (data['obj2']['key1'])
     print (data['obj2']['key2'])
 
+    # 키 인덱싱으로 값 변경
+    data['obj1']['key1'] = 'ysoftman'
+
+    # map 방식으로 탐색
+    for key, value in data['obj1'].items():
+        print key, value
+        
+
 if __name__ == '__main__':
     parse_json()
 
