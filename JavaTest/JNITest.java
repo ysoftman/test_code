@@ -1,35 +1,35 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// JNI(Java Native Interface) Å×½ºÆ®
-// JNI(Java Native Interface) ·Î Java¿¡¼­ C ÄÚµå¸¦ »ç¿ëÇÒ ¼ö ÀÖ´Ù.
-// JNIManager Å¬·¡½º·Î ºÎÅÍ JNIManager.h ÆÄÀÏ »ı¼º
+// JNI(Java Native Interface) í…ŒìŠ¤íŠ¸
+// JNI(Java Native Interface) ë¡œ Javaì—ì„œ C ì½”ë“œë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆë‹¤.
+// JNIManager í´ë˜ìŠ¤ë¡œ ë¶€í„° JNIManager.h íŒŒì¼ ìƒì„±
 // javah -jni JNIManager
 ////////////////////////////////////////////////////////////////////////////////////
 class JNIManager {
 	static {
-		// C++ ·Î ¸¸µç .dll ¸¦ ·ÎµåÇÑ´Ù.
-		// ½ÇÇà½Ã .dll ·Îµå¿¡¼­ ¿¡·¯ ¹ß»ı½Ã
-		// 32bit java.exe ¸¦ »ç¿ëÇÏ¿© ½ÇÇàÇÏµµ·Ï ÇÑ´Ù.
-		// ·Îµå ¹æ¹ı 1 - °°Àº µğ·ºÅä¸®¿¡ .dll À§Ä¡
+		// C++ ë¡œ ë§Œë“  .dll ë¥¼ ë¡œë“œí•œë‹¤.
+		// ì‹¤í–‰ì‹œ .dll ë¡œë“œì—ì„œ ì—ëŸ¬ ë°œìƒì‹œ
+		// 32bit java.exe ë¥¼ ì‚¬ìš©í•˜ì—¬ ì‹¤í–‰í•˜ë„ë¡ í•œë‹¤.
+		// ë¡œë“œ ë°©ë²• 1 - ê°™ì€ ë””ë ‰í† ë¦¬ì— .dll ìœ„ì¹˜
 		// System.loadLibrary("JNIImpl");
-		// ·Îµå ¹æ¹ı 2 - Àı´ë °æ·Î ¸í½Ã
+		// ë¡œë“œ ë°©ë²• 2 - ì ˆëŒ€ ê²½ë¡œ ëª…ì‹œ
 		System.load("D:\\ysoftman\\Project\\ysoftmanCode\\Debug\\JNIImpl.dll");
 	}
 	
-	// ´Ü¼ø È£Ãâ
+	// ë‹¨ìˆœ í˜¸ì¶œ
 	public native void Print();
 	
-	// int ÁÖ°í ¹Ş±â
+	// int ì£¼ê³  ë°›ê¸°
 	public native int Add(int a, int b);
 	
-	// ¹®ÀÚ¿­ ÁÖ°í ¹Ş±â
+	// ë¬¸ìì—´ ì£¼ê³  ë°›ê¸°
 	public native String PrintString(String str);
 }
 
 public class JNITest {
 	public static void main(String[] args) {
 		System.out.println("This java println");
-		// JNI »ç¿ëÇÏ±â
+		// JNI ì‚¬ìš©í•˜ê¸°
 		JNIManager jni = new JNIManager();
 		jni.Print();
 		int c = jni.Add(1, 2);
