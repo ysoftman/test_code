@@ -18,9 +18,27 @@ def test_print_list(val):
 
 val1 = ["한글", 123, "bbb" ]
 
-#  리스트 내용 출력
+# 특정 위치 원소 삭제하기
+del val1[0]
+
+# 끝에 원소 추가
+val1.append('korean')
+
+# 특정 위치에  원소 추가
+val1.insert(0, 'english')
+
+# 값으로 원소 삭제 
+val1.remove('english')
+
+# 원소 위치 파악
+print "index of 'bbb' =", val1.index('bbb')
+
+# 리스트 내용 출력
 test_print_list(val1)
 
+
+
+# 튜플(원소 수정 불가)
 val1 = "한글 , def , 123 ,456"
 
 # 구분자로 구분하기
