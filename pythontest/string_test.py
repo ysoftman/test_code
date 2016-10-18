@@ -35,4 +35,15 @@ print '{first} {second}'.format(**data)
 print "{first} {second}".format(**data)
 
 
+# 스트링 복사
+str = 'abc'
+str2 = str
+print 'str =', str
+print 'str2 =', str2
+
+str = 'zzz'
+print 'str =', str
+print 'str2 =', str2
+
+
 
