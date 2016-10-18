@@ -1,53 +1,94 @@
 // ysoftman
-// const Å×½ºÆ®
+// const í…ŒìŠ¤íŠ¸
 #include <stdio.h>
+
+class myclass {
+
+public:
+    int nNum;
+    char szString[3];
+    myclass() {
+        nNum = 0;
+        szString[0] = NULL;
+        szString[1] = NULL;
+        szString[2] = NULL;
+    }
+    ~myclass() {}
+
+    void func1()
+    {
+        nNum = 10;
+        szString[0] = 'a';
+        szString[1] = 'b';
+        szString[2] = NULL;
+    }
+    // const í•¨ìˆ˜ë¡œ ì„ ì–¸ë˜ë©´ ë©¤ë²„ ë³€ìˆ˜ë¥¼ ë³€ê²½í•  ìˆ˜ ì—†ë‹¤.
+    void func2() const
+    {
+        // nNum = 10;
+        // szString[0] = 'a';
+        // szString[1] = 'b';
+        // szString[2] = NULL;
+    }    
+
+};
 
 int main()
 {
     const int ConstNum = 1;
-    // const Çü º¯¼ö¿¡ »õ·Î¿î °ªÀ» ÇÒ´Ş ÇÒ ¼ö ¾ø´Ù.
-    // a = 2;
+    // const í˜• ë³€ìˆ˜ì— ìƒˆë¡œìš´ ê°’ì„ í• ë‹¬ í•  ìˆ˜ ì—†ë‹¤.
+    // ConstNum = 2; -> ì»´íŒŒì¼ ì—ëŸ¬ ë°œìƒ
     printf("ConstNum=%d\n", ConstNum);
-
 
     int num = 10;
     int *pNormal = NULL;
-    const int *pConst = NULL;   // pConst °ªÀ» º¯°æÇÏÁö ¸øÇÔ
-    int *const pConst2 = &num;  // pConst2 ÁÖ¼Ò¸¦ º¯°æÇÏÁö ¸øÇÔ
+    const int *pConst = NULL;   // pConst ê°’ì„ ë³€ê²½í•˜ì§€ ëª»í•¨
+    int *const pConst2 = &num;  // pConst2 ì£¼ì†Œë¥¼ ë³€ê²½í•˜ì§€ ëª»í•¨
 
     printf("&num:%p\n", &num);
     printf("num:%d\n", num);
 
     pNormal = &num;
-    // pNormal ÀÌ °¡¸£Å°´Â num º¯¼ö ÁÖ¼Ò°ª
+    // pNormal ì´ ê°€ë¥´í‚¤ëŠ” num ë³€ìˆ˜ ì£¼ì†Œê°’
     printf("&(pNormal->num):%p\n", pNormal);
-    // pNormal ÁÖ¼Ò °ª Ãâ·Â
+    // pNormal ì£¼ì†Œ ê°’ ì¶œë ¥
     printf("&(pNormal):%p\n", &pNormal);
-    // pNormal ÀÌ °¡¸£Å°ºì num º¯¼ö ÁÖ¼Ò°ª¿¡ ÀúÀåµÇ¾î ÀÖ´Â °ª
+    // pNormal ì´ ê°€ë¥´í‚¤ë¸ num ë³€ìˆ˜ ì£¼ì†Œê°’ì— ì €ì¥ë˜ì–´ ìˆëŠ” ê°’
     printf("*(pNormal):%d\n", *pNormal);
 
-    // ÀÏ¹İ Æ÷ÀÎÅÍ º¯¼öÀÇ °ªÀº º¯°æ °¡´ÉÇÏ´Ù.
+    // ì¼ë°˜ í¬ì¸í„° ë³€ìˆ˜ì˜ ê°’ì€ ë³€ê²½ ê°€ëŠ¥í•˜ë‹¤.
     *pNormal = 20;
     printf("*(pNormal):%d\n", *pNormal);
-
-    
+   
     printf("&(pConst):%p\n", pConst);
     pConst = &num;
-    // pConst Æ÷ÀÎÅÍ º¯¼öÀÇ °ªÀº º¯°æÇÒ ¼ö ¾ø´Ù.
-    // ÇÏÁö¸¸ pNormal ÀÌ num ÀÇ °ªÀ» º¯°æÇØ¼­ 20 °ªÀÌ Ç¥½ÃµÈ´Ù.
+    // pConst í¬ì¸í„° ë³€ìˆ˜ì˜ ê°’ì€ ë³€ê²½í•  ìˆ˜ ì—†ë‹¤.
+    // í•˜ì§€ë§Œ pNormal ì´ num ì˜ ê°’ì„ ë³€ê²½í•´ì„œ 20 ê°’ì´ í‘œì‹œëœë‹¤.
     // *pConst = 30;
     printf("&(pConst):%p\n", pConst);
     printf("*(pConst):%d\n", *pConst);
     
 
-    // pConst2 Æ÷ÀÎÅÍ º¯¼ö¸¦ º¯°æÇÒ ¼ö ¾ø´Ù.
+    // pConst2 í¬ì¸í„° ë³€ìˆ˜ë¥¼ ë³€ê²½í•  ìˆ˜ ì—†ë‹¤.
     // pConst2 = &num;
-    // pConst2 Æ÷ÀÎÅÍ º¯¼öÀÇ °ªÀº º¯°æÇÒ ¼ö ÀÖ´Ù.
-    // pConst2 ¼±¾ğ½Ã NULL ÀÌ ¾Æ´Ñ°ªÀ¸·Î ÃÊ±âÈ­µÇ¾î¾ß ÇÑ´Ù.
+    // pConst2 í¬ì¸í„° ë³€ìˆ˜ì˜ ê°’ì€ ë³€ê²½í•  ìˆ˜ ìˆë‹¤.
+    // pConst2 ì„ ì–¸ì‹œ NULL ì´ ì•„ë‹Œê°’ìœ¼ë¡œ ì´ˆê¸°í™”ë˜ì–´ì•¼ í•œë‹¤.
     *pConst2 = 30;
     printf("*(pConst2):%d\n", *pConst2);
-    // pConst2 °¡ num2 º¯¼öÀÇ °ªÀ» º¯°æÇÏ¿´´Ù.
+    // pConst2 ê°€ num ë³€ìˆ˜ì˜ ê°’ì„ ë³€ê²½í•˜ì˜€ë‹¤.
     printf("num:%d\n", num);
 
+
+
+
+    // const í•¨ìˆ˜ í…ŒìŠ¤íŠ¸
+    printf("-const function test-\n");
+    myclass mc;
+    printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);  
+    mc.func1();
+    printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
+    mc.func2();
+    printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
+    
     return 0;
 }
