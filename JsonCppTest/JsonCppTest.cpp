@@ -1,43 +1,35 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// jsoncpp library Å×½ºÆ®
-// json °ø½Ä È¨ÆäÀÌÁö http://json.org
+// jsoncpp library í…ŒìŠ¤íŠ¸
+// json ê³µì‹ í™ˆí˜ì´ì§€ http://json.org
 // jsoncpp
 // http://sourceforge.net/projects/jsoncpp/
-// http://jsoncpp.sourceforge.net/ 
+// http://jsoncpp.sourceforge.net/
+// mac jsoncpp ì„¤ì¹˜
+// brew install jsoncpp
+// build
+// g++ JsonCppTest.cpp -ljsoncpp
 ////////////////////////////////////////////////////////////////////////////////////
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
+#include <iostream>
 #include <string>
 #include <vector>
 
-#include "json/json.h"
+#include <json/json.h>
 
 using namespace std;
-
-#if defined(_WIN32) || defined(_WIN64)
-#if defined(_DEBUG)
-#define JSON_DEBUG
-#pragma comment(lib, "./json/json_vc71_libmtd")
-#else
-#pragma comment(lib, "./json/json_vc71_libmt")
-#endif
-#else // linux
-#endif
 
 string JsonWriteTest();
 void JsonReadTest(string strJSON);
 
 int main()
 {
-	// Å×½ºÆ®1
+	// í…ŒìŠ¤íŠ¸1
 	printf("test1---------------\n");
 	string result = JsonWriteTest();
 	JsonReadTest(result);
 
 
-	// Å×½ºÆ®2
+	// í…ŒìŠ¤íŠ¸2
 	printf("test2---------------\n");
 	Json::Value root;
 	Json::Reader reader;
@@ -55,33 +47,35 @@ int main()
 		Json::Value info = root["Info"];
 		if (info.isNull() == false)
 		{
-			__int64 num1 = info.get("num1",0).asInt();
-			__int64 num2 = info.get("num2",0).asInt();
+			int64_t num1 = info.get("num1",0).asInt();
+			int64_t num2 = info.get("num2",0).asInt();
 			string str1 = info.get("str1","").asString();
 			printf("num1=%lld, num2=%lld, str1=%s\n", num1, num2, str1.c_str());
 		}
 	}
+
+	return 0;
 }
 
 string JsonWriteTest()
 {
 	/*
 	{
-	"ÀÌ¸§": "À±º´ÈÆ",
-	"³ªÀÌ": 30,
-	"Ä£±¸": ["È«±æµ¿", "¿¤¸®ÀÚº£½º"],
-	"¼ºº°": "³²"
+	"ì´ë¦„": "ìœ¤ë³‘í›ˆ",
+	"ë‚˜ì´": 30,
+	"ì¹œêµ¬": ["í™ê¸¸ë™", "ì—˜ë¦¬ìë² ìŠ¤"],
+	"ì„±ë³„": "ë‚¨"
 	}
 	*/
-	// À§¿Í °°Àº json ¹®¼­ ¸¸µé±â
+	// ìœ„ì™€ ê°™ì€ json ë¬¸ì„œ ë§Œë“¤ê¸°
 	Json::Value root;
-	root["ÀÌ¸§"] = "À±º´ÈÆ";
-	root["³ªÀÌ"] = 30;
+	root["ì´ë¦„"] = "ìœ¤ë³‘í›ˆ";
+	root["ë‚˜ì´"] = 30;
 	Json::Value friends;
-	friends.append("È«±æµ¿");
-	friends.append("¿¤¸®ÀÚº£½º");
-	root["Ä£±¸ ¸®½ºÆ®"] = friends;
-	root["¼ºº°"] = "³²";
+	friends.append("í™ê¸¸ë™");
+	friends.append("ì—˜ë¦¬ìë² ìŠ¤");
+	root["ì¹œêµ¬ ë¦¬ìŠ¤íŠ¸"] = friends;
+	root["ì„±ë³„"] = "ë‚¨";
 
 	Json::StyledWriter writer;
 	string strJSON = writer.write(root);
@@ -93,7 +87,7 @@ string JsonWriteTest()
 
 void JsonReadTest(string strJSON)
 {
-	// json ¹®¼­ ÀĞ±â
+	// json ë¬¸ì„œ ì½ê¸°
 	Json::Value root;
 	Json::Reader reader;
 	if (reader.parse(strJSON, root) == false)
@@ -104,21 +98,21 @@ void JsonReadTest(string strJSON)
 
 	cout << "JSON ReadTest" << endl;
 
-	string name = root.get("ÀÌ¸§", "defaultvalue").asString();
-	cout << "ÀÌ¸§: " << name << endl;
+	string name = root.get("ì´ë¦„", "defaultvalue").asString();
+	cout << "ì´ë¦„: " << name << endl;
 
-	int age = root.get("³ªÀÌ", "defaultvalue").asInt();
-	cout << "³ªÀÌ: " << age << endl;
+	int age = root.get("ë‚˜ì´", "defaultvalue").asInt();
+	cout << "ë‚˜ì´: " << age << endl;
 
 	Json::Value friends;
-	friends = root["Ä£±¸ ¸®½ºÆ®"];
-	cout << "Ä£±¸ ¸®½ºÆ®: " << endl;
+	friends = root["ì¹œêµ¬ ë¦¬ìŠ¤íŠ¸"];
+	cout << "ì¹œêµ¬ ë¦¬ìŠ¤íŠ¸: " << endl;
 	for (unsigned int i=0; i<friends.size(); ++i)
 	{
 		cout << friends[i].asString() << endl;
 	}
 
-	string sex = root.get("¼ºº°", "defaultvalue").asString();
-	cout << "¼ºº°: " << sex << endl;
+	string sex = root.get("ì„±ë³„", "defaultvalue").asString();
+	cout << "ì„±ë³„: " << sex << endl;
 }
 
