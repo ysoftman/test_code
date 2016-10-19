@@ -57,3 +57,15 @@ hoon'''
     print 'str =', str
     print 'str2 =', str2
 
+    
+    str = 'yOOn Byoung hooN'
+    print str
+    # 모두 소문자로
+    str = str.lower()
+    print str
+    # 모두 대문자로
+    str = str.upper()
+    print str
+    # 첫문자만 대문자로
+    str = str.capitalize()
+    print str
