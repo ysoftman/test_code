@@ -16,10 +16,14 @@ def enviroment():
     
     # python 3 에서 가능
     # print("sys.getallocatedblocks() = ", sys.getallocatedblocks())
-
     if len(sys.argv) > 0:
         idx = 0
         for val in sys.argv:
             print("arg[", idx,"] = ", val)
-if __name__ == "__main__":
-    enviroment()
+
+    # 환경변수 파악
+    print("os.environ.get('SHELL') =", os.environ.get('SHELL'))
+    print("os.environ.get('EDITOR') =", os.environ.get('EDITOR'))
+    print("os.environ.get('PWD') =", os.environ.get('PWD'))
+    # 환경변수의 모든 키
+    print("os.environ.keys() =", os.environ.keys())
