@@ -69,3 +69,12 @@ hoon'''
     # 첫문자만 대문자로
     str = str.capitalize()
     print str
+
+
+    str = "윤\n병\n훈"
+    print 'str = {0}'.format(str) 
+    # raw 문자: escape 문자의 기능이 적용되지 않고 문자 그대로 출력
+    str = r"윤\n병\n훈"
+    print 'str = {0}'.format(str)
+     
+    
