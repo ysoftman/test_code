@@ -41,7 +41,18 @@ int main()
 	{
 		cout << (*iter).c_str() << endl;
 	}
+
+
+	// string find 테스트
+	string aa = "yoon\nbyoung\nhoon\n";
+	cout << "aa = " << aa << endl;
+	if (aa.find("\n") == string::npos)
+	{
+		cout << "not found" << endl;
+	}
+	else
+	{
+		cout << "found  " << endl;
+	}
 	return 0;
 }
-
-
