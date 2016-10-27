@@ -18,47 +18,9 @@
 
 using namespace std;
 
-string JsonWriteTest();
-void JsonReadTest(string strJSON);
-
-int main()
+string WriteJsonTest()
 {
-	// 테스트1
-	printf("test1---------------\n");
-	string result = JsonWriteTest();
-	JsonReadTest(result);
-
-
-	// 테스트2
-	printf("test2---------------\n");
-	Json::Value root;
-	Json::Reader reader;
-	string strJSON = "{"
-		"\"Info\":" 
-		"{"
-		"\"num1\":999,"
-		"\"num2\":123456789,"
-		"\"str1\":\"ysoftman\""
-		"}"
-		"}";
-	printf("strJSON = %s\n", strJSON.c_str());
-	if (reader.parse(strJSON, root) == true)
-	{
-		Json::Value info = root["Info"];
-		if (info.isNull() == false)
-		{
-			int64_t num1 = info.get("num1",0).asInt();
-			int64_t num2 = info.get("num2",0).asInt();
-			string str1 = info.get("str1","").asString();
-			printf("num1=%lld, num2=%lld, str1=%s\n", num1, num2, str1.c_str());
-		}
-	}
-
-	return 0;
-}
-
-string JsonWriteTest()
-{
+	cout << "testing... " << __FUNCTION__ << endl;
 	/*
 	{
 	"이름": "윤병훈",
@@ -85,8 +47,9 @@ string JsonWriteTest()
 	return strJSON;
 }
 
-void JsonReadTest(string strJSON)
+void ReadJsonTest(string strJSON)
 {
+	cout << "testing... " << __FUNCTION__ << endl;
 	// json 문서 읽기
 	Json::Value root;
 	Json::Reader reader;
@@ -113,6 +76,58 @@ void JsonReadTest(string strJSON)
 	}
 
 	string sex = root.get("성별", "defaultvalue").asString();
-	cout << "성별: " << sex << endl;
+	cout << "성별: " << sex << endl << endl;
 }
 
+void TraverseJsonTest(Json::Value root)
+{
+	cout << "testing... " << __FUNCTION__ << endl;
+	Json::Value::Members members = root.getMemberNames();
+	for (int i=0; i<(int)members.size(); i++)
+	{
+		Json::Value key = members[i];
+		Json::Value value = root[key.asString()];
+		cout << key.asString() << endl;
+		if (value.isObject())
+		{
+			// object 는 재귀호출
+			TraverseJsonTest(value);
+		}
+		else if (value.isString())
+		{
+			cout << value.asString() << endl;
+		}
+		else if (value.isInt())
+		{
+			cout << value.asInt() << endl;
+		}			
+	}	
+}
+
+int main()
+{
+	// json 쓰기
+	string result = WriteJsonTest();
+	// json 읽기
+	ReadJsonTest(result);
+
+	// json 탐색
+	string strJSON = "{"
+		"\"Info\":" 
+		"{"
+		"\"num1\":999,"
+		"\"num2\":123456789,"
+		"\"str1\":\"ysoftman\""
+		"}"
+		"}";
+	cout << "strJSON = " << strJSON << endl;
+	Json::Value root;
+	Json::Reader reader;	
+	if (reader.parse(strJSON, root) == true)
+	{
+
+		TraverseJsonTest(root);
+	}
+
+	return 0;
+}
