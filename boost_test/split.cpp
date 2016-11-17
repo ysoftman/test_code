@@ -10,12 +10,16 @@ using namespace std;
 
 int main()
 {
-    cout << "split test" << endl;
+    cout << "boost split test" << endl;
 
     string str = "Yoon,Byoung,Hoon";
+    cout << "str = " << str << endl;
+    
     vector<string> vecResult;
     boost::split(vecResult, str, boost::is_any_of(","));
-
+    
+    cout << "separator = ," << endl;
+    cout << "count = " << vecResult.size() << endl;
     vector<string>::iterator iter;
     for (iter = vecResult.begin(); iter != vecResult.end(); iter++)
     {
