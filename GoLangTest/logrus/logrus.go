@@ -13,7 +13,7 @@ func main() {
 
 	// 로그 출력 대상 선택
 	log.SetOutput(os.Stderr)
-	// 디버그 레벨 이상의 로그는 출력 하도록
+	// 디버그 레벨 이상의 로그는 출력 하도록 설정
 	log.SetLevel(log.DebugLevel)
 
 	printlog()
