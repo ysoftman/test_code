@@ -29,41 +29,41 @@ func func1(ch chan int) int {
 	value := 0
 	for {
 		time.Sleep(500 * time.Millisecond)
-		value++
-		fmt.Printf("[%s] func1 %2d\n", time.Now(), value)
-
-		// 채널에 value 값 전달
-		ch <- value
-
-		// 채널 송신측에서는 채널을 close 할 수 있다.
-		if value >= 5 {
-			//fmt.Printf("[%s] func1 채널닫음\n", time.Now())
-			//close(ch)
-			break
-		}
-	}
-	fmt.Printf("[%s] func1 end\n", time.Now())
-	return 0
-}
-
-func func2(ch chan int) int {
-	value := 0
-	for {
-		time.Sleep(500 * time.Millisecond)
-		value++
-		fmt.Printf("[%s] func2 %2d\n", time.Now(), value)
+		fmt.Printf("[%s] func1 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value)
 
 		// 채널에 value 값 전달
 		ch <- value
 
 		// 채널 송신측에서는 채널을 close 할 수 있다.
 		if value >= 10 {
-			//fmt.Printf("[%s] func2 채널닫음\n", time.Now())
+			//fmt.Printf("[%s] func1 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
 			//close(ch)
 			break
 		}
+		value += 2
 	}
-	fmt.Printf("[%s] func2 end\n", time.Now())
+	fmt.Printf("[%s] func1 end\n", time.Now().Format("2006-01-02 15:04:05"))
+	return 0
+}
+
+func func2(ch chan int) int {
+	value := 1
+	for {
+		time.Sleep(500 * time.Millisecond)
+		fmt.Printf("[%s] func2 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value)
+
+		// 채널에 value 값 전달
+		ch <- value
+
+		// 채널 송신측에서는 채널을 close 할 수 있다.
+		if value >= 10 {
+			//fmt.Printf("[%s] func2 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
+			//close(ch)
+			break
+		}
+		value += 2
+	}
+	fmt.Printf("[%s] func2 end\n", time.Now().Format("2006-01-02 15:04:05"))
 	return 0
 }
 
@@ -73,10 +73,10 @@ func func3(ch1, ch2 chan int) {
 		select {
 		// 채널1 값을 value 로 전달
 		case value1 := <-ch1:
-			fmt.Printf("[%s] func3 value1 %2d\n", time.Now(), value1)
+			fmt.Printf("[%s] func3 value1 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value1)
 		// 채널2 값을 value 로 전달
 		case value2 := <-ch2:
-			fmt.Printf("[%s] func3 value2 %2d\n", time.Now(), value2)
+			fmt.Printf("[%s] func3 value2 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value2)
 		}
 	}
 }
