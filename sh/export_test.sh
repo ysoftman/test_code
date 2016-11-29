@@ -1,7 +1,7 @@
 #/bin/sh
 # unexport 
-unset ysoftman1
-unset ysoftman2
+unset ysoftmanvar1
+unset ysoftmanvar2
 
 # export
 # sh export_test.sh 로 실행하면 export_test.sh 쉘에만 export 가 반영된다.
