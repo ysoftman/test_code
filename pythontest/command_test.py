@@ -26,3 +26,8 @@ print output
 linelist = output.split('\n')
 for line in linelist: 
     print line + " --> ok."
+# 라인구분으로 리스토 얻어 오기 -> 각 요소마다 엔터 포함된다.
+lines = os.popen('find . -name "*.py"').readlines()
+print lines
+for line in lines: 
+    print line + " --> ok2."
