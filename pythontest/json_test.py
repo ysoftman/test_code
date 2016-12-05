@@ -18,6 +18,7 @@ strJson = '''
 }
 '''
 
+
 def parse_json():
     # json 스트링 로드(파싱)
     data = json.loads(strJson)
@@ -31,10 +32,12 @@ def parse_json():
     # 키 인덱싱으로 값 변경
     data['obj1']['key1'] = 'ysoftman'
 
-    # map 방식으로 탐색
-    for key, value in data['obj1'].items():
-        print key, value
-        
+    # 탐색
+    for obj in data:
+        print obj
+        for key, value in data[obj].items():
+            print key, value
+
     # file 로 쓰기
     fp = file('data.json', 'wb')
     json.dump(data, fp, indent=2)
@@ -43,4 +46,3 @@ def parse_json():
 
 if __name__ == '__main__':
     parse_json()
-
