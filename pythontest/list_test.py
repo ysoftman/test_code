@@ -6,8 +6,9 @@
 #import os
 #import sys
 
+
 def test_print_list(val):
-#     print("func1")
+    #     print("func1")
     for idx in val:
         # 리스트가 형식이면
         if isinstance(idx, list):
@@ -16,7 +17,8 @@ def test_print_list(val):
             print("element = ", idx)
 
 
-val1 = ["한글", 123, "bbb" ]
+val1 = ["한글", 123, "bbb"]
+fruits_list = ["apple", "banana", "grape", "lemon", "fineapple"]
 
 # 특정 위치 원소 삭제하기
 del val1[0]
@@ -27,15 +29,17 @@ val1.append('korean')
 # 특정 위치에  원소 추가
 val1.insert(0, 'english')
 
-# 값으로 원소 삭제 
+# 값으로 원소 삭제
 val1.remove('english')
 
 # 원소 위치 파악
 print "index of 'bbb' =", val1.index('bbb')
 
+# 리스트에 리스트 추가
+val1.extend(fruits_list)
+
 # 리스트 내용 출력
 test_print_list(val1)
-
 
 
 # 튜플(원소 수정 불가)
@@ -45,7 +49,7 @@ val1 = "한글 , def , 123 ,456"
 print(val1.split(","))
 
 
-val1 = [7,8,6,8,4,3,2,1]
+val1 = [7, 8, 6, 8, 4, 3, 2, 1]
 # va1 리스트 출력
 print(val1)
 
@@ -72,4 +76,3 @@ print(val1)
 # 마지막 원소 삭제
 val1.pop()
 print(val1)
-
