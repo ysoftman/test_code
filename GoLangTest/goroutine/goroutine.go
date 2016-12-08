@@ -76,13 +76,21 @@ func func2(ch chan int, wg *sync.WaitGroup) int {
 
 func func3(ch1, ch2 chan int, wg *sync.WaitGroup) {
 	defer wg.Done()
+	cnt1, cnt2 := 0, 0
 	for {
-		// ch1 값을 받을때까지 대기한다.
-		value1 := <-ch1
-		value2 := <-ch2
-		fmt.Printf("[%s] func3 [%d]\n", time.Now().Format("2006-01-02 15:04:05"), value1)
-		fmt.Printf("[%s] func3 \t[%d]\n", time.Now().Format("2006-01-02 15:04:05"), value2)
-		if value1 >= Maxcnt && value2 >= Maxcnt {
+		// 다음과 같이 사용하면 ch1,ch2 값을 받을때까지 대기한다.
+		// value1 := <-ch1:
+		// value2 := <-ch2:
+		// select 를 사용하면 입력으로 들어온 채널만 먼저 처리할 수 있다.
+		select {
+		case value1 := <-ch1:
+			fmt.Printf("[%s] func3 [%d]\n", time.Now().Format("2006-01-02 15:04:05"), value1)
+			cnt1++
+		case value2 := <-ch2:
+			fmt.Printf("[%s] func3 \t[%d]\n", time.Now().Format("2006-01-02 15:04:05"), value2)
+			cnt2++
+		}
+		if cnt1 >= Maxcnt && cnt2 >= Maxcnt {
 			break
 		}
 	}
