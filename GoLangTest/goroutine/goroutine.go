@@ -5,6 +5,10 @@ package main
 
 import "time"
 import "fmt"
+import "sync"
+
+// Maxcnt 대문자로 시작하면 export 된다.
+const Maxcnt = 10
 
 func main() {
 	// go routine 간의 통신 및 동기화를 위한 channel 생성
@@ -14,69 +18,72 @@ func main() {
 	channel1 := make(chan int, 10)
 	channel2 := make(chan int, 10)
 
+	var wg sync.WaitGroup
+	// 고루틴 3개를 WaitGroup 에 추가
+	wg.Add(3)
 	// go 로 go routine(경량 쓰레드) 돌리기
 	// go routine 생성 비용은 크지 않아 수천개를 사용해도 된다.
-	go func1(channel1)
-	go func2(channel2)
-	go func3(channel1, channel2)
-
-	// 키입력 하면 프로그램 종료
-	input := ""
-	fmt.Scanln(&input)
+	go func1(channel1, &wg)
+	go func2(channel2, &wg)
+	go func3(channel1, channel2, &wg)
+	//  WaitGroup 의 고루틴들이 모두 끝날(Done)때까지 대기
+	wg.Wait()
 }
 
-func func1(ch chan int) int {
+func func1(ch chan int, wg *sync.WaitGroup) int {
+	defer wg.Done()
 	value := 0
 	for {
-		time.Sleep(500 * time.Millisecond)
-		fmt.Printf("[%s] func1 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value)
+		time.Sleep(100 * time.Millisecond)
+		fmt.Printf("[%s] func1 %d\n", time.Now().Format("2006-01-02 15:04:05"), value)
 
 		// 채널에 value 값 전달
 		ch <- value
 
 		// 채널 송신측에서는 채널을 close 할 수 있다.
-		if value >= 10 {
+		if value >= Maxcnt {
 			//fmt.Printf("[%s] func1 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
 			//close(ch)
 			break
 		}
-		value += 2
+		value++
 	}
 	fmt.Printf("[%s] func1 end\n", time.Now().Format("2006-01-02 15:04:05"))
 	return 0
 }
 
-func func2(ch chan int) int {
-	value := 1
+func func2(ch chan int, wg *sync.WaitGroup) int {
+	defer wg.Done()
+	value := 0
 	for {
-		time.Sleep(500 * time.Millisecond)
-		fmt.Printf("[%s] func2 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value)
+		time.Sleep(200 * time.Millisecond)
+		fmt.Printf("[%s] func2 \t%d\n", time.Now().Format("2006-01-02 15:04:05"), value)
 
 		// 채널에 value 값 전달
 		ch <- value
 
 		// 채널 송신측에서는 채널을 close 할 수 있다.
-		if value >= 10 {
+		if value >= Maxcnt {
 			//fmt.Printf("[%s] func2 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
 			//close(ch)
 			break
 		}
-		value += 2
+		value++
 	}
-	fmt.Printf("[%s] func2 end\n", time.Now().Format("2006-01-02 15:04:05"))
+	fmt.Printf("[%s] func2 \tend\n", time.Now().Format("2006-01-02 15:04:05"))
 	return 0
 }
 
-func func3(ch1, ch2 chan int) {
+func func3(ch1, ch2 chan int, wg *sync.WaitGroup) {
+	defer wg.Done()
 	for {
-		// select 로 수신 채널들 구분하기(채널에서의 switch)
-		select {
-		// 채널1 값을 value 로 전달
-		case value1 := <-ch1:
-			fmt.Printf("[%s] func3 value1 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value1)
-		// 채널2 값을 value 로 전달
-		case value2 := <-ch2:
-			fmt.Printf("[%s] func3 value2 %2d\n", time.Now().Format("2006-01-02 15:04:05"), value2)
+		// ch1 값을 받을때까지 대기한다.
+		value1 := <-ch1
+		value2 := <-ch2
+		fmt.Printf("[%s] func3 [%d]\n", time.Now().Format("2006-01-02 15:04:05"), value1)
+		fmt.Printf("[%s] func3 \t[%d]\n", time.Now().Format("2006-01-02 15:04:05"), value2)
+		if value1 >= Maxcnt && value2 >= Maxcnt {
+			break
 		}
 	}
 }
