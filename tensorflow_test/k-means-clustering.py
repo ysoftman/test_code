@@ -13,3 +13,4 @@ df = pd.DataFrame({"x": [v[0] for v in vector], "y": [v[1] for v in vector]})
 print df
 sb.lmplot("x", "y", data=df, fit_reg=False, size=6)
 plt.pyplot.show()
+
