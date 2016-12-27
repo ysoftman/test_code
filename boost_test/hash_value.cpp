@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    cout << "has_value test..." << endl;
+    cout << "hash_value test..." << endl;
     string str = "ysoftman";
     cout << "str=" << str << endl;
     size_t hashed = boost::hash_value(str);
