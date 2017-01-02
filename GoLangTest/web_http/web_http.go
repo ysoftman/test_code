@@ -41,7 +41,7 @@ func main() {
 	//http.ListenAndServe(":55555", nil)
 
 	// 서버띄우기 방법2
-	// ServeHTTP 함수를 mythttp 핸들로 사용
+	// ServeHTTP(이미 정의됨) 함수를 mythttp 핸들로 사용
 	var web myHttp
 	//http.ListenAndServe("127.0.0.1:55555", web)
 	http.ListenAndServe(":55555", web)
