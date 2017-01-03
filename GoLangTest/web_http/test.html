@@ -3,11 +3,11 @@
 <body>
 	This is test page.
 	<form action="/test" method="post">
-		사용자번호: <input type="number" name="user_no" size=100 value="1" />
+		번호: <input type="number" name="user_no" size=30 value="1" />
 		<br>
-		이름: <input type="text" name="user_name" size=100 value="홍길동" />
+		이름: <input type="text" name="user_name" size=30 value="홍길동" />
 		<br>
-		<input type="submit" name="send" size=100 value="보내기" />
+		<input type="submit" name="send" size=10 value="보내기" />
 	</form>
 	<!-- 템플릿 파일로 넘어온 데이터 처리 -->
 	<!-- 템플릿(중괄호)은 html 주석으로 감싸도 주석으로 취급되지 않는다. -->
@@ -18,17 +18,16 @@
 	
 	{{/* 입력된 사용자 리시트 출력. */}}
 	{{range .}}
-	
-	{{if le .UserNo $con10}}
-	<span style ="background-color:#FF00FF">(0~10) UserNo = {{.UserNo | html}}	Name = {{.StrName | html}}</span>
-	{{else if le .UserNo $con20}}
-	<span style ="background-color:#00FF00">(11~20) UserNo = {{.UserNo | html}}	Name = {{.StrName | html}}</span>
-	{{else}}
-	<span style ="background-color:#00FEFE">(21~...) UserNo = {{.UserNo | html}}	Name = {{.StrName | html}}</span>	
-	{{end}}		
-
-	<br>
-
+		{{if le .UserNo $con10}}
+		<span style ="background-color:#FF00FF">(0~10) UserNo = {{.UserNo | html}}	Name = {{.StrName | html}}</span>
+		{{else if le .UserNo $con20}}
+		<span style ="background-color:#00FF00">(11~20) UserNo = {{.UserNo | html}}	Name = {{.StrName | html}}</span>
+		{{else}}
+		<span style ="background-color:#00FEFE">(21~...) UserNo = {{.UserNo | html}} Name = {{.StrName | html}}</span>
+		{{end}}
+		<br>
 	{{end}}
+	<br>
+	<a href="/">main page</a>
 </body>
 </html>
