@@ -3,6 +3,12 @@
 <body>
 	This is main page.
 	<br>
+	NameList = {{.NameList}}
+	<br>
+	{{range $i := .NameList}}
+	{{$i}}<br>
+	{{end}}
+	<br>
 	<img src="/imgs/ascii_art_test.png">
 	<br>
 	<br>

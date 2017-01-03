@@ -71,9 +71,16 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 	// main page 템플릿 생성
 	templateMain, _ := template.ParseFiles("main.html")
 
+	var context struct {
+		NameList []string
+	}
+	context.NameList = append(context.NameList, "ysoftman", "bill", "yoon")
+	// fmt.Println("context.NameList = ", context.NameList)
+	
 	// 템플릿 실행(html 응답)
 	//templateMain.Execute(os.Stdout, nil)
-	templateMain.Execute(w, nil)
+	templateMain.Execute(w, context)
+
 	g_Request++
 	fmt.Println("request cnt = ", g_Request)
 }
