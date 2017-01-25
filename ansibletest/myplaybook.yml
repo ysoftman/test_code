@@ -1,8 +1,8 @@
-# role : 대상 서버 명시
 - name: hello world by ansible
-  hosts: testhost
+  # inventory 에 명시된 호스트그룹, inventory 의 모든 호스그룹이라면 all 로 명시
+  hosts: testhost1
   user: hanadmin
-  # task : 대상 서버에서 수행할 작업 명시
+  # 대상 서버에서 수행할 작업들 명시
   tasks:
   - name: print hello world
     shell: echo "hello world" > helloworld.txt
@@ -16,5 +16,4 @@
   - name: clear all files
     shell: rm -fv helloworld.txt pwd.txt whoami.txt
     tags: clearall
-
     
