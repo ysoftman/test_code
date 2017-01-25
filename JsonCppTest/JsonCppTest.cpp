@@ -23,6 +23,9 @@ string WriteJsonTest()
 	cout << "testing... " << __FUNCTION__ << endl;
 	/*
 	{
+	"a" : {
+		"b" : "c"
+	},
 	"이름": "윤병훈",
 	"나이": 30,
 	"친구": ["홍길동", "엘리자베스"],
@@ -31,6 +34,7 @@ string WriteJsonTest()
 	*/
 	// 위와 같은 json 문서 만들기
 	Json::Value root;
+	root["a"]["b"] = "c";
 	root["이름"] = "윤병훈";
 	root["나이"] = 30;
 	Json::Value friends;
@@ -125,7 +129,6 @@ int main()
 	Json::Reader reader;	
 	if (reader.parse(strJSON, root) == true)
 	{
-
 		TraverseJsonTest(root);
 	}
 

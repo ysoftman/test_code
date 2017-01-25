@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// time °ü·Ã ÇÔ¼ö Å×½ºÆ®
+// time ê´€ë ¨ í•¨ìˆ˜ í…ŒìŠ¤íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <time.h>
@@ -9,7 +9,7 @@
 int main()
 {
 	time_t llCurtime = time(NULL);
-	printf("llCurtime = %lld\n\n", llCurtime);
+	printf("llCurtime = %ld\n\n", llCurtime);
 
 	struct tm *tmCurtime = localtime(&llCurtime);
 	printf("yday=%d\nwday=%d\nyear=%d\nmon=%d\nmday=%d\nhour=%d\nmin=%d\nsec=%d\nisdst=%d\n\n",
@@ -25,19 +25,19 @@ int main()
 		);
 
 	time_t llCurtime2 = mktime(tmCurtime);
-	printf("llCurtime2 = %lld\n\n", llCurtime2);
+	printf("llCurtime2 = %ld\n\n", llCurtime2);
 
-	// À©µµ¿ì¿¡¼­´Â
-	// mktime ÀÇ °æ¿ì ³»ºÎÀûÀ¸·Î _mktime64 ¸¦ »ç¿ëÇÑ´Ù.
-	// ¸¸¾à _USE_32BIT_TIME_T ¸¦ ÀüÃ³¸®±â·Î ¹Ì¸® Á¤ÀÇ ÇÏ¿´´Ù¸é _mktime32 ¸¦ »ç¿ëÇÑ´Ù.
-	// _mktime32 ´Â 2038³â 1¿ù 19ÀÏ 03:14:07 ±îÁö °è»ê°¡´ÉÇÑ´Ù.
-	// _mktime64 ´Â 3000³â 12¿ù 31ÀÏ 23:59:59 ±îÁö °è»ê°¡´ÉÇÑ´Ù.
-	// Âü°í·Î ¸®´ª½º 64ºñÆ®¿¡¼­´Â 3000³â ÀÌ»ó °è»ê °¡´ÉÇÏ´Ù.
-	// 7000³âÀº 3000 ³âÀÌ Áö³µ±â ¶§¹®¿¡ mktime ÀÌ ½ÇÆÐ(-1) ÇÑ´Ù.
+	// ìœˆë„ìš°ì—ì„œëŠ”
+	// mktime ì˜ ê²½ìš° ë‚´ë¶€ì ìœ¼ë¡œ _mktime64 ë¥¼ ì‚¬ìš©í•œë‹¤.
+	// ë§Œì•½ _USE_32BIT_TIME_T ë¥¼ ì „ì²˜ë¦¬ê¸°ë¡œ ë¯¸ë¦¬ ì •ì˜ í•˜ì˜€ë‹¤ë©´ _mktime32 ë¥¼ ì‚¬ìš©í•œë‹¤.
+	// _mktime32 ëŠ” 2038ë…„ 1ì›” 19ì¼ 03:14:07 ê¹Œì§€ ê³„ì‚°ê°€ëŠ¥í•œë‹¤.
+	// _mktime64 ëŠ” 3000ë…„ 12ì›” 31ì¼ 23:59:59 ê¹Œì§€ ê³„ì‚°ê°€ëŠ¥í•œë‹¤.
+	// ì°¸ê³ ë¡œ ë¦¬ëˆ…ìŠ¤ 64ë¹„íŠ¸ì—ì„œëŠ” 3000ë…„ ì´ìƒ ê³„ì‚° ê°€ëŠ¥í•˜ë‹¤.
+	// 7000ë…„ì€ 3000 ë…„ì´ ì§€ë‚¬ê¸° ë•Œë¬¸ì— mktime ì´ ì‹¤íŒ¨(-1) í•œë‹¤.
 	memset(tmCurtime, 0, sizeof(tm));
 	tmCurtime->tm_year = 7000 - 1900;
 	llCurtime2 = mktime(tmCurtime);
-	printf("llCurtime2 = %lld\n\n", llCurtime2);
+	printf("llCurtime2 = %ld\n\n", llCurtime2);
 
 	return 0;
 }

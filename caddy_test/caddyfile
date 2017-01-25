@@ -1,0 +1,18 @@
+# port
+:8080
+
+# auth
+basicauth / ysoftman qwer1234
+
+# file server
+filemanager / {
+        show    ./
+        usf:
+        allow_new       true
+        allow_edit      true
+        allow_commands  true
+        allow_command   rm
+        allow_command   mv
+        allow           dotfiles
+}
+
