@@ -1,4 +1,6 @@
 #/bin/sh
+# ysoftman
+
 # unexport 
 unset ysoftmanvar1
 unset ysoftmanvar2

@@ -1,4 +1,5 @@
 #!/bin/bash
+# ysoftman
 
 # 텍스트 파일 만들기
 echo 'create text_file_sample\n'
