@@ -1,4 +1,5 @@
 #!/bin/bash
+# ysoftman
 
 # rename 설치(맥의 경우)
 # sudo  brew install rename
