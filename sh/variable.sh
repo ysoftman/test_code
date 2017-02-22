@@ -28,3 +28,24 @@ echo ${var3}
 output=$(echo "ysoftman_99s")
 # 응답 내용 출력
 echo ${output}
+
+# predefined variable
+# http://www.tldp.org/LDP/abs/html/internalvariables.html
+# 머신 타입
+echo ${MACHTYPE}
+# 기본 에디터 프로그램
+echo ${EDITOR}
+# 설정된 경로
+echo ${PATH}
+# 스클비트 수행 시간
+echo ${SECONDS}
+# 인자 개수
+echo ${#}
+# 0번째 인자
+echo ${0}
+# 1번째 인자
+echo ${1}
+# 현재 디랙토리 전체 경로 출력
+echo ${PWD}
+# 현재 디렉토리만 출력
+echo ${PWD##*/}
