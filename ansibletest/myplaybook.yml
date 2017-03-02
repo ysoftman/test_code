@@ -15,5 +15,9 @@
     tags: myname
   - name: clear all files
     shell: rm -fv helloworld.txt pwd.txt whoami.txt
-    tags: clearall
-    
+    tags: clearall 
+  # 디버깅 출력
+  - debug:
+      msg: "ansible_distribution: {{ansible_distribution}}  ansible_distribution_major_version: {{ansible_distribution_major_version}}"
+    tags:
+      - print_debug
