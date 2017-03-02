@@ -8,13 +8,20 @@ using namespace std;
 enum MY_FRUIT_TYPE {
     MY_APPLE = 0,
     MY_LEMON,
-    MY_BANANA,
+    MY_BANANA,   
 };
 
 struct testEnum
 {
+    // gcc 최신 버전에서  초기화 0으로 되지 않음
     MY_FRUIT_TYPE type;
     std::string type_str;
+
+    testEnum()
+    {
+        type = MY_APPLE;
+        type_str = "ysoftman";
+    }
 };
 
 int main()
@@ -24,3 +31,4 @@ int main()
     cout << myfruit.type_str << endl;
     return 0;
 }
+
