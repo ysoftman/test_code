@@ -13,13 +13,15 @@ enum MY_FRUIT_TYPE {
 
 struct testEnum
 {
-    // gcc 최신 버전에서  초기화 0으로 되지 않음
+    std::string type_str;  
     MY_FRUIT_TYPE type;
-    std::string type_str;
 
+    // gcc 최신 버전에서 enum 타입의 변수가 0으로 초기화 되지 않는다.
+    // 따라서 다음과 같이 초기화해야 한다.
     testEnum()
     {
-        type = MY_APPLE;
+        // type = MY_APPLE;
+        // string 은 따로 초기화하지 않으면 empty
         type_str = "ysoftman";
     }
 };
