@@ -20,7 +20,7 @@ struct testEnum
     // 따라서 다음과 같이 초기화해야 한다.
     testEnum()
     {
-        // type = MY_APPLE;
+        type = MY_APPLE;
         // string 은 따로 초기화하지 않으면 empty
         type_str = "ysoftman";
     }
