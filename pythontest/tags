@@ -1,0 +1,208 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ArgParse	argparse_test.py	/^def ArgParse():$/;"	kind:function	line:9
+BeautifulSoup	beautifulsoup-test.py	/^from bs4 import BeautifulSoup$/;"	kind:namespace	line:12
+DoLogging	logging_test.py	/^def DoLogging():$/;"	kind:function	line:9
+Environment	jinja_test.py	/^from jinja2 import Environment, FileSystemLoader$/;"	kind:namespace	line:9
+FileSystemLoader	jinja_test.py	/^from jinja2 import Environment, FileSystemLoader$/;"	kind:namespace	line:9
+Image	pil_test.py	/^from PIL import Image$/;"	kind:namespace	line:7
+ImageFilter	pil_test.py	/^from PIL import ImageFilter$/;"	kind:namespace	line:8
+Keys	selenium_test.py	/^from selenium.webdriver.common.keys import Keys$/;"	kind:namespace	line:12
+Template	jinja_test.py	/^from jinja2 import Template$/;"	kind:namespace	line:8
+TestClass	class_test.py	/^class TestClass:$/;"	kind:class	line:11
+__author__	python2_test.py	/^__author__ = 'ysoftman'$/;"	kind:variable	line:3
+__del__	class_test.py	/^    def __del__(self):$/;"	kind:member	line:19
+__init__	class_test.py	/^    def __init__(self):$/;"	kind:member	line:15
+a	condition_operator_test.py	/^a = 'yoon'$/;"	kind:variable	line:16
+a	condition_operator_test.py	/^a = 'yoon'$/;"	kind:variable	line:7
+a	condition_operator_test.py	/^a = 'ysoftman'$/;"	kind:variable	line:11
+a	condition_operator_test.py	/^a = 'ysoftman'$/;"	kind:variable	line:20
+add	python2_test.py	/^def add(val1, val2):$/;"	kind:function	line:11
+argparse	argparse_test.py	/^import argparse$/;"	kind:namespace	line:6
+argparse	checkconnection.py	/^import argparse$/;"	kind:namespace	line:3
+argparse_test.py	argparse_test.py	1;"	kind:file	line:1
+args	argparse_test.py	/^    args = ArgParse()$/;"	kind:variable	line:27
+args	command_test.py	/^args = ['ls', '-1']$/;"	kind:variable	line:40
+beautifulsoup-test.py	beautifulsoup-test.py	1;"	kind:file	line:1
+calc_do_something	numpy_test.py	/^def calc_do_something():$/;"	kind:function	line:10
+check_connection_via_ssh	checkconnection.py	/^def check_connection_via_ssh():$/;"	kind:function	line:6
+check_something	raise_test.py	/^def check_something(string):$/;"	kind:function	line:8
+checkconnection.py	checkconnection.py	1;"	kind:file	line:1
+class_test.py	class_test.py	1;"	kind:file	line:1
+client	http_client_test.py	/^import http.client$/;"	kind:namespace	line:7
+collections	dictionary_test.py	/^import collections$/;"	kind:namespace	line:8
+command_test.py	command_test.py	1;"	kind:file	line:1
+condition_operator_test.py	condition_operator_test.py	1;"	kind:file	line:1
+content	gzip_test.py	/^    content = "my name is byoung hoon, yoon."$/;"	kind:variable	line:10
+copy	copy_test.py	/^import copy$/;"	kind:namespace	line:5
+copy_test	copy_test.py	/^def copy_test():$/;"	kind:function	line:7
+copy_test.py	copy_test.py	1;"	kind:file	line:1
+cur_abs_path	os_path_test.py	/^cur_abs_path = os.path.abspath(__file__)$/;"	kind:variable	line:11
+cur_abs_path_dirname	os_path_test.py	/^cur_abs_path_dirname = os.path.dirname(cur_abs_path)$/;"	kind:variable	line:13
+data	gzip_test.py	/^    data = fp2.read()$/;"	kind:variable	line:17
+data	hashlib_test.py	/^data = b"ysoftman"$/;"	kind:variable	line:9
+data	string_test.py	/^    data = {'first': 'bill', 'second': 'yoon'}$/;"	kind:variable	line:41
+day_of_week	time_test.py	/^    day_of_week = {$/;"	kind:variable	line:28
+db_charset	mysql_test.py	/^db_charset = "utf8"$/;"	kind:variable	line:23
+db_dbname	mysql_test.py	/^db_dbname = "test"$/;"	kind:variable	line:22
+db_host	mysql_test.py	/^db_host = "127.0.0.1"$/;"	kind:variable	line:18
+db_passwd	mysql_test.py	/^db_passwd = "ysoftman"$/;"	kind:variable	line:21
+db_port	mysql_test.py	/^db_port = 13306$/;"	kind:variable	line:19
+db_test	mysql_test.py	/^def db_test():$/;"	kind:function	line:25
+db_user	mysql_test.py	/^db_user = "root"$/;"	kind:variable	line:20
+dictionary_test.py	dictionary_test.py	1;"	kind:file	line:1
+do_math	math_test.py	/^def do_math():$/;"	kind:function	line:8
+do_random	random_test.py	/^def do_random():$/;"	kind:function	line:8
+do_regular_expression	regexp_test.py	/^def do_regular_expression():$/;"	kind:function	line:8
+do_sort	sort_test.py	/^def do_sort():$/;"	kind:function	line:7
+driver	selenium_test.py	/^    driver = webdriver.Chrome(".\/chromedriver")$/;"	kind:variable	line:21
+elem	selenium_test.py	/^    elem = driver.find_element_by_name("q")$/;"	kind:variable	line:25
+end	time_test.py	/^    end = time.clock()$/;"	kind:variable	line:41
+enviroment	system_enviroment.py	/^def enviroment():$/;"	kind:function	line:9
+even_list	odd_even.py	/^even_list = []$/;"	kind:variable	line:24
+file_read_write_test.py	file_read_write_test.py	1;"	kind:file	line:1
+fp	gzip_test.py	/^    fp = gzip.open('gzip_file.gz','wb')$/;"	kind:variable	line:11
+fp2	gzip_test.py	/^    fp2 = gzip.open('gzip_file.gz','rb')$/;"	kind:variable	line:16
+fruits_list	list_test.py	/^fruits_list = ["apple", "banana", "grape", "lemon", "fineapple"]$/;"	kind:variable	line:21
+func1	class_test.py	/^    def func1(self):$/;"	kind:member	line:22
+func2	class_test.py	/^    def func2(self, parameter):$/;"	kind:member	line:25
+gugudan.py	gugudan.py	1;"	kind:file	line:1
+gzip	gzip_test.py	/^import gzip$/;"	kind:namespace	line:6
+gzip_test.py	gzip_test.py	1;"	kind:file	line:1
+hashlib	hashlib_test.py	/^import hashlib$/;"	kind:namespace	line:7
+hashlib_test.py	hashlib_test.py	1;"	kind:file	line:1
+http	http_client_test.py	/^import http.client$/;"	kind:namespace	line:7
+http_client_test.py	http_client_test.py	1;"	kind:file	line:1
+http_test	http_client_test.py	/^def http_test(url):$/;"	kind:function	line:10
+jinja_test	jinja_test.py	/^def jinja_test():$/;"	kind:function	line:11
+jinja_test.py	jinja_test.py	1;"	kind:file	line:1
+json	json_test.py	/^import json$/;"	kind:namespace	line:6
+json_test.py	json_test.py	1;"	kind:file	line:1
+linelist	command_test.py	/^linelist = output.split('\\n')$/;"	kind:variable	line:29
+lines	command_test.py	/^lines = os.popen('find . -name "*.py"').readlines()$/;"	kind:variable	line:33
+lines	command_test.py	/^lines = stdout.split('\\n')$/;"	kind:variable	line:46
+list_test.py	list_test.py	1;"	kind:file	line:1
+logging	logging_test.py	/^import logging$/;"	kind:namespace	line:6
+logging_test.py	logging_test.py	1;"	kind:file	line:1
+make_filename_dir_and_copy_file.py	make_filename_dir_and_copy_file.py	1;"	kind:file	line:1
+math	math_test.py	/^import math$/;"	kind:namespace	line:6
+math_test.py	math_test.py	1;"	kind:file	line:1
+matplotlib	matplotlib_test.py	/^import matplotlib.pyplot as plt$/;"	kind:namespace	line:7
+matplotlib_test.py	matplotlib_test.py	1;"	kind:file	line:1
+md5	hashlib_test.py	/^md5 = hashlib.md5()$/;"	kind:variable	line:12
+modify_data	string_test.py	/^def modify_data(str):$/;"	kind:function	line:8
+mysql_test.py	mysql_test.py	1;"	kind:file	line:1
+mytest	unit_test.py	/^class mytest(unittest.TestCase):$/;"	kind:class	line:8
+numpy	numpy_test.py	/^import numpy$/;"	kind:namespace	line:7
+numpy_test.py	numpy_test.py	1;"	kind:file	line:1
+odd_even.py	odd_even.py	1;"	kind:file	line:1
+odd_list	odd_even.py	/^odd_list = []$/;"	kind:variable	line:25
+operator	dictionary_test.py	/^import operator$/;"	kind:namespace	line:9
+os	command_test.py	/^import os$/;"	kind:namespace	line:5
+os	jinja_test.py	/^import os$/;"	kind:namespace	line:7
+os	make_filename_dir_and_copy_file.py	/^import os$/;"	kind:namespace	line:7
+os	os_path_test.py	/^import os$/;"	kind:namespace	line:5
+os	python2_test.py	/^import os$/;"	kind:namespace	line:5
+os	system_enviroment.py	/^import os$/;"	kind:namespace	line:5
+os_path_test.py	os_path_test.py	1;"	kind:file	line:1
+output	command_test.py	/^output = os.popen('find . -name "*.py"').read()$/;"	kind:variable	line:26
+output	command_test.py	/^output = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)$/;"	kind:variable	line:41
+parse_html	beautifulsoup-test.py	/^def parse_html():$/;"	kind:function	line:15
+parse_json	json_test.py	/^def parse_json():$/;"	kind:function	line:22
+parse_url	beautifulsoup-test.py	/^def parse_url(url):$/;"	kind:function	line:44
+pickle	pickle_test.py	/^import pickle$/;"	kind:namespace	line:6
+pickle	raise_test.py	/^import pickle$/;"	kind:namespace	line:6
+pickle_test.py	pickle_test.py	1;"	kind:file	line:1
+pil_test	pil_test.py	/^def pil_test():$/;"	kind:function	line:10
+pil_test.py	pil_test.py	1;"	kind:file	line:1
+plt	matplotlib_test.py	/^import matplotlib.pyplot as plt$/;"	kind:namespace	line:7
+pymysql	mysql_test.py	/^import pymysql$/;"	kind:namespace	line:15
+python2_test.py	python2_test.py	1;"	kind:file	line:1
+raise_test.py	raise_test.py	1;"	kind:file	line:1
+random	random_test.py	/^import random$/;"	kind:namespace	line:6
+random_test.py	random_test.py	1;"	kind:file	line:1
+re	regexp_test.py	/^import re$/;"	kind:namespace	line:6
+regexp_test.py	regexp_test.py	1;"	kind:file	line:1
+requests	beautifulsoup-test.py	/^import requests$/;"	kind:namespace	line:8
+requests	url_request_test.py	/^import requests $/;"	kind:namespace	line:19
+result	python2_test.py	/^result = add(1, 2)$/;"	kind:variable	line:15
+ret	command_test.py	/^ret = os.system("echo 'ysoftman'")$/;"	kind:variable	line:19
+ret	command_test.py	/^ret = os.system("ll")$/;"	kind:variable	line:15
+ret	command_test.py	/^ret = os.system("ls")$/;"	kind:variable	line:11
+selenium_test.py	selenium_test.py	1;"	kind:file	line:1
+sha256	hashlib_test.py	/^sha256 = hashlib.sha256()$/;"	kind:variable	line:17
+sha512	hashlib_test.py	/^sha512 = hashlib.sha512()$/;"	kind:variable	line:22
+show_current_files	make_filename_dir_and_copy_file.py	/^def show_current_files():$/;"	kind:function	line:11
+showgraph	matplotlib_test.py	/^def showgraph():$/;"	kind:function	line:9
+shutil	make_filename_dir_and_copy_file.py	/^import shutil$/;"	kind:namespace	line:8
+slot356	odd_even.py	/^slot356 = [2, 18, 38, 46, 58, 59, 74, 82, 84, 96]$/;"	kind:variable	line:4
+slot357	odd_even.py	/^slot357 = [1, 10, 12, 23, 29, 30, 50, 62, 64, 76]$/;"	kind:variable	line:5
+slot359	odd_even.py	/^slot359 = [8, 9, 13, 16, 19, 35, 37, 42, 45, 54, 68, 78, 85, 89, 99]$/;"	kind:variable	line:6
+slot363	odd_even.py	/^slot363 = [4, 26, 36, 40, 43, 49, 52, 55, 56,$/;"	kind:variable	line:2
+slot375	odd_even.py	/^slot375 = [5, 7, 11, 14, 17, 24, 25, 27, 28,$/;"	kind:variable	line:7
+slotall	odd_even.py	/^slotall = []$/;"	kind:variable	line:14
+sort_test.py	sort_test.py	1;"	kind:file	line:1
+start	time_test.py	/^    start = time.clock()$/;"	kind:variable	line:17
+str	string_test.py	/^    str = "'ysoftman'"$/;"	kind:variable	line:21
+str	string_test.py	/^    str = "윤\\n병\\n훈"$/;"	kind:variable	line:74
+str	string_test.py	/^    str = '"ysoftman"'$/;"	kind:variable	line:17
+str	string_test.py	/^    str = 'abc'$/;"	kind:variable	line:47
+str	string_test.py	/^    str = 'yOOn Byoung hooN'$/;"	kind:variable	line:61
+str	string_test.py	/^    str = 'yoon\\nbyoung\\nhoon'$/;"	kind:variable	line:25
+str	string_test.py	/^    str = 'zzz'$/;"	kind:variable	line:52
+str	string_test.py	/^    str = modify_data(str)$/;"	kind:variable	line:56
+str	string_test.py	/^    str = r"윤\\n병\\n훈"$/;"	kind:variable	line:77
+str	string_test.py	/^    str = str.capitalize()$/;"	kind:variable	line:70
+str	string_test.py	/^    str = str.lower()$/;"	kind:variable	line:64
+str	string_test.py	/^    str = str.upper()$/;"	kind:variable	line:67
+str2	string_test.py	/^    str2 = str$/;"	kind:variable	line:48
+strFileName	pickle_test.py	/^strFileName = "dump_test"$/;"	kind:variable	line:29
+string_test.py	string_test.py	1;"	kind:file	line:1
+subprocess	checkconnection.py	/^import subprocess$/;"	kind:namespace	line:4
+subprocess	command_test.py	/^import subprocess$/;"	kind:namespace	line:6
+sys	beautifulsoup-test.py	/^import sys$/;"	kind:namespace	line:5
+sys	mysql_test.py	/^import sys$/;"	kind:namespace	line:16
+sys	string_test.py	/^import sys$/;"	kind:namespace	line:5
+sys	system_enviroment.py	/^import sys$/;"	kind:namespace	line:6
+system_enviroment	system_enviroment_test.py	/^import system_enviroment$/;"	kind:namespace	line:6
+system_enviroment.py	system_enviroment.py	1;"	kind:file	line:1
+system_enviroment_test.py	system_enviroment_test.py	1;"	kind:file	line:1
+temp	class_test.py	/^temp = TestClass()$/;"	kind:variable	line:29
+test_case1	unit_test.py	/^    def test_case1(self):$/;"	kind:member	line:10
+test_case2	unit_test.py	/^    def test_case2(self):$/;"	kind:member	line:16
+test_case3	unit_test.py	/^    def test_case3(self):$/;"	kind:member	line:22
+test_file_read	file_read_write_test.py	/^def test_file_read():$/;"	kind:function	line:23
+test_file_write	file_read_write_test.py	/^def test_file_write(val):$/;"	kind:function	line:10
+test_pickle_dump	pickle_test.py	/^def test_pickle_dump(filename, data):$/;"	kind:function	line:8
+test_pickle_load	pickle_test.py	/^def test_pickle_load(filename):$/;"	kind:function	line:15
+test_print_list	list_test.py	/^def test_print_list(val):$/;"	kind:function	line:10
+time	selenium_test.py	/^import time$/;"	kind:namespace	line:10
+time	time_test.py	/^import time$/;"	kind:namespace	line:6
+time_test.py	time_test.py	1;"	kind:file	line:1
+tuple_test	tuple_test.py	/^def tuple_test():$/;"	kind:function	line:7
+tuple_test.py	tuple_test.py	1;"	kind:file	line:1
+unit_test.py	unit_test.py	1;"	kind:file	line:1
+unittest	unit_test.py	/^import unittest$/;"	kind:namespace	line:5
+url_request	url_request_test.py	/^def url_request(url):$/;"	kind:function	line:21
+url_request_test.py	url_request_test.py	1;"	kind:file	line:1
+val1	class_test.py	/^    val1 = 0$/;"	kind:variable	line:12
+val1	dictionary_test.py	/^val1 = {}$/;"	kind:variable	line:12
+val1	list_test.py	/^val1 = "한글 , def , 123 ,456"$/;"	kind:variable	line:46
+val1	list_test.py	/^val1 = ["한글", 123, "bbb"]$/;"	kind:variable	line:20
+val1	list_test.py	/^val1 = [7, 8, 6, 8, 4, 3, 2, 1]$/;"	kind:variable	line:52
+val1	list_test.py	/^val1 = set(val1)$/;"	kind:variable	line:73
+val1	pickle_test.py	/^val1 = ["한글", 123, "bbb" ]$/;"	kind:variable	line:27
+val1	pickle_test.py	/^val1 = test_pickle_load(strFileName)$/;"	kind:variable	line:32
+val2	dictionary_test.py	/^val2 = {1: 30, 2: 20, 3: 10, 4: 40, 5: 50}$/;"	kind:variable	line:30
+val2	list_test.py	/^val2 = sorted(val1)$/;"	kind:variable	line:60
+val3	dictionary_test.py	/^val3 = collections.OrderedDict(sorted(val2.items(), key=operator.itemgetter(1), reverse=True))$/;"	kind:variable	line:36
+var1	python2_test.py	/^var1 = "123"$/;"	kind:variable	line:24
+var1	python2_test.py	/^var1 = "string1"$/;"	kind:variable	line:19
+var2	python2_test.py	/^var2 = "string2"$/;"	kind:variable	line:20
+var3	python2_test.py	/^var3 = var1 + " " + var2$/;"	kind:variable	line:21
+wday	time_test.py	/^    wday = time.localtime().tm_wday$/;"	kind:variable	line:38
+webdriver	selenium_test.py	/^from selenium import webdriver$/;"	kind:namespace	line:11

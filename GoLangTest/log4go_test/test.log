@@ -1,0 +1,27 @@
+[2016/11/24 17:54:23 KST] [INFO] (main.main:14) The time is now: 2016-11-24 17:54:23.481141724 +0900 KST
+[2016/11/24 17:54:23 KST] [FNST] (main.main:23) Finest
+[2016/11/24 17:54:23 KST] [FINE] (main.main:24) Fine
+[2016/11/24 17:54:23 KST] [DEBG] (main.main:25) Debug
+[2016/11/24 17:54:23 KST] [TRAC] (main.main:26) Trace
+[2016/11/24 17:54:23 KST] [INFO] (main.main:27) Info
+[2016/11/24 17:54:23 KST] [WARN] (main.main:28) warn
+[2016/11/24 17:54:23 KST] [EROR] (main.main:29) Error
+[2016/11/24 17:54:23 KST] [CRIT] (main.main:30) Critical
+[2016/11/24 17:54:25 KST] [INFO] (main.main:14) The time is now: 2016-11-24 17:54:25.05098717 +0900 KST
+[2016/11/24 17:54:25 KST] [FNST] (main.main:23) Finest
+[2016/11/24 17:54:25 KST] [FINE] (main.main:24) Fine
+[2016/11/24 17:54:25 KST] [DEBG] (main.main:25) Debug
+[2016/11/24 17:54:25 KST] [TRAC] (main.main:26) Trace
+[2016/11/24 17:54:25 KST] [INFO] (main.main:27) Info
+[2016/11/24 17:54:25 KST] [WARN] (main.main:28) warn
+[2016/11/24 17:54:25 KST] [EROR] (main.main:29) Error
+[2016/11/24 17:54:25 KST] [CRIT] (main.main:30) Critical
+[2016/11/24 17:55:10 KST] [INFO] (main.main:14) The time is now: 2016-11-24 17:55:10.032134129 +0900 KST
+[2016/11/24 17:55:10 KST] [FNST] (main.main:23) Finest
+[2016/11/24 17:55:10 KST] [FINE] (main.main:24) Fine
+[2016/11/24 17:55:10 KST] [DEBG] (main.main:25) Debug
+[2016/11/24 17:55:10 KST] [TRAC] (main.main:26) Trace
+[2016/11/24 17:55:10 KST] [INFO] (main.main:27) Info
+[2016/11/24 17:55:10 KST] [WARN] (main.main:28) warn
+[2016/11/24 17:55:10 KST] [EROR] (main.main:29) Error
+[2016/11/24 17:55:10 KST] [CRIT] (main.main:30) Critical
