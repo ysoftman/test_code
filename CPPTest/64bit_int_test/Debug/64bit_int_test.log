@@ -1,0 +1,33 @@
+﻿  64bit_int_test.cpp
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): warning C4477: 'printf' : 서식 문자열 '%I64d'에 '__int64' 형식의 인수가 필요하지만 variadic 인수 3의 형식이 'int'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): note: 서식 문자열에서 '%d'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): note: 서식 문자열에서 '%Id'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): note: 서식 문자열에서 '%I32d'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): warning C4477: 'printf' : 서식 문자열 '%lld'에 '__int64' 형식의 인수가 필요하지만 variadic 인수 4의 형식이 'int'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): note: 서식 문자열에서 '%d'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): note: 서식 문자열에서 '%Id'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(16): note: 서식 문자열에서 '%I32d'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(17): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 '__int64'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(17): note: 서식 문자열에서 '%lld'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(17): note: 서식 문자열에서 '%I64d'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(17): warning C4477: 'printf' : 서식 문자열 '%I32d'에 'int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 '__int64'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(17): note: 서식 문자열에서 '%lld'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(17): note: 서식 문자열에서 '%I64d'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(18): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 '__int64'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(18): note: 서식 문자열에서 '%lld'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(18): note: 서식 문자열에서 '%I64d'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(18): warning C4477: 'printf' : 서식 문자열 '%I32d'에 'int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 '__int64'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(18): note: 서식 문자열에서 '%lld'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(18): note: 서식 문자열에서 '%I64d'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(19): warning C4477: 'printf' : 서식 문자열 '%I64d'에 '__int64' 형식의 인수가 필요하지만 variadic 인수 3의 형식이 '__time32_t'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(19): note: 서식 문자열에서 '%ld'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(19): warning C4477: 'printf' : 서식 문자열 '%lld'에 '__int64' 형식의 인수가 필요하지만 variadic 인수 4의 형식이 '__time32_t'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(19): note: 서식 문자열에서 '%ld'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(20): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 '__time64_t'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(20): note: 서식 문자열에서 '%lld'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(20): note: 서식 문자열에서 '%I64d'을(를) 사용하는 것이 좋습니다.
+d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(20): warning C4477: 'printf' : 서식 문자열 '%I32d'에 'int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 '__time64_t'입니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(20): note: 서식 문자열에서 '%lld'을(를) 사용하는 것이 좋습니다.
+  d:\ysoftman\workspace\test_code\cpptest\64bit_int_test\64bit_int_test.cpp(20): note: 서식 문자열에서 '%I64d'을(를) 사용하는 것이 좋습니다.
+  64bit_int_test.vcxproj -> D:\ysoftman\workspace\test_code\CPPTest\64bit_int_test\Debug\64bit_int_test.exe
+  64bit_int_test.vcxproj -> D:\ysoftman\workspace\test_code\CPPTest\64bit_int_test\Debug\64bit_int_test.pdb (Full PDB)
