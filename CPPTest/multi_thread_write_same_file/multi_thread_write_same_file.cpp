@@ -8,14 +8,14 @@
 #include <fcntl.h>
 #include <pthread.h>
 
-const int MAX_LEN = 100000;
+const int MAX_LEN = 1000000;
 
 struct thread_args {
     int fd;
-    char buffer[MAX_LEN+2];
+    char buffer[MAX_LEN+1];
     thread_args() {
         fd = 0;
-        memset(buffer, 0, MAX_LEN+2);
+        memset(buffer, 0, MAX_LEN+1);
     }
 };
 
@@ -25,7 +25,7 @@ void *write_func(void *arg)
 {
     // newline 기준 길이 파악
     int len = 0;
-    for (;len<MAX_LEN;)
+    for (;len<MAX_LEN+1;)
     {
         if (((char*)((thread_args*)(arg))->buffer)[len] == '\n')
         {
@@ -53,10 +53,12 @@ int main()
     th_arg1.fd = fd;
     th_arg2.fd = fd;
 
-    for (int i=0; i < MAX_LEN/10; ++i) strcat(th_arg1.buffer, "OOOOOOOOOO");
+    // for (int i=0; i < MAX_LEN/10; ++i) strcat(th_arg1.buffer, "OOOOOOOOOO");
+    memset(th_arg1.buffer, 0x4F, MAX_LEN);
     strcat(th_arg1.buffer, "\n");
 
-    for (int i=0; i < MAX_LEN/10; ++i) strcat(th_arg2.buffer, "XXXXXXXXXX");
+    // for (int i=0; i < MAX_LEN/10; ++i) strcat(th_arg2.buffer, "XXXXXXXXXX");
+    memset(th_arg2.buffer, 0x58, MAX_LEN);
     strcat(th_arg2.buffer, "\n");
 
     // 멀티 쓰레드로 파일 하나에 동시 쓰기
