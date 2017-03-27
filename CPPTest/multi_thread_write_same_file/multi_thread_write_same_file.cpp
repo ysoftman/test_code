@@ -1,8 +1,10 @@
 // ysoftman
 // 파일 동시쓰기 테스트
 // g++ -lpthread 로 컴파일
-// 테스트 해보기 X 와 O 가 같은 라인에 존재하는지 체크
+// 테스트 해보기 X 와 O 가 같은 라인에 존재하는지 체크(멀티 쓰레드상에서는 문제 발생하지 않음))
 // g++ -lpthread multi_thread_write_same_file.cpp && rm -f yoon*.txt && ./a.out && grep XO yoon*.txt && grep OX yoon*.txt
+// 이 프로그램을 하느의 쓰레드로 설정하고 멀티 프로세스로 테스트 할 경우 fprintf 사용시 atomic 하지 않음
+// ./a.out & ./a.out & ./a.out & ./a.out & ./a.out & ./a.out & ./a.out & ./a.out & ./a.out & ./a.out & 
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
