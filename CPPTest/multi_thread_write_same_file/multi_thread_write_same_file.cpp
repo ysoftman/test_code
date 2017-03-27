@@ -8,12 +8,14 @@
 #include <fcntl.h>
 #include <pthread.h>
 
+const int MAX_LEN = 100000;
+
 void *write_func(void *arg)
 {
     int fd = open("yoon.txt",O_CREAT | O_WRONLY | O_APPEND, 0664);
 
     int len = 0;
-    for (;len<100000;)
+    for (;len<MAX_LEN;)
     {
         if (((char*)arg)[len] == '\n')
         {
@@ -22,7 +24,7 @@ void *write_func(void *arg)
         ++len;
     }
     printf("len:%d\n", ++len);
-    for (int i=0; i<10000; ++i)
+    for (int i=0; i<100; ++i)
     {
         write(fd, (char*)arg, len);
     }
@@ -34,10 +36,14 @@ int main()
 {
     printf("SSIZE_MAX : %ld\n", SSIZE_MAX);
 
-    char buffer1[100000] = {0,};
-    char buffer2[100000] = {0,};
-    sprintf(buffer1, "apple_juice_ok\n");
-    sprintf(buffer2, "lemon_soda_good\n");
+    char buffer1[MAX_LEN] = {0,};
+    char buffer2[MAX_LEN] = {0,};
+
+    for (int i=0; i < MAX_LEN/10-1; ++i) strcat(buffer1, "OOOOOOOOOO");
+    strcat(buffer1, "\n");
+
+    for (int i=0; i < MAX_LEN/10-1; ++i) strcat(buffer2, "XXXXXXXXXX");
+    strcat(buffer2, "\n");
 
     int status;
     pthread_t pth[2];
