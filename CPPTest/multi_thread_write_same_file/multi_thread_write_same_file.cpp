@@ -8,13 +8,15 @@
 #include <fcntl.h>
 #include <pthread.h>
 
-const int MAX_LEN = 1000000;
+const int MAX_LEN = 100000;
 
 struct thread_args {
     int fd;
+    FILE *fp;
     char buffer[MAX_LEN+1];
     thread_args() {
         fd = 0;
+        fp = NULL;
         memset(buffer, 0, MAX_LEN+1);
     }
 };
@@ -37,6 +39,8 @@ void *write_func(void *arg)
     for (int i=0; i<10; ++i)
     {
         write(((thread_args*)(arg))->fd, (char*)((thread_args*)(arg))->buffer, len);
+        //fprintf(((thread_args*)(arg))->fp, "%s", (char*)((thread_args*)(arg))->buffer);
+
     }
 }
 
@@ -44,7 +48,8 @@ int main()
 {
     printf("SSIZE_MAX : %ld\n", SSIZE_MAX);
 
-    int fd = open("yoon.txt",O_CREAT | O_WRONLY | O_APPEND, 0664);
+    FILE *fp = fopen("yoon.txt", "a");
+    int fd = open("yoon2.txt",O_CREAT | O_WRONLY | O_APPEND, 0664);
 
     // 데이터 준비
     thread_args th_arg1;
@@ -52,6 +57,8 @@ int main()
 
     th_arg1.fd = fd;
     th_arg2.fd = fd;
+    th_arg1.fp = fp;
+    th_arg2.fp = fp;
 
     // for (int i=0; i < MAX_LEN/10; ++i) strcat(th_arg1.buffer, "OOOOOOOOOO");
     memset(th_arg1.buffer, 0x4F, MAX_LEN);
@@ -63,17 +70,29 @@ int main()
 
     // 멀티 쓰레드로 파일 하나에 동시 쓰기
     int status;
-    pthread_t pth[2];
-    pthread_create(&pth[0], NULL, write_func, (void*)&th_arg1);
-    pthread_create(&pth[1], NULL, write_func, (void*)&th_arg2);
+    pthread_t pth[100];
+    for (int i=0; i<100; i++)
+    {
+        if (i%2==0)
+        {
+            pthread_create(&pth[i], NULL, write_func, (void*)&th_arg1);
+        }
+        else
+        {
+            pthread_create(&pth[i], NULL, write_func, (void*)&th_arg2);
+        }
+    }
 
-    pthread_join(pth[0], (void**)&status);
-    printf("thread1 finish. status:%d\n", status);
-    pthread_join(pth[1], (void**)&status);
-    printf("thread2 finish. status:%d\n", status);
 
+    for (int i=0; i<100; i++)
+    {
+        pthread_join(pth[i], (void**)&status);
+        printf("thread[%d] finish. status:%d\n", i, status);
+    }
 
     close(fd);
+    fclose(fp);
 
     return 0;
 }
+
