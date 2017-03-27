@@ -1,6 +1,8 @@
 // ysoftman
 // 파일 동시쓰기 테스트
 // g++ -lpthread 로 컴파일
+// 테스트 해보기 X 와 O 가 같은 라인에 존재하는지 체크
+// g++ -lpthread multi_thread_write_same_file.cpp && rm -f yoon*.txt && ./a.out && grep XO yoon*.txt && grep OX yoon*.txt
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
@@ -8,6 +10,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 
+const int THREAD_CNT = 1;
 const int MAX_LEN = 100000;
 
 struct thread_args {
@@ -36,12 +39,13 @@ void *write_func(void *arg)
         ++len;
     }
     printf("len:%d\n", ++len);
-    for (int i=0; i<10; ++i)
+    for (int i=0; i<1; ++i)
     {
         write(((thread_args*)(arg))->fd, (char*)((thread_args*)(arg))->buffer, len);
-        //fprintf(((thread_args*)(arg))->fp, "%s", (char*)((thread_args*)(arg))->buffer);
-
+        // fprintf(((thread_args*)(arg))->fp, "%s", (char*)((thread_args*)(arg))->buffer);
     }
+
+    pthread_exit((void *) 0);
 }
 
 int main()
@@ -70,8 +74,8 @@ int main()
 
     // 멀티 쓰레드로 파일 하나에 동시 쓰기
     int status;
-    pthread_t pth[100];
-    for (int i=0; i<100; i++)
+    pthread_t pth[THREAD_CNT];
+    for (int i=0; i<THREAD_CNT; i++)
     {
         if (i%2==0)
         {
@@ -84,7 +88,7 @@ int main()
     }
 
 
-    for (int i=0; i<100; i++)
+    for (int i=0; i<THREAD_CNT; i++)
     {
         pthread_join(pth[i], (void**)&status);
         printf("thread[%d] finish. status:%d\n", i, status);
