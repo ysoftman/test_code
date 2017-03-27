@@ -15,7 +15,7 @@ void printData(char *pData, int size)
 	}
 	printf("\n");
 }
-void main()
+int main()
 {
 	printf("test1 malloc\n");
 	// malloc 으로 할당한경우 초기화되지 않아 memset으로 초기화해야 한다.
@@ -47,18 +47,20 @@ void main()
 	// 크기를 늘리는 경우 기존 값을 새 메모리에 복사하고 새 메모리 주소값을 리턴한다.
 	// 늘이는 경우 malloc 을 사용하기 때문에 늘어난 부분에대해서는 초기화되어 있지 않다.
 	// 줄이는 경우
-	printf("pData2(%X)\n", pData2);
+	printf("pData2(%p)\n", pData2);
 	pData2 = (char*)realloc(pData2, sizeof(char)*5);
 	printData(pData2, 5);
-	printf("pData2(%X)\n", pData2);
+	printf("pData2(%p)\n", pData2);
 
 	// 늘이는 경우
-	printf("pData2(%X)\n", pData2);
+	printf("pData2(%p)\n", pData2);
 	pData2 = (char*)realloc(pData2, sizeof(char)*100);
 	printData(pData2, 100);
-	printf("pData2(%X)\n", pData2);
+	printf("pData2(%p)\n", pData2);
 
 	free(pData);
 	free(pData2);
+
+	return 0;
 }
 
