@@ -1,4 +1,4 @@
-// protocol buffer test
+// pb_test.proto  -  protocol buffer 정의 파일
 package pb_test;
 
 message UserInfo {

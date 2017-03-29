@@ -1,41 +1,45 @@
-// author : ysoftman
-// encoding : utf-8
-// title : protocol buffer for golang test
-// desc : protocol buffer 는 현재 c++. java, python2 만 현재 공식 지원
-// 		  Go 언어용 -> https://github.com/golang/protobuf
-
 /*
-# github.com 오픈 소스 사용하기(윈도우 환경 기준)
-# GOPATH 에 현재 작업디렉토리 경로 추가
-set gopath=%cd%;
+author : ysoftman
+encoding : utf-8
+title : protocol buffer for golang test
+desc : protocol buffer 는 현재 c++. java, python 만 현재 공식 지원
 
-# go get 으로 github 다운받기
+Go 용 protocol buffer 패키지 설치
+GOPATH 설정되어 있어야함
+go get 으로 github 다운받기
+
 go get -u github.com/golang/protobuf/proto
 go get -u github.com/golang/protobuf/protoc-gen-go
 
-# liteide 사용시 GOPATH 에 현재 작업 디렉토리 경로 추가
-View -> Manage GOPATH -> Custom Directories -> Add Directory
+$GOPATH/bin/protoc-gen-go 바이너리가 생성된다.
+
+
+protocol buffer 컴파일러 설치(osx 기준)
+
+wget https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-osx-x86_64.zip
+
+tar zxvf protoc-3.2.0-osx-x86_64.zip
+
+.go 파일 생성
+protoc 는 $GOPATH/bin/protoc-gen-go 를 사용한다.
+따라서 $GOPATH/bin/ 가 path 로 잡혀 있어야 한다.
+또는 $GOPATH/bin/protoc-gen-go 파일을 현재 위치에 복사 한다.
+
+
+mkdir -p $GOPATH/src/pb_test
+./bin/protoc --go_out=$GOPATH/src/pb_test *.proto
+
+pb_test.proto  -> src/pb_test/pb_test.pb.go 파일을 생성한다.
+
+go build
 */
 
-/*
-protocol buffer 컴파일러 사용하기
-1. protocol buffer 컴파일러(protoc.exe) 다운로드
-https://developers.google.com/protocol-buffers/docs/downloads
-
-2. protoc.exe 와 같은 위치에 protoc-gen-go.exe 복사
-copy -v bin\protoc-gen-go.exe .\
-
-3. go 용 프로토콜 생성
-protoc.exe --go_out=. *.proto
-
-4. 생성된 프로토콜 xxx.go 파일 src/xxx/xxx.go 로 이동
-*/
-
+// pb.go - go 로 테스트
 package main
 
 import "fmt"
 import "log"
-import "pb_test"
+import "pb_test" // protocol buffer 로 생성된 pb_test.pb.go 의 패키지
 import "github.com/golang/protobuf/proto"
 
 func main() {
