@@ -3,7 +3,7 @@
 // GOPATH 설명 --> http://golang.org/doc/code.html#GOPATH
 // 현재 디렉토리를 GOPATH 로 설정한다면
 // set GOPATH=%CD% (윈도우 경우)
-// export GOPATH=$CD (리눅스 경우)
+// export GOPATH=$PWD (리눅스 경우)
 
 // 현재 디렉토리 안에 src/my_math 디렉토리 생성
 // mkdir src

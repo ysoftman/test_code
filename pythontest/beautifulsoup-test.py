@@ -53,7 +53,7 @@ def parse_url(url):
     print result.title.string
     
     # selector 로 찾기
-    # class="navbar" 에서 태그 부분만
+    # <div class="navbar"> 하위에서 <a href="xxx"> 태그 부분만
     selector = ".navbar a"
     result2 = result.select(selector)
     # 여러개의 a 태그중 첫번째의 텍스트부분 출력
