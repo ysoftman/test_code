@@ -4,14 +4,19 @@
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <vector>
+#include <string>
+
 int value(int a)
 {
+	printf ("%s\ta(%p)\n", __FUNCTION__, &a);
 	a = a+5;
 	return a;
 }
 
 void reference(int *a)
 {
+	printf ("%s\ta(%p)\n", __FUNCTION__, a);
+	printf ("%s\t&a(%p)\n", __FUNCTION__, &a);
 	*a = *a+5;
 }
 
@@ -43,13 +48,20 @@ void func1(std::vector<Dummy*> vecDum)
 	}
 
 }
-void main()
+int main()
 {
 	int num = 5;
+	printf ("num(%p)\n", &num);
 	num = value(num);
 	printf ("Call by Value : %d\n", num);
 	reference(&num);
 	printf ("Call by Reference : %d\n", num);
+	int* pnum = &num;
+	printf ("pnum(%p)\n", pnum);
+	printf ("pnum(%p)\n", &pnum);
+	reference(pnum);
+	printf ("Call by Reference : %d\n", num);
+
 
 	std::vector<Dummy*> vecDum;
 	for (int i = 0; i<3; i++) 
@@ -73,4 +85,6 @@ void main()
 	}
 
 	while(!vecDum.empty()){ delete vecDum.back(); vecDum.pop_back(); }
+
+	return 0;
 }
