@@ -1,7 +1,7 @@
 -------------------------------------------------
 -- lua_for_c.lua
 -- ysoftman
--- Lua <-> C ¿¬µ¿ Å×½ºÆ®
+-- Lua <-> C ì—°ë™ í…ŒìŠ¤íŠ¸
 print ("lua_for_c test start...")
 
 function myfunc1(arg1, arg2, arg3, arg4)
@@ -22,7 +22,7 @@ function myfunc2(arg1, arg2)
 end
 
 print ("---------------------------")
--- C ÇÔ¼ö È£Ãâ
+-- C í•¨ìˆ˜ í˜¸ì¶œ
 print ("Lua --> C")
 result = DoSomething(9, 9, 9)
 print ("result from C = " .. result)

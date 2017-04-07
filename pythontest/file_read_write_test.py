@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 3.x
+# python version : 2.x
 # desc : 파이썬 기본 테스트
 
 # import os
@@ -15,7 +15,10 @@ def test_file_write(val):
         # write 함수를 통한 파일 쓰기
         myfile.write(strMsg)
         # print 함수를 통한 파일 쓰기
-        print(strMsg, end='', file=myfile)
+        # 3.x
+        #print(strMsg, end='', file=myfile)
+        # 2.x
+        myfile.write(strMsg)
     myfile.close()
     return None
 
@@ -26,7 +29,10 @@ def test_file_read():
         myfile = open("test.txt", "r")
         linebuffer = myfile.readlines()
         for temp in linebuffer:
-            print(temp, end='')
+            # 3.x
+            #print(temp, end='')
+            # 2.x
+            print(temp)
     except IOError as err:
         print("can't open file...." + str(err))
         pass

@@ -1,14 +1,14 @@
 ///////////////////////////////////////////////////////////
 // c_for_lua.cpp
 // ysoftman
-// Lua <-> C ¿¬µ¿ Å×½ºÆ®
+// Lua <-> C ì—°ë™ í…ŒìŠ¤íŠ¸
 #include "iostream"
 
 #ifdef _WIN32
-// ·ç¾Æ ¼³Ä¡ÇßÀ¸¸é include ¿Í lib °æ·Î Ãß°¡(Windows ±âÁØ)
+// lua ì„¤ì¹˜í–ˆìœ¼ë©´ include ì™€ lib ê²½ë¡œ ì¶”ê°€(Windows ê¸°ì¤€)
 // C:\Program Files (x86)\Lua\5.1\include
 // C:\Program Files (x86)\Lua\5.1\lib
-// lua lib ¸µÅ©
+// lua lib ë§í¬
 #pragma comment(lib , "lua5.1.lib")
 
 #elif __APPLE__
@@ -20,19 +20,19 @@
 // g++ c_for_lua.cpp -L./lua-5.3.3/src -llua
 #endif
 
-// lua(C ·Î ¸¸µé¾îÁü) Çì´õ include
+// lua(C ë¡œ ë§Œë“¤ì–´ì§) í—¤ë” include
 extern "C" {
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
 }
 
-// ·ç¾Æ¿¡¼­ È£Ãâ ÇÒ ¼ö ÀÖ´Â ÇÔ¼ö(int funcname(lua_State* L) Çü½ÄÀÌ¾î¾ß ÇÑ´Ù)
+// luaì—ì„œ í˜¸ì¶œ í•  ìˆ˜ ìˆëŠ” í•¨ìˆ˜(int funcname(lua_State* L) í˜•ì‹ì´ì–´ì•¼ í•œë‹¤)
 int DoSomethingForLua(lua_State *L)
 {
 	std::cout << "DoSomethingForLua() called." << std::endl;
 
-	// ·ç¾Æ¿¡¼­ µé¾î¿Â ÀÎÀÚµé ÆÄ¾Ç
+	// luaì—ì„œ ë“¤ì–´ì˜¨ ì¸ìë“¤ íŒŒì•…
 	int a = luaL_checkint(L, 1);
 	int b = luaL_checkint(L, 2);
 	int c = luaL_checkint(L, 3);
@@ -41,10 +41,10 @@ int DoSomethingForLua(lua_State *L)
 	std::cout << "b = " << b << std::endl;
 	std::cout << "c = " << c << std::endl;
 
-	// ·ç¾Æ¿¡ ½ºÅÃ¿¡ °á°ú ³Ö±â
+	// luaì— ìŠ¤íƒì— ê²°ê³¼ ë„£ê¸°
 	lua_pushinteger(L, a+b+c);
 
-	// ·ç¾Æ¿¡ ¸®ÅÏ °³¼ö ¾Ë¸®±â
+	// luaì— ë¦¬í„´ ê°œìˆ˜ ì•Œë¦¬ê¸°
 	return 1;
 }
 
@@ -52,23 +52,23 @@ int main(int argc, char* argv[])
 {
 	std::cout << "c_for_lua test start..." << std::endl;
 
-	// ·ç¾Æ state »ı¼º
+	// lua state ìƒì„±
 	lua_State *L = luaL_newstate();
-	// ·ç¾Æ ¶óÀÌºê·¯¸® ¿ÀÇÂ
+	// lua ë¼ì´ë¸ŒëŸ¬ë¦¬ ì˜¤í”ˆ
 	luaL_openlibs(L);
 
-	// ·ç¾Æ¿¡¼­ C ÇÔ¼ö¸¦ È£Ãâ ÇÒ ¼ö ÀÖµµ·Ï C ÇÔ¼ö µî·Ï
+	// luaì—ì„œ C í•¨ìˆ˜ë¥¼ í˜¸ì¶œ í•  ìˆ˜ ìˆë„ë¡ C í•¨ìˆ˜ ë“±ë¡
 	lua_register(L, "DoSomething", DoSomethingForLua);
 
-	// ·ç¾Æ ÆÄÀÏ ½ÇÇà
-	// luaL_dofile Àº luaL_loadfile(·ç¾Æ ·Îµå) ¿Í lua_pcall(·ç¾Æ ÃÊ±âÈ­) ¸¦ ÇÕÄ£°Í
+	// lua íŒŒì¼ ì‹¤í–‰
+	// luaL_dofile ì€ luaL_loadfile(lua ë¡œë“œ) ì™€ lua_pcall(lua ì´ˆê¸°í™”) ë¥¼ í•©ì¹œê²ƒ
 	luaL_dofile(L, "lua_for_c.lua");
 
 
-	// ·ç¾Æ ½ºÅ©¸³Æ®ÀÇ myfunc1 ÇÔ¼ö °¡Á®¿À±â
+	// lua ìŠ¤í¬ë¦½íŠ¸ì˜ myfunc1 í•¨ìˆ˜ ê°€ì ¸ì˜¤ê¸°
 	lua_getglobal(L, "myfunc1");
 
-	// ·ç¾Æ ÇÔ¼ö¿¡ Àü´ŞÇÒ ÆÄ¶ó¹ÌÅÍ ½ºÅÃ¿¡ ³Ö±â
+	// lua í•¨ìˆ˜ì— ì „ë‹¬í•  íŒŒë¼ë¯¸í„° ìŠ¤íƒì— ë„£ê¸°
 	lua_pushboolean(L, true);
 	lua_pushinteger(L, 99999);
 	lua_pushnumber(L, 123.456);
@@ -77,41 +77,41 @@ int main(int argc, char* argv[])
 	std::cout << "---------------------------" << std::endl;
 	std::cout << "C --> Lua" << std::endl;
 	
-	// ·ç¾Æ ÇÔ¼ö È£Ãâ
-	// ÆÄ¶ó¹ÌÅÍ 4°³¸¦ Àü´ŞÇÏ°í ¸®ÅÏ 1°³ ¹ŞÀº
+	// lua í•¨ìˆ˜ í˜¸ì¶œ
+	// íŒŒë¼ë¯¸í„° 4ê°œë¥¼ ì „ë‹¬í•˜ê³  ë¦¬í„´ 1ê°œ ë°›ì€
 	lua_call(L, 4, 1);
 
-	// ½ºÅÃ(minus indexing)¿¡ ½×ÀÎ ¸®ÅÏ °á°ú ÆÄ¾Ç
+	// ìŠ¤íƒ(minus indexing)ì— ìŒ“ì¸ ë¦¬í„´ ê²°ê³¼ íŒŒì•…
 	std::cout << "result from Lua = " << lua_tonumber(L, -1) << std::endl;
 	std::cout << "---------------------------" << std::endl;
 	
-	// pop À» ÇØÁÖÁö ¾ÊÀ¸¸é ½ºÅÃÀÌ °è¼Ó ½×ÀÎ´Ù.
-	// ³»ºÎÀûÀ¸·Î lua_settop À¸·Î ½ºÅÃ À§Ä¡¸¦ ¼³Á¤
+	// pop ì„ í•´ì£¼ì§€ ì•Šìœ¼ë©´ ìŠ¤íƒì´ ê³„ì† ìŒ“ì¸ë‹¤.
+	// lua_pop ì€ ë‚´ë¶€ì ìœ¼ë¡œ lua_settop ìœ¼ë¡œ ìŠ¤íƒ ìœ„ì¹˜ë¥¼ ì„¤ì •
 	lua_pop(L, 1);
 	
-	// ·ç¾Æ ½ºÅ©¸³Æ®ÀÇ myfunc2 ÇÔ¼ö °¡Á®¿À±â
+	// lua ìŠ¤í¬ë¦½íŠ¸ì˜ myfunc2 í•¨ìˆ˜ ê°€ì ¸ì˜¤ê¸°
 	lua_getglobal(L, "myfunc2");
 		
-	// ·ç¾Æ ÇÔ¼ö¿¡ Àü´ŞÇÒ ÆÄ¶ó¹ÌÅÍ ½ºÅÃ¿¡ ³Ö±â
+	// lua í•¨ìˆ˜ì— ì „ë‹¬í•  íŒŒë¼ë¯¸í„° ìŠ¤íƒì— ë„£ê¸°
 	lua_pushnumber(L, 5);
 	lua_pushnumber(L, 5);
 	
 	std::cout << "---------------------------" << std::endl;
 	std::cout << "C --> Lua" << std::endl;
 	
-	// ·ç¾Æ ÇÔ¼ö È£Ãâ
-	// ÆÄ¶ó¹ÌÅÍ 2°³¸¦ Àü´ŞÇÏ°í ¸®ÅÏ 1°³ ¹ŞÀº
+	// lua í•¨ìˆ˜ í˜¸ì¶œ
+	// íŒŒë¼ë¯¸í„° 2ê°œë¥¼ ì „ë‹¬í•˜ê³  ë¦¬í„´ 1ê°œ ë°›ì€
 	lua_call(L, 2, 1);
 
-	// ½ºÅÃ(minus indexing)¿¡ ½×ÀÎ ¸®ÅÏ °á°ú ÆÄ¾Ç
+	// ìŠ¤íƒ(minus indexing)ì— ìŒ“ì¸ ë¦¬í„´ ê²°ê³¼ íŒŒì•…
 	std::cout << "result from Lua = " << lua_tonumber(L, -1) << std::endl;
 	std::cout << "---------------------------" << std::endl;	
 	
-	// pop À» ÇØÁÖÁö ¾ÊÀ¸¸é ½ºÅÃÀÌ °è¼Ó ½×ÀÎ´Ù.
-	// ³»ºÎÀûÀ¸·Î lua_settop À¸·Î ½ºÅÃ À§Ä¡¸¦ ¼³Á¤
+	// pop ì„ í•´ì£¼ì§€ ì•Šìœ¼ë©´ ìŠ¤íƒì´ ê³„ì† ìŒ“ì¸ë‹¤.
+	// lua_pop ì€ ë‚´ë¶€ì ìœ¼ë¡œ lua_settop ìœ¼ë¡œ ìŠ¤íƒ ìœ„ì¹˜ë¥¼ ì„¤ì •
 	lua_pop(L, 1);
 
-	// ·ç¾Æ state Á¦°Å
+	// lua state ì œê±°
 	lua_close(L);
 
 	return 0;

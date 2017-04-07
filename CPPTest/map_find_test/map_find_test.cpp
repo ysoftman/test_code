@@ -20,15 +20,14 @@ void FindNumInMap(std::map<int,int> mapTemp, int num)
 	}
 }
 
-void main()
+int main()
 {
 	std::map<int, int> mapTemp;
-
-	int num = 123;
 
 	FindNumInMap(mapTemp, 123);
 	mapTemp[123] = 999;
 	FindNumInMap(mapTemp, 123);
 
+	return 0;
 }
 
