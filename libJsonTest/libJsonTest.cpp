@@ -1,13 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// libjson Å×½ºÆ®
-// json °ø½Ä È¨ÆäÀÌÁö http://json.org
-// libjson http://sourceforge.net/projects/libjson/
-// À©µµ¿ì È¯°æ¿¡¼­´Â Á¦´ë·Î Å×½ºÆ®µÇÁö ¾Ê°í ¹èÆ÷µÇ´Â ¹®Á¦°¡ ÀÖÀ½
-// À©µµ¿ì¿¡¼­ 7.6.1 ºôµå½Ã
-// .vcproj ¿­Áö ¸øÇÏ´Â ¹®Á¦ ¹ß»ı -> .vcproj xml Çü½ÄÀÌ Àß¸øµÈ °÷ ¼öÁ¤
-// libjson ºôµå½Ã ¿¡·¯ ¹ß»ı -> libjson.h 43 ¹øÂ° ¶óÀÎ ÁÖ¼®Ã³¸®
-// Å×½ºÆ® ºôµå½Ã ¿¡·¯ ¹ß»ı -> jsondefs.h 159 ¹øÂ° ¶óÀÎ ÁÖ¼®Ã³¸®
+// libjson í…ŒìŠ¤íŠ¸
+// json ê³µì‹ í™ˆí˜ì´ì§€ http://json.org
+// ë‹¤ìš´ë¡œë“œ http://sourceforge.net/projects/libjson/
+// linux build
+// unzip libjson_7.6.1.zip
+// cd libjson 
+// make 
+// g++ libJsonTest.cpp -L./libjson/ -ljson
+// windows build
+// ìœˆë„ìš° í™˜ê²½ì—ì„œëŠ” ì œëŒ€ë¡œ í…ŒìŠ¤íŠ¸ë˜ì§€ ì•Šê³  ë°°í¬ë˜ëŠ” ë¬¸ì œê°€ ìˆìŒ
+// .vcproj ì—´ì§€ ëª»í•˜ëŠ” ë¬¸ì œ ë°œìƒ -> .vcproj xml í˜•ì‹ì´ ì˜ëª»ëœ ê³³ ìˆ˜ì •
+// libjson ë¹Œë“œì‹œ ì—ëŸ¬ ë°œìƒ -> libjson.h 43 ë²ˆì§¸ ë¼ì¸ ì£¼ì„ì²˜ë¦¬
+// í…ŒìŠ¤íŠ¸ ë¹Œë“œì‹œ ì—ëŸ¬ ë°œìƒ -> jsondefs.h 159 ë²ˆì§¸ ë¼ì¸ ì£¼ì„ì²˜ë¦¬
 ////////////////////////////////////////////////////////////////////////////////////
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -16,32 +21,32 @@
 #include <string>
 #include <vector>
 
-#include "./libJson/libjson.h"
+#include "./libjson/libjson.h"
 
 using namespace std;
 
 #if defined(_WIN32) || defined(_WIN64)
 #if defined(_DEBUG)
 #define JSON_DEBUG
-#pragma comment(lib, "./libJson/statLibJson-mdd")
+#pragma comment(lib, "./libjson/statLibJson-mdd")
 #else
-#pragma comment(lib, "./libJson/statLibJson-md")
+#pragma comment(lib, "./libjson/statLibJson-md")
 #endif
 #else // linux
 #if defined(_DEBUG)
-#pragma comment(lib, "libjson")
+#pragma comment(lib, "./libjson/libjson")
 #else
-#pragma comment(lib, "libjson")
+#pragma comment(lib, "./libjson/libjson")
 #endif
 #endif
 
 /**
-*	@brief						JSON ÀÇ ¸ğµç °æ·Î¿Í °ªÀ» ÃßÃâÇÑ´Ù.
-*	@author						À±º´ÈÆ
-*	@param			pNode		JSON Çü½ÄÀÇ ³ëµå
-*	@param			output		Ã£Àº ¸ğµç °æ·Î¸¦ ÀúÁ¤ÇÒ º¤ÅÍ
-*	@param			curpath		ÇöÀçÀ§Ä¡±îÁöÀÇ °æ·Î¸¦ ÀúÀåÇÒ º¤ÅÍ
-*	@param			depth		stack overflow ¹æÁö¸¦ À§ÇÑ Ä«¿îÆ®
+*	@brief						JSON ì˜ ëª¨ë“  ê²½ë¡œì™€ ê°’ì„ ì¶”ì¶œí•œë‹¤.
+*	@author						ìœ¤ë³‘í›ˆ
+*	@param			pNode		JSON í˜•ì‹ì˜ ë…¸ë“œ
+*	@param			output		ì°¾ì€ ëª¨ë“  ê²½ë¡œë¥¼ ì €ì •í•  ë²¡í„°
+*	@param			curpath		í˜„ì¬ìœ„ì¹˜ê¹Œì§€ì˜ ê²½ë¡œë¥¼ ì €ì¥í•  ë²¡í„°
+*	@param			depth		stack overflow ë°©ì§€ë¥¼ ìœ„í•œ ì¹´ìš´íŠ¸
 *	@return						None
 */
 void ParseJsonToGetAllPath(JSONNODE *pNode, vector<string> &output, vector<string> curpath, int depth)
@@ -60,7 +65,7 @@ void ParseJsonToGetAllPath(JSONNODE *pNode, vector<string> &output, vector<strin
 	JSONNODE_ITERATOR iter = json_begin(pNode);
 	while (iter != json_end(pNode))
 	{
-		// ÇöÀç À§Ä¡ÀÇ °æ·Î ¼³Á¤
+		// í˜„ì¬ ìœ„ì¹˜ì˜ ê²½ë¡œ ì„¤ì •
 		json_char *cur_key = json_name(*iter);
 		if (cur_key != NULL && strlen(cur_key) > 0)
 		{
@@ -69,7 +74,7 @@ void ParseJsonToGetAllPath(JSONNODE *pNode, vector<string> &output, vector<strin
 		json_free(cur_key);
 
 		char type = json_type(*iter);
-		// ÇöÀç À§Ä¡°¡ ¹è¿­ÀÌ³ª ³ëµå¶ó¸é Àç±ÍÈ£ÃâÇÑ´Ù.
+		// í˜„ì¬ ìœ„ì¹˜ê°€ ë°°ì—´ì´ë‚˜ ë…¸ë“œë¼ë©´ ì¬ê·€í˜¸ì¶œí•œë‹¤.
 		if (type == JSON_ARRAY || type == JSON_NODE)
 		{
 			ParseJsonToGetAllPath(*iter, output, curpath, depth+1);
@@ -78,7 +83,7 @@ void ParseJsonToGetAllPath(JSONNODE *pNode, vector<string> &output, vector<strin
 			{
 				return;
 			}
-			// ´ÙÀ½ À§Ä¡°¡ ¹è¿­ÀÌ³ª ÀÚ½Ä³ëµå¶ó¸é curpath ¸¦ À¯ÁöÇØ¾ß ÇÑ´Ù.
+			// ë‹¤ìŒ ìœ„ì¹˜ê°€ ë°°ì—´ì´ë‚˜ ìì‹ë…¸ë“œë¼ë©´ curpath ë¥¼ ìœ ì§€í•´ì•¼ í•œë‹¤.
 			char nexttype = json_type(*(iter+1));
 			if (!(curpath.empty()) && nexttype != JSON_ARRAY && nexttype != JSON_NODE)
 			{
@@ -88,7 +93,7 @@ void ParseJsonToGetAllPath(JSONNODE *pNode, vector<string> &output, vector<strin
 		else
 		{
 			temp.clear();
-			// curpath ÀÇ ¿ø¼Ò°ªÀÇ ¼ø¼­·Î ÇöÀç °æ·Î¸¦ ÆÄ¾ÇÇÑ´Ù.
+			// curpath ì˜ ì›ì†Œê°’ì˜ ìˆœì„œë¡œ í˜„ì¬ ê²½ë¡œë¥¼ íŒŒì•…í•œë‹¤.
 			vector<string>::iterator curpathiter;
 			for (curpathiter = curpath.begin(); curpathiter != curpath.end(); curpathiter++)
 			{
@@ -110,7 +115,7 @@ void ParseJsonToGetAllPath(JSONNODE *pNode, vector<string> &output, vector<strin
 				json_int_t node_int_value = json_as_int(*iter);
 				ostringstream ostr;
 				ostr.str("");
-				// ½ºÆ®¸µ Å¸ÀÔÀ¸·Î º¯È¯
+				// ìŠ¤íŠ¸ë§ íƒ€ì…ìœ¼ë¡œ ë³€í™˜
 				ostr << node_int_value;
 				temp += ostr.str();
 			}
@@ -132,16 +137,16 @@ void ParseJsonToGetAllPath(JSONNODE *pNode, vector<string> &output, vector<strin
 
 int main()
 {
-	string strJSON = "{\"ÀÌ¸§\": \"À±º´ÈÆ\", \
-					 \"³ªÀÌ\": 30, \
-					 \"¼ºº°\": \"³²\", \
-					 \"Ä£±¸\": [\"È«±æµ¿\", \"¿¤¸®ÀÚº£½º\"], \
-					 \"À§Ä¡\": \"ÅÂ¾ç°è Áö±¸\" }";
+	string strJSON = "{\"ì´ë¦„\": \"ìœ¤ë³‘í›ˆ\", \
+					 \"ë‚˜ì´\": 30, \
+					 \"ì„±ë³„\": \"ë‚¨\", \
+					 \"ì¹œêµ¬\": [\"í™ê¸¸ë™\", \"ì—˜ë¦¬ìë² ìŠ¤\"], \
+					 \"ìœ„ì¹˜\": \"íƒœì–‘ê³„ ì§€êµ¬\" }";
 
-	// json ÆÄ½Ì
+	// json íŒŒì‹±
 	JSONNODE *pNode = json_parse(strJSON.c_str());
 
-	// json ¿¡¼­ÀÇ ¸ğµç path¿Í value ¸¦ ÃßÃâÇÑ´Ù.
+	// json ì—ì„œì˜ ëª¨ë“  pathì™€ value ë¥¼ ì¶”ì¶œí•œë‹¤.
 	vector<string> vecTemp;
 	vector<string> vecPath;
 	vector<string>::iterator iter;

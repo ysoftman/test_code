@@ -40,7 +40,7 @@
 		  json_char * json_strip_white_space(json_const json_char * json);
 		  #ifdef JSON_VALIDATE
 			 #ifdef JSON_DEPRECATED_FUNCTIONS
-//				JSONNODE * json_deprecated(json_validate(json_const json_char * json), "json_validate is deprecated, use json_is_valid and json_parse instead");
+				JSONNODE * json_deprecated(json_validate(json_const json_char * json), "json_validate is deprecated, use json_is_valid and json_parse instead");
 			 #endif
 			 json_bool_t json_is_valid(json_const json_char * json);
 			 json_bool_t json_is_valid_unformatted(json_const json_char * json);
