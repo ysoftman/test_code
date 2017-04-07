@@ -1,14 +1,17 @@
+// ysoftman
+// gtest ì‚¬ìš©í•˜ê¸°
+// git clone https://github.com/google/googletest
+// gtest-1.7.0 ê¸°ì¤€ msvc10(vc2010) ê¹Œì§€ë§Œ ë¹Œë“œë˜ê¸° ë•Œë¬¸ì— vc2010 ì»´íŒŒì¼ëŸ¬ ì‚¬ìš©í•´ì•¼ í•¨
+
 #include <stdio.h>
 
-// gtest-1.7.0 ±âÁØ msvc10(vc2010) ±îÁö¸¸ ºôµåµÇ±â ¶§¹®¿¡ vc2010 ÄÄÆÄÀÏ·¯ »ç¿ëÇØ¾ß ÇÔ
-// ´Ù¿î·Îµå https://code.google.com/p/googletest/ 
 #ifdef _DEBUG
 #pragma comment(lib, "gtest/lib/gtest-vc100-mtd.lib")
 #else
 #pragma comment(lib, "gtest/lib/gtest-vc100-mt.lib")
 #endif
 
-#include "gtest/gtest.h"
+#include "./googletest/googletest/include/gtest/gtest.h"
 
 TEST(testcase1, testname1)
 {
@@ -28,10 +31,10 @@ TEST(testcase3, testname3)
 
 int main(int argc, char **argv)
 {
-	// gtest ÃÊ±âÈ­
+	// gtest ì´ˆê¸°í™”
 	testing::InitGoogleTest(&argc, argv);
 	
-	// TEST ÇÔ¼öµé¿¡ ´ëÇÑ Å×½ºÆ®
+	// TEST í•¨ìˆ˜ë“¤ì— ëŒ€í•œ í…ŒìŠ¤íŠ¸
 	RUN_ALL_TESTS();
 
 	return 0;
