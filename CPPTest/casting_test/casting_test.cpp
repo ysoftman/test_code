@@ -24,54 +24,54 @@ int main()
 	printf("nNumber = %lld\n", nNumber);
 	printf("\n");
 
-	// C : ¹«Á¶°Ç Ä³½ºÆÃµÊ
-	nNumber = (int)lNumber;
-	printf("nNumber = %lld\n", nNumber);
-	nNumber = (int)CONST_NUMBER;
-	printf("nNumber = %lld\n", nNumber);
-	nNumber = (int)fNumber;
-	printf("nNumber = %lld\n", nNumber);
-	nNumber = (int)szStr;
-	printf("nNumber = %lld\n", nNumber);
-	printf("\n");
+	// C : ë¬´ì¡°ê±´ ìºìŠ¤íŒ…ë¨
+	// nNumber = (int)lNumber;
+	// printf("nNumber = %lld\n", nNumber);
+	// nNumber = (int)CONST_NUMBER;
+	// printf("nNumber = %lld\n", nNumber);
+	// nNumber = (int)fNumber;
+	// printf("nNumber = %lld\n", nNumber);
+	// nNumber = (int)szStr;
+	// printf("nNumber = %lld\n", nNumber);
+	// printf("\n");
 
-	// C++ static_cast : ³í¸®ÀûÀ¸·Î ¸ÂÀ»¶§¸¸ º¯È¯ °¡´É
+	// C++ static_cast : ë…¼ë¦¬ì ìœ¼ë¡œ ë§ì„ë•Œë§Œ ë³€í™˜ ê°€ëŠ¥
 	nNumber = static_cast<int>(lNumber);
 	printf("nNumber = %lld\n", nNumber);
 	nNumber = static_cast<int>(CONST_NUMBER);
 	printf("nNumber = %lld\n", nNumber);
 	nNumber = static_cast<int>(fNumber);
 	printf("nNumber = %lld\n", nNumber);
-	//nNumber = static_cast<int>(szStr);	// Æ÷ÀÎÅÍ Å¸ÀÔÀ» ´Ù¸¥ Å¸ÀÔÀ¸·Î º¯È¯ ¾ÈµÊ
+	//nNumber = static_cast<int>(szStr);	// í¬ì¸í„° íƒ€ì…ì„ ë‹¤ë¥¸ íƒ€ì…ìœ¼ë¡œ ë³€í™˜ ì•ˆë¨
 	//printf("nNumber = %lld\n", nNumber);
 	printf("\n");
 
-	// C++ const_cast : »ó¼ö¼º¸¦ ºñ»ó¼ö·Î º¯È¯ÇÒ¶§
-	//nNumber = const_cast<int&>(lNumber);	// ºñ»ó¼ö º¯È¯ ¾ÈµÊ
+	// C++ const_cast : ìƒìˆ˜ì„±ë¥¼ ë¹„ìƒìˆ˜ë¡œ ë³€í™˜í• ë•Œ
+	//nNumber = const_cast<int&>(lNumber);	// ë¹„ìƒìˆ˜ ë³€í™˜ ì•ˆë¨
 	//printf("nNumber = %lld\n", nNumber);
 	nNumber = const_cast<int&>(CONST_NUMBER);
 	printf("nNumber = %lld\n", nNumber);
-	//nNumber = const_cast<int&>(fNumber);	// ºñ»ó¼ö º¯È¯ ¾ÈµÊ
+	//nNumber = const_cast<int&>(fNumber);	// ë¹„ìƒìˆ˜ ë³€í™˜ ì•ˆë¨
 	//printf("nNumber = %lld\n", nNumber);
-	//nNumber = static_cast<int&>(szStr);	// ºñ»ó¼ö º¯È¯ ¾ÈµÊ
+	//nNumber = static_cast<int&>(szStr);	// ë¹„ìƒìˆ˜ ë³€í™˜ ì•ˆë¨
 	//printf("nNumber = %lld\n", nNumber);
 	printf("\n");
 
-	// C++ reinterpret_cast : Æ÷ÀÎÅÍ³¢¸® ¶Ç´Â Æ÷ÀÎÅÍ¿Í °ª°£¿¡ º¯È¯ÇÒ¶§
+	// C++ reinterpret_cast : í¬ì¸í„°ë¼ë¦¬ ë˜ëŠ” í¬ì¸í„°ì™€ ê°’ê°„ì— ë³€í™˜í• ë•Œ
 	int *pNumber = NULL;
 	pNumber = reinterpret_cast<int*>(lNumber);
 	printf("pNumber = %lld\n", pNumber);
 	pNumber = reinterpret_cast<int*>(CONST_NUMBER);
 	printf("pNumber = %lld\n", pNumber);
-	//pNumber = reinterpret_cast<int*>(fNumber);	// Á¤¼ö <-> ½Ç¼ö º¯È¯ ¾ÈµÊ
+	//pNumber = reinterpret_cast<int*>(fNumber);	// ì •ìˆ˜ <-> ì‹¤ìˆ˜ ë³€í™˜ ì•ˆë¨
 	//printf("pNumber = %lld\n", pNumber);
 	pNumber = reinterpret_cast<int*>(szStr);
 	printf("pNumber = %s\n", pNumber);
-	pNumber = reinterpret_cast<int*>(77777);	// °ªÀ» Æ÷ÀÎÅÍÇüÀ¸·Î º¯È¯ °¡´É
+	pNumber = reinterpret_cast<int*>(77777);	// ê°’ì„ í¬ì¸í„°í˜•ìœ¼ë¡œ ë³€í™˜ ê°€ëŠ¥
 	printf("pNumber = %lld\n", pNumber);
 	printf("\n");
 
-	// C++ dynamic_cast : »ó¼Ó°ü°è¿¡¼­ upcasting º¯È¯ °¡´É downcasting Àº ¾ÈµÊ
+	// C++ dynamic_cast : ìƒì†ê´€ê³„ì—ì„œ upcasting ë³€í™˜ ê°€ëŠ¥ downcasting ì€ ì•ˆë¨
 	Parent *pParent = new Parent();
 	Parent *pParent2 = NULL;
 	Child *pChild = new Child();
