@@ -12,8 +12,8 @@
    "c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat"
 
 4. perl 로 설정파일 만들기(perl 설치파일 http://downloads.activestate.com/ActivePerl/releases/)
-   win32 경우 ==> perl Configure VC-WIN32 --openssldir=C:\OpenSSL1.0.1
-   win64 경우 ==> perl Configure VC-WIN64A --openssldir=C:\OpenSSL1.0.1
+   win32 경우 ==> perl Configure VC-WIN32 --prefix=C:\OpenSSL1.0.1
+   win64 경우 ==> perl Configure VC-WIN64A --prefix=C:\OpenSSL1.0.1
 
 5. 컴파일 환경 설정 배치 실행
    win32 경우 ==> ms\do_ms.bat
@@ -32,9 +32,9 @@ wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
 tar zxvf openssl-1.0.2k.tar.gz
 cd openssl-1.0.2k
 # linux
-./config --openssldir=/home/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2 -fPIC
+./config --prefix=/home/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2 -fPIC
 # mac 
-./Configure darwin64-x86_64-cc --openssldir=/Users/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2 -fPIC
+./Configure darwin64-x86_64-cc --prefix=/Users/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2 -fPIC
 make && make install
 */
 
