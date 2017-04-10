@@ -27,13 +27,15 @@
    include 파일 ==> C:\OpenSSL1.0.1\include\openssl
    .lib(.dll) 파일 ==> C:\OpenSSL1.0.1\lib
 
-[리눅스 빌드]
+[linux build]
 wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
 tar zxvf openssl-1.0.2k.tar.gz
 cd openssl-1.0.2k
-./config --openssldir=/home/ysoftman/openssl1.0.2
-make
-make install
+# linux
+./config --openssldir=/home/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2
+# mac 
+./Configure darwin64-x86_64-cc --openssldir=/Users/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2
+make && make install
 */
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +43,7 @@ make install
 // OpenSSL 테스트
 // 앞서 빌드된 경로에서 include 와 lib 사용
 // 프로젝트 설정에서 추가 포함디렉토리에 현재 디렉토리(.) 추가
-// g++ -I./openssl-1.0.2/include -L./openssl-1.0.2/lib -lcrypto -lssl Cryptography.cpp OpenSSLTest.cpp
+// rm a.out *.o core*; g++ -g -fPIC -c Cryptography.cpp OpenSSLTest.cpp -I./openssl-1.0.2/include && g++ -shared -L./openssl-1.0.2/lib -lcrypto -lssl Cryptography.o OpenSSLTest.o
 ////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
@@ -66,8 +68,6 @@ make install
 
 #if defined(_WIN32) || defined(_WIN64)
 #pragma comment(lib, "./openssl/lib/libeay32")
-#else // linux
-#pragma comment(lib, "libcrypto")
 #endif
 
 using namespace std;
