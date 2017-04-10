@@ -32,9 +32,9 @@ wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
 tar zxvf openssl-1.0.2k.tar.gz
 cd openssl-1.0.2k
 # linux
-./config --openssldir=/home/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2
+./config --openssldir=/home/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2 -fPIC
 # mac 
-./Configure darwin64-x86_64-cc --openssldir=/Users/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2
+./Configure darwin64-x86_64-cc --openssldir=/Users/ysoftman/workspace/test_code/OpenSSLTest/openssl-1.0.2 -fPIC
 make && make install
 */
 
