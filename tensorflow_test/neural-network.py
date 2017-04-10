@@ -4,7 +4,14 @@ import pandas as pd
 import seaborn as sb
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+
+# mkdir MNIST_DATA
+# cd MNIST_DATA
+# wget http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
+# wget http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
+# wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
+# wget http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
+mnist = input_data.read_data_sets("./MNIST_DATA", one_hot=True)
 
 tf.convert_to_tensor(mnist.train.images).get_shape()
 

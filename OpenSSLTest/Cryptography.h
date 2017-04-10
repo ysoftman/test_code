@@ -28,29 +28,20 @@
    .lib(.dll) 파일 ==> C:\OpenSSL1.0.1\lib
 
 [리눅스 빌드]
-1. openssl-1.0.1c.tar.gz 압축 해제
-   tar zxvf openssl-1.0.1c.tar.gz
-
-2. cd openssl-1.0.1c
-
-3. 설정파일 만들기
-   ./config --openssldir=/home/ysoftman/openssl1.0.1
-
-4. 빌드 후 테스트
-   make && make test
-
-5. 설치
-   make install
-
-6. 결과 확인
-   include 파일 ==> /home/ysoftman/openssl1.0.1/include/openssl
-   .a 파일 ==> /home/ysoftman/openssl1.0.1/lib
+wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
+tar zxvf openssl-1.0.2k.tar.gz
+cd openssl-1.0.2k
+./config --openssldir=/home/ysoftman/openssl1.0.2
+make
+make install
 */
+
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // OpenSSL 테스트
 // 앞서 빌드된 경로에서 include 와 lib 사용
 // 프로젝트 설정에서 추가 포함디렉토리에 현재 디렉토리(.) 추가
+// g++ -I./openssl-1.0.2/include -L./openssl-1.0.2/lib -lcrypto -lssl Cryptography.cpp OpenSSLTest.cpp
 ////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
