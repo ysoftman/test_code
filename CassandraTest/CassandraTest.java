@@ -1,113 +1,12 @@
-/*
-# ysoftman
-# Cassandra ¼­¹ö ¼³Ä¡
-
-# ´Ù¿î·Îµå
-wget http://mirror.apache-kr.org/cassandra/1.2.5/apache-cassandra-1.2.5-bin.tar.gz
-tar zxvf apache-cassandra-1.2.5-bin.tar.gz
-cd apache-cassandra-1.2.5
- 
-# ¼³Á¤ ¼öÁ¤
-vi conf/cassandra.yaml
-data_file_directories:
-    - /home/ysoftman/apache-cassandra-1.2.5/ysoftman_db/data
-commitlog_directory: /home/ysoftman/apache-cassandra-1.2.5/ysoftman_db/commitlog
-saved_caches_directory: /home/ysoftman/apache-cassandra-1.2.5/ysoftman_db/saved_caches
-rpc_port: 0.0.0.0
-rpc_port: 30000
-
-vi conf/log4j-server.properties
-log4j.appender.R.File=/home/ysoftman/apache-cassandra-1.2.5/ysoftman_db/log/system.log
-
-# Cassandra ±¸¼º ÇÏ±â
-# JDK ¼³Ä¡(http://www.oracle.com/technetwork/java/javase/downloads/index.html)
- 
-# ´ÙÀ½ Ã³·³ set
-set CASSANDRA_HOME=/home/ysoftman/apache-cassandra-1.2.5
-
-# Cassandra node tool
-# µğ½ºÅ© °­Á¦ ¾²±â
-bin/nodetool -h localhost flush
-
-# ¿äÃ» ÀÛ¾÷ »óÅÂ º¸±â
-bin/nodetool -h localhost tpstats
-
-# thrift »óÅÂ º¸±â
-bin/nodetool -h localhost statusthrift
-
-# cfg »óÅÂ º¸±â(db Å©±âµî..)
-bin/nodetool -h localhost cfstats
-
-#Cassandra ½ÇÇà
-bin/cassandra -f > null &
-
-# Cassandra Äõ¸®ÇÏ±â
-# Cassandra-cli (Command Line Interface) ½ÇÇàÇÏ°í Á¢¼ÓÇÏ±â(Æ÷Æ® 30000 »ç¿ë)
-bin/cassandra-cli
-connect localhost/30000;
-
-# ¶Ç´Â ÇÑ¹ø¿¡ ½ÃÀÛÇÏ¸é¼­ Á¢¼ÓÇÏ±â
-bin/cassandra-cli --host localhost --port 30000
-
-# Å¬·¯½ºÅÍ ¸ñ·Ï º¸±â
-show cluster name;
-
-# Å°½ºÆäÀÌ½º ¸ñ·Ï º¸±â
-show keyspaces;
-
-# Å°½ºÆäÀÌ½º »ı¼º
-create keyspace testdb;
-
-# Å°½ºÆäÀÌ½º Á¦°Å
-drop keyspace testdb;
-
-# Å°½ºÆäÀÌ½º ¼±ÅÃ
-use testdb;
-
-# ÄÃ·³ÆĞ¹Ğ¸®(cf) »ı¼º
-create column family col1 with comparator=UTF8Type and subcomparator=UTF8Type and column_type=Super and key_validation_class=UTF8Type and default_validation_class=UTF8Type;
-
-# cf ÀÇ rows_cache Å©±â º¯°æ
-update column family col1 with rows_cached=5000;
-
-# cf ÀÇ keys_cache Å©±â º¯°æ
-update column family col1 with keys_cached=2000;
-
-# cf ÀÇ secondary index ¼³Á¤
-# rowkey °¡ Ã¹¹øÂ° ÀÎµ¦½º
-# super column ¿¡ ÀÎµ¦½º Áö¿ø ¾ÈµÊ
-update column family col1 with column_metadata= [{column_name:temp, validation_class:UTF8Type, index_type:KEYS}];
-
-# cf=col1¿¡ rowkey=1234, superÄÃ·³=Map, MapID_100ÄÃ·³=1000 ÀúÀå
-set col1[1234][Map][MapID_100]='1000';
-
-# cf=col1¿¡ rowkey=1234, superÄÃ·³=Map, Score_100ÄÃ·´=100 ÀúÀå
-set col1[1234][Map][Socre_100]=100;
-
-# cf=col1¿¡ rowkey=1234, ¸ğµç ÄÃ·³ Á¶È¸
-get col1[1234];
-
-# cf=col1¿¡ rowkey=1234, ÄÃ·³ 10°³ ±îÁö¸¸ Á¶È¸
-get col1[1234] limit 10;
-
-# cf=col1¿¡ rowkey=1234, MapÀÇ Score_100 ÄÃ·³ »èÁ¦
-del col1[1234][Map][Score_100];
-
-# cf=col1¿¡ rowkey=1234, µ¥ÀÌÅÍÀÇ ¸ğµç ÄÃ·³ »èÁ¦
-del col1[1234];
-
-# cf col1 ¸ğµç µ¥ÀÌÅÍ 1000 °³±îÁö Á¶È¸
-list col1 limit 1000
-
-# cf=col1¿¡ rowkey=1234, ÄÃ·³ °³¼ö
-count col1[1234];
-*/
-
-//////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 // ysoftman
 // Cassandra Client Test (Java + thrift)
-// thrift ´Â Cassandra ¹èÆ÷(Cassandra/lib/*.jar) ¿¡ Æ÷ÇÔµÇ¾î ÀÖÀ½
-//////////////////////////////////////////////////////////////////////////////////
+// thrift ëŠ” Cassandra ë°°í¬(Cassandra/lib/*.jar) ì— í¬í•¨ë˜ì–´ ìˆìŒ
+// ì»´íŒŒì¼ ë° ì‹¤í–‰
+// export CLASSPATH=/Users/ysoftman/workspace/test_code/CassandraTest/apache-cassandra-1.2.5/lib/*:.
+// javac CassandraTest.java
+// java CassandraTest
+/////////////////////////////////////////////////////////////
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -142,8 +41,8 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 
 /*
-cassandra 0.7 ÀÌ»ó API ¸¦ »ç¿ëÇÔ
-# ÄÃ·³ÆĞ¹Ğ¸®(cf) »ı¼º;
+cassandra 0.7 ì´ìƒ API ë¥¼ ì‚¬ìš©í•¨
+# ì»¬ëŸ¼íŒ¨ë°€ë¦¬(cf) ìƒì„±;
 create column family game2 with comparator=UTF8Type and subcomparator=UTF8Type and column_type=Super and key_validation_class=UTF8Type and default_validation_class=UTF8Type;
 */
 public class CassandraTest
@@ -161,20 +60,20 @@ public class CassandraTest
 	}	
 	public static void main(String[] args) throws TException, InvalidRequestException, UnavailableException, UnsupportedEncodingException, NotFoundException, TimedOutException
 	{
-		InsertData("10.10.10.100", 30000, "testdb", "col1");
-//		Search1("10.10.10.100", 30000, "testdb", "col1");
-//		Search2("10.10.10.100", 30000, "testdb", "col1");
-//		Search3("10.10.10.100", 30000, "testdb", "col1");
+		InsertData("127.0.0.1", 9160, "testdb", "col1");
+//		Search1("127.0.0.1", 9160, "testdb", "col1");
+//		Search2("127.0.0.1", 9160, "testdb", "col1");
+//		Search3("127.0.0.1", 9160, "testdb", "col1");
 	}
 	
-	// ´ë·®ÀÇ Data Insert 
+	// ëŒ€ëŸ‰ì˜ Data Insert 
 	public static void InsertData(String ip, int port, String keyspace, String columnfamily) throws TException, InvalidRequestException, UnavailableException, UnsupportedEncodingException, NotFoundException, TimedOutException
 	{
 		long timebefore = 0;
 		long timeafter = 0;
 		long timeinsert = 0;
 				
-		// cassandra db Á¢¼ÓÇÏ±â
+		// cassandra db ì ‘ì†í•˜ê¸°
 		TSocket socket = new TSocket(ip, port);
 		socket.setTimeout(10000);
 		TTransport tr = new TFramedTransport(socket);
@@ -182,21 +81,21 @@ public class CassandraTest
 		Cassandra.Client client = new Cassandra.Client(proto);
 		tr.open();
 
-		// keyspace »ç¿ë
+		// keyspace ì‚¬ìš©
 		client.set_keyspace(keyspace);
 		
-		// ¹İº¹ÀûÀ¸·Î µ¥ÀÌÅÍ ³Ö±â
+		// ë°˜ë³µì ìœ¼ë¡œ ë°ì´í„° ë„£ê¸°
 		String key_UserNo = "1";
 		//ColumnParent parent = new ColumnParent();
 		//parent.setColumn_family(columnfamily);
 		for (int i=1; i<=100; i++)
 		{
-			// Å°°ª ÀÚµ¿ÀûÀ¸·Î Áõ°¡
+			// í‚¤ê°’ ìë™ì ìœ¼ë¡œ ì¦ê°€
 			key_UserNo = Integer.toString(i, 10);
 			
 			SuperColumn supercol = new SuperColumn();
 			supercol.setName("Map".getBytes("UTF-8"));
-			// MapID ¿Í Score ÄÃ·³À» ¹İº¹ÀûÀ¸·Î ÀúÀå
+			// MapID ì™€ Score ì»¬ëŸ¼ì„ ë°˜ë³µì ìœ¼ë¡œ ì €ì¥
 			for (int j=1; j<=1000; j++)
 			{
 				Column colMapID = new Column();
@@ -205,7 +104,7 @@ public class CassandraTest
 				colMapID.setTimestamp(System.currentTimeMillis());
 				//client.insert(toByteBuffer(key_UserNo), parent, colMapID, ConsistencyLevel.ONE);
 				
-				// ·£´ı ³Ñ¹ö »ı¼º
+				// ëœë¤ ë„˜ë²„ ìƒì„±
 				Random r = new Random(System.currentTimeMillis());
 				long num = Math.abs((r.nextLong()%1000));
 				
@@ -218,24 +117,24 @@ public class CassandraTest
 				supercol.addToColumns(colMapID);
 				supercol.addToColumns(colScore);
 			}
-			// supercolumn -> mutation ¿¡ Ãß°¡
+			// supercolumn -> mutation ì— ì¶”ê°€
 			Mutation mutation = new Mutation();
 			ColumnOrSuperColumn columnOrsupercolumn = new ColumnOrSuperColumn();
 			columnOrsupercolumn.setSuper_column(supercol);
 			mutation.setColumn_or_supercolumn(columnOrsupercolumn);
 			
-			// mutation -> list ¿¡ Ãß°¡
+			// mutation -> list ì— ì¶”ê°€
 			List<Mutation> mutationlist = new ArrayList<Mutation>();
 			mutationlist.add(mutation);
 			
-			// list -> map ¿¡ Ãß°¡
+			// list -> map ì— ì¶”ê°€
 			Map<String, List<Mutation>> mutationlistmap = new HashMap<String, List<Mutation>>();
-			// column family ¿Í mutation list Ãß°¡
+			// column family ì™€ mutation list ì¶”ê°€
 			mutationlistmap.put(columnfamily, mutationlist);
 			
-			// map -> map ¿¡ Ãß°¡
+			// map -> map ì— ì¶”ê°€
 			Map<ByteBuffer, Map<String, List<Mutation>>> data = new HashMap<ByteBuffer, Map<String, List<Mutation>>>();
-			// rowkey ¿Í mutationlistmap Ãß°¡
+			// rowkey ì™€ mutationlistmap ì¶”ê°€
 			data.put(toByteBuffer(key_UserNo), mutationlistmap);
 			
 			timebefore = System.currentTimeMillis();
@@ -243,13 +142,13 @@ public class CassandraTest
 			timeafter = System.currentTimeMillis();
 			timeinsert = (timeafter-timebefore)/1000;
 			
-			// insert ½Ã°£ÀÌ ¿À·£ °É¸° °æ¿ì
+			// insert ì‹œê°„ì´ ì˜¤ëœ ê±¸ë¦° ê²½ìš°
 			if (timeinsert > 5)
 			{
 				System.out.println("Data Count:"+i+"   insert time: "+timeinsert+"sec");
 			}
 			
-			// ÁøÇà»óÈ² ÆÄ¾ÇÀ» À§ÇØ
+			// ì§„í–‰ìƒí™© íŒŒì•…ì„ ìœ„í•´
 			if (i%10 == 0)
 			{
 				System.out.println("Data Count:"+i);
@@ -259,10 +158,10 @@ public class CassandraTest
 		tr.close();
 	}
 	
-	// rowkey ¿Í ÄÃ·³À» ÁÖ°í °ª Ã£±â
+	// rowkey ì™€ ì»¬ëŸ¼ì„ ì£¼ê³  ê°’ ì°¾ê¸°
 	public static void Search1(String ip, int port, String keyspace, String columnfamily) throws TException, InvalidRequestException, UnavailableException, UnsupportedEncodingException, NotFoundException, TimedOutException
 	{
-		// cassandra db Á¢¼ÓÇÏ±â
+		// cassandra db ì ‘ì†í•˜ê¸°
 		TSocket socket = new TSocket(ip, port);
 		socket.setTimeout(10000);
 		TTransport tr = new TFramedTransport(socket);
@@ -270,10 +169,10 @@ public class CassandraTest
 		Cassandra.Client client = new Cassandra.Client(proto);
 		tr.open();
 
-		// keyspace »ç¿ë
+		// keyspace ì‚¬ìš©
 		client.set_keyspace(keyspace);
 		
-		// rowkey ¸¦ ¾Ë°æ¿ì, ÇØ´ç ·Î¿ìÀÇ ÄÃ·³ÀÇ ÆĞ½º ¼³Á¤ÇÏ¿© Á¶È¸
+		// rowkey ë¥¼ ì•Œê²½ìš°, í•´ë‹¹ ë¡œìš°ì˜ ì»¬ëŸ¼ì˜ íŒ¨ìŠ¤ ì„¤ì •í•˜ì—¬ ì¡°íšŒ
 		ColumnPath path = new ColumnPath();
 		path.setColumn_family(columnfamily);
 		path.setSuper_column(toByteBuffer("Map"));
@@ -286,10 +185,10 @@ public class CassandraTest
 		tr.close();
 	}
 	
-	// rowkey ¸¦ ÁÖ°í Æ¯Á¤¹üÀ§ÀÇ ÄÃ·³¿¡ ´ëÇÑ °ª Ã£±â
+	// rowkey ë¥¼ ì£¼ê³  íŠ¹ì •ë²”ìœ„ì˜ ì»¬ëŸ¼ì— ëŒ€í•œ ê°’ ì°¾ê¸°
 	public static void Search2(String ip, int port, String keyspace, String columnfamily) throws TException, InvalidRequestException, UnavailableException, UnsupportedEncodingException, NotFoundException, TimedOutException
 	{
-		// cassandra db Á¢¼ÓÇÏ±â
+		// cassandra db ì ‘ì†í•˜ê¸°
 		TSocket socket = new TSocket(ip, port);
 		socket.setTimeout(10000);
 		TTransport tr = new TFramedTransport(socket);
@@ -297,19 +196,19 @@ public class CassandraTest
 		Cassandra.Client client = new Cassandra.Client(proto);
 		tr.open();
 		
-		// keyspace »ç¿ë
+		// keyspace ì‚¬ìš©
 		client.set_keyspace(keyspace);
 		
-		// rowkey ¸¦ ¾Ë°æ¿ì, ÇØ´ç ·Î¿ìÀÇ ÀüÃ¼ µ¥ÀÌÅÍ Á¶È¸
+		// rowkey ë¥¼ ì•Œê²½ìš°, í•´ë‹¹ ë¡œìš°ì˜ ì „ì²´ ë°ì´í„° ì¡°íšŒ
 		ColumnParent parent = new ColumnParent();
 		parent.setColumn_family(columnfamily);
 		parent.setSuper_column(toByteBuffer("Map"));
 		
 		SlicePredicate predicate = new SlicePredicate();
-		// °Ë»öÇÒ ÄÃ·³ ¹üÀ§ ÁöÁ¤
-		// ¸ğµç ÄÃ·³		 
+		// ê²€ìƒ‰í•  ì»¬ëŸ¼ ë²”ìœ„ ì§€ì •
+		// ëª¨ë“  ì»¬ëŸ¼		 
 		//SliceRange sliceRange = new SliceRange(toByteBuffer(""), toByteBuffer(""), false, 10000);
-		// Æ¯Á¤ ¹üÀ§ÀÇ ÄÃ·³
+		// íŠ¹ì • ë²”ìœ„ì˜ ì»¬ëŸ¼
 		SliceRange sliceRange = new SliceRange(toByteBuffer("Score_1"), toByteBuffer("Score_1000"), false, 10000);
 		predicate.setSlice_range(sliceRange);
 
@@ -325,38 +224,38 @@ public class CassandraTest
 		tr.close();
 	}
 		
-	// ÀüÃ¼ row ¿¡¼­ Æ¯Á¤ ÄÃ·³ÀÇ °ªÀ» Ã£±â
-	// Ã£Àº °ªµé Áß¿¡¼­ Á¶°ÇÀÌ»ó ÄÃ·³ Ä«¿îÆ®ÇÏ±â
+	// ì „ì²´ row ì—ì„œ íŠ¹ì • ì»¬ëŸ¼ì˜ ê°’ì„ ì°¾ê¸°
+	// ì°¾ì€ ê°’ë“¤ ì¤‘ì—ì„œ ì¡°ê±´ì´ìƒ ì»¬ëŸ¼ ì¹´ìš´íŠ¸í•˜ê¸°
 	public static void Search3(String ip, int port, String keyspace, String columnfamily) throws TException, InvalidRequestException, UnavailableException, UnsupportedEncodingException, NotFoundException, TimedOutException
 	{
-		// cassandra db Á¢¼ÓÇÏ±â
+		// cassandra db ì ‘ì†í•˜ê¸°
 		TSocket socket = new TSocket(ip, port);
-		// µ¥ÀÌÅÍ°¡ ¸¹À¸¸é ½Ã°£ÀÌ ¿À·¡ °É·Á timeout À» ³Ë³ËÇÏ°Ô ÁØ´Ù.
+		// ë°ì´í„°ê°€ ë§ìœ¼ë©´ ì‹œê°„ì´ ì˜¤ë˜ ê±¸ë ¤ timeout ì„ ë„‰ë„‰í•˜ê²Œ ì¤€ë‹¤.
 		socket.setTimeout(1000000);
 		TTransport tr = new TFramedTransport(socket);
 		TProtocol proto = new TBinaryProtocol(tr);
 		Cassandra.Client client = new Cassandra.Client(proto);
 		tr.open();
 		
-		// keyspace »ç¿ë
+		// keyspace ì‚¬ìš©
 		client.set_keyspace(keyspace);
 	
-		// ÀüÃ¼ ·Î¿ì¸¦ ´ë»óÀ¸·Î µ¥ÀÌÅÍ Á¶È¸ 
+		// ì „ì²´ ë¡œìš°ë¥¼ ëŒ€ìƒìœ¼ë¡œ ë°ì´í„° ì¡°íšŒ 
 		ColumnParent parent = new ColumnParent();
 		parent.setColumn_family(columnfamily);
 		parent.setSuper_column(toByteBuffer("Map"));
 		
 		SlicePredicate predicate = new SlicePredicate();
-		// °Ë»öÇÒ ÄÃ·³ ¹üÀ§ ÁöÁ¤
-		// ¸ğµç ÄÃ·³
+		// ê²€ìƒ‰í•  ì»¬ëŸ¼ ë²”ìœ„ ì§€ì •
+		// ëª¨ë“  ì»¬ëŸ¼
 		//SliceRange sliceRange = new SliceRange(toByteBuffer(""), toByteBuffer(""), false, 10000);
-		// Æ¯Á¤ ¹üÀ§ÀÇ ÄÃ·³
+		// íŠ¹ì • ë²”ìœ„ì˜ ì»¬ëŸ¼
 		SliceRange sliceRange = new SliceRange(toByteBuffer("Score_1000"), toByteBuffer("Score_1000"), false, 10000);
 		predicate.setSlice_range(sliceRange);
 				
 		KeyRange kr = new KeyRange();
 		kr.setCount(100000);
-		// ¸ğµç Å°¿¡ ´ëÇØ¼­
+		// ëª¨ë“  í‚¤ì— ëŒ€í•´ì„œ
 		//kr.start_key = toByteBuffer("");
 		//kr.end_key = toByteBuffer("");
 		kr.setStart_key(toByteBuffer(""));
@@ -376,7 +275,7 @@ public class CassandraTest
 		for (i=0; i<rows.size(); i++)
 		{
 			KeySlice ks = rows.get(i);
-			// °¢ ·Î¿ìÀÇ ÄÃ·³ Ãâ·Â
+			// ê° ë¡œìš°ì˜ ì»¬ëŸ¼ ì¶œë ¥
 			List<ColumnOrSuperColumn> temp = ks.getColumns();
 			//System.out.print("rowkey["+i+"]"  );
 			int j;
@@ -388,7 +287,7 @@ public class CassandraTest
 				long colvalue = Long.parseLong(toString(column.value)); 
 				//System.out.print(colname + " -> " + colvalue + "    ");
 				
-				// ÄÃ·³ °ªÀÌ 500 ÀÎ»óÀÌ¸é Ä«¿îÆ®
+				// ì»¬ëŸ¼ ê°’ì´ 500 ì¸ìƒì´ë©´ ì¹´ìš´íŠ¸
 				if (colvalue >= 500)
 				{
 					cntCol++;
