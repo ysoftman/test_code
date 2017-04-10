@@ -134,7 +134,7 @@ char* Crypto::RSA_DecryptPrivate(RSA *rsa, char *pBase64Cipher)
 
 	if (pBase64Cipher == NULL)
 	{
-		return "";
+		return NULL;
 	}
 
 	// Base64인코딩은 원래데이터보다 크다.
