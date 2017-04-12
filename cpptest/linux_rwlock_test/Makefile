@@ -1,10 +1,9 @@
-# CPPTest Makefile
+# Makefile
 CXX = gcc 
 OUTPUT = rwlock_test
 INCLUDES = -I./ -I../
 CFLAGS = -pg -O3 -fPIC -Wall -lpthread
 SRCS = linux_rwlock_test.cpp \
-#	CPPTestSupport.cpp \
 # 	aaa.cpp 
 
 
