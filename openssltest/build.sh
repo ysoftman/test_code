@@ -11,4 +11,4 @@
 
 rm a.out *.o core*
 g++ -g -fPIC -c cryptography.cpp test_cryptography.cpp -I./openssl-1.0.2/include
-g++ -shared -L./openssl-1.0.2/lib -lcrypto -lssl cryptography.o test_cryptography.o
+g++ -L./openssl-1.0.2/lib -lcrypto -lssl cryptography.o test_cryptography.o
