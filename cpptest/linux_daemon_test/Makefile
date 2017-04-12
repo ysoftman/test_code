@@ -1,10 +1,9 @@
-# CPPTest Makefile
+# Makefile
 CXX = gcc 
 OUTPUT = daemon_test
 INCLUDES = -I./ -I../
 CFLAGS = -pg -O3 -fPIC -Wall -lpthread
 SRCS = linux_daemon_test.cpp \
-#	CPPTestSupport.cpp \
 # 	aaa.cpp 
 
 
