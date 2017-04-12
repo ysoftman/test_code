@@ -21,4 +21,4 @@ cd ..
 
 rm a.out *.o core*
 g++ -g -fPIC -c cryptography.cpp test_cryptography.cpp -I${install_path}/include
-g++ -L${install_path}/lib -lcrypto -lssl cryptography.o test_cryptography.o
+g++ cryptography.o test_cryptography.o -L${install_path}/lib -lcrypto -lssl -ldl
