@@ -7,7 +7,7 @@
 // unzip libjson_7.6.1.zip
 // cd libjson 
 // make 
-// g++ libJsonTest.cpp -L./libjson/ -ljson
+// g++ libjsontest.cpp -L./libjson/ -ljson
 // windows build
 // 윈도우 환경에서는 제대로 테스트되지 않고 배포되는 문제가 있음
 // .vcproj 열지 못하는 문제 발생 -> .vcproj xml 형식이 잘못된 곳 수정
