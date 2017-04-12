@@ -1,4 +1,4 @@
-#include "Cryptography.h"
+#include "cryptography.h"
 
 /**
 *	@brief					Crypto 클래스 생성자
@@ -134,7 +134,7 @@ char* Crypto::RSA_DecryptPrivate(RSA *rsa, char *pBase64Cipher)
 
 	if (pBase64Cipher == NULL)
 	{
-		return "";
+		return NULL;
 	}
 
 	// Base64인코딩은 원래데이터보다 크다.
@@ -285,7 +285,7 @@ string Crypto::AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, 
 {
 	if (pBase64Cipher == NULL || strlen(pBase64Cipher) <= 0)
 	{
-		return "";
+		return NULL;
 	}
 	// Base64인코딩은 원래데이터보다 크다.
 	int CipherBase64Len = strlen(pBase64Cipher);
@@ -294,7 +294,7 @@ string Crypto::AES_CBC_Decrypt(const unsigned char *userKey, unsigned char *iv, 
 	char* pCipher = Base64_Decoding(pBase64Cipher, CipherBase64Len);
 	if (pCipher == NULL)
 	{
-		return "";
+		return NULL;
 	}
 	// pCipher 에는 '\0' 값이 중간에 포함될 수 있기때문에 strlen으로 크기를 파악하면 안된다.
 	int CipherLen = 0;

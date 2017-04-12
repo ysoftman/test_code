@@ -1,10 +1,10 @@
-#include "Cryptography.h"
+#include "cryptography.h"
 
 int main()
 {
 	Crypto crypto;
 	// Base64 인코딩/디코딩 테스트
-	char *pPlain = "Base64인코딩/디코딩 테스트입니다. 이 문장이 보이면 Base64인코딩/디코딩이 정상적인것입니다.\n";
+	char pPlain[512] = "Base64인코딩/디코딩 테스트입니다. 이 문장이 보이면 Base64인코딩/디코딩이 정상적인것입니다.\n";
 	char *base64 = crypto.Base64_Encoding(pPlain, strlen(pPlain));
 	if (base64 != NULL)
 	{
@@ -14,7 +14,7 @@ int main()
 		{
 			printf("base64 decoded: %s\n", output);
 			delete[] output;
-		}				
+		}
 		delete[] base64;
 	}
 
@@ -23,7 +23,9 @@ int main()
 	RSA *rsa = crypto.RSA_GenerateKey(1024);
 
 	// RSA_PKCS1_OAEP_PADDING 일때 평문의 길이는 keysize(1024bit(128byte)-41(byte)) 보다 작아야 한다
-	char *pCipher = crypto.RSA_EncryptPublic(rsa, "암호(RSA) 테스트입니다. 이 문장이 보이면 암호/복호화가 정상적인것입니다.\n");
+	memset(pPlain, 0, 512);
+	sprintf(pPlain, "암호(RSA) 테스트입니다. 이 문장이 보이면 암호/복호화가 정상적인것입니다.\n");
+	char *pCipher = crypto.RSA_EncryptPublic(rsa, pPlain);
 	char *pPlain2 = crypto.RSA_DecryptPrivate(rsa, pCipher);
 	if (pCipher != NULL)
 	{
