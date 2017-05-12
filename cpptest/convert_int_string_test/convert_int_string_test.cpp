@@ -44,5 +44,12 @@ int main()
 	string str2 = ss2.str();
 	cout << str2 << endl;
 
+	// stringstream 으로 int -> string 로 변환
+	int i = 99;
+	cout << "i:" << i << endl;
+	stringstream s;
+	s << i;
+	cout << "s:" << s.str() << endl;
+
 	return 0;
 }
