@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string>
+#include <stdlib.h>
 #include <sstream>
 #include <iostream>
 #include <sstream>
