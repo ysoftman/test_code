@@ -1,0 +1,40 @@
+<!-- vue.js -->
+<script src="https://unpkg.com/vue"></script>
+
+<!--html file-->
+<div id="app">
+  {{ name }}
+  <ol>
+    <!--app 인스턴의 데이터를 action-item 컴포넌트를 사용하여 출력-->
+    <action-item v-for="item in fruiteList" v-bind:param="item"></action-item>
+  </ol>
+</div>
+
+<!--scrit file-->
+<script>
+  // 컴포넌트스타일로 인스턴스 생성하여 등록
+  // 컴포넌트를 먼저 선언
+  Vue.component('action-item', {
+    // props 으로 선언된 키를 통해 app 객체의 데이터를 전달 받는다.
+    props: ['param'],
+    template: "<li>{{ param.message }}</li>",
+  })
+
+  // 일반 vue 인스턴스
+  var app = new Vue({
+    el: '#app',
+    data: {
+      fruiteList: [{
+          message: "apple"
+        },
+        {
+          message: "banana"
+        },
+        {
+          message: "lemon"
+        },
+      ],
+      name: "fruiteList",
+    }
+  })
+</script>
