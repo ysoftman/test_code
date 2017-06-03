@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #include <string>
 #include <iostream>
 
@@ -45,6 +46,7 @@ int main()
 
 	// 문자열 시간 을 time 값으로 
 	tm tmResult;
+	memset(&tmResult, 0, sizeof(tm));
 	std::string timestr;
 	timestr = "201705311624";
 	cout << timestr << endl;
