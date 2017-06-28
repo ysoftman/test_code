@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// malloc() °ú calloc() ÀÇ Â÷ÀÌ
+// malloc() ê³¼ calloc() ì˜ ì°¨ì´
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,12 +9,12 @@
 void main()
 {
 
-	// malloc() ¸¦ ÀÌ¿ë ÇÒ °æ¿ì µ¿Àû ¸Þ¸ð¸® ÇÒ´ç¸¸ µÈ´Ù.
+	// malloc() ë¥¼ ì´ìš© í•  ê²½ìš° ë™ì  ë©”ëª¨ë¦¬ í• ë‹¹ë§Œ ëœë‹¤.
 	int *p1 = (int*)malloc(sizeof(int)*100);
-	// memset À» ÀÌ¿ëÇÏ¿© 0À¸·Î ÃÊ±âÈ­ ÇØÁà¾ß ÇÑ´Ù.
+	// memset ì„ ì´ìš©í•˜ì—¬ 0ìœ¼ë¡œ ì´ˆê¸°í™” í•´ì¤˜ì•¼ í•œë‹¤.
 	memset(p1, 0, sizeof(int)*100);
 
-	// calloc() ¸¦ ÀÌ¿ëÇÒ °æ¿ì µ¿Àû ÇÒ´ç ÈÄ ÀÚµ¿À¸·Î 0À¸·Î ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+	// calloc() ë¥¼ ì´ìš©í•  ê²½ìš° ë™ì  í• ë‹¹ í›„ ìžë™ìœ¼ë¡œ 0ìœ¼ë¡œ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
 	int *p2 = (int*)calloc(100, sizeof(int));
 
 	free(p1);

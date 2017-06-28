@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // Reverse String 
-// ¹®ÀÚ¿­ µÚÁı±â
+// ë¬¸ìì—´ ë’¤ì§‘ê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
-#include <string.h>	// strlen()ÇÔ¼ö »ç¿ë
+#include <string.h>	// strlen()í•¨ìˆ˜ ì‚¬ìš©
 
 void main()
 {
@@ -12,7 +12,7 @@ void main()
 	char ch[50];
 	char result_str[50];
 
-	// ¿µ¹®
+	// ì˜ë¬¸
 	printf("\nInput String[English] to Reverse :  ");
 	scanf("%s", ch);
 	
@@ -22,17 +22,17 @@ void main()
 	{
 		result_str[i] = ch[n-i-1];
 
-		// ¹®ÀåÀÇ ¸¶Áö¸·¿¡ ³¡À» Ç¥½Ã
+		// ë¬¸ì¥ì˜ ë§ˆì§€ë§‰ì— ëì„ í‘œì‹œ
 		if (i == n-1)
 		{
-			// NULL, 0, \0 ´Ù °°Àº ÀÇ¹Ì·Î ¾²ÀÓ
+			// NULL, 0, \0 ë‹¤ ê°™ì€ ì˜ë¯¸ë¡œ ì“°ì„
 			result_str[i+1] = NULL;
 		}
 	}
 
  	printf("\n[string length : %d]\n%s -> %s\n", n, ch, result_str);
 
-	// ÇÑ±Û
+	// í•œê¸€
 	printf("\nInput String[Korean] to Reverse :  ");
 	scanf("%s", ch);
 	
@@ -44,10 +44,10 @@ void main()
 		result_str[i] = ch[n-i-2];
 		result_str[i+1] = ch[n-i-1];
 
-		// ¹®ÀåÀÇ ¸¶Áö¸·¿¡ ³¡À» Ç¥½Ã
+		// ë¬¸ì¥ì˜ ë§ˆì§€ë§‰ì— ëì„ í‘œì‹œ
 		if (i == n-2)
 		{
-			// NULL, 0, \0 ´Ù °°Àº ÀÇ¹Ì·Î ¾²ÀÓ
+			// NULL, 0, \0 ë‹¤ ê°™ì€ ì˜ë¯¸ë¡œ ì“°ì„
 			result_str[i+2] = NULL;
 		}
 	}

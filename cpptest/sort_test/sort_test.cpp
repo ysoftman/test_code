@@ -20,7 +20,7 @@ void SelectionSort(int arr[], int size);
 void QuickSort(int arr[], int left, int right);
 void HeapSort(int arr[], int size);
 
-// ¹è¿­ Ãâ·Â
+// ë°°ì—´ ì¶œë ¥
 void Print(FILE *fp, int arr[], int size, char *msg)
 {
 	int i = 0;
@@ -50,7 +50,7 @@ void main()
 	DWORD start=0, end=0;
 #endif
 
-	// ·£´ý ¼ýÀÚ »ý¼º
+	// ëžœë¤ ìˆ«ìž ìƒì„±
 #if defined(_WIN32) || defined(_WIN64)
 	start = GetTickCount();
 #endif
@@ -144,7 +144,7 @@ void BubbleSort(int arr[], int size)
 				bSwap = true;
 			}
 		}
-		// ÇöÀç ·çÇÁ¿¡¼­ ±³È¯ÀÌ ¹ß»ýÇÏÁö ¾ÊÀ¸¸é Á¤·ÄÀÌ ¿Ï·áµÇ¾úÀ½À¸·Î ³¡³½´Ù.
+		// í˜„ìž¬ ë£¨í”„ì—ì„œ êµí™˜ì´ ë°œìƒí•˜ì§€ ì•Šìœ¼ë©´ ì •ë ¬ì´ ì™„ë£Œë˜ì—ˆìŒìœ¼ë¡œ ëë‚¸ë‹¤.
 		if (bSwap == false)
 		{
 			break;
@@ -159,7 +159,7 @@ void SelectionSort(int arr[], int size)
 	for (i = 0; i < size-1; i++)
 	{
 		MinIdx = i;
-		// ÇöÀç ¿ø¼Ò¸¦ ±âÁØÀ¸·Î ÇöÀç¿ø¼ÒÀÇ µÚ¿¡ ÀÖ´Â ¸ðµç ¿ø¼ÒÁß °¡Àå ÀÛÀº ¿ø¼Ò¸¦ Ã£´Â´Ù.
+		// í˜„ìž¬ ì›ì†Œë¥¼ ê¸°ì¤€ìœ¼ë¡œ í˜„ìž¬ì›ì†Œì˜ ë’¤ì— ìžˆëŠ” ëª¨ë“  ì›ì†Œì¤‘ ê°€ìž¥ ìž‘ì€ ì›ì†Œë¥¼ ì°¾ëŠ”ë‹¤.
 		for (j = i+1; j < size; j++)
 		{
 			if (arr[MinIdx] > arr[j])
@@ -167,7 +167,7 @@ void SelectionSort(int arr[], int size)
 				MinIdx = j;
 			}
 		}
-		// ÇöÀç ¿ø¼Ò¸¦ °¡Àå ÀÛÀº ¿ø¼Ò¿Í ±³È¯ÇÑ´Ù.
+		// í˜„ìž¬ ì›ì†Œë¥¼ ê°€ìž¥ ìž‘ì€ ì›ì†Œì™€ êµí™˜í•œë‹¤.
 		Swap(&arr[i], &arr[MinIdx]);
 	}
 }
@@ -176,35 +176,35 @@ void SelectionSort(int arr[], int size)
 void QuickSort(int arr[], int left, int right)
 {
 	int i = 0, j = 0, k = 0;
-	// ¿ÞÂÊ°ú ¿À¸¥ÂÊÀÌ ±³Â÷µÇ¸é Àç±Í¸¦ ºüÁ® ³ª°£´Ù.
+	// ì™¼ìª½ê³¼ ì˜¤ë¥¸ìª½ì´ êµì°¨ë˜ë©´ ìž¬ê·€ë¥¼ ë¹ ì ¸ ë‚˜ê°„ë‹¤.
 	if (right - left < 1)
 	{
 		return;
 	}
-	// ÇöÀç °¡Àå ¿À¸¥ÂÊ ¿ø¼ÒÀÇ °ªÀ» ±âÁØÀ¸·Î »ï´Â´Ù.
+	// í˜„ìž¬ ê°€ìž¥ ì˜¤ë¥¸ìª½ ì›ì†Œì˜ ê°’ì„ ê¸°ì¤€ìœ¼ë¡œ ì‚¼ëŠ”ë‹¤.
 	k = arr[right];
 	i = left;
 	j = right - 1;
 	for (;;)
 	{
-		// ¿ÞÂÊºÎÅÍ ¿À¸¥ÂÊ ¹æÇâÀ¸·Î ±âÁØ°ª º¸´Ù Å« ¿ø¼Ò¸¦ Ã£´Â´Ù.
+		// ì™¼ìª½ë¶€í„° ì˜¤ë¥¸ìª½ ë°©í–¥ìœ¼ë¡œ ê¸°ì¤€ê°’ ë³´ë‹¤ í° ì›ì†Œë¥¼ ì°¾ëŠ”ë‹¤.
 		while (arr[i] < k) i++;
-		// ¿À¸¥ÂÊºÎÅÍ ¿ÞÂÊ ¹æÇâÀ¸·Î ±âÁØ°ª º¸´Ù ÀÛÀº ¿ø¼Ò¸¦ Ã£´Â´Ù.
+		// ì˜¤ë¥¸ìª½ë¶€í„° ì™¼ìª½ ë°©í–¥ìœ¼ë¡œ ê¸°ì¤€ê°’ ë³´ë‹¤ ìž‘ì€ ì›ì†Œë¥¼ ì°¾ëŠ”ë‹¤.
 		while (arr[j] > k) j--;
-		// Å« ¿ø¼Ò °ªÀÌ ÀÛÀº ¿ø¼Ò °ªº¸´Ù Å©°Å³ª °°À¸¸é ÇöÀç ·çÇÁ¸¦ ºüÁ®³ª°£´Ù.
+		// í° ì›ì†Œ ê°’ì´ ìž‘ì€ ì›ì†Œ ê°’ë³´ë‹¤ í¬ê±°ë‚˜ ê°™ìœ¼ë©´ í˜„ìž¬ ë£¨í”„ë¥¼ ë¹ ì ¸ë‚˜ê°„ë‹¤.
 		if (i >= j)
 		{
 			break;
 		}
-		// ÀÛÀº ¿ø¼Ò °ªÀÌ Å« ¿ø¼Ò °ªº¸´Ù Å©¸é µÑÀ» ±³È¯ÇÑ´Ù.
+		// ìž‘ì€ ì›ì†Œ ê°’ì´ í° ì›ì†Œ ê°’ë³´ë‹¤ í¬ë©´ ë‘˜ì„ êµí™˜í•œë‹¤.
 		Swap(&arr[i], &arr[j]);
-		// Å« ¿ø¼Ò °ªÀÌ ÀÛÀº ¿ø¼Ò °ªº¸´Ù Å¬¶§±îÁö ¹Ýº¹ÇÑ´Ù.
+		// í° ì›ì†Œ ê°’ì´ ìž‘ì€ ì›ì†Œ ê°’ë³´ë‹¤ í´ë•Œê¹Œì§€ ë°˜ë³µí•œë‹¤.
 		i++;
 		j--;
 	}
-	// À§¿¡¼­ Ã£Àº i ¹øÂ° ¿ø¼Ò °ª°ú Á¦ÀÏ ¿À¸¥ÂÊ ¿ø¼ÒÀÇ °ªÀ» ±³È¯ÇÑ´Ù.
+	// ìœ„ì—ì„œ ì°¾ì€ i ë²ˆì§¸ ì›ì†Œ ê°’ê³¼ ì œì¼ ì˜¤ë¥¸ìª½ ì›ì†Œì˜ ê°’ì„ êµí™˜í•œë‹¤.
 	Swap(&arr[i], &arr[right]);
-	// ÇöÀç ½ÃÁ¡¿¡¼­ ¿ÞÂÊºÎºÐ°ú ¿À¸¥ÂÊºÎºÐ¿¡ ´ëÇØ¼­ ¹Ýº¹ ¼öÇàÇÑ´Ù.(ºÐÇÒ Á¤º¹)
+	// í˜„ìž¬ ì‹œì ì—ì„œ ì™¼ìª½ë¶€ë¶„ê³¼ ì˜¤ë¥¸ìª½ë¶€ë¶„ì— ëŒ€í•´ì„œ ë°˜ë³µ ìˆ˜í–‰í•œë‹¤.(ë¶„í•  ì •ë³µ)
 	QuickSort(arr, left, i-1);
 	QuickSort(arr, i+1, right);
 }
@@ -215,23 +215,23 @@ void MakeMaxHeap(int arr[], int CurIdx, int EndIdx)
 	int MaxChildIdx = 0;
 	bool done = false;
 	
-	// Âü°í
-	// ¹è¿­ ¿ø¼Ò(³ëµå)´Â 0ºÎÅÍ ½ÃÀÛÇÒ¶§
-	// ÇöÀç ³ëµåÀÇ ¿ÞÂÊ ÀÚ½Ä ³ëµå À§Ä¡´Â ÇöÀç³ëµå*2+1
-	// ÇöÀç ³ëµåÀÇ ¿À¸¥ÂÊ ÀÚ½Ä ³ëµå À§Ä¡´Â ÇöÀç³ëµå*2+1+1
+	// ì°¸ê³ 
+	// ë°°ì—´ ì›ì†Œ(ë…¸ë“œ)ëŠ” 0ë¶€í„° ì‹œìž‘í• ë•Œ
+	// í˜„ìž¬ ë…¸ë“œì˜ ì™¼ìª½ ìžì‹ ë…¸ë“œ ìœ„ì¹˜ëŠ” í˜„ìž¬ë…¸ë“œ*2+1
+	// í˜„ìž¬ ë…¸ë“œì˜ ì˜¤ë¥¸ìª½ ìžì‹ ë…¸ë“œ ìœ„ì¹˜ëŠ” í˜„ìž¬ë…¸ë“œ*2+1+1
 
-	// ´ÙÀ½ÀÇ Á¶°ÇÀ» ¸¸Á·ÇÒ¶§±îÁö¸¸ µ¿ÀÛÇÑ´Ù.
-	// ÇöÀç ¿ø¼ÒÀÇ 2¹è+1 ÀÌ»óµÇ´Â ¿ø¼ÒºÎÅÍ´Â ¸»´Ü³ëµå±â ¶§¹®¿¡ ÁøÇàÇÏÁö ¾Ê´Â´Ù.
-	// ´õÀÌ»ó ±³È¯ÇÒ ¿ø¼Ò°¡ ¾ø´Ù¸é ÁøÇàÇÏÁö ¾Ê´Â´Ù.
+	// ë‹¤ìŒì˜ ì¡°ê±´ì„ ë§Œì¡±í• ë•Œê¹Œì§€ë§Œ ë™ìž‘í•œë‹¤.
+	// í˜„ìž¬ ì›ì†Œì˜ 2ë°°+1 ì´ìƒë˜ëŠ” ì›ì†Œë¶€í„°ëŠ” ë§ë‹¨ë…¸ë“œê¸° ë•Œë¬¸ì— ì§„í–‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
+	// ë”ì´ìƒ êµí™˜í•  ì›ì†Œê°€ ì—†ë‹¤ë©´ ì§„í–‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
 	while ((CurIdx*2+1 <= EndIdx) && (!done))
 	{
-		// ÇöÀçÀÇ ¿ÞÂÊ ÀÚ½Ä³ëµå°¡ ÇöÀç ¹è¿­ÀÇ ³¡ ¿ø¼Ò(³ëµå)¶ó¸é ¿ÞÂÊ ÀÚ½Ä³ëµå ÇÏ³ª¸¸ Á¸ÀçÇÏ´Â °ÍÀ¸·Î
-		// ¿ÞÂÊ ÀÚ½Ä³ëµå°¡ Å« °ªÀ» °®´Â ÀÚ½Ä ³ëµå°¡ µÈ´Ù.
+		// í˜„ìž¬ì˜ ì™¼ìª½ ìžì‹ë…¸ë“œê°€ í˜„ìž¬ ë°°ì—´ì˜ ë ì›ì†Œ(ë…¸ë“œ)ë¼ë©´ ì™¼ìª½ ìžì‹ë…¸ë“œ í•˜ë‚˜ë§Œ ì¡´ìž¬í•˜ëŠ” ê²ƒìœ¼ë¡œ
+		// ì™¼ìª½ ìžì‹ë…¸ë“œê°€ í° ê°’ì„ ê°–ëŠ” ìžì‹ ë…¸ë“œê°€ ëœë‹¤.
 		if (CurIdx*2+1 == EndIdx)
 		{
 			MaxChildIdx = EndIdx;
 		}
-		// 2°³ÀÇ ÀÚ½Ä ³ëµå°¡ ¸ðµÎ ÀÖ´Â °æ¿ì, ¿ÞÂÊÀÚ½Ä ³ëµå¿Í ¿À¸¥ÂÊ ÀÚ½Ä ³ëµåÁß Å« ÂÊÀ» ¼±ÅÃÇÑ´Ù.
+		// 2ê°œì˜ ìžì‹ ë…¸ë“œê°€ ëª¨ë‘ ìžˆëŠ” ê²½ìš°, ì™¼ìª½ìžì‹ ë…¸ë“œì™€ ì˜¤ë¥¸ìª½ ìžì‹ ë…¸ë“œì¤‘ í° ìª½ì„ ì„ íƒí•œë‹¤.
 		else if (arr[CurIdx*2+1] > arr[CurIdx*2+1+1])
 		{
 			MaxChildIdx = CurIdx*2+1;
@@ -241,15 +241,15 @@ void MakeMaxHeap(int arr[], int CurIdx, int EndIdx)
 			MaxChildIdx = CurIdx*2+1+1;
 		}
 
-		// ÀÌÁ¦ ÇöÀç ³ëµå¿Í À§¿¡¼­ ¼±ÃâÇÑ ÀÛÀº ÀÚ½Ä ³ëµå °ªÀ» ºñ±³ÇÑ´Ù.
-		// ÀÚ½Ä ³ëµå°¡ Å©´Ù¸é ÇöÀç(ºÎ¸ð)³ëµå¿Í °ªÀ» ±³È¯ÇÑ´Ù.
+		// ì´ì œ í˜„ìž¬ ë…¸ë“œì™€ ìœ„ì—ì„œ ì„ ì¶œí•œ ìž‘ì€ ìžì‹ ë…¸ë“œ ê°’ì„ ë¹„êµí•œë‹¤.
+		// ìžì‹ ë…¸ë“œê°€ í¬ë‹¤ë©´ í˜„ìž¬(ë¶€ëª¨)ë…¸ë“œì™€ ê°’ì„ êµí™˜í•œë‹¤.
 		if (arr[CurIdx] < arr[MaxChildIdx])
 		{
 			Swap(&arr[CurIdx], &arr[MaxChildIdx]);
-			// ±³È¯ÈÄ ÇöÀç ³ëµå¸¦ MaxChildIdx ·Î °»½ÅÇÑ´Ù.
+			// êµí™˜í›„ í˜„ìž¬ ë…¸ë“œë¥¼ MaxChildIdx ë¡œ ê°±ì‹ í•œë‹¤.
 			CurIdx = MaxChildIdx;
 		}
-		// ±³È¯ÇÒ ÇÊ¿ä°¡ ¾øÀ¸¸é Á¾·áÇÑ´Ù.
+		// êµí™˜í•  í•„ìš”ê°€ ì—†ìœ¼ë©´ ì¢…ë£Œí•œë‹¤.
 		else
 		{
 			done = true;
@@ -260,8 +260,8 @@ void MakeMaxHeap(int arr[], int CurIdx, int EndIdx)
 // Heap Sort
 void HeapSort(int arr[], int size)
 {
-	// Heap Sort ´Â ¹è¿­À» ÀÌÁø Æ®¸®·Î ¸ÅÄªÇÑ´Ù.
-	// ¹è¿­ 1 2 3 4 5 °¡ µé¾î¿À¸é ´ÙÀ½°ú °°Àº ÀÌÁø Æ®¸®·Î »ý°¢ÇÑ´Ù.
+	// Heap Sort ëŠ” ë°°ì—´ì„ ì´ì§„ íŠ¸ë¦¬ë¡œ ë§¤ì¹­í•œë‹¤.
+	// ë°°ì—´ 1 2 3 4 5 ê°€ ë“¤ì–´ì˜¤ë©´ ë‹¤ìŒê³¼ ê°™ì€ ì´ì§„ íŠ¸ë¦¬ë¡œ ìƒê°í•œë‹¤.
 	//
 	//       1
 	//       |
@@ -275,20 +275,20 @@ void HeapSort(int arr[], int size)
 
 	int i = 0, j = 0;
 
-	// ¿ì¼± Max Heap »óÅÂ¸¦ ¸¸µç´Ù.
-	// size/2 ¿ø¼ÒºÎÅÍ ½ÃÀÛÇÏ´Â ÀÌÀ¯´Â size/2 µÚ ¿ø¼Ò´Â ¸ðµÎ ÀÚ½Ä ³ëµå°¡ ¾ø±â ¸»´Ü ³ëµåÀÌ±â ¶§¹®ÀÌ´Ù.
+	// ìš°ì„  Max Heap ìƒíƒœë¥¼ ë§Œë“ ë‹¤.
+	// size/2 ì›ì†Œë¶€í„° ì‹œìž‘í•˜ëŠ” ì´ìœ ëŠ” size/2 ë’¤ ì›ì†ŒëŠ” ëª¨ë‘ ìžì‹ ë…¸ë“œê°€ ì—†ê¸° ë§ë‹¨ ë…¸ë“œì´ê¸° ë•Œë¬¸ì´ë‹¤.
 	for (i = (size/2)-1; i >= 0; i--)
 	{
 		MakeMaxHeap(arr, i, size-1);
 	}
-	// Max Heap »óÅÂ°¡ µÇ¸é °¡Àå Å« ¿ø¼Ò °ªÀÇ root(¹è¿­[0])³ëµå¿¡ À§Ä¡ÇÏ°Ô µÈ´Ù.
+	// Max Heap ìƒíƒœê°€ ë˜ë©´ ê°€ìž¥ í° ì›ì†Œ ê°’ì˜ root(ë°°ì—´[0])ë…¸ë“œì— ìœ„ì¹˜í•˜ê²Œ ëœë‹¤.
 	for (i = size-1; i >= 0; i--)
 	{
-		// °¡Àå ³¡ ³ëµå°ª°ú root ³ëµå °ªÀ» ±³È¯ÇÑ´Ù.
+		// ê°€ìž¥ ë ë…¸ë“œê°’ê³¼ root ë…¸ë“œ ê°’ì„ êµí™˜í•œë‹¤.
 		Swap(&arr[0], &arr[i]);
 		
-		// ±³È¯ÈÄ ¸Ç ¸¶Áö¸·Àº °¡Àå Å« °ªÀÌ ÀÚ¸®ÇÑ´Ù.
-		// µû¶ó¼­ ÀÌ ¿ø¼Ò´Â Á¤·Ä ´ë»ó¿¡¼­ Á¦¿Ü½ÃÅ°±â À§ÇØ i-1 ¸¦ ³¡À¸·Î Àâ´Â´Ù.
+		// êµí™˜í›„ ë§¨ ë§ˆì§€ë§‰ì€ ê°€ìž¥ í° ê°’ì´ ìžë¦¬í•œë‹¤.
+		// ë”°ë¼ì„œ ì´ ì›ì†ŒëŠ” ì •ë ¬ ëŒ€ìƒì—ì„œ ì œì™¸ì‹œí‚¤ê¸° ìœ„í•´ i-1 ë¥¼ ëìœ¼ë¡œ ìž¡ëŠ”ë‹¤.
 		MakeMaxHeap(arr, 0, i-1);
 	}
 }

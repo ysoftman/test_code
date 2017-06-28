@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// Levenshtein Distance ¾Ë°í¸®ÁòÀ¸·Î µÎ ¹®ÀÚÀÇ Â÷ÀÌ¸¦ distance ·Î ¸®ÅÏÇØÁØ´Ù.
+// Levenshtein Distance ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ ë‘ ë¬¸ìì˜ ì°¨ì´ë¥¼ distance ë¡œ ë¦¬í„´í•´ì¤€ë‹¤.
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
@@ -15,7 +15,7 @@ int LevenshteinDistance(char* pInStr, char* pDicStr)
 	memset(pStr1, 0, sizeof(char)*MAX_STR_LEN);
 	memset(pStr2, 0, sizeof(char)*MAX_STR_LEN);
 
-	// 0¹øÂ°¿¡ ÀÇ¹Ì ¾ø´Â ¹®ÀÚ¸¦ Ãß°¡ÇØ ÁØ´Ù.
+	// 0ë²ˆì§¸ì— ì˜ë¯¸ ì—†ëŠ” ë¬¸ìë¥¼ ì¶”ê°€í•´ ì¤€ë‹¤.
 	strcat(pStr1, "_");
 	strcat(pStr2, "_");
 
@@ -28,11 +28,11 @@ int LevenshteinDistance(char* pInStr, char* pDicStr)
 	int i = 0, j = 0;
 	int cost = 0, distance = 0;
 
-	// distace ¸¦ ±â·ÏÇÒ m x n matrix
+	// distace ë¥¼ ê¸°ë¡í•  m x n matrix
 	int d[MAX_STR_LEN][MAX_STR_LEN];
 	memset(d, 0, sizeof(char)*MAX_STR_LEN*MAX_STR_LEN);
 
-	// Ã¹¹øÂ° Çà°ú ¿­À» ÃÊ±âÈ­ÇÑ´Ù.
+	// ì²«ë²ˆì§¸ í–‰ê³¼ ì—´ì„ ì´ˆê¸°í™”í•œë‹¤.
 	for (i=0; i<m; i++)
 	{
 		d[0][i] = i;
@@ -49,17 +49,17 @@ int LevenshteinDistance(char* pInStr, char* pDicStr)
 			if (pStr1[i] == pStr2[j]) cost = 0;
 			else cost = 1; // replace cost
 
-			// ÇöÀç¼¿¿¡¼­ ¿ŞÂÊ, À§ÂÊ, ¿ŞÂÊÀ§ ÀÇ ¼¿ Áß¿¡°¡ °¡Àå ÀÛÀº °ªÀ» ¼±ÅÃÇÑ´Ù.
+			// í˜„ì¬ì…€ì—ì„œ ì™¼ìª½, ìœ„ìª½, ì™¼ìª½ìœ„ ì˜ ì…€ ì¤‘ì—ê°€ ê°€ì¥ ì‘ì€ ê°’ì„ ì„ íƒí•œë‹¤.
 			d[j][i] = MIN(d[j][i-1]+1, // insertion
 					MIN(d[j-1][i]+1, // deletion
 					d[j-1][i-1]+cost)); // substitution(replace)
-			// ÃÖÁ¾ distance °ª
+			// ìµœì¢… distance ê°’
 			distance = d[j][i];
 		}
 	}
 
-	// Á¦´ë·Î µÇ¾ú´ÂÁö È®ÀÎÇÏ±â À§ÇØ¼­ m x n matrix ÀÇ »óÅÂ¸¦ Âï¾îº»´Ù.
-	// kitten °ú sitting ¿¡¼­ replace cost=1¶ó¸é 3ÀÌ ÃÖÁ¾ distance °¡ µÈ´Ù.
+	// ì œëŒ€ë¡œ ë˜ì—ˆëŠ”ì§€ í™•ì¸í•˜ê¸° ìœ„í•´ì„œ m x n matrix ì˜ ìƒíƒœë¥¼ ì°ì–´ë³¸ë‹¤.
+	// kitten ê³¼ sitting ì—ì„œ replace cost=1ë¼ë©´ 3ì´ ìµœì¢… distance ê°€ ëœë‹¤.
 	//    k i t t e n 
 	//  0 1 2 3 4 5 6 
 	//s 1 1 2 3 4 5 6 
@@ -95,7 +95,7 @@ int LevenshteinDistance(char* pInStr, char* pDicStr)
 
 int main()
 {
-	// LevenshteinDistance Å×½ºÆ®...
+	// LevenshteinDistance í…ŒìŠ¤íŠ¸...
 	LevenshteinDistance("kitten", "sitting");
 	LevenshteinDistance("Saturday", "Sunday");
 }

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ÀÚ½ÅÀÇ ip ÁÖ¼Ò ¾ò¾î¿À±â
+// ìì‹ ì˜ ip ì£¼ì†Œ ì–»ì–´ì˜¤ê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string>
@@ -26,7 +26,7 @@ string GetIPAddress()
 	if (nError == 0)
 	{
 		hostinfo = gethostbyname(hostname);
-		// ip address ÆÄ¾Ç
+		// ip address íŒŒì•…
 		strcpy(ipaddr, inet_ntoa(*(struct in_addr*)hostinfo->h_addr_list[0]));
 	}
 

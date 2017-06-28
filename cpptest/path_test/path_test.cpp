@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ÇöÀç °æ·Î ÆÄ¾Ç ¹× ¼³Á¤
+// í˜„ì¬ ê²½ë¡œ íŒŒì•… ë° ì„¤ì •
 ////////////////////////////////////////////////////////////////////////////////////
 #if (defined _WIN32) || (defined _WIN64)
 #define _CRT_SECURE_NO_WARNINGS
@@ -19,14 +19,14 @@ int main()
 	char curpath[100];
 	memset(curpath, 0, sizeof(char)*100);
 #ifdef _WIN32
-	// ÇöÀç °æ·Î ÆÄ¾Ç
+	// í˜„ì¬ ê²½ë¡œ íŒŒì•…
 	GetCurrentDirectory(100, curpath);
 	fprintf(stderr, "CurrentPath = %s\n", curpath);
-	// ÇöÀç °æ·Î Àç ¼³Á¤
+	// í˜„ì¬ ê²½ë¡œ ì¬ ì„¤ì •
 	SetCurrentDirectory("../");
 	GetCurrentDirectory(100, curpath);
 	fprintf(stderr, "CurrentPath = %s\n", curpath);
-	// ÇöÀç ¸ğµâ °æ·Î ÆÄ¾Ç
+	// í˜„ì¬ ëª¨ë“ˆ ê²½ë¡œ íŒŒì•…
 	GetModuleFileName(0, curpath, 1024);
 	fprintf(stderr, "CurrentPath = %s\n", curpath);
 #endif

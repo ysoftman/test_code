@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// 64bit ¿¡¼­´Â 4GB ÀÌ»ó Èü ¸Þ¸ð¸® ÇÒ´çÀÌ °¡´ÉÇÏ´Ù.
-// À©µµ¿ìÀÇ °æ¿ì ÆäÀÌÁö ÆÄÀÏÀÌ ½ÇÁ¦ ¸Þ¸ð¸®ÀÌ»óÀ¸·Î ¼³Á¤µÇ¾î¾ß ÇÑ´Ù.
-// ½Ã½ºÅÛ¼Ó¼º -> °í±Þ -> ¼º´É -> °í±Þ -> °¡»ó¸Þ¸ð¸® -> c: -> ½Ã½ºÅÛÀÌ °ü¸®ÇÏ´Â Å©±â·Î ¼³Á¤
+// 64bit ì—ì„œëŠ” 4GB ì´ìƒ íž™ ë©”ëª¨ë¦¬ í• ë‹¹ì´ ê°€ëŠ¥í•˜ë‹¤.
+// ìœˆë„ìš°ì˜ ê²½ìš° íŽ˜ì´ì§€ íŒŒì¼ì´ ì‹¤ì œ ë©”ëª¨ë¦¬ì´ìƒìœ¼ë¡œ ì„¤ì •ë˜ì–´ì•¼ í•œë‹¤.
+// ì‹œìŠ¤í…œì†ì„± -> ê³ ê¸‰ -> ì„±ëŠ¥ -> ê³ ê¸‰ -> ê°€ìƒë©”ëª¨ë¦¬ -> c: -> ì‹œìŠ¤í…œì´ ê´€ë¦¬í•˜ëŠ” í¬ê¸°ë¡œ ì„¤ì •
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,10 +12,10 @@
 int main()
 {
 #if defined(_WIN64)
-	// 64bit ¸ðµå¿¡¼± size_t °¡ 8byte
+	// 64bit ëª¨ë“œì—ì„  size_t ê°€ 8byte
 	printf("_WIN64 size_t -> %d bytes\n", sizeof(size_t));
 #else //_WIN32
-	// 32bit ¸ðµå¿¡¼± size_t °¡ 4byte
+	// 32bit ëª¨ë“œì—ì„  size_t ê°€ 4byte
 	printf("_WIN32 size_t -> %d bytes\n", sizeof(size_t));
 #endif
 
@@ -24,9 +24,9 @@ int main()
 	unsigned int total_size = 0;
 	char *pHeap[cnt];
 
-	// 32bit ºôµå°¡ 2GB±îÁö ÇÒ´ç
-	// (32bit À©µµ¿ì¿¡¼­ 4GB ¸Þ¸ð¸®¸¦ ÀÎ½ÄÇÏ°í ÀÌÁß 2GB Ä¿³Î¸ðµå°ø°£, 2GB´Â À¯Àú¸ðµå °ø°£ Áï ÀÀ¿ëÇÁ·Î±×·¥¿¡¼­ »ç¿ëÇÑ´Ù.)
-	// 64bit ºôµå½Ã 10GB±îÁö ¸ðµÎ ÇÒ´ç
+	// 32bit ë¹Œë“œê°€ 2GBê¹Œì§€ í• ë‹¹
+	// (32bit ìœˆë„ìš°ì—ì„œ 4GB ë©”ëª¨ë¦¬ë¥¼ ì¸ì‹í•˜ê³  ì´ì¤‘ 2GB ì»¤ë„ëª¨ë“œê³µê°„, 2GBëŠ” ìœ ì €ëª¨ë“œ ê³µê°„ ì¦‰ ì‘ìš©í”„ë¡œê·¸ëž¨ì—ì„œ ì‚¬ìš©í•œë‹¤.)
+	// 64bit ë¹Œë“œì‹œ 10GBê¹Œì§€ ëª¨ë‘ í• ë‹¹
 	for (int i=0; i<cnt; ++i)
 	{
 		pHeap[i] = new char[size];

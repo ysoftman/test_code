@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// stl vector ÀÇ °ª(Å¬·¡½º) »èÁ¦ Å×½ºÆ®
+// stl vector ì˜ ê°’(í´ë˜ìŠ¤) ì‚­ì œ í…ŒìŠ¤íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <vector>
@@ -37,7 +37,7 @@ int main()
 		Dummy dummy3;
 		vecDummy1.push_back(dummy3);
 	}
-	// ¼Ò¸êÀÚ Á¦´ë·Î È£Ãâ(ÇÏÁö¸¸ ¸¹ÀÌ ³Ê¹« ¸¹ÀÌ È£ÃâµÈ´Ù)
+	// ì†Œë©¸ì ì œëŒ€ë¡œ í˜¸ì¶œ(í•˜ì§€ë§Œ ë§ì´ ë„ˆë¬´ ë§ì´ í˜¸ì¶œëœë‹¤)
 	vecDummy1.clear();
 
 	printf("\n\n");
@@ -48,26 +48,26 @@ int main()
 		Dummy *dummy4 = new Dummy();
 		vecDummy2.push_back(dummy4);
 	}
-	// ¼Ò¸êÀÚ È£Ãâ ¾ÈµÊ
-	// Å¬·¡½º ¿ø¼Ò Æ÷ÀÎÅÍ¸¦ »èÁ¦ÇÏÁö¸¸ ½ÇÁ¦ Å¬·¡½ºÀÇ ¸Ş¸ğ¸®´Â »èÁ¦ÇÏÁö ¾Ê´Â´Ù.
+	// ì†Œë©¸ì í˜¸ì¶œ ì•ˆë¨
+	// í´ë˜ìŠ¤ ì›ì†Œ í¬ì¸í„°ë¥¼ ì‚­ì œí•˜ì§€ë§Œ ì‹¤ì œ í´ë˜ìŠ¤ì˜ ë©”ëª¨ë¦¬ëŠ” ì‚­ì œí•˜ì§€ ì•ŠëŠ”ë‹¤.
 	//vecDummy2.clear();
 
-	// µû¶ó¼­ ÀÏÀÏÈ÷ Å¬·¡½º¸¦ »èÁ¦ÇØ¾ß ÇÑ´Ù.
-	// ¹æ¹ı1
+	// ë”°ë¼ì„œ ì¼ì¼íˆ í´ë˜ìŠ¤ë¥¼ ì‚­ì œí•´ì•¼ í•œë‹¤.
+	// ë°©ë²•1
 	while (!vecDummy2.empty())
 	{
 		delete vecDummy2.back();
 		vecDummy2.pop_back();
 	}
-	// ¹æ¹ı2
+	// ë°©ë²•2
 	std::vector<Dummy*>::iterator iter;
 	std::vector<Dummy*>::iterator iterTemp;
 	for (iter = vecDummy2.begin(); iter != vecDummy2.end();)
 	{
 		iterTemp = iter;
-		// ÀÏÀÏÈ÷ delete ÇÑ´Ù.
+		// ì¼ì¼íˆ delete í•œë‹¤.
 		delete (*iterTemp);
-		// ¿ø¼Ò »èÁ¦
+		// ì›ì†Œ ì‚­ì œ
 		iter = vecDummy2.erase(iter++);
 	}
 	
