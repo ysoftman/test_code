@@ -1,18 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ASCII ÄÚµå Ãâ·Â
+// ASCII ì½”ë“œ ì¶œë ¥
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void main()
+int main()
 {
-	// ASCII Ãâ·Â
+	// ASCII ì¶œë ¥
 	int number;
 	for (number = 0; number < 128; number++)
 	{
 		printf("%d -> %c\n", number, number);
 	}
+	return 0;
 }
 

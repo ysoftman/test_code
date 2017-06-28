@@ -1,0 +1,31 @@
+<!-- vue.js -->
+<script src="https://unpkg.com/vue"></script>
+
+<!--html file-->
+<div id="app">
+  <h3 v-for="aaa in aaa_list">
+    {{aaa.a}} {{aaa.b}}
+  </h3>
+</div>
+
+<!--scrit file-->
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      aaa_list: [{
+          a: 111,
+          b: "첫번째 데이터"
+        },
+        {
+          a: 222,
+          b: "두번째 데이터"
+        },
+        {
+          a: 333,
+          b: "세번째 데이터"
+        },
+      ]
+    }
+  })
+</script>

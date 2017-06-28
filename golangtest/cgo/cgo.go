@@ -3,6 +3,8 @@
 // title : cgo 패키지 테스트
 
 // package 와 import "C" 사이에 주석으로 C 코드를 작성해 놓는다.
+// mac 환경에서 go 1.7.4 버전에서 signal: killed 에러가 발생함
+// go 1.8.2 버전으로 업그레이 후 해결
 package main
 
 /*

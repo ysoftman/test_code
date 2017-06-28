@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 int main()
 {
@@ -38,6 +42,28 @@ int main()
 	tmCurtime->tm_year = 7000 - 1900;
 	llCurtime2 = mktime(tmCurtime);
 	printf("llCurtime2 = %ld\n\n", llCurtime2);
+
+
+	// 문자열 시간 을 time 값으로 
+	tm tmResult;
+	memset(&tmResult, 0, sizeof(tm));
+	std::string timestr;
+	timestr = "201705311624";
+	cout << timestr << endl;
+	if (strptime(timestr.c_str(), "%Y%m%d%H%M", &tmResult) != NULL)
+	{
+		// cout << tmResult.tm_yday << endl;
+		// cout << tmResult.tm_wday << endl;
+		cout << "year:" << tmResult.tm_year+1900 << endl;
+		cout << "month:" << tmResult.tm_mon+1 << endl;
+		cout << "day:" << tmResult.tm_mday << endl;
+		cout << "hour:" << tmResult.tm_hour << endl;
+		cout << "min:" << tmResult.tm_min << endl;
+		cout << "sec:" << tmResult.tm_sec << endl;
+		// cout << tmResult.tm_isdst << endl;
+		time_t epoch = mktime(&tmResult);
+		cout << "epoch:" << epoch << endl;
+	}
 
 	return 0;
 }

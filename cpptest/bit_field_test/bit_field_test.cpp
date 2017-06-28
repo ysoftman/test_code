@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// bit field Å×½ºÆ®
+// bit field í…ŒìŠ¤íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
@@ -8,22 +8,23 @@ int main()
 {
 	struct bitField {
 		unsigned int nNum;
-		unsigned char bitNum : 1;	// 8ºñÆ®°¡ ¾Æ´Ñ 1ºñÆ®¸¸ ¸Ş¸ğ¸® ÇÒ´çÇÑ´Ù.
+		unsigned char bitNum : 1;	// 8ë¹„íŠ¸ê°€ ì•„ë‹Œ 1ë¹„íŠ¸ë§Œ ë©”ëª¨ë¦¬ í• ë‹¹í•œë‹¤.
 	};
 
 	bitField bf;
 	bf.nNum = 100;
 	sizeof(bf.nNum);
-	//sizoef(bf.bitNum);	// 1ºñÆ® ÀÌ±â¶§¹®¿¡ »ç¿ëÇÒ ¼ö ¾ø´Ù.
+	//sizoef(bf.bitNum);	// 1ë¹„íŠ¸ ì´ê¸°ë•Œë¬¸ì— ì‚¬ìš©í•  ìˆ˜ ì—†ë‹¤.
 	printf("bf.nNum = %d\n", bf.nNum);
 
-	// 1ºñÆ® 0,1 ¸¸À» »ç¿ëÇÒ ¼ö ÀÖ´Ù.
+	// 1ë¹„íŠ¸ 0,1 ë§Œì„ ì‚¬ìš©í•  ìˆ˜ ìˆë‹¤.
 	bf.bitNum = 0;
 	printf("bf.bitNum = %d\n", bf.bitNum);
 	bf.bitNum = 1;
 	printf("bf.bitNum = %d\n", bf.bitNum);
 
-	// ¿À¹ö¸¦·Î¿ìµÇ¾î 0 ¶Ç´Â 1 °ªÀ¸·Î ¼³Á¤µÊ
+	// ì˜¤ë²„í”Œë¡œ ê²½ê³  ë©”ì‹œì§€ ë°œìƒ
+	// ì˜¤ë²„í”Œë¡œ ë˜ì–´ 0 ë˜ëŠ” 1 ê°’ìœ¼ë¡œ ì„¤ì •ë¨
 	bf.bitNum = 2;
 	printf("bf.bitNum = %d\n", bf.bitNum);
 	bf.bitNum = 3;

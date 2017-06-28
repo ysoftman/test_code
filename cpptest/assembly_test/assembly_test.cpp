@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// assembly »ç¿ë ¿¹Á¦
+// assembly ì‚¬ìš© ì˜ˆì œ
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 int calc(int num1, int num2, int num3)
 {
-	// ¾î¼Àºí¸® ÄÚµå ¿µ¿ª
+	// ì–´ì…ˆë¸”ë¦¬ ì½”ë“œ ì˜ì—­
 	__asm
 	{
 		mov eax, num1
@@ -14,12 +14,13 @@ int calc(int num1, int num2, int num3)
 		add eax, ebx
 		add eax, num3
 	}
-	// eax °ªÀÌ ¸®ÅÏµÇ¾îÁø´Ù.
+	// eax ê°’ì´ ë¦¬í„´ë˜ì–´ì§„ë‹¤.
 }
 
-void main()
+int main()
 {
 	printf("result = %d\n", calc(7, 8, 9));
+	return 0;
 }
 
 

@@ -1,33 +1,56 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// int -> string, string -> int ·Î º¯È¯ÇÏ±â
+// int -> string, string -> int ë¡œ ë³€í™˜í•˜ê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string>
+#include <stdlib.h>
+#include <sstream>
+#include <iostream>
 #include <sstream>
 
+using namespace std;
 
 int main()
 {
 	int num = 0;
-	
-	// Numeric Type (int, float, double)À» stringÀ¸·Î º¯È¯ÇØÁÖ±â À§ÇÑ °´Ã¼
-	std::ostringstream ostr;
 
-	for (num=1; num<=10; num++)
+	// Numeric Type (int, float, double)ì„ stringìœ¼ë¡œ ë³€í™˜í•´ì£¼ê¸° ìœ„í•œ ê°ì²´
+	ostringstream ostr;
+	for (num = 1; num <= 10; num++)
 	{
-		// ÃÊ±âÈ­
+		// ì´ˆê¸°í™”
 		ostr.str("");
-		// int¸¦ stringÀ¸·Î º¯È¯
+		// intë¥¼ stringìœ¼ë¡œ ë³€í™˜
 		ostr << num;
 		printf("[int -> string] ostr = %s\n", ostr.str().c_str());
 	}
 
-	std::string str = "12345";
+	// atoi ë¡œ string í˜•ì„ int ë¡œ ë³€í™˜
+	string str = "12345";
 	num = atoi(str.c_str());
 	printf("[string -> int] num = %d\n", num);
 
+
+	// double í˜•ì„ string ìœ¼ë¡œ ë³€í™˜
+	double a = 0.0000000000000123456789;
+	ostringstream ss;
+	ss << "a:" << a;
+	string str1 = ss.str();
+	cout << str1 << endl;
+
+	double b = 0.0000000000012345678912345678912346;
+	ostringstream ss2;
+	ss2 << "b:" << fixed << b;
+	string str2 = ss2.str();
+	cout << str2 << endl;
+
+	// stringstream ìœ¼ë¡œ int -> string ë¡œ ë³€í™˜
+	int i = 99;
+	cout << "i:" << i << endl;
+	stringstream s;
+	s << i;
+	cout << "s:" << s.str() << endl;
+
 	return 0;
 }
-
-
