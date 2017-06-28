@@ -4,12 +4,12 @@
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
+
 
 int cnt = 0;
 
-// ÀÌÁø Å½»ö(Condition : Á¤·ÄµÈ ¹è¿­¿¡ ´ëÇØ¼­¸¸)
-// parameter : arr - ¹è¿­, head - ¹è¿­½ÃÀÛ(0), end - ¹è¿­³¡, k - Ã£À» µ¥ÀÌÅÍ)
+// ì´ì§„ íƒìƒ‰(Condition : ì •ë ¬ëœ ë°°ì—´ì— ëŒ€í•´ì„œë§Œ)
+// parameter : arr - ë°°ì—´, head - ë°°ì—´ì‹œì‘(0), end - ë°°ì—´ë, k - ì°¾ì„ ë°ì´í„°)
 int BinarySearch(int arr[], int head, int end, int k)
 {
 	
@@ -44,7 +44,7 @@ int BinarySearch(int arr[], int head, int end, int k)
 	}
 }
 
-void main()
+int main()
 {	
 	int array[10] = {25, 37, 56, 99, 120, 521, 590, 709, 1005, 2506};
 	int i = 0;
@@ -59,6 +59,7 @@ void main()
 	scanf("%d", &target);
 
 	BinarySearch(array, 0, 9, target);
+	return 0;
 }
 
 
