@@ -40,7 +40,7 @@ int isPalindrome(char *str)
 
 	for (index=0; index<pivot; index++)
 	{
-		// ¹®ÀÚ¿­ÀÇ Ã³À½°ú ³¡À» ºñ±³ -> ¹®ÀÚÀÇ °¡¿îµ¥±îÁö °Ë»ç
+		// ë¬¸ìì—´ì˜ ì²˜ìŒê³¼ ëì„ ë¹„êµ -> ë¬¸ìì˜ ê°€ìš´ë°ê¹Œì§€ ê²€ì‚¬
 		if (str[index] == str[str_len-1-index])
 		{
 			printf("\n%c and %c are same", str[index], str[str_len-1-index]);
@@ -48,11 +48,11 @@ int isPalindrome(char *str)
 		else
 		{
 			printf("\n%c and %c are different", str[index], str[str_len-1-index]);
-			// ´Ù¸¥ ¹®ÀÚ  ¹ß°ß -> ´õÀÌ»ó °Ë»çÇÏÁö ¾Ê°í Á¾·á(ÆÓ¸°µå·ÒÀÌ ¾Æ´Ï¶ó°í ÆÇ´Ü)
+			// ë‹¤ë¥¸ ë¬¸ì  ë°œê²¬ -> ë”ì´ìƒ ê²€ì‚¬í•˜ì§€ ì•Šê³  ì¢…ë£Œ(íŒ°ë¦°ë“œë¡¬ì´ ì•„ë‹ˆë¼ê³  íŒë‹¨)
 			return 0;
 		}
 	}
-	// °Ë»ç°á°ú ÆÓ¸°µå·ÒÀÌ´Ù
+	// ê²€ì‚¬ê²°ê³¼ íŒ°ë¦°ë“œë¡¬ì´ë‹¤
 	return 1;
 }
 

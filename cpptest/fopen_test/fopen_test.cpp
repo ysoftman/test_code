@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// fopenÀÇ text¸ğµå¿Í binary¸ğµå Â÷ÀÌ
-// À©µµ¿ì È¯°æ¿¡¼­ °³Çà¹®ÀÚ(\n)´Â CR(CarriageReturn) °ú LF(LineFeed) Á¶ÇÕÀÌ´Ù.
+// fopenì˜ textëª¨ë“œì™€ binaryëª¨ë“œ ì°¨ì´
+// ìœˆë„ìš° í™˜ê²½ì—ì„œ ê°œí–‰ë¬¸ì(\n)ëŠ” CR(CarriageReturn) ê³¼ LF(LineFeed) ì¡°í•©ì´ë‹¤.
 // LF(Line Feed) : Dec(10) Hex(0x0a)
 // CR(Carriage Return) : Dec(13) Hex(0x0d)
-// fprintf(fp, "\n"); ÇÏ¸é ½ÇÁ¦·Î´Â 
-// MAC ¿¡¼­´Â CR ÄÚµå 1¹ÙÀÌÆ®¸¸ ¹ÚÈù´Ù.
-// UNIX ¿¡¼­´Â LF ÄÚµå 1¹ÙÀÌÆ®¸¸ ¹ÚÈù´Ù.
-// Windows/DOS ¿¡¼­´Â CR °ú LF ÄÚµå 2¹ÙÀÌÆ®°¡ ¹ÚÈù´Ù.
-// Windows/DOS ¿¡¼­´Â ÆÄÀÏ ¿ÀÇÂ½Ã text ¸ğµåÀÏ¶§ CRLF Áß LF ¸¸ ÀĞ¾î¿Â´Ù.
-// Windows/DOS ¿¡¼­´Â ÆÄÀÏ ¿ÀÇÂ½Ã binary ¸ğµåÀÏ¶§ ±×´ë·Î CRLF ¸¦ ÀĞ¾î¿Â´Ù.
+// fprintf(fp, "\n"); í•˜ë©´ ì‹¤ì œë¡œëŠ” 
+// MAC ì—ì„œëŠ” CR ì½”ë“œ 1ë°”ì´íŠ¸ë§Œ ë°•íŒë‹¤.
+// UNIX ì—ì„œëŠ” LF ì½”ë“œ 1ë°”ì´íŠ¸ë§Œ ë°•íŒë‹¤.
+// Windows/DOS ì—ì„œëŠ” CR ê³¼ LF ì½”ë“œ 2ë°”ì´íŠ¸ê°€ ë°•íŒë‹¤.
+// Windows/DOS ì—ì„œëŠ” íŒŒì¼ ì˜¤í”ˆì‹œ text ëª¨ë“œì¼ë•Œ CRLF ì¤‘ LF ë§Œ ì½ì–´ì˜¨ë‹¤.
+// Windows/DOS ì—ì„œëŠ” íŒŒì¼ ì˜¤í”ˆì‹œ binary ëª¨ë“œì¼ë•Œ ê·¸ëŒ€ë¡œ CRLF ë¥¼ ì½ì–´ì˜¨ë‹¤.
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,29 +21,29 @@ void main()
 	int num_of_bytes = 0;
 	char c = NULL;
 
-	// ÆÄÀÏ ¾²±â
+	// íŒŒì¼ ì“°ê¸°
 	fp = fopen("CRLF.txt", "w");
-	fprintf(fp, "YOON BYOUNG HOON\nÀ±º´ÈÆ\nëÅÜ¼ı³\n");
+	fprintf(fp, "YOON BYOUNG HOON\nìœ¤ë³‘í›ˆ\nå°¹ç§‰å‹³\n");
 	fclose(fp);
 
-	// text ¸ğµå·Î ÀĞ±â
+	// text ëª¨ë“œë¡œ ì½ê¸°
 	fp = fopen("CRLF.txt", "rt");
 	num_of_bytes = 0;
 	while ( (c = fgetc(fp)) != EOF )
 	{
 		num_of_bytes++;
 	}
-	fprintf(stdout, "[Text mode open] ÆÄÀÏÅ©±â(¹ÙÀÌÆ®°³¼ö):%d\n", num_of_bytes);
+	fprintf(stdout, "[Text mode open] íŒŒì¼í¬ê¸°(ë°”ì´íŠ¸ê°œìˆ˜):%d\n", num_of_bytes);
 	fclose(fp);
 
-	// binary ¸ğµå·Î ÀĞ±â
+	// binary ëª¨ë“œë¡œ ì½ê¸°
 	fp = fopen("CRLF.txt", "rb");
 	num_of_bytes = 0;
 	while ( (c = fgetc(fp)) != EOF )
 	{
 		num_of_bytes++;
 	}
-	fprintf(stdout, "[Binary mode open] ÆÄÀÏÅ©±â(¹ÙÀÌÆ®°³¼ö):%d\n", num_of_bytes);
+	fprintf(stdout, "[Binary mode open] íŒŒì¼í¬ê¸°(ë°”ì´íŠ¸ê°œìˆ˜):%d\n", num_of_bytes);
 	fclose(fp);
 
 }

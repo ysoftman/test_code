@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// union °ú struct ÀÇ Â÷ÀÌ
+// union ê³¼ struct ì˜ ì°¨ì´
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
@@ -20,39 +20,39 @@ void main()
 {
 	ST stInstance;
 	memset(&stInstance, 0, sizeof(stInstance));
-	// 8 byte Ãâ·Â
-	// 1¹ÙÀÌÆ® char ÇüÀÌ 4¹ÙÀÌÆ® int Çü°ú °°Àº 4¹ÙÀÌÆ® ¸Ş¸ğ¸®¸¦ Â÷ÁöÇÏ°Ô µÈ´Ù.
-	// ¸â¹ö º¯¼ö¸¦ Ãß°¡ÇÏ¸é ÇöÀç ±¸Á¶Ã¼¿¡ ÇÒ´çµÈ ¸Ş¸ğ¸® Å©±â¸¦ ³Ñ¾î°¡°Ô µÉ °æ¿ì
-	// °¡Àå Å« ¸â¹ö º¯¼öÀÇ Å¸ÀÔÀÇ Å©±â ´ÜÀ§·Î ¸Ş¸ğ¸®¸¦ ÇÒ´çÇÏ°Ô µÈ´Ù.
-	// 4byte ¸¦ ³Ñ¾î°¡¸é -> 8byte ¸¦ ³Ñ¾î°¡¸é -> 12byte ...
+	// 8 byte ì¶œë ¥
+	// 1ë°”ì´íŠ¸ char í˜•ì´ 4ë°”ì´íŠ¸ int í˜•ê³¼ ê°™ì€ 4ë°”ì´íŠ¸ ë©”ëª¨ë¦¬ë¥¼ ì°¨ì§€í•˜ê²Œ ëœë‹¤.
+	// ë©¤ë²„ ë³€ìˆ˜ë¥¼ ì¶”ê°€í•˜ë©´ í˜„ì¬ êµ¬ì¡°ì²´ì— í• ë‹¹ëœ ë©”ëª¨ë¦¬ í¬ê¸°ë¥¼ ë„˜ì–´ê°€ê²Œ ë  ê²½ìš°
+	// ê°€ì¥ í° ë©¤ë²„ ë³€ìˆ˜ì˜ íƒ€ì…ì˜ í¬ê¸° ë‹¨ìœ„ë¡œ ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹í•˜ê²Œ ëœë‹¤.
+	// 4byte ë¥¼ ë„˜ì–´ê°€ë©´ -> 8byte ë¥¼ ë„˜ì–´ê°€ë©´ -> 12byte ...
 	printf("stInstance size : %d bytes\n", sizeof(stInstance));
 
 	UI uiInstance;
 	memset(&uiInstance, 0, sizeof(uiInstance));
-	// 4 byte Ãâ·Â
-	// 1¹ÙÀÌÆ® char ÇüÀÌ 4¹ÙÀÌÆ® int Çü°ú °°Àº 4¹ÙÀÌÆ® ¸Ş¸ğ¸®¸¦ Â÷ÁöÇÏÁö¸¸ ÇÏ³ªÀÇ ÇÏ³ªÀÇ 4¹ÙÀÌÆ® ¸Ş¸ğ¸®°ø°£À» °øÀ¯ÇÑ´Ù.
+	// 4 byte ì¶œë ¥
+	// 1ë°”ì´íŠ¸ char í˜•ì´ 4ë°”ì´íŠ¸ int í˜•ê³¼ ê°™ì€ 4ë°”ì´íŠ¸ ë©”ëª¨ë¦¬ë¥¼ ì°¨ì§€í•˜ì§€ë§Œ í•˜ë‚˜ì˜ í•˜ë‚˜ì˜ 4ë°”ì´íŠ¸ ë©”ëª¨ë¦¬ê³µê°„ì„ ê³µìœ í•œë‹¤.
 	printf("uiInstance size : %d bytes\n", sizeof(uiInstance));
 	
 	printf("\n\n");
 
-	// struct ÀÇ ¸â¹ö´Â °¢°¢ÀÇ µ¶¸³ÀûÀÎ ¸Ş¸ğ¸® °ø°£ÀÌ ÀÖ¾î °¢°¢ °ªÀ» À¯ÁöÇÑ´Ù.
+	// struct ì˜ ë©¤ë²„ëŠ” ê°ê°ì˜ ë…ë¦½ì ì¸ ë©”ëª¨ë¦¬ ê³µê°„ì´ ìˆì–´ ê°ê° ê°’ì„ ìœ ì§€í•œë‹¤.
 	stInstance.ucChar = 255;
 	stInstance.unInt = 65535;
 	printf("stInstance.ucChar = %d   stInstance.unInt = %d\n", stInstance.ucChar, stInstance.unInt);
 	printf("stInstance.ucChar[0] = %x\n", stInstance.ucChar);
-	// little/big endian ¿¡ µû¶ó byte order °¡ ´Ù¸£°Ô ³ª¿Ã ¼ö ÀÖ´Ù.
+	// little/big endian ì— ë”°ë¼ byte order ê°€ ë‹¤ë¥´ê²Œ ë‚˜ì˜¬ ìˆ˜ ìˆë‹¤.
 	printf("stInstance.unInt[0] = %x\n", (stInstance.unInt & 0x000000ff));
 	printf("stInstance.unInt[1] = %x\n", (stInstance.unInt & 0x0000ff00) >> 8);
 	printf("stInstance.unInt[2] = %x\n", (stInstance.unInt & 0x00ff0000) >> 16);
 	printf("stInstance.unInt[3] = %x\n", (stInstance.unInt & 0xff000000) >> 24);
 	printf("\n");
 
-	// °¡Àå Å« ¸Ş¸ğ¸® °ø°£À» °øÀ¯ÇÔÀ¸·Î °¢ ¹ÙÀÌÆ®´Â ÃÖ±Ù¿¡ ÇÒ´çÇÑ °ªÀÌ À¯ÁöµÈ´Ù.
+	// ê°€ì¥ í° ë©”ëª¨ë¦¬ ê³µê°„ì„ ê³µìœ í•¨ìœ¼ë¡œ ê° ë°”ì´íŠ¸ëŠ” ìµœê·¼ì— í• ë‹¹í•œ ê°’ì´ ìœ ì§€ëœë‹¤.
 	uiInstance.unInt = 65535;
 	uiInstance.ucChar = 1;
 	printf("uiInstance.ucChar = %d   uiInstance.b = %d\n", uiInstance.ucChar, uiInstance.unInt);
 	printf("uiInstance.ucChar[0] = %x\n", uiInstance.ucChar);
-	// little/big endian ¿¡ µû¶ó byte order °¡ ´Ù¸£°Ô ³ª¿Ã ¼ö ÀÖ´Ù.
+	// little/big endian ì— ë”°ë¼ byte order ê°€ ë‹¤ë¥´ê²Œ ë‚˜ì˜¬ ìˆ˜ ìˆë‹¤.
 	printf("uiInstance.unInt[0] = %x\n", (uiInstance.unInt & 0x000000ff));
 	printf("uiInstance.unInt[1] = %x\n", (uiInstance.unInt & 0x0000ff00) >> 8);
 	printf("uiInstance.unInt[2] = %x\n", (uiInstance.unInt & 0x00ff0000) >> 16);

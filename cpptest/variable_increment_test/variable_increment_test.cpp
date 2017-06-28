@@ -9,8 +9,8 @@ void main()
 	const int max = 5;
 	int i = 0;
 
-	// ÀüÀ§, ÈÄÀ§ Áõ°¡ ¿¬»êÀÚÀÇ °á°ú´Â °°´Ù
-	printf("for ¹®¿¡¼­ i++ »ç¿ë\n");
+	// ì „ìœ„, í›„ìœ„ ì¦ê°€ ì—°ì‚°ìžì˜ ê²°ê³¼ëŠ” ê°™ë‹¤
+	printf("for ë¬¸ì—ì„œ i++ ì‚¬ìš©\n");
 	for (int i=0; i<max; i++)
 	{
 		printf("%2d", i);
@@ -18,7 +18,7 @@ void main()
 	printf("\n");
 
 	i = 0;
-	printf("for ¹®¿¡¼­ ++i »ç¿ë\n");
+	printf("for ë¬¸ì—ì„œ ++i ì‚¬ìš©\n");
 	for (int i=0; i<max; ++i)
 	{
 		printf("%2d", i);
@@ -30,11 +30,11 @@ void main()
 	printf("i : %2d\n", i);
 	printf("++i : %2d\n", ++i);
 	i = 0;
-	// ÈÄÀ§ Áõ°¡´Â ÇöÀç º¯¼ö°ªÀ» ´Ù¸¥ º¯¼ö¿¡ ÀúÀå ÈÄ ÇöÀç º¯¼ö¸¦ Áõ°¡½ÃÅ°°í ´Ù¸¥ º¯¼ö¸¦ ¸®ÅÏÇÑ´Ù.
+	// í›„ìœ„ ì¦ê°€ëŠ” í˜„ìž¬ ë³€ìˆ˜ê°’ì„ ë‹¤ë¥¸ ë³€ìˆ˜ì— ì €ìž¥ í›„ í˜„ìž¬ ë³€ìˆ˜ë¥¼ ì¦ê°€ì‹œí‚¤ê³  ë‹¤ë¥¸ ë³€ìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤.
 	// temp = i;
 	// i = i + 1;
 	// return temp;
-	// º¸Åë ¼º´É Çâ»óÀ» À§ÇØ¼­ for ·çÇÁ³»¿¡¼± ++i ·Î ÀüÀ§ Áõ°¡¸¦ »ç¿ëÇÑ´Ù.
+	// ë³´í†µ ì„±ëŠ¥ í–¥ìƒì„ ìœ„í•´ì„œ for ë£¨í”„ë‚´ì—ì„  ++i ë¡œ ì „ìœ„ ì¦ê°€ë¥¼ ì‚¬ìš©í•œë‹¤.
 	printf("i++ : %2d\n", i++);
 	printf("i : %2d\n", i);
 }

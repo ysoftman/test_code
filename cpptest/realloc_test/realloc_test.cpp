@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
 // ysoftman
-// realloc Å×½ºÆ®
+// realloc í…ŒìŠ¤íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>	// malloc calloc realloc free
@@ -18,7 +18,7 @@ void printData(char *pData, int size)
 int main()
 {
 	printf("test1 malloc\n");
-	// malloc À¸·Î ÇÒ´çÇÑ°æ¿ì ÃÊ±âÈ­µÇÁö ¾Ê¾Æ memsetÀ¸·Î ÃÊ±âÈ­ÇØ¾ß ÇÑ´Ù.
+	// malloc ìœ¼ë¡œ í• ë‹¹í•œê²½ìš° ì´ˆê¸°í™”ë˜ì§€ ì•Šì•„ memsetìœ¼ë¡œ ì´ˆê¸°í™”í•´ì•¼ í•œë‹¤.
 	char *pData = (char*)malloc(sizeof(char)*100);
 	if (pData != NULL)
 	{
@@ -29,7 +29,7 @@ int main()
 
 
 	printf("test2 calloc\n");
-	// calloc À¸·Î ÇÒ´çÇÑ°æ¿ì 0À¸·Î ÃÊ±âÈ­µÊ
+	// calloc ìœ¼ë¡œ í• ë‹¹í•œê²½ìš° 0ìœ¼ë¡œ ì´ˆê¸°í™”ë¨
 	char *pData2 = (char*)calloc(100, sizeof(char));
 	if (pData2 != NULL)
 	{
@@ -43,16 +43,16 @@ int main()
 		pData2[i] = 'A';
 	}
 	printData(pData2, 100);
-	// realloc À¸·Î ¸Ş¸ğ¸® Å©±â¸¦ ´Ã¸®°Å³ª ÁÙÀÏ ¼ö ÀÖ°í
-	// Å©±â¸¦ ´Ã¸®´Â °æ¿ì ±âÁ¸ °ªÀ» »õ ¸Ş¸ğ¸®¿¡ º¹»çÇÏ°í »õ ¸Ş¸ğ¸® ÁÖ¼Ò°ªÀ» ¸®ÅÏÇÑ´Ù.
-	// ´ÃÀÌ´Â °æ¿ì malloc À» »ç¿ëÇÏ±â ¶§¹®¿¡ ´Ã¾î³­ ºÎºĞ¿¡´ëÇØ¼­´Â ÃÊ±âÈ­µÇ¾î ÀÖÁö ¾Ê´Ù.
-	// ÁÙÀÌ´Â °æ¿ì
+	// realloc ìœ¼ë¡œ ë©”ëª¨ë¦¬ í¬ê¸°ë¥¼ ëŠ˜ë¦¬ê±°ë‚˜ ì¤„ì¼ ìˆ˜ ìˆê³ 
+	// í¬ê¸°ë¥¼ ëŠ˜ë¦¬ëŠ” ê²½ìš° ê¸°ì¡´ ê°’ì„ ìƒˆ ë©”ëª¨ë¦¬ì— ë³µì‚¬í•˜ê³  ìƒˆ ë©”ëª¨ë¦¬ ì£¼ì†Œê°’ì„ ë¦¬í„´í•œë‹¤.
+	// ëŠ˜ì´ëŠ” ê²½ìš° malloc ì„ ì‚¬ìš©í•˜ê¸° ë•Œë¬¸ì— ëŠ˜ì–´ë‚œ ë¶€ë¶„ì—ëŒ€í•´ì„œëŠ” ì´ˆê¸°í™”ë˜ì–´ ìˆì§€ ì•Šë‹¤.
+	// ì¤„ì´ëŠ” ê²½ìš°
 	printf("pData2(%p)\n", pData2);
 	pData2 = (char*)realloc(pData2, sizeof(char)*5);
 	printData(pData2, 5);
 	printf("pData2(%p)\n", pData2);
 
-	// ´ÃÀÌ´Â °æ¿ì
+	// ëŠ˜ì´ëŠ” ê²½ìš°
 	printf("pData2(%p)\n", pData2);
 	pData2 = (char*)realloc(pData2, sizeof(char)*100);
 	printData(pData2, 100);

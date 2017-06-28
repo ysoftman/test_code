@@ -2,7 +2,7 @@
 // ysoftman
 // Big Endian(UNIX with RISC(Motoloa 6800, MIPS, SPARC, etc...))
 // Little Endian(Windows with Intel x86, DEC Alpah, etc...)
-// µÎ ¹æ½Ä °£ÀÇ µ¥ÀÌ·¯¸¦ ¸Ş¸ğ¸®»ó¿¡ Mapping ¹æ½ÄÀÌ Æ²·Á¼­ byte swappingÀÌ ÇÊ¿ä
+// ë‘ ë°©ì‹ ê°„ì˜ ë°ì´ëŸ¬ë¥¼ ë©”ëª¨ë¦¬ìƒì— Mapping ë°©ì‹ì´ í‹€ë ¤ì„œ byte swappingì´ í•„ìš”
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
@@ -30,7 +30,7 @@ void main()
 
 	std.age = 26;
 	
-	printf("\n¡Ú Little Endian(Windows) ¡Ú\n");
+	printf("\nâ˜… Little Endian(Windows) â˜…\n");
 	printf("[Name]\n%p/%p/%p/%p\n%d/%d/%d/%d\n%c/%c/%c/%c\n[Age]\n%p\n%d\n",
 		std.name[0], std.name[1], std.name[2], std.name[3],
 		std.name[0], std.name[1], std.name[2], std.name[3],
@@ -47,7 +47,7 @@ void main()
 	std.Name[2] = htonl(76);
 	std.Name[3] = htonl(76);
 	
-	printf("\n¡Ú Big Endian(UNIX) ¡Ú\n");
+	printf("\nâ˜… Big Endian(UNIX) â˜…\n");
 	printf("[Name]\n%p/%p/%p/%p\t%d\n%d/%d/%d/%d\n%c/%c/%c/%c\n[Age]\n%p\n%d\n",
 		std.Name[0], std.Name[1], std.Name[2], std.Name[3], &std.Name[0],
 		std.Name[0], std.Name[1], std.Name[2], std.Name[3],
@@ -64,7 +64,7 @@ void main()
 	std.Name[2] = htonl(std.Name[2]);
 	std.Name[3] = htonl(std.Name[3]);
 
-	printf("\n¡Ú Little Endian(Windows) ¡Ú\n");
+	printf("\nâ˜… Little Endian(Windows) â˜…\n");
 	printf("[Name]\n%p/%p/%p/%p\n%d/%d/%d/%d\n%c/%c/%c/%c\n[Age]\n%p\n%d\n",
 		std.Name[0], std.Name[1], std.Name[2], std.Name[3],
 		std.Name[0], std.Name[1], std.Name[2], std.Name[3],

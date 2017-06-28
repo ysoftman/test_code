@@ -1,19 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ÅØ½ºÆ® ÆÄÀÏÀÇ º¹»ç
-// ÅØ½ºÆ® ÆÄÀÏÀÇ ³»¿ëº¸±â
-// ÅØ½ºÆ® ÆÄÀÏÀÇ ÃÑ ¹®ÀÚ °¹¼ö
+// í…ìŠ¤íŠ¸ íŒŒì¼ì˜ ë³µì‚¬
+// í…ìŠ¤íŠ¸ íŒŒì¼ì˜ ë‚´ìš©ë³´ê¸°
+// í…ìŠ¤íŠ¸ íŒŒì¼ì˜ ì´ ë¬¸ì ê°¯ìˆ˜
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	FILE *fp1 = NULL;
 	FILE *fp2 = NULL;
 
-	// ÆÄÀÏ ³»¿ë Ãâ·Â
+	// íŒŒì¼ ë‚´ìš© ì¶œë ¥
 	if (argc == 3 && strcmp(argv[1], "-v") == 0)
 	{
 		if	((fp1 = fopen(argv[2], "r")) == NULL)
@@ -28,7 +28,7 @@ void main(int argc, char *argv[])
 		}
 		fclose(fp1);
 	}
-	// ÆÄÀÏ³» ¹®ÀÚ ¹ÙÀÌÆ® ¼ö ¼¼±â
+	// íŒŒì¼ë‚´ ë¬¸ì ë°”ì´íŠ¸ ìˆ˜ ì„¸ê¸°
 	else if (argc == 3 && strcmp(argv[1], "-b") == 0)
 	{
 		if ((fp1 = fopen(argv[2], "r")) == NULL)
@@ -38,11 +38,11 @@ void main(int argc, char *argv[])
 		}
 		unsigned long cnt=0;
 		int ch;
-		// fgetcÇÔ¼ö´Â ¸®ÅÏ°ªÀÌ intÇüÀÌ´Ù
-		// ÇÑ±Û ÇÑ¹®ÀÚ´Â 2¹ÙÀÌÆ® Â÷Áö -> 2°³
+		// fgetcí•¨ìˆ˜ëŠ” ë¦¬í„´ê°’ì´ intí˜•ì´ë‹¤
+		// í•œê¸€ í•œë¬¸ìëŠ” 2ë°”ì´íŠ¸ ì°¨ì§€ -> 2ê°œ
 		while ((ch = fgetc(fp1)) != EOF)
 		{
-			// ÁÙ¹Ù²Ş(Enter) ¹®ÀÚ´Â Á¦¿Ü
+			// ì¤„ë°”ê¿ˆ(Enter) ë¬¸ìëŠ” ì œì™¸
 			if (ch != '\n')
 			{
 				cnt++;
@@ -52,7 +52,7 @@ void main(int argc, char *argv[])
 
 		fclose(fp1);
 	}
-	// ÆÄÀÏ º¹»ç
+	// íŒŒì¼ ë³µì‚¬
 	else if (argc == 4 && strcmp(argv[1], "-c") == 0)
 	{
 		if ((fp1 = fopen(argv[2], "r")) == NULL)
@@ -79,13 +79,13 @@ void main(int argc, char *argv[])
 	}
 	else
 	{
-		// »ç¿ë¹æ¹ı Ç¥½Ã
+		// ì‚¬ìš©ë°©ë²• í‘œì‹œ
 		printf("----- Usage -----\n");
 		printf("[File View     ] %s -v File.txt\n", argv[0]);
 		printf("[File ByteCount] %s -b File.txt\n", argv[0]);
 		printf("[File Copy     ] %s -c SourceFile.txt DestinationFile.txt\n", argv[0]);
 		exit(-1);
 	}
+
+	return 0;
 }
-
-

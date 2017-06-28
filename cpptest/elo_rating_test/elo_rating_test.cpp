@@ -15,9 +15,9 @@ const float ELO_GAME_RESULT_LOSE = 0.0;
 
 float EloRating(float Ra, float Rb, float Sa)
 {
-	// A ÀÇ ½Â·ü
+	// A ì˜ ìŠ¹ë¥ 
 	float Ea = 1 / (1 + pow(10, ((Rb - Ra) / ELO_CRITERION)));
-	// A ÀÇ ½Â·ü¿¡ ±â¹İÇØ ¾ó¸¶¸¸Å­ÀÇ Ãß°¡ Á¡¼ö¸¦ ÁÙ Áö °áÁ¤
+	// A ì˜ ìŠ¹ë¥ ì— ê¸°ë°˜í•´ ì–¼ë§ˆë§Œí¼ì˜ ì¶”ê°€ ì ìˆ˜ë¥¼ ì¤„ ì§€ ê²°ì •
 	float newRa = Ra + (ELO_K * (Sa - Ea));
 	return newRa;
 }

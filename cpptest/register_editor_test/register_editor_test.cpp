@@ -24,13 +24,13 @@ int main()
 		"LegalNoticeCaption",
 		NULL,
 		REG_SZ,
-		(unsigned char*)"¡Úysoftman¡Ú",
+		(unsigned char*)"â˜…ysoftmanâ˜…",
 		10);
 	RegSetValueEx(r_key,
 		"LegalNoticeText",
 		NULL,
 		REG_SZ,
-		(unsigned char*)"°øÁö Å×½ºÆ®ÀÔ´Ï´Ù.... À±º´ÈÆ", 
+		(unsigned char*)"ê³µì§€ í…ŒìŠ¤íŠ¸ìž…ë‹ˆë‹¤.... ìœ¤ë³‘í›ˆ", 
 		1000);
 	RegCloseKey(r_key);
 	return 0;

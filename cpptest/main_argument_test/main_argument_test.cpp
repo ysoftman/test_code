@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ¸ŞÀÎ ÇÔ¼ö¿¡¼­ ÀÎÀÚ ¹Ş±â
+// ë©”ì¸ í•¨ìˆ˜ì—ì„œ ì¸ì ë°›ê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// argc ÀÎÀÚÀÇ ¼ö
-// argv ÀÎÀÚÀÇ °ª
-void main(int argc, char **argv) //char *argv[] ¿Í °°Àº¸»
+// argc ì¸ìì˜ ìˆ˜
+// argv ì¸ìì˜ ê°’
+void main(int argc, char **argv) //char *argv[] ì™€ ê°™ì€ë§
 {
 	fprintf(stderr, "argc = %d\n", argc);
 	if (argc <= 1)
