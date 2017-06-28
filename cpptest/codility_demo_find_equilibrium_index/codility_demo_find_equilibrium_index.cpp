@@ -1,16 +1,16 @@
 // title : find_equilibrium_index
 // author : ysoftman
-// ¹®Á¦ : https://codility.com/c/run/demo23NSFC-WFE
-// °á°ú : https://codility.com/demo/results/demo5WNNRP-Y8T
-// codility µ¥¸ğ Å×½ºÆ® Ç®±â
+// ë¬¸ì œ : https://codility.com/c/run/demo23NSFC-WFE
+// ê²°ê³¼ : https://codility.com/demo/results/demo5WNNRP-Y8T
+// codility ë°ëª¨ í…ŒìŠ¤íŠ¸ í’€ê¸°
 
 #include <stdio.h>
 #include <vector>
 
 using namespace std;
 
-// ÁÖ¾îÁø Á¤¼ö ¹è¿­¿¡¼­ ¾ÕºÎºĞ¿¡¼­ÀÇ ÇÕ°ú µŞºÎºĞ¿¡¼­ÀÇ ÇÕÀÌ °°¾Æ ±âÁğ ÁöÁ¡(equilibrium index) Ã£±â
-// ¿©·¯°³ÀÇ equilibrium index °¡ ÀÖÀ» ¼ö ÀÖ±â ¶§¹®¿¡ °á°ú °ªÀ» ¹è¿­·Î µû·Î ¹Ş´Â´Ù.
+// ì£¼ì–´ì§„ ì •ìˆ˜ ë°°ì—´ì—ì„œ ì•ë¶€ë¶„ì—ì„œì˜ í•©ê³¼ ë’·ë¶€ë¶„ì—ì„œì˜ í•©ì´ ê°™ì•„ ê¸°ì¦Œ ì§€ì (equilibrium index) ì°¾ê¸°
+// ì—¬ëŸ¬ê°œì˜ equilibrium index ê°€ ìˆì„ ìˆ˜ ìˆê¸° ë•Œë¬¸ì— ê²°ê³¼ ê°’ì„ ë°°ì—´ë¡œ ë”°ë¡œ ë°›ëŠ”ë‹¤.
 int solution(vector<int> &A, vector<int> &output) {
 	// write your code in C++11 (g++ 4.8.2)
 	long prefix_sum = 0;
@@ -58,7 +58,7 @@ int main()
 	vector<int>::iterator iter;
 	for (iter=vecResult.begin(); iter!=vecResult.end(); iter++)
 	{
-		printf("%d\n", *iter);
+		printf("equilibrium = %d\n", *iter);
 	}
 
 
