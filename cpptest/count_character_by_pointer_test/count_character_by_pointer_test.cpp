@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// Æ÷ÀÎÅÍ¸¦ ÀÌ¿ëÇÑ ¹®ÀÚ¿­ ±æÀÌ Ä«¿îÆ®
+// í¬ì¸í„°ë¥¼ ì´ìš©í•œ ë¬¸ìì—´ ê¸¸ì´ ì¹´ìš´íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
-// ¹®ÀÚ¿­ ±æÀÌ Ä«¿îÆ®
+// ë¬¸ìì—´ ê¸¸ì´ ì¹´ìš´íŠ¸
 int GetByteLength(char *pByte)
 {
 	int cnt = 0;
@@ -16,10 +16,12 @@ int GetByteLength(char *pByte)
 	return cnt;
 }
 
-void main()
+int main()
 {
-	char *pMunja = "ABCDEFGHIJ";
+	char szData[50] = "ABCDEFGHIJ";
+	char *pMunja = szData;
 	int Len = GetByteLength(pMunja);
 	fprintf(stderr, "Munja = %s\nLen = %d\n", pMunja, Len);
+	return 0;
 }
 

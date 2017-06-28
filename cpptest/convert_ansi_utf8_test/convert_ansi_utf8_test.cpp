@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// MultiByte UTF8 <-> MultiByte ANSI(cp949, euc-kr, euc-jp...) ∫Ø»Ø
+// MultiByte UTF8 <-> MultiByte ANSI(cp949, euc-kr, euc-jp...) Î≥ÄÌôò
 ////////////////////////////////////////////////////////////////////////////////////
 #if (defined _WIN32) || (defined _WIN64)
 #define _CRT_SECURE_NO_WARNINGS
@@ -17,21 +17,21 @@ char *UTF8ToANSI(char *pUTF8)
 	}
 	char *pResult = NULL;
 #if defined(_WIN32) || defined(_WIN64)
-	// CP_ACP (current Windows ANSI code page) ¥¬ øµæÓ ¿©µµøÏø°º≠¥¬ ascii, «—±€ ¿©µµøÏø°º≠¥¬ euc-kr, ¿œ∫ª ¿©µµøÏø°º≠¥¬ euc-jp ∑Œ ¿€µø
-	// ¿Œƒ⁄µ˘ πÊπ˝ : utf-8(∏÷∆ºπŸ¿Ã∆Æ) -> ¿Ø¥œƒ⁄µÂ -> ANSI(euc-kr, euc-kr...) (∏÷∆ºπŸ¿Ã∆Æ)
-	// multibyte UTF8 ¿« ≈©±‚ ∆ƒæ«
+	// CP_ACP (current Windows ANSI code page) Îäî ÏòÅÏñ¥ ÏúàÎèÑÏö∞ÏóêÏÑúÎäî ascii, ÌïúÍ∏Ä ÏúàÎèÑÏö∞ÏóêÏÑúÎäî euc-kr, ÏùºÎ≥∏ ÏúàÎèÑÏö∞ÏóêÏÑúÎäî euc-jp Î°ú ÏûëÎèô
+	// Ïù∏ÏΩîÎî© Î∞©Î≤ï : utf-8(Î©ÄÌã∞Î∞îÏù¥Ìä∏) -> Ïú†ÎãàÏΩîÎìú -> ANSI(euc-kr, euc-kr...) (Î©ÄÌã∞Î∞îÏù¥Ìä∏)
+	// multibyte UTF8 Ïùò ÌÅ¨Í∏∞ ÌååÏïÖ
 	int nwcUTF8Size = MultiByteToWideChar(CP_UTF8, 0, pUTF8, -1, NULL, NULL);
-	// multibyte UTF8 ¿ª widechar UTF8 ∑Œ ∫Ø»Ø
+	// multibyte UTF8 ÏùÑ widechar UTF8 Î°ú Î≥ÄÌôò
 	WCHAR *pwcUTF8 = new WCHAR[nwcUTF8Size];
 	memset(pwcUTF8, 0, sizeof(WCHAR)*nwcUTF8Size);
 	MultiByteToWideChar(CP_UTF8, 0, pUTF8, -1, pwcUTF8, nwcUTF8Size);
-	// widechar UTF8 ¿Ã NULL ∑Œ ≥°≥™µµ∑œ 
+	// widechar UTF8 Ïù¥ NULL Î°ú ÎÅùÎÇòÎèÑÎ°ù 
 	pwcUTF8[nwcUTF8Size-1] = L'\0';
-	// widechar UTF8 ≈©±‚ ∆ƒæ«
+	// widechar UTF8 ÌÅ¨Í∏∞ ÌååÏïÖ
 	int nANSISize = WideCharToMultiByte(CP_ACP, 0, pwcUTF8, -1, NULL, NULL, NULL, NULL);
 	char *pANSI = new char[nANSISize];
 	memset(pANSI, 0, sizeof(char)*(nANSISize));
-	// widechar UTF8 ¿ª multibyte ANSI(euc-kr, euc-kr...) ∑Œ ∫Ø»Ø
+	// widechar UTF8 ÏùÑ multibyte ANSI(euc-kr, euc-kr...) Î°ú Î≥ÄÌôò
 	if (WideCharToMultiByte(CP_ACP, 0, pwcUTF8, -1, pANSI, nANSISize, NULL, NULL) == 0)
 	{
 		delete[] pANSI;
@@ -52,21 +52,21 @@ char *ANSIToUTF8(char *pANSI)
 	}
 	char *pResult = NULL;
 #if defined(_WIN32) || defined(_WIN64)
-	// CP_ACP (current Windows ANSI code page) ¥¬ øµæÓ ¿©µµøÏø°º≠¥¬ ascii, «—±€ ¿©µµøÏø°º≠¥¬ euc-kr, ¿œ∫ª ¿©µµøÏø°º≠¥¬ euc-jp ∑Œ ¿€µø
-	// ¿Œƒ⁄µ˘ πÊπ˝ : ANSI(euc-kr, euc-kr...) (∏÷∆ºπŸ¿Ã∆Æ) -> ¿Ø¥œƒ⁄µÂ -> utf-8(∏÷∆ºπŸ¿Ã∆Æ)
-	// multibyte ANSI(euc-kr, euc-kr...) ¿« ≈©±‚ ∆ƒæ«
+	// CP_ACP (current Windows ANSI code page) Îäî ÏòÅÏñ¥ ÏúàÎèÑÏö∞ÏóêÏÑúÎäî ascii, ÌïúÍ∏Ä ÏúàÎèÑÏö∞ÏóêÏÑúÎäî euc-kr, ÏùºÎ≥∏ ÏúàÎèÑÏö∞ÏóêÏÑúÎäî euc-jp Î°ú ÏûëÎèô
+	// Ïù∏ÏΩîÎî© Î∞©Î≤ï : ANSI(euc-kr, euc-kr...) (Î©ÄÌã∞Î∞îÏù¥Ìä∏) -> Ïú†ÎãàÏΩîÎìú -> utf-8(Î©ÄÌã∞Î∞îÏù¥Ìä∏)
+	// multibyte ANSI(euc-kr, euc-kr...) Ïùò ÌÅ¨Í∏∞ ÌååÏïÖ
 	int nwcANSISize = MultiByteToWideChar(CP_ACP, 0, pANSI, -1, NULL, NULL);
-	// multibyte ANSI(euc-kr, euc-kr...) ¿ª widechar ANSI(euc-kr, euc-kr...) ∑Œ ∫Ø»Ø
+	// multibyte ANSI(euc-kr, euc-kr...) ÏùÑ widechar ANSI(euc-kr, euc-kr...) Î°ú Î≥ÄÌôò
 	WCHAR *pwcANSI = new WCHAR[nwcANSISize];
 	memset(pwcANSI, 0, sizeof(WCHAR)*nwcANSISize);
 	MultiByteToWideChar(CP_ACP, 0, pANSI, -1, pwcANSI, nwcANSISize);
-	// widechar ANSI(euc-kr, euc-kr...) ¿Ã NULL ∑Œ ≥°≥™µµ∑œ 
+	// widechar ANSI(euc-kr, euc-kr...) Ïù¥ NULL Î°ú ÎÅùÎÇòÎèÑÎ°ù 
 	pwcANSI[nwcANSISize-1] = L'\0';
-	// widechar ANSI(euc-kr, euc-kr...) ≈©±‚ ∆ƒæ«
+	// widechar ANSI(euc-kr, euc-kr...) ÌÅ¨Í∏∞ ÌååÏïÖ
 	int UTF8Size = WideCharToMultiByte(CP_UTF8, 0, pwcANSI, -1, NULL, NULL, NULL, NULL);
 	char *pUTF8 = new char[UTF8Size];
 	memset(pUTF8, 0, sizeof(char)*(UTF8Size));
-	// widechar ANSI(euc-kr, euc-kr...) ¿ª multibyte UTF8 ∑Œ ∫Ø»Ø
+	// widechar ANSI(euc-kr, euc-kr...) ÏùÑ multibyte UTF8 Î°ú Î≥ÄÌôò
 	if (WideCharToMultiByte(CP_UTF8, 0, pwcANSI, -1, pUTF8, UTF8Size, NULL, NULL) == 0)
 	{
 		delete[] pUTF8;
@@ -83,20 +83,21 @@ int main()
 {
 	FILE *fp = fopen("EncodingTest.txt", "w");
 
-	char *szTestString = "Yoon,ByoungHoon ¿±∫¥»∆ ¿Œƒ⁄µ˘ ≈◊Ω∫∆Æ...";
-	printf("Default: %s\n", szTestString);
-	fprintf(fp, "%s\n", szTestString);
+	char TestString[50] = "Yoon,ByoungHoon Ïú§Î≥ëÌõà Ïù∏ÏΩîÎî© ÌÖåÏä§Ìä∏...";
+	char *pTestString = TestString;
+	printf("Default: %s\n", pTestString);
+	fprintf(fp, "%s\n", pTestString);
 
-	char *szUTF8 = ANSIToUTF8(szTestString);
-	printf("UTF8   : %s\n", szUTF8);
-	fprintf(fp, "UTF8: %s\n", szUTF8);
+	char *pANSI = UTF8ToANSI(pTestString);
+	printf("ANSI   : %s\n", pANSI);
+	fprintf(fp, "ANSI: %s\n", pANSI);
 
-	char *szANSI = UTF8ToANSI(szUTF8);
-	printf("ANSI   : %s\n", szANSI);
-	fprintf(fp, "ANSI: %s\n", szANSI);
+	char *pUTF8 = ANSIToUTF8(pANSI);
+	printf("UTF8   : %s\n", pUTF8);
+	fprintf(fp, "UTF8: %s\n", pUTF8);
 
-	delete[] szUTF8;
-	delete[] szANSI;
+	delete[] pUTF8;
+	delete[] pANSI;
 
 	fclose(fp);
 

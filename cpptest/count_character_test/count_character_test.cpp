@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// Count Character - ¹®ÀÚ 'a' ¼¼±â ÇÁ·Î±×·¥
+// Count Character - ë¬¸ì 'a' ì„¸ê¸° í”„ë¡œê·¸ë¨
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
-#include <string.h>	// strlen()ÇÔ¼ö »ç¿ë
+#include <string.h>	// strlen()í•¨ìˆ˜ ì‚¬ìš©
 
-void main()
+int main()
 {
 	char str[100];
 	int n = 0;
@@ -26,5 +26,6 @@ void main()
 	}
 
 	printf("\nNumber of Character 'a' is  %2d\n", cnt);
+	return 0;
 }
 

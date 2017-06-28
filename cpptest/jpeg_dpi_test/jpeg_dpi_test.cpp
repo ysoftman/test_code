@@ -1,26 +1,26 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// jpeg Çì´õÀÇ dpi Á¤º¸¸¦ ¹Ù²Û´Ù.
+// jpeg í—¤ë”ì˜ dpi ì •ë³´ë¥¼ ë°”ê¾¼ë‹¤.
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 // 20101203 ysoftman
-// ÆÄÀÏÀÇ Å©±â¸¦ ÆÄ¾ÇÇÑ´Ù.
+// íŒŒì¼ì˜ í¬ê¸°ë¥¼ íŒŒì•…í•œë‹¤.
 int GetFileSize(FILE *fp)
 {
-	// fp ¸¦ ÆÄÀÏÀÇ ¸Ç ³¡À¸·Î ¿Å±ä´Ù.
+	// fp ë¥¼ íŒŒì¼ì˜ ë§¨ ëìœ¼ë¡œ ì˜®ê¸´ë‹¤.
 	fseek(fp, 0, SEEK_END);
-	// ÆÄÀÏÀÇ ¸Ç Ã³À½ºÎÅÍÀÇ °Å¸®¸¦ ¹ÙÀÌÆ®·Î ¾Ë¾Æº»´Ù.
+	// íŒŒì¼ì˜ ë§¨ ì²˜ìŒë¶€í„°ì˜ ê±°ë¦¬ë¥¼ ë°”ì´íŠ¸ë¡œ ì•Œì•„ë³¸ë‹¤.
 	int size = ftell(fp);
-	// fp ¸¦ ÆÄÀÏÀÇ ¸Ç Ã³À½À¸·Î µ¹·Á ³õ´Â´Ù.
+	// fp ë¥¼ íŒŒì¼ì˜ ë§¨ ì²˜ìŒìœ¼ë¡œ ëŒë ¤ ë†“ëŠ”ë‹¤.
 	fseek(fp, 0, SEEK_SET);
 	return size;
 }
 
 // 20101203 ysoftman
-// jpeg ÆÄÀÏÀÇ DPI Á¤º¸¸¦ ¹Ù²ãÁØ´Ù.
+// jpeg íŒŒì¼ì˜ DPI ì •ë³´ë¥¼ ë°”ê¿”ì¤€ë‹¤.
 int main(int argc, char *argv[])
 {
 	if (argc != 4)
@@ -30,43 +30,43 @@ int main(int argc, char *argv[])
 		exit(-1);
 	}
 
-	// ÀÔ·Â jpg ÆÄÀÏ
+	// ì…ë ¥ jpg íŒŒì¼
 	FILE *fpIn = fopen(argv[2], "rb");
 	if (fpIn == NULL)
 	{
 		fprintf(stderr, "can't open %s file...\n", argv[2]);
 		exit(-1);
 	}
-	// Ãâ·Â jpg ÆÄÀÏ
+	// ì¶œë ¥ jpg íŒŒì¼
 	FILE *fpOut = fopen(argv[3], "wb");
 	if (fpOut == NULL)
 	{
 		fprintf(stderr, "can't open %s file...\n", argv[3]);
 		exit(-1);
 	}
-	// ¼³Á¤ÇÒ dpi °ª
+	// ì„¤ì •í•  dpi ê°’
 	int dpi = atoi(argv[1]);
 	if (dpi < 0 || dpi > 200)
 	{
 		dpi = 200;
 	}
-	// ÀÔ·Â ÆÄÀÏÅ©±â ¾ò±â
+	// ì…ë ¥ íŒŒì¼í¬ê¸° ì–»ê¸°
 	int size = GetFileSize(fpIn);
 	char *pBuffer = (char*)malloc(sizeof(char)*size);
 	memset(pBuffer, 0, sizeof(char)*size);
-	// ÀÔ·Â ÆÄÀÏ ¸Ş¸ğ¸®·Î º¹»çÇÏ±â
+	// ì…ë ¥ íŒŒì¼ ë©”ëª¨ë¦¬ë¡œ ë³µì‚¬í•˜ê¸°
 	fread(pBuffer, sizeof(char)*size, 1, fpIn);
 
 	char readbyte = 0;
 
-	// ¼öÆò ÇØ»óµµ
+	// ìˆ˜í‰ í•´ìƒë„
 	readbyte = pBuffer[15];
 	pBuffer[15] = dpi;
-	// ¼öÁ÷ ÇØ»óµµ
+	// ìˆ˜ì§ í•´ìƒë„
 	readbyte = pBuffer[17];
 	pBuffer[17] = dpi;
 
-	// Ãâ·Â ÆÄÀÏ ¸¸µé±â
+	// ì¶œë ¥ íŒŒì¼ ë§Œë“¤ê¸°
 	fwrite(pBuffer, sizeof(char)*size, 1, fpOut);
 	fprintf(stderr, "%s(%d) -> %s(%d) dpi Completed.\n", argv[2], readbyte, argv[3], dpi);
 

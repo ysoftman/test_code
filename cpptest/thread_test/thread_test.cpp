@@ -15,7 +15,7 @@ static int nCount = 0;
 #ifdef _WIN32
 int job()
 {
-	// ´Ù¸¥ thread °¡ »ç¿ëÁßÀÌ¶ó¸é ÀÛ¾÷À» ¸¶Ä¥¶§±îÁö ´ë±âÇÑ´Ù.
+	// ë‹¤ë¥¸ thread ê°€ ì‚¬ìš©ì¤‘ì´ë¼ë©´ ì‘ì—…ì„ ë§ˆì¹ ë•Œê¹Œì§€ ëŒ€ê¸°í•œë‹¤.
 	EnterCriticalSection(&cs);
 	
 	nCount++;
@@ -62,7 +62,7 @@ unsigned int __stdcall Thread2(void* param)
 void main()
 {
 #ifdef _WIN32
-	// critical_section ÃÊ±âÈ­
+	// critical_section ì´ˆê¸°í™”
 	InitializeCriticalSection(&cs);
 
 	SYSTEM_INFO	SystemInfo;
@@ -78,13 +78,13 @@ void main()
 	DWORD tick_start;
 	DWORD tick_end;
 
-	// Ã³¸®½Ã°£ ÆÄ¾Ç
+	// ì²˜ë¦¬ì‹œê°„ íŒŒì•…
 	tick_start = GetTickCount();
 
 	hThreads[0] = (HANDLE)_beginthreadex(NULL, 0, Thread1, (void*)1, 0, &ThreadID);
 	hThreads[1] = (HANDLE)_beginthreadex(NULL, 0, Thread2, (void*)2, 0, &ThreadID);
 
-	// ¸ğµç ¾²·¹µå°¡ Á¾·áµÉ¶§±îÁö ±â´Ù¸°´Ù.
+	// ëª¨ë“  ì“°ë ˆë“œê°€ ì¢…ë£Œë ë•Œê¹Œì§€ ê¸°ë‹¤ë¦°ë‹¤.
 	WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);
 	printf("Result Count = %d\n", nCount);
 	

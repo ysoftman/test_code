@@ -1,26 +1,26 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// URL ÀÎÄÚµù/µğÄÚµù
+// URL ì¸ì½”ë”©/ë””ì½”ë”©
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string>
 
 using namespace std;
 
-// 16Áø¼ö ¹®ÀÚ°ªÀ» 10Áø¼ö ¹®ÀÚ°ªÀ¸·Î º¯È¯
+// 16ì§„ìˆ˜ ë¬¸ìê°’ì„ 10ì§„ìˆ˜ ë¬¸ìê°’ìœ¼ë¡œ ë³€í™˜
 char hex2int(char input)
 {
-	// ¼ıÀÚ
+	// ìˆ«ì
 	if (input >= '0' && input <= '9')
 	{
 		return input - '0';
 	}
-	// ´ë¹®ÀÚ
+	// ëŒ€ë¬¸ì
 	else if (input >= 'A' && input <= 'Z')
 	{
 		return input - 'A' + 10;
 	}
-	// ¼Ò¹®ÀÚ
+	// ì†Œë¬¸ì
 	else if (input >= 'a' && input <= 'z')
 	{
 		return input - 'a' + 10;
@@ -28,14 +28,14 @@ char hex2int(char input)
 	return NULL;
 }
 
-// 10Áø¼ö ¹®ÀÚ°ªÀ» 16Áø¼ö ¹®ÀÚ°ªÀ¸·Î º¯È¯
+// 10ì§„ìˆ˜ ë¬¸ìê°’ì„ 16ì§„ìˆ˜ ë¬¸ìê°’ìœ¼ë¡œ ë³€í™˜
 char int2hex(char input)
 {
 	char hex[17] = "0123456789abcdef";
 	return hex[0x0f & input];
 }
 
-// URL ÀÎÄÚµù ÇÑ´Ù.
+// URL ì¸ì½”ë”© í•œë‹¤.
 string URLEncoding(char *pIn)
 {
 	if (pIn == NULL)
@@ -48,19 +48,19 @@ string URLEncoding(char *pIn)
 	while (*pIn != NULL)
 	{
 		temp = *pIn;
-		// ASCII ´ë¼Ò¹®ÀÚ¿Í ¼ıÀÚÀÎ °æ¿ì¸¸ ±×´ë·Î ÀúÀå
+		// ASCII ëŒ€ì†Œë¬¸ìì™€ ìˆ«ìì¸ ê²½ìš°ë§Œ ê·¸ëŒ€ë¡œ ì €ì¥
 		if ((temp>= '0' && temp <= '9') ||
 			(temp >= 'a' && temp <= 'z') ||
 			(temp >= 'A' && temp <= 'Z'))
 		{
 			result += temp;
 		}
-		// °ø¹éÀº + ·Î
+		// ê³µë°±ì€ + ë¡œ
 		else if (temp == ' ')
 		{
 			result += "+";
 		}
-		// ¾Æ´Ï¸é % ¿Í 2ÀÚ¸® 16Áø¼ö ¹®ÀÚ°ªÀ¸·Î ¸¸µé¾î ÀúÀå
+		// ì•„ë‹ˆë©´ % ì™€ 2ìë¦¬ 16ì§„ìˆ˜ ë¬¸ìê°’ìœ¼ë¡œ ë§Œë“¤ì–´ ì €ì¥
 		else
 		{
 			result += "%";
@@ -73,7 +73,7 @@ string URLEncoding(char *pIn)
 	return result;
 }
 
-// URL µğÄÚµù ÇÑ´Ù.
+// URL ë””ì½”ë”© í•œë‹¤.
 string URLDecoding(char *pIn)
 {
 	if (pIn == NULL)
@@ -86,19 +86,19 @@ string URLDecoding(char *pIn)
 	while (*pIn != NULL)
 	{
 		temp = *pIn;
-		// ASCII ´ë¼Ò¹®ÀÚ¿Í ¼ıÀÚÀÎ °æ¿ì¸¸ ±×´ë·Î ÀúÀå
+		// ASCII ëŒ€ì†Œë¬¸ìì™€ ìˆ«ìì¸ ê²½ìš°ë§Œ ê·¸ëŒ€ë¡œ ì €ì¥
 		if ((temp >= '0' && temp <= '9') ||
 			(temp >= 'a' && temp <= 'z') ||
 			(temp >= 'A' && temp <= 'Z'))
 		{
 			result += temp;
 		}
-		// + ´Â °ø¹éÀ¸·Î ÀúÀå
+		// + ëŠ” ê³µë°±ìœ¼ë¡œ ì €ì¥
 		else if (temp == '+')
 		{
 			result += " ";
 		}
-		// % ·Î ½ÃÀÛµÇ¸é % »©°í 2ÀÚ¸® 16Áø¼ö ¹®ÀÚ°ªÀ» 10Áø¼ö ¹®ÀÚ°ªÀ¸·Î º¯°æÇÏ¿© ÀúÀå
+		// % ë¡œ ì‹œì‘ë˜ë©´ % ë¹¼ê³  2ìë¦¬ 16ì§„ìˆ˜ ë¬¸ìê°’ì„ 10ì§„ìˆ˜ ë¬¸ìê°’ìœ¼ë¡œ ë³€ê²½í•˜ì—¬ ì €ì¥
 		else if (temp == '%')
 		{
 			char buf = NULL;
@@ -120,7 +120,7 @@ string URLDecoding(char *pIn)
 
 void main()
 {
-	char *pInput = "À±º´ÈÆ qwer 1234 QWER !@#$";
+	char *pInput = "ìœ¤ë³‘í›ˆ qwer 1234 QWER !@#$";
 	string Result;
 	
 	fprintf(stdout, "input = %s\n", pInput);

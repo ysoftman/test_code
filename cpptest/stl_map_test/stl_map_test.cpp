@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// stl map Å×½ºÆ®
+// stl map í…ŒìŠ¤íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <map>
@@ -12,20 +12,20 @@ int main()
 	map<int, int> mapTest;
 
 
-	printf("-- map ¼³Á¤ °ª Å×½ºÆ® --\n");
+	printf("-- map ì„¤ì • ê°’ í…ŒìŠ¤íŠ¸ --\n");
 	int index = 1000;
 	for (int i = 0; i<index; i++)
 	{
 		mapTest[i] = i;
 	}
-	printf("mapTest[%d] ~ [%d] ¼³Á¤ ¿Ï·á\n", index-1, mapTest[index-1]);
-	printf("mapTest[%d] = %d ¼³Á¤µÈ °ª\n", index-1, mapTest[index-1]);
-	// set ÇÏÁö ¾ÊÀº °÷Àº NULL ·Î µÇ¾îÀÖ´Ù.
-	printf("mapTest[%d] = %d ¹Ì¼³Á¤½Ã °ªÀº µðÆúÆ® NULL(0) ·Î Ãß°¡\n", index, mapTest[index+1]);
+	printf("mapTest[%d] ~ [%d] ì„¤ì • ì™„ë£Œ\n", index-1, mapTest[index-1]);
+	printf("mapTest[%d] = %d ì„¤ì •ëœ ê°’\n", index-1, mapTest[index-1]);
+	// set í•˜ì§€ ì•Šì€ ê³³ì€ NULL ë¡œ ë˜ì–´ìžˆë‹¤.
+	printf("mapTest[%d] = %d ë¯¸ì„¤ì •ì‹œ ê°’ì€ ë””í´íŠ¸ NULL(0) ë¡œ ì¶”ê°€\n", index, mapTest[index+1]);
 
 	printf("\n");
-	printf("-- map find() Å×½ºÆ® --\n");
-	// map find() ¹«ÇÑ ·çÇÁ °¡´É¼º Å×½ºÆ®
+	printf("-- map find() í…ŒìŠ¤íŠ¸ --\n");
+	// map find() ë¬´í•œ ë£¨í”„ ê°€ëŠ¥ì„± í…ŒìŠ¤íŠ¸
 	map<int, int>::iterator iter;
 
 	int key = 5;
@@ -36,7 +36,7 @@ int main()
 	printf("mapTest.erase(%d) .. ok\n", key);
 
 	iter = mapTest.find(key);
-	// iter °ªÀÌ invalid
+	// iter ê°’ì´ invalid
 	//printf("mapTest.find(%d) .. %d\n", key, iter->second);
 
 	return 0;

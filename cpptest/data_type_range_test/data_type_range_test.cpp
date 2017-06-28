@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// OS È¯°æ¿¡ µû¸¥ Data Type Range ¾Ë¾Æº¸±â
+// OS í™˜ê²½ì— ë”°ë¥¸ Data Type Range ì•Œì•„ë³´ê¸°
 //
 //DataModel		char	short	int		long	long long		pointers/size_t		OS(64bit)
 //LP64			8		16		32		64		X				64					Unix, Solaris, Linux, Mac OS
 //LLP64			8		16		32		32		64				64					MS-Windows
 //ILP64			8		16		64		64		X				64
 //
-//LP64 ´Â long °ú pointer ¸¸ 64bit ¶ó´Â Ç¥½Ã
-//LLP64 ´Â long long °ú pointer ¸¸ 64bit ¶ó´Â Ç¥½Ã
-//ILP64 ´Â int ¿Í long °ú pointer ¸¸ 64bit ¶ó´Â Ç¥½Ã
+//LP64 ëŠ” long ê³¼ pointer ë§Œ 64bit ë¼ëŠ” í‘œì‹œ
+//LLP64 ëŠ” long long ê³¼ pointer ë§Œ 64bit ë¼ëŠ” í‘œì‹œ
+//ILP64 ëŠ” int ì™€ long ê³¼ pointer ë§Œ 64bit ë¼ëŠ” í‘œì‹œ
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 

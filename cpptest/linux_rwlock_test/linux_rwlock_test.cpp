@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // linux RWLock test
-// ÄÄÆÄÀÏ½Ã -lpthread »ç¿ë
+// ì»´íŒŒì¼ì‹œ -lpthread ì‚¬ìš©
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
@@ -11,10 +11,10 @@
 
 pthread_rwlock_t gRWLock;
 
-// ÀĞ±â ¿ëµµ·Î È£Ãâ µÇ´Â ÇÔ¼ö
+// ì½ê¸° ìš©ë„ë¡œ í˜¸ì¶œ ë˜ëŠ” í•¨ìˆ˜
 void *readfunc(void *arg)
 {
-	// Read Lock Àº ¿©·¯ ¾²·¹µå°¡ µ¿½Ã Á¢±Ù °¡´É
+	// Read Lock ì€ ì—¬ëŸ¬ ì“°ë ˆë“œê°€ ë™ì‹œ ì ‘ê·¼ ê°€ëŠ¥
 	pthread_rwlock_rdlock(&gRWLock);
 	printf("readfunc threadId(%u)\n", (unsigned int)pthread_self());
 	sleep(1);
@@ -22,11 +22,11 @@ void *readfunc(void *arg)
 	return (void*)0;
 }
 
-// ¾²±â ¿ëµµ·Î È£Ãâ µÇ´Â ÇÔ¼ö
+// ì“°ê¸° ìš©ë„ë¡œ í˜¸ì¶œ ë˜ëŠ” í•¨ìˆ˜
 void *writefunc(void *arg)
 {
-	// Write Lock Àº Critical Section Ã³·³ µ¿½Ã¿¡ ÇÏ³ª¸¸ Á¢±Ù °¡´ÉÇÏ´Ù.
-	// ¸ğµç Read Lock ÀÌ ³¡³ª¾ßÁö Á¢±Ù °¡´ÉÇÏ´Ù.
+	// Write Lock ì€ Critical Section ì²˜ëŸ¼ ë™ì‹œì— í•˜ë‚˜ë§Œ ì ‘ê·¼ ê°€ëŠ¥í•˜ë‹¤.
+	// ëª¨ë“  Read Lock ì´ ëë‚˜ì•¼ì§€ ì ‘ê·¼ ê°€ëŠ¥í•˜ë‹¤.
 	pthread_rwlock_wrlock(&gRWLock);
 	printf("writefunc threadId(%u)\n", (unsigned int)pthread_self());
 	sleep(1);
@@ -47,8 +47,8 @@ int main()
 	for (int i=0; i<nThreadCnt; ++i)
 	{
 		pthread_create(&readThread[i], NULL, readfunc, NULL);
-		// ¾²±â ÇÔ¼ö°¡ 3¹øÂ°·Î ¼öÇàµÇÁö ¾Ê°í
-		// ÀĞ±â ¾²·¹µå°¡ ¸ğµÎ Á¾·áµÈ ÈÄ ¼öÇàµÈ´Ù.
+		// ì“°ê¸° í•¨ìˆ˜ê°€ 3ë²ˆì§¸ë¡œ ìˆ˜í–‰ë˜ì§€ ì•Šê³ 
+		// ì½ê¸° ì“°ë ˆë“œê°€ ëª¨ë‘ ì¢…ë£Œëœ í›„ ìˆ˜í–‰ëœë‹¤.
 		if (i==3)
 		{
 			pthread_create(&writeThread, NULL, writefunc, NULL);

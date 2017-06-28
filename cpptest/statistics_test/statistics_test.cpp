@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// Åë°è °ª °è»ê
+// í†µê³„ ê°’ ê³„ì‚°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <math.h>
@@ -13,7 +13,7 @@ float GetAverage(float* set, int num)
 	{
 		average += set[i];
 	}
-	//Æò±Õ (average) : ¼öµéÀÇ ÃÑÇÕÀ» °³¼ö·Î ³ª´« ¼ö 
+	//í‰ê·  (average) : ìˆ˜ë“¤ì˜ ì´í•©ì„ ê°œìˆ˜ë¡œ ë‚˜ëˆˆ ìˆ˜ 
 	average = float(average/num);
 	return average;
 }
@@ -25,13 +25,13 @@ float GetVariance(float* set, int num, float average)
 	int i = 0;
 	for (i=0; i<num; i++)
 	{
-		// ÆíÂ÷(deviation) : Æò±Õ¿¡¼­ °¢°¢ÀÇ ¼ö°¡ ¶³¾îÁø Á¤µµ
+		// í¸ì°¨(deviation) : í‰ê· ì—ì„œ ê°ê°ì˜ ìˆ˜ê°€ ë–¨ì–´ì§„ ì •ë„
 		deviation = set[i] - average;
 		printf("deviation set[%d] = %.2f\n", i, deviation);
 
 		variance += deviation * deviation;
 	}
-	// ºĞ»ê(variance) : ÆíÂ÷ÀÇ Á¦°öµéÀÇ ÇÕÀ» °³¼ö·Î ³ª´« ¼ö
+	// ë¶„ì‚°(variance) : í¸ì°¨ì˜ ì œê³±ë“¤ì˜ í•©ì„ ê°œìˆ˜ë¡œ ë‚˜ëˆˆ ìˆ˜
 	variance = float(variance/num);
 	return variance;
 }
@@ -39,7 +39,7 @@ float GetVariance(float* set, int num, float average)
 float GetStandardDeviation(float variance)
 {
 	float sd = 0.0;
-	// Ç¥ÁØÆíÂ÷(standard deviation) : ºĞ»êÀÇ Á¦°ö±Ù
+	// í‘œì¤€í¸ì°¨(standard deviation) : ë¶„ì‚°ì˜ ì œê³±ê·¼
 	sd = sqrt(variance);
 	return sd;
 }
@@ -53,20 +53,20 @@ float GetCoVariance(float* setX, float* setY, int num, float averageX, float ave
 	{
 		covariance += (setX[i] - averageX) * (setY[i] - averageY);
 	}
-	// °øºĞ»ê(covariance) : setX¿Í setYÀÇ ÆíÂ÷°öµéÀÇ ÇÕÀ» °³¼ö·Î ³ª´« ¼ö
+	// ê³µë¶„ì‚°(covariance) : setXì™€ setYì˜ í¸ì°¨ê³±ë“¤ì˜ í•©ì„ ê°œìˆ˜ë¡œ ë‚˜ëˆˆ ìˆ˜
 	covariance = float(covariance/num);
 	return covariance;
 }
 
-// PCC (Pearson Correlation Coefficient) ÇÇ¾î½¼»ó°ü°è¼ö
-// -1 <= PCC <= 1 »çÀÌÀÇ °ªÀ¸·Î »ó°ü °ü°è¸¦ ³ªÅ¸³½´Ù.
-// 1 ¿¡ °¡±î¿ï ¼ö·Ï °°Àº ¹æÇâÀÇ »ó°ü¼ºÀ» ³ªÅ¸³½´Ù.
-// -1 ¿¡ °¡±î¿ï ¼ö·Ï ¹İ´ë ¹æÇâÀÇ »ó°ü¼ºÀ» ³ªÅ¸³½´Ù.
-// 0 ¿¡ °¡±î¿ï ¼ö·Ï »ó°ü¼ºÀÌ ¾øÀ½À» ³ªÅ¸³½´Ù.
+// PCC (Pearson Correlation Coefficient) í”¼ì–´ìŠ¨ìƒê´€ê³„ìˆ˜
+// -1 <= PCC <= 1 ì‚¬ì´ì˜ ê°’ìœ¼ë¡œ ìƒê´€ ê´€ê³„ë¥¼ ë‚˜íƒ€ë‚¸ë‹¤.
+// 1 ì— ê°€ê¹Œìš¸ ìˆ˜ë¡ ê°™ì€ ë°©í–¥ì˜ ìƒê´€ì„±ì„ ë‚˜íƒ€ë‚¸ë‹¤.
+// -1 ì— ê°€ê¹Œìš¸ ìˆ˜ë¡ ë°˜ëŒ€ ë°©í–¥ì˜ ìƒê´€ì„±ì„ ë‚˜íƒ€ë‚¸ë‹¤.
+// 0 ì— ê°€ê¹Œìš¸ ìˆ˜ë¡ ìƒê´€ì„±ì´ ì—†ìŒì„ ë‚˜íƒ€ë‚¸ë‹¤.
 float GetPCC(float covariance, float sdX, float sdY)
 {
 	float pcc = 0.0;
-	// ÇÇ¾î½¼ »ó°ü°è¼ö(Pearson Correlation Coefficient) : °øºĞ»êÀ» setX¿Í setYÀÇ Ç¥ÁØÆíÂ÷ÀÇ °öÀ¸·Î ³ª´« ¼ö
+	// í”¼ì–´ìŠ¨ ìƒê´€ê³„ìˆ˜(Pearson Correlation Coefficient) : ê³µë¶„ì‚°ì„ setXì™€ setYì˜ í‘œì¤€í¸ì°¨ì˜ ê³±ìœ¼ë¡œ ë‚˜ëˆˆ ìˆ˜
 	pcc = covariance/(sdX*sdY);
 	return pcc;
 }

@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// Dijkstra (´ÙÀÍ½ºÆ®¶ó) ¾Ë°í¸®ÁòÀ¸·Î ÃÖ´Ü°æ·Î Ã£±â
+// Dijkstra (ë‹¤ìµìŠ¤íŠ¸ë¼) ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ ìµœë‹¨ê²½ë¡œ ì°¾ê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
 #include <stack>
 
-const int X = 99999;	// ¹«ÇÑ´ë
-const int NUM_OF_NODES = 9;	// ³ëµå ¼ö
+const int X = 99999;	// ë¬´í•œëŒ€
+const int NUM_OF_NODES = 9;	// ë…¸ë“œ ìˆ˜
 int Dijkstra(int N, int Matrix[NUM_OF_NODES][NUM_OF_NODES], int nStartPos, int Distance[], int PreNode[])
 {
 	if (nStartPos < 0 || nStartPos >= N)
@@ -38,7 +38,7 @@ int Dijkstra(int N, int Matrix[NUM_OF_NODES][NUM_OF_NODES], int nStartPos, int D
 				i = j;
 			}
 		}
-		// ´õÀÌ»ó Å½»öÇÒ ³ëµå°¡ ¾ø´Ù¸é ³¡³½´Ù.
+		// ë”ì´ìƒ íƒìƒ‰í•  ë…¸ë“œê°€ ì—†ë‹¤ë©´ ëë‚¸ë‹¤.
 		if (i == -1)
 		{
 			break;
@@ -46,11 +46,11 @@ int Dijkstra(int N, int Matrix[NUM_OF_NODES][NUM_OF_NODES], int nStartPos, int D
 		bFind[i] = true;
 		for (int j=0; j<N; j++)
 		{
-			// ÇöÀç ³ëµå¿¡ ÇöÀç ³ëµå±îÁöÀÇ ºñ¿ëÁß °¡Àå ÀÛÀº ºñ¿ëÇÕ»êÀ¸·Î ±â·ÏÇÑ´Ù.
+			// í˜„ì¬ ë…¸ë“œì— í˜„ì¬ ë…¸ë“œê¹Œì§€ì˜ ë¹„ìš©ì¤‘ ê°€ì¥ ì‘ì€ ë¹„ìš©í•©ì‚°ìœ¼ë¡œ ê¸°ë¡í•œë‹¤.
 			if (Matrix[i][j] != X && Distance[j] > Distance[i] + Matrix[i][j])
 			{
 				Distance[j] = Distance[i] + Matrix[i][j];
-				// ÀÌÀü ³ëµå ±â·Ï
+				// ì´ì „ ë…¸ë“œ ê¸°ë¡
 				PreNode[j] = i;
 			}
 		}
@@ -77,7 +77,7 @@ char *GetNodeName(int num)
 int main()
 {
 
-    // ±×·¡ÇÁ¸¦ ÀÎÁ¢ Çà·Ä(adjacency matrix)·Î Ç¥Çö
+    // ê·¸ë˜í”„ë¥¼ ì¸ì ‘ í–‰ë ¬(adjacency matrix)ë¡œ í‘œí˜„
 	//   A B C D E F G H J
 	// A 0 6 3 2 X X X X X
 	// B X 0 X X 2 X X X X
@@ -133,7 +133,7 @@ int main()
 	printf("                                                                \n");
 
 
-	// ÃÖ´Ü °æ·Î ÆÄ¾Ç
+	// ìµœë‹¨ ê²½ë¡œ íŒŒì•…
 	std::stack<int> ShortestPath;
 	int temp = nEndPos;
 	for (int i=0; i<NUM_OF_NODES; i++)
@@ -145,7 +145,7 @@ int main()
 		}
 		temp = PreNode[temp];
 	}
-	// ÃÖ´Ü °æ·Î Ãâ·Â
+	// ìµœë‹¨ ê²½ë¡œ ì¶œë ¥
 	while (ShortestPath.empty() == false)
 	{
 		printf("%s", GetNodeName(ShortestPath.top()) );
