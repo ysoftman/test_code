@@ -12,9 +12,9 @@
 const int MAX_SET = 10;
 
 struct DOT{
-	int x;			// x ÁÂÇ¥
-	int y;			// y ÁÂÇ¥
-	int group;		// ÇöÀç Á¡ÀÌ ¼ÓÇÑ ±×·ì(Å¬·¡½º)
+	int x;			// x ì¢Œí‘œ
+	int y;			// y ì¢Œí‘œ
+	int group;		// í˜„ì¬ ì ì´ ì†í•œ ê·¸ë£¹(í´ë˜ìŠ¤)
 };
 
 bool KMeansClustering(DOT *pInput, int nClass);
@@ -23,7 +23,7 @@ int main()
 {
 	srand((unsigned int)time(NULL));
 	DOT *pInput = new DOT[MAX_SET];
-	// ÀÔ·ÂÀ¸·Î »ç¿ëÇÒ Á¡µéÀ» ·£´ıÇÏ°Ô ¸¸µç´Ù.
+	// ì…ë ¥ìœ¼ë¡œ ì‚¬ìš©í•  ì ë“¤ì„ ëœë¤í•˜ê²Œ ë§Œë“ ë‹¤.
 	for (int i=0; i<MAX_SET; i++)
 	{
 		pInput[i].x = rand()%10;
@@ -31,7 +31,7 @@ int main()
 		pInput[i].group = 0;
 		fprintf(stderr, "pInput[%3d] = (%3d,%3d)\n", i, pInput[i].x, pInput[i].y);
 	}
-	// ±ºÁıÈ­ ½ÃÅ²´Ù.
+	// êµ°ì§‘í™” ì‹œí‚¨ë‹¤.
 	KMeansClustering(pInput, 3);
 
 	delete[] pInput;
@@ -43,7 +43,7 @@ bool KMeansClustering(DOT *pInput, int nClass)
 	bool bFind = false;
 
 	DOT *pCenterDot = new DOT[nClass];
-	// ÃÊ±âÀÇ °¢ Å¬·¡½º¸¦ ´ëÇ¥ÇÒ ÁßÁ¡Àº ÀÔ·Â »ùÇÃ·Î ºÎÅÍ ¼±ÅÃÇÑ´Ù.
+	// ì´ˆê¸°ì˜ ê° í´ë˜ìŠ¤ë¥¼ ëŒ€í‘œí•  ì¤‘ì ì€ ì…ë ¥ ìƒ˜í”Œë¡œ ë¶€í„° ì„ íƒí•œë‹¤.
 	for (int i=0; i<nClass; i++)
 	{
 		pCenterDot[i].x = pInput[i].x;
@@ -51,24 +51,24 @@ bool KMeansClustering(DOT *pInput, int nClass)
 		pCenterDot[i].group = 0;
 	}
 
-	// ¹İº¹½Ã ÁßÁ¡À» ´Ù½Ã °è»êÇÏ±â À§ÇØ¼­
+	// ë°˜ë³µì‹œ ì¤‘ì ì„ ë‹¤ì‹œ ê³„ì‚°í•˜ê¸° ìœ„í•´ì„œ
 	DOT *pNewCenterDot = new DOT[nClass];
 	memset(pNewCenterDot, 0, sizeof(DOT)*nClass);
 
 	while (true)
 	{
-		// ÇöÀç ÁßÁ¡ °ª Ãâ·Â
+		// í˜„ì¬ ì¤‘ì  ê°’ ì¶œë ¥
 		for (j=0; j<nClass; j++)
 		{
 			fprintf(stderr, "pCenterDot[%3d] = (%3d,%3d)\n", j, pCenterDot[j].x, pCenterDot[j].y);
 		}
-		// ÁÖ¾îÁø ÁßÁ¡°úÀÇ °Å¸®¸¦ ±â¹İÀ¸·Î ÀÔ·Âµ¥ÀÌÅÍ¸¦ classify
+		// ì£¼ì–´ì§„ ì¤‘ì ê³¼ì˜ ê±°ë¦¬ë¥¼ ê¸°ë°˜ìœ¼ë¡œ ì…ë ¥ë°ì´í„°ë¥¼ classify
 		for (i=0; i<MAX_SET; i++)
 		{
 			PreDist = 99999;
 			for (j=0; j<nClass; j++)
 			{
-				// ÀÔ·Âµ¥ÀÌÅÍ Á¡µéÀÌ ÇöÀç ÁßÁ¡°úÀÇ ÀÌÀü ÁßÁ¡ Áß ÀÛÀº °÷ÀÇ Å¬·¡½º¸¦ ¼±ÅÃÇÑ´Ù.
+				// ì…ë ¥ë°ì´í„° ì ë“¤ì´ í˜„ì¬ ì¤‘ì ê³¼ì˜ ì´ì „ ì¤‘ì  ì¤‘ ì‘ì€ ê³³ì˜ í´ë˜ìŠ¤ë¥¼ ì„ íƒí•œë‹¤.
 				CurDist = 0;
 				CurDist += abs(pCenterDot[j].x-pInput[i].x) + abs(pCenterDot[j].y-pInput[i].y);
 				if (PreDist > CurDist)
@@ -77,10 +77,10 @@ bool KMeansClustering(DOT *pInput, int nClass)
 				}
 				PreDist = MIN(PreDist,CurDist);
 			}
-			// ÇöÀç ÀÔ·Âµ¥ÀÌÅÍ°¡ ¾î¶² Å¬·¡½º·Î ºĞ·ùµÇ¾ú´ÂÁö Ãâ·Â
+			// í˜„ì¬ ì…ë ¥ë°ì´í„°ê°€ ì–´ë–¤ í´ë˜ìŠ¤ë¡œ ë¶„ë¥˜ë˜ì—ˆëŠ”ì§€ ì¶œë ¥
 			//fprintf(stderr, "pInput[%3d] = (%3d,%3d) ==> class%3d = (%3d,%3d)\n", i, pInput[i].x, pInput[i].y, pInput[i].group, pCenterDot[pInput[i].group].x, pCenterDot[pInput[i].group].y);
 		}
-		// classify µÈ µ¥ÀÌÅÍµé·Î ´Ù½Ã ÁßÁ¡À» °è»êÇÑ´Ù.
+		// classify ëœ ë°ì´í„°ë“¤ë¡œ ë‹¤ì‹œ ì¤‘ì ì„ ê³„ì‚°í•œë‹¤.
 		memset(pNewCenterDot, 0, sizeof(DOT)*nClass);
 		for (j=0; j<nClass; j++)
 		{
@@ -103,7 +103,7 @@ bool KMeansClustering(DOT *pInput, int nClass)
 			pNewCenterDot[j].y /= Cnt;
 		}
 
-		// ÀÌÀü ÁßÁ¡°ú »õ·Ó°Ô °è»êµÈ ÁßÁ¡ÀÌ °°À¸¸é ºüÁ®³ª°£´Ù.
+		// ì´ì „ ì¤‘ì ê³¼ ìƒˆë¡­ê²Œ ê³„ì‚°ëœ ì¤‘ì ì´ ê°™ìœ¼ë©´ ë¹ ì ¸ë‚˜ê°„ë‹¤.
 		for (j=0; j<nClass; j++)
 		{
 			if (pNewCenterDot[j].x == pCenterDot[j].x && pNewCenterDot[j].y == pCenterDot[j].y)
@@ -121,7 +121,7 @@ bool KMeansClustering(DOT *pInput, int nClass)
 			break;
 		}
 
-		// »õ·Ó°Ô °è»êµÇ ÁßÁ¡À» ¹İ¿µÇÑ´Ù.
+		// ìƒˆë¡­ê²Œ ê³„ì‚°ë˜ ì¤‘ì ì„ ë°˜ì˜í•œë‹¤.
 		for (j=0; j<nClass; j++)
 		{
 			pCenterDot[j].x = pNewCenterDot[j].x;

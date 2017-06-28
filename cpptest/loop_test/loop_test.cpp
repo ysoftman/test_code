@@ -1,18 +1,18 @@
 // ysoftman
-// C++ ¿¡¼­ ¹İº¹ »ç¿ë ¹æ¹ıµé Å×½ºÆ®
+// C++ ì—ì„œ ë°˜ë³µ ì‚¬ìš© ë°©ë²•ë“¤ í…ŒìŠ¤íŠ¸
 #include <iostream>
 #include <vector>
 #include <algorithm>	// for_each
 
 using namespace std;
 
-// add ÇÔ¼ö °´Ã¼
+// add í•¨ìˆ˜ ê°ì²´
 struct Add {
 	Add()
 	{
 		result = 0;
 	}
-	// operator() ¸¦ »ç¿ëÇÏ¿© °´Ã¼(class, struct)¸¦ ÇÔ¼öÃ³·³ »ç¿ëÇÑ´Ù.
+	// operator() ë¥¼ ì‚¬ìš©í•˜ì—¬ ê°ì²´(class, struct)ë¥¼ í•¨ìˆ˜ì²˜ëŸ¼ ì‚¬ìš©í•œë‹¤.
 	void operator() (int n)
 	{
 		result = result + n;
@@ -23,7 +23,7 @@ struct Add {
 
 int main()
 {
-	// 1~100 ±îÁö ´õÇÏ±â¸¦ ´Ù¾çÇÑ ¹İº¹¹®À» »ç¿ëÇØ¼­ Ã³¸®ÇØº¸±â
+	// 1~100 ê¹Œì§€ ë”í•˜ê¸°ë¥¼ ë‹¤ì–‘í•œ ë°˜ë³µë¬¸ì„ ì‚¬ìš©í•´ì„œ ì²˜ë¦¬í•´ë³´ê¸°
 
 	// for
 	int result = 0;
@@ -35,19 +35,19 @@ int main()
 
 
 	// std::for_each
-	// STL <algorithm> ¿¡ ÀÎÅ¬·çµåÇÏ¿© »ç¿ë °¡´ÉÇÏ´Ù.
+	// STL <algorithm> ì— ì¸í´ë£¨ë“œí•˜ì—¬ ì‚¬ìš© ê°€ëŠ¥í•˜ë‹¤.
 	vector<int> vecNums;
 	for (int i=1; i<=100; i++)
 	{
 		vecNums.push_back(i);
 	}
-	// Add°´Ã¼¸¦ ÇÔ¼öÃ³·³(ÇÔ¼ö °´Ã¼) Add() ·Î È£ÃâÇÒ ¼ö ÀÖ´Ù.
+	// Addê°ì²´ë¥¼ í•¨ìˆ˜ì²˜ëŸ¼(í•¨ìˆ˜ ê°ì²´) Add() ë¡œ í˜¸ì¶œí•  ìˆ˜ ìˆë‹¤.
 	Add add = for_each(vecNums.begin(), vecNums.end(), Add());
 	cout << "std::for_each result : " << add.result << endl;
 
 
 	// foreach 
-	// Ç¥ÁØ C++ ½ºÆåÀÌ ¾Æ´Ï´Ù. visual studio 2010 ÀÌ»ó ¿¡¼­¸¸ »ç¿ë °¡´ÉÇÏ´Ù.
+	// í‘œì¤€ C++ ìŠ¤í™ì´ ì•„ë‹ˆë‹¤. visual studio 2010 ì´ìƒ ì—ì„œë§Œ ì‚¬ìš© ê°€ëŠ¥í•˜ë‹¤.
 	int numlist[101];
 	numlist[0] = 0;
 	for (int i=1; i<=100; ++i)

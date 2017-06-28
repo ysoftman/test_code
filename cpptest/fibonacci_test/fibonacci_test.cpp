@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// Fibonacci ¼ö¿­ ±¸ÇÏ±â
-// Fibonacci ¼ö¿­
+// Fibonacci ìˆ˜ì—´ êµ¬í•˜ê¸°
+// Fibonacci ìˆ˜ì—´
 // 1 1 2 3 5 8 13 21 34 55 89 144 ...
 // 1 + 2 = 3, 2 + 3 = 5, ...
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
-// Fibonacci ¼ö¿­¿¡¼­ n¹øÂ° Ç×ÀÇ °ª
+// Fibonacci ìˆ˜ì—´ì—ì„œ në²ˆì§¸ í•­ì˜ ê°’
 // recursion method
 int Fibonacci_r(int n)
 {
@@ -21,20 +21,20 @@ int Fibonacci_r(int n)
 	{
 		return 1;
 	}
-	// nÀÌ 3ÀÌ»óÀÏ¶§
+	// nì´ 3ì´ìƒì¼ë•Œ
 	else
 	{
 		result = Fibonacci_r(n-2) + Fibonacci_r(n-1);
 		if (result <= 0)
 		{
-			printf("\n%d¹øÂ° ¿¡¼­ Overflow...");
+			printf("\n%dë²ˆì§¸ ì—ì„œ Overflow...");
 			return -1;
 		}
 		return result;
 	}
 }
 
-// Fibonacci ¼ö¿­¿¡¼­ n¹øÂ° Ç×ÀÇ °ª
+// Fibonacci ìˆ˜ì—´ì—ì„œ në²ˆì§¸ í•­ì˜ ê°’
 // iteration method
 int Fibonacci_i(int n)
 {
@@ -51,7 +51,7 @@ int Fibonacci_i(int n)
 	{
 		return 1;
 	}
-	// nÀÌ 3ÀÌ»óÀÏ¶§
+	// nì´ 3ì´ìƒì¼ë•Œ
 	else
 	{
 		// 1 1 2 3 5 8 13 21 34 55 89 144 ...
@@ -62,7 +62,7 @@ int Fibonacci_i(int n)
 			temp2 = result;
 			if (result <= 0)
 			{
-				printf("\n%d¹øÂ° ¿¡¼­ Overflow...");
+				printf("\n%dë²ˆì§¸ ì—ì„œ Overflow...");
 				return -1;
 			}
 		}
@@ -75,13 +75,13 @@ int main()
 	int num = 0;
 	int last_number = 0;
 
-	// ¹İº¹¹® ÀÌ¿ë
+	// ë°˜ë³µë¬¸ ì´ìš©
 	printf("\n[Fibonacci]Input Number : ");
 	scanf("%d", &num);
 	last_number = Fibonacci_i(num);
 	printf("\nIn %d, Fibonacci Number is %d\n", num, last_number);
 
-	// Àç±ÍÇÔ¼ö ÀÌ¿ë(Å«¼ö·Î °¥¼ö·Ï °è»ê °á°ú°¡ Á¡Á¡ ´À·ÁÁø´Ù)
+	// ì¬ê·€í•¨ìˆ˜ ì´ìš©(í°ìˆ˜ë¡œ ê°ˆìˆ˜ë¡ ê³„ì‚° ê²°ê³¼ê°€ ì ì  ëŠë ¤ì§„ë‹¤)
 	printf("\n[Fibonacci]Input Number : ");
 	scanf("%d", &num);
 	last_number = Fibonacci_r(num);

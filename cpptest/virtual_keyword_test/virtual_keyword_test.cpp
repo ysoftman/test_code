@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// virtual Å°¿öµå »ç¿ë ¿¹
-// public, protected, private Å°¿öµå »ç¿ë ¿¹
+// virtual í‚¤ì›Œë“œ ì‚¬ìš© ì˜ˆ
+// public, protected, private í‚¤ì›Œë“œ ì‚¬ìš© ì˜ˆ
 ////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 
@@ -26,10 +26,10 @@ private:
 	}
 };
 
-class Child : public Parent	// public À» »ç¿ëÇÏÁö ¾ÊÀ¸¸é ±âº» private À¸·Î »ó¼ÓµÊ
+class Child : public Parent	// public ì„ ì‚¬ìš©í•˜ì§€ ì•Šìœ¼ë©´ ê¸°ë³¸ private ìœ¼ë¡œ ìƒì†ë¨
 {
 public:
-	void public_func()	// Parent public_func() ¿À¹ö¶óÀÌµù
+	void public_func()	// Parent public_func() ì˜¤ë²„ë¼ì´ë”©
 	{
 		cout << "Child public_func()\n";
 	}
@@ -55,20 +55,20 @@ private:
 int main()
 {
 	Parent *p = new Child();
-	// Parent ÀÇ public_func() ¿¡ virtual ÀÌ ÀÖÀ¸¸é Child public_func() È£Ãâ
-	// Parent ÀÇ public_func() ¿¡ virtual ÀÌ ¾øÀ¸¸é Parent public_func() È£Ãâ
+	// Parent ì˜ public_func() ì— virtual ì´ ìˆìœ¼ë©´ Child public_func() í˜¸ì¶œ
+	// Parent ì˜ public_func() ì— virtual ì´ ì—†ìœ¼ë©´ Parent public_func() í˜¸ì¶œ
 	p->public_func();
 	delete p;
 
 
 	Child *c = new Child();
-	// Child ÀÎ½ºÅÏ½º¿¡¼­ public ¾×¼¼½º °¡´É
+	// Child ì¸ìŠ¤í„´ìŠ¤ì—ì„œ public ì•¡ì„¸ìŠ¤ ê°€ëŠ¥
 	c->public_func();
-	// Child ÀÎ½ºÅÏ½º¿¡¼­ protected ¾×¼¼½º ºÒ°¡´É
-	// protected ´Â Child Å¬·¡½º ³»¿¡¼­¸¸ ¾×¼¼½º °¡´É
+	// Child ì¸ìŠ¤í„´ìŠ¤ì—ì„œ protected ì•¡ì„¸ìŠ¤ ë¶ˆê°€ëŠ¥
+	// protected ëŠ” Child í´ë˜ìŠ¤ ë‚´ì—ì„œë§Œ ì•¡ì„¸ìŠ¤ ê°€ëŠ¥
 	//c->protected_func();
 	c->public_call_protected_func();
-	// Child ÀÇ private ¾×¼¼½º ºÒ°¡´É
+	// Child ì˜ private ì•¡ì„¸ìŠ¤ ë¶ˆê°€ëŠ¥
 	//c->public_func3();
 	delete c;
 

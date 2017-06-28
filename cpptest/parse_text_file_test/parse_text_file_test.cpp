@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ÅØ½ºÆ® ÆÄÀÏ³»¿ë ÆÄ½ÌÇÏ±â
-// ÅØ½ºÆ® ÆÄÀÏÀÇ ³»¿ëÀº ´ÙÀ½°ú °°Àº Çü½ÄÀ¸·Î N °³±îÁö Á¸ÀçÇÑ´Ù.
+// í…ìŠ¤íŠ¸ íŒŒì¼ë‚´ìš© íŒŒì‹±í•˜ê¸°
+// í…ìŠ¤íŠ¸ íŒŒì¼ì˜ ë‚´ìš©ì€ ë‹¤ìŒê³¼ ê°™ì€ í˜•ì‹ìœ¼ë¡œ N ê°œê¹Œì§€ ì¡´ì¬í•œë‹¤.
 // filename (tab) answer_string (tab) recog_string
-// À§ ³»¿ëÀ» ÆÄ½ÌÇÏ¿© ´ÙÀ½ÀÇ ÀÛ¾÷À» ¼öÇàÇÑ´Ù.
-// answer_string ³»¿ëÀ» ´ãÀº filename ÆÄÀÏ »ı¼º (./answer)
-// recog_string ³»¿ëÀ» ´ãÀº filename ÆÄÀÏ »ı¼º (./recog)
+// ìœ„ ë‚´ìš©ì„ íŒŒì‹±í•˜ì—¬ ë‹¤ìŒì˜ ì‘ì—…ì„ ìˆ˜í–‰í•œë‹¤.
+// answer_string ë‚´ìš©ì„ ë‹´ì€ filename íŒŒì¼ ìƒì„± (./answer)
+// recog_string ë‚´ìš©ì„ ë‹´ì€ filename íŒŒì¼ ìƒì„± (./recog)
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,11 +14,11 @@
 #include <memory.h>
 #include <string>
 
-//	@brief				¸ŞÀÎÇÔ¼ö
-//	@author				À±º´ÈÆ
-//	@param		argc	ÀÎÀÚÀÇ ¼ö exeÆÄÀÏ¸í±îÁö Æ÷ÇÔ
-//	@param		argv	ÀÎÀÚÀÇ °ª
-//	@return				Á¾·áÄÚµå
+//	@brief				ë©”ì¸í•¨ìˆ˜
+//	@author				ìœ¤ë³‘í›ˆ
+//	@param		argc	ì¸ìì˜ ìˆ˜ exeíŒŒì¼ëª…ê¹Œì§€ í¬í•¨
+//	@param		argv	ì¸ìì˜ ê°’
+//	@return				ì¢…ë£Œì½”ë“œ
 int main(int argc, char *argv[])
 {
 	if (argc <= 1)
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 		exit(-1);
 	}
 
-	// µğ·ºÅä¸® »ı¼º
+	// ë””ë ‰í† ë¦¬ ìƒì„±
 	const char *pAnswerDIR = "@answer/";
 	const char *pRecogDIR = "@recog/";
 	
@@ -46,25 +46,25 @@ int main(int argc, char *argv[])
 	bool bUnicode = false;
 	bool bUTF8 = false;
 	int code_check[3] = {0,0,0};
-	// unicode(utf-16) ÄÚµå °Ë»ç(2¹ÙÀÌÆ® Çì´õ °Ë»ç)
+	// unicode(utf-16) ì½”ë“œ ê²€ì‚¬(2ë°”ì´íŠ¸ í—¤ë” ê²€ì‚¬)
 	for(int i=0; i<=1; i++)
 	{
 		code_check[i] = fgetc(fpInput);
 	}
-	// Little Endian ÀÏ¶§ FF FE(Âü°í·Î Bing Endian ÀÏ¶§ FE FF)
+	// Little Endian ì¼ë•Œ FF FE(ì°¸ê³ ë¡œ Bing Endian ì¼ë•Œ FE FF)
 	if(!(code_check[0] == 0xFF && code_check[1] == 0xFE))
 	{
-		// unicode(utf-16) °¡ ¾Æ´Ï¸é ´Ù½Ã Ã³À½ ºÎÅÍ ÀĞ±â
+		// unicode(utf-16) ê°€ ì•„ë‹ˆë©´ ë‹¤ì‹œ ì²˜ìŒ ë¶€í„° ì½ê¸°
 		fseek(fpInput, -2, SEEK_CUR);
 
-		// utf-8 ÄÚµå °Ë»ç(3¹ÙÀÌÆ® Çì´õ °Ë»ç)
+		// utf-8 ì½”ë“œ ê²€ì‚¬(3ë°”ì´íŠ¸ í—¤ë” ê²€ì‚¬)
 		for(int i=0; i<=2; i++)
 		{
 			code_check[i] = fgetc(fpInput);
 		}
 		if(!(code_check[0] == 0xEF && code_check[1] == 0xBB && code_check[2] == 0xBF))
 		{
-			// utf-8 ÀÌ ¾Æ´Ï¸é ´Ù½Ã Ã³À½ ºÎÅÍ ÀĞ±â
+			// utf-8 ì´ ì•„ë‹ˆë©´ ë‹¤ì‹œ ì²˜ìŒ ë¶€í„° ì½ê¸°
 			fseek(fpInput, -3, SEEK_CUR);
 		}
 		else
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 
 		// 0x09(9->Tab) 0x0A(10->LineFeed) 0x0D(13->CarriageReturn)
 		
-		// LF¿ÍCR ÀÌ °°ÀÌ ÀÖ´Â ÅØ½ºÆ® ÆÄÀÏÀÇ °æ¿ì¸¦ À§ÇÑ Ã³¸®
+		// LFì™€CR ì´ ê°™ì´ ìˆëŠ” í…ìŠ¤íŠ¸ íŒŒì¼ì˜ ê²½ìš°ë¥¼ ìœ„í•œ ì²˜ë¦¬
 		bLine = false;
 		if (c == 0x0D)
 		{
@@ -136,15 +136,15 @@ int main(int argc, char *argv[])
 			}
 			if (tabcnt == 3)
 			{
-				// Á¤´äÅØ½ºÆ®ÆÄÀÏ »ı¼ºÇÏ±â
+				// ì •ë‹µí…ìŠ¤íŠ¸íŒŒì¼ ìƒì„±í•˜ê¸°
 				fpOutput = fopen(strAnswerFileName.c_str(), "wb");			
-				// unicode Çì´õ ¸¸µé±â
+				// unicode í—¤ë” ë§Œë“¤ê¸°
 				if (bUnicode)
 				{
 					fputc(0xFF, fpOutput);
 					fputc(0xFE, fpOutput);
 				}
-				// utf-8 Çì´õ ¸¸µé±â
+				// utf-8 í—¤ë” ë§Œë“¤ê¸°
 				if (bUTF8)
 				{
 					fputc(0xEF, fpOutput);
@@ -157,15 +157,15 @@ int main(int argc, char *argv[])
 
 				fprintf(stderr, "%s created.\n", strAnswerFileName.c_str());
 
-				// ÀÎ½ÄÅØ½ºÆ®ÆÄÀÏ »ı¼ºÇÏ±â
+				// ì¸ì‹í…ìŠ¤íŠ¸íŒŒì¼ ìƒì„±í•˜ê¸°
 				fpOutput = fopen(strRecogFileName.c_str(), "wb");
-				// unicode Çì´õ ¸¸µé±â
+				// unicode í—¤ë” ë§Œë“¤ê¸°
 				if (bUnicode)
 				{
 					fputc(0xFF, fpOutput);
 					fputc(0xFE, fpOutput);
 				}
-				// utf-8 Çì´õ ¸¸µé±â
+				// utf-8 í—¤ë” ë§Œë“¤ê¸°
 				if (bUTF8)
 				{
 					fputc(0xEF, fpOutput);
