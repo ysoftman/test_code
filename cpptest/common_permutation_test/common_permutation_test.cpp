@@ -1,14 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // Common Permutation
-// µÎ°³ÀÇ ¹®ÀÚ¿­ÀÇ °øÅëÀûÀ¸·Î ¸¸µé¼ö ÀÖ´Â ºÎºÐ ¹®ÀÚ¿­ Áß °¡Àå ±ä ¹®ÀÚ¿­ Ãâ·ÂÇÏ±â
+// ë‘ê°œì˜ ë¬¸ìžì—´ì˜ ê³µí†µì ìœ¼ë¡œ ë§Œë“¤ìˆ˜ ìžˆëŠ” ë¶€ë¶„ ë¬¸ìžì—´ ì¤‘ ê°€ìž¥ ê¸´ ë¬¸ìžì—´ ì¶œë ¥í•˜ê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
 
 #define min(x, y) ((x) < (y) ? (x) : (y))
 
-void main()
+int main()
 {
 	char *s;
 	char str1[100];
@@ -35,7 +35,7 @@ void main()
 		printf("\nSecond String : ");
 		scanf("%s", str2);
 		
-		// ÃÊ±âÈ­
+		// ì´ˆê¸°í™”
 		for (i=0; i<256; i++)
 		{
 			cnt1[i] = cnt2[i] = 0;
@@ -61,6 +61,5 @@ void main()
 		}
 		printf("\n");
 	}
+	return 0;
 }
-
-

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// InitializeCriticalSectionAndSpinCount »ç¿ëÇÏ±â
-// ¸±¸®Áî ºôµå·Î Å×½ºÆ® ÇÏ±â
+// InitializeCriticalSectionAndSpinCount ì‚¬ìš©í•˜ê¸°
+// ë¦´ë¦¬ì¦ˆ ë¹Œë“œë¡œ í…ŒìŠ¤íŠ¸ í•˜ê¸°
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
@@ -52,22 +52,22 @@ int main()
 {
 #if defined(_WIN32) || defined(_WIN64)
 
-	printf("InitializeCriticalSectionAndSpinCount Å×½ºÆ®\n");
+	printf("InitializeCriticalSectionAndSpinCount í…ŒìŠ¤íŠ¸\n");
 
-	// ÀÏ¹İÀûÀÎ criticalsection ÃÊ±âÈ­(CRITICAL_SECTION ±¸Á¶Ã¼ÀÇ SpinCount = 0)
+	// ì¼ë°˜ì ì¸ criticalsection ì´ˆê¸°í™”(CRITICAL_SECTION êµ¬ì¡°ì²´ì˜ SpinCount = 0)
 	//InitializeCriticalSection(&g_cs);
 
-	// spin count ¸í½ÃÇÑ criticalsection ÃÊ±âÈ­
-	// À©µµ¿ì XP ÀÌ»ó¿¡¼­¸¸ Áö¿ø
+	// spin count ëª…ì‹œí•œ criticalsection ì´ˆê¸°í™”
+	// ìœˆë„ìš° XP ì´ìƒì—ì„œë§Œ ì§€ì›
 	// http://msdn.microsoft.com/ko-kr/library/windows/desktop/ms683476(v=vs.85).aspx
 	// Initializes a critical section object and sets the spin count for the critical section.
 	// When a thread tries to acquire a critical section that is locked, the thread spins: it enters a loop which iterates spin count times, checking to see if the lock is released.
 	// If the lock is not released before the loop finishes, the thread goes to sleep to wait for the lock to be released.
-	// µ¿±âÈ­ »óÈ²¿¡¼­ ¾²·¹µå°¡ ¹Ù·Î wait »óÅÂ·Î µÇÁö ¾Ê°í spin count ¸¸Å­ lock ÀÌ Ç®·È´ÂÁö Ã¼Å©ÇÏ¿© criticalsection ¿¡ Á¢±Ù ½ÃµµÇÑ´Ù.
-	// ¸¸¾à spin count ¸¸Å­ µ¹¾Æµµ lock Ç®¸®Áö ¾ÊÀ¸¸é ´ë±â wait »óÅÂ·Î º¯°æµÇ¾î lock Ç®¸±¶§±îÁö ±â´Ù¸°´Ù.
-	// À¯Àú¸ğµåÀÇ criticalsection °¡ wait »óÅÂ·Î º¯°æµÈ´Â°ÍÀº Ä¿³Î¸ğµå·Î ÀüÈ¯µÇ´Â °ÍÀ¸·Î ½Ã°£ ºñ¿ëÀÌ ¹ß»ıµÈ´Ù.
-	// ¸ÖÆ¼ÄÚ¾î È¯°æ¿¡¼­´Â »óÈ²¿¡ µû¶ó spin count ·Î ¾²·¹µå°¡ wait »óÅÂ·Î µÇ±âÀü¿¡ criticalsection À» È¹µæÇÑ °æ¿ì ¼º´ÉÀÌ Çâ»óµÇÁö¸¸
-	// ¹İ´ë·Î spin count ³»¿¡ lock ÀÌ Ç®¸®Áö ¾ÊÀ¸¸é spin count ¸¸Å­ ¼º´ÉÀÌ ´À·ÁÁø´Ù.
+	// ë™ê¸°í™” ìƒí™©ì—ì„œ ì“°ë ˆë“œê°€ ë°”ë¡œ wait ìƒíƒœë¡œ ë˜ì§€ ì•Šê³  spin count ë§Œí¼ lock ì´ í’€ë ¸ëŠ”ì§€ ì²´í¬í•˜ì—¬ criticalsection ì— ì ‘ê·¼ ì‹œë„í•œë‹¤.
+	// ë§Œì•½ spin count ë§Œí¼ ëŒì•„ë„ lock í’€ë¦¬ì§€ ì•Šìœ¼ë©´ ëŒ€ê¸° wait ìƒíƒœë¡œ ë³€ê²½ë˜ì–´ lock í’€ë¦´ë•Œê¹Œì§€ ê¸°ë‹¤ë¦°ë‹¤.
+	// ìœ ì €ëª¨ë“œì˜ criticalsection ê°€ wait ìƒíƒœë¡œ ë³€ê²½ëœëŠ”ê²ƒì€ ì»¤ë„ëª¨ë“œë¡œ ì „í™˜ë˜ëŠ” ê²ƒìœ¼ë¡œ ì‹œê°„ ë¹„ìš©ì´ ë°œìƒëœë‹¤.
+	// ë©€í‹°ì½”ì–´ í™˜ê²½ì—ì„œëŠ” ìƒí™©ì— ë”°ë¼ spin count ë¡œ ì“°ë ˆë“œê°€ wait ìƒíƒœë¡œ ë˜ê¸°ì „ì— criticalsection ì„ íšë“í•œ ê²½ìš° ì„±ëŠ¥ì´ í–¥ìƒë˜ì§€ë§Œ
+	// ë°˜ëŒ€ë¡œ spin count ë‚´ì— lock ì´ í’€ë¦¬ì§€ ì•Šìœ¼ë©´ spin count ë§Œí¼ ì„±ëŠ¥ì´ ëŠë ¤ì§„ë‹¤.
 	InitializeCriticalSectionAndSpinCount(&g_cs, 4000);
 
 
@@ -80,13 +80,13 @@ int main()
 	DWORD tick_start;
 	DWORD tick_end;
 
-	// Ã³¸®½Ã°£ ÆÄ¾Ç
+	// ì²˜ë¦¬ì‹œê°„ íŒŒì•…
 	tick_start = GetTickCount();
 
 	hThreads[0] = (HANDLE)_beginthreadex(NULL, 0, thread1, (void*)"arg", 0, &nThread1ID);
 	hThreads[1] = (HANDLE)_beginthreadex(NULL, 0, thread2, (void*)"arg", 0, &nThread2ID);
 	
-	// ¸ğµç ¾²·¹µå°¡ Á¾·áµÉ¶§±îÁö ±â´Ù¸°´Ù.
+	// ëª¨ë“  ì“°ë ˆë“œê°€ ì¢…ë£Œë ë•Œê¹Œì§€ ê¸°ë‹¤ë¦°ë‹¤.
 	WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);
 
 	tick_end = GetTickCount();
