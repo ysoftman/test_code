@@ -4,7 +4,13 @@ google appengine test using golang
 
 # go-appengine 환경 구성
 ```bash
-# go appengine sdk 다운로드 및 설
+##########
+# 작업환경1 - google clould 접속해서 작업하기
+# google cloud console -> shell 접속
+
+##########
+# 작업환경2 - 로컬에서 작업하기
+# go appengine sdk 다운로드 및 설치
 https://cloud.google.com/appengine/downloads?hl=en
 tar zxvf go_appengine_sdk_darwin_amd64-1.9.48.zip
 cd go_appengine
