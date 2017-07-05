@@ -53,8 +53,17 @@ func main() {
 	fmt.Println("json2 = ", string(json2))
 
 	// string 형 json 만들기
-	json3, _ := json.Marshal("ysoftman")
+	json3, _ := json.Marshal("<script>ysoftman</script>")
 	fmt.Println("json3 = ", string(json3))
+	// Marshal 은 기본적으로 특수문자들이 유니코드 escape 으로 인코딩된다.
+	// Marshal 대신 encoder 를 사용하여 escape 없이 인코딩할 수 있다.
+	bytesbuffer1 := new(bytes.Buffer)
+	encoder := json.NewEncoder(bytesbuffer1)
+	// html escape 없이 인코딩
+	encoder.SetEscapeHTML(false)
+	encoder.SetIndent("", "  ")
+	encoder.Encode("<script>ysoftman</script>")
+	fmt.Println("json3 = ", bytesbuffer1.String())
 
 	// 배열 json 만들기
 	array := []string{"red", "green", "blue"}
@@ -79,6 +88,14 @@ func main() {
 	dst := new(bytes.Buffer)
 	json.HTMLEscape(dst, []byte(strJson))
 	fmt.Println(dst.String())
+
+	bytesbuffer2 := new(bytes.Buffer)
+	encoder = json.NewEncoder(bytesbuffer2)
+	// html escape 없이 인코딩
+	encoder.SetEscapeHTML(false)
+	encoder.SetIndent("", "  ")
+	encoder.Encode(json_data)
+	fmt.Println(bytesbuffer2.String())
 
 	// json file 로드
 	file, err := ioutil.ReadFile("./json_data.json")
