@@ -1,0 +1,47 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <input type="input" name="user_name" id="user_name1" value="">
+    <br>
+    <input type="input" name="user_name" id="user_name2" value="">
+    <script>
+        var yourname = prompt("이름을 입력하세요");
+        console.clear();
+        console.log(yourname);
+        // user_name 이름을 가진 dom 객체들 파악 
+        var userNames = document.getElementsByName("user_name");
+        // 각 객체마다 속성을 변경한다
+        for (i = 0; i < userNames.length; i++) {
+            userNames[i].setAttribute("value", yourname);
+        }
+
+        // id 가 user_name1 인 dom 객체 파악
+        var username1 = document.getElementById("user_name1");
+        // 마우스 오버 이벤트가 발생하면 내용 바꾸기
+        username1.onmouseover = function listener1() {
+            username1.setAttribute("value", "마우스 오버되었습니다.");
+        }
+        // 마우스 아웃 이벤트가 발생하면 원래 내용으로 변경
+        username1.onmouseout = function listener2() {
+            username1.setAttribute("value", yourname);
+        }
+
+
+        // id 가 user_name2 인 dom 객체 파악
+        var username2 = document.getElementById("user_name2");
+        // 마우스 오버 이벤트가 발생하면 내용 바꾸기
+        username2.onmouseover = function listener3() {
+            username2.setAttribute("value", "내용 가리기");
+        }
+        // 마우스 아웃 이벤트가 발생하면 원래 내용으로 변경
+        username2.onmouseout = function listener4() {
+            username2.setAttribute("value", yourname);
+        }
+    </script>
+
+</body>
+
+</html>
