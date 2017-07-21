@@ -7,7 +7,7 @@
 // ysoftman
 // JSON 문서 http://www.json.org
 // cJSON http://sourceforge.net/projects/cjson/
-// cJSON 사용 예제
+// g++ cJSON.c cJSONTest.cpp
 int main()
 {
 	std::string strFileName = "json_sample.txt";
