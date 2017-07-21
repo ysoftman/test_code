@@ -10,7 +10,7 @@
 // g++ cJSON.c cJSONTest.cpp
 int main()
 {
-	std::string strFileName = "json_sample.txt";
+	std::string strFileName = "json_sample.json";
 	std::string strJson;
 	
 	FILE *fp = fopen(strFileName.c_str(), "r");
