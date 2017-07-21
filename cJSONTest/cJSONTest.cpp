@@ -1,29 +1,15 @@
 #include <iostream>
 #include <string>
-
-#include <Windows.h>
-
+#include <stdlib.h>
+#include <string.h>
 #include "cJSON.h"
 
 // ysoftman
-// JSON ¹®¼­ http://www.json.org
+// JSON ë¬¸ì„œ http://www.json.org
 // cJSON http://sourceforge.net/projects/cjson/
-// cJSON »ç¿ë ¿¹Á¦
+// cJSON ì‚¬ìš© ì˜ˆì œ
 int main()
 {
-#if defined(WIN32) || defined(WIN64)
-#ifdef _DEBUG
-#include <crtdbg.h>
-	// _CRTDBG_ALLOC_MEM_DF ==> _CLIENT_BLOCK ¿¡ ¸Þ¸ð¸®¸¦ ÇÒ´ç¿¡ ´ëÇØ¼­ ´ýÇÁ
-	// _CRTDBG_LEAK_CHECK_DF ==> ÇÁ·Î±×·¥ÀÌ Á¾·áµÉ ¶§ ÀÚµ¿À¸·Î _CrtDumpMemoryLeaks() ¸¦ È£ÃâÇÏ¿© ¸Þ¸ð¸® ´©¼ö½Ã ´ýÇÁ
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	// ÇØÁ¦ ¾ÈµÇ´Â new ÀÇ ÆÄÀÏ°ú ¶óÀÎ¼ö¸¦ ÆÄ¾ÇÇÑ´Ù.
-	#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
-	// ¸Þ¸ð¸® ´©¼ö½Ã ºí·Ï¼ýÀÚ°ª(Ãâ·ÂÃ¢ÀÇ{1234})À» ÁÖ¸é ¸Þ¸ð¸® °ø°£À» È®º¸ÇÏ´Â ½ÃÁ¡¿¡ ºê·¹ÀÌÅ©Æ÷ÀÎÆ®°¡ °É¸°´Ù.
-	_CrtSetBreakAlloc(3532);
-#endif
-#endif
-
 	std::string strFileName = "json_sample.txt";
 	std::string strJson;
 	
@@ -43,7 +29,7 @@ int main()
 	fclose(fp);
 
 	
-	// json ÆÄ½Ì
+	// json íŒŒì‹±
 	cJSON *root = cJSON_Parse(strJson.c_str());
 	if (root != NULL)
 	{
@@ -51,15 +37,13 @@ int main()
 
 		if (out != NULL)
 		{
-			// json Ãâ·ÂÇØº¸±â
+			// json ì¶œë ¥í•´ë³´ê¸°
 			std::cout << out << std::endl;
 			free(out);
 		}
-		// json »èÁ¦
+		// json ì‚­ì œ
 		cJSON_Delete(root);
 	}
 
-
 	return 0;
 }
-
