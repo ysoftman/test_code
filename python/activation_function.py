@@ -53,4 +53,4 @@ if __name__ == "__main__":
 
     y = relu(x)
     print y
-    graph(x, y, "sigmoid function")
+    graph(x, y, "relu function")
