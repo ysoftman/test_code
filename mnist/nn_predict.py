@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.x
-# desc : neural nets 로 mnist(숫자글씨) 인식하기
+# desc : neural nets 로 mnist(엠니스트, 숫자 데이터) 인식하기
 '''
 mnist 데이터 다운로드민 넘파이 배열러 리턴하는 소스를 사용
 https://github.com/WegraLee/deep-learning-from-scratch/blob/master/dataset/mnist.py 내용을 mnist.py 로 저장
