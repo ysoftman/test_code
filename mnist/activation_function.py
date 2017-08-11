@@ -28,6 +28,19 @@ def relu(x):
     return np.maximum(0, x)
 
 
+# softmax(소프트맥스)
+# 훈련시 출력 레이어에서 사용한다.
+# 각 노드 출력을 전체 1.0 에 대한 비율(확률)로 계산한다.
+def softmax(x):
+    if x.ndim == 2:
+        x = x.T
+        x = x - np.max(x, axis=0)
+        y = np.exp(x) / np.sum(np.exp(x), axis=0)
+        return y.T
+    x = x - np.max(x)  # 오버플로 방지하기 가장 높은 값과의 차이만을 취한다.
+    return np.exp(x) / np.sum(np.exp(x))
+
+
 def graph(x, y, title):
     # set range y
     plt.ylim(-0.1, 1.1)
@@ -43,14 +56,19 @@ def graph(x, y, title):
 if __name__ == "__main__":
     x = np.arange(-5, 5, 0.1)
     y = step(x)
-    print x
-    print y
+    print (x)
+    print (y)
     graph(x, y, "step function")
 
     y = sigmoid(x)
-    print y
+    print (y)
     graph(x, y, "sigmoid function")
 
     y = relu(x)
-    print y
+    print (y)
     graph(x, y, "relu function")
+
+
+    y = softmax(x)
+    print (y)
+    graph(x, y, "softmax function")
