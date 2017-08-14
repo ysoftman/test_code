@@ -17,7 +17,7 @@ func main() {
 	fmt.Println("color test")
 
 	for i := 0; i < 12; i++ {
-		fmt.Println(getNextColorString(i, strconv.Itoa(i)+" ysoftman	"))
+		fmt.Println(getNextColorString(i, strconv.Itoa(i)+" ysoftman"))
 	}
 }
 
