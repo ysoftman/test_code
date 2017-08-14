@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 author: ysoftman
-python version : 2.x
+python version : 3.x
 desc : 손실(오차) 함수 
 '''
 import numpy as np
