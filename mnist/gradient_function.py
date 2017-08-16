@@ -25,8 +25,38 @@ def simple_function1(x):
 
 
 # 간단한 2차 함수
-def simple_function2(x1, x2):
-    return x1**2 + x2**2
+def simple_function2(x):
+    return x[0]**2 + x[1]**2
+
+
+def temp_function1(x1):
+    return x1**2 + 4.0**2
+
+
+def temp_function2(x2):
+    return 3.0**2 + x2**2
+
+
+# 기울기 구하기
+def numerical_gradient(f, x):
+    h = 1e-4  # 0.001 더 작으면 파이썬에 0으로 취급된다.
+    grad = np.zeros_like(x)  # x 같은 모양의 0값으로 초기화
+    for i in range(x.size):
+        temp = x[i]
+        # f(x+h) 계산
+        x[i] = temp + h
+        fxh1 = f(x)
+
+        # f(x-h) 계산
+        x[i] = temp - h
+        fxh2 = f(x)
+
+        # 수치 미분
+        grad[i] = (fxh1 - fxh2) / (2 * h)
+
+        x[i] = temp
+
+    return grad
 
 
 def graph(x, y, title):
@@ -66,7 +96,7 @@ if __name__ == "__main__":
     """
     x = np.arange(0.0, 20.0, 0.1)
     y = simple_function1(x)
-    # graph(x, y, "간단한 2차 함수 - 첫번째")
+    graph(x, y, "간단한 2차 함수 - 첫번째")
     # 2차 함수에서 5일대의 수치미분 계산
     # 0.1999999999990898 (실제 해석적 미분값은 0.2 으로 거의 같다)
     print(numerical_differentiation(simple_function1, 5))
@@ -75,12 +105,35 @@ if __name__ == "__main__":
     print(numerical_differentiation(simple_function1, 10))
 
     """
-    변수가 2개읜 2차 함수 그리기
+    변수가 2개인 2차 함수 그리기
     """
     x1 = np.arange(-10.0, 10.1, 0.1)
-    x2 = x1
+    x2 = np.arange(10.0, -10.1, -0.1)
     # 2차원 배열 생성
     x1_2d, x2_2d = np.meshgrid(x1, x2)
-    y_2d = simple_function2(x1_2d, x2_2d)
+    # x1_2d, x2_2d 배열 하나에 묶어 2차 함수 계산
+    y_2d = simple_function2([x1_2d, x2_2d])
     graph_wire3d(x1_2d, x2_2d, y_2d)
-    print(x1_2d, x2_2d, y_2d)
+
+    """
+    편미분(partial derivative)
+    변수가 2개 이상인 함수에 대한 미분
+    목표 변수외의 변수는 고정하여 계산
+    """
+    # x1=3.0 x2=4.0 일때
+    # x2 = 4.0 고정 하여 계산
+    print(numerical_differentiation(temp_function1, 3.0))
+    # x1 = 3.0 고정 하여 계산
+    print(numerical_differentiation(temp_function2, 4.0))
+
+    """
+    기울기(gradient)
+    모든 변수의 편미분을 벡터로 구성한것
+    """
+    # 변수 2개 편미분 한번에 하기
+    # 점(3,4) 에서의 기울기 = (6,8)
+    print(numerical_gradient(simple_function2, np.array([3.0, 4.0])))
+    # 점(0,2) 에서의 기울기 = (0,4)
+    print(numerical_gradient(simple_function2, np.array([0.0, 2.0])))
+    # 점(3,0) 에서의 기울기 = (6,0)
+    print(numerical_gradient(simple_function2, np.array([3.0, 0.0])))
