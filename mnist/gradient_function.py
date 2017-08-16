@@ -39,6 +39,16 @@ def graph(x, y, title):
     plt.show()
 
 
+def graph_wire3d(x, y, title):
+    # set range y
+    plt.ylim(-0.1, 7.0)
+    # change windows title
+    fig = plt.gcf()
+    fig.canvas.set_window_title(title)
+    # set x, y value
+    plt.plot(x, y)
+    # show graph
+    plt.show()
 
 # 입력 x 값들에 대해서 활성화(출력 0이상)화 판단
 if __name__ == "__main__":
@@ -52,6 +62,6 @@ if __name__ == "__main__":
     # 0.1999999999990898 (실제 해석적 미분값은 0.2 으로 거의 같다)
     print(numerical_differentiation(simple_function1, 5))
     # 2차 함수에서 10일대의 수치미분 계산
-    # 0.2999999999986347 (실제 해석저 미분값은 0.3 으로 거의 같다)
+    # 0.2999999999986347 (실제 해석적 미분값은 0.3 으로 거의 같다)
     print(numerical_differentiation(simple_function1, 10))
-
+    
