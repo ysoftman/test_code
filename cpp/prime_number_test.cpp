@@ -7,7 +7,7 @@
 
 void PrimeNumber(int);
 
-void main()
+int main()
 {
 	int num=0;
 
@@ -15,6 +15,8 @@ void main()
 	scanf("%d", &num);
 
 	PrimeNumber(num);
+
+	return 0;
 }
 
 // 소수 구하는 함수
