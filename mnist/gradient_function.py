@@ -28,6 +28,12 @@ def simple_function1(x):
 def simple_function2(x):
     return x[0]**2 + x[1]**2
 
+def function_2(x):
+    if x.ndim == 1:
+        return np.sum(x**2)    
+    else:
+        return np.sum(x**2, axis=1)
+
 
 def temp_function1(x1):
     return x1**2 + 4.0**2
@@ -57,6 +63,17 @@ def numerical_gradient(f, x):
         x[i] = temp
 
     return grad
+
+# 기울기 구하기 배치 작업
+def numerical_gradient_batch(f, X):
+    if X.ndim == 1:
+        return numerical_gradient(f, X)
+    else:
+        grad = np.zeros_like(X)
+        for idx, x in enumerate(X):
+            grad[idx] = numerical_gradient(f, x)
+
+        return grad
 
 
 def graph(x, y, title):
@@ -137,3 +154,20 @@ if __name__ == "__main__":
     print(numerical_gradient(simple_function2, np.array([0.0, 2.0])))
     # 점(3,0) 에서의 기울기 = (6,0)
     print(numerical_gradient(simple_function2, np.array([3.0, 0.0])))
+    # 각 지접에서의 기울기 화살표 기울기로 그리기
+    x0 = np.arange(-2, 2.5, 0.25)
+    x1 = np.arange(-2, 2.5, 0.25)
+    X, Y = np.meshgrid(x0, x1)
+    X = X.flatten()
+    Y = Y.flatten()
+    grad = numerical_gradient_batch(function_2, np.array([X, Y]) )
+    plt.figure()
+    plt.quiver(X, Y, -grad[0], -grad[1],  angles="xy",color="#666666")#,headwidth=10,scale=40,color="#444444")
+    # plt.xlim([-2, 2])
+    # plt.ylim([-2, 2])
+    # plt.xlabel('x0')
+    # plt.ylabel('x1')
+    # plt.grid()
+    # plt.legend()
+    # plt.draw()
+    plt.show()
