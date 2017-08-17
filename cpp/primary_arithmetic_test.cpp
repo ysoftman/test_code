@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
-void main()
+int main()
 {
 	// 두 수의 단위 자리는 최대 10자리로 제한
 	int num1[10];
@@ -91,6 +91,7 @@ void main()
 			printf("No Carry Operation.\n");
 		}
 	} // End of while (1)
-}
 
+	return 0;
+}
 

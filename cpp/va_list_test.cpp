@@ -18,11 +18,13 @@ void TestPrintf(const char *format, ...)
 	va_end(args);
 }
 
-void main()
+int main()
 {
 	int a=10, b=20;
 	char *pTemp="YoonByoungHoon";
 	TestPrintf("%d %d %s\n", a, b, pTemp);
+
+	return 0;
 }
 
 

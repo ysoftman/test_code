@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void main()
+int main()
 {
 	// 다음의 경우 1 값으로 초기화 된다.
 	char *pCh = new char[100];
@@ -28,5 +28,7 @@ void main()
 	delete[] pCh;
 	delete[] pNum1;
 	delete[] pNum2;
+
+	return 0;
 }
 

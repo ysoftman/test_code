@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>	// strlen()함수 사용
 
-void main()
+int main()
 {
 	int i=0, n=0;
 	char ch[50];
@@ -52,7 +52,9 @@ void main()
 		}
 	}
 
- 	printf("\n[string length : %d]\n%s -> %s\n", n, ch, result_str);
+	 printf("\n[string length : %d]\n%s -> %s\n", n, ch, result_str);
+	 
+	 return 0;
 }
 
 

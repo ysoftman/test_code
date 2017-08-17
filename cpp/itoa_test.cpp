@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
-void main()
+int main()
 {
 	int Value = 1037626467;
 
@@ -36,6 +36,8 @@ void main()
 	Result[j] = '\0';
 
 	fprintf(stdout, "result = %s\n", Result);
+
+	return 0;
 }
 
 

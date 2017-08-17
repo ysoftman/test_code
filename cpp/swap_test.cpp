@@ -30,7 +30,7 @@ void swap2(int *a, int *b)
 // 변수 없는 방법을 간단하게 정의해 버릴 수 도 있다.
 #define swap3(a, b)   ((a)^=(b)^=(a)^=(b));
 
-void main()
+int main()
 {
 	int a = 10, b = 20;
 	swap1(&a, &b);
@@ -39,6 +39,6 @@ void main()
 	printf("a = %d, b = %d\n", a, b);
 	swap3(a, b);
 	printf("a = %d, b = %d\n", a, b);
+
+	return 0;
 }
-
-
