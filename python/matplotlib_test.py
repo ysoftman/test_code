@@ -3,7 +3,7 @@
 # python version : 2.x
 # desc : matplotlib  test
 # pip install matplotlib
-
+import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
@@ -22,6 +22,7 @@ def simple2d():
     plt.show()
 
 
+# 하나의 윈도우(figure)에서 2개의 그래프 그리기
 def multi_graph():
     # 그래프가 들어가 fig 생성
     fig = plt.figure()
@@ -40,6 +41,7 @@ def multi_graph():
     plt.show()
 
 
+# 와이드로 표시되는 3d 그래프
 def wire3d():
     # 그래프가 들어가 fig 생성
     fig = plt.figure()
@@ -62,7 +64,30 @@ def wire3d():
     ax.plot_wireframe(x, y, z, rstride=10, cstride=10)
     plt.show()
 
+
+# 화살통(quiver) 모양의 그래프
+def quiver():
+    X, Y = np.meshgrid(np.arange(0, 2 * np.pi, .2),
+                       np.arange(0, 2 * np.pi, .2))
+    U = np.cos(X)
+    V = np.sin(Y)
+    fig = plt.figure()
+    fig.canvas.set_window_title(quiver.__name__)
+    Q = plt.quiver(X, Y, U, V, units='width')
+    qk = plt.quiverkey(
+        Q, 0.9, 0.9, 2, r'$2 \frac{m}{s}$', labelpos='E', coordinates='figure')
+    # x,y 축 범위
+    plt.xlim([-1, 7])
+    plt.ylim([-1, 7])
+    # x,y 축 이름
+    plt.xlabel('x')
+    plt.ylabel('y')
+    # 배경 격자 표시
+    plt.grid()
+    plt.show()
+
 if __name__ == '__main__':
     simple2d()
     multi_graph()
     wire3d()
+    quiver()
