@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 author: ysoftman
-python version : 2.x
+python version : 3.x
 desc : 활성화 함수 테스트
 '''
 import numpy as np
