@@ -7,7 +7,7 @@
 
 int a=1e4, b, c=56980, d, e, f[56980], g, h, i;
 
-void main()
+int main()
 {
 	for (; b=c,c-=14; i=printf("%04d",e+d/a),e=d%a)
 	{
@@ -18,6 +18,7 @@ void main()
 			f[b] = d%g;
 		}
 	}
-}
 
+	return 0;
+}
 

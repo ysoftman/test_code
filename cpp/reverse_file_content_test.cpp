@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void main()
+int main()
 {
 	char c = NULL;
 	int i = 0;
@@ -45,5 +45,7 @@ void main()
 	}
 	printf("\n");
 	fclose(fp);
+
+	return 0;
 }
 

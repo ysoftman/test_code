@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void main()
+int main()
 {
 
 	// malloc() 를 이용 할 경우 동적 메모리 할당만 된다.
@@ -19,5 +19,7 @@ void main()
 
 	free(p1);
 	free(p2);
+
+	return 0;
 }
 

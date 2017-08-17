@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
-void main()
+int main()
 {
 	int a			= 1000000000;
 	__int64 b		= 10000000000;
@@ -18,6 +18,6 @@ void main()
 	printf("long long   %%d: %d %%I32d: %I32d %%I64d: %I64d %%lld: %lld\n", b, c, c, c);
 	printf("__time32_t  %%d: %d %%I32d: %I32d %%I64d: %I64d %%lld: %lld\n", d, d, d, d);
 	printf("__time64_t  %%d: %d %%I32d: %I32d %%I64d: %I64d %%lld: %lld\n", e, e, e, e);
-
+	return 0;
 }
 

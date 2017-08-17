@@ -8,7 +8,7 @@
 
 int isPalindrome(char *str);
 
-void main()
+int main()
 {
 	char input_string[10];
 	
@@ -29,7 +29,7 @@ void main()
 	{
 		printf("\n\n[Result]%s is not a Palindrome\n.", input_string);
 	}
-
+	return 0;
 }
 
 int isPalindrome(char *str)

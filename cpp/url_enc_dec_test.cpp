@@ -118,7 +118,7 @@ string URLDecoding(char *pIn)
 	return result;
 }
 
-void main()
+int main()
 {
 	char *pInput = "윤병훈 qwer 1234 QWER !@#$";
 	string Result;
@@ -130,6 +130,8 @@ void main()
 	
 	Result = URLDecoding((char*)Result.c_str());
 	fprintf(stdout, "[URL Decoding] = %s\n", Result.c_str());
+
+	return 0;
 }
 
 

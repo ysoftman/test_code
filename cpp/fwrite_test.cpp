@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void main()
+int main()
 {
 	FILE *fp = fopen("fwriteTest.txt", "wb");
 	float set = 123.45;
@@ -17,5 +17,7 @@ void main()
 	fread(&get, sizeof(float), 1, fp);
 	printf("%f", get);
 	fclose(fp);
+
+	return 0;
 }
 

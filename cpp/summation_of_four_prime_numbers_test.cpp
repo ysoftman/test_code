@@ -64,7 +64,7 @@ bool PrimeSum(int a)
 	return false;
 }
 
-void main()
+int main()
 {
 	printf("Summation Of 4 Prime Numbers...\n");
 	printf("[Input 0 to Exit]\n");
@@ -86,6 +86,8 @@ void main()
 			printf("Impossible...\n");
 		}
 	}
+
+	return 0;
 }
 
 

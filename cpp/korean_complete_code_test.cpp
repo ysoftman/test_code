@@ -123,7 +123,7 @@ void make_KOR_COM_CODE_8822()
 	fclose(fp);
 }
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	// 완성형 코드 출력
 	make_KOR_COM_CODE_2350();
@@ -133,7 +133,7 @@ void main(int argc, char *argv[])
 	if (argc != 2)
 	{
 		printf("usage:\n%s xxx.txt\n", argv[0]);
-		return;
+		return -1;
 	}
 	const int MAX_LEN = 50;
 	char target[MAX_LEN];
@@ -184,5 +184,7 @@ void main(int argc, char *argv[])
 	fprintf(fpOut, "unkowncnt : %d\n", unkonwcnt);
 	fclose(fpIn);
 	fclose(fpOut);
+
+	return 0;
 }
 

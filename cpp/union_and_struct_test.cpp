@@ -16,7 +16,7 @@ union UI {
 	unsigned int unInt;
 };
 
-void main()
+int main()
 {
 	ST stInstance;
 	memset(&stInstance, 0, sizeof(stInstance));
@@ -58,5 +58,7 @@ void main()
 	printf("uiInstance.unInt[2] = %x\n", (uiInstance.unInt & 0x00ff0000) >> 16);
 	printf("uiInstance.unInt[3] = %x\n", (uiInstance.unInt & 0xff000000) >> 24);
 	printf("\n");
+
+	return 0;
 }
 

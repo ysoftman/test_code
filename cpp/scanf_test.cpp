@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void main()
+int main()
 {
 	char *a;
 
@@ -16,5 +16,6 @@ void main()
 	printf("%s", a);
 
 	free(a);
+	return 0;
 }
 
