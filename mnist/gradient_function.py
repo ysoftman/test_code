@@ -28,9 +28,10 @@ def simple_function1(x):
 def simple_function2(x):
     return x[0]**2 + x[1]**2
 
+
 def function_2(x):
     if x.ndim == 1:
-        return np.sum(x**2)    
+        return np.sum(x**2)
     else:
         return np.sum(x**2, axis=1)
 
@@ -65,6 +66,8 @@ def numerical_gradient(f, x):
     return grad
 
 # 기울기 구하기 배치 작업
+
+
 def numerical_gradient_batch(f, X):
     if X.ndim == 1:
         return numerical_gradient(f, X)
@@ -103,6 +106,21 @@ def graph_wire3d(x, y, z):
     # rcount	Use at most this many rows, defaults to 50
     # ccount	Use at most this many columns, defaults to 50
     ax.plot_wireframe(x, y, z, rstride=10, cstride=10)
+    plt.show()
+
+
+# 화살통(quiver) 형식의 그래프
+def graph_quiver(X, Y, grad):
+    plt.figure()
+    # ,headwidth=10,scale=40,color="#444444")
+    plt.quiver(X, Y, -grad[0], -grad[1],  angles="xy", color="#666666")
+    plt.xlim([-2, 2])
+    plt.ylim([-2, 2])
+    plt.xlabel('x0')
+    plt.ylabel('x1')
+    plt.grid()
+    plt.legend()
+    plt.draw()
     plt.show()
 
 
@@ -154,20 +172,14 @@ if __name__ == "__main__":
     print(numerical_gradient(simple_function2, np.array([0.0, 2.0])))
     # 점(3,0) 에서의 기울기 = (6,0)
     print(numerical_gradient(simple_function2, np.array([3.0, 0.0])))
-    # 각 지접에서의 기울기 화살표 기울기로 그리기
+
+    """
+    각 지접에서의 기울기를 화살표 모양으로 그리기
+    """
     x0 = np.arange(-2, 2.5, 0.25)
     x1 = np.arange(-2, 2.5, 0.25)
     X, Y = np.meshgrid(x0, x1)
     X = X.flatten()
     Y = Y.flatten()
-    grad = numerical_gradient_batch(function_2, np.array([X, Y]) )
-    plt.figure()
-    plt.quiver(X, Y, -grad[0], -grad[1],  angles="xy",color="#666666")#,headwidth=10,scale=40,color="#444444")
-    # plt.xlim([-2, 2])
-    # plt.ylim([-2, 2])
-    # plt.xlabel('x0')
-    # plt.ylabel('x1')
-    # plt.grid()
-    # plt.legend()
-    # plt.draw()
-    plt.show()
+    grad = numerical_gradient_batch(function_2, np.array([X, Y]))
+    graph_quiver(X, Y, grad)
