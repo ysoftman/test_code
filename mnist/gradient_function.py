@@ -19,28 +19,26 @@ def numerical_differentiation(f, x):
     return (f(x + h) - f(x - h)) / (2 * h)
 
 
-# 간단한 2차 함수
-def simple_function1(x):
+def function_1(x):
     return 0.01 * x**2 + 0.1 * x
 
 
-# 간단한 2차 함수
-def simple_function2(x):
+def function_2(x):
     return x[0]**2 + x[1]**2
 
 
-def function_2(x):
+def function_3(x):
     if x.ndim == 1:
         return np.sum(x**2)
     else:
         return np.sum(x**2, axis=1)
 
 
-def temp_function1(x1):
+def function_4(x1):
     return x1**2 + 4.0**2
 
 
-def temp_function2(x2):
+def function_5(x2):
     return 3.0**2 + x2**2
 
 
@@ -65,9 +63,8 @@ def numerical_gradient(f, x):
 
     return grad
 
+
 # 기울기 구하기 배치 작업
-
-
 def numerical_gradient_batch(f, X):
     if X.ndim == 1:
         return numerical_gradient(f, X)
@@ -77,6 +74,20 @@ def numerical_gradient_batch(f, X):
             grad[idx] = numerical_gradient(f, x)
 
         return grad
+
+
+# 경사법(경사하강법) 기울기를 이용하여 (손실)함수의 최소값을 찾기
+# 신경망에서 매겨변수(가중치(weight), 편향(bias))을 찾기 위해서 사용
+# f: 최적화 대상 함수
+# init_x: 초기값
+# lr: learning rate(학습률), 값이 너무 크거나 작으면 좋은 장소(최소값)을 찾아 갈 수 없다.
+# step: 반복회수
+def gradient_descent(f, init_x, lr=0.01, step=100):
+    x = init_x
+    for i in range(step):
+        grad = numerical_gradient(f, x)
+        x -= lr * grad
+    return x
 
 
 def graph(x, y, title):
@@ -126,18 +137,19 @@ def graph_quiver(X, Y, grad):
 
 # 입력 x 값들에 대해서 활성화(출력 0이상)화 판단
 if __name__ == "__main__":
+
     """
     수치미분(두점의 변화량을 이용해서 미분을 계산)
     """
     x = np.arange(0.0, 20.0, 0.1)
-    y = simple_function1(x)
-    graph(x, y, "간단한 2차 함수 - 첫번째")
+    y = function_1(x)
+    graph(x, y, "2차 함수 - 첫번째")
     # 2차 함수에서 5일대의 수치미분 계산
     # 0.1999999999990898 (실제 해석적 미분값은 0.2 으로 거의 같다)
-    print(numerical_differentiation(simple_function1, 5))
+    print(numerical_differentiation(function_1, 5))
     # 2차 함수에서 10일대의 수치미분 계산
     # 0.2999999999986347 (실제 해석적 미분값은 0.3 으로 거의 같다)
-    print(numerical_differentiation(simple_function1, 10))
+    print(numerical_differentiation(function_1, 10))
 
     """
     변수가 2개인 2차 함수 그리기
@@ -147,7 +159,7 @@ if __name__ == "__main__":
     # 2차원 배열 생성
     x1_2d, x2_2d = np.meshgrid(x1, x2)
     # x1_2d, x2_2d 배열 하나에 묶어 2차 함수 계산
-    y_2d = simple_function2([x1_2d, x2_2d])
+    y_2d = function_2([x1_2d, x2_2d])
     graph_wire3d(x1_2d, x2_2d, y_2d)
 
     """
@@ -157,9 +169,9 @@ if __name__ == "__main__":
     """
     # x1=3.0 x2=4.0 일때
     # x2 = 4.0 고정 하여 계산
-    print(numerical_differentiation(temp_function1, 3.0))
+    print(numerical_differentiation(function_4, 3.0))
     # x1 = 3.0 고정 하여 계산
-    print(numerical_differentiation(temp_function2, 4.0))
+    print(numerical_differentiation(function_5, 4.0))
 
     """
     기울기(gradient)
@@ -167,11 +179,11 @@ if __name__ == "__main__":
     """
     # 변수 2개 편미분 한번에 하기
     # 점(3,4) 에서의 기울기 = (6,8)
-    print(numerical_gradient(simple_function2, np.array([3.0, 4.0])))
+    print(numerical_gradient(function_2, np.array([3.0, 4.0])))
     # 점(0,2) 에서의 기울기 = (0,4)
-    print(numerical_gradient(simple_function2, np.array([0.0, 2.0])))
+    print(numerical_gradient(function_2, np.array([0.0, 2.0])))
     # 점(3,0) 에서의 기울기 = (6,0)
-    print(numerical_gradient(simple_function2, np.array([3.0, 0.0])))
+    print(numerical_gradient(function_2, np.array([3.0, 0.0])))
 
     """
     각 지접에서의 기울기를 화살표 모양으로 그리기
@@ -183,3 +195,17 @@ if __name__ == "__main__":
     Y = Y.flatten()
     grad = numerical_gradient_batch(function_2, np.array([X, Y]))
     graph_quiver(X, Y, grad)
+
+    """
+    경사법(경사하강법)으로 function_2 함수에서의 최소값 구하기
+    lr: learning rate(학습률), 값이 너무 크거나 작으면 좋은 장소(최소값)을 찾아 갈 수 없다.
+    lr 과 같이 실험으로 통해 사람이 적절한 값으로 설정해야 줘야하는 것 하이퍼파라미터라(hyper parameter)고 부른다.
+    """
+    init_x = np.array([-3.0, 4.0])
+    print(gradient_descent(function_2, init_x, lr=0.1, step=100))
+    # 학습률이 너무 크게 잡은 경우 큰 값으로 발산
+    init_x = np.array([-3.0, 4.0])
+    print(gradient_descent(function_2, init_x, lr=10.0, step=100))
+    # 학습률이 너무 작게 잡은 경우 거의 갱신되지 않음
+    init_x = np.array([-3.0, 4.0])
+    print(gradient_descent(function_2, init_x, lr=1e-10, step=100))
