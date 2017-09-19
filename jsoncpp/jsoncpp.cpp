@@ -8,7 +8,7 @@
 // mac jsoncpp 설치
 // brew install jsoncpp
 // build
-// g++ JsonCppTest.cpp -ljsoncpp
+// g++ ./jsoncpp.cpp -ljsoncpp
 ////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
@@ -37,16 +37,18 @@ string WriteJsonTest()
 	root["a"]["b"] = "c";
 	root["이름"] = "윤병훈";
 	root["나이"] = 30;
+	root["float_value"] = 0.01;
 	Json::Value friends;
 	friends.append("홍길동");
 	friends.append("엘리자베스");
-	root["친구 리스트"] = friends;
+	root["친구"] = friends;
 	root["성별"] = "남";
 
 	Json::StyledWriter writer;
 	string strJSON = writer.write(root);
 
-	cout << "JSON WriteTest" << endl << strJSON << endl;
+	cout << "JSON WriteTest" << endl
+		 << strJSON << endl;
 
 	return strJSON;
 }
@@ -72,22 +74,23 @@ void ReadJsonTest(string strJSON)
 	cout << "나이: " << age << endl;
 
 	Json::Value friends;
-	friends = root["친구 리스트"];
-	cout << "친구 리스트: " << endl;
-	for (unsigned int i=0; i<friends.size(); ++i)
+	friends = root["친구"];
+	cout << "친구: " << endl;
+	for (unsigned int i = 0; i < friends.size(); ++i)
 	{
 		cout << friends[i].asString() << endl;
 	}
 
 	string sex = root.get("성별", "defaultvalue").asString();
-	cout << "성별: " << sex << endl << endl;
+	cout << "성별: " << sex << endl
+		 << endl;
 }
 
 void TraverseJsonTest(Json::Value root)
 {
 	cout << "testing... " << __FUNCTION__ << endl;
 	Json::Value::Members members = root.getMemberNames();
-	for (int i=0; i<(int)members.size(); i++)
+	for (int i = 0; i < (int)members.size(); i++)
 	{
 		Json::Value key = members[i];
 		Json::Value value = root[key.asString()];
@@ -104,8 +107,8 @@ void TraverseJsonTest(Json::Value root)
 		else if (value.isInt())
 		{
 			cout << value.asInt() << endl;
-		}			
-	}	
+		}
+	}
 }
 
 int main()
@@ -117,16 +120,16 @@ int main()
 
 	// json 탐색
 	string strJSON = "{"
-		"\"Info\":" 
-		"{"
-		"\"num1\":999,"
-		"\"num2\":123456789,"
-		"\"str1\":\"ysoftman\""
-		"}"
-		"}";
+					 "\"Info\":"
+					 "{"
+					 "\"num1\":999,"
+					 "\"num2\":123456789,"
+					 "\"str1\":\"ysoftman\""
+					 "}"
+					 "}";
 	cout << "strJSON = " << strJSON << endl;
 	Json::Value root;
-	Json::Reader reader;	
+	Json::Reader reader;
 	if (reader.parse(strJSON, root) == true)
 	{
 		TraverseJsonTest(root);
