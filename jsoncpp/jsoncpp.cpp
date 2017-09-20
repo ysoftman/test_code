@@ -26,6 +26,7 @@ string WriteJsonTest()
 	"a" : {
 		"b" : "c"
 	},
+	"float_value" : 0.12346,
 	"이름": "윤병훈",
 	"나이": 30,
 	"친구": ["홍길동", "엘리자베스"],
@@ -37,7 +38,8 @@ string WriteJsonTest()
 	root["a"]["b"] = "c";
 	root["이름"] = "윤병훈";
 	root["나이"] = 30;
-	root["float_value"] = 0.01;
+	float fval = 0.123456789123456789;
+	root["float_value"] = fval;
 	Json::Value friends;
 	friends.append("홍길동");
 	friends.append("엘리자베스");
@@ -48,6 +50,22 @@ string WriteJsonTest()
 	string strJSON = writer.write(root);
 
 	cout << "JSON WriteTest" << endl
+		 << strJSON << endl;
+
+	// 소수점등 기타 옵션 설정하여 스트링을 출력시 StreamWriterBuilder 사용
+	Json::StreamWriterBuilder sb;
+	// "None" or "All"
+	sb["commentStyle"] = "None";
+	// 들여쓰기시 탭 사용
+	sb["indentation"] = "\t";
+	sb["enableYAMLCompatibility"] = false;
+	sb["dropNullPlaceholders"] = false;
+	sb["useSpecialFloats"] = false;
+	// 소수점 5자리까지만 설정(반올림된다.)
+	sb["precision"] = 5;
+	strJSON = Json::writeString(sb, root);
+
+	cout << "JSON StreamWriteBuilderTest" << endl
 		 << strJSON << endl;
 
 	return strJSON;
