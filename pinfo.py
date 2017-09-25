@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-''''
-title: get photo exif information
-author: ysoftman
+'''
+title : get photo exif information
+author : ysoftman
 python version : 2.x
 
 prerequisite:
@@ -28,6 +28,9 @@ def get_exif():
             elif tag == 'GPS GPSLatitudeRef':
                 temp = str(tags[tag])
                 exifdata['LatitudeRef'] = temp
+            elif tag == 'GPS GPSLongitudeRef':
+                temp = str(tags[tag])
+                exifdata['LongitudeRef'] = temp
             elif tag == 'GPS GPSLatitude':
                 temp = str(tags[tag])
                 temp = temp[1:]
@@ -40,27 +43,28 @@ def get_exif():
                 temp = temp[:-1]
                 temp = temp.replace(', ', '-')
                 exifdata['Longitude'] = temp
-            elif tag == 'GPS GPSLongitudeRef':
-                temp = str(tags[tag])
-                exifdata['LongitudeRef'] = temp
 
         # print fn, exifdata['DateTime'], exifdata['LatitudeRef'],
         # exifdata['Latitude'], exifdata['LongitudeRef'], exifdata['Longitude']
 
         # convert to decimal degrees for googling
-        temp = exifdata['Latitude'].split('-')
-        LatitudeDec = int(temp[0])
-        LatitudeDec += float(temp[1]) / 60
-        LatitudeDec += float(temp[2]) / (60 * 60)
-        if exifdata['LatitudeRef'] == 'S':
-            LatitudeDec *= -1
+        LatitudeDec = "none"
+        if 'Latitude' in exifdata:
+            temp = exifdata['Latitude'].split('-')
+            LatitudeDec = int(temp[0])
+            LatitudeDec += float(temp[1]) / 60
+            LatitudeDec += float(temp[2]) / (60 * 60)
+            if exifdata['LatitudeRef'] == 'S':
+                LatitudeDec *= -1
 
-        temp = exifdata['Longitude'].split('-')
-        LongitudeDec = int(temp[0])
-        LongitudeDec += float(temp[1]) / 60
-        LongitudeDec += float(temp[2]) / (60 * 60)
-        if exifdata['LongitudeRef'] == 'W':
-            LongitudeDec *= -1
+        LongitudeDec = "none"
+        if 'Longitude' in exifdata:
+            temp = exifdata['Longitude'].split('-')
+            LongitudeDec = int(temp[0])
+            LongitudeDec += float(temp[1]) / 60
+            LongitudeDec += float(temp[2]) / (60 * 60)
+            if exifdata['LongitudeRef'] == 'W':
+                LongitudeDec *= -1
 
         print fn, exifdata['DateTime'], "{0},{1}".format(LatitudeDec, LongitudeDec)
 
