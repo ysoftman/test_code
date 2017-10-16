@@ -24,18 +24,18 @@ int main()
 	keys.push_back("bb");
 	keys.push_back("cc");
 	keys.push_back("zz");
- 
+
 	// 키값을 찾는 정규 표현식 만들기
 	ostringstream regex_format;
 	regex_format << "(";
 	unsigned int i = 0;
-	BOOST_FOREACH(string key, keys)
+	BOOST_FOREACH (string key, keys)
 	{
 		cout << "key: " << key << endl;
 		// 참고 https://ko.wikipedia.org/wiki/%EC%A0%95%EA%B7%9C_%ED%91%9C%ED%98%84%EC%8B%9D
 		// (key=  또는 &key= 로 시작하고) (& 로 가 아닌 것들이 1번이상 발생)
 		regex_format << "^" << key << "\\=|\\&" << key << "\\=";
-		
+
 		if (++i < keys.size())
 		{
 			regex_format << "|";
@@ -44,17 +44,18 @@ int main()
 	regex_format << ")([^\\&]+)";
 	cout << "regex_format: " << regex_format.str() << endl;
 
-
+	// url 에서 정규 표현식으로 찾아 변경하기
 	boost::regex re(regex_format.str());
 	boost::smatch match;
 	string url_param_replaced;
-	// url 에서 정규 표현식으로 찾아 변경하기
-	while (regex_search(url_param, match, re)) 
+	while (regex_search(url_param, match, re))
 	{
 		// 매칭되는 키 위치 이전 스트링
 		cout << "match.prefix().str(): " << match.prefix().str() << endl;
-		// 첫번째로 매칭되는 키 위치
-		cout << "match[1]: " << match[1] << endl;
+
+		for (int i = 0; i < match.size(); i++)
+			cout << "match[" << i << "]: " << match[i] << endl;
+
 		// 매칭되는 키 위치 이후 스트링
 		cout << "match.suffix().str(): " << match.suffix().str() << endl;
 		// 매칭되는 키 뒤의 값은 무시하고 _ 로 대체
@@ -63,6 +64,24 @@ int main()
 		url_param = match.suffix().str();
 	}
 	cout << "replaced url param: " << url_param_replaced + url_param << endl;
+
+	// useragent 에서 찾기
+	string ua = "Mozilla/5.0 (Linux; Android 7.0; SM-G955N Build/NRD90M; wv) AppleWebKit/537.36(KHTML,like Gecko) Version/4.0 Chrome/61.0.3163.98 Mobile Safari/537.36;KAKAOTALK 1600297";
+	cout << "useragent = " << ua << endl;
+	boost::regex re2("(lgtelecom|Opera.*SKT|PPC.*Opera|Smartphone.*Opera|800*480;NATE|NATE.*Browser|Mobile Safari|iriver|IEMobile|POLARIS|iPhone|Dolfin)");
+	cout << "regex = " << re2 << endl;
+	boost::smatch match2;
+	if (regex_search(ua, match2, re2))
+	{
+		for (int i = 0; i < match2.size(); i++)
+		{
+			cout << "match[" << i << "] = " << match2[i].str() << endl;
+		}
+	}
+	else
+	{
+		cout << "not matched" << endl;
+	}
 
 	return 0;
 }
