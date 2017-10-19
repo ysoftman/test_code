@@ -1,16 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// jsoncpp library 테스트
-// json 공식 홈페이지 http://json.org
-// jsoncpp
-// http://sourceforge.net/projects/jsoncpp/
-// http://jsoncpp.sourceforge.net/
+// jsoncpp library 테스트 (1.8.3 기준)
+// https://github.com/open-source-parsers/jsoncpp
 // mac jsoncpp 설치
 // brew install jsoncpp
+// brew upgrade jsoncpp
 // build
 // g++ ./jsoncpp.cpp -ljsoncpp
 ////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -46,11 +45,13 @@ string WriteJson()
 	root["친구"] = friends;
 	root["성별"] = "남";
 
-	Json::StyledWriter writer;
-	string strJSON = writer.write(root);
+	string strJSON;
 
-	cout << "JSON Write" << endl
-		 << strJSON << endl;
+	// StyledWriter deprecated
+	// Json::StyledWriter writer;
+	// strJSON = writer.write(root);
+	// cout << "JSON Write" << endl
+	// 	 << strJSON << endl;
 
 	// 소수점등 기타 옵션 설정하여 스트링을 출력시 StreamWriterBuilder 사용
 	Json::StreamWriterBuilder sb;
@@ -75,12 +76,20 @@ void ReadJson(string strJSON)
 	cout << "testing... " << __FUNCTION__ << endl;
 	// json 문서 읽기
 	Json::Value root;
-	Json::Reader reader;
-	if (reader.parse(strJSON, root) == false)
-	{
-		cout << "JSON parsing failed." << endl;
-		return;
-	}
+
+	// Reader deprecated.
+	// Json::Reader reader;
+	// if (reader.parse(strJSON, root) == false)
+	// {
+	// 	cout << "JSON parsing failed." << endl;
+	// 	return;
+	// }
+	Json::CharReaderBuilder builder;
+	builder["collectComments"] = false;
+	std::istringstream strjson;
+	strjson.str(strJSON);
+	JSONCPP_STRING errs;
+	bool ok = Json::parseFromStream(builder, strjson, &root, &errs);
 
 	cout << "JSON Read" << endl;
 
@@ -146,8 +155,19 @@ int main()
 					 "}";
 	cout << "strJSON = " << strJSON << endl;
 	Json::Value root;
-	Json::Reader reader;
-	if (reader.parse(strJSON, root) == true)
+
+	// Reader deprecated.
+	// Json::Reader reader;
+	// if (reader.parse(strJSON, root) == true)
+	// {
+	// 	TraverseJson(root);
+	// }
+	Json::CharReaderBuilder builder;
+	builder["collectComments"] = false;
+	std::istringstream strjson;
+	strjson.str(strJSON);
+	JSONCPP_STRING errs;
+	if (Json::parseFromStream(builder, strjson, &root, &errs))
 	{
 		TraverseJson(root);
 	}
