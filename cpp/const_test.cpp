@@ -32,7 +32,7 @@ class myclass
         szString[1] = 'b';
         szString[2] = '\0';
     }
-    // 함수뒤에 const 를 선언하면 변수를 변경할 수 없다.(컴파일시 에러 발생)
+    // 함수뒤에 const 를 선언하면 멤버 변수를 변경할 수 없다.(컴파일시 에러 발생)
     void func2() const
     {
         // nNum = 10;
