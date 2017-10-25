@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void main()
+int main()
 {
 	char str[5] = "abcd";
 
@@ -29,7 +29,8 @@ void main()
 
 	printf("aa=%s\n", aa);
 	printf("bb=%s\n", bb);
-
+	
+	return 0;
 }
 
 

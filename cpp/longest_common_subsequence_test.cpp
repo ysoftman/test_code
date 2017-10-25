@@ -18,7 +18,7 @@ int i, j, m, n;
 int LCSlength();
 void printLCS(int i, int j);
 
-void main()
+int main()
 {
 	printf("Input Two String : ");
 	scanf("%s", X);
@@ -28,6 +28,8 @@ void main()
 	printf("\nLongest Common Subsequence (String) ");
 	printLCS(m, n);
 	printf("\n");
+
+	return 0;
 }
 
 int LCSlength()

@@ -59,7 +59,7 @@ unsigned int __stdcall Thread2(void* param)
 }
 #endif
 
-void main()
+int main()
 {
 #ifdef _WIN32
 	// critical_section 초기화
@@ -92,5 +92,7 @@ void main()
 	printf("Elapsed = %ld\n", tick_end - tick_start);
 
 #endif
+
+	return 0;
 }
 

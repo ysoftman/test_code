@@ -8,7 +8,7 @@
 
 #include <conio.h>
 
-void main()
+int main()
 {
 	
 	int num1, num2;
@@ -37,5 +37,6 @@ void main()
 	{
 		printf("\n %2d * %2d = %2d\n", num1, num2, num1*num2);
 	}
+	return 0;
 }
 

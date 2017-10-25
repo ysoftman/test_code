@@ -35,7 +35,7 @@ void Print(FILE *fp, int arr[], int size, char *msg)
 }
 
 
-void main()
+int main()
 {
 	int i = 0;
 	int input[MAX];
@@ -117,6 +117,8 @@ void main()
 	memcpy(temp, input, sizeof(int)*MAX);
 
 	fclose(fp);
+
+	return 0;
 }
 
 // Swap

@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void main()
+int main()
 {
 	FILE *fp = NULL;
 	int num_of_bytes = 0;
@@ -45,7 +45,8 @@ void main()
 	}
 	fprintf(stdout, "[Binary mode open] 파일크기(바이트개수):%d\n", num_of_bytes);
 	fclose(fp);
-
+	
+	return 0;
 }
 
 

@@ -71,7 +71,7 @@ float GetPCC(float covariance, float sdX, float sdY)
 	return pcc;
 }
 
-void main()
+int main()
 {
 	float averageX = 0.0;
 	float averageY = 0.0;
@@ -116,6 +116,8 @@ void main()
 
 	pcc = GetPCC(covariance, sdX, sdY);
 	printf("Pearson Correlation Coefficient = %.2f\n", pcc);
+
+	return 0;
 }
 
 

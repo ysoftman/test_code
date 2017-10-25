@@ -3,5 +3,3 @@
 import MyModule
 
 MyModule.syscmd("ls -ahl")
-
-

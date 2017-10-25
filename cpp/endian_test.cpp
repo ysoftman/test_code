@@ -20,7 +20,7 @@ struct STUDENT {
 };
 
 
-void main()
+int main()
 {
 	STUDENT std;
 	// B = 66(ASCII)
@@ -71,7 +71,7 @@ void main()
 		std.Name[0], std.Name[1], std.Name[2], std.Name[3],
 		std.age, 
 		std.age);
-
+	return 0;
 }
 
 

@@ -7,7 +7,7 @@
 // CWI Dik T. Winter가 작성한 것으로 pi를 십진수 800자리까지 계산
 int a = 10000, b, c = 2800, d, e, f[2801], g;
 
-void main()
+int main()
 {
 	for ( ; b-c; )
 	{
@@ -17,7 +17,6 @@ void main()
 	{
 		for(b=c; d+=f[b]*a, f[b] = d%--g, d /= g--, --b; d *= b);
 	}
+
+	return 0;
 }
-
-
-

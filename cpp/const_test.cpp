@@ -1,17 +1,27 @@
 // ysoftman
 // const 테스트
 #include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
 
-class myclass {
+using namespace std;
 
-public:
+class myclass
+{
+  public:
     int nNum;
     char szString[3];
-    myclass() {
+    vector<string> vecString;
+    myclass()
+    {
         nNum = 0;
-        szString[0] = NULL;
-        szString[1] = NULL;
-        szString[2] = NULL;
+        szString[0] = '\0';
+        szString[1] = '\0';
+        szString[2] = '\0';
+        vecString.push_back("aaa");
+        vecString.push_back("bbb");
+        vecString.push_back("ccc");
     }
     ~myclass() {}
 
@@ -20,17 +30,26 @@ public:
         nNum = 10;
         szString[0] = 'a';
         szString[1] = 'b';
-        szString[2] = NULL;
+        szString[2] = '\0';
     }
-    // const 함수로 선언되면 멤버 변수를 변경할 수 없다.
+    // 함수뒤에 const 를 선언하면 멤버 변수를 변경할 수 없다.(컴파일시 에러 발생)
     void func2() const
     {
         // nNum = 10;
         // szString[0] = 'a';
         // szString[1] = 'b';
         // szString[2] = NULL;
-    }    
+    }
 
+    vector<string> &func3()
+    {
+        return vecString;
+    }
+    // 함수 뒤에 const 로 선언된 경우 reference 로 리턴하려면 const 로 리턴해야 된다.
+    const vector<string> &func4() const
+    {
+        return vecString;
+    }
 };
 
 int main()
@@ -42,8 +61,8 @@ int main()
 
     int num = 10;
     int *pNormal = NULL;
-    const int *pConst = NULL;   // pConst 값을 변경하지 못함
-    int *const pConst2 = &num;  // pConst2 주소를 변경하지 못함
+    const int *pConst = NULL;  // pConst 값을 변경하지 못함
+    int *const pConst2 = &num; // pConst2 주소를 변경하지 못함
 
     printf("&num:%p\n", &num);
     printf("num:%d\n", num);
@@ -59,7 +78,7 @@ int main()
     // 일반 포인터 변수의 값은 변경 가능하다.
     *pNormal = 20;
     printf("*(pNormal):%d\n", *pNormal);
-   
+
     printf("&(pConst):%p\n", pConst);
     pConst = &num;
     // pConst 포인터 변수의 값은 변경할 수 없다.
@@ -67,7 +86,6 @@ int main()
     // *pConst = 30;
     printf("&(pConst):%p\n", pConst);
     printf("*(pConst):%d\n", *pConst);
-    
 
     // pConst2 포인터 변수를 변경할 수 없다.
     // pConst2 = &num;
@@ -78,17 +96,27 @@ int main()
     // pConst2 가 num 변수의 값을 변경하였다.
     printf("num:%d\n", num);
 
-
-
-
     // const 함수 테스트
     printf("-const function test-\n");
     myclass mc;
-    printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);  
+    printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
     mc.func1();
     printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
     mc.func2();
     printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
-    
+    vector<string> &myStringVec = mc.func3();
+    vector<string>::iterator iter;
+    for (iter = myStringVec.begin(); iter != myStringVec.end(); ++iter)
+    {
+        cout << *iter << endl;
+    }
+    // const reference 는 const 변수로 받아야 한다.
+    const vector<string> &myStringVec2 = mc.func4();
+    vector<string>::const_iterator iter2;
+    for (iter2 = myStringVec2.begin(); iter2 != myStringVec2.end(); ++iter2)
+    {
+        cout << *iter2 << endl;
+    }
+
     return 0;
 }

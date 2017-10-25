@@ -13,7 +13,6 @@ https://docs.python.org/3/extending/index.html#extending-index
 c:\Python35\python35.dll -> 프로젝트 경로 복사
 */
 
-
 // Python.h 에 stdio.h stdlib.h string.h 등 기본적인 헤더 파일이 포함되어 있음
 #include <Python.h>
 
@@ -29,7 +28,8 @@ static PyObject *execute_system_command(PyObject *self, PyObject *args)
 	printf("%s\n", command);
 
 	sts = system(command);
-	if (sts < 0) {
+	if (sts < 0)
+	{
 		PyErr_SetString(MyError, "System command failed");
 		return NULL;
 	}
@@ -41,19 +41,17 @@ static PyObject *execute_system_command(PyObject *self, PyObject *args)
 static PyMethodDef MyMethods[] = {
 
 	// 파이썬에서 systcmd 를 호출하면 실제 execute_system_command 가 실행되도록 함
-	{"syscmd",  execute_system_command, METH_VARARGS, "Execute a shell command."},
-	{NULL, NULL, 0, NULL}        /* Sentinel */
+	{"syscmd", execute_system_command, METH_VARARGS, "Execute a shell command."},
+	{NULL, NULL, 0, NULL} /* Sentinel */
 };
 
 // 모듈 구조 설정
 static struct PyModuleDef MyModule = {
 	PyModuleDef_HEAD_INIT,
-	"MyModule",	/* name of module */
-	NULL,	/* module documentation, may be NULL */
-	-1,	/* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
-	MyMethods
-};
-
+	"MyModule", /* name of module */
+	NULL,		/* module documentation, may be NULL */
+	-1,			/* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
+	MyMethods};
 
 // 모듈 초기화 함수
 // 파이썬에서 import 시 맨 처음 호출된다.
@@ -63,13 +61,13 @@ PyMODINIT_FUNC PyInit_MyModule(void)
 	return PyModule_Create(&MyModule);
 }
 
-
 int main(int argc, char *argv[])
 {
 	printf("%s testing...\n", argv[0]);
-	
+
 	wchar_t *program = Py_DecodeLocale(argv[0], NULL);
-	if (program == NULL) {
+	if (program == NULL)
+	{
 		fprintf(stderr, "Fatal error: cannot decode argv[0]\n");
 		exit(1);
 	}
@@ -82,17 +80,9 @@ int main(int argc, char *argv[])
 	/* Initialize the Python interpreter.  Required. */
 	Py_Initialize();
 
-
-	
-
 	PyMem_RawFree(program);
 
 	//Py_Finalize();
 
 	return 0;
 }
-
-
-
-
-
