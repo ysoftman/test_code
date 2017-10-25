@@ -13,7 +13,8 @@ import (
 func main() {
 	fmt.Println("slack api test")
 	// slack token 명시
-	slackapi := slack.New("xoxp-3061993574-55243284818-92053298579-c89480262eead7a26906ef3eb38befda")
+	// 실제 토큰을 명시해서 github 로 공개되니 slack 에서 보안상 해당 토큰을 disable 처리한다고 메일이 온다.
+	slackapi := slack.New("aaaaaaaaa")
 
 	// 그룹파악
 	groups, err := slackapi.GetGroups(false)
