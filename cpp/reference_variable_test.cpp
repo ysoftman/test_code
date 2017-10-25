@@ -11,15 +11,20 @@ int main()
 	int b = a;
 	// 레퍼런스 변수 선언
 	int &c = a;
-	printf ("a=%d(%p) b_addr=%d(%p) c=%d(%p)\n", a, &a, b, &b, c, &c);
+	printf("a=%d(%p) b_addr=%d(%p) c=%d(%p)\n", a, &a, b, &b, c, &c);
 
 	// 참조하는 변수가 값이 바뀌면 참조하는 레퍼런스 변수 값도 같이 변경된다.(a주소공간을 공유)
 	a = 99999;
-	printf ("a=%d(%p) b_addr=%d(%p) c=%d(%p)\n", a, &a, b, &b, c, &c);
+	printf("a=%d(%p) b_addr=%d(%p) c=%d(%p)\n", a, &a, b, &b, c, &c);
 
 	// 레퍼런스 변수 값을 바꾸면 참조되는 일반 변수 값도 변경된다.(a주소공간을 공유)
 	c = 11111;
-	printf ("a=%d(%p) b_addr=%d(%p) c=%d(%p)\n", a, &a, b, &b, c, &c);
+	printf("a=%d(%p) b_addr=%d(%p) c=%d(%p)\n", a, &a, b, &b, c, &c);
 
+	// int& x 나 int &x 나 코딩스타일만 다를뿐 차이가 없다.
+	// 레퍼런스 변수 x 는 선언과 동시에 참조할 값을 설정해야 한다.(매개변수로 사용될때는 예외)
+	int &x = a, y = 1;
+	printf("x=%d y=%d\n", x, y);
+	
 	return 0;
 }

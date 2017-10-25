@@ -6,7 +6,7 @@
 
 int GCD(int m, int n);
 
-void main()
+int main()
 {
 	int num1;
 	int num2;
@@ -20,7 +20,8 @@ void main()
 	
 	gcd = GCD (num1, num2);
 	printf ("\n\n\nGreatest Common Divisor is :   %d\n", gcd);
-
+	
+	return 0;
 }
 
 //재귀함수를 이용한 최대공약수 구하기

@@ -18,7 +18,7 @@ void MoveTower(char a, char b, char c, int n)
 	}
 }
 
-void main()
+int main()
 {
 	int number;	// 원판의 개수
 	
@@ -27,5 +27,6 @@ void main()
 
 	//MoveTower1('A', 'B', 'C', number);
 	MoveTower('A', 'B', 'C', number);
-}
 
+	return 0;
+}

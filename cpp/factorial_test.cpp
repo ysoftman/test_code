@@ -33,7 +33,7 @@ int Fact_method2(int input)
 	return output;
 }
 
-void main()
+int main()
 {
 	unsigned int result=0;
 	unsigned int in_number=0;
@@ -43,6 +43,6 @@ void main()
 	printf ("recursive method %d! = %d\n", in_number, result);
 	result = Fact_method2(in_number);
 	printf ("iteration method %d! = %d\n", in_number, result);
+
+	return 0;
 }
-
-

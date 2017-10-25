@@ -15,7 +15,7 @@ public:
 	};
 };
 
-void main()
+int main()
 {
 	// 정적 인스턴스
 	// 스택에 쌓이기 때문에 사이즈가 클경우 스택 오버플로우 발생
@@ -26,5 +26,7 @@ void main()
 	MyClass *inst2 = new MyClass();
 	inst2->Func1();
 	delete inst2;
+
+	return 0;
 }
 

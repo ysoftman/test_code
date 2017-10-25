@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 
-void main()
+int main()
 {
 #if defined(_WIN32) || defined(_WIN64)
 	// 현재 콘솔 창의 핸들 얻어 오기
@@ -38,6 +38,8 @@ void main()
 #else
 	printf("This OS is not Windows NT\n");
 #endif
+
+	return 0;
 }
 
 
