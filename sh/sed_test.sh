@@ -6,8 +6,8 @@
 # | grep ":$" : 앞의 출력 결과를 파이프로 넘겨받아 : 로 끝나는 부분만 출력
 # | sed 's/:/\//' : 앞의 출력 결과를 파이프로 넘겨받아 처음 부분을 [subdir] 로 바꿔서(추가) 출력
 ls -lR .. | grep ":$" | sed "s/^/[subdir]/"
-# stringdata.txt 내용에서 ysoftman 찾으면 출력 끝내기
-cat stringdata.txt | sed "/ysoftman/q"
+# sed_test.txt 내용에서 ysoftman 찾으면 출력 끝내기
+cat sed_test.txt | sed "/ysoftman/q"
 
 # sed test2
 # 임시 텍스트 파일 생성
