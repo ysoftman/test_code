@@ -13,4 +13,5 @@ int main()
     cout << "str=" << str << endl;
     size_t hashed = boost::hash_value(str);
     cout << "hash_value=" << hashed << endl;
+    return 0;
 }
