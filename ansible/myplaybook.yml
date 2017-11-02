@@ -1,6 +1,10 @@
 - name: hello world by ansible
   # inventory 에 명시된 호스트그룹, inventory 의 모든 호스그룹이라면 all 로 명시
   hosts: testhost1
+  # 태스크를 대상 호스트모두에서 동시에 실행하지 않고 대상 호스트를 순차적으로 처리하고 싶은 경우
+  # 호스트1에서 끝나면 그다음 호스트2에 대해서 수행 = serial 1
+  # 호스트1,2 에서 끝나면 그다음 호스트3,4에 대해서 수행 = serial 2
+  serial: 1
   user: hanadmin
   # 대상 서버에서 수행할 작업들 명시
   tasks:
