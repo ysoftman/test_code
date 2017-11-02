@@ -1,290 +1,94 @@
-2017-02-16 17:44:00,251 p=67739 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-02-16 17:44:00,291 p=67739 u=ysoftman |  TASK [setup] *******************************************************************
-2017-02-16 17:44:00,771 p=67739 u=ysoftman |   [ERROR]: User interrupted execution
+2017-11-02 16:50:57,796 p=55608 u=ysoftman |  192.168.77.20 | SUCCESS | rc=0 >>
+합계 76K
+drwxr-xr-x  10 hanadmin hanmail 4.0K 11월  2 13:05 .
+dr-xr-xr-x. 21 root     root    4.0K  5월 10 19:10 ..
+drwx------   3 hanadmin hanmail   16  5월 10 19:10 .ansible
+-rw-------   1 hanadmin hanmail  17K 11월  2 14:43 .bash_history
+-rw-------   1 hanadmin hanmail   18 11월 20  2015 .bash_logout
+-rw-------   1 hanadmin hanmail   51 10월 12 18:30 .bash_profile
+-rw-------   1 hanadmin hanmail 3.0K 10월 20 11:38 .bashrc
+drwxr-xr-x   3 hanadmin hanmail   17 10월 24  2016 .cache
+drwxr-xr-x   3 hanadmin hanmail   17 10월 24  2016 .config
+-rw-r--r--   1 hanadmin hanmail  178 10월 12 18:30 .gdbinit
+-rw-------   1 hanadmin hanmail  146 11월  2 13:01 .lesshst
+drwxr-----   3 hanadmin hanmail   18 10월 12 18:21 .pki
+drwx------   2 hanadmin hanmail   28  5월 10 19:10 .ssh
+-rw-r--r--   1 hanadmin hanmail  619 10월 12 18:30 .toprc
+-rw-------   1 hanadmin hanmail 9.8K 11월  2 12:42 .viminfo
+-rw-r--r--   1 hanadmin hanmail 1.2K 10월 12 18:30 .vimrc
+-rw-r--r--   1 hanadmin hanmail  168 11월  2 12:42 extract_json.txt
+drwxr-xr-x   4 root     root      36 10월 12 19:13 shared
+drwxr-xr-x   3 hanadmin hanmail   26 10월 12 18:21 src
+drwxr-xr-x  24 hanadmin hanmail 4.0K 10월 20 11:34 tmp
 
-2017-02-16 17:44:02,163 p=67774 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-02-16 17:44:02,345 p=67774 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-02-16 17:44:02,371 p=67774 u=ysoftman |  TASK [setup] *******************************************************************
-2017-02-16 17:44:03,237 p=67774 u=ysoftman |  ok: [192.168.77.20]
-2017-02-16 17:44:03,546 p=67774 u=ysoftman |  ok: [192.168.77.21]
-2017-02-16 17:44:03,549 p=67774 u=ysoftman |  TASK [print hello world] *******************************************************
-2017-02-16 17:44:04,183 p=67774 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.007119", "end": "2017-02-16 17:44:04.162745", "rc": 0, "start": "2017-02-16 17:44:04.155626", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:04,185 p=67774 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.007362", "end": "2017-02-16 17:44:04.155386", "rc": 0, "start": "2017-02-16 17:44:04.148024", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:04,186 p=67774 u=ysoftman |  TASK [who am i] ****************************************************************
-2017-02-16 17:44:04,639 p=67774 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "whoami > whoami.txt", "delta": "0:00:00.008653", "end": "2017-02-16 17:44:04.619666", "rc": 0, "start": "2017-02-16 17:44:04.611013", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:04,641 p=67774 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "whoami > whoami.txt", "delta": "0:00:00.007993", "end": "2017-02-16 17:44:04.613106", "rc": 0, "start": "2017-02-16 17:44:04.605113", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:04,642 p=67774 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-02-16 17:44:04,642 p=67774 u=ysoftman |  192.168.77.20              : ok=3    changed=2    unreachable=0    failed=0   
-2017-02-16 17:44:04,643 p=67774 u=ysoftman |  192.168.77.21              : ok=3    changed=2    unreachable=0    failed=0   
-2017-02-16 17:44:10,020 p=67848 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-02-16 17:44:10,202 p=67848 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-02-16 17:44:10,229 p=67848 u=ysoftman |  TASK [setup] *******************************************************************
-2017-02-16 17:44:11,086 p=67848 u=ysoftman |  ok: [192.168.77.20]
-2017-02-16 17:44:11,123 p=67848 u=ysoftman |  ok: [192.168.77.21]
-2017-02-16 17:44:11,126 p=67848 u=ysoftman |  TASK [print hello world] *******************************************************
-2017-02-16 17:44:11,653 p=67848 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.007008", "end": "2017-02-16 17:44:11.632464", "rc": 0, "start": "2017-02-16 17:44:11.625456", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:11,654 p=67848 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.007133", "end": "2017-02-16 17:44:11.626371", "rc": 0, "start": "2017-02-16 17:44:11.619238", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:11,656 p=67848 u=ysoftman |  TASK [current path] ************************************************************
-2017-02-16 17:44:12,110 p=67848 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "pwd > pwd.txt", "delta": "0:00:00.007773", "end": "2017-02-16 17:44:12.082357", "rc": 0, "start": "2017-02-16 17:44:12.074584", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:12,247 p=67848 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "pwd > pwd.txt", "delta": "0:00:00.007316", "end": "2017-02-16 17:44:12.230194", "rc": 0, "start": "2017-02-16 17:44:12.222878", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:12,250 p=67848 u=ysoftman |  TASK [who am i] ****************************************************************
-2017-02-16 17:44:12,731 p=67848 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "whoami > whoami.txt", "delta": "0:00:00.008180", "end": "2017-02-16 17:44:12.710969", "rc": 0, "start": "2017-02-16 17:44:12.702789", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:12,733 p=67848 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "whoami > whoami.txt", "delta": "0:00:00.008439", "end": "2017-02-16 17:44:12.705309", "rc": 0, "start": "2017-02-16 17:44:12.696870", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
-2017-02-16 17:44:12,734 p=67848 u=ysoftman |  TASK [clear all files] *********************************************************
-2017-02-16 17:44:13,183 p=67848 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "rm -fv helloworld.txt pwd.txt whoami.txt", "delta": "0:00:00.008008", "end": "2017-02-16 17:44:13.162597", "rc": 0, "start": "2017-02-16 17:44:13.154589", "stderr": "", "stdout": "removed `helloworld.txt'\nremoved `pwd.txt'\nremoved `whoami.txt'", "stdout_lines": ["removed `helloworld.txt'", "removed `pwd.txt'", "removed `whoami.txt'"], "warnings": ["Consider using file module with state=absent rather than running rm"]}
-2017-02-16 17:44:13,184 p=67848 u=ysoftman |   [WARNING]: Consider using file module with state=absent rather than running rm
+2017-11-02 16:50:57,798 p=55608 u=ysoftman |  192.168.77.21 | SUCCESS | rc=0 >>
+합계 44K
+drwxr-xr-x  10 hanadmin hanmail 4.0K 10월 30 15:01 .
+dr-xr-xr-x. 21 root     root    4.0K  5월 10 19:10 ..
+drwx------   3 hanadmin hanmail   16  5월 10 19:10 .ansible
+-rw-------   1 hanadmin hanmail 1.3K 10월 30 15:54 .bash_history
+-rw-------   1 hanadmin hanmail   18 11월 20  2015 .bash_logout
+-rw-------   1 hanadmin hanmail   51 10월 12 18:56 .bash_profile
+-rw-------   1 hanadmin hanmail 3.0K 10월 12 19:21 .bashrc
+drwxr-xr-x   3 hanadmin hanmail   17 10월 24  2016 .cache
+drwxr-xr-x   3 hanadmin hanmail   17 10월 24  2016 .config
+-rw-r--r--   1 hanadmin hanmail  178 10월 12 18:56 .gdbinit
+drwxr-----   3 hanadmin hanmail   18 10월 12 18:47 .pki
+drwx------   2 hanadmin hanmail   28  5월 10 19:10 .ssh
+-rw-r--r--   1 hanadmin hanmail  619 10월 12 18:56 .toprc
+-rw-------   1 hanadmin hanmail 1.9K 10월 30 15:01 .viminfo
+-rw-r--r--   1 hanadmin hanmail 1.2K 10월 12 18:56 .vimrc
+drwxr-xr-x   4 root     root      36 10월 12 19:21 shared
+drwxr-xr-x   3 hanadmin hanmail   26 10월 12 18:47 src
+drwxr-xr-x  23 hanadmin hanmail 4.0K 10월 12 18:57 tmp
 
-2017-02-16 17:44:13,186 p=67848 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "rm -fv helloworld.txt pwd.txt whoami.txt", "delta": "0:00:00.008366", "end": "2017-02-16 17:44:13.156981", "rc": 0, "start": "2017-02-16 17:44:13.148615", "stderr": "", "stdout": "removed `helloworld.txt'\nremoved `pwd.txt'\nremoved `whoami.txt'", "stdout_lines": ["removed `helloworld.txt'", "removed `pwd.txt'", "removed `whoami.txt'"], "warnings": ["Consider using file module with state=absent rather than running rm"]}
-2017-02-16 17:44:13,187 p=67848 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-02-16 17:44:13,187 p=67848 u=ysoftman |  192.168.77.20              : ok=5    changed=4    unreachable=0    failed=0   
-2017-02-16 17:44:13,187 p=67848 u=ysoftman |  192.168.77.21              : ok=5    changed=4    unreachable=0    failed=0   
-2017-03-02 19:52:16,826 p=83613 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-03-02 19:52:16,929 p=83613 u=ysoftman |  ERROR! 'debug' is not a valid attribute for a Play
-
-The error appears to have been in '/Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml': line 21, column 3, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-  # 디버깅 출력
-- debug:
-  ^ here
-
-2017-03-02 19:52:19,254 p=83636 u=ysoftman |  ERROR! 'debug' is not a valid attribute for a Play
-
-The error appears to have been in '/Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml': line 21, column 3, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-  # 디버깅 출력
-- debug:
-  ^ here
-
-2017-03-02 19:52:54,392 p=83700 u=ysoftman |  ERROR! 'msg' is not a valid attribute for a Task
-
-The error appears to have been in '/Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml': line 20, column 5, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-  # 디버깅 출력
-  - debug:
-    ^ here
-
-2017-03-02 19:53:03,796 p=83743 u=ysoftman |  ERROR! 'msg' is not a valid attribute for a Task
-
-The error appears to have been in '/Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml': line 20, column 5, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-  # 디버깅 출력
-  - debug:
-    ^ here
-
-2017-03-02 19:53:09,960 p=83809 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:53:10,006 p=83809 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:53:11,160 p=83809 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:53:11,162 p=83809 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:53:11,167 p=83809 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:53:11,219 p=83809 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ysoftman CentOS 6"
-}
-2017-03-02 19:53:11,220 p=83809 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ysoftman CentOS 6"
-}
-2017-03-02 19:53:11,222 p=83809 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:53:11,222 p=83809 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:53:11,222 p=83809 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:53:39,466 p=83909 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:53:39,493 p=83909 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:53:40,399 p=83909 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:53:40,420 p=83909 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:53:40,424 p=83909 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:53:40,470 p=83909 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS ansible_distribution_major_version: 6"
-}
-2017-03-02 19:53:40,471 p=83909 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS ansible_distribution_major_version: 6"
-}
-2017-03-02 19:53:40,474 p=83909 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:53:40,475 p=83909 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:53:40,475 p=83909 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:53:48,238 p=83963 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:53:48,262 p=83963 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:53:49,207 p=83963 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:53:49,217 p=83963 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:53:49,221 p=83963 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:53:49,264 p=83963 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS\n ansible_distribution_major_version: 6"
-}
-2017-03-02 19:53:49,268 p=83963 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS\n ansible_distribution_major_version: 6"
-}
-2017-03-02 19:53:49,271 p=83963 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:53:49,271 p=83963 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:53:49,272 p=83963 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:53:59,666 p=84017 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:53:59,698 p=84017 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:54:00,722 p=84017 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:54:01,124 p=84017 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:54:01,129 p=84017 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:54:01,184 p=84017 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:01,185 p=84017 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:01,187 p=84017 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:54:01,187 p=84017 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:01,187 p=84017 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:19,027 p=84095 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-03-02 19:54:19,189 p=84095 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:54:19,216 p=84095 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:54:20,082 p=84095 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:54:20,091 p=84095 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:54:20,094 p=84095 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:54:20,140 p=84095 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:20,146 p=84095 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:20,149 p=84095 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:54:20,149 p=84095 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:20,150 p=84095 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:22,923 p=84150 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-03-02 19:54:23,079 p=84150 u=ysoftman |  PLAYBOOK: myplaybook.yml *******************************************************
-2017-03-02 19:54:23,079 p=84150 u=ysoftman |  1 plays in myplaybook.yml
-2017-03-02 19:54:23,081 p=84150 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:54:23,106 p=84150 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:54:24,007 p=84150 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:54:24,144 p=84150 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:54:24,148 p=84150 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:54:24,148 p=84150 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml:20
-2017-03-02 19:54:24,192 p=84150 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:24,195 p=84150 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:24,198 p=84150 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:54:24,198 p=84150 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:24,198 p=84150 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:27,075 p=84188 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-03-02 19:54:27,235 p=84188 u=ysoftman |  PLAYBOOK: myplaybook.yml *******************************************************
-2017-03-02 19:54:27,235 p=84188 u=ysoftman |  1 plays in myplaybook.yml
-2017-03-02 19:54:27,238 p=84188 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:54:27,265 p=84188 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:54:27,492 p=84188 u=ysoftman |  Using module file /usr/local/Cellar/ansible/2.2.1.0/libexec/lib/python2.7/site-packages/ansible/modules/core/system/setup.py
-2017-03-02 19:54:27,494 p=84188 u=ysoftman |  Using module file /usr/local/Cellar/ansible/2.2.1.0/libexec/lib/python2.7/site-packages/ansible/modules/core/system/setup.py
-2017-03-02 19:54:28,137 p=84188 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:54:28,220 p=84188 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:54:28,223 p=84188 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:54:28,224 p=84188 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml:20
-2017-03-02 19:54:28,268 p=84188 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:28,270 p=84188 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:28,273 p=84188 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:54:28,273 p=84188 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:28,273 p=84188 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:30,593 p=84223 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-03-02 19:54:30,692 p=84223 u=ysoftman |  Loading callback plugin default of type stdout, v2.0 from /usr/local/Cellar/ansible/2.2.1.0/libexec/lib/python2.7/site-packages/ansible/plugins/callback/__init__.pyc
-2017-03-02 19:54:30,754 p=84223 u=ysoftman |  PLAYBOOK: myplaybook.yml *******************************************************
-2017-03-02 19:54:30,755 p=84223 u=ysoftman |  1 plays in myplaybook.yml
-2017-03-02 19:54:30,757 p=84223 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:54:30,783 p=84223 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:54:31,022 p=84223 u=ysoftman |  Using module file /usr/local/Cellar/ansible/2.2.1.0/libexec/lib/python2.7/site-packages/ansible/modules/core/system/setup.py
-2017-03-02 19:54:31,024 p=84223 u=ysoftman |  Using module file /usr/local/Cellar/ansible/2.2.1.0/libexec/lib/python2.7/site-packages/ansible/modules/core/system/setup.py
-2017-03-02 19:54:31,656 p=84223 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:54:31,658 p=84223 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:54:31,661 p=84223 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:54:31,662 p=84223 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml:20
-2017-03-02 19:54:31,713 p=84223 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:31,714 p=84223 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:31,716 p=84223 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:54:31,716 p=84223 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:31,716 p=84223 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:35,056 p=84264 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-03-02 19:54:35,219 p=84264 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:54:35,246 p=84264 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:54:36,116 p=84264 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:54:36,119 p=84264 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:54:36,122 p=84264 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:54:36,168 p=84264 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:36,170 p=84264 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:54:36,173 p=84264 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:54:36,173 p=84264 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:54:36,173 p=84264 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:55:34,267 p=84482 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:55:34,291 p=84482 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:55:35,159 p=84482 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:55:35,249 p=84482 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:55:35,251 p=84482 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:55:35,252 p=84482 u=ysoftman |  192.168.77.20              : ok=1    changed=0    unreachable=0    failed=0   
-2017-03-02 19:55:35,252 p=84482 u=ysoftman |  192.168.77.21              : ok=1    changed=0    unreachable=0    failed=0   
-2017-03-02 19:55:41,429 p=84543 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:55:41,453 p=84543 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:55:42,310 p=84543 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:55:42,312 p=84543 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:55:42,314 p=84543 u=ysoftman |  TASK [print hello world] *******************************************************
-2017-03-02 19:55:42,852 p=84543 u=ysoftman |  changed: [192.168.77.20]
-2017-03-02 19:55:43,006 p=84543 u=ysoftman |  changed: [192.168.77.21]
-2017-03-02 19:55:43,009 p=84543 u=ysoftman |  TASK [current path] ************************************************************
-2017-03-02 19:55:43,462 p=84543 u=ysoftman |  changed: [192.168.77.20]
-2017-03-02 19:55:43,464 p=84543 u=ysoftman |  changed: [192.168.77.21]
-2017-03-02 19:55:43,466 p=84543 u=ysoftman |  TASK [who am i] ****************************************************************
-2017-03-02 19:55:43,924 p=84543 u=ysoftman |  changed: [192.168.77.20]
-2017-03-02 19:55:43,936 p=84543 u=ysoftman |  changed: [192.168.77.21]
-2017-03-02 19:55:43,939 p=84543 u=ysoftman |  TASK [clear all files] *********************************************************
-2017-03-02 19:55:44,394 p=84543 u=ysoftman |  changed: [192.168.77.20]
-2017-03-02 19:55:44,398 p=84543 u=ysoftman |   [WARNING]: Consider using file module with state=absent rather than running rm
-
-2017-03-02 19:55:44,399 p=84543 u=ysoftman |  changed: [192.168.77.21]
-2017-03-02 19:55:44,401 p=84543 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:55:44,448 p=84543 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:55:44,453 p=84543 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:55:44,455 p=84543 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:55:44,456 p=84543 u=ysoftman |  192.168.77.20              : ok=6    changed=4    unreachable=0    failed=0   
-2017-03-02 19:55:44,456 p=84543 u=ysoftman |  192.168.77.21              : ok=6    changed=4    unreachable=0    failed=0   
-2017-03-02 19:55:50,800 p=84653 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:55:50,828 p=84653 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:55:51,690 p=84653 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:55:51,764 p=84653 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:55:51,768 p=84653 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:55:51,768 p=84653 u=ysoftman |  192.168.77.20              : ok=1    changed=0    unreachable=0    failed=0   
-2017-03-02 19:55:51,768 p=84653 u=ysoftman |  192.168.77.21              : ok=1    changed=0    unreachable=0    failed=0   
-2017-03-02 19:56:09,726 p=84747 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansibletest/ansible.cfg as config file
-2017-03-02 19:56:09,881 p=84747 u=ysoftman |  PLAYBOOK: myplaybook.yml *******************************************************
-2017-03-02 19:56:09,881 p=84747 u=ysoftman |  1 plays in myplaybook.yml
-2017-03-02 19:56:09,884 p=84747 u=ysoftman |  PLAY [hello world by ansible] **************************************************
-2017-03-02 19:56:09,908 p=84747 u=ysoftman |  TASK [setup] *******************************************************************
-2017-03-02 19:56:10,780 p=84747 u=ysoftman |  ok: [192.168.77.20]
-2017-03-02 19:56:10,805 p=84747 u=ysoftman |  ok: [192.168.77.21]
-2017-03-02 19:56:10,809 p=84747 u=ysoftman |  TASK [debug] *******************************************************************
-2017-03-02 19:56:10,809 p=84747 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansibletest/myplaybook.yml:20
-2017-03-02 19:56:10,855 p=84747 u=ysoftman |  ok: [192.168.77.20] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:56:10,860 p=84747 u=ysoftman |  ok: [192.168.77.21] => {
-    "msg": "ansible_distribution: CentOS  ansible_distribution_major_version: 6"
-}
-2017-03-02 19:56:10,863 p=84747 u=ysoftman |  PLAY RECAP *********************************************************************
-2017-03-02 19:56:10,863 p=84747 u=ysoftman |  192.168.77.20              : ok=2    changed=0    unreachable=0    failed=0   
-2017-03-02 19:56:10,863 p=84747 u=ysoftman |  192.168.77.21              : ok=2    changed=0    unreachable=0    failed=0   
+2017-11-02 16:51:53,455 p=55665 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansible/ansible.cfg as config file
+2017-11-02 16:51:53,543 p=55665 u=ysoftman |  PLAYBOOK: myplaybook.yml *******************************************************
+2017-11-02 16:51:53,543 p=55665 u=ysoftman |  1 plays in myplaybook.yml
+2017-11-02 16:51:53,545 p=55665 u=ysoftman |  PLAY [hello world by ansible] **************************************************
+2017-11-02 16:51:53,557 p=55665 u=ysoftman |  TASK [setup] *******************************************************************
+2017-11-02 16:51:54,236 p=55665 u=ysoftman |  ok: [192.168.77.21]
+2017-11-02 16:51:55,219 p=55665 u=ysoftman |  ok: [192.168.77.20]
+2017-11-02 16:51:55,222 p=55665 u=ysoftman |  TASK [print hello world] *******************************************************
+2017-11-02 16:51:55,222 p=55665 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansible/myplaybook.yml:7
+2017-11-02 16:51:55,515 p=55665 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.008975", "end": "2017-11-02 16:35:49.292506", "rc": 0, "start": "2017-11-02 16:35:49.283531", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 16:51:55,523 p=55665 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.008170", "end": "2017-11-02 16:50:23.418718", "rc": 0, "start": "2017-11-02 16:50:23.410548", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 16:51:55,526 p=55665 u=ysoftman |  TASK [who am i] ****************************************************************
+2017-11-02 16:51:55,526 p=55665 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansible/myplaybook.yml:13
+2017-11-02 16:51:55,752 p=55665 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "whoami > whoami.txt", "delta": "0:00:00.012114", "end": "2017-11-02 16:35:49.531476", "rc": 0, "start": "2017-11-02 16:35:49.519362", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 16:51:55,754 p=55665 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "whoami > whoami.txt", "delta": "0:00:00.010785", "end": "2017-11-02 16:50:23.646537", "rc": 0, "start": "2017-11-02 16:50:23.635752", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 16:51:55,756 p=55665 u=ysoftman |  PLAY RECAP *********************************************************************
+2017-11-02 16:51:55,756 p=55665 u=ysoftman |  192.168.77.20              : ok=3    changed=2    unreachable=0    failed=0   
+2017-11-02 16:51:55,756 p=55665 u=ysoftman |  192.168.77.21              : ok=3    changed=2    unreachable=0    failed=0   
+2017-11-02 16:52:18,099 p=55729 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansible/ansible.cfg as config file
+2017-11-02 16:52:18,184 p=55729 u=ysoftman |  PLAYBOOK: myplaybook.yml *******************************************************
+2017-11-02 16:52:18,184 p=55729 u=ysoftman |  1 plays in myplaybook.yml
+2017-11-02 16:52:18,186 p=55729 u=ysoftman |  PLAY [hello world by ansible] **************************************************
+2017-11-02 16:52:18,201 p=55729 u=ysoftman |  TASK [setup] *******************************************************************
+2017-11-02 16:52:18,834 p=55729 u=ysoftman |  ok: [192.168.77.20]
+2017-11-02 16:52:18,837 p=55729 u=ysoftman |  ok: [192.168.77.21]
+2017-11-02 16:52:18,840 p=55729 u=ysoftman |  TASK [print hello world] *******************************************************
+2017-11-02 16:52:18,841 p=55729 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansible/myplaybook.yml:7
+2017-11-02 16:52:19,165 p=55729 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.008752", "end": "2017-11-02 16:36:12.957224", "rc": 0, "start": "2017-11-02 16:36:12.948472", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 16:52:19,167 p=55729 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.008693", "end": "2017-11-02 16:50:47.070586", "rc": 0, "start": "2017-11-02 16:50:47.061893", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 16:52:19,168 p=55729 u=ysoftman |  PLAY RECAP *********************************************************************
+2017-11-02 16:52:19,168 p=55729 u=ysoftman |  192.168.77.20              : ok=2    changed=1    unreachable=0    failed=0   
+2017-11-02 16:52:19,168 p=55729 u=ysoftman |  192.168.77.21              : ok=2    changed=1    unreachable=0    failed=0   
+2017-11-02 17:00:18,689 p=56126 u=ysoftman |  Using /Users/ysoftman/workspace/test_code/ansible/ansible.cfg as config file
+2017-11-02 17:00:18,816 p=56126 u=ysoftman |  PLAYBOOK: myplaybook.yml *******************************************************
+2017-11-02 17:00:18,817 p=56126 u=ysoftman |  1 plays in myplaybook.yml
+2017-11-02 17:00:18,819 p=56126 u=ysoftman |  PLAY [hello world by ansible] **************************************************
+2017-11-02 17:00:18,841 p=56126 u=ysoftman |  TASK [setup] *******************************************************************
+2017-11-02 17:00:19,626 p=56126 u=ysoftman |  ok: [192.168.77.20]
+2017-11-02 17:00:19,627 p=56126 u=ysoftman |  TASK [print hello world] *******************************************************
+2017-11-02 17:00:19,628 p=56126 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansible/myplaybook.yml:11
+2017-11-02 17:00:19,942 p=56126 u=ysoftman |  changed: [192.168.77.20] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.009539", "end": "2017-11-02 16:44:13.986531", "rc": 0, "start": "2017-11-02 16:44:13.976992", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 17:00:19,945 p=56126 u=ysoftman |  PLAY [hello world by ansible] **************************************************
+2017-11-02 17:00:19,947 p=56126 u=ysoftman |  TASK [setup] *******************************************************************
+2017-11-02 17:00:20,521 p=56126 u=ysoftman |  ok: [192.168.77.21]
+2017-11-02 17:00:20,523 p=56126 u=ysoftman |  TASK [print hello world] *******************************************************
+2017-11-02 17:00:20,523 p=56126 u=ysoftman |  task path: /Users/ysoftman/workspace/test_code/ansible/myplaybook.yml:11
+2017-11-02 17:00:20,741 p=56126 u=ysoftman |  changed: [192.168.77.21] => {"changed": true, "cmd": "echo \"hello world\" > helloworld.txt", "delta": "0:00:00.008783", "end": "2017-11-02 16:58:48.853398", "rc": 0, "start": "2017-11-02 16:58:48.844615", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+2017-11-02 17:00:20,742 p=56126 u=ysoftman |  PLAY RECAP *********************************************************************
+2017-11-02 17:00:20,742 p=56126 u=ysoftman |  192.168.77.20              : ok=2    changed=1    unreachable=0    failed=0   
+2017-11-02 17:00:20,742 p=56126 u=ysoftman |  192.168.77.21              : ok=2    changed=1    unreachable=0    failed=0   
