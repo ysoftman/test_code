@@ -12,6 +12,8 @@ ansible-playbook -i ./inventory myplaybook.yml -t helloworld -vv
 # --connection=local 플레이북 작업을 로컬에서 수행한다.
 ansible-playbook -i ./inventory myplaybook.yml -t helloworld -vv --connection=local
 
+ansible-playbook -i ./inventory myplaybook.yml -t helloworld -e "edit_file=yes" -vv --connection=local
+
 ansible-playbook -i ./inventory myplaybook.yml -t mylocation -vv
 
 ansible-playbook -i ./inventory myplaybook.yml -t myname -vv
