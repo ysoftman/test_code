@@ -19,7 +19,19 @@
     tags: myname
   - name: clear all files
     shell: rm -fv helloworld.txt pwd.txt whoami.txt
-    tags: clearall 
+    tags: clearall
+  - name: edit file
+    # become: yes  # root 권한
+    lineinfile:
+      # 대상 파일에서
+      dest: ./helloworld.txt
+      # 해당 스트링이 있는지 체크
+      regexp: "^ysoftman edit this file.$"
+      # 라인 추가
+      line: ysoftman edit this file.
+    # edit_file 변수가 yes 인 경우만 실행
+    when: edit_file == "yes"
+    tags: helloworld
   # 디버깅 출력
   - debug:
       msg: "ansible_distribution: {{ansible_distribution}}  ansible_distribution_major_version: {{ansible_distribution_major_version}}"
