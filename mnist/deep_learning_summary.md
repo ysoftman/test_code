@@ -112,7 +112,7 @@
 ## 합성곱 신경망(Convolutional Neural Network, CNN)
  - 이미지, 음성 인식에 주로 사용
  - CNN 합성곱계층(convolutional layer, conv)와, 풀링계층(pooling layer, pooling)을 사용하여 다음과 같이 구성(pooling 은 생략 가능)
- - conv -> ReLu -> pooling --> conv -> ReLu -> pooling --> ...
-   - 앞장에서 설명한 신경망들은 인접한 모든 뉴런과 완전연결(fully-connected)된 Affine 계층을 사용하여 다음과 같이 구성
+   - conv -> ReLu -> pooling --> conv -> ReLu -> pooling --> ...
+ - 앞장에서 설명한 신경망들은 인접한 모든 뉴런과 완전연결(fully-connected)된 Affine 계층을 사용하여 다음과 같이 구성
    - affine -> ReLu --> affine -> ReLu --> ...
 
