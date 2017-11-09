@@ -3,7 +3,8 @@
 # 디렉토리 내의 모든 파일들을 대상으로 문자열 찾기
 # -r : 재귀수행(하위 디렉토리)
 # -n : 라인번호# --include=*.cpp : cpp 확장자 파일만 대상
-# ysoftman : 찾을 문자열
+# -E : 확장 정규식 사용 or(|) 연산을 사용하기 위해
+# "ysoftman|bill" : ysoftman 또는 bill 문자열이 있는 경우
 # . : 시작할 디렉토리
-grep -rn --include=*.txt ysoftman .
+grep -rn --include=*.txt -E "ysoftman|bill" .
 
