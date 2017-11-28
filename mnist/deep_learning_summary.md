@@ -1,4 +1,4 @@
-# DeepLearning 요약 정리
+# DeepLearning 요약
 ## 개발 환경
 - python 3.x
 - numpy : 각종 수식을 쉽게 처리할 수 있는 다양한 기능 제공
