@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    cout << "lexical_cat test" << endl;
+    cout << "boost lexical_cat test" << endl;
     int a = 10;
     string str = "num=";
     // int -> string 으로 변환

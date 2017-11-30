@@ -13,7 +13,7 @@ using namespace std;
 
 int main()
 {
-	cout << "regex test" << endl;
+	cout << "boost regex test" << endl;
 
 	string url_param = "aa=aaa&bb=bbb&cc=123&dd=ddd";
 	cout << "url_param: " << url_param << endl;

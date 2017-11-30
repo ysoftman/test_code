@@ -10,7 +10,7 @@ using namespace boost::chrono;
 
 int main()
 {
-    cout << "chrono test" << endl;
+    cout << "boost chrono test" << endl;
 
 	// 경과시간 측정
 	system_clock::time_point start = system_clock::now();

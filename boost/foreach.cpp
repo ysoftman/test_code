@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    cout << "foreach test" << endl;
+    cout << "boost foreach test" << endl;
 
     string str = "ysoftman";
     // array, vector, string, ... 등 다양하게 루프를 돌리 수 있다.
