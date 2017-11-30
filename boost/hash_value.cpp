@@ -8,10 +8,10 @@ using namespace std;
 
 int main()
 {
-    cout << "hash_value test..." << endl;
+    cout << "boost hash_value test..." << endl;
     string str = "ysoftman";
     cout << "str=" << str << endl;
     size_t hashed = boost::hash_value(str);
-    cout << "hash_value=" << hashed << endl;
+    cout << "boost hash_value=" << hashed << endl;
     return 0;
 }
