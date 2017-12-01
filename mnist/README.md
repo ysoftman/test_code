@@ -144,7 +144,7 @@
  - CNN 합성곱 계층이 여러겹 쌓이면서 복잡하고 추상화된 정보가 추출된다.
  - 대표적인 CNN 들
    - LeNet : 1998년에 제안된 손글씨 인식 CNN으로 단순히 합성곱계층과 풀링 계층을 반복하고 마지막에 완전연결 계층 적용하는 방식
-   - AlexNet : 2012년에 발표된 CNN으로 LeNet 과 같은 구성이지만 활성화 함수로 ReLU 사용, LRN(Local Response Normalization) 이라는 국소적 정규화 계층을 이용, 드롭아웃을 적용하하였다.
+   - AlexNet : 2012년에 발표된 CNN으로 LeNet 과 같은 구성이지만 활성화 함수로 ReLU 사용, LRN(Local Response Normalization) 이라는 국소적 정규화 계층을 이용, 드롭아웃을 적용하였다.
 
 ## 딥러닝(Deep Learning)
 - mnist(Modified National Institute of Standards and Technology, 손글씨 인식을 위한 표준 숫자 데이터 샘풀) 숫자 데이터를 인식할때 99.38% 정확하고 나머지 0.62% 는 인간도 잘 구분할 수 없는 숫자 이미지 샘풀이다.
