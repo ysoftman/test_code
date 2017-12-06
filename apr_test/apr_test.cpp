@@ -49,17 +49,21 @@ char *errmsg(apr_status_t rc)
     return errbuff;
 }
 
-// ./aprtest "www.json.org" 80 "/json-ko.hml"
 int main(int argc, char **argv)
 {
-    string ip = "www.json.org";
-    int port = 80;
-    string uri = "/json-ko.html";
+    // string ip = "www.json.org";
+    // int port = 80;
+    // string uri = "/json-ko.html";
     if (argc == 4)
     {
         ip = argv[1];
         port = atoi(argv[2]);
         uri = argv[3];
+    }
+    else
+    {
+        cout << argv[0] << " \"www.json.org\" " << 80 << " \"/json-ko.hml\"" << endl;
+        exit(0);
     }
     stringstream portstr;
     portstr << port;
