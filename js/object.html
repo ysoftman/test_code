@@ -1,0 +1,26 @@
+<html>
+<script>
+    // 오브젝트 생성 - 생성자 사용
+    // let myinfo = new object()
+    // 오브젝트 생성 - 리터럴 사용
+    // let myinfo = {}
+
+    let myinfo = {
+        name: "ysoftman",
+        age: 30
+    }
+
+    // 오브젝트 내부 변수 ㄴ접근
+    alert("myinfo.name = " + myinfo.name)
+    alert("myinfo[\"name\"] = " + myinfo["name"])
+
+    // 오브젝트내 변수 추가
+    myinfo.address = "seoul"
+    // 공백이 포함된 변수는 bracket 사용해 read/write 한다.
+    myinfo["phone number"] = "123-456-789"
+
+    alert("myinfo.addres = " + myinfo.address)
+    alert("myinfo[\"phone number\"] = " + myinfo["phone number"])
+</script>
+
+</html>

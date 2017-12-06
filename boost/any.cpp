@@ -10,7 +10,7 @@ using namespace boost;
 
 int main()
 {
-    cout << "any test" << endl;
+    cout << "boost any test" << endl;
 
 	// any 를 사용하면 javascript var변수와 같이 다양한 타입의 값을 저장할 수 있다.
 	any anybuffer;

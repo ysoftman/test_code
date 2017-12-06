@@ -1,11 +1,11 @@
 // author : ysoftman
 // encoding : utf-8
 // title : testing 테스트
-// desc : go test -v -run 함수명 으로 특정 함수만 테스트
-//		go test -v 파일명.go 로 전체 TestXXX 함수들 테스트
-//		참고로 liteide 에선 Ctrl + t)
-// caution : .go 파일 이름에 testing 이 존재하면 [no test files] 가 발생하여,
-//		 테스트코드가 실행되지 않음
+// desc :
+// 테스트 대상 파일명은 _test.go 로 끝나야하고, 함수명은 TestX(Test대문자)로 시작해야 한다.
+// go test -v 파일명.go 로 전체 TestXXX 함수들 테스트
+// go test -v -run 함수명 으로 특정 함수(들)만 테스트
+
 package test_something
 
 import "testing"
