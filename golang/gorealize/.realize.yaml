@@ -1,0 +1,49 @@
+# ysoftman
+# 설치
+# go get -u  github.com/tockins/realize
+# 시작 (.realize.yaml 파일 없으면 생성)
+# realize start
+settings:
+  legacy:
+    force: false
+    interval: 0s
+# 웹서버 설정
+server:
+  # 웹서버 활성화
+  status: true
+  open: false
+  port: 5002
+  host: localhost
+
+# 프로젝트 설정
+schema:
+- name: realize
+  # 프로젝트 경로
+  path: .
+  # 수행할 go 명령
+  commands:
+    # 실행
+    run:
+      # 수행함
+      status: true
+    # 빌드
+    build:
+      # 수행안함
+      status: false
+    # 설치
+    install:
+      # 수행 안함
+      status: false
+  # 프로젝트에 전달할 인자
+  args:
+    - "hello_world"
+  # 감시 설정
+  watcher:
+    paths:
+    - /
+    extensions:
+    - go
+    ignored_paths:
+    - .git
+    - .realize
+    - vendor
