@@ -1,15 +1,20 @@
 # ysoftman
+# realize 로 프로젝트 빌드 자동화(프로젝트내 .go 파일 변경을 감지하여 자동 빌드)
 # 설치
 # go get -u  github.com/tockins/realize
 # 시작 (.realize.yaml 파일 없으면 생성)
 # realize start
 settings:
   legacy:
-    force: false
-    interval: 0s
+    # 감지를 위한 polling 강제
+    # 강제하지 않으면 변경 감지가 한번만 일어나는것 같다.
+    force: true
+    # 감지를 위한 polling 주기
+    interval: 100ms
+
 # 웹서버 설정
 server:
-  # 웹서버 활성화
+  # 웹서버 활성화 여부
   status: true
   open: false
   port: 5002
@@ -22,23 +27,30 @@ schema:
   path: .
   # 수행할 go 명령
   commands:
+    # 포맷팅
+    fmt:
+        status: true
     # 실행
     run:
       # 수행함
       status: true
     # 빌드
     build:
-      # 수행안함
+      # 수행 안함
       status: false
     # 설치
     install:
       # 수행 안함
+      # run = true && build = false && install = false 이면 인스톨을 강제하게 된다.
+      # 그런데 프로젝트가 인스톨(goapth/bin/) 되어 있지 않으면 realize 자체가 실행되지 않는다.
+      # 그래서 그냥 인스톨 되도록~
       status: false
   # 프로젝트에 전달할 인자
   args:
     - "hello_world"
   # 감시 설정
   watcher:
+    # / 는 프로젝트 경로를 root 로 하는것 같다.
     paths:
     - /
     extensions:
@@ -47,3 +59,23 @@ schema:
     - .git
     - .realize
     - vendor
+    scripts:
+    # watching 시작 (global) 수행 전 스크립트
+    - type: before
+      command: echo before global
+      # global 영역 활성
+      global: true
+      output: true
+    # go commands 수행 전 스크립트
+    - type: before
+      command: echo aaa
+      output: true
+    # go commands 수행 후 스크립트
+    - type: after
+      command: ls -ahl
+      output: true
+    # watching 종료 전 스크립트
+    - type: after
+      command: echo after global
+      global: true
+      output: true
