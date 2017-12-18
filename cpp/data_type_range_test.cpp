@@ -15,14 +15,14 @@
 
 int main()
 {
-	printf("sizeof(char) = %d\n", sizeof(char));
-	printf("sizeof(short) = %d\n", sizeof(short));
-	printf("sizeof(wchar_t) = %d\n", sizeof(wchar_t));
-	printf("sizeof(int) = %d\n", sizeof(int));
-	printf("sizeof(float) = %d\n", sizeof(float));
-	printf("sizeof(long) = %d\n", sizeof(long));
-	printf("sizeof(long long) = %d\n", sizeof(long long));
-	printf("sizeof(double) = %d\n", sizeof(double));
+	printf("sizeof(bool) = %ld\n", sizeof(bool));
+	printf("sizeof(char) = %ld\n", sizeof(char));
+	printf("sizeof(short) = %ld\n", sizeof(short));
+	printf("sizeof(wchar_t) = %ld\n", sizeof(wchar_t));
+	printf("sizeof(int) = %ld\n", sizeof(int));
+	printf("sizeof(float) = %ld\n", sizeof(float));
+	printf("sizeof(long) = %ld\n", sizeof(long));
+	printf("sizeof(long long) = %ld\n", sizeof(long long));
+	printf("sizeof(double) = %ld\n", sizeof(double));
 	return 0;
 }
-
