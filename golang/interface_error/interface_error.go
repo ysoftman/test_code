@@ -5,16 +5,17 @@ package main
 
 import "fmt"
 
-func not_work_add(a int, b int) int {
+func plus(a int, b int) int {
 	return a + b
 }
 
-// 파라미터 타입만 변경하여 overloading 함수를 구현 할 수 없다.
+// 파라미터 타입만 변경하여 overloading 함수를 구현 할 수 없고,
+// 메소드 리시버의 타입을 주어 overloading 과 비슷하게 사용할 수 있다.
 // 컴파일시 중복 함수 구현에러 발생
-//func not_work_add(a float32, b float32) float32{
+//func plus(a float32, b float32) float32{
 //	return a + b
 //}
-func not_work_add2(a float32, b float32) float32 {
+func plus2(a float32, b float32) float32 {
 	return a + b
 }
 
@@ -68,10 +69,10 @@ func main() {
 	// 함수를 직접 호출하는 overloading 방법은 쓸 수 없다.
 	var a int = 1
 	var b int = 2
-	fmt.Printf("%v + %v = %v\n", a, b, not_work_add(a, b))
+	fmt.Printf("%v + %v = %v\n", a, b, plus(a, b))
 	var c float32 = 1.1
 	var d float32 = 2.3
-	fmt.Printf("%v + %v = %v\n", c, d, not_work_add2(c, d))
+	fmt.Printf("%v + %v = %v\n", c, d, plus2(c, d))
 
 	fmt.Println("interface test...")
 
