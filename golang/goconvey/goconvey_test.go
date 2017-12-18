@@ -11,7 +11,7 @@ package a
 
 import "testing"
 
-// import . 명시하면 패키지의 export 된 모든 identifiler 에 대해 qualifer 없이 액세스 가능
+// import . 명시하면 패키지의 export 된 모든 identifier 에 대해 qualifier 없이 액세스 가능
 // import _ 명시하면 패키지의 초기화 사이드 이펙트만 반영
 // import   "lib/math"         math.Sin
 // import m "lib/math"         m.Sin
