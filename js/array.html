@@ -1,0 +1,31 @@
+<html>
+<script>
+    // 배열 테스트
+    let arr = [1, 2, 3, 4, 'a', "abc"]
+    debug = "arr=" + arr + " arr.length=" + arr.length
+    debug += "\n"
+    debug += "arr.indexOf(3)=" + arr.indexOf(3)
+    debug += "\n"
+    debug += "arr.reverse()=" + arr.reverse()
+    debug += "\n"
+    // 원소의 끝에 추가
+    debug += "arr.push(\"ysoftman\")=" + arr.push("ysoftman") + " arr=" + arr
+    debug += "\n"
+    // 원소의 끝에서 부터 삭제
+    debug += "arr.pop()=" + arr.pop() + " arr=" + arr
+    debug += "\n"
+    // 배열을 이어 붙일때
+    debug += "arr.concat([99,aaa])=" + arr.concat([99, "aaa"])
+    debug += "\n"
+    debug += "arr.slice(3,5)=" + arr.slice(3, 5)
+    debug += "\n"
+    // 1번 인텍스부터 2개 원소 삭제
+    debug += "arr.splice(1,2)=" + arr.splice(1, 2) + " arr=" + arr
+    debug += "\n"
+    // 원소값 삭제시 해당 값만 undefined 되고 배열의 크기는 변화가 없다.
+    debug += "delete arr[3]=" + delete arr[3] + "  arr=" + arr + "  arr[3]=" + arr[3] + " arr.length=" + arr.length
+    debug += "\n"
+    alert(debug)
+</script>
+
+</html>
