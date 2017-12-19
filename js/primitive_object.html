@@ -1,7 +1,8 @@
 <html>
 <script>
-    // null, boolean, number, string, undefined, symbol(ECMAscript6) 기본(primitive) 타입이 있고
+    // null, undefined, boolean, number, string, symbol(ECMAscript6) 기본(primitive) 타입이 있고
     // boolean, number, string, symbol 는 object wrapper 로 사용된다.
+    // null, undefined 는 object wrapper 가 아니기 때문에 method 를 제공하지 않는다.
     // string 기본 타입의 변수이지만
     let str = "ysoftman"
 
@@ -18,8 +19,12 @@
     debug += "\n"
     debug += "str.toUpperCase()=" + str.toUpperCase()
     debug += "\n"
+    // undefined 에러발생,, 속성을 추가할 수 없다.
+    str.customproerty = 1
+    debug += "str.customproerty=" + str.customproerty
     debug += "\n"
-
+    debug += "\n"
+    
 
     let num = 123456789
     debug += "num=" + num
