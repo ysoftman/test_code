@@ -1,0 +1,30 @@
+<html>
+<script>
+    debug = ""
+
+    // map 생성
+    let map = new Map()
+    debug += "map=" + map + "\n"
+    // key,value 추가
+    map.set('name', 'ysoftman')
+    map.set(1, 'numberKey_stringValue')
+    map.set(true, 'booleanKey_stringValue')
+    // debug += "map.set(name, 'ysoftman')=" + map + "\n"
+    // 맵 전체 내용 출력
+    debug += "-----\n"
+    map.forEach((value, key, newmap) => {
+        debug += key + ":" + value + "\n"
+    })
+    debug += "-----\n"
+    // 키로 값 가져오기
+    debug += "map.get('name')=" + map.get('name') + "\n"
+
+    // 삭제
+    debug += "map.delete(true)=" + map.delete(true) + "\n"
+    debug += "map.has('name')=" + map.has('name') + "\n"
+    debug += "map.size=" + map.size + "\n"
+
+    alert(debug)
+</script>
+
+</html>
