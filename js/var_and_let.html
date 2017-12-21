@@ -14,7 +14,7 @@
 
         // var 의 경우 상위(글로벌 변수)를 사용하게 되지만 let 의 경우
         // func1 내에 let 으로 aa 가 선언되어 있으면 에러(Uncaught ReferenceError: aa is not defined)가 발생한다.
-        // lef aa 선언 이후에 사용해야 한다.
+        // let aa 선언 이후에 사용해야 되서 변수 사용에 있어 실수를 방지할 수 있다.
         // printMessage("aa:" + aa)
 
         let aa = "(let) local variable"

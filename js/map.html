@@ -10,15 +10,30 @@
     map.set(1, 'numberKey_stringValue')
     map.set(true, 'booleanKey_stringValue')
     // debug += "map.set(name, 'ysoftman')=" + map + "\n"
-    // 맵 전체 내용 출력
+    // 맵 전체 내용 출력 방법1
     debug += "-----\n"
-    map.forEach((value, key, newmap) => {
+    map.forEach((value, key, aaa) => {
         debug += key + ":" + value + "\n"
     })
     debug += "-----\n"
+    // 맵 전체 내용 출력 방법2
+    for (let data of map) {
+        debug += data + "\n"
+    }
+    debug += "-----\n"
+    // 맵의 키만 뽑아 보기
+    for (let key of map.keys()) {
+        debug += key + "\n"
+    }
+    debug += "-----\n"
+    // 맵의 밸류만 뽑아 보기
+    for (let value of map.values()) {
+        debug += value + "\n"
+    }
+    debug += "-----\n"
+
     // 키로 값 가져오기
     debug += "map.get('name')=" + map.get('name') + "\n"
-
     // 삭제
     debug += "map.delete(true)=" + map.delete(true) + "\n"
     debug += "map.has('name')=" + map.has('name') + "\n"
