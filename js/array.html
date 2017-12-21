@@ -8,10 +8,16 @@
     debug += "\n"
     debug += "arr.reverse()=" + arr.reverse()
     debug += "\n"
-    // 원소의 끝에 추가
+    // 배열 처음에 원소 추가
+    debug += "arr.unshift('first_element')=" + arr.unshift('first_element') + " arr=" + arr
+    debug += "\n"
+    // 배열 처음에 원소 삭제
+    debug += "arr.shift()=" + arr.shift() + " arr=" + arr
+    debug += "\n"
+    // 배열 끝에 원소 추가
     debug += "arr.push(\"ysoftman\")=" + arr.push("ysoftman") + " arr=" + arr
     debug += "\n"
-    // 원소의 끝에서 부터 삭제
+    // 배열 끝에서 원소 삭제
     debug += "arr.pop()=" + arr.pop() + " arr=" + arr
     debug += "\n"
     // 배열을 이어 붙일때
@@ -69,6 +75,20 @@
     debug += "myarr1[3].second=" + myarr1[3].second + "\n"
     // 배열내의 함수 호출
     debug += "myarr1[4]()=" + myarr1[4]() + "\n"
+    alert(debug)
+
+
+    // 다차원 배열
+    let arr2d = [
+        [1, 2, 3],
+        [4, 5, 6],
+    ]
+
+    debug = ""
+    debug += "arr2d=" + arr2d + "\n"
+    debug += "arr2d[1][1]=" + arr2d[1][1] + "\n"
+    // strict equality(===) 는 타입이 다르면 바로 false 를 리턴하는 엄격한 비교 연사자
+    debug += "String(arr2d)==='1,2,3,4,5,6' --> " + (String(arr2d) === "1,2,3,4,5,6") + "\n"
     alert(debug)
 </script>
 
