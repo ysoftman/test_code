@@ -2,17 +2,23 @@
 
 ## 실습 환경
 
+- java sdk 1.8.0 이상 http://www.oracle.com/technetwork/java/javase/downloads/index.html
+- yTextMiner 설치 http://informatics.yonsei.ac.kr:8080/yTextMiner/home.html
+
+### eclipse 사용시
+
+- eclipse 설치 https://www.eclipse.org/downloads/ 
+- eclipse -> file -> open projects from file system -> import source -> yTextMiner 경로 추가
+- src -> edu.yonsei.lexical_analysis -> SimpleTokenizer.java -> (pop-up menu) run as -> java application
+- JRE 빌드 환경에 에러 발생시
+  - properties(alt+enter) -> java build path -> jre system library -> 현재 설치된 jre 버전에 맞게 변경
+
+### command-line 사용시
+
 ```bash
-# eclipse, yTextMiner 다운로드
-https://www.eclipse.org/downloads/
-http://informatics.yonsei.ac.kr:8080/yTextMiner/home.html
-
-# 빌드
-eclipse -> file -> open projects from file system -> import source -> yTextMiner 경로 추가
-src -> edu.yonsei.lexical_analysis -> SimpleTokenizer.java -> (pop-up menu) run as -> java application
-
-# JRE 빌드 환경에 에러 발생시
-properties(alt+enter) -> java build path -> jre system library -> 현재 설치된 jre 버전에 맞게 변경
+cd yTextMiner1.0
+javac -Xlint -classpath lib\* src\edu\yonsei\lexical_analysis\SimpleTokenizer.java
+java -classpath lib\*;. edu.yonsei.lexical_analysis.SimpleTokenizer
 ```
 
 ## 텍스트 요소 단위별 분석
