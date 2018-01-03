@@ -14,5 +14,12 @@ ysoftman1
 ysoftman2
 bash: echoysoftman: command not found
 
-# 한줄로 처리하면 zsh, bash 둘 잘 작동한다.
+# 해결방법 1
+# 모든 커멘드를한줄로 처리하면 zsh, bash 둘 잘 작동한다.
 alias echoysoftman='echo ysoftman1 && echo ysoftman2 && echo -e ysoftman3'
+
+# 해결방법 2
+# 또는 커맨드 하나당 한줄로해도 잘 동작한다. 
+alias echoysoftman='echo ysoftman1 &&
+echo ysoftman2 &&
+echo -e ysoftman3'
