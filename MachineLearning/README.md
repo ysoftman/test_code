@@ -3,12 +3,14 @@
 ## 1주차 - 확률론 및 나이브 베이즈(Probability and Naive Bayes)
 
 ### Bayes Rules
+
 - 조건부 확률(Conditional Probability)
   - P(Y|X) : X가 조건으로 주어졌을때(given), Y 가 일어날 확률
 - Bayes rules 이란
-```
+
+```text
 P(Y|X) : x 가 조건으로 주어졌을때 y 의 확률
-에 대해서 궁금한경우를 반대로 
+에 대해서 궁금한경우를 반대로
 P(X|Y) : y 가 조건으로 주어졌을때 x 의 확률
 로 바꿔서 사용할 수 있다.
 
@@ -30,8 +32,58 @@ P(Y=y|X=x) = P(Y=y)P(X=x|Y=y) / SUM(y') P(Y=y')P(X=x|Y=y')
 
 계산식은 파이썬 인터프리터로 바로 계산될 수 있도록 함
 
-Pr(Y=1|X=1) 
-= Pr(Y=1)P(X=1|Y=1) / SUM(y') P(Y=y')P(X)
+Pr(Y=1|X=1)
+= P(Y=1)P(X=1|Y=1) / SUM(y') { P(Y=y')P(X) }
+= P(Y=1)P(X=1|Y=1) / P(Y=1)P(X=1|Y=1) + P(Y=0)P(X=1|Y=0)
 = 0.2*0.8 / (0.2*0.8 + 0.8*0.1)
 = 0.16 / 0.24
+
+# Quiz
+유방암 검사 예제에서,
+유방암에 걸렸을 때 (Y=Yes), 유방암 진단 (X=Positive)을 받을 확률 (Sensitivity of Mammogram) 은 Pr(X=Positive|Y=Yes)=0.9,
+유방암에 걸리지 않았을 때 (Y=No), 유방암 진단 (X=Positive)을 받을 확률 (False Positive of Mammogram) 은 Pr(X=Positive|Y=No)=0.1,
+아무런 조건 없이 유방암에 걸릴 확률 (Prior Probability) Pr(Y=Yes)=0.004 이다.
+
+이 때, 유방암 진단을 받은 여성이 실제로 유방암에 걸렸을 확률 Pr(Y=Yes|X=Positive) 은 몇인가 ?
+( 참고 : 반올림 가능 )
+
+추가로 추론할 수 있는 것, 일반적으로 비가 오지 않은 확률 Pr(Y=No) = 1 - 0.004 = 0.996
+
+Pr(Y=Yes|X=Positive)
+= P(Y=Yes)P(X=Positive|Y=Yes) / SUM(y') { P(Y=y')P(X)) }
+= P(Y=Yes)P(X=Positive|Y=Yes) / P(Y=Yes)P(X=Positive|Y=Yes) + P(Y=No)P(X=Positive|Y=NO)
+= 0.004*0.9 / (0.004*0.9 + 0.996*0.1)
+= 0.0036 / 0.1032
+= 0.03488372093023256 = 0.035
 ```
+
+- [사족] 확률 문제를 풀때 사용 방법
+  - 표본공간이용-> 모든 조건이 같을때, 경우의 수가 많을때, ex) 주머니에 구슬 빨강공3,파란공7개가 있을때 5번째 사람이 빨간공을 뽑을 확률
+  - 곱셈공식이용(조건부확률) : 조건이 다른 경우, 경우의 수가 적을때, ex) 제주도에 사는 남성의 비율
+
+### 나이브 베이즈(Naive Bayes) classifier
+
+- Query Y --> Observation X : query 는 observation 에 영향을 준다.
+- 8*8 특징들로 표현되는 숫자 인식에서 각각의 픽셀마다 0~9(클래스) 에서의 확률을 알고 있을때 모든 클래스의 사후확률(posterior probability) 중 가장 높은 값을 선택하여 클래스를 인식/분류(classification)한다.
+
+```text
+조건부 확률 테이블 CBT(Conditional Probability Table) 이 64(8*8)개가 있을때
+사후확률 Prior Probability(Class Probability 라도 함) 을 구한다.(맨처음에 모든 클래스가 0.1로)
+
+# 사후확률(특징  F 0,0 ... n,n 주어졌을때) 은
+P(Y|F ... Fn,n)
+# 사전확률P(Y) 와 likelihood ㅠP(Fi,j|Y)로 계산할 수 있다.
+P(Y)ㅠP(Fi,j|Y)
+```
+
+- likelihood(우도) : 각각의 class 가 주어졌을때 feature 값들이 나올 확률 값
+  - 숫자 3의 경우 (0,0,1,1,1,0,0,0... )로 feature 가 있는데
+  - 3에서 나올 확률을 높다 -> likelihood 가 높다.
+  - 2에서 나올 확률은 낮다 -> likelihood 가 낮다
+- overfitting : trainning data 에 너무 fitting 되어 실제 데이터에서는 인식이 잘 안되는 것
+  - likelihood 가 확률적으로 (극단적인경우)0 나오면 안되기 때문에 lapalce smoothing 기법(실제 관찰값보다 +1)으로 해결
+  - P라플라스(x) = c(x) + 1 / sum(x) { c(x) + 1} = c(x) + 1 / N + |X|
+
+  ```text
+  Pml(X) -> maximum likelihood  0.001 일때 Plap(X) -> laplace smoothing 을 통해 전체적으로 1 더해준다.
+  ``
