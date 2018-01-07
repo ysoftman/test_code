@@ -64,7 +64,7 @@ Pr(Y=Yes|X=Positive)
 ### 나이브 베이즈(Naive Bayes) classifier
 
 - Query Y --> Observation X : query(알려고 하는것) Y 는 observation(관찰) X 에 확률적으로 영향을 준다.
-- 숫자 인식에서 각각의 8*8 특징들로 표현되는 픽셀마다 0~9(클래스) 에서의 사전확률(prior probability) 확률과 likelihood(우도)를 알고 있을때 모든(0~9) 클래스의 사후확률(posterior probability, Class Probability 라도 함)를 구할 수 있고 이중 가장 높은 값을 선택하여 클래스를 인식/분류(classification)한다.
+- 숫자 인식에서 각각의 8*8 특징들로 표현되는 픽셀마다 0 ~ 9(클래스) 에서의 사전확률(prior probability) 확률과 likelihood(우도)를 알고 있을때 모든(0 ~ 9) 클래스의 사후확률(posterior probability, Class Probability 라도 함)를 구할 수 있고 이중 가장 높은 값을 선택하여 클래스를 인식/분류(classification)한다.
   - likelihood(우도) : 각각의 class 가 주어졌을때 feature 값들이 나올 확률 값
     - 숫자 3의 경우 (0,0,1,1,1,0,0,0... )로 feature 가 있는데
     - 3에서 나올 확률을 높다 -> likelihood 가 높다.
