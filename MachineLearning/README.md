@@ -85,3 +85,88 @@ P(Y|F ... Fn,n) = P(Y)ㅠP(Fi,j|Y)
   ```text
   Pml(X) -> ml(maximum likelihood) 0.001 일때 Plap(X) -> lap(laplace smoothing) 을 통해 전체적으로 1 더해준다.
   ```
+
+## 2주차 - SVM(Support Vector Machines)
+
+### 기본개념
+
+- svm 은 linear classifier 방법으로 특정 데이터를 기반으로 클래스를 구분하고 마진을 최대로 하는 구분선(hyperplane)을 찾는 알고리즘이다.
+  - margin : 데이터를 구분할 수 있는 라인(hyperplane)이 한개가 있을때 라인과 가장 가까운 데이터 포인터와 라인과의 거리
+    - 최대 마진(거리)을 결정하는 데이터 벡터들을 support vector 라고 부른다.
+  - dichotomy(이분법) : a,b,c 3개의 클래스가 있을때 2개의 집합으로 나눠주는것
+    - {0} {a,b,c} or {a} {b,c} or {a,b} {c} ... 최대 8개
+  - shattering(산산히부수는) : classifier 가 dichotomy 모든 경우(위 예에서 8개)를 표현할 수 있는가를 의미
+  - VC(Vapnik–Chervonenkis) dimension : shattering 할 수 있는 max num of data points, classifier 가 얼마나 복잡한 데이터를 구분할 수 있는지를 나타내는 수치
+    - 2D(2차원)에서는 linear classifier VC dimension = 2 + 1 = 3 이된다, n차원에서 linear classifier 의 vc dimension 은 n + 1 이 된다.
+    - vc dimension 이 높으면 (전체 에러가 높아) 안좋다.
+  - svm maximize margin 을 높이는것 => shattering dataset 낮추는것 => vc dimension 를 낮추는것 => 에러를 줄이는것
+
+### 최대 마진 분류기(maximum margin classifier)
+
+- hyperplane 과 마진
+
+```text
+# w 가 hyperplane(초평면, n차원에서 n-1 로 표현되는 subspace) 을 정한다.
+# w : weight parameter vector(matrx)
+# x : input vector(matrix), 공간상에 표현되는 데이터들
+# b : 상수
+hyperplane 정의 -> w(transpose) 내적곱 x + b = 0 으로 표현되는 선 또는 평면
+transpose(전치행렬, 열과행을 바꿔준다)하는 이유는 w,x 는 다음과같이 세로로된 1열 형렬로 표현되고
+w = {1,   x = {1,
+     2}        2
+행렬을 곱하기 위해 w transpose 한다
+w = {1,2}   x = {1,
+                 2
+
+2차원 벡터(그래프)에서 x1 = 1, x2 = 2 일때 x1 - x2 + 1 = 0 가 되고
+hyperplane 정의를 이용하면 w1*(x1=1) + w2*(x2=2) + b = 0
+w1 = 1, w2 = -1, b = 1
+w1 = 2, w2 = -2, b = 2 ... 등이 될 수 있다.
+
+다음 제약조건(contraint)를 이용해 최적화 문제를 편하게 풀 수 있다.(마진 구할때 분자로 사용하게됨)
+| w(transpose) * Xn + b | = 1
+```
+
+- 마진 최대화
+
+```text
+ x1-x2 벡터는 w vector 와 직교(orthogonal)이고  1 / ||w|| (normed space, 길이 일반화) 로 hyperplane 과의 거리가 마진이 된다.
+# ||w|| 예제
+w=(3,4) 일때 ||w|| = root(3**2 + 4**2) = 5.0 가 된다.
+# python
+import math
+math.sqrt(3**2 + 4**2)
+
+# 최대 마진 찾기
+# 제약조건 : ||w||(거리)는 데이터 벡터들 중 hyperplane 과 가장 가까운 거리를 찾는다.
+||w|| ====> min(i=1,2,..n) | w(transpose) Xi + b | = 1
+# 마진 계산
+max( 1 / ||w|| )
+# 1 = > | w(transpose) * Xn + b | 로 표현되고
+# 마진 최대화
+max (| w(transpose) * Xn + b | / || w ||)
+
+# Quiz
+w=[1,−2,3,−1]⊤, b=2라 할 때 초평면 w⊤x+b=0과 x1=[3,1,2,4]⊤ 사이의 거리를 구하면?
+( 소수점 둘째 자리 이상 계산하시오 )
+거리 d = |w1*x1+w2*x2 .. +wn*xn + b| / root(w1^2+w2^2+...+wn^2)
+math.fabs((1*3)+(-2*1)+(3*2)+(-1*4) + 2) / math.sqrt((1**2)+((-2)**2)+(3**2)+((-1)**2)) = 1.2909944487358056 = 1.290
+```
+
+### 듀얼 문제와 서포트벡터(Larange Dual and Support Vector)
+
+- Larange(라그랑주, L) : 제약이 있는 최적화 문제 --> 최적화하려 하는 값에 형식적인 라그랑주 승수항을 더해 --> 제약이 없는 문제로 변경
+- svm 의 최적회 식이 여러개가(수식은 별도 참고) 있고 이중 듀얼 문제(형식)으로 풀면 느슨한(slack) 변수는 사라지는 효과가 있다.
+- svm 최적화의 듀얼 문제를 풀었을때 AlphaN >= 0 이고, 대부분 0의 값을 가진다.
+- slack 값 yn(w(transpose)Xn + b) - 1 = 0 이 되는점 Xn 들을 support vector 라 부른다.
+- 학습된 svm 이용해 새로운 점 x 에 대한 예측을 수행할때, support vector 가 아닌 점들은 계산에서 제외된다.(slack)
+- svm 에서는 전체 데이터를 다 보지 않고 support vector 만 보고 이들의 내적곱으로 y(답)을 구할 수 있다.
+
+### 커널 서포트 벡터 머신(Kernel SVM)
+
+- svm 은 linear classifier 로 많이 쓰지만 linear 하지 않는 데이터들에 대해서도 커널(kernel : 현재 차원에서 linear 하게 구별할 수 없는 경우 차원을 높여 높은 차원에서 hpyerplane 을 만들어 구별)이라는 것을 사용해 잘 분류 할 수 있다.
+- 차원을 너무 높이면 컴퓨팅 코스트가 너무 많이 들어 불가능할 수 있다.
+- 아주 큰 차원이라고 할지라도 실제 support vector 의 개수는 차원에 비해 훨씬 적을 수 있다.
+- kernel trick : original low dimension space 에서 어렵지 않게 구할 수 있다. 실제 높은 차원에서 컴퓨팅을 해야한다고 하지만 실제 그렇게 높지 않는 차원에서 컴퓨팅하면 된다.
+- low dimension 에서 linear 하게 seperation 되지 않았는데, 차원이 infinite 까지 갈 수 있는 kernel trick 을 써서 nonlinearyity 를 얻을 수 있다.
+- 커널 종류 : Gaussian Kernel, Radial Basis Function, Polynomial 등
