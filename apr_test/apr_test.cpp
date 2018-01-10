@@ -51,9 +51,9 @@ char *errmsg(apr_status_t rc)
 
 int main(int argc, char **argv)
 {
-    // string ip = "www.json.org";
-    // int port = 80;
-    // string uri = "/json-ko.html";
+    string ip = "www.json.org";
+    int port = 80;
+    string uri = "/json-ko.html";
     if (argc == 4)
     {
         ip = argv[1];
