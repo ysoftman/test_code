@@ -7,7 +7,11 @@ import "fmt"
 
 func main() {
 	// 배열
-	// arTest1 := [5]int{11, 22, 33, 44, 55}
+	arTest0 := [5]int{11, 22, 33, 44, 55}
+	fmt.Println("arTest0 len = ", len(arTest0), "arTest1 cap = ", cap(arTest0), "arTest1 = ", arTest0)
+
+	// ... 파라미터는 variadic 으로 부고, 0 이상의 파라미터가 올수 있다는 의미
+	// https://golang.org/ref/spec#Function_types
 	// [...] 로 구체적 원소개수를 명시하지 않아도 된다.
 	arTest1 := [...]int{11, 22, 33, 44, 55}
 	arTest2 := []int{10, 20, 30}
@@ -41,6 +45,7 @@ func main() {
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
 
 	// append 로 element 삭제하기
+	// append 에서 ... 는 해당 타입의 모든(0 이상) 원소들을 의미
 	arTest4 = append(arTest4[:3], arTest4[4:]...)
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
 
@@ -75,4 +80,26 @@ func main() {
 	strslice[len(strslice)-1] = 'N'
 	fmt.Printf("str = %s\n", str)
 	fmt.Printf("strslice = %s\n", strslice)
+
+	fmt.Printf("")
+	arTest10 := []int{1, 2, 3, 4, 5}
+	fmt.Println("arTest10 =", arTest10)
+
+	// pop
+	value, arTest10 := arTest10[0], arTest10[1:]
+	fmt.Println("pop value =", value, " arTest10 =", arTest10)
+
+	// pop-back
+	value, arTest10 = arTest10[len(arTest10)-1], arTest10[:len(arTest10)-1]
+	fmt.Println("pop-back value =", value, " arTest10 =", arTest10)
+
+	// push
+	value = 5
+	arTest10 = append(arTest10, value)
+	fmt.Println("push value =", value, " arTest10 =", arTest10)
+
+	// push-front
+	value = 1
+	arTest10 = append([]int{value}, arTest10...)
+	fmt.Println("push-front value =", value, " arTest10 =", arTest10)
 }
