@@ -169,4 +169,79 @@ math.fabs((1*3)+(-2*1)+(3*2)+(-1*4) + 2) / math.sqrt((1**2)+((-2)**2)+(3**2)+((-
 - 아주 큰 차원이라고 할지라도 실제 support vector 의 개수는 차원에 비해 훨씬 적을 수 있다.
 - kernel trick : original low dimension space 에서 어렵지 않게 구할 수 있다. 실제 높은 차원에서 컴퓨팅을 해야한다고 하지만 실제 그렇게 높지 않는 차원에서 컴퓨팅하면 된다.
 - low dimension 에서 linear 하게 seperation 되지 않았는데, 차원이 infinite 까지 갈 수 있는 kernel trick 을 써서 nonlinearyity 를 얻을 수 있다.
-- 커널 종류 : Gaussian Kernel, Radial Basis Function, Polynomial 등
+- 커널 종류 : Gaussian Kernel, RBF(Radial Basis Function) Kernel, Polynomial Kernel 등
+
+## 3주차 - 결정 트리(Decision Trees)
+
+### 결정 트리 개념
+
+- 결정 트리는
+  - 데이터들이 linear 하게 분류 할수 없는 경우에 여러개의 룰을 가진 classifier, tree 형식으로 조건에 해당하는 leaf 노드를 선택해 나간다.
+  - linear serparation 보다 복잡한 function 으로 데이터를 분류하고 싶을때 많이 사용
+  - 커널 방법이 좋지 않은 경우 결정트리를 이용할 수 있다.
+  - 사람이 이해하기 편한다.
+  - 앙상블 러닝(ensemble learning, 여러개의 결정트리를 조합) - random forest 가 대표적
+- 예) 구매자가 n 번째까지 구매한 케이스 데이터를 학습하여 결정트리로 만들고 n+1 번째의 구매를 어디서 해야하는지 판단
+- leaf node 들이 pure(더이상 나눌 수 없는 상태)가 되어야 한다.
+- 실제 데이터에서는 pure node 를 만들기 위해 아주 많은 질문을 던져 overfitting 될 수 있다.
+
+### ID3 알고리즘(Iterative Dichotomiser 3 Algorithm)
+
+- 결정트리를 만드는 ID3 알고리즘 과정
+  - 현재 노드를 나눌 수 있는 A: 최적의 속성(Best Attribute)을 찾는다.
+  - A 를 현재 노드의 decision attribute 로 적용한다.
+  - A 의 가능한 값들에 대해 현재 노드의 child 노드들을 각각 하나씩 만든다.
+  - 현 노드에 들어 있는 training example 들을 A 값에 따라 child node 에 넣는다.
+  - 모든 child node 에 대해, 그 노드가 "pure" 하면 멈추고, 그렇지 않으면 그 child node 에 대해 처음부터 다시 반복한다.
+- entropy(복잡도) : 좋은 attribute 를 정하기 위해 계산
+  - H(S) = -(P1 Log2 P1) * -(P2 Log2 P2) , P1 or P2 : 전체 S 개중 class A or B 의 확률, An / S or Bn / S
+    ```text
+    # 노드에 대한 entropy 구하는 예시
+    전체 데이터 (9, 5) - class a 에 속하는 경우 9개, class b 에 속하는 겨웅 5개, 전체 15개
+    -(9/14 * log2 9/14) - (5/14 * log2 * 5/14)
+    # python
+    import math
+    -(9.0/14.0 * math.log(9.0/14.0, 2)) -(5.0/14.0 * math.log(5.0/14.0, 2)) = 0.9402859586706309
+    H = 0.94
+    ```
+  - 노드 마다 entropy 를 구할 수 있다. pure 노드는 H(entpropy) = 0
+  - best attribute 를 구한다고했을때, decision 노드들에 대해서, attribute를 정하면 엔트로피가 감소하고, 엔트로피를 가장 많이 감소하게 할 수 있을 꺼라는 것을 염두해 두고 고르면 best attribute 가 나온다.(entropy 를 감소하는 쪽으로 가는 attribute 가 best 이다.)
+- information gain(정보획득) : entropy 를 감소하기 위해 계산
+  - Gain(S,A) = A 로 나눔으로써 얻게되는 entropy 감소, S 는 전체 데이터 사이즈
+  - Gain(S,A) = H(S) - Sum(v){ |Sv| / |S| } Entropy(Sv)
+
+```text
+# Quiz
+아래와 같이 Attribute A를 이용해 데이터를 Child node로 쪼갤 때 Information Gain을 계산하면?
+괄호 안의 숫자 (a,b)는 각각 (class 1에 속하는 데이터의 수, class 2에 속하는 데이터의 수)를 뜻한다.
+힌트) 소수점 아래 셋째 자리 이상 계산하시오.
+전체데이터(10,20)
+Attribute A 로 구분하였을때
+Attribute A(3,14) , Attribute B(7,6)
+
+풀이)
+전체데이터 엔트로피 = -(10.0/30.0 * math.log(10.0/30.0, 2)) -(20.0/30.0 * math.log(20.0/30.0, 2)) = 0.9182958340544896
+Attribute A 엔트로피 = -(3.0/17.0 * math.log(3.0/17.0, 2)) -(14.0/17.0 * math.log(14.0/17.0, 2)) = 0.672294817075638
+Attribute B 엔트로피 = -(7.0/13.0 * math.log(7.0/13.0, 2)) -(6.0/13.0 * math.log(6.0/13.0, 2)) = 0.9957274520849256
+Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/30.0)*0.9957274520849256) = 0.1058468751414936
+```
+
+### 랜덤 포레스트(Random Forest)
+
+- 결정트리의 가장 큰 단점 중 하나는 overfitting 이다.
+- 실제 데이터를 ID3 로 pure 노드까지 가게할 경우 node 개수가 많아 지면서 overfitting 이 발생할 수 있다.
+- overfitting 을 막는 방법
+  - 통계적으로 무의미한 노드들은 나누지(split) 않는다. ex) 1000 데이터 대해서 95 : 5 정도로 나누는 경우
+  - 결정트리가 만들어진 상태에서 Validation Data 의 정확도(accuracy) 를 기준으로 sub-tree 를 제거(prune)한다. prune 의미는 child-node 는 제거하고 parent node 는 pure 하지 않더라도 그대로 놔둔다.
+
+- random forest
+  - 결정트리 하나만 쓰면 prediction accuracy 가 좋기지 않기 때문에, bagging 과 attribute 둘다 random 하게 두는 random forest 방법을 사용한다.
+  - bagging(bootstrap aggregating) tree : trainning data 에서 랜덤하게 k개를 랜덤하게 고른다. -> subset (training) data 로 ID3 등의 알고리즘으로 결정트리를 생성한다. 이과정을 B번 반복하여 B 개의 결정트리르 만든다. classification 시 B 개의 트리들 사용해서 majority vote(다수의 트리가 선택한쪽, 다수결)
+    - decreases variance while bias stays same : overfitting(bias 의미) 이 늘어나지 않으면서 variance 를 줄이는 것
+  - attribute 무작위 선택 : bagging 과정의 subset data 에 대해 모든 attriibute 를 사용해서 tree 를 만들경우, 특정 attribute 가 압도적으로 많이 나와(항상 결정트리에 포함되) 모든 결정트리에 영향을 주는 것을 막기위해 랜덤하게 하게 attribute 를 선택한다.
+
+- 결정트리와 random foreset 정리
+  - 결정트리는 svm, nerual network 등의 다른 기계학습과 달리 사람이 이해하기 쉬운 classifier 다.
+  - 결정트리는 svm 과 같이 linear 가 아닌 non-linear 바운더리 형태로 나타낼 수 있다.
+  - O(height of tree) 의 시간복잡도로 비교적 빠른 prediction 이 가능하다.
+  - random forest 등을 사용할 경우 prediction accuracy 을 높일 수 있다.
