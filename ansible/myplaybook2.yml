@@ -1,0 +1,6 @@
+- name: myplaybook2
+  hosts: localhost
+  roles:
+  - role: my_role1
+  tags: [ my_role1 ]
+  

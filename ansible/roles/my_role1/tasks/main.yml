@@ -1,0 +1,14 @@
+---
+- name : task1
+  command : chdir=~
+            rm -fv "{{ my_file1 }}"
+            touch "{{ my_file1 }}"
+  notify: [ handler1 ]
+  tags: [ task1 ]
+
+- name : task2
+  command : chdir=~
+            rm -fv "{{ my_file2 }}"
+            touch "{{ my_file2 }}"
+  notify: [ handler2 ]
+  tags: [ task2 ]

@@ -4,6 +4,8 @@ ansible -i ./inventory testhost1 -u hanadmin -m command -a "ls -ahl"
 ```
 
 ## ansible-playbook 테스트
+
+### myplaybook.yml
 ```bash
 ansible-playbook -i ./inventory myplaybook.yml -t clearall -vv
 
@@ -19,4 +21,10 @@ ansible-playbook -i ./inventory myplaybook.yml -t mylocation -vv
 ansible-playbook -i ./inventory myplaybook.yml -t myname -vv
 
 ansible-playbook -i ./inventory myplaybook.yml -t print_debug -vv
+```
+
+#### myplaybook2.yml
+
+```bash
+ansible-playbook -i ./inventory -l localhost myplaybook2.yml -t my_role1 -vv  --connection=local
 ```
