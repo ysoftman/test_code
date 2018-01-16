@@ -26,5 +26,5 @@ ansible-playbook -i ./inventory myplaybook.yml -t print_debug -vv
 #### myplaybook2.yml
 
 ```bash
-ansible-playbook -i ./inventory -l localhost myplaybook2.yml -t my_role1 -vv  --connection=local
+ansible-playbook -i ./inventory -l localhost myplaybook2.yml -vv  --connection=local -t my_role1 -e task_num=1
 ```
