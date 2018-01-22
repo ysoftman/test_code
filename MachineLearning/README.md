@@ -245,3 +245,42 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - 결정트리는 svm 과 같이 linear 가 아닌 non-linear 바운더리 형태로 나타낼 수 있다.
   - O(height of tree) 의 시간복잡도로 비교적 빠른 prediction 이 가능하다.
   - random forest 등을 사용할 경우 prediction accuracy 을 높일 수 있다.
+
+## 4주차 - 신경망 모델(Neural Networks)
+
+### 인공뉴런(Artificial Neuron)
+
+- 인공 신경망은 60년대부터 인공지능 분야에서 많이 연구었고, 최근 DeepLearning 의 기반기술로 주목 받고 있다.
+- 안공 신경망에서 하나의 작은 단위가 인공뉴런이다.(인간 뇌의 뉴런을 모델로 한것)
+- 인공 뉴런은 x(x1..n 벡터, input)을 입력과 b(bias) 를 입력으로 받아 g(activation function)를 거쳐 활성화 여부를 출력한다.
+  - inptut activation 또는 pre-activation : input x와 b를 합하였을때까지의 상태로 activation function 계산하기전을 말한다.
+  - activation function :  output 출력에 사용
+  - h(x) = g(a(x)) = g(b + sum(i) WiXi)
+- 활성화 함수(activation function)
+  - linear : g(a) = a 로 입력에 따라 출력이 결정되는 형태로 거의 사용되지 않는다.
+  - sigmoid(사전적의미:S자형의) : g(a) = sigm(a) = 1 / (1+exp(-a)) 로  0~1사의 값이 출력으로 가지면(항상 양수), S 자 모양의 그래프
+  - tanh(hyperbolic tangent) : g(a) = tanh(a) = (exp(2a)-1 / exp(2a)+1) sigmoid 와 비슷하지만 -1~1 시아로 음수값도 가진다.
+  - reclin(rectified(사전적의미:수정된,정류된) linear) : g(a) = recline(a) = max(0,a) 0보작 작을때 무조건 0, 0보다 크면 a 가 출력된다. sparse(뉴런 하나의 output 값이 0이 아닌 경우가 많이 생겨 부족하다. 부족하다는것은 뉴런 네트워크 전체를 계산하는데 훨씬 쉽고 간단해진다.)하여 가장 많이 쓰인다.
+- sigmoid 활성화 함수를 통해 0~1사의 값을 주게 된다고 했을대, 이 값을 확률로 볼 수 x가 주었을때 y가 될 확률로 볼수 있고, 이것은 logistic regression(로지시틱 회귀: 사건의 발생 가능성을 예측하는 통계기법) classifier 랑 똑같이 되는것이다. binary classifier 로 활용된다.
+
+### 다층 뉴럴 네트워크(Multilayer Neural Network)
+
+- 다수의 뉴런을 연결하여 non-linear 문제를 해결해보자
+- 여러개의 뉴런이 hidden layer 를 이루고, hidden layer neuron 들로부터 output neuron 이 만들어진다.
+- output layer activation function 으로는 hidden layer activation function 과는 다른 softmax 등을 사용한다.
+- hidden layer activation function h(x) = g(a(x)) 에서 activation function g(-) 은 sigmoid, tanh, recline 등이 될 수있다.
+- single neuron 으로 표현이 힘든 xor(x1,x2) 를 표현할 수 있다.
+- a(x) = b(1) + W(1)x  : W 는 여러기의 뉴런들을 matrix 로 표현
+- softmax 는 output layer activation function 으로 사용한다. 확률값으로 모든 출력 노트의 출력값이 1로 했을때의 각 노의 확률값을 표현
+  - softmax(a) = [ { exp(a1) / sum(c)exp(ac) } ... { exp(ac) / sum(c)exp(ac) }]
+- 각 hidden layer 는 single layer neural network 처럼 pre-activation 과 activation function 이 있다.
+- trainning data {(xi,yi)} 로 부터 neural network 의 weight matrix W 들을 학습해야 한다.
+- 학습된 neural network 에서 test data x 를 input layer 에 넣고 output layer 의 값을 계산함으로써 y(hat) 을 추정할 수 있다.
+
+
+### 경험적 위험 최소화(Empirical Risk Minimization)
+
+- training data 를 가장 잘 설명할 수 있는 가장 적합한 parameter 를 찾는게 인공신경망 training 이고 이를 해결하기 위한 방법으로 risk minimization을 있다.
+- empirical risk minimization 알고리즘(수식)은 다음과 같은 2부분이 더해져 나온다.
+  - (1번째) 정답을 가장 잘 맞출 수 있는 parameter 를 구하는것 + (2번째)최대한 간단한 모델이 되도록 하는것
+- 
