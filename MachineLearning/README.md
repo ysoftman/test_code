@@ -277,10 +277,38 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - trainning data {(xi,yi)} 로 부터 neural network 의 weight matrix W 들을 학습해야 한다.
 - 학습된 neural network 에서 test data x 를 input layer 에 넣고 output layer 의 값을 계산함으로써 y(hat) 을 추정할 수 있다.
 
-
 ### 경험적 위험 최소화(Empirical Risk Minimization)
 
-- training data 를 가장 잘 설명할 수 있는 가장 적합한 parameter 를 찾는게 인공신경망 training 이고 이를 해결하기 위한 방법으로 risk minimization을 있다.
-- empirical risk minimization 알고리즘(수식)은 다음과 같은 2부분이 더해져 나온다.
-  - (1번째) 정답을 가장 잘 맞출 수 있는 parameter 를 구하는것 + (2번째)최대한 간단한 모델이 되도록 하는것
-- 
+- training data 를 가장 잘 설명할 수 있는 가장 적합한 parameter 를 찾는게 인공신경망 training 이고 이를 해결하기 위한 대표적인 방법으로 risk minimization을 사용한다.
+- empirical risk minimization 알고리즘(수식)은
+  - 수식에서 1번 부분(l 부분) : loss function
+    - l(loss function)은 f(모든 nerual network 의 모든 계산을 거처 나온 최종 ouput)과 정답과의 차이 구하는 함수
+    - 주어진 training data 에서 정답을 가장 잘 맞출 수 있는 parameter 를 구하는것
+    - 학습데이터와 다른 그 차이에 대한 패널티을 주는 부분
+    - 우리가 최적화(optimization) 하고자 하는 실제 목적(objective)을 나타내는 부분이다.
+  - 수식에서 2번 부분(omega 부분) : regularizer, overfitting 을 막기위한 패널티 주는것
+    - 최대한 간단한 모델이 되도록 하는 파라미터를 찾는 역할
+    - 모델의 복잡도가 올라가면 overfitting 되어 이에 대한 패널티를 주는 부분
+  - loss function 과 regularizer 의 합을 최소화 하는 최적화(optimization) 문제로 나타낼 수 있다.
+- classification error optimization 을 위해서 -> gradient 계산하고 -> gradient 계산을 위해선 smooth 한 loss function 에러를 대체한다.
+- stochastic gradient descent(SGD, 확률적 경사 하강법) : 뉴럴넷에서 가장 많이 쓰이는 최적화 방법
+  - 초기 파라미터는 랜덤밸류로 시작
+  - 조금씩 object function(loss function + regularization)을 최적화하는 방향으로 조금씩 업데이트
+    - 편미분(partial derivative)을 구해서 반대 방향으로, 그 방향에서 alpha(learning rate)를 곱해서 그 만큼 이동한다.
+    - 모든 training data 에 대해서 하나하나 계산
+    - 이 과정을 n 번을 반복, n 도 실험적으로 해보면서 정한다.
+- Gradient Descent 알고리즘을 사용할 경우, 미분 가능한 함수를 선호한다.
+
+### 손실 함수(Loss Function)
+
+- 정답을 알고 뉴럴넷이 출결과와 얼마나 일치하는가를 확률적으로 나타내는 것 손실함수의 기능이다.
+- 입력값에 대해서 특정 class(c)에 대한 확률 추정값 f(x)c = p(y=c|x) 로 계산한다.
+- 입력값 x의 true class가 y일 때, f(x)y를 최대화 하는 방향으로 학습이 되어야 하고, 이는 negative log likelihood −log⁡f(x)y를 최소화 함으로써 달성할 수 있다.
+- 입력값 x에 대한 추정값 f(x)과 입력값의 true class y 사이의 손실 함수는 흔히 l(f(x),y)=−∑c1(y=c)log⁡f(x)c 로 정의된다.
+
+### 은닉층 그래디언트(Hidden Layer Gradient)
+
+- Loss function의 Hidden layer에 대한 gradient를 바로 계산하기는 복잡하므로 Chain rule을 이용해 단계적으로 계산한다.
+  - Chain rule : qi 의 여러개를 더하거나 곱하면 p 를 구성하는 intermediate step 들에 대해 partial derivative 를 하고, 모든 qi 에 대해 summation 을 하면 구할 수 있다.
+- Back propagation을 하기 위해서는 Forward propagation 계산이 선행되어야 한다.
+- Back propagation 알고리즘을 이용해 파라미터에 대한 Loss function의 Gradient를 효율적으로 계산할 수 있고, 이를 이용해 Loss function을 줄이는 방향으로 파라미터를 최적화 시켜나가게 된다.
