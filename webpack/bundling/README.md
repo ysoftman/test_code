@@ -31,7 +31,7 @@ echo '
 # 실제 js 소스
 echo 'document.getElementById("my_text").innerHTML = "Hello World<br /><p>ysoftman</p>";' >! src/app.js
 
-# app.js 을 번들링하여  dist/bundle.js 을 만들도록 한다.
+# .js 들을 번들링하여 dist/bundle.js 을 생성하게 한다.
 echo "const webpack = require('webpack')
 const path = require('path')
 const extractCommons = new webpack.optimize.CommonsChunkPlugin({
