@@ -7,7 +7,7 @@
 npm init -y
 
 # webpack, babel-core, babel-loader 등 설치
-# package-lock.json(package.json 보두 우선해서 dependency 체크) node_modules 생성된다.
+# package-lock.json(package.json 보다 우선해서 dependency 체크) node_modules 생성된다.
 # --save 는 dependency object 를 --save-dev 는 devdendency object 를 package.json 를 추가한다.
 npm install webpack babel-core babel-loader babel-preset-es2015 extract-text-webpack-plugin --save-dev
 
