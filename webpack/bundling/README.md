@@ -1,4 +1,4 @@
-# webpack 으로 번들링 테스트하기
+# webpack 으로 번들링 테스트
 
 ## npm 초기화 및 webpack 설치
 
