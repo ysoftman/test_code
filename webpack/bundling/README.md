@@ -1,7 +1,5 @@
 # webpack 으로 번들링 테스트
 
-## npm 초기화 및 webpack 설치
-
 ```bash
 # 현재 디렉토리를 npm 초기화(package.json 생성된다.)
 npm init -y
