@@ -13,7 +13,7 @@ func main() {
 	// 배열 생성시 2번째는 7값, 5번째는 99값을 넣는다.
 	// 이때 설정안된 곳은 0값으로 채워지고 마지막으로 설정된 n번째가 배열의 크기가 된다.
 	arTest00 := []int{2: 7, 5: 99}
-	fmt.Println("arTest0 len = ", len(arTest00), "arTest1 cap = ", cap(arTest00), "arTest1 = ", arTest00)
+	fmt.Println("arTest00 len = ", len(arTest00), "arTest00 cap = ", cap(arTest00), "arTest00 = ", arTest00)
 
 	// ... 파라미터는 variadic 으로 부고, 0 이상의 파라미터가 올수 있다는 의미
 	// https://golang.org/ref/spec#Function_types
