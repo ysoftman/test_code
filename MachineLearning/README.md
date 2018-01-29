@@ -313,7 +313,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - Back propagation을 하기 위해서는 Forward propagation 계산이 선행되어야 한다.
 - Back propagation 알고리즘을 이용해 파라미터에 대한 Loss function의 Gradient를 효율적으로 계산할 수 있고, 이를 이용해 Loss function을 줄이는 방향으로 파라미터를 최적화 시켜나가게 된다.
 
-## 5주차 - 딥 러닝과 그 응용(Deep Learngin & Application)
+## 5주차 - 딥 러닝과 그 응용(Deep Learning & Application)
 
 ### 딥 러닝 소개(Introduction to Deep Learnging)
 
