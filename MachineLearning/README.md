@@ -286,7 +286,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
     - 주어진 training data 에서 정답을 가장 잘 맞출 수 있는 parameter 를 구하는것
     - 학습데이터와 다른 그 차이에 대한 패널티을 주는 부분
     - 우리가 최적화(optimization) 하고자 하는 실제 목적(objective)을 나타내는 부분이다.
-  - 수식에서 2번 부분(omega 부분) : regularizer, overfitting 을 막기위한 패널티 주는것
+  - 수식에서 2번 부분(omega 부분) : regularizer(overfitting 을 막기위해 패널티 주는것)
     - 최대한 간단한 모델이 되도록 하는 파라미터를 찾는 역할
     - 모델의 복잡도가 올라가면 overfitting 되어 이에 대한 패널티를 주는 부분
   - loss function 과 regularizer 의 합을 최소화 하는 최적화(optimization) 문제로 나타낼 수 있다.
@@ -312,3 +312,80 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - Chain rule : qi 의 여러개를 더하거나 곱하면 p 를 구성하는 intermediate step 들에 대해 partial derivative 를 하고, 모든 qi 에 대해 summation 을 하면 구할 수 있다.
 - Back propagation을 하기 위해서는 Forward propagation 계산이 선행되어야 한다.
 - Back propagation 알고리즘을 이용해 파라미터에 대한 Loss function의 Gradient를 효율적으로 계산할 수 있고, 이를 이용해 Loss function을 줄이는 방향으로 파라미터를 최적화 시켜나가게 된다.
+
+## 5주차 - 딥 러닝과 그 응용(Deep Learngin & Application)
+
+### 딥 러닝 소개(Introduction to Deep Learnging)
+
+- 딥러닝의 역사
+  - NN 의 20년간 암흑기가 있었는데, 캐나다 토론토 대학의 Geoff Hinton 교수가 2006년 reducing the dimensionality of data with nerual networks 라는 논문을 사인언스에 내게 된다. restricted boltzmann machiness (RBM) 을 이용해 학습한다. 현재는 RBM 보다 좋은 알고리즘들을 사용한다.
+  - 2009년 훨씬 큰 데이터와, 현실적인 데이터를 가지고 convolutional rbm 을 만들어서 한번더 관심을 받게 된다.
+  - 2012년 ICML(머신러닝에서 가장 큰 학회) 에서 Google 과 스탠포드 Andrew Ng 가 논문을 발표하게 된다. 천만개의 이미지와 16천개의 코어와 3일동안 트레이닝을 하는등 엄청 큰 스케일의 데이터와 하드웨어로 사용하였다. 딥러닝의 잠재력은 높다.
+- 여러개의 Levels of Abstraction 을 가진다. (Ex. Pixel - 직선 - 눈코입 - 얼굴 (in Face Recongition Example))
+- 딥러닝은 feature extraction 하지 않고 딥 뉴럴 네트워크로 여러 레벨의 abstraction 을 뽑아주는게 가장 큰 힘이라고 할 수 있다.
+  - Feature Extraction 에 대한 사전지식 없이, Deep Neural Network 이 자동으로 Levels of Abstraction 을 찾아주는 Representation Learning 이 가능하다.
+- 딥러닝은 supervised learning, unsupervised learning 둘 다 할 수 있다.
+- 딥러닝이 근본적으로 하는 것은 representation learning 이다.
+  - represenetation learning : 이미지 데이터에서 픽셀 부터 사물 전체 레벨까지 여러개의 레벨이 될 수 있는 representation 들이 무엇이 있는지 그것을 자동으로 학습한다.
+- Deep Learning 에서 쓰이는 모델로는 Restricted Boltzmann Machine (RBM), Autoencoder, Convolutional Neural Network (CNN), Recurrent Neural Network (RNN) 등이 있다.
+  - 더 잘할 수 없을 정도로 좋은쪽 : 이미지인식, 음성인식
+  - 아직 좀 미흡한 쪽: 자연어 처리, 기계번역
+
+### 제한적 볼츠만 기계(Restricted Boltzmann Machine, RBM)
+
+- RBM 은 unsupervised learning 을 할 수 있는 모델로 데이터의거 아주 커지는 상황에서 일일히 레이블링하여 정답셋을 만들 수 없기 때문에 unsupervised learning 이 중요해 졌다.
+- 차원 감소, 분류, 선형 회구 분석, 특징값 학습등에 사용 가능한 알고리즘으로 Geoff Hinton 교수가 제안
+- RBM 자체적으로 사용할 수 있지만 다른 디러닝 신경망의 학습을 돕기 위해서 쓰이기도 한다.
+- RBM 은 입력층(visible layer) + 은닉층(hidden layer) 의 2 layers 로 구성된다.
+  - 입력층노드와 은닉층 노드들은 모두 풀 연결되어 있지만 layer 안에서의 노드들끼는 연결되어 있지 않다. -> 확률적인 관계가 없다. -> 독립적이다.
+    - 같은 layer 에서는 연결이 없어 '제한된' 볼츠만 머신 이름이 붙여짐
+    - 입력 데이터를 은닉층으로 전달할지(1) 말지(0)를 확률적 결정(stochastic decision)
+    - MNIST 필기인식의 경우 784개의 픽셀이 입력노드의 입력값이 된다.
+  - Hidden Layer 와 Visible Layer 사이에 방향성이 없는 (Undirected) 관계를 가지는 Graphical Model 이다.
+  - Contrastive Divergence 알고리즘 등으로 RBM 의 Inference 가 가능하고, Deep Neural Network 의 Weight Initialize 를 위한 Pre-Training(전처리, 선행학습) 에 쓰일 수 있다.
+  - inference : 확률값을 높이는 파라미터를 알아보는것
+- 2006년 hinton 교수의 논문 에 소갠된 Contrastive Divergence(CD) (대조 분기?)는
+  - RBM 을 하나의 유닛을 가지고 있는 딥러닝응 쉽게 할 수 있는 알고리즘이다.
+  - RBM 에서 Stocastic Gradient Descent 알고리즘 대신 사용
+  - CD 로 굉장히 쉽고 빠르게 inference 할 수 있다.
+- Contrastive Divergence(CD) 의 아이디어
+  - 하나의 포인트 X estimate 를 expecation 으로 보자.
+  - gibbs sample (chain 으로 볼수 있다.) 을 k 개의 적은 숫자로 iteration 한다.
+    - gibbs sample: 두개 이상의 확률 변수의 결합 확률 분포로부터 일련의 표본을 생성하는 확률적 알고리즘으로, 결합 확률 분포나 그에 관련된 확률 계산을 근사하기 위해 사용
+    - gibbs sample 을 쓴다는 것은 sample iteration 하나를 거칠때 마다 parameter 를 업데이틑 해준다는것, parameter 는 conneciton weight W, Bias Vectors bj,ck 들을 업데이트 해간다.
+  - chain 시작시 랜덤하지 하지 않고 input data 에서 그냥 하나를 뽑아 시작한다.
+  - k=1 일때어 어느정도 좋은 결과를 보인다.
+- RBM 예시
+  - MINIST 필기 숫자데이터 -> RBM 으로 pretraining filter 적용한듯(특징이 있어야 하는 곳은 밝게, 없어야 할곳은 어둡게 표현)
+
+### 오토인코더(Autoencoder)
+
+- 오토인코더는 RBM 과 같은 unsupervised learning 모델이고, pretraing 을 하는 단계에서 많이 쓰임
+- input layer -> hidden layer -> output layer(input layer 의 노드 개수와 같다.) 형태로 input 값을 ouput 에서 reconstrunction 하는 것이 목적이다.
+  - input -> hidden layer : encoder 라 부르고 sigmoid 를 사용
+  - hidden layer -> output layer : decocder 라 부르고 sigmoid 를 사용
+  - under complete representation(compression) : hidden layer node(dimension) 개수가 input node(dimension) 보다 작은 경우
+    - dimension reducntion 목적으로도 쓰임 PCA(Principle Component Analysis) 에 대응
+    - training data 와 많이 다른 데이터가 들어왔을경우 compression 이 전혀 역할을 하지 않는 제한이 있다.
+  - overcomplete : hidden layer node 개수가 input node 보다 큰 경우
+    - hidden layer 의미있는 structure 를 발견하지 못할 수도 있는 제한이 있어 좋은 모델이 아니다.
+    - overcomplete 를 개선하기 위해 노이즈가 추가된 데이터를 노이즈가 없는 원래 데이터로 복원할 수 있는 유의미한 Feature들을 찾아내는 denoising autoencoder 를 사용, 음성인식, 이미지인식등 노이즈가 많은 input 데이터 대해서 pre-training 으로서 사용한다.
+
+### 딥 뉴럴 네트워크 정규화(Deep Neural Network Regularization)
+
+- 딥러닝 = representation learning = distributed(첫번재 hidden layer 픽셀 특징, 두번재 hidden layer 눈,코입....특징, 등 layer 를 쌓아 올려) representation
+- multi layer feed forward nerual net 이 표현할 수 있는 function 은 complexity 가 높은 function 이다.
+- 2가지 문제점
+  - underfitting : parameter optimization 잘 못한다. 최적화 의미는 backpropagation 에서 layer 마다 gradient 를 구하고 그 뒤로 가는것, stochastic gradidnet descent 를 통한 최적화. hyperbolic tangent, sigmoid 등에서 0에 가까울때는 slope(경사, gradient)가 있지만 0에서 멀어질수록 slope 가 거의 0에 가까워진다. gradient이 거의 0이 되면 다음 iteration 에서 paramter update 할때 잘 되지 않는다. iteration 마다 처음 시작했던 weight 보다 좋은쪽으로 움직여야 하는데 움직이지 못한다는것으로 이를 vanishing gradient problem 이라고 한다.
+  - overfitting : training data 에 너무 fitting 되서 실제 데이터에 prediction 할수있는 generalization power 가 떨어진다. 학습할 수 있는 함수의 범위가 매우 크기 때문에 overfitting 이 잘 일어난다.
+- overfitting 방지를 위해서 parameter 들의 값에 패너티를 주면서 에방하는 regularization 을 사용한다.
+- 정규화(regularization, 딥넷의 overfitting 을 줄이기 위한것) 2 가지 방법
+  - unsupervised pre-training : 다음과 과정을 거치면서 feature 조합을 잘 찾아낸다. combination of combination of ...
+    - first layer : training data input 에서만 잘 나오는 hidden unit 용 feature 를 찾는다.
+    - second layer : first layer output 을 입력으로 받아 hidden unit 들의 combination 을 찾는다.
+    - third layer : second layer output 을 입력을 받아 또 hidden unit 들의 feature 를 또 combination 한다.
+    - Unsupervised pre-training을 할 때, 첫 번째 Layer의 학습이 끝나면 첫 번째 Layer의 weight 값을 고정시킨 채 두 번째 Layer의 학습을 진행하며, 같은 방식으로 여러 층에 걸쳐 학습된 Weight를 Supervised learning의 파라미터 초기값으로 사용하면 Over-fitting이 방지되는 효과가 있다.
+    - 마지막 output layer 를 하다 더 얹는데 이는 정답을 가지고 있는 supervised learning 이 된다.
+    - 그리고 backpropagation 을 통해 hidden layer 의 weight 들을 업데이트를 한하는데 이를 find tuning 한다고 얘기한다.
+  - dropout : hidden layer 의 hidden unit 을 0.5의 확률로 0으로 한다.
+    - 모든 hidden unit layer 가 출력되면 비슷한 효과를 내는 feature 들을 표현하지 않고 다른것을 해버리는 net weight 들의 co-adaptation(동조화 현상)이 발생하는데 몇몇 hidden unit 을 없앰(drop)으로써 hidden unit 이 좀더 자기가 표현할 수 있도록 한다.
