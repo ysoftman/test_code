@@ -1,4 +1,5 @@
-## ansible 테스트
+# ansible 테스트
+
 ```bash
 ansible -i ./inventory testhost1 -u hanadmin -m command -a "ls -ahl"
 ```
@@ -6,6 +7,7 @@ ansible -i ./inventory testhost1 -u hanadmin -m command -a "ls -ahl"
 ## ansible-playbook 테스트
 
 ### myplaybook.yml
+
 ```bash
 ansible-playbook -i ./inventory myplaybook.yml -t clearall -vv
 
@@ -23,7 +25,7 @@ ansible-playbook -i ./inventory myplaybook.yml -t myname -vv
 ansible-playbook -i ./inventory myplaybook.yml -t print_debug -vv
 ```
 
-#### myplaybook2.yml
+### myplaybook2.yml
 
 ```bash
 ansible-playbook -i ./inventory -l localhost myplaybook2.yml -vv  --connection=local -t my_role1 -e task_num=1
