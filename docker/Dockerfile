@@ -10,7 +10,7 @@ RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbi
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 USER ysoftman
 # 환경설정 저장소 클론 받아 놓기
-RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv && cd /home/ysoftman/workspace/myenv/ && bash ./installconfig.sh && bash ./installvimplugin.sh
+RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv && cd /home/ysoftman/workspace/myenv/ && bash ./installvimplugin.sh && bash ./installconfig.sh
 # apache httpd 설치 스크립트 복사, 절대 경로로 명시해야 한다.
 COPY install_apache_httpd.sh /home/ysoftman/workspace
 # apache httpd 설치
