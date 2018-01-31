@@ -4,6 +4,8 @@ RUN yum groupinstall -y 'development tools'
 RUN localedef -f UTF-8 -i ko_KR ko_KR.utf8 && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 RUN groupadd programmer && useradd -d /home/ysoftman -g programmer -p ysoftman ysoftman
 RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbin/halt, !/usr/bin/poweroff, !/usr/bin/halt' >> /etc/sudoers
+# EPEL(Extra Packages for Enterprise Linux, Fedora 에서 제공되는 최신 패키지 저장소) 를 추가
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 USER ysoftman
 # 환경설정 저장소 클론 받아 놓기
 RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv && cd /home/ysoftman/workspace/myenv/ && bash ./installconfig.sh && bash ./installvimplugin.sh
