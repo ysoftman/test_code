@@ -6,7 +6,7 @@ RUN groupadd programmer && useradd -d /home/ysoftman -g programmer -p ysoftman y
 RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbin/halt, !/usr/bin/poweroff, !/usr/bin/halt' >> /etc/sudoers
 USER ysoftman
 # 환경설정 저장소 클론 받아 놓기
-RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv && cd /home/ysoftman/workspace/myenv/ && bash ./installconfig.sh
+RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv && cd /home/ysoftman/workspace/myenv/ && bash ./installconfig.sh && bash ./installvimplugin.sh
 # apache httpd 설치 스크립트 복사, 절대 경로로 명시해야 한다.
 COPY install_apache_httpd.sh /home/ysoftman/workspace
 # apache httpd 설치
