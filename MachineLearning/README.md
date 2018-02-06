@@ -425,6 +425,17 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - lemmatization(혹은 normalization) : 대문자를 소문자로 만드다던지, 7 같은 숫자 자체는 number 로 고친다던지등의 표준형태로 만드는 과정
 - corpus(문서의집합)에서 단어들을 모두 추출할 수 있고 이것을 vocabulary 만든다고 한다. vocabulary 를 만들때 크게 의미 없는 단어(예를 들어 the) 너무 많이 나오는 단어(예를 들어 the)는 빼는 등의 작업을 하고 각각에 단어에 unique 한 id를 부여한다. oov(out of vocabulary) vocabbulary 에 없는 경우도 구분
   - one-hot encoding : vocabulary dimension 크기의 벡터를 만들고 모두 0 으로 하고 vocabulary 의 특정 단어가가 가진 위치(position)에 대해서만 1로 한다. 많이 쓰이지만 dimension 의 크기가 너무 커진다는 단점이 있다.
-  - continuous word representation : one-hot encoding 이 단점을 보완하기 위해 나온 방법, 모든 dimension 에대해서 0 아닌 value 를 가질 수 있도록 한다.
+  - continuous word representation : one-hot encoding 이 단점을 보완하기 위해 나온 방법, 모든 dimension 에대해서 0 아닌 value 를 가질 수 있도록 한다. vecotr(dimension) 값들이 서로 비슷한 단어들은 서로 비슷하다고 할 수 있도록 하는것이 continuous word representation가 추구하는 목표이다.
+- Language Model : 문서에서 단어들 (Sequence of Words)이 나타날 분포에 대한 확률적 모델이다. 영어, 한국어등 하나의 언어에 쓰이는 단어들의 distrubution 을 표현한것으로 많은 텍스트가 주어졌을때 텍스트에서 단어들이 어떤 순서로 나오는지를 보고 모델링하면 영어에서는 어떤 단어들이 어떤 단어들 다음에 나온다는것을 확률적으로 표현 할 수 있다.
+  - n-gram model : 지금까지 가장 많이 쓰이는 language model. n-gram 모델에서는 (n-1) 개의 순차적인 단어들 후에 나올 n 번째 단어에 대한 확률을 나타내는 모델이다. n=1 이면 unigram, n=2 이면 bigram, n=3 이면 trigram(음성인식, 자동기계번역에서 많이 쓰임)
+    - 학습 과정에서 한 번도 보지 못했던 n-gram 은 확률 모델이 잘 설명할 수 없기 때문에 Data Sparsity(희박함) 문제가 있다. trigram 에 없는 모델은 bigram 과 unigram 을 조합해서 Data Sparsity 문제를 부분적으로 해결할 수 있지만 근본적으로 해결할 수 없어 Nerual Network 를 활용하기 시작했다.
+  - Neural Network Language Model : Continuous Word Representation 을 input 으로 하고 output 은 전체 문장의 확률 혹은 전체문장에 context 가 주어졌을때 그 단어 하나가 나올 조거부확률(conditional probability)이 된다.
+    - Continuous Word Representation 을 Input 으로 하고, 각각의 단어가 나올 확률을 Output 으로 하는 Neural Network 구조로 표현할 수 있다.
+    - "cat" 과 "dog" 라는 단어를 Continuous Word Representation 으로 표현했을 때, 비슷한 Vector 값을 가지도록 Neural Network 를 학습함으로서 Data Sparsity 문제를 다룰 수 있다.
+    - 학습된 Language Model 로부터 학습되지 않은 새로운 문장에 대한 확률 값을 기준으로 Language Model 의 성능을 측정할 수 있다. (ex. Perplexity(곤혹,혼론,당혹) : 학습한 language 모델에서 확률듈을 계산했을때 새로운 문장에 대해서 얼마나 높게 주는가는 확률이고 이 확율을 반대 개념을 Perplexity 라고 하고 perplexity 는 낮을 수록 좋다.)
 
 ### 강좌 종합 정리(Course Summary)
+
+- 딥러닝 도입 사례
+  - netflix 개인별 추천에 머신러닝을 도입하고 있다. personalized rating prediction(내가 좋아하는 영화 별주기) -> personalized ranking(영화들 랭킹) -> personalized page generation(나에 맞는 첫화면 생성)
+  - ibm watson service 로 health care 분야에 활용하고 있다. 환자의 피부 사진을 보고 skin cancer(피부암)인지를 dectection 을 이미지 딥러닝을 활용한다.
