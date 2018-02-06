@@ -9,6 +9,7 @@ RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbi
 # EPEL(Extra Packages for Enterprise Linux, Fedora 에서 제공되는 최신 패키지 저장소) 를 추가
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 USER ysoftman
+COPY .vimrc /home/ysoftman/.vimrc
 # 환경설정 저장소 클론 받아 놓기
 RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv
 # apache httpd 설치 스크립트 복사, 절대 경로로 명시해야 한다.
