@@ -389,3 +389,42 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
     - 그리고 backpropagation 을 통해 hidden layer 의 weight 들을 업데이트를 한하는데 이를 find tuning 한다고 얘기한다.
   - dropout : hidden layer 의 hidden unit 을 0.5의 확률로 0으로 한다.
     - 모든 hidden unit layer 가 출력되면 비슷한 효과를 내는 feature 들을 표현하지 않고 다른것을 해버리는 net weight 들의 co-adaptation(동조화 현상)이 발생하는데 몇몇 hidden unit 을 없앰(drop)으로써 hidden unit 이 좀더 자기가 표현할 수 있도록 한다.
+
+## 6주차 - 강좌 종합 정리
+
+### 콘볼루션 신경망(Convolutional Neural Network)
+
+- 컴퓨터비전 분야에서 딥러닝을 사용하는데
+  - obeject regcogintion(사물인식)에 많이 사용한다. caltech 101 dataset(101개의 사물 분류) 데이터를 많이 사용한다.
+  - 이미지의 경우 dimension(MxN 픽셀, 픽셀당 RGB 컬러 정보)이 크다.
+  - 이미지의 경우 togoploy(위상, 지형) 패턴을 가지고 있다. 예를 들어 edge 등의 특성, 꽃의 경우 비슷한 색깔이 많이 분포된다.
+  - rotation, illumination, scaling 등의 invariance(불변) 를 지켜줘야 한다.
+  - 이런 문제 특성을 해결하기 위해 CNN(Convolutional Neural Network) 방법을 인식하며, 다음 3가지 아이디어에서 내포되어 있다.
+    - local connectivity : fully connected hidden layer 는 관리되지 않는 너무 많은 파라미터를 가지고 있고 복잡하기 때문에 local connected hidden layer 를 보도록 한다. paramter 의 수를 줄여준다.
+      - feature-map 이 가지고 있는 필터 효과를 이용해 이미지에 대해서 계산하여 어떤 패턴을 찾아 내는 방법을 convoluvtion 이라고 하는데, discrete(분리된) convolution (사실singal processing 에서 하나의 input singal 있을때 패턴을 감지하기 위해 사용)는 이미지 데이터에서 kernel(이미지 필터 값은 녀석)이 가지고 있는 패턴을 input data 에서 찾아보기 위해 input 의 필터크리만큰 shift 하면서 곱해주는 것을 말한다. 이미지의 크기가 5x5이고 커널의 크기가 3x3이라면 콘볼루션 결과는 3x3 행렬이 된다.
+      - convolution 후에 non-linear 한 sigmoid function, hyperbolic tangent 등을 계산하여 찾고자 하는 패턴와의 차이을 수치상을 확인할 수 있다. convolution 결과값이 크다는 것은, 입력 이미지의 해당 위치가 커널과 비슷한 패턴을 가지고 있음을 뜻한다.
+      - 이미지의 바깥쪽에 있는 곳을 0으로 채워주는 zero padding 을 통해 바깥쪽의 패턴도 잡을 수 있도록 한다.
+    - parameter sharing : N 개의 feaature-map 이 있고 feature-Map(w1, w2,,,. wn)일때, 각 feature-map 의 w1 은 이미지의 한 부분에 특징 값을 가진다. local connectivity 로 파라미터를 줄여줬지만 parameter sharing 을 통해 feature-map 의 숫자만큼 parameter 수를 줄여준다. 그리고 receptive-filed(수용영역, 외부자극이 있을때 전체에 영향을 주는것이 아니라 특정영역에만 영향은 준다는 의미로 이미지에서 특정 필셀은 인접한 일부 픽셀들하고만 밀접하게 연과되어 있고 거리가 멀수록 영향은 감소된다) 이미지의 모든 position 에 대해서 똑같은 feature 들을 extraction 하고 있다.
+    - pooling / subsample hidden unit : convolution 결과에서 3x3, 4x4 크기의 patch(neighborhood 라고도 함, 일종의 필터)들을 적용하여 max 값만 취한다. 3x3 의 경우 max 1개만 취하고 나머지 8개는 버린다.(max-pooling).
+      - input data 이미지가 클때, hidden layer 가 클때 pooling 을 통해 이미지 사이즈를 줄이거나 hidden unit 개수를 줄이다.
+      - local translation : max-pooling 을 통해 특정부분(local)값이 다른쪽을 이동(번역translation)되는 현상, Pooling을 통해 Local translation에 대한 Invariance를 가질 수 있다.
+  - CNN 흐름 : input -> layer1 (convolution) -> max-pooling -> layer2(convolution) -> max-pooling .... -> max-pooling -> output
+  - max-pooling gradient : 0  except for delta xij+p`,k+q` l = delta yijk l
+  - average-pooling gradient : { umsample(delta y l) } / m*m
+  - jarret 2009년 논문에 rectification(개정, 수정) 를 사용 : 모든 layer 에 대해서 값이 다 나오는데 그값에 대해서 absoulte value 를 쓰운다. convolution의 특징은 잡는단 것은 결국 edge 를 찾는것으로 흰색에서 검은색으로, 검은색에서 흰색으로 변하는 구간인데, rectification 을 적용하여 흰색->검은색으로 가던 검은색->흰색으로 가던 구분없이 모두 edge 로 하겠다는 의미다.
+    - contrast nomalization : 비슷한 neighbor local한 부분에 대해서 contrast 에 대한 평균값을 빼고 standard deviation 으로 나눈다. 모든 layer 에서 contrast-normalization 을 하여 비슷한 부분은 무시되고 정말 다른 부분만 잡아내겠다는 의미
+    - input image -> convolution -> rectification -> contrast normalization -> pooling/subsample ...
+    - rectification, contrast normalization 등을 적용하니 인식률이 좋아지고, 2번 적용하니 더 좋아지더라.
+    - 그리고 random filters(kernel)를 적용하더라도 어느정도 패턴을 잡아내기는 한다.
+
+### 신경망 언어 모델(Neural Network Language Model)
+
+- 자연어 처리(Natural Language Processing, NLP)는 책, 신문기사 등의 문서 데이터에서 의미를 추출하기 위한 분석을 하는 학문으로 에도 머신 러닝을 이용할 수 있다.
+- word(단어) 단위로 분석하며 다음의 2과정을 거친다.
+  - tokenization : 단어 추출하는 과정
+  - lemmatization(혹은 normalization) : 대문자를 소문자로 만드다던지, 7 같은 숫자 자체는 number 로 고친다던지등의 표준형태로 만드는 과정
+- corpus(문서의집합)에서 단어들을 모두 추출할 수 있고 이것을 vocabulary 만든다고 한다. vocabulary 를 만들때 크게 의미 없는 단어(예를 들어 the) 너무 많이 나오는 단어(예를 들어 the)는 빼는 등의 작업을 하고 각각에 단어에 unique 한 id를 부여한다. oov(out of vocabulary) vocabbulary 에 없는 경우도 구분
+  - one-hot encoding : vocabulary dimension 크기의 벡터를 만들고 모두 0 으로 하고 vocabulary 의 특정 단어가가 가진 위치(position)에 대해서만 1로 한다. 많이 쓰이지만 dimension 의 크기가 너무 커진다는 단점이 있다.
+  - continuous word representation : one-hot encoding 이 단점을 보완하기 위해 나온 방법, 모든 dimension 에대해서 0 아닌 value 를 가질 수 있도록 한다.
+
+### 강좌 종합 정리(Course Summary)
