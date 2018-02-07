@@ -15,7 +15,7 @@ func main() {
 	arTest00 := []int{2: 7, 5: 99}
 	fmt.Println("arTest00 len = ", len(arTest00), "arTest00 cap = ", cap(arTest00), "arTest00 = ", arTest00)
 
-	// ... 파라미터는 variadic 으로 부고, 0 이상의 파라미터가 올수 있다는 의미
+	// ... 파라미터는 variadic 으로, 0 이상의 파라미터가 올수 있다는 의미
 	// https://golang.org/ref/spec#Function_types
 	// [...] 로 구체적 원소개수를 명시하지 않아도 된다.
 	arTest1 := [...]int{11, 22, 33, 44, 55}
