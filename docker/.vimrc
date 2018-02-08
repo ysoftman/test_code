@@ -7,3 +7,4 @@ set tabstop=4
 set autoindent
 set laststatus=2
 set lines=80
+set columns=200
