@@ -1,3 +1,4 @@
+# python version : 3.x
 import tensorflow as tf
 import numpy as np
 

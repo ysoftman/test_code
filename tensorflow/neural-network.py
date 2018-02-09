@@ -1,3 +1,4 @@
+# python version : 3.x
 import numpy as np
 import matplotlib as plt
 import pandas as pd
@@ -11,6 +12,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 # wget http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
 # wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
 # wget http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
+# read_data_sets 에서 mnist data 를 자동으로 다운로드된다.
 mnist = input_data.read_data_sets("./MNIST_DATA", one_hot=True)
 
 tf.convert_to_tensor(mnist.train.images).get_shape()

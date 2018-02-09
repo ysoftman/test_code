@@ -1,3 +1,4 @@
+# python version : 3.x
 import numpy as np
 import matplotlib as plt
 import pandas as pd
@@ -9,10 +10,10 @@ num_vectors = 1000
 num_clusters = 3
 num_steps = 100
 vector_values = []
-for i in xrange(1000):
+for i in range(1000):
     vector_values.append(
         [np.random.normal(0.0, 0.9), np.random.normal(0.0, 0.9)])
-for i in xrange(500):
+for i in range(500):
     vector_values.append(
         [np.random.normal(3.0, 0.5), np.random.normal(1.0, 0.5)])
 
