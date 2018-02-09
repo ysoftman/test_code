@@ -6,7 +6,7 @@
 
 ```bash
 # mac 기준
-brew instal python3
+brew install python3
 sudo pip3 install matplotlib pandas seaborn tensorflow jupyter
 ```
 
