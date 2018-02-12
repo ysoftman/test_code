@@ -1,8 +1,12 @@
+export PS1="\u@\h:\w\$ "
+export LANG=ko_KR.utf8
+export LC_ALL=ko_KR.utf8
+
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 alias l.='ls -d .* --color=auto'
-alias ll='ls -l --color=auto'
+alias ll='ls -ahl --color=auto'
 alias ls='ls --color=auto'
 alias vi='vim'
 alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
