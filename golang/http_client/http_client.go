@@ -9,17 +9,16 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/labstack/gommon/log"
 )
-
-const testURL = "http://httpbin.org/ip"
 
 func main() {
 	// 방법1
 	// 일반적인 http get 요청
 	fmt.Println("using http.Get()")
-	resp, err := http.Get(testURL)
+	resp, err := http.Get("http://httpbin.org/ip")
 	if err != nil {
 		log.Error(err.Error())
 		os.Exit(1)
@@ -37,12 +36,15 @@ func main() {
 	// 방법2
 	// 헤더를 추가하거나 post 방식으로 요청할경우
 	fmt.Println("using http.NewRequest()")
-	req, err := http.NewRequest("GET", testURL, nil)
+	requestbody := "ysoftman"
+	req, err := http.NewRequest("GET", "http://httpbin.org/anything", strings.NewReader(requestbody))
 	if err != nil {
 		log.Fatal("can't create NewRequeset()")
 	}
 	// 헤더 추가
-	req.Header.Add("test-header", "test-requester")
+	req.Header.Add("test-header1", "test-requester_value1")
+	req.Header.Add("test-header2", "test-requester_value2")
+	req.Header.Add("test-header3", "test-requester_value3")
 	// 요청 수행
 	client := &http.Client{}
 	resp, err = client.Do(req)
