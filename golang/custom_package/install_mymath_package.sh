@@ -4,7 +4,7 @@
 rm -rfv $GOPATH/src/mymath
 cp -rv ./src/mymath $GOPATH/src/
 
-# 패키지 빌드 및 설치
+# 패키지 빌드 및 (GOPATH에) 설치
 # 설치가 성공했다으면 (윈도우64 기준으로) $GOPATH/pkg/windows_amd64/mymath.a 가 생성된다.
 go build mymath
 go install mymath
