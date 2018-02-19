@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"encoding/hex"
 	"fmt"
 )
 
@@ -56,6 +57,11 @@ func main() {
 
 	encrypted := AESCTREncrypt(key, iv, plaintext)
 	fmt.Printf("[AESCTREncrypt]\n%X\n", encrypted)
+
+	// hexadecimal string 으로 변환
+	hexstring := hex.EncodeToString([]byte(encrypted))
+	fmt.Printf("[AESCTREncrypt hex]\n%s\n", hexstring)
+
 	decrypted := AESCTRDecrypt(key, iv, encrypted)
 	fmt.Printf("[AESCTRDecrypt]\n%s\n", decrypted)
 }
