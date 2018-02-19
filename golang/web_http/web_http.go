@@ -4,6 +4,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"html/template"
@@ -135,6 +136,11 @@ func testPage(w http.ResponseWriter, r *http.Request) {
 	// 전역 리에 저장하여 보여주기
 	mapUserData[data.UserNo] = data
 	err := templateMain.Execute(w, mapUserData)
+
+	// 템플릿 내용이 적용된 html 을 string 형태로 출력해보자
+	var tpl bytes.Buffer
+	err = templateMain.Execute(&tpl, mapUserData)
+	fmt.Println(tpl.String())
 
 	if err != nil {
 		fmt.Println(err.Error())
