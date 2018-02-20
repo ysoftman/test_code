@@ -32,9 +32,9 @@ func main() {
 	fmt.Printf("strslice = %s\n", strslice)
 	fmt.Printf("str2 = %s\n", str2)
 
-	str2 = strings.Replace(string(str2), "\t", "", -1)
+	str2 = strings.Replace(str2, "\t", "", -1)
 	fmt.Printf("str2 = %s\n", str2)
-	str2 = strings.Replace(string(str2), " ", "", -1)
+	str2 = strings.Replace(str2, " ", "", -1)
 	fmt.Printf("str2 = %s\n", str2)
 
 	// 스트링 복제(슬라이스는 기본 참조라서 같이 변경된다.)
