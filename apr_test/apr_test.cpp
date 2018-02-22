@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << argv[0] << " \"www.json.org\" " << 80 << " \"/json-ko.hml\"" << endl;
+        cout << argv[0] << " \"www.json.org\" " << 80 << " \"/json-ko.html\"" << endl;
         exit(0);
     }
     stringstream portstr;
