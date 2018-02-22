@@ -7,6 +7,13 @@ import (
 )
 
 func main() {
+	printRune()
+	cutRuneByMaxByte(10)
+	cutRuneByMaxByte(13)
+	cutRuneByMaxByte(17)
+}
+
+func printRune() {
 	str := "이건 한글, This is English"
 	fmt.Println(str)
 
@@ -15,4 +22,20 @@ func main() {
 	for index, runeValue := range str {
 		fmt.Printf("index(%d) %v %U %#U\n", index, runeValue, runeValue, runeValue)
 	}
+}
+
+func cutRuneByMaxByte(maxbytes int) {
+	str := "이건 한글, This is English"
+	fmt.Println(str, "maxbytes:", maxbytes)
+
+	cutStr := ""
+	for index, runeValue := range str {
+		if index < maxbytes {
+			cutStr += string(runeValue)
+			fmt.Printf("index(%d) < maxbytes(%d) (%v)(%#U)\n", index, maxbytes, runeValue, runeValue)
+		} else {
+			break
+		}
+	}
+	fmt.Println(cutStr)
 }
