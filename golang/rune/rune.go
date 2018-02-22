@@ -9,7 +9,7 @@ import (
 
 func main() {
 	printRune()
-	cutRuneByMaxByte(10)
+	cutRuneByMaxByte(7)
 	cutRuneByMaxByte(13)
 	cutRuneByMaxByte(17)
 }
@@ -29,18 +29,25 @@ func cutRuneByMaxByte(maxbytes int) {
 	str := "이건 한글, This is English"
 	fmt.Println(str, "(maxbytes:", maxbytes, ")")
 
-	// cutStr := ""
+	cutStr := ""
 	var byteBuf bytes.Buffer
+	preindex := 0
 	for index, runeValue := range str {
+
 		if index < maxbytes {
+			preindex = index
+
 			// 스트링이 커지면 += 효율성이 떨어지니 bytes.Buffer 를 사용하자.
-			// cutStr += string(runeValue)
 			byteBuf.WriteRune(runeValue)
 			fmt.Printf("index(%d) < maxbytes(%d) (%v)(%#U)\n", index, maxbytes, runeValue, runeValue)
+
 		} else {
 			break
 		}
 	}
-	// fmt.Println(cutStr)
-	fmt.Println(byteBuf.String())
+	fmt.Printf("byteBuf: %v\n", byteBuf.String())
+
+	cutStr = str[:preindex]
+	fmt.Printf("preindex(%d) cutstr: %v\n", preindex, cutStr)
+
 }
