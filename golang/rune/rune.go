@@ -3,6 +3,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 )
 
@@ -26,16 +27,20 @@ func printRune() {
 
 func cutRuneByMaxByte(maxbytes int) {
 	str := "이건 한글, This is English"
-	fmt.Println(str, "maxbytes:", maxbytes)
+	fmt.Println(str, "(maxbytes:", maxbytes, ")")
 
-	cutStr := ""
+	// cutStr := ""
+	var byteBuf bytes.Buffer
 	for index, runeValue := range str {
 		if index < maxbytes {
-			cutStr += string(runeValue)
+			// 스트링이 커지면 += 효율성이 떨어지니 bytes.Buffer 를 사용하자.
+			// cutStr += string(runeValue)
+			byteBuf.WriteRune(runeValue)
 			fmt.Printf("index(%d) < maxbytes(%d) (%v)(%#U)\n", index, maxbytes, runeValue, runeValue)
 		} else {
 			break
 		}
 	}
-	fmt.Println(cutStr)
+	// fmt.Println(cutStr)
+	fmt.Println(byteBuf.String())
 }
