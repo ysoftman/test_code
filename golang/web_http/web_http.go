@@ -118,7 +118,11 @@ func testPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("RequestURI : ", r.RequestURI)
 
 	// test page 템플릿 생성
-	templateMain, _ := template.ParseFiles("test.html")
+	// templateMain, err := template.ParseFiles("test.html", "testnested.html")
+	templateMain, err := template.New("test.html").Funcs(myFuncMap).ParseFiles("test.html", "testnested.html")
+	if err != nil {
+		panic(err)
+	}
 
 	// 클라가 보낸 값 파악
 	data := userData{}
@@ -131,11 +135,11 @@ func testPage(w http.ResponseWriter, r *http.Request) {
 	// 템플릿 실행(html 응답)
 	//templateMain.Execute(os.Stdout, nil)
 	// data 를 템플릿으로 넘겨 동적 html 을 생성할 수 있도록 한다.
-	//err := templateMain.Execute(w, data)
+	//err = templateMain.Execute(w, data)
 
-	// 전역 리에 저장하여 보여주기
+	// 전역 변수에 저장하여 보여주기, 응답 주기
 	mapUserData[data.UserNo] = data
-	err := templateMain.Execute(w, mapUserData)
+	err = templateMain.Execute(w, mapUserData)
 
 	// 템플릿 내용이 적용된 html 을 string 형태로 출력해보자
 	var tpl bytes.Buffer
@@ -147,4 +151,17 @@ func testPage(w http.ResponseWriter, r *http.Request) {
 	}
 	requestCnt++
 	fmt.Println("request cnt = ", requestCnt)
+}
+
+var myFuncMap = template.FuncMap{
+	"setInt": setInt,
+}
+
+func setInt(n ...int) []int {
+	var sliceint []int
+	for _, val := range n {
+		fmt.Println("seInt:", n)
+		sliceint = append(sliceint, val)
+	}
+	return sliceint
 }
