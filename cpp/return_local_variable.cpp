@@ -48,7 +48,7 @@ int main()
     char str[4] = {
         0,
     };
-    cout << func1(str) << endl;
-    cout << func2() << endl;
-    cout << func3() << endl;
+    cout << "func1 " << func1(str) << endl;
+    cout << "func2 " << func2() << endl;
+    cout << "func3 " << func3() << endl;
 }
