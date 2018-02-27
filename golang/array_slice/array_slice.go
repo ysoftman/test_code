@@ -10,7 +10,7 @@ func main() {
 	arTest0 := [5]int{11, 22, 33, 44, 55}
 	fmt.Println("arTest0 len = ", len(arTest0), "arTest1 cap = ", cap(arTest0), "arTest1 = ", arTest0)
 
-	// 배열 생성시 2번째는 7값, 5번째는 99값을 넣는다.
+	// 슬라이스 생성시 2번째는 7값, 5번째는 99값을 넣는다.
 	// 이때 설정안된 곳은 0값으로 채워지고 마지막으로 설정된 n번째가 배열의 크기가 된다.
 	arTest00 := []int{2: 7, 5: 99}
 	fmt.Println("arTest00 len = ", len(arTest00), "arTest00 cap = ", cap(arTest00), "arTest00 = ", arTest00)
@@ -20,7 +20,7 @@ func main() {
 	// https://golang.org/ref/spec#Function_types
 	// [...] 로 구체적 원소개수를 명시하지 않아도 된다.
 	arTest1 := [...]int{11, 22, 33, 44, 55}
-	// 배열을 크기가 고정되어 있어 append (슬라이스만 허용) 을 사용할 수 없다.
+	// 슬라이스 크기가 고정되어 있어 append (슬라이스만 허용) 을 사용할 수 없다.
 	// arTest1 = append(arTest1, 6, 7)
 	arTest2 := []int{10, 20, 30}
 
