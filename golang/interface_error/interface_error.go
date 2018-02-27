@@ -5,17 +5,33 @@ package main
 
 import "fmt"
 
-func plus(a int, b int) int {
-	return a + b
-}
-
 // 파라미터 타입만 변경하여 overloading 함수를 구현 할 수 없고,
 // 메소드 리시버의 타입을 주어 overloading 과 비슷하게 사용할 수 있다.
 // 컴파일시 중복 함수 구현에러 발생
 //func plus(a float32, b float32) float32{
 //	return a + b
 //}
+
+type myParam interface{}
+
+// 파라미터를 interface 로 받아서 overloading 흉내
+func plus(p1 myParam, p2 myParam) myParam {
+	switch p1.(type) {
+	case int:
+		return plus1(p1.(int), p2.(int))
+	case float32:
+		return plus2(p1.(float32), p2.(float32))
+	}
+	return 0
+}
+
+func plus1(a int, b int) int {
+	fmt.Println("plus1()")
+	return a + b
+}
+
 func plus2(a float32, b float32) float32 {
+	fmt.Println("plus2()")
 	return a + b
 }
 
@@ -53,10 +69,8 @@ type myError int
 func (myerr myError) Error() string {
 	if myerr == 0 {
 		return "ysoftman's ok"
-	} else {
-		return "ysoftman's error"
 	}
-
+	return "ysoftman's error"
 }
 
 // error 값 구현한 myError 를 수행
@@ -65,14 +79,13 @@ func run() error {
 }
 
 func main() {
-
-	// 함수를 직접 호출하는 overloading 방법은 쓸 수 없다.
-	var a int = 1
-	var b int = 2
+	// 함수를 직접 호출하는 overloading 방법은 쓸 수 없고, interface 로 흉내낼 수 는 있다.
+	a := 1
+	b := 2
 	fmt.Printf("%v + %v = %v\n", a, b, plus(a, b))
 	var c float32 = 1.1
 	var d float32 = 2.3
-	fmt.Printf("%v + %v = %v\n", c, d, plus2(c, d))
+	fmt.Printf("%v + %v = %v\n", c, d, plus(c, d))
 
 	fmt.Println("interface test...")
 
