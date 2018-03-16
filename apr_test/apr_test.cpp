@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     char recvbuff[1024*1024];
     apr_size_t recvlen = sizeof(recvbuff);
     memset(recvbuff, 0, sizeof(recvbuff));
-    apr_socket_recv(sock, recvbuff, &recvlen);
+    rc = apr_socket_recv(sock, recvbuff, &recvlen);
     if (rc != APR_SUCCESS)
     {
         cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " " << errmsg(rc) << endl;
