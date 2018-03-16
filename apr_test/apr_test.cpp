@@ -72,7 +72,8 @@ int main(int argc, char **argv)
     cout << "port: " << port << endl;
     cout << "uri: " << uri << endl;
 
-    unsigned int waitms = 1000 * 500;
+    // unsigned int waitms = 1000 * 500;
+    apr_interval_time_t waitms = 1000 * 500;
     apr_socket_t *sock = NULL;
     apr_pool_t *pool;
     apr_sockaddr_t *sa;
@@ -139,20 +140,40 @@ int main(int argc, char **argv)
     cout << "[sent len]" << endl
          << sendlen << endl;
 
-    char recvbuff[1024*1024];
-    apr_size_t recvlen = sizeof(recvbuff);
-    memset(recvbuff, 0, sizeof(recvbuff));
-    rc = apr_socket_recv(sock, recvbuff, &recvlen);
-    if (rc != APR_SUCCESS)
+    apr_size_t max_buffer_size = 1024 * 1024 * 1024;
+    // can't create over 1MB local(stack) memeory
+    // char recvbuff[max_buffer_size];
+    char *recvbuff = (char *)malloc(max_buffer_size);
+    memset(recvbuff, 0, sizeof(max_buffer_size));
+
+    char *pos = recvbuff;
+    apr_size_t read = 1024;
+    while (read > 0)
     {
-        cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " " << errmsg(rc) << endl;
-        apr_socket_close(sock);
-        return -1;
+        read = 1024;
+        rc = apr_socket_recv(sock, pos, &read);
+        if (rc == APR_EOF)
+        {
+            break;
+        }
+        if (rc != APR_SUCCESS)
+        {
+            cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " " << errmsg(rc) << endl;
+            apr_socket_close(sock);
+            apr_pool_destroy(pool);
+            free(recvbuff);
+            return -1;
+        }
+        pos += read;
+        // cout << "[read from socket len]" << endl
+        //      << read << endl;
+        // usleep(100);
     }
-    cout << "[received http response]" << endl
+
+    cout << "[response]" << endl
          << recvbuff << endl;
-    cout << "[received len]" << endl
-         << recvlen << endl;
+
+    free(recvbuff);
 
     apr_socket_close(sock);
     apr_pool_destroy(pool);
