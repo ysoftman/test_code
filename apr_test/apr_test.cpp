@@ -139,7 +139,7 @@ int main(int argc, char **argv)
     cout << "[sent len]" << endl
          << sendlen << endl;
 
-    char recvbuff[8192];
+    char recvbuff[1024*1024];
     apr_size_t recvlen = sizeof(recvbuff);
     memset(recvbuff, 0, sizeof(recvbuff));
     apr_socket_recv(sock, recvbuff, &recvlen);
