@@ -1,0 +1,3 @@
+---
+- name : task1
+  template: src=test.conf.j2 dest=~/test.conf
