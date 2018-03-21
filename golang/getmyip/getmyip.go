@@ -8,8 +8,15 @@ import (
 )
 
 func main() {
+	fmt.Println("-- local ip --")
 	myip := myip()
 	fmt.Println("myip :", myip)
+	fmt.Println()
+	fmt.Println("-- dns lookup --")
+	dnsLookup("google.com")
+	dnsLookup("naver.com")
+	dnsLookup("210.89.164.90")
+	dnsLookup("daum.com")
 }
 func myip() string {
 	addrs, err := net.InterfaceAddrs()
@@ -35,4 +42,16 @@ func myip() string {
 		}
 	}
 	return firstip
+}
+
+func dnsLookup(dns string) {
+	fmt.Println("dns:", dns)
+	ips, err := net.LookupIP(dns)
+	if err != nil {
+		fmt.Printf("LookupIP Error : %v\n", err)
+		return
+	}
+	for _, ip := range ips {
+		fmt.Println(ip)
+	}
 }
