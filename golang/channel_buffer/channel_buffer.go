@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	channelUnbuffered()
 
 	channelBuffer1()
 
@@ -19,6 +20,21 @@ func main() {
 	channelBuffer2(ch)
 	fmt.Println("channel buffer 2 - end")
 
+}
+
+func channelUnbuffered() {
+	fmt.Println("channelUnbuffered - start")
+	// unbuffered channel
+	channel0 := make(chan int)
+
+	go func() {
+		// 고루틴에서 데이터 송신
+		channel0 <- 123456789
+	}()
+
+	// unbuffered channel 로 부터 수신될때까지 기다리게 된다.
+	fmt.Println(<-channel0)
+	fmt.Println("channelUnbuffered - end")
 }
 
 func channelBuffer1() {
