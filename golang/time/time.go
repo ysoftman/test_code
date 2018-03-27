@@ -12,27 +12,33 @@ import (
 func main() {
 	fmt.Println("time test...")
 
-	// 현재 unix epoch time(nano sec 까지 표시)
-	fmt.Println("unix epoch time(nanosec): ", time.Now().UnixNano())
+	// 현재 시간
+	fmt.Println("time.Now():", time.Now())
+	fmt.Println("time.Now().UnixNano() (nanosec):", time.Now().UnixNano())
+	fmt.Println("time.Now().Unix() (sec):", time.Now().Unix())
+	fmt.Println("time.Now().Year():", time.Now().Year())
+	fmt.Println("time.Now().Month():", time.Now().Month())
+	fmt.Println("time.Now().Day():", time.Now().Day())
+	// constants
+	fmt.Println("time.ANSIC:", time.ANSIC)
+	fmt.Println("time.UnixDate:", time.UnixDate)
+	fmt.Println("time.RubyDate:", time.RubyDate)
+	fmt.Println("time.RFC822:", time.RFC822)
+	fmt.Println("time.RFC850:", time.RFC850)
+	fmt.Println("time.RFC1123:", time.RFC1123)
+	fmt.Println("time.RFC3339:", time.RFC3339)
+	fmt.Println("time.Kitchen:", time.Kitchen)
+	fmt.Println("time.Stamp:", time.Stamp)
 
-	// 현재 unix epoch time(sec로 표시)
-	unixtime := time.Now().Unix()
-	fmt.Println("unix epoch time(sec): ", unixtime)
-
-	// 현재 unix epoch time(날짜로 표시)
-	unixtime2 := time.Unix(unixtime, 0).String()
-	fmt.Println("unix epoch time(date): ", unixtime2)
-
-	// 현재 시간 파악
-	curtime := time.Now()
-	fmt.Println("curtime:", curtime)
-	fmt.Println("curtime.Year():", curtime.Year())
-	fmt.Println("curtime.Month():", curtime.Month())
-	fmt.Println("curtime.Day():", curtime.Day())
+	// Mon Jan 2 15:04:05 -0700 MST 2006 시간으로 포맷팅을 명시해야 한다.
+	fmt.Println(`time.Now().Format("20060102150405"):`, time.Now().Format("20060102150405"))
+	fmt.Println(`time.Now().Format("3:04 PM"):`, time.Now().Format("3:04 PM"))
+	fmt.Println(`time.Now().Format("Mon Jan _2 17:05:30 1981"):`, time.Now().Format("Mon Jan _2 17:05:30 2006"))
 
 	// 현재로 부터 2달 20일 뒤 시간 파악
-	nexttime := curtime.AddDate(0, 2, 10)
-	fmt.Println("Now()+2months+20days:", nexttime)
+	fmt.Println("time.Now()+2months+20days:", time.Now().AddDate(0, 2, 10))
+	// 현재 유닉스 시간을 날짜로 변경
+	fmt.Println("time.Unix(time.Now().Unix(), 0).String() (date):", time.Unix(time.Now().Unix(), 0).String())
 
 	// 1초 표헌
 	fmt.Println("time.Second:", time.Second)
@@ -40,7 +46,7 @@ func main() {
 	fmt.Println("time.Now():", time.Now())
 
 	// 3초 슬립
-	fmt.Println("Sleep 3 sec...")
+	fmt.Println("time.Sleep(3) sec...")
 	time.Sleep(3 * time.Second)
 
 	fmt.Println("time.Now():", time.Now())
@@ -49,20 +55,8 @@ func main() {
 	fmt.Println("time.Duration(1):", time.Duration(1))
 
 	// 날짜 설정
-	targetTime := time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local)
-	fmt.Println("targetTime:", targetTime)
-	fmt.Println("targetTime.Unix():", targetTime.Unix())
-
-	// constants
-	fmt.Println("ANSIC:", time.ANSIC)
-	fmt.Println("UnixDate:", time.UnixDate)
-	fmt.Println("RubyDate:", time.RubyDate)
-	fmt.Println("RFC822:", time.RFC822)
-	fmt.Println("RFC850:", time.RFC850)
-	fmt.Println("RFC1123:", time.RFC1123)
-	fmt.Println("RFC3339:", time.RFC3339)
-	fmt.Println("Kitchen:", time.Kitchen)
-	fmt.Println("Stamp:", time.Stamp)
+	fmt.Println("time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local):", time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local))
+	fmt.Println("time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix():", time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix())
 
 	countDown()
 }

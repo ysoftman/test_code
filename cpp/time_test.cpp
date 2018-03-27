@@ -13,20 +13,19 @@ using namespace std;
 int main()
 {
 	time_t llCurtime = time(NULL);
-	printf("llCurtime = %ld\n\n", llCurtime);
-
+	printf("llCurtime = %ld\n", llCurtime);
 	struct tm *tmCurtime = localtime(&llCurtime);
 	printf("yday=%d\nwday=%d\nyear=%d\nmon=%d\nmday=%d\nhour=%d\nmin=%d\nsec=%d\nisdst=%d\n\n",
-		tmCurtime->tm_yday, // days since January 1 - [0,365]
-		tmCurtime->tm_wday, // days since Sunday - [0,6]
-		tmCurtime->tm_year+1900, // years since 1900
-		tmCurtime->tm_mon+1, // months since January - [0,11]
-		tmCurtime->tm_mday, // day of the month - [1,31]
-		tmCurtime->tm_hour, // hours since midnight - [0,23]
-		tmCurtime->tm_min, // minutes after the hour - [0,59]
-		tmCurtime->tm_sec, // seconds after the minute - [0,59]
-		tmCurtime->tm_isdst // daylight savings time flag
-		);
+		   tmCurtime->tm_yday,		  // days since January 1 - [0,365]
+		   tmCurtime->tm_wday,		  // days since Sunday - [0,6]
+		   tmCurtime->tm_year + 1900, // years since 1900
+		   tmCurtime->tm_mon + 1,	 // months since January - [0,11]
+		   tmCurtime->tm_mday,		  // day of the month - [1,31]
+		   tmCurtime->tm_hour,		  // hours since midnight - [0,23]
+		   tmCurtime->tm_min,		  // minutes after the hour - [0,59]
+		   tmCurtime->tm_sec,		  // seconds after the minute - [0,59]
+		   tmCurtime->tm_isdst		  // daylight savings time flag
+	);
 
 	time_t llCurtime2 = mktime(tmCurtime);
 	printf("llCurtime2 = %ld\n\n", llCurtime2);
@@ -43,20 +42,19 @@ int main()
 	llCurtime2 = mktime(tmCurtime);
 	printf("llCurtime2 = %ld\n\n", llCurtime2);
 
-
-	// 문자열 시간 을 time 값으로 
+	// 문자열 시간 을 time 값으로
 	tm tmResult;
 	memset(&tmResult, 0, sizeof(tm));
 	std::string timestr;
 	timestr = "201705311624";
-	cout << timestr << endl;
+	cout << "[timestr] " << timestr << endl;
 	if (strptime(timestr.c_str(), "%Y%m%d%H%M", &tmResult) != NULL)
 	{
-		// cout << tmResult.tm_yday << endl;
-		// cout << tmResult.tm_wday << endl;
-		cout << "year:" << tmResult.tm_year+1900 << endl;
-		cout << "month:" << tmResult.tm_mon+1 << endl;
+
+		cout << "year:" << tmResult.tm_year + 1900 << endl;
+		cout << "month:" << tmResult.tm_mon + 1 << endl;
 		cout << "day:" << tmResult.tm_mday << endl;
+		cout << "wday:" << tmResult.tm_wday << endl;
 		cout << "hour:" << tmResult.tm_hour << endl;
 		cout << "min:" << tmResult.tm_min << endl;
 		cout << "sec:" << tmResult.tm_sec << endl;
@@ -67,4 +65,3 @@ int main()
 
 	return 0;
 }
-

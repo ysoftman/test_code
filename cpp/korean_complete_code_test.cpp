@@ -10,7 +10,7 @@ using namespace std;
 
 void make_KOR_COM_CODE_2350()
 {
-	char ch[3] = "가";
+	char ch[3] = "";
 	int i;
 	int j;
 	int cnt=0;
@@ -43,7 +43,7 @@ void make_KOR_COM_CODE_2350()
 
 void make_KOR_COM_CODE_8822()
 {
-	char ch[3] = "가";
+	char ch[3] = "";
 	int i;
 	int j;
 	int cnt=0;

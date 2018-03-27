@@ -10,10 +10,18 @@ func main() {
 	arTest0 := [5]int{11, 22, 33, 44, 55}
 	fmt.Println("arTest0 len = ", len(arTest0), "arTest1 cap = ", cap(arTest0), "arTest1 = ", arTest0)
 
-	// ... 파라미터는 variadic 으로 부고, 0 이상의 파라미터가 올수 있다는 의미
+	// 슬라이스 생성시 2번째는 7값, 5번째는 99값을 넣는다.
+	// 이때 설정안된 곳은 0값으로 채워지고 마지막으로 설정된 n번째가 배열의 크기가 된다.
+	arTest00 := []int{2: 7, 5: 99}
+	fmt.Println("arTest00 len = ", len(arTest00), "arTest00 cap = ", cap(arTest00), "arTest00 = ", arTest00)
+	arTest00 = append(arTest00, 5)
+
+	// ... 파라미터는 variadic 으로, 0 이상의 파라미터가 올수 있다는 의미
 	// https://golang.org/ref/spec#Function_types
 	// [...] 로 구체적 원소개수를 명시하지 않아도 된다.
 	arTest1 := [...]int{11, 22, 33, 44, 55}
+	// 슬라이스 크기가 고정되어 있어 append (슬라이스만 허용) 을 사용할 수 없다.
+	// arTest1 = append(arTest1, 6, 7)
 	arTest2 := []int{10, 20, 30}
 
 	fmt.Println("arTest1 len = ", len(arTest1), "arTest1 cap = ", cap(arTest1), "arTest1 = ", arTest1)
@@ -32,11 +40,14 @@ func main() {
 
 	// 배열의 일정 부분을 가져와 슬라이스 형태로 참조
 	arTest3 := arTest1[2:]
+	// arTest3 는 슬라이스로 값을 추가하여 크리를 늘릴 수 있다.
+	arTest3 = append(arTest3, 6, 7)
 
 	fmt.Println("arTest3 len = ", len(arTest3), "arTest3 cap = ", cap(arTest3), "arTest3 = ", arTest3)
 
 	// make 로 슬라이스 만들기
-	// make 의 두번째 인자는 len, 세번째 인자는 cap 설정
+	// make 의 두번째 인자는 len, 세번째 인자는 cap 설정q
+
 	arTest4 := make([]int, 3, 5)
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
 

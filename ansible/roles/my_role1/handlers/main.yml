@@ -1,0 +1,9 @@
+- name: handler1
+  command: chdir=~
+           echo "execute handler1"
+           rm -fv "{{ my_file1 }}"
+
+- name: handler2
+  command: chdir=~
+           echo "execute handler2"
+           rm -fv "{{ my_file2}}"

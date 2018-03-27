@@ -1,0 +1,18 @@
+<html>
+<script>
+    var key = "ysoftman_key"
+    var query_before = "apple lemon banana"
+    query_after = decodeURIComponent(query_before);
+    // alert(query_before + "\n" + query_after)
+    console.log("[query_before] " + query_before)
+    console.log("[query_after] " + query_after)
+    // 브라우저 localStorage 에 삭제
+    window.localStorage.removeItem(key);
+    // 브라우저 localStorage 에 저장
+    window.localStorage.setItem(key, query_after);
+    // 브라우저 localStorage 에서 읽기
+    value = window.localStorage.getItem(key);
+    console.log("[localStorage] " + key + " : " + value)
+</script>
+
+</html>

@@ -7,7 +7,7 @@
 
 ### eclipse 사용시
 
-- eclipse 설치 https://www.eclipse.org/downloads/ 
+- eclipse 설치 https://www.eclipse.org/downloads/
 - eclipse -> file -> open projects from file system -> import source -> yTextMiner 경로 추가
 - src -> edu.yonsei.lexical_analysis -> SimpleTokenizer.java -> (pop-up menu) run as -> java application
 - JRE 빌드 환경에 에러 발생시
@@ -124,9 +124,9 @@ java -classpath lib\*;. edu.yonsei.lexical_analysis.SimpleTokenizer
   5. 분석후보선택 : 어휘 사전을 활용하여 최종 결과 도출
   6. 후처리 : 중의성 해소, 미등록어 처리등
 - 언어적 차이
- - 한글은 교착어(고립어와 굴절어의 중간적 성격을 띠는 것으로 어근과 접사에 의해 단어의 기능이 결정되는 언어의 형태)의 일종
- - 한글은 어간과 기능어를 활용하여 어절 생성
- - 영어는 어간의 변화 또는 연관 기능 형태소 결합으로 성,수, 시제를 표현
+  - 한글은 교착어(고립어와 굴절어의 중간적 성격을 띠는 것으로 어근과 접사에 의해 단어의 기능이 결정되는 언어의 형태)의 일종
+  - 한글은 어간과 기능어를 활용하여 어절 생성
+  - 영어는 어간의 변화 또는 연관 기능 형태소 결합으로 성,수, 시제를 표현
 - 어휘 분석 기법
   - Lex(구문분석 프로그램) 사용
 - 형태소 분석의 난제
@@ -138,15 +138,17 @@ java -classpath lib\*;. edu.yonsei.lexical_analysis.SimpleTokenizer
   - 한글의 가능한 음절 조합 수 : 11.172음절
 
 ### 한글 품사
+
 - 규칙 기반 접근 방법
- - 긍정/부정 정보 활요해 점수 부여
- - 정밀하게 고안된 규칙은 정확성이 높지만 새로운 용어나 규칙의 변화로 인해 규칙 구축이 어려움
-- 통계적 접근 방법 
+  - 긍정/부정 정보 활요해 점수 부여
+  - 정밀하게 고안된 규칙은 정확성이 높지만 새로운 용어나 규칙의 변화로 인해 규칙 구축이 어려움
+- 통계적 접근 방법
   - 충분한 태그가 젱공되는 말뭉치로 부터 통계 정보 추출해 사용
   - HMM(hidden markov model) 과 같은 기계학습 사용
 - 복합적 접근 방법 : 규칙기반 후 해소안된 부분에는 통게적 접근 적용
 
 ### 한글 형태소 분석기 종류
+
 - UTagger(울산과기대) : HMM 기반 / c 언어
 - 꼬꼬마(서울대) : HMM + 휴리스틱
 - MACH(성신여대), KLT(국민대)
@@ -170,7 +172,7 @@ java -classpath lib\*;. edu.yonsei.lexical_analysis.SimpleTokenizer
     - P : 규칙(Rules)
   - 모든 단어는 노드로 표현하고 노드 사이의에는 의존적 관계가 있다.
 
-### 한글 구문 분석 
+### 한글 구문 분석
 
 - 구문 표지와 트리 태깅
   - 명사구(NP) 는 명사(N)와 격조사(이,가,을,를)와 접속사(와,과) 또는 특수조사(도,만), 주제격조사(은,는)로 형성될 수 있다.

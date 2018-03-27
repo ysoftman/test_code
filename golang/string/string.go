@@ -11,7 +11,7 @@ import (
 func main() {
 
 	// string 은 변경불가능하기때문에 byte 슬라이스로 변환해서 변경하도록한다.
-	str := "ysoftman"
+	str := "ysoftman ysoftman\tysoftman"
 	//	str[0] = "a" --> 스트링은 변경 불가능하기 때문에 컴파일 에러 발생
 	strslice := []byte(str)
 
@@ -30,6 +30,11 @@ func main() {
 	// n < 0 인경우 교체 회수에 제한을 두지 않는다.
 	str2 := strings.Replace(string(strslice), "_", "", -1)
 	fmt.Printf("strslice = %s\n", strslice)
+	fmt.Printf("str2 = %s\n", str2)
+
+	str2 = strings.Replace(str2, "\t", "", -1)
+	fmt.Printf("str2 = %s\n", str2)
+	str2 = strings.Replace(str2, " ", "", -1)
 	fmt.Printf("str2 = %s\n", str2)
 
 	// 스트링 복제(슬라이스는 기본 참조라서 같이 변경된다.)

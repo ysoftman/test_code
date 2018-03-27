@@ -25,22 +25,32 @@
 	<!-- 템플릿 파일로 넘어온 데이터 처리 -->
 	<!-- 템플릿(중괄호)은 html 주석으로 감싸도 주석으로 취급되지 않는다. -->
 	<!-- 중괄호 안에 /* */ 주석로 표시해야 한다. -->
+	{{/* template "testnested.html" */}}
 	
-	{{$con10 := 10}}
-	{{$con20 := 20}}
-	
+	{{ $con10 := 10 }}
+	{{ $con20 := 20 }}
+	con10 = {{ $con10|html }}<br>
+	con20 = {{ $con20|html }}<br>
+
 	{{/* 입력된 사용자 리시트 출력. */}}
-	{{range .}}
-		{{if le .UserNo $con10}}
+	
+	{{ range .}}
+		{{ if le .UserNo $con10 }}
 		<span style ="background-color:#FF00FF">(0~10) UserNo = {{.UserNo | html}} Name = {{.StrName | html}}</span>
-		{{else if le .UserNo $con20}}
+		{{ else if le .UserNo $con20 }}
 		<span style ="background-color:#00FF00">(11~20) UserNo = {{.UserNo | html}} Name = {{.StrName | html}}</span>
-		{{else}}
+		{{ else }}
 		<span style ="background-color:#00FEFE">(21~...) UserNo = {{.UserNo | html}} Name = {{.StrName | html}}</span>
-		{{end}}
+		{{ end }}
 		<br>
-	{{end}}
+	{{ end }}
 	<br>
+	<!--  testnested.html 에 로컬 변수 전달을 funcmap 으로 선언된 setInt 를 호출해서 설정한다. -->
+	{{ template "testnested.html" (setInt $con10 $con20) }}
+
+	<!-- 글로벌 변수를 testnested.html 에 넘길 경우 -->
+	{{/* $global := . */}}
+	{{/* template "testnested.html" $global */}}
 	<a href="/">main page</a>
 </body>
 </html>

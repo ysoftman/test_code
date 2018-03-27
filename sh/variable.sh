@@ -2,8 +2,16 @@
 # ysoftman
 # 변수 사용 테스트
 
-var1=""
+var1="ysoftman"
 
+# 변수 사용시 ${}와 같이 curly brace 로 감싸는 이유는 변수 확장(variable expansion)하기 위함이다.
+echo $var1
+# 변수화변수값을 얻어온 후 스트링을 추가하는 경우
+echo ${var1}_add_something
+# 다음과 같이 파라미터 개수가 10을 넘어가는 2자리수 부터는 {} 로 감싸줘야 한다.
+echo $0 $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
+
+var1=""
 # -z -n 을 뒤에 명시하면 "unary operator expected" 가 발생하니 주의!
 # -z : null(empty) 인경우 체크
 if [ -z "${var1}" ]; then
@@ -11,6 +19,8 @@ if [ -z "${var1}" ]; then
 else
     echo "var1 =" ${var1}
 fi
+
+var1=1
 # -n : non-zero 값이 있는 경우
 if [ -n "${var1}" ]; then
     echo "var1 is non-zone, var1 =" ${var1}

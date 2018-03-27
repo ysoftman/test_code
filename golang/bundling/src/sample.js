@@ -1,0 +1,1 @@
+document.getElementById("text").innerHTML = "Hello World<br /><p>ysoftman</p>";

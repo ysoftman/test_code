@@ -1,7 +1,9 @@
 [testhost1]
-192.168.77.20
-192.168.77.21
+host1 ansible_host=192.168.77.20
+host2 ansible_host=192.168.77.21
 
 [testhost2]
-192.168.77.22
+host3 ansible_host=192.168.77.22
 
+[localhost]
+local ansible_host=127.0.0.1

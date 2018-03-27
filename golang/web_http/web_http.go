@@ -3,10 +3,14 @@
 // title : http 웹 서버 테스트
 package main
 
-import "fmt"
-import "net/http"
-import "html/template"
-import "strconv"
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"html/template"
+	"net/http"
+	"strconv"
+)
 
 //import "os"
 
@@ -16,23 +20,23 @@ import "strconv"
 //}
 
 // Handler 타임 선언
-type myHttp struct{}
+type myHTTP struct{}
 
-var g_Request int = 0
+var requestCnt int
 
-type UserData struct {
+type userData struct {
 	UserNo  int64
 	StrName string
 }
 
-var g_mapUserData map[int64]UserData
+var mapUserData map[int64]userData
 
 func main() {
 	fmt.Println("web http start...")
 
 	// map 사용하기위새 미리 make 해놓음 := 를 사용하면 지역 변수로 취급
-	g_mapUserData = make(map[int64]UserData)
-	fmt.Println("len(g_mapUserDatalen) = ", len(g_mapUserData))
+	mapUserData = make(map[int64]userData)
+	fmt.Println("len(g_mapUserDatalen) = ", len(mapUserData))
 
 	// 서버띄우기 방법1
 	// 요청 주소에 따른 핸들러 등록
@@ -44,13 +48,13 @@ func main() {
 
 	// 서버띄우기 방법2
 	// ServeHTTP(이미 정의됨) 함수를 mythttp 핸들로 사용
-	// var web myHttp
+	// var web myHTTP
 	// //http.ListenAndServe("127.0.0.1:55555", web)
 	// http.ListenAndServe(":55555", web)
 }
 
 // ServeHTTP 인터페이스 구현
-func (web myHttp) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (web myHTTP) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("RequestURI : ", r.RequestURI)
 
 	if r.RequestURI == "/" {
@@ -60,8 +64,8 @@ func (web myHttp) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 	}
-	g_Request++
-	fmt.Println("request cnt = ", g_Request)
+	requestCnt++
+	fmt.Println("request cnt = ", requestCnt)
 }
 
 // mainpage 처리 함수
@@ -71,18 +75,42 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 	// main page 템플릿 생성
 	templateMain, _ := template.ParseFiles("main.html")
 
-	var context struct {
+	var responseData struct {
 		NameList []string
 	}
-	context.NameList = append(context.NameList, "ysoftman", "bill", "yoon")
-	// fmt.Println("context.NameList = ", context.NameList)
-	
+	responseData.NameList = append(responseData.NameList, "ysoftman", "bill", "yoon")
+	// fmt.Println("responseData.NameList = ", responseData.NameList)
+
+	type key string
+	type value int
+	var mykey key = "aaa"
+
+	fmt.Println(`r.FormValue("ysoftman")`, r.FormValue("ysoftman"))
+	fmt.Println(`r.Header.Get("Accept-Language")`, r.Header.Get("Accept-Language"))
+	fmt.Println(`r.Header`, r.Header)
+	ctx := context.WithValue(r.Context(), mykey, "aaa")
+	fmt.Println(ctx)
+
+	ctx = context.WithValue(context.Background(), mykey, "aaa")
+	mykey = "bbb"
+	ctx = context.WithValue(ctx, mykey, "bbb")
+	mykey = "ccc"
+	ctx = context.WithValue(ctx, mykey, 3333)
+	fmt.Println(ctx)
+
+	mykey = "aaa"
+	fmt.Println(`ctx.Value("aaa")`, ctx.Value(mykey))
+	mykey = "bbb"
+	fmt.Println(`ctx.Value("bbb")`, ctx.Value(mykey))
+	mykey = "ccc"
+	fmt.Println(`ctx.Value("ccc")`, ctx.Value(mykey))
+
 	// 템플릿 실행(html 응답)
 	//templateMain.Execute(os.Stdout, nil)
-	templateMain.Execute(w, context)
+	templateMain.Execute(w, responseData)
 
-	g_Request++
-	fmt.Println("request cnt = ", g_Request)
+	requestCnt++
+	fmt.Println("request cnt = ", requestCnt)
 }
 
 // testpage 처리 함수
@@ -90,10 +118,14 @@ func testPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("RequestURI : ", r.RequestURI)
 
 	// test page 템플릿 생성
-	templateMain, _ := template.ParseFiles("test.html")
+	// templateMain, err := template.ParseFiles("test.html", "testnested.html")
+	templateMain, err := template.New("test.html").Funcs(myFuncMap).ParseFiles("test.html", "testnested.html")
+	if err != nil {
+		panic(err)
+	}
 
 	// 클라가 보낸 값 파악
-	data := UserData{}
+	data := userData{}
 	//data.userno, _ = strconv.Atoi(r.FormValue("user_no")) // 32bit int 인 경우
 	data.UserNo, _ = strconv.ParseInt(r.FormValue("user_no"), 0, 64) // 64bit int 인 경우
 	data.StrName = r.FormValue("user_name")
@@ -103,15 +135,33 @@ func testPage(w http.ResponseWriter, r *http.Request) {
 	// 템플릿 실행(html 응답)
 	//templateMain.Execute(os.Stdout, nil)
 	// data 를 템플릿으로 넘겨 동적 html 을 생성할 수 있도록 한다.
-	//err := templateMain.Execute(w, data)
+	//err = templateMain.Execute(w, data)
 
-	// 전역 리에 저장하여 보여주기
-	g_mapUserData[data.UserNo] = data
-	err := templateMain.Execute(w, g_mapUserData)
+	// 전역 변수에 저장하여 보여주기, 응답 주기
+	mapUserData[data.UserNo] = data
+	err = templateMain.Execute(w, mapUserData)
+
+	// 템플릿 내용이 적용된 html 을 string 형태로 출력해보자
+	var tpl bytes.Buffer
+	err = templateMain.Execute(&tpl, mapUserData)
+	fmt.Println(tpl.String())
 
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	g_Request++
-	fmt.Println("request cnt = ", g_Request)
+	requestCnt++
+	fmt.Println("request cnt = ", requestCnt)
+}
+
+var myFuncMap = template.FuncMap{
+	"setInt": setInt,
+}
+
+func setInt(n ...int) []int {
+	var sliceint []int
+	for _, val := range n {
+		fmt.Println("seInt:", n)
+		sliceint = append(sliceint, val)
+	}
+	return sliceint
 }

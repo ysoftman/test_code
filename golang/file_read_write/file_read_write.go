@@ -64,11 +64,15 @@ func main() {
 	}
 	fmt.Println("파일 읽기2 ", len(buffer2), "bytes, 내용 = ", string(buffer2))
 
-	// 파일 열기, 없으면 생성
-	// OpenFile 후 write 사용시 참고
-	// 파일이 이미 존재하고 write 를 하게 되면 내용만 덮어 씌워진다.
-	// 기존 파일내용이 write 할 내용보다 크면 write 후에도 파일 크기는 줄어 들지 않는다.
-	fp3, err := os.OpenFile("test3.txt", os.O_CREATE, 0666)
+	// O_RDONLY  open the file read-only.
+	// O_WRONLY  open the file write-only.
+	// O_RDWR    open the file read-write.
+	// O_APPEND  append data to the file when writing.
+	// O_CREATE  create a new file if none exists.
+	// O_EXCL    used with O_CREATE, file must not exist
+	// O_SYNC    open for synchronous I/O.
+	// O_TRUNC   if possible, truncate file when opened.
+	fp3, err := os.OpenFile("test3.txt", os.O_RDWR|os.O_APPEND|os.O_CREATE|os.O_SYNC, 0644)
 	if err != nil {
 		fmt.Println("fail to open file")
 	}

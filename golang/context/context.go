@@ -55,14 +55,13 @@ func main() {
 		// nil
 		fmt.Println(ctx.Err())
 	// 채널로부터 작업완료 통보가 된 경우
-	case <-ch:
-		fmt.Println("complete job!")
+	case a := <-ch:
+		fmt.Println("go routine end, <-ch:", a)
 	// context 가 취소되었거나 타임아웃되어 context 끝난경우
 	case <-ctx.Done():
-		fmt.Println("context done()")
 		// context.Canceled => "context canceled"
 		// context.DeadlineExceeded => "context deadline exceeded"
-		fmt.Println(ctx.Err())
+		fmt.Println("ctx.Done(), ctx.Err():", ctx.Err())
 	}
 
 	fmt.Println("cancel()....")
