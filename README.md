@@ -1,4 +1,4 @@
-# ysoftman 테스트 코드 저장소
+# ysoftman 테스트 코드
 
 ```text
                     ______
