@@ -1,7 +1,6 @@
-/*
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ¸®´ª½º(kernel 2.4 ÀÌ»ó) EPOLL ±â´É »ç¿ë ¼­¹ö Å×½ºÆ®
+// ë¦¬ëˆ…ìŠ¤(kernel 2.4 ì´ìƒ) EPOLL ê¸°ëŠ¥ ì‚¬ìš© ì„œë²„ í…ŒìŠ¤íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,17 +12,17 @@
 const int MAX_LEN = 1024;
 const int EPOLL_SIZE = 10;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	if (argc != 3)
 	{
 		fprintf(stderr, "Usage(example) : TestEPOLLServer 127.0.0.1 9999\n");
 		return 0;
 	}
-	// EPOLL_SIZE ¸¸Å­ ÀÌº¥Æ® Å©±â ¸¸µé±â
+	// EPOLL_SIZE ë§Œí¼ ì´ë²¤íŠ¸ í¬ê¸° ë§Œë“¤ê¸°
 	struct epoll_event *pEvents;
-	pEvents = (struct epoll_event*)malloc(sizeof(*pEvents)*EPOLL_SIZE);
-	// epoll FileDescriptor »ı¼º
+	pEvents = (struct epoll_event *)malloc(sizeof(*pEvents) * EPOLL_SIZE);
+	// epoll FileDescriptor ìƒì„±
 	int fdEpoll = epoll_create(50);
 	if (fdEpoll < 0)
 	{
@@ -37,8 +36,8 @@ int main(int argc, char** argv)
 	sockAddr.sin_addr.s_addr = inet_addr(argv[1]);
 	sockAddr.sin_port = htons(atoi(argv[2]));
 	fprintf(stderr, "ip = %d port = %d\n", ntohl(sockAddr.sin_addr.s_addr), ntohs(sockAddr.sin_port));
-	
-	// ¼ÒÄÏ »ı¼º
+
+	// ì†Œì¼“ ìƒì„±
 	sockServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sockServer == -1)
 	{
@@ -48,15 +47,15 @@ int main(int argc, char** argv)
 	fprintf(stderr, "socket() ok\n");
 
 	int ret = 0;
-	// ¹ÙÀÎµù
-	ret = bind(sockServer, (struct sockaddr*)&sockAddr, sizeof(sockAddr));
+	// ë°”ì¸ë”©
+	ret = bind(sockServer, (struct sockaddr *)&sockAddr, sizeof(sockAddr));
 	if (ret == -1)
 	{
 		fprintf(stderr, "bind() error\n");
 		return 1;
 	}
 	fprintf(stderr, "bind() ok\n");
-	// ¸®½¼
+	// ë¦¬ìŠ¨
 	ret = listen(sockServer, 5);
 	if (ret == -1)
 	{
@@ -65,11 +64,11 @@ int main(int argc, char** argv)
 	}
 	fprintf(stderr, "listen() ok\n");
 
-	// EPOLLIN(ÀĞ±â) ÀÌº¥Æ®¸¦ °¨Áö
+	// EPOLLIN(ì½ê¸°) ì´ë²¤íŠ¸ë¥¼ ê°ì§€
 	pEvents->events = EPOLLIN;
-	// Ã³À½ µ¥ÀÌÅÍ´Â µè±â »óÅÂÀÇ ¼­¹ö¼ÒÄÏÀ¸·Î ¼³Á¤
+	// ì²˜ìŒ ë°ì´í„°ëŠ” ë“£ê¸° ìƒíƒœì˜ ì„œë²„ì†Œì¼“ìœ¼ë¡œ ì„¤ì •
 	pEvents->data.fd = sockServer;
-	// ¸®½¼»óÅÂÀÇ ¼­¹ö ¼ÒÄÏ(sockServer)À» epoll ÀÌº¥Æ® Ç®¿¡ Ãß°¡½Ã±â¸ç °á°ú´Â pEvents ¿¡ Àû¿ëÇÑ´Ù.
+	// ë¦¬ìŠ¨ìƒíƒœì˜ ì„œë²„ ì†Œì¼“(sockServer)ì„ epoll ì´ë²¤íŠ¸ í’€ì— ì¶”ê°€ì‹œê¸°ë©° ê²°ê³¼ëŠ” pEvents ì— ì ìš©í•œë‹¤.
 	epoll_ctl(fdEpoll, EPOLL_CTL_ADD, sockServer, pEvents);
 	int i = 0;
 	int NumOfEvents = 0;
@@ -77,56 +76,56 @@ int main(int argc, char** argv)
 	while (1)
 	{
 		fprintf(stderr, "epoll_wait() ...\n");
-		// epoll ÀÌº¥Æ® Ç®¿¡¼­ ÀÌº¥Æ®°¡ ÀÏ¾î³¯¶§±îÁö ±â´Ù¸°´Ù.
+		// epoll ì´ë²¤íŠ¸ í’€ì—ì„œ ì´ë²¤íŠ¸ê°€ ì¼ì–´ë‚ ë•Œê¹Œì§€ ê¸°ë‹¤ë¦°ë‹¤.
 		NumOfEvents = epoll_wait(fdEpoll, pEvents, EPOLL_SIZE, -1);
 		fprintf(stderr, "events occur!\n");
 		if (NumOfEvents == -1)
 		{
 			fprintf(stderr, "epoll_wait() error\n");
 		}
-		// ¹ß»ıÇÑ ÀÌº¥Æ® ¸¸Å­ ·çÇÁ¸¦ µ¹¸é¼­ Ã³¸®ÇÑ´Ù.
-		for (i=0; i<NumOfEvents; i++)
+		// ë°œìƒí•œ ì´ë²¤íŠ¸ ë§Œí¼ ë£¨í”„ë¥¼ ëŒë©´ì„œ ì²˜ë¦¬í•œë‹¤.
+		for (i = 0; i < NumOfEvents; i++)
 		{
-			// µè±â »óÅÂÀÇ ¼­¹ö ¼ÒÄÏ¿¡¼­ ÀÌº¥Æ®°¡ ¹ß»ıÇÏ¸é
+			// ë“£ê¸° ìƒíƒœì˜ ì„œë²„ ì†Œì¼“ì—ì„œ ì´ë²¤íŠ¸ê°€ ë°œìƒí•˜ë©´
 			if (pEvents[i].data.fd == sockServer)
 			{
-				// accpet ÇÏ°í Å¬¶óÀÌ¾ğÆ®¿Í ¿¬°á ¼ÒÄÏÀ» ¸¸µç´Ù.
+				// accpet í•˜ê³  í´ë¼ì´ì–¸íŠ¸ì™€ ì—°ê²° ì†Œì¼“ì„ ë§Œë“ ë‹¤.
 				int sockClient = 0;
 				struct sockaddr_in sockClientAddr;
 				int szClient = sizeof(sockClientAddr);
-				sockClient = accept(sockServer, (struct sockaddr*)&sockClientAddr, &szClient);
+				sockClient = accept(sockServer, (struct sockaddr *)&sockClientAddr, &szClient);
 				fprintf(stderr, "accept()\n");
-				// ÀĞ±â ÀÌº¥Æ®°¡ ¹ß»ıÇß´Ù°í ¼³Á¤ÇÑ´Ù.
+				// ì½ê¸° ì´ë²¤íŠ¸ê°€ ë°œìƒí–ˆë‹¤ê³  ì„¤ì •í•œë‹¤.
 				pEvents->events = EPOLLIN;
-				// ÀĞ±â ÀÌº¥Æ®ÀÇ filedescriptor ´Â sockClient·Î ¼³Á¤ÇÑ´Ù.
+				// ì½ê¸° ì´ë²¤íŠ¸ì˜ filedescriptor ëŠ” sockClientë¡œ ì„¤ì •í•œë‹¤.
 				pEvents->data.fd = sockClient;
-				// sockClient ¸¦ epoll ÀÌº¥Æ® Ç®¿¡ Ãß°¡½ÃÅ²´Ù.
+				// sockClient ë¥¼ epoll ì´ë²¤íŠ¸ í’€ì— ì¶”ê°€ì‹œí‚¨ë‹¤.
 				epoll_ctl(fdEpoll, EPOLL_CTL_ADD, sockClient, pEvents);
 			}
-			// ¿¬°á»óÅÂÀÇ Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏ¿¡¼­ ÀÌº¥Æ®°¡ ¹ß»ıÇÏ¸é
+			// ì—°ê²°ìƒíƒœì˜ í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“ì—ì„œ ì´ë²¤íŠ¸ê°€ ë°œìƒí•˜ë©´
 			else
 			{
-				memset(buffer, 0, sizeof(char)*MAX_LEN);
-				// ¿¬°á¼ÒÄÏ¿¡¼­ ¹öÆÛ·Î µ¥ÀÌÅÍ ÀĞ¾î ¿À±â
+				memset(buffer, 0, sizeof(char) * MAX_LEN);
+				// ì—°ê²°ì†Œì¼“ì—ì„œ ë²„í¼ë¡œ ë°ì´í„° ì½ì–´ ì˜¤ê¸°
 				int n = read(pEvents[i].data.fd, buffer, MAX_LEN);
-				// ÀĞ¾î¿Â µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é
+				// ì½ì–´ì˜¨ ë°ì´í„°ê°€ ì—†ìœ¼ë©´
 				if (n <= 0)
 				{
-					// epoll Ç®¿¡¼­ ¿¬°á ¼ÒÄÏÀ» Á¦°ÅÇÏ°í
+					// epoll í’€ì—ì„œ ì—°ê²° ì†Œì¼“ì„ ì œê±°í•˜ê³ 
 					epoll_ctl(fdEpoll, EPOLL_CTL_DEL, pEvents[i].data.fd, pEvents);
-					// ¿¬°á ¼ÒÄÏÀ» ´İ´Â´Ù.
+					// ì—°ê²° ì†Œì¼“ì„ ë‹«ëŠ”ë‹¤.
 					close(pEvents[i].data.fd);
 					fprintf(stderr, "close socket(%d)\n", pEvents[i].data.fd);
 				}
-				// ÀĞ¾î¿Â µ¥ÀÌÅÍ°¡ ÀÖÀ¸¸é
+				// ì½ì–´ì˜¨ ë°ì´í„°ê°€ ìˆìœ¼ë©´
 				else
 				{
-					// Ãâ·ÂÇÏ°í
+					// ì¶œë ¥í•˜ê³ 
 					fprintf(stderr, "[socket=%d] %s received\n", pEvents[i].data.fd, buffer);
-					// µ¥ÀÌÅÍ¸¦ º¸³½´Ù.
-					memset(buffer, 0, sizeof(char)*MAX_LEN);
+					// ë°ì´í„°ë¥¼ ë³´ë‚¸ë‹¤.
+					memset(buffer, 0, sizeof(char) * MAX_LEN);
 					strcpy(buffer, "ysoftman");
-					send(pEvents[i].data.fd, buffer, sizeof(char)*MAX_LEN, 0);
+					send(pEvents[i].data.fd, buffer, sizeof(char) * MAX_LEN, 0);
 					fprintf(stderr, "[socket=%d] %s sent\n", pEvents[i].data.fd, buffer);
 				}
 			}
@@ -137,4 +136,3 @@ int main(int argc, char** argv)
 	close(fdEpoll);
 	return 0;
 }
-//*/

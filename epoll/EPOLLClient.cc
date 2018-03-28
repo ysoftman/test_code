@@ -1,7 +1,6 @@
-/*
 ////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// ¸®´ª½º(kernel 2.4 ÀÌ»ó) EPOLL ±â´É »ç¿ë Å¬¶óÀÌ¾ğÆ® Å×½ºÆ®
+// ë¦¬ëˆ…ìŠ¤(kernel 2.4 ì´ìƒ) EPOLL ê¸°ëŠ¥ ì‚¬ìš© í´ë¼ì´ì–¸íŠ¸ í…ŒìŠ¤íŠ¸
 ////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +10,7 @@
 
 const int MAX_LEN = 1024;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	if (argc != 3)
 	{
@@ -24,16 +23,16 @@ int main(int argc, char** argv)
 	sockAddr.sin_addr.s_addr = inet_addr(argv[1]);
 	sockAddr.sin_port = htons(atoi(argv[2]));
 	fprintf(stderr, "ip = %d port = %d\n", ntohl(sockAddr.sin_addr.s_addr), ntohs(sockAddr.sin_port));
-	
+
 	int ret = 0;
-	// ¼ÒÄÏ »ı¼º
+	// ì†Œì¼“ ìƒì„±
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock == -1)
 	{
 		fprintf(stderr, "socket() error\n");
 	}
-	// Á¢¼Ó½Ãµµ
-	ret = connect(sock, (struct sockaddr*)&sockAddr, sizeof(sockAddr));
+	// ì ‘ì†ì‹œë„
+	ret = connect(sock, (struct sockaddr *)&sockAddr, sizeof(sockAddr));
 	if (ret < 0)
 	{
 		fprintf(stderr, "connect() error\n");
@@ -43,18 +42,18 @@ int main(int argc, char** argv)
 
 	while (1)
 	{
-		// º¸³»±â
+		// ë³´ë‚´ê¸°
 		char buffer[MAX_LEN];
 		strcpy(buffer, "YoonByoungHoon");
 		send(sock, buffer, strlen(buffer), 0);
 		fprintf(stderr, "[socket=%d] %s sent\n", sock, buffer);
 
-		// ¹Ş±â
-		memset(buffer, 0, sizeof(char)*MAX_LEN);
-		recv(sock, buffer, sizeof(char)*MAX_LEN, 0);
+		// ë°›ê¸°
+		memset(buffer, 0, sizeof(char) * MAX_LEN);
+		recv(sock, buffer, sizeof(char) * MAX_LEN, 0);
 		fprintf(stderr, "[socket=%d] %s received\n", sock, buffer);
 
-		// ÃÊ´ÜÀ§
+		// ì´ˆë‹¨ìœ„
 		sleep(1);
 	}
 
@@ -63,4 +62,3 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-//*/
