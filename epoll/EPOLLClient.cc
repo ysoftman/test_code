@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
@@ -57,7 +58,7 @@ int main(int argc, char **argv)
 		sleep(1);
 	}
 
-	closesocket(sock);
+	close(sock);
 	fprintf(stderr, "closesocket()\n");
 
 	return 0;

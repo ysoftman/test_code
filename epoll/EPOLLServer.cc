@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <sys/epoll.h>
@@ -92,7 +93,7 @@ int main(int argc, char **argv)
 				// accpet 하고 클라이언트와 연결 소켓을 만든다.
 				int sockClient = 0;
 				struct sockaddr_in sockClientAddr;
-				int szClient = sizeof(sockClientAddr);
+				unsigned int szClient = sizeof(sockClientAddr);
 				sockClient = accept(sockServer, (struct sockaddr *)&sockClientAddr, &szClient);
 				fprintf(stderr, "accept()\n");
 				// 읽기 이벤트가 발생했다고 설정한다.
@@ -132,7 +133,7 @@ int main(int argc, char **argv)
 		}
 	}
 	free(pEvents);
-	closesocket(sockServer);
+	close(sockServer);
 	close(fdEpoll);
 	return 0;
 }
