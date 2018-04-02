@@ -16,7 +16,7 @@ if __name__ == '__main__':
     #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     #        ]
-    lines = 11
+    lines = 10
     cols = lines
     mat = np.zeros((lines, cols))
     print (mat)
@@ -25,7 +25,7 @@ if __name__ == '__main__':
             mat[line][cols] = np.random.randint(100)
     print (mat)
     names = {"aaa", "bbb", "ccc", "ddd", "eee",
-             "fff", "ggg", "hhh", "iii", "jjj", "kkkk"}
+             "fff", "ggg", "hhh", "iii", "jjj", }
     df_cm = pd.DataFrame(
         mat, index=[i for i in names], columns=[i for i in names])
     plt.figure()
