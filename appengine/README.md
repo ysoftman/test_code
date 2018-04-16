@@ -12,16 +12,13 @@
 ##########
 # 작업환경2 - 로컬에서 작업하기
 # go appengine sdk 다운로드 및 설치
+# https://cloud.google.com/appengine/downloads
 # mac
-https://cloud.google.com/appengine/downloads?hl=en
-tar zxvf go_appengine_sdk_darwin_amd64-1.9.48.zip
-cd go_appengine
-export PATH=$PATH:~/workspace/go_appengine/
-# google cloud 다운로드 및 설치 - https://cloud.google.com/sdk/
 wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-136.0.0-darwin-x86_64.tar.gz
 tar zxvf google-cloud-sdk-136.0.0-darwin-x86_64.tar.gz
 ./google-cloud-sdk/install.sh
 export PATH=$PATH:~/workspace/google-cloud-sdk/bin
+gcloud components install app-engine-go
 
 # ubuntu
 export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
