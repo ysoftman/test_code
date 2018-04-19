@@ -7,3 +7,6 @@ host3 ansible_host=192.168.77.22
 
 [localhost]
 local ansible_host=127.0.0.1
+
+[all:vars]
+edit_file="no"
