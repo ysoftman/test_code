@@ -1,30 +1,31 @@
 // ysoftman
 // apr(Apache Portable Runtime) library test
 /*
-# 설치 방법1 - apche httpd 설치하면 생성되는 apr 사용
+# [설치 방법1]
+# apche httpd 설치하면 생성되는 apr 사용
 wget http://mirror.apache-kr.org//httpd/httpd-2.2.34.tar.gz
 tar zxvf httpd-2.2.34.tar.gz
 cd httpd-2.2.34
-./configure --prefix="${HOME}/httpd" --with-mpm-prefork
+./configure --prefix="${HOME}/workspace/httpd" --with-mpm-prefork
 make && make install
 # 빌드
-g++ -O2 -g -fPIC -I${HOME}/httpd/include -L${HOME}/httpd/lib -lapr-1 apr_test.cpp -o aprtest
+g++ -O2 -g -fPIC -I${HOME}/workspace/httpd/include -L${HOME}/workspace/httpd/lib -lapr-1 apr_test.cpp -o aprtest
 
 
-# 설치 방법2 - apr 만 설치
-apr 설치
+# [설치 방법2]
+# apr 설치
 wget http://apache.mirror.cdnetworks.com//apr/apr-1.6.3.tar.gz
 cd apr-1.6.3
-./configure --prefix="${HOME}/apr"
+./configure --prefix="${HOME}/workspace/apr"
 make && make install
 # apr-util 설치
 wget http://apache.mirror.cdnetworks.com//apr/apr-util-1.6.1.tar.gz
 tar zxvf apr-util-1.6.1.tar.gz
 cd apr-util-1.6.1
-./configure --prefix="${HOME}/apr"  --with-apr="${HOME}/apr/bin/apr-1-config"
+./configure --prefix="${HOME}/workspace/apr" --with-apr="${HOME}/workspace/apr/bin/apr-1-config"
 make && make install
 # 빌드
-g++ -O2 -g -fPIC -I${HOME}/apr/include/apr-1 -L${HOME}/apr/lib -lapr-1 apr_test.cpp -o aprtest
+g++ -O2 -g -fPIC -I${HOME}/workspace/apr/include/apr-1 -L${HOME}/workspace/apr/lib -lapr-1 apr_test.cpp -o aprtest
 */
 
 #include "apr.h"
