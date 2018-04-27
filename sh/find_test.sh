@@ -35,3 +35,10 @@ cat ${TEMP_FILE2}
 
 # 임시 텍스트  파일 삭제
 rm -f ${TEMP_FILE1} ${TEMP_FILE2}
+
+
+# find test 3
+# 현재로 부터 1일 전(24~48) 수정된 파일만 찾기
+find . -name *.txt -mtime 1
+# 현재로 부터 수정된지 1일 이상(24~) 파일만 찾기
+find . -name *.txt -mtime +1
