@@ -5,6 +5,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"unicode/utf8"
 )
 
 func main() {
@@ -17,11 +18,15 @@ func main() {
 func printRune() {
 	str := "이건 한글, This is English"
 	fmt.Println(str)
+	// byte 기준 글자 개수
+	fmt.Println("len(str):", len(str))
+	// rune 기준 글자 개수
+	fmt.Println("utf8.RuneCountInString(str):", utf8.RuneCountInString(str))
 
 	// golang 에서 str 은 utf8 이고, rune 은 4byte utf-8(한글 3byte)을 담는데 사용한다.
 	// range 로 스트링에서 개별 룬문자와 개별 룬문자의 시작 위치(index) 알 수 있다.
 	for index, runeValue := range str {
-		fmt.Printf("index(%d) %v %U %#U\n", index, runeValue, runeValue, runeValue)
+		fmt.Printf("index(%d) %v %U %#U len(string(%d))\n", index, runeValue, runeValue, runeValue, len(string(runeValue)))
 	}
 }
 
