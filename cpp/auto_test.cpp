@@ -1,6 +1,6 @@
 // ysoftman
 // c++ 11 auto 사용하기
-// g++ std=c++11 auto_test.cpp
+// g++ -std=c++11 auto_test.cpp
 
 #include <iostream>
 #include <vector>
