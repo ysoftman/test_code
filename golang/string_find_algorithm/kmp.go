@@ -6,42 +6,6 @@ import (
 	"fmt"
 )
 
-func main() {
-	sentence := "abcdef abcabc bcabcabcd"
-	word := "abcabc"
-	fmt.Println("sentence:", sentence)
-	fmt.Println("word:", word)
-
-	idx, result := simpleFind(sentence, word)
-	fmt.Println("simpleFind() = ", idx, result)
-
-	fmt.Println("-----")
-
-	indexes, results := kmp(sentence, word)
-	fmt.Println("kmp() = ", indexes, results)
-}
-
-// 그냥 쉽게 생각할 수 있는 naive 문자열 매칭
-// 시간 복잡도 : O(mn)
-func simpleFind(s, w string) (idx int, result string) {
-	sl := len(s)
-	wl := len(w)
-	for i := 0; i < sl; i++ {
-		bFind := true
-		// 단순히 한칸씩 이동하면 맞는 스트링이 나올때까지 반복
-		for j := 0; j < wl; j++ {
-			if w[j] != s[i+j] {
-				bFind = false
-				break
-			}
-		}
-		if bFind {
-			return i, s[i : i+wl]
-		}
-	}
-	return -1, ""
-}
-
 // KMP(Knuth–Morris–Pratt 두사람의 이름을딴 문자열 검색(패턴 찾기)) algorithm
 // 시간 복잡도 : O(m+n)
 // s[i] 와 w[j] 를 비교해가면서 다른 부분이 나오면
