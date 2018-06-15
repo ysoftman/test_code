@@ -6,7 +6,7 @@
     <router-link to = "/BindMessage">BindMessage</router-link>
     <router-link to = "/Component">Component</router-link>
     <router-link to = "/DataList">DataList</router-link>
-    <router-link to = "/HelloVue">HelloVue</router-link>
+    <router-link to = "/ModifyArray">ModifyArray</router-link>
     <router-link to = "*">NotFound</router-link>
     <router-view/>
   </div>

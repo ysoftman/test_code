@@ -2,7 +2,6 @@
 <!-- <script src="https://unpkg.com/vue"></script> -->
 
 <template>
-<!--html file-->
 <div id="bindmessage">
   <!--message 속성을 title 속성과 바인딩-->
   <h3 v-bind:title="message">

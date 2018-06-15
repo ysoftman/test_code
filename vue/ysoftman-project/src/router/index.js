@@ -6,7 +6,7 @@ import Alert from '@/components/Alert'
 import BindMessage from '@/components/BindMessage'
 import DataList from '@/components/DataList'
 import Component from '@/components/Component'
-import HelloVue from '@/components/HelloVue'
+import ModifyArray from '@/components/ModifyArray'
 
 Vue.use(Router)
 
@@ -29,9 +29,9 @@ export default new Router({
     name: 'Alert',
     component: Alert
   }, {
-    path: '/hellovue',
-    name: 'HelloVue',
-    component: HelloVue
+    path: '/modifyarray',
+    name: 'ModifyArray',
+    component: ModifyArray
   }, {
     path: '/bindmessage',
     name: 'BindMessage',

@@ -1,4 +1,3 @@
-<!--html file-->
 <template>
 <div id="component">
   {{ name }}
@@ -10,7 +9,6 @@
 </div>
 </template>
 
-<!--script file-->
 <script>
 /* eslint-disable */
 import Vue from "vue";
