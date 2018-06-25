@@ -11,6 +11,13 @@ echo ${var1}_add_something
 # 다음과 같이 파라미터 개수가 10을 넘어가는 2자리수 부터는 {} 로 감싸줘야 한다.
 echo $0 $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
 
+# 매개변수 개수
+echo $#
+# 매개변수 모두
+echo $*
+# 매개변수 모두(문자로 취급)
+echo $@
+
 var1=""
 # -z -n 을 뒤에 명시하면 "unary operator expected" 가 발생하니 주의!
 # -z : null(empty) 인경우 체크
@@ -70,8 +77,8 @@ do
     echo ${v}
 done
 
-# 입력 필드 구분자를 뉴라인을 명시, 기본은 스페이스
-IFS='\n'
+# 입력 필드 구분자를 뉴라인으로 명시, 기본은 스페이스
+IFS=$'\n'
 echo "\${IFS}:" ${IFS}
 for v in `cat variable.txt`
 do
