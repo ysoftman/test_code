@@ -13,13 +13,21 @@ function myfunc1(arg1, arg2, arg3, arg4)
 	return 111
 end
 
-function myfunc2(arg1, arg2)
-	print ("myfunc2() called.")
-	print ("arg1 = " .. arg1)
-	print ("arg2 = " .. arg2)
-
-	return arg1 + arg2
+function myfunc2(arg1)
+	print ("args1.title = " .. arg1.title)
+	print ("args1.date = " .. arg1.date)
+	len = #arg1
+	print ("args1 size = " .. len)
+	if len < 1 then
+		return "fail"
+	end
+	for i = 1, len do
+	print ("arg1[" .. i .. "].name = " .. arg1[i].name)
+	print ("arg1[" .. i .. "].age = " .. arg1[i].age)
+	end
+	return "success"
 end
+
 
 print ("---------------------------")
 -- C 함수 호출
