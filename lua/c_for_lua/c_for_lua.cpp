@@ -4,21 +4,23 @@
 // Lua <-> C 연동 테스트
 #include "iostream"
 
-#ifdef _WIN32
+// windows
 // lua 설치했으면 include 와 lib 경로 추가(Windows 기준)
 // C:\Program Files (x86)\Lua\5.1\include
 // C:\Program Files (x86)\Lua\5.1\lib
 // lua lib 링크
-#pragma comment(lib, "lua5.1.lib")
+// #pragma comment(lib, "lua5.1.lib")
 
-#elif __APPLE__
+// linux / mac
 // curl -R -O http://www.lua.org/ftp/lua-5.3.3.tar.gz
 // tar zxf lua-5.3.3.tar.gz
 // cd lua-5.3.3
+// 리눅스
+// make generic test
+// 맥
 // make macosx test
 // cd ..
 // g++ c_for_lua.cpp -I./lua-5.3.3/src -L./lua-5.3.3/src -llua && ./a.out
-#endif
 
 // lua(C 로 만들어짐) 헤더 include
 extern "C"
@@ -56,34 +58,35 @@ int DoSomethingForLua(lua_State *L)
 void printCurrentLuaStack(lua_State *L)
 {
 	lua_Debug dbg;
-	int size = lua_gettop(L);
-	std::cout << "size(top position) = " << size << std::endl;
+	int top = lua_gettop(L);
+	std::cout << "stack top position = " << top << std::endl;
 	// for (int i = 1; i < LUAI_MAXSTACK; i++)
-	for (int i = 1; i < size; i++)
+	for (int i = 1; i <= top; i++)
 	{
 		if (lua_isnil(L, -i))
 		{
+			std::cout << "stack(-" << i << ") = nil  " << std::endl;
 			break;
 		}
 		else if (lua_isboolean(L, -i))
 		{
-			std::cout << "current stack(-" << i << ") = bool,  " << lua_toboolean(L, -i) << std::endl;
+			std::cout << "stack(-" << i << ") = bool,  " << lua_toboolean(L, -i) << std::endl;
 		}
 		else if (lua_isinteger(L, -i))
 		{
-			std::cout << "current stack(-" << i << ") = integer, " << lua_tointeger(L, -i) << std::endl;
+			std::cout << "stack(-" << i << ") = integer, " << lua_tointeger(L, -i) << std::endl;
 		}
 		else if (lua_isnumber(L, -i))
 		{
-			std::cout << "current stack(-" << i << ") = number, " << lua_tonumber(L, -i) << std::endl;
+			std::cout << "stack(-" << i << ") = number, " << lua_tonumber(L, -i) << std::endl;
 		}
 		else if (lua_isstring(L, -i))
 		{
-			std::cout << "current stack(-" << i << ") = string, " << lua_tostring(L, -i) << std::endl;
+			std::cout << "stack(-" << i << ") = string, " << lua_tostring(L, -i) << std::endl;
 		}
 		else if (lua_istable(L, -i))
 		{
-			std::cout << "current stack(-" << i << ") = table, " << lua_topointer(L, -i) << std::endl;
+			std::cout << "stack(-" << i << ") = table, " << lua_topointer(L, -i) << std::endl;
 		}
 	}
 }
@@ -132,6 +135,8 @@ int main(int argc, char *argv[])
 	// 스택에서 1개를 pop 한다.
 	lua_pop(L, 1);
 
+	printCurrentLuaStack(L);
+
 	std::cout << "---------------------------" << std::endl;
 
 	// lua 스크립트의 myfunc2 함수 가져오기
@@ -154,7 +159,7 @@ int main(int argc, char *argv[])
 	// 	]
 	// }
 	// 상위 테이블 생성
-	// lua 내부적으로 별도의 신규 스택을 만들다.
+	// lua 내부적으로 별도의 신규(가상의) 스택을 만들다.
 	// 스택 top은 실제 신규 테이블 포인터 값을 가진다.
 	lua_newtable(L);
 
@@ -202,6 +207,8 @@ int main(int argc, char *argv[])
 	// lua_pop 은 내부적으로 lua_settop 으로 스택 위치를 설정
 	// 스택에서 1개를 pop 한다.
 	lua_pop(L, 1);
+
+	printCurrentLuaStack(L);
 
 	// lua state 제거
 	lua_close(L);
