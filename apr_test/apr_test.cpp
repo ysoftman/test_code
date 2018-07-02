@@ -9,12 +9,13 @@ cd httpd-2.2.34
 ./configure --prefix="${HOME}/workspace/httpd" --with-mpm-prefork
 make && make install
 # 빌드
-g++ -O2 -g -fPIC -I${HOME}/workspace/httpd/include -L${HOME}/workspace/httpd/lib -lapr-1 apr_test.cpp -o aprtest
+g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/httpd/include -L${HOME}/workspace/httpd/lib -lapr-1 apr_test.cpp -o aprtest
 
 
 # [설치 방법2]
 # apr 설치
 wget http://apache.mirror.cdnetworks.com//apr/apr-1.6.3.tar.gz
+tar zxvf apr-1.6.3.tar.gz
 cd apr-1.6.3
 ./configure --prefix="${HOME}/workspace/apr"
 make && make install
@@ -23,9 +24,14 @@ wget http://apache.mirror.cdnetworks.com//apr/apr-util-1.6.1.tar.gz
 tar zxvf apr-util-1.6.1.tar.gz
 cd apr-util-1.6.1
 ./configure --prefix="${HOME}/workspace/apr" --with-apr="${HOME}/workspace/apr/bin/apr-1-config"
+# make 시 expat.h 가 없어 에러가 난다면 
+# centos : yum install expat-devel
+# ubuntu : apt-get install libexpat1-dev
 make && make install
+cd ..
 # 빌드
-g++ -O2 -g -fPIC -I${HOME}/workspace/apr/include/apr-1 -L${HOME}/workspace/apr/lib -lapr-1 apr_test.cpp -o aprtest
+g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/apr/include/apr-1 -L${HOME}/workspace/apr/lib -lapr-1
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/workspace/apr/lib:
 */
 
 #include "apr.h"
