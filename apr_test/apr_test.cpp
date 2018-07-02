@@ -1,7 +1,18 @@
 // ysoftman
 // apr(Apache Portable Runtime) library test
 /*
-# [설치 방법1]
+# openssl 설치
+wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
+tar zxvf openssl-1.0.2k.tar.gz
+cd openssl-1.0.2k
+./config
+make clean
+make -j4
+sudo make install
+cd ..
+
+
+# apr 설치 방법1
 # apche httpd 설치하면 생성되는 apr 사용
 wget http://mirror.apache-kr.org//httpd/httpd-2.2.34.tar.gz
 tar zxvf httpd-2.2.34.tar.gz
@@ -9,11 +20,10 @@ cd httpd-2.2.34
 ./configure --prefix="${HOME}/workspace/httpd" --with-mpm-prefork
 make && make install
 # 빌드
-g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/httpd/include -L${HOME}/workspace/httpd/lib -lapr-1 apr_test.cpp -o aprtest
+g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/httpd/include -I/usr/local/ssl/include -L${HOME}/workspace/httpd/lib -L/usr/local/ssl/lib -lapr-1 -lssl -lcrypto -ldl
 
 
-# [설치 방법2]
-# apr 설치
+# apr 설치 방법2
 wget http://apache.mirror.cdnetworks.com//apr/apr-1.6.3.tar.gz
 tar zxvf apr-1.6.3.tar.gz
 cd apr-1.6.3
@@ -30,7 +40,7 @@ cd apr-util-1.6.1
 make && make install
 cd ..
 # 빌드
-g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/apr/include/apr-1 -L${HOME}/workspace/apr/lib -lapr-1
+g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/apr/include/apr-1 -I/usr/local/ssl/include -L${HOME}/workspace/apr/lib -L/usr/local/ssl/lib -lapr-1 -lssl -lcrypto -ldl
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/workspace/apr/lib:
 */
 
@@ -40,6 +50,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/workspace/apr/lib:
 #include "apr_network_io.h"
 #include "apr_pools.h"
 #include "apr_poll.h"
+#include "openssl/ssl.h"
 #include <iostream>
 #include <sstream>
 #include <string.h>
@@ -118,6 +129,27 @@ int main(int argc, char **argv)
 
     apr_socket_timeout_set(sock, waitms);
 
+    // SSL 초기화
+    SSL_load_error_strings();
+    SSL_library_init();
+    OpenSSL_add_all_algorithms();
+
+    // SSL context 생성
+    SSL_CTX *ssl_ctx = SSL_CTX_new(SSLv23_client_method());
+
+    // SSL context 로 SSL 연결생성
+    SSL *ssl = SSL_new(ssl_ctx);
+
+    // apr socket 을 SSL 에 연결할 수 없다???
+    // SSL_set_fd(ssl, sock->socketdes);
+    // int ssl_err = SSL_connect(ssl);
+    // if (ssl_err != 1)
+    // {
+    //     cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " fail ssl connection err(" << ssl_err << ")" << endl;
+    //     apr_socket_close(sock);
+    //     return -1;
+    // }
+
     // rc = APR_EINPROGRESS;
     // while (rc == APR_EINPROGRESS)
     {
@@ -184,5 +216,11 @@ int main(int argc, char **argv)
 
     apr_socket_close(sock);
     apr_pool_destroy(pool);
+
+    // SSL 자원 해제
+    SSL_shutdown(ssl);
+    SSL_free(ssl);
+    SSL_CTX_free(ssl_ctx);
+
     return 0;
 }
