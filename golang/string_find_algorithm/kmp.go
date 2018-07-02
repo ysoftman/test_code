@@ -1,5 +1,5 @@
 // ysoftman
-// 문자열 찾기 알고리즘 테스트
+// kmp 알고리즘
 package main
 
 import (
