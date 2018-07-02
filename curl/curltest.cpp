@@ -2,18 +2,20 @@
 # ysoftman
 # libcurl 테스트
 # linux/mac
-# 다운로드
-wget https://curl.haxx.se/download/curl-7.60.0.tar.gz
-tar zxvf curl-7.60.0.tar.gz
-cd curl-7.60.0
 
 # openssl 설치
 wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
 tar zxvf openssl-1.0.2k.tar.gz
 cd openssl-1.0.2k
-./Configure darwin64-x86_64-cc
-make
+./config
+make -j4
 sudo make install
+cd ..
+
+# curl 설치
+wget https://curl.haxx.se/download/curl-7.60.0.tar.gz
+tar zxvf curl-7.60.0.tar.gz
+cd curl-7.60.0
 
 # linux
 ./configure --prefix=${HOME}/workspace/curl-7.60.0 --with-ssl
@@ -22,8 +24,11 @@ sudo make install
 export MACOSX_DEPLOYMENT_TARGET="10.6"
 ./configure --prefix=${HOME}/workspace/curl-7.60.0 --with-darwinssl
 
-make && make install
+make -j4 && make install
+cd ..
+
 gcc curltest.cpp -I${HOME}/workspace/curl-7.60.0/include/curl -L${HOME}/workspace/curl-7.60.0/lib -lcurl -o curltest
+
 
 # windows
 # https://curl.haxx.se/download/curl-7.60.0.tar.gz 다운로드 후 압축 풀기
@@ -83,7 +88,7 @@ int main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage(example) : %s www.naver.com\n", argv[0]);
+		fprintf(stderr, "Usage(example) : %s https://www.google.com\n", argv[0]);
 		return 0;
 	}
 
@@ -100,7 +105,6 @@ int main(int argc, char **argv)
 	}
 
 	// 대상 URL 설정
-	//curl_easy_setopt(curl, CURLOPT_URL, "http://www.naver.com");
 	curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
 
 	// 헤더와 바디 내용 쓰기 함수 설정
