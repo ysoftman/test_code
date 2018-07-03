@@ -19,4 +19,11 @@ func main() {
 
 	indexes, results := kmp(sentence, word)
 	fmt.Println("kmp() = ", indexes, results)
+
+	fmt.Println("-----")
+
+	// sentence := "abcdef abcabc bcabcabcd"
+	words := []string{"ab", "a", "abc", "aa", "cd"}
+	indexes, results = ahocorasick(sentence, words)
+	fmt.Println("ahocorasick() = ", indexes, results)
 }
