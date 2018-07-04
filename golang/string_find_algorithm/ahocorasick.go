@@ -13,6 +13,7 @@ type Node struct {
 	parent *Node            // 현재 노드의 부모(for debugging)
 	isRoot bool             // 루트노드 여부
 	value  string           // 현재 노드까이 왔을때의 문자열
+	find   bool             // 현재 노드까지의 값이 패턴(words) 중 하나로 일치하는 경우 true
 	child  map[string]*Node // 문자하나:자식노드 를 맵으로 구성
 	fail   *Node            // 현재 노드까지 와서 찾는 정보가 없을 경우 이동할 노드
 	out    *Node            // 현재 노드까지 왔을때까지 word 찾았다면(성공) 다음 으로 이동할 노드, 찾은 word 의 suffix 가 다른 찾을 word 의 substring이 되는 경우 사용
@@ -32,12 +33,28 @@ func ahocorasick(sentence string, words []string) (indexes []int, results []stri
 	// TODO
 	// 트라이를 참조해서 sentence 에서 패턴들(words) 찾기
 	node := root
-	node.depth = 0
 	for i, s := range sentence {
 		fmt.Printf("%2d %c\n", i, s)
-
-		indexes = append(indexes, i)
-		results = append(results, string(sentence[i]))
+		if node == nil {
+			continue
+		}
+		if node.child[string(s)] != nil {
+			// out 존재하먼 실제 존해는 것으로 파악
+			if node.child[string(s)].out != nil {
+				indexes = append(indexes, i)
+				results = append(results, node.child[string(s)].value)
+				node = node.child[string(s)].out
+				continue
+			}
+			// 자식 노드중에 현재 문자가 있으면 계속 따라간다.
+			node = node.child[string(s)]
+		} else {
+			// 현재 자식 노드 중에 존재하지 않으면 실패노드를 따라간다.
+			// for node.child != nil && node.child[string(s)] == nil && node.fail != nil {
+			for node.fail != nil {
+				node = node.fail
+			}
+		}
 	}
 	return indexes, results
 }
@@ -80,10 +97,12 @@ func makeTrie(words []string) *Node {
 				if child.fail != nil {
 					fmt.Println("setFailNode:", child.depth, child.value, "->", child.fail.depth, child.fail.value)
 
-					if child.fail.child == nil {
+					// word 끝나는 노드(찾은 경우) 계속 다른 word 의 substring 이 되는 노드 설정
+					if child.fail.find {
 						fmt.Println("setOutNode:", child.value, "->", child.fail.depth, child.fail.value)
-
+						child.out = child.fail
 					}
+
 					break
 				}
 				// 실패노드를 찾지못하면 루트노드로 설정
@@ -114,6 +133,7 @@ func insertNode(node *Node, w string) {
 				parent: node,
 				isRoot: false,
 				value:  string(w[:i+1]),
+				find:   false,
 				child:  nil,
 				fail:   nil,
 				out:    nil,
@@ -121,6 +141,10 @@ func insertNode(node *Node, w string) {
 			node = node.child[string(w[i])]
 		}
 	}
+	// words 입력이 끝났을때 마직 노드가 한 word(패턴)를 찾은 지점으로 표시해둔다.
+	node.find = true
+	node.out = node
+	fmt.Println("setOutNode:", node.value, "->", node.out.depth, node.out.value)
 }
 
 func setFailNode(root *Node, w string) *Node {
