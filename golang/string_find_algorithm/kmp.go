@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-// KMP(Knuth–Morris–Pratt 두사람의 이름을딴 문자열 검색(패턴 찾기)) algorithm
+// KMP(Knuth–Morris–Pratt 세사람의 이름을딴 문자열 검색(패턴 찾기)) algorithm
 // 시간 복잡도 : O(m+n)
 // s[i] 와 w[j] 를 비교해가면서 다른 부분이 나오면
 // 현재까지 비교한 w부분문자열에 해당하는 실패함수의 값으로 이동(점프)해서 불필요한 비교 루프를 줄인다.

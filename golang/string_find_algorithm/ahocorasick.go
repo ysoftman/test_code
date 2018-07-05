@@ -100,7 +100,7 @@ func makeTrie(words []string) *Node {
 				lst.PushBack(child)
 			}
 			// 실패노드는 현재 노드보다 부모노들중 가장 긴 매칭 문자열을 가지는 노드여야 한다.
-			// 현재 노드까지 매칭된 값으로 보모노드들중 실패노드가 될 수 있는 것을 찾는다.
+			// 현재 노드까지 매칭된 값으로 부모노드들중 실패노드가 될 수 있는 것을 찾는다.
 			for i := 1; i < len(child.accstr); i++ {
 				// 현재 노드까지의 스트링과 같은 노드를 찾으면 안되니, 첫 스트링부터 제외하고 찾아야 하다.(suffix 를 줄여가며)
 				fmt.Println(child.accstr, "-", child.accstr[i:])
@@ -160,7 +160,7 @@ func insertNode(root *Node, w string) {
 }
 
 func getFailNode(root *Node, w string) *Node {
-	// 루트부타 w 와 매칭되는 노드들을 찾아본다.
+	// 루트부터 w 와 매칭되는 노드들을 찾아본다.
 	node := root
 	for node != nil && len(w) > 0 {
 		fmt.Println(string(w[0]))
