@@ -22,7 +22,8 @@ func main() {
 
 	fmt.Println("-----")
 
-	words := []string{"ab", "a", "abc", "aa", "bc", "cd"}
+	words := []string{"ab", "a", "abcd", "abc", "aa", "bc", "cd"}
 	indexes, results = ahocorasick(sentence, words)
-	fmt.Println("ahocorasick() = ", indexes, results)
+	fmt.Println("ahocorasick() = ", indexes)
+	fmt.Println("ahocorasick() = ", results)
 }

@@ -44,6 +44,9 @@ func ahocorasick(sentence string, words []string) (indexes []int, results []stri
 		for node != nil && (node.child == nil || (node.child != nil && node.child[string(sentence[i])] == nil)) {
 			fmt.Printf("%2d %c [cur-node:%s -> fail-node:%p]\n", i, sentence[i], node.accstr, node.fail)
 			node = node.fail
+			if node == root {
+				break
+			}
 		}
 
 		// 자식 노드중에 현재 문자가 있으면 계속 따라간다.
@@ -52,12 +55,17 @@ func ahocorasick(sentence string, words []string) (indexes []int, results []stri
 			node = node.child[string(sentence[i])]
 		}
 
-		// 현재 노드에 out 노드가 존재하먼 word 찾음
-		if node != nil && node.out != nil {
+		outNode := node
+		// 현재 노드가 find 노드라면 word 찾음 (substring 인 경우)
+		for outNode != nil && outNode.out != nil && outNode.find {
 			indexes = append(indexes, i)
-			results = append(results, node.accstr)
-			fmt.Printf("%2d %c [(find:%s) cur-node:%s -> out-node:%s]\n", i, sentence[i], results[len(results)-1], node.accstr, node.out.accstr)
-			node = node.out
+			results = append(results, outNode.accstr)
+			fmt.Printf("%2d %c [(find:%s) cur-node:%s -> out-node:%s]\n", i, sentence[i], results[len(results)-1], outNode.accstr, outNode.out.accstr)
+			// find 노드가 더이상 없는 경우
+			if outNode == outNode.out {
+				break
+			}
+			outNode = outNode.out
 		}
 
 		curNode := "root"
@@ -76,10 +84,10 @@ func makeTrie(words []string) *Node {
 	root := &Node{
 		isRoot: true,
 		accstr: "",
-		fail:   nil, // 루트의 실패노드는 갈곳 이 없다.(그대로 종료)
+		fail:   nil,
 		out:    nil, // 루트의 성공
 	}
-
+	root.fail = root
 	fmt.Printf("root address : %p\n", root)
 
 	for i := 0; i < len(words); i++ {
