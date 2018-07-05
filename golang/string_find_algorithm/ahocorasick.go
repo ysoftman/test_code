@@ -12,7 +12,8 @@ type Node struct {
 	depth  int              // 현재 노드의 깊이(for debugging)
 	parent *Node            // 현재 노드의 부모(for debugging)
 	isRoot bool             // 루트노드 여부
-	value  string           // 현재 노드까이 왔을때의 문자열
+	keystr string           // 현재 노드의 문자(자식 노드 맵에서의 키)
+	accstr string           // 현재 노드까지 왔을때의 누적 문자열
 	find   bool             // 현재 노드까지의 값이 패턴(words) 중 하나로 일치하는 경우 true
 	child  map[string]*Node // 문자하나:자식노드 를 맵으로 구성
 	fail   *Node            // 현재 노드까지 와서 찾는 정보가 없을 경우 이동할 노드
@@ -31,7 +32,6 @@ func ahocorasick(sentence string, words []string) (indexes []int, results []stri
 	root := makeTrie(words)
 	printTrie(root)
 
-	// TODO
 	// 트라이를 참조해서 sentence 에서 패턴들(words) 찾기
 	node := root
 	for i := 0; i < len(sentence); i++ {
@@ -40,39 +40,32 @@ func ahocorasick(sentence string, words []string) (indexes []int, results []stri
 			fmt.Printf("%2d %c [<nil> node -> root]\n", i, sentence[i])
 			node = root
 		}
-
-		for node.child != nil && node.child[string(sentence[i])] != nil {
-			// out 존재하먼 실제 존해는 것으로 파악
-			if node.child[string(sentence[i])].out != nil {
-				indexes = append(indexes, i)
-				results = append(results, node.child[string(sentence[i])].value)
-				fmt.Printf("%2d %c [1 (find:%s) cur-node:%s -> next-node:%s]\n", i, sentence[i], results[len(results)-1], node.value, node.child[string(sentence[i])].out.value)
-				node = node.child[string(sentence[i])].out
-				i++
-				continue
-			}
-			// 자식 노드중에 현재 문자가 있으면 계속 따라간다.
-			fmt.Printf("%2d %c [2 cur-node:%s -> child-node:%s]\n", i, sentence[i], node.value, node.child[string(sentence[i])].value)
-			node = node.child[string(sentence[i])]
-			if node.child != nil {
-				fmt.Println("zzzzz node", node.child, string(sentence[i]), node.child[string(sentence[i])])
-			}
-			i++
-		}
-
-		fmt.Printf("%2d %c [cur-node:%s]\n", i, sentence[i], node.value)
-		if node.out != nil {
-			indexes = append(indexes, i)
-			results = append(results, node.value)
-			fmt.Printf("%2d %c [3 (find:%s) cur-node:%s -> next-node:%s]\n", i, sentence[i], results[len(results)-1], node.value, node.out.value)
-			node = node.out
-			i++
-		}
-		// 현재 자식 노드 중에 존재하지 않으면 실패노드를 따라간다.
-		for node != nil && i < len(sentence) && (node.child == nil || (node.child != nil && node.child[string(sentence[i])] == nil)) {
-			fmt.Printf("%2d %c [4 cur-node:%s -> fail-node:%p]\n", i, sentence[i], node.value, node.fail)
+		// 현재 자식노드가 없거나 자식 노드 중에 문자가 존재하지 않으면 실패노드를 따라간다.
+		for node != nil && (node.child == nil || (node.child != nil && node.child[string(sentence[i])] == nil)) {
+			fmt.Printf("%2d %c [cur-node:%s -> fail-node:%p]\n", i, sentence[i], node.accstr, node.fail)
 			node = node.fail
 		}
+
+		// 자식 노드중에 현재 문자가 있으면 계속 따라간다.
+		if node != nil && node.child != nil && node.child[string(sentence[i])] != nil {
+			fmt.Printf("%2d %c [cur-node:%s -> child-node:%s]\n", i, sentence[i], node.accstr, node.child[string(sentence[i])].accstr)
+			node = node.child[string(sentence[i])]
+		}
+
+		// 현재 노드에 out 노드가 존재하먼 word 찾음
+		if node != nil && node.out != nil {
+			indexes = append(indexes, i)
+			results = append(results, node.accstr)
+			fmt.Printf("%2d %c [(find:%s) cur-node:%s -> out-node:%s]\n", i, sentence[i], results[len(results)-1], node.accstr, node.out.accstr)
+			node = node.out
+		}
+
+		curNode := "root"
+		if node != nil {
+			curNode = node.keystr
+		}
+		fmt.Printf("%2d %c [cur-node:%s]\n", i, sentence[i], curNode)
+
 	}
 	return indexes, results
 }
@@ -82,7 +75,7 @@ func makeTrie(words []string) *Node {
 	// words 들로 그래프 구성
 	root := &Node{
 		isRoot: true,
-		value:  "",
+		accstr: "",
 		fail:   nil, // 루트의 실패노드는 갈곳 이 없다.(그대로 종료)
 		out:    nil, // 루트의 성공
 	}
@@ -108,15 +101,15 @@ func makeTrie(words []string) *Node {
 			}
 			// 실패노드는 현재 노드보다 부모노들중 가장 긴 매칭 문자열을 가지는 노드여야 한다.
 			// 현재 노드까지 매칭된 값으로 보모노드들중 실패노드가 될 수 있는 것을 찾는다.
-			for i := 1; i < len(child.value); i++ {
+			for i := 1; i < len(child.accstr); i++ {
 				// 현재 노드까지의 스트링과 같은 노드를 찾으면 안되니, 첫 스트링부터 제외하고 찾아야 하다.(suffix 를 줄여가며)
-				fmt.Println(child.value, "-", child.value[i:])
-				child.fail = getFailNode(root, child.value[i:])
+				fmt.Println(child.accstr, "-", child.accstr[i:])
+				child.fail = getFailNode(root, child.accstr[i:])
 				if child.fail != nil {
-					fmt.Printf("setFailNode: %d, %s -> %p, %d, %s\n", child.depth, child.value, child.fail, child.fail.depth, child.fail.value)
+					fmt.Printf("setFailNode: %d, %s -> %p, %d, %s\n", child.depth, child.accstr, child.fail, child.fail.depth, child.fail.accstr)
 					// word 끝나는 노드(찾은 경우) 계속 다른 word 의 substring 이 되는 노드 설정
 					if child.fail.find {
-						fmt.Printf("setOutNode: %d, %s -> %p, %d, %s\n", child.depth, child.value, child.fail, child.fail.depth, child.fail.value)
+						fmt.Printf("setOutNode: %d, %s -> %p, %d, %s\n", child.depth, child.accstr, child.fail, child.fail.depth, child.fail.accstr)
 						child.out = child.fail
 					}
 
@@ -125,7 +118,7 @@ func makeTrie(words []string) *Node {
 				// 실패노드를 찾지못하면 루트노드로 설정
 				if child.fail == nil {
 					child.fail = root
-					fmt.Printf("setFailNode: %d, %s -> %p, %d, %s\n", child.depth, child.value, child.fail, child.fail.depth, child.fail.value)
+					fmt.Printf("setFailNode: %d, %s -> %p, %d, %s\n", child.depth, child.accstr, child.fail, child.fail.depth, child.fail.accstr)
 				}
 			}
 		}
@@ -145,12 +138,13 @@ func insertNode(root *Node, w string) {
 			// fmt.Println("exist-node", string(w[i]))
 			node = node.child[string(w[i])]
 		} else {
-			// fmt.Println("new-node ", string(w[i]), " set value:", string(w[:i+1]))
+			// fmt.Println("new-node ", string(w[i]), " set accstr:", string(w[:i+1]))
 			node.child[string(w[i])] = &Node{
 				depth:  node.depth + 1,
 				parent: node,
 				isRoot: false,
-				value:  string(w[:i+1]),
+				keystr: string(w[i]),
+				accstr: string(w[:i+1]),
 				find:   false,
 				child:  nil,
 				fail:   root,
@@ -162,7 +156,7 @@ func insertNode(root *Node, w string) {
 	// words 입력이 끝났을때 마직 노드가 한 word(패턴)를 찾은 지점으로 표시해둔다.
 	node.find = true
 	node.out = node
-	fmt.Printf("setOutNode: %d, %s -> %p, %d, %s\n", node.depth, node.value, node.out, node.out.depth, node.out.value)
+	fmt.Printf("setOutNode: %d, %s -> %p, %d, %s\n", node.depth, node.accstr, node.out, node.out.depth, node.out.accstr)
 }
 
 func getFailNode(root *Node, w string) *Node {
@@ -183,14 +177,14 @@ func getFailNode(root *Node, w string) *Node {
 }
 
 func printTrie(root *Node) {
-	fmt.Printf("depth: %d %p (key: %s, string: %s, out: %p, fail: %p)\n", root.depth, root, "", root.value, root.out, root.fail)
+	fmt.Printf("depth: %d %p (key: %s, string: %s, out: %p, fail: %p)\n", root.depth, root, "", root.accstr, root.out, root.fail)
 	lst := list.New()
 	lst.PushBack(root)
 	// BFS(Breadth First Search)
 	for lst.Len() > 0 {
 		node := lst.Remove(lst.Front()).(*Node)
 		for k, v := range node.child {
-			fmt.Printf("depth: %d %p (key: %s, string: %s, out: %p, fail: %p)\n", v.depth, v, k, v.value, v.out, v.fail)
+			fmt.Printf("depth: %d %p (key: %s, string: %s, out: %p, fail: %p)\n", v.depth, v, k, v.accstr, v.out, v.fail)
 			if v != nil {
 				lst.PushBack(v)
 			}
