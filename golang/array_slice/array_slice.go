@@ -51,11 +51,11 @@ func main() {
 	arTest4 := make([]int, 3, 5)
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
 
-	// append 로 슬라이스에 추가하기
+	// add(push)
 	arTest4 = append(arTest4, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
 
-	// append 로 element 삭제하기
+	// delete
 	// append 에서 ... 는 해당 타입의 모든(0 이상) 원소들을 의미
 	arTest4 = append(arTest4[:3], arTest4[4:]...)
 	fmt.Println("arTest4 len = ", len(arTest4), "arTest4 cap = ", cap(arTest4), "arTest4 = ", arTest4)
