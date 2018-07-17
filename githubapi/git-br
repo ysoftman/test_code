@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+'''
+ysoftman
+
+브랜치명이 xxx-이슈번호 인 경우, 
+github 의 이슈타이틀을 파악해서 현재 로컬 브랜치에 정보에 같이 표시한다.
+git-command 형태의 파일로 실행모드를 추가하고 다음과 같이 실행 한다.
+
+chmod +x git-br
+git br
+
+참고로 git branch 가 git br 로 alias 로 설정되더라고, 현재 위치에선 git-br 이 실행된다.
+'''
+
+import requests
+import json
+import sys
+import subprocess
+
+
+# github 접속 정보를 명시
+user = "ysoftman"
+passwd = ""
+baseurl = "https://api.github.com"
+owner = "ysoftman"
+repo = "test_code"
+
+
+def issue_list(branches):
+    # https://github.com/api/v3/repos/오너/저장소/issues?state=open
+    url = "{}/repos/{}/{}/issues?state=open".format(baseurl, owner, repo)
+    resp = requests.get(url, auth=(user, passwd))
+    result = json.loads(resp.content)
+
+    for br_name in branches:
+        # xxx-111 의 뒤부분은 이슈번호인 경우
+        tokens = br_name.split('-')
+        if len(tokens) == 2:
+            for item in result:
+                if tokens[1] == str(item['number']):
+                    print tokens[0], tokens[1], item['title']
+        elif len(tokens) == 1:
+            print tokens[0]
+
+if __name__ == '__main__':
+    if len(passwd) == 0:
+        print 'password is empty.'
+        sys.exit(0)
+
+    # 로컬 브랜치 리스트를 얻어 온다.
+    result = subprocess.Popen("git branch", shell=True,
+                              stdout=subprocess.PIPE).stdout.read()
+    # 브랜치들은 라인으로 구분해서 리스트 파라미터로 넘긴다.
+    issue_list(result.splitlines())
