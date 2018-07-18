@@ -26,4 +26,9 @@ func main() {
 	} else {
 		fmt.Println("Not Exist 15")
 	}
+
+	// element 삭제, delete builtin 함수로 리턴이 없다, 키가 없다면 아무동작 하지 않는다.
+	fmt.Println("delete element(key:20)")
+	delete(mymap, 20)
+	fmt.Println(mymap)
 }
