@@ -32,8 +32,6 @@ cd nginx-1.14.0
 make
 sudo make install
 
-# nginx 설정
-#vi /usr/local/nginx/conf/nginx.conf
 # nginx 시작
 #sudo /usr/local/nginx/sbin/nginx
 # nginx 재시작
@@ -42,5 +40,6 @@ sudo make install
 #sudo /usr/local/nginx/sbin/nginx -s stop
 # nginx 설명
 #sudo /usr/local/nginx/sbin/nginx -h
+
 # 설정 변경하면서 테스트할때
-# sudo /usr/local/nginx/sbin/nginx -s stop && sudo /usr/local/nginx/sbin/nginx  && curl http://localhost/echo
+sudo cp -v ./nginx.conf /usr/local/nginx/conf/nginx.conf && sudo /usr/local/nginx/sbin/nginx -s stop && sudo /usr/local/nginx/sbin/nginx  && curl http://localhost:8080/echo
