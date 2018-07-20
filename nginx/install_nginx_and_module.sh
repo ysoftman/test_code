@@ -1,12 +1,19 @@
 #!/bin/bash
 
+# nginx 에 필요한 모듈 설치
 if [ $(uname) == 'Darwin' ]; then
     echo `uname`
 elif [ $(uname) == 'Linux' ]; then
     echo `uname`
-    # nginx 에 필요한 모듈 설치
-    sudo yum install pcre-devel
-    sudo yum install openssl-devel
+    yum --version
+    if [ $? == 0 ]; then
+        sudo yum install -y pcre-devel
+        sudo yum install -y openssl-devel
+    else
+        sudo apt-get install -y libpcre3-dev
+        sudo apt-get install -y libssl-dev
+        sudo apt-get install -y libz-dev
+    fi
 fi
 
 
@@ -15,10 +22,10 @@ git clone https://github.com/openresty/echo-nginx-module.git
 export ECHO_PWD=$(pwd)/echo-nginx-module
 
 # 다운로드
-wget http://nginx.org/download/nginx-1.12.0.tar.gz
+wget https://nginx.org/download/nginx-1.14.0.tar.gz
 # 압축 해제
-tar zxvf nginx-1.12.0.tar.gz
-cd nginx-1.12.0
+tar zxvf nginx-1.14.0.tar.gz
+cd nginx-1.14.0
 
 # configure 수행 및 빌드 및 설치
 ./configure --with-http_ssl_module --with-http_v2_module --with-http_stub_status_module --add-module=$ECHO_PWD
