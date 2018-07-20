@@ -20,3 +20,13 @@ curl -s --user "ysoftman:password123" https://api.github.com/repos/ysoftman/test
 ## git-br
 
 브랜치명이 xxx-이슈번호 인 경우, github 의 이슈타이틀을 파악해서 현재 로컬 브랜치에 정보에 같이 표시한다.
+
+- 예시
+
+```bash
+# test_code 에 테스트를 위한 이슈(10번)를 만들어두었음
+# ysoftman-10 를 만들어 본다.
+git co -b ysoftman-10
+# git-br 에 password 명시하고 실행
+git br
+```
