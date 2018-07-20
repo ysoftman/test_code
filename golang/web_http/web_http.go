@@ -40,7 +40,9 @@ func main() {
 
 	// 서버띄우기 방법1
 	// 요청 주소에 따른 핸들러 등록
-	http.HandleFunc("/", mainPage)
+	// / 를 허용하지 않도록 한다. 아래 path 외는 404 발생을 위해서
+	// http.HandleFunc("/", mainPage)
+	http.HandleFunc("/main", mainPage)
 	http.HandleFunc("/test", testPage)
 	// imgs 의 파이들에 접급 허용
 	http.Handle("/imgs/", http.StripPrefix("/imgs", http.FileServer(http.Dir("./imgs"))))
