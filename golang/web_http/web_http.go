@@ -78,6 +78,7 @@ func (web myHTTP) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func notfound(w http.ResponseWriter, r *http.Request) {
 	notFoundMsg := "404 not found... :( path: " + r.RequestURI
 	fmt.Println(notFoundMsg)
+	w.WriteHeader(http.StatusNotFound)
 	w.Write([]byte(notFoundMsg))
 }
 
