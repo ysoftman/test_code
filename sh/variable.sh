@@ -2,6 +2,14 @@
 # ysoftman
 # 변수 사용 테스트
 
+clear
+
+# clear(이전 명령) 실행 후 리턴 값
+echo $?
+
+# 현재 프로세스 ID
+echo $$
+
 var1="ysoftman"
 
 # 변수 사용시 ${}와 같이 curly brace 로 감싸는 이유는 변수 확장(variable expansion)하기 위함이다.
