@@ -7,6 +7,7 @@ import BindMessage from '@/components/BindMessage'
 import DataList from '@/components/DataList'
 import Component from '@/components/Component'
 import ModifyArray from '@/components/ModifyArray'
+import Draggable from '@/components/Draggable'
 
 Vue.use(Router)
 
@@ -44,6 +45,10 @@ export default new Router({
     path: '/component',
     name: 'Component',
     component: Component
+  }, {
+    path: '/draggable',
+    name: 'Draggable',
+    component: Draggable
   }, {
     path: '*',
     name: 'NotFound',

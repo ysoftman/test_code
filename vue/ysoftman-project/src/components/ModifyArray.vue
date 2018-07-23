@@ -37,7 +37,7 @@ export default {
       form: {
         va1: "",
         va2: "",
-      },      
+      },
       arr: []
     };
   },

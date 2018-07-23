@@ -7,6 +7,7 @@
     <router-link to = "/Component">Component</router-link>
     <router-link to = "/DataList">DataList</router-link>
     <router-link to = "/ModifyArray">ModifyArray</router-link>
+    <router-link to = "/Draggable">Draggable</router-link>
     <router-link to = "*">NotFound</router-link>
     <router-view/>
   </div>
@@ -30,4 +31,9 @@ export default {
   color: white;
   background-color: green;
 }
+
+#app {
+  margin: 10px 10px 10px 10px;
+}
+
 </style>

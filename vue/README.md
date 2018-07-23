@@ -18,6 +18,9 @@ npm install
 # bootstrap-vue 설치
 npm install bootstrap-vue
 
+# vuedraggable 설치
+npm install vuedraggable
+
 # dev 로 실행(node_modules/.bin/webpack-dev-server 로 서비를 띄워준다.)
 npm run dev
 
