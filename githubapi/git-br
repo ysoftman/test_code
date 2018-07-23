@@ -34,6 +34,7 @@ def issue_list(branches):
     resp = requests.get(url, auth=(user, passwd))
     result = json.loads(resp.content)
 
+    # print len(result)
     for br_name in branches:
         # xxx-111 의 뒤부분은 이슈번호인 경우
         tokens = br_name.split('-')
@@ -41,8 +42,13 @@ def issue_list(branches):
             for item in result:
                 if tokens[1] == str(item['number']):
                     print br_name, item['title'], item['state']
+                    # 찾은 것은 결과에서 제거해서 빠르게하기
+                    idx = result.index(item)
+                    del result[idx]
+                    break
         elif len(tokens) == 1:
             print tokens[0]
+    # print len(result)
 
 if __name__ == '__main__':
     if len(passwd) == 0:
