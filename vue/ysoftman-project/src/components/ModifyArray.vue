@@ -1,6 +1,6 @@
 <template>
   <div>
-    <customtag1> arr = {{ arr }} <br> </customtag1>
+    <div id=customtag1> arr = {{ arr }} <br> </div>
 
   <b-form-group id=""
                 label="insert value"
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style>
-customtag1 {
+#customtag1 {
   color: red;
   font-size: 100%;
 }

@@ -1,5 +1,5 @@
 <template>
-<div id="component">
+<div id=aaa>
   {{ name }}
   <ol>
     <!--app 인스턴의 데이터를 action-item 컴포넌트를 사용하여 출력-->
@@ -21,7 +21,7 @@ Vue.component("action-item", {
 });
 
 export default {
-  name: "Component",
+  name: "myComponent",
   data() {
     return {
       fruiteList: [
