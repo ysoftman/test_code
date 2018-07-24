@@ -18,7 +18,10 @@
           <draggable class="list-group" element="ul" v-model="myList" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
             <transition-group type="transition" :name="'flip-list'">
               <li class="list-group-item" v-for="element in myList" :key="element.order">
-                {{element}}
+                <!-- {{element}} -->
+                <!-- {{ Element2JsonString(element) }} -->
+                {{element.order}}
+                {{element.mydata.name}},{{element.mydata.desc}}
               </li>
             </transition-group>
         </draggable>
@@ -81,6 +84,9 @@ export default {
       return (
         (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
       );
+    },
+    Element2JsonString(ele) {
+      return JSON.stringify(ele, null, 2);
     }
   },
   computed: {
