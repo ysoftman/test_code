@@ -11,6 +11,18 @@
 //
 // github sql driver 다운로드
 // go get github.com/go-sql-driver/mysql
+
+// db 및 table 생성 쿼리
+// CREATE DATABASE `mytest` /*!40100 DEFAULT CHARACTER SET utf8 */;
+// use mytest;
+// CREATE TABLE `test_info` (
+// 	`id` varchar(45) NOT NULL,
+// 	`age` int(11) DEFAULT NULL,
+// 	`name` varchar(45) DEFAULT NULL,
+// 	`last_date` datetime DEFAULT NULL,
+// 	PRIMARY KEY (`id`)
+//   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 package main
 
 import (
@@ -36,7 +48,7 @@ func main() {
 	host_ip := "127.0.0.1"
 	host_port := 13306
 	protocol := "tcp"
-	dbname := "test"
+	dbname := "mytest"
 	id := "root"
 	pass := "ysoftman"
 
@@ -53,14 +65,38 @@ func main() {
 	}
 	defer db.Close()
 
-	// write 경우 Execute() 사용
-	result, err := db.Exec("insert into test_info(id, age, name, last_date) values(?,?,?,now())", "ysoftman", 20, "윤병훈")
+	// insert, update, delete 경우 Execute() 사용
+	// 아래 테스트를 위해 테이블 데이터 모두 삭제
+	result, err := db.Exec("delete from test_info")
 	if err != nil {
 		fmt.Println("insert error!")
 		log.Fatal(err)
 	}
 	fmt.Println(result.LastInsertId())
 	fmt.Println(result.RowsAffected())
+
+	// 컬럼명이 order 등과 같은 mysql 에약어인 경우가 있을 수 있어 ``(grave) 로 묶어주는게 좋다.
+	result, err = db.Exec("insert into test_info(`id`, `age`, `name`, `last_date`) values(?,?,?,now())", "ysoftman", 20, "윤병훈")
+	if err != nil {
+		fmt.Println("insert error!")
+		log.Fatal(err)
+	}
+	fmt.Println(result.LastInsertId())
+	fmt.Println(result.RowsAffected())
+
+	// prepare 로 sql 처리 하고 살행하면 좀더 빠르게 처리할 수 있다.
+	q := fmt.Sprintf("insert into test_info(`id`, `age`, `name`, `last_date`) values('%s','%d','%s',now())", "ysoftman2", 20, "윤병훈2")
+	fmt.Println(q)
+	stmt, err := db.Prepare(q)
+	if err != nil {
+		fmt.Println("insert (prepare) error!")
+		log.Fatal(err)
+	}
+	result, err = stmt.Exec()
+	if err != nil {
+		fmt.Println("insert (prepare-exec) error!")
+		log.Fatal(err)
+	}
 
 	// read 경우 Query() 사용
 	rows, err := db.Query("select id, age, name from test_info where id = ?", "ysoftman")
