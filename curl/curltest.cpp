@@ -1,61 +1,78 @@
-////////////////////////////////////////////////////////////////////////////////////
-// ysoftman
-// libcurl Å×½ºÆ®
-//
-// [linux]
-// curl-7.21.3.tar.gz À» ´Ù¿î¹Ş¾Æ ¾ĞÃà ÇØÁ¦ ÈÄ ¼³Ä¡
-// wget http://curl.haxx.se/download/curl-7.21.3.tar.gz
-// tar zxvf curl-7.21.3.tar.gz
-// cd crul-7.21.3
-// ./configure
-// make
-// sudo make install
-// ÄÄÆÄÀÏ
-// gcc curltest.cc -lcurl -o curltest
-// 
-// [windows]
-// http://curl.haxx.se/download/curl-7.21.3.zip ´Ù¿î·Îµå ÈÄ ¾ĞÃà Ç®±â
-// cmake ¿¡¼­ configure -> visual studio 11 2012 ¼±ÅÃ -> generate
-// visual studio ·Î ºôµåÇÏ±â (ÄÚµå »ı¼º MT)
-// Çì´õÆÄÀÏÀº curl ¼Ò½ºÀÇ include »ç¿ë
-// Âü°í
-// visual studio ¿¡¼­ .c ´ë½Å .cpp È®ÀåÀÚ¸¦ »ç¿ëÇÏµµ·Ï ÇÑ´Ù.
-// ½ÇÇà½Ã zlib1.dll °ü·Ã ¿¡·¯°¡ ¹ß»ıÇÑ´Ù¸é 
-// À©µµ¿ì¿ë zlib ´Ù¿î·Îµå http://gnuwin32.sourceforge.net/downlinks/zlib-bin-zip.php
-// ¾ĞÃà ÇØÁ¦ ÈÄ zlib1.dll ¸¦ º¹»çÇØ¼­ »ç¿ëÇØÇÑ´Ù.
-//
-// curl Âü°í
-// https://curl.haxx.se/libcurl/c/getinmemory.html
-// http://curl.haxx.se/libcurl/c/example.html
-// http://www.joinc.co.kr/modules/moniwiki//wiki.php/Site/Web/documents/UsedCurl
-////////////////////////////////////////////////////////////////////////////////////
+/*
+# ysoftman
+# libcurl í…ŒìŠ¤íŠ¸
+# linux/mac
+
+# openssl ì„¤ì¹˜
+wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
+tar zxvf openssl-1.0.2k.tar.gz
+cd openssl-1.0.2k
+./config
+make -j4
+sudo make install
+cd ..
+
+# curl ì„¤ì¹˜
+wget https://curl.haxx.se/download/curl-7.60.0.tar.gz
+tar zxvf curl-7.60.0.tar.gz
+cd curl-7.60.0
+
+# linux
+./configure --prefix=${HOME}/workspace/curl-7.60.0 --with-ssl
+
+# mac
+export MACOSX_DEPLOYMENT_TARGET="10.6"
+./configure --prefix=${HOME}/workspace/curl-7.60.0 --with-darwinssl
+
+make -j4 && make install
+cd ..
+
+gcc curltest.cpp -I${HOME}/workspace/curl-7.60.0/include/curl -L${HOME}/workspace/curl-7.60.0/lib -lcurl -o curltest
+
+
+# windows
+# https://curl.haxx.se/download/curl-7.60.0.tar.gz ë‹¤ìš´ë¡œë“œ í›„ ì••ì¶• í’€ê¸°
+# cmake ì—ì„œ configure -> visual studio 11 2012 ì„ íƒ -> generate
+# visual studio ë¡œ ë¹Œë“œí•˜ê¸° (ì½”ë“œ ìƒì„± MT)
+# í—¤ë”íŒŒì¼ì€ curl ì†ŒìŠ¤ì˜ include ì‚¬ìš©
+# ì°¸ê³ 
+# visual studio ì—ì„œ .c ëŒ€ì‹  .cpp í™•ì¥ìë¥¼ ì‚¬ìš©í•˜ë„ë¡ í•œë‹¤.
+# ì‹¤í–‰ì‹œ zlib1.dll ê´€ë ¨ ì—ëŸ¬ê°€ ë°œìƒí•œë‹¤ë©´
+# ìœˆë„ìš°ìš© zlib ë‹¤ìš´ë¡œë“œ http://gnuwin32.sourceforge.net/downlinks/zlib-bin-zip.php
+# ì••ì¶• í•´ì œ í›„ zlib1.dll ë¥¼ ë³µì‚¬í•´ì„œ ì‚¬ìš©í•´í•œë‹¤.
+# curl ì°¸ê³ 
+https://curl.haxx.se/libcurl/c/getinmemory.html
+http://curl.haxx.se/libcurl/c/example.html
+http://www.joinc.co.kr/modules/moniwiki//wiki.php/Site/Web/documents/UsedCurl
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#ifdef linux
-#include "/usr/local/include/curl/curl.h"
-#endif
+#include "curl.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include "include/curl/curl.h"
 #pragma comment(lib, "lib/libcurl_imp_mtd_2012.lib")
 #endif
 
-
-struct CURL_DATA_INFO {
+struct CURL_DATA_INFO
+{
 	char *pData;
 	size_t size;
 };
 
-// ÀÀ´ä ÆĞÅ¶ ³»¿ë ¾²´Â ÇÔ¼ö(Äİ¹é)
+// ì‘ë‹µ íŒ¨í‚· ë‚´ìš© ì“°ëŠ” í•¨ìˆ˜(ì½œë°±)
 static size_t WriteData(void *contents, size_t size, size_t nmemb, void *userdata)
 {
 	size_t realsize = size * nmemb;
 	struct CURL_DATA_INFO *mem = (struct CURL_DATA_INFO *)userdata;
 
-	// ¿©·¯¹ø Äİ¹éµÉ ¼ö ÀÖ¾î ±âÁ¸ µ¥ÀÌÅÍ¿¡ ÀÌ¾îºÙÀÎ´Ù.
-	mem->pData = (char*)realloc(mem->pData, mem->size + realsize + 1);
-	if(mem->pData == NULL) {
+	// ì—¬ëŸ¬ë²ˆ ì½œë°±ë  ìˆ˜ ìˆì–´ ê¸°ì¡´ ë°ì´í„°ì— ì´ì–´ë¶™ì¸ë‹¤.
+	mem->pData = (char *)realloc(mem->pData, mem->size + realsize + 1);
+	if (mem->pData == NULL)
+	{
 		fprintf(stderr, "realloc failed\n");
 		return 0;
 	}
@@ -67,18 +84,18 @@ static size_t WriteData(void *contents, size_t size, size_t nmemb, void *userdat
 	return realsize;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage(example) : %s www.naver.com\n", argv[0]);
+		fprintf(stderr, "Usage(example) : %s https://www.google.com\n", argv[0]);
 		return 0;
 	}
 
 	CURL *curl;
 	CURLcode curlcode;
 
-	// ÃÊ±âÈ­
+	// ì´ˆê¸°í™”
 	curl_global_init(CURL_GLOBAL_ALL);
 	curl = curl_easy_init();
 	if (!curl)
@@ -87,39 +104,38 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	// ´ë»ó URL ¼³Á¤
-	//curl_easy_setopt(curl, CURLOPT_URL, "http://www.naver.com");
+	// ëŒ€ìƒ URL ì„¤ì •
 	curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
 
-	// Çì´õ¿Í ¹Ùµğ ³»¿ë ¾²±â ÇÔ¼ö ¼³Á¤
+	// í—¤ë”ì™€ ë°”ë”” ë‚´ìš© ì“°ê¸° í•¨ìˆ˜ ì„¤ì •
 	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, WriteData);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteData);
 
-	// Çì´õ¿Í ¹Ùµğ ³»¿ë Ãâ·Â ´ë»ó ¼³Á¤
+	// í—¤ë”ì™€ ë°”ë”” ë‚´ìš© ì¶œë ¥ ëŒ€ìƒ ì„¤ì •
 	//curl_easy_setopt(curl, CURLOPT_WRITEHEADER, stderr);
 	//curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
 	CURL_DATA_INFO header;
 	header.size = 0;
-	header.pData = (char*)calloc(1, sizeof(char)*1);
+	header.pData = (char *)calloc(1, sizeof(char) * 1);
 	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, &header);
 
 	CURL_DATA_INFO body;
 	body.size = 0;
-	body.pData = (char*)calloc(1, sizeof(char*)*1);
+	body.pData = (char *)calloc(1, sizeof(char *) * 1);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &body);
 
-	// id, pw ¼³Á¤
+	// id, pw ì„¤ì •
 	//curl_easy_setopt(curl, CURLOPT_USERNAME, "ysoftman");
 	//curl_easy_setopt(curl, CURLOPT_PASSWORD, "qwer1234");
 	//curl_easy_setopt(curl, CURLOPT_USERPWD, "ysoftman:qwer1234");
-	// »ó¼¼ Á¤º¸ º¸±â(ÄÜ¼Ö¿¡ request/body °ü·Ã Á¤º¸°¡ Ãâ·ÂµÈ´Ù.)
+	// ìƒì„¸ ì •ë³´ ë³´ê¸°(ì½˜ì†”ì— request/body ê´€ë ¨ ì •ë³´ê°€ ì¶œë ¥ëœë‹¤.)
 	//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-	// redirect µÈ °æ¿ì ÇØ´ç °æ·Î¸¦ µû¶ó°¡µµ·Ï ÇÔ
+	// redirect ëœ ê²½ìš° í•´ë‹¹ ê²½ë¡œë¥¼ ë”°ë¼ê°€ë„ë¡ í•¨
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	// Å¸ÀÓ¾Æ¿ô(second) ¼³Á¤
+	// íƒ€ì„ì•„ì›ƒ(second) ì„¤ì •
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 10);
 
-	// ½ÇÇà
+	// ì‹¤í–‰
 	curlcode = curl_easy_perform(curl);
 	if (curlcode != CURLE_OK)
 	{
@@ -127,7 +143,7 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		int nHttpRespCode;
+		long nHttpRespCode;
 		double dDownloadSize;
 		char *szContentType;
 		curl_easy_getinfo(curl, CURLINFO_HTTP_CODE, &nHttpRespCode);
@@ -135,7 +151,7 @@ int main(int argc, char** argv)
 		curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD, &dDownloadSize);
 
 		fprintf(stderr, "curl success!\n");
-		fprintf(stderr, "HttpResponseCode: %d\n", nHttpRespCode);
+		fprintf(stderr, "HttpResponseCode: %ld\n", nHttpRespCode);
 		fprintf(stderr, "ContentType: %s\n", szContentType);
 		fprintf(stderr, "DownloadSize: %f (bytes)\n", dDownloadSize);
 		fprintf(stderr, "Response Header: %s\n", header.pData);
@@ -145,12 +161,10 @@ int main(int argc, char** argv)
 	free(header.pData);
 	free(body.pData);
 
-	// context Á¦°Å
+	// context ì œê±°
 	curl_easy_cleanup(curl);
 
 	curl_global_init(CURL_GLOBAL_ALL);
 
-
 	return 0;
 }
-

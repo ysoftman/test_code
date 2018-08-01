@@ -40,7 +40,13 @@ func main() {
 
 	// 서버띄우기 방법1
 	// 요청 주소에 따른 핸들러 등록
-	http.HandleFunc("/", mainPage)
+	// / 를 허용하지 않도록 한다. 아래 path 외는 404 발생을 위해서
+	// http.HandleFunc("/", mainPage)
+	// 404 not found 디폴트 핸들러
+	// http.Handle("/", http.NotFoundHandler())
+	// not found 로깅을 위해 별도 핸들러에서 처리
+	http.HandleFunc("/", notfound)
+	http.HandleFunc("/main", mainPage)
 	http.HandleFunc("/test", testPage)
 	// imgs 의 파이들에 접급 허용
 	http.Handle("/imgs/", http.StripPrefix("/imgs", http.FileServer(http.Dir("./imgs"))))
@@ -66,6 +72,14 @@ func (web myHTTP) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	requestCnt++
 	fmt.Println("request cnt = ", requestCnt)
+}
+
+// notfound 처리 함수
+func notfound(w http.ResponseWriter, r *http.Request) {
+	notFoundMsg := "404 not found... :( path: " + r.RequestURI
+	fmt.Println(notFoundMsg)
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte(notFoundMsg))
 }
 
 // mainpage 처리 함수

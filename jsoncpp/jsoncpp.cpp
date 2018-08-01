@@ -99,6 +99,11 @@ void ReadJson(string strJSON)
 	int age = root.get("나이", "defaultvalue").asInt();
 	cout << "나이: " << age << endl;
 
+	// Value 값 변경
+	Json::Value ageValue = root.get("나이", "defaultvalue").asInt();
+	ageValue = ageValue.asInt() - 5;
+	cout << "나이: " << ageValue.asInt() << endl;
+
 	Json::Value friends;
 	friends = root["친구"];
 	cout << "친구: " << endl;

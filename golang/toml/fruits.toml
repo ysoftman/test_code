@@ -1,0 +1,38 @@
+# fruits toml
+[fruits]
+# 여기세 필드를 명시하면 apple, lemon, banana 를 map 으로 파싱할때 에러가 발생한다.
+# desc = "Fruits Information"
+
+[fruits.apple]
+name = "Apple"
+weight = 50
+sugarcontent = 10
+
+[fruits.apple.price.usa]
+price = 1
+[fruits.apple.price.canada]
+price = 10
+
+
+[fruits.lemon]
+name = "Lemon"
+weight = 70
+sugarcontent = 20
+
+[fruits.lemon.price.usa]
+price = 2
+[fruits.lemon.price.canada]
+price = 20
+
+
+[fruits.banana]
+name = "Banana"
+weight = 100
+sugarcontent = 30
+
+[fruits.banana.price.usa]
+price = 3
+[fruits.banana.price.canada]
+price = 30
+
+

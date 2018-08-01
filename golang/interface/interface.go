@@ -6,7 +6,10 @@ package main
 
 import "fmt"
 
-// Calc 인터페이스 정의
+// struct 는 데이터 필드들의 집합
+// interface 는 구현해야 하는 메소드들의 집합
+
+// Calc 인터페이스 정의,Calc 인터페이스는 calculate() 구현한것이라면 모든 될 수 있다.
 type Calc interface {
 	calculate() int
 }
@@ -51,13 +54,27 @@ func main() {
 	fmt.Println("go interface test.")
 	f1 := foo1{1, 2}
 	f2 := foo2{1, 2}
+	f3 := foo3{1, 2}
 
 	// 각 타입에 맞는 함수(인터페이스 구현)를 수행
 	fmt.Println("foo1 calculate result:", doCal(f1))
 	fmt.Println("foo2 calculate result:", doCal(f2))
 
 	// foo3 는 calute() int 를 구현하고 있지 않아 doCal 을 사용할 수 없다.
-	// f3 := foo3{1, 2}
 	// fmt.Println("foo2 calculate result:", doCal(f3))
 
+	// interface{} 파라미터는 어떤 타입의 값이던 전달 할 수 있다.
+	interfaceParameter(1, 'a', "abc", f1, f2, f3)
+}
+
+// 빈인터페이스는 0개의 메소드 구현이 필요한것으로 볼 수 있다.
+// 따라서 모든 타입의 값을 파라미터로 받을 수 있다. C/C++ 에서의 void* 와 같음
+// ... variadic 으로 여러개의 타입 값들을 받을 수 있다.
+func interfaceParameter(x ...interface{}) {
+	fmt.Println("interface parameter test.")
+	fmt.Println(x)
+
+	for _, v := range x {
+		fmt.Println(v)
+	}
 }
