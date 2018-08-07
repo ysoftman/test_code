@@ -45,6 +45,7 @@ func makePanicAndRecover(a int, b int) {
 			perr := fmt.Errorf("aaa_panic %v", r)
 			fp2.WriteString(perr.Error() + "\n" + string(debug.Stack()))
 
+			debug.PrintStack()
 			fmt.Println(r)
 		}
 		fmt.Println("defer end")
