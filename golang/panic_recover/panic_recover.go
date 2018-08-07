@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime/debug"
 )
 
 func main() {
@@ -42,7 +43,7 @@ func makePanicAndRecover(a int, b int) {
 			}
 			defer fp2.Close()
 			perr := fmt.Errorf("aaa_panic %v", r)
-			fp2.WriteString(perr.Error() + "\n")
+			fp2.WriteString(perr.Error() + "\n" + string(debug.Stack()))
 
 			fmt.Println(r)
 		}
