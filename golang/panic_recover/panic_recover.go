@@ -28,13 +28,21 @@ func makePanicAndRecover(a int, b int) {
 		if r != nil {
 
 			// 패닉 내용 파일로 쓰기
-			fp, err := os.OpenFile("panic.log", os.O_RDWR|os.O_APPEND|os.O_CREATE|os.O_SYNC, 0644)
+			fp1, err := os.OpenFile("panic1.log", os.O_RDWR|os.O_APPEND|os.O_CREATE|os.O_SYNC, 0644)
 			if err != nil {
 				fmt.Println("open file error...", err)
 			}
-			defer fp.Close()
-			log.SetOutput(fp)
+			defer fp1.Close()
+			log.SetOutput(fp1)
 			log.Println(r)
+
+			fp2, err := os.OpenFile("panic2.log", os.O_RDWR|os.O_APPEND|os.O_CREATE|os.O_SYNC, 0644)
+			if err != nil {
+				fmt.Println("open file error...", err)
+			}
+			defer fp2.Close()
+			perr := fmt.Errorf("aaa_panic %v", r)
+			fp2.WriteString(perr.Error() + "\n")
 
 			fmt.Println(r)
 		}
