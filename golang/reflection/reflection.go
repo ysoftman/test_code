@@ -33,9 +33,14 @@ func main() {
 	// 필드 파악
 	fmt.Println("myBoxReflectType.Field(0).Name:", myBoxReflectType.Field(0).Name)
 	fmt.Println("myBoxReflectType.Field(0).Type:", myBoxReflectType.Field(0).Type)
+	fmt.Println("myBoxReflectType.Field(0).Type.Kind():", myBoxReflectType.Field(0).Type.Kind())
+	if myBoxReflectType.Field(0).Type.Kind() == reflect.String {
+		fmt.Println("myBoxReflectType.Field(0).Type.Kind() == reflect.String")
+	}
 	fmt.Println("myBoxReflectType.Field(0).Tag:", myBoxReflectType.Field(0).Tag)
 	fmt.Println("myBoxReflectType.Field(1).Name:", myBoxReflectType.Field(1).Name)
 	fmt.Println("myBoxReflectType.Field(1).Type:", myBoxReflectType.Field(1).Type)
+	fmt.Println("myBoxReflectType.Field(1).Type.Kind():", myBoxReflectType.Field(1).Type.Kind())
 	fmt.Println("myBoxReflectType.Field(1).Tag:", myBoxReflectType.Field(1).Tag)
 
 	// 타입 내부의 변수명으로 필드를 가져올 수 도 있다.
