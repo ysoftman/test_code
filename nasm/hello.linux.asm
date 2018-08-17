@@ -32,12 +32,7 @@
 ;     win       WIN (short name for WIN32)
 ; 어셈블 및 링크
 ; -e 로 entrypoint 지정
-; nasm -f elf64 hello.asm -o hello.o && ld hello.o -o hello -e start
-;
-; 맥 기준
-; -e 로 entrypoint 지정
-; 기본으로 설치된 /usr/bin/nasm 버전대신 brew 로 설치한 nasm 사용
-; /usr/local/bin/nasm -f macho64 hello.asm -o hello.o && ld hello.o -o hello -e start
+; nasm -f elf64 hello.linux.asm -o hello.o && ld hello.o -o hello -e start
 
 global start
 
@@ -51,19 +46,11 @@ section .text
 
 ; 여기서 부터는 시작 루틴
 start:
-    ; eax = 4, sys_write 시스템콜 설정
-    mov eax, 4
-    ; ebx = 1, stdout file descriptor 설정
-    mov ebx, 1
-    ; ecx = msg, msg 내용 설정
-    mov ecx, msg
-    ; edx = len, msg 길이 설정
-    mov edx, msg.len
-    ; 0x80 인터럽트 발생 -> 시스템 콜 실행
-    int 0x80
-    ; eax = 1, sys_exit 시스템콜 설정
-    mov eax, 1
-    ; ebx = 0, exit 코드 0 설정
-    mov ebx, 0
-    ; 0x80 인터럽트 발생 -> 시스템 콜 실행
-    int 0x80
+    mov eax, 4  ; eax = 4, sys_write 시스템콜 설정
+    mov ebx, 1  ; ebx = 1, stdout file descriptor 설정
+    mov ecx, msg    ; ecx = msg, msg 내용 설정
+    mov edx, msg.len    ; edx = len, msg 길이 설정
+    int 0x80    ; 0x80 인터럽트(syscall)로 os 에 stdout 메시지 출력 요청
+    mov eax, 1  ; eax = 1, sys_exit 시스템콜 설정
+    mov ebx, 0  ; ebx = 0, exit 코드 0 설정
+    int 0x80    ; 0x80 인터럽트(syscall)로 os 에 프로세스 종료 요청
