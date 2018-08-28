@@ -1,7 +1,7 @@
 // ysoftman
 // go 1.11 에 추가된 trace 패키지 테스트
 
-// 트레이스 결과 웹브라우저로 보기
+// 트레이스 결과 웹브라우저로 보기 - https://golang.org/cmd/trace/
 // go tool trace trace.out
 package main
 
