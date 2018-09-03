@@ -28,6 +28,8 @@ func main() {
 		// MaxSize 보다 커야만 rotate 된다.
 		// MaxSize: 999999,
 		MaxSize: 1,
+
+		// old 로그 유지 조건 - MaxAge or MaxBackups
 		// old 로그 유지 기간(days)
 		// MaxAge is the maximum number of days to retain old log files based on the
 		// timestamp encoded in their filename.  Note that a day is defined as 24
@@ -35,16 +37,19 @@ func main() {
 		// savings, leap seconds, etc. The default is not to remove old log files
 		// based on age.
 		MaxAge: 1,
+
 		// old 로그 유지 개수
 		// MaxBackups is the maximum number of old log files to retain.  The default
 		// is to retain all old log files (though MaxAge may still cause them to get
 		// deleted.)
 		MaxBackups: 10,
+
 		// 로컬 시간으로 파일명(타임스탬프)사용, 기본 UTC
 		// LocalTime determines if the time used for formatting the timestamps in
 		// backup files is the computer's local time.  The default is to use UTC
 		// time.
 		LocalTime: true,
+
 		// 압축여부
 		// Compress determines if the rotated log files should be compressed
 		// using gzip. The default is not to perform compression.
