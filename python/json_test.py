@@ -12,6 +12,10 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+# 인코딩 상태 확인
+print sys.stdin.encoding
+print sys.stdout.encoding
+
 
 strJson = '''
 {
@@ -57,6 +61,16 @@ def parse_json():
     json.dump(data, fp, indent=2, ensure_ascii=False)
     fp.close()
 
+
+    # 출력된 json 파일 읽기
+    print "\n\nload from json file."
+    fp2 = file(outfile, 'r')
+    fromjsonfile = json.load(fp2, encoding='utf-8')
+    print fromjsonfile['obj1']['key1']
+    print fromjsonfile['obj1']['key2']
+    print fromjsonfile['obj2']['key1']
+    print fromjsonfile['obj2']['key2']
+    fp2.close()
 
 if __name__ == '__main__':
     parse_json()
