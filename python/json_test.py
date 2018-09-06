@@ -61,7 +61,6 @@ def parse_json():
     json.dump(data, fp, indent=2, ensure_ascii=False)
     fp.close()
 
-
     # 출력된 json 파일 읽기
     print "\n\nload from json file."
     fp2 = file(outfile, 'r')
