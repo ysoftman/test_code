@@ -102,3 +102,19 @@ echo ${#var3}
 if [[ ${#var3} == 5 ]]; then
     echo "len(${var3}) == 5"
 fi
+
+
+var1="1"
+var2="2"
+if [[ ${var1} == "1" ]] && [[ ${var2} == "2" ]]; then
+    echo 'condition 1'
+fi
+if [[ ${var1} == "1" ]] && [[ ${var2} == "3" ]]; then
+    echo 'condition 2'
+fi
+if [[ ${var1} == "5" ]] || [[ ${var2} == "2" ]]; then
+    echo 'condition 3'
+fi
+if [[ ${var1} == "5" ]] || [[ ${var2} == "10" ]]; then
+    echo 'condition 4'
+fi
