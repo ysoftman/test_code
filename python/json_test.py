@@ -30,6 +30,10 @@ strJson = '''
 }
 '''
 
+outfile = os.path.basename(__file__)
+outfile = outfile.split('.')[0]
+outfile = outfile + "_out.json"
+
 
 def parse_json():
     # json 스트링 로드(파싱)
@@ -51,11 +55,8 @@ def parse_json():
             print key, value
 
     # file 로 쓰기
-    outfile = os.path.basename(__file__)
-    outfile = outfile.split('.')[0]
-    outfile = outfile + "_out.json"
     print "outfile :", outfile
-    fp = file(outfile, 'wb')
+    fp = open(outfile, 'wb')
     # 참고 https://docs.python.org/2/library/json.html
     # json.dump(data, fp, indent=2) # json 파일에 한글 \uXXX 로 escape 되어 기록된다.
     json.dump(data, fp, indent=2, ensure_ascii=False)
@@ -63,13 +64,24 @@ def parse_json():
 
     # 출력된 json 파일 읽기
     print "\n\nload from json file."
-    fp2 = file(outfile, 'r')
+    fp2 = open(outfile, 'rb')
     fromjsonfile = json.load(fp2, encoding='utf-8')
     print fromjsonfile['obj1']['key1']
     print fromjsonfile['obj1']['key2']
     print fromjsonfile['obj2']['key1']
     print fromjsonfile['obj2']['key2']
+
+    # json.load 로 읽은 데이터는 u(유니코드 한글이 깨져 출력된다.)
+    print fromjsonfile
+    # json.load 로 fp2 는 fflush/file pointer 가 EOF 로 간것으로 추측, 따라서 다시 오픈해야한다.
+    fp2 = open(outfile, 'rb')
+    # 그냥 파일을 읽으면 한글이 깨지 않고 그대로 나온다.
+    print fp2.read()
+
     fp2.close()
 
 if __name__ == '__main__':
+    if os.path.exists(outfile):
+        os.remove(outfile)
+
     parse_json()
