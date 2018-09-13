@@ -43,3 +43,11 @@ echo 'delete pattern ccc ~ ggg and print'
 cat ${TEMP_FILE} | sed "/^ccc/,/^ggg/d;"
 # 임시 텍스트  파일 삭제
 rm -f ${TEMP_FILE}
+
+
+# @뒤로 삭제
+out=`(echo "ysoftman @open (12345)" | sed "s/@.*$//")`
+echo "$out"___result
+# 공백@ 뒤로 삭제
+out=`(echo "ysoftman @open (12345)" | sed "s/ @.*$//")`
+echo "$out"___result
