@@ -61,10 +61,3 @@ green='\033[0;32m'
 echo -e "ysoftman ${green}color${reset_color} string " | sed "s/ color.*$//"
 # 중간에 컬러 문자를 제거해줘야 한다.
 echo -e "ysoftman ${green}color${reset_color} string " | sed "s,$(printf '\033')\\[[0-9;]*[a-zA-Z],,g" | sed "s/ color.*$//"
-
-
-# sed test4
-# day 로 정렬하기 위해 (days 1) 부분을 앞으로 옮기기
-msg="lemon (days 1)
-apple (days 2)"
-echo "$msg" | sed -i sort -r
