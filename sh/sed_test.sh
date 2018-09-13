@@ -57,5 +57,5 @@ reset_color='\033[0m'
 green='\033[0;32m'
 # 공백이 아닌 컬러 문자가 포함되어 공백 뒤 삭제가 안된다.
 echo -e "ysoftman ${green}color${reset_color} string " | sed "s/ color.*$//"
-# 중간게 컬러 문자를 제거해줘야 한다.
+# 중간에 컬러 문자를 제거해줘야 한다.
 echo -e "ysoftman ${green}color${reset_color} string " | sed "s,$(printf '\033')\\[[0-9;]*[a-zA-Z],,g" | sed "s/ color.*$//"
