@@ -17,7 +17,19 @@ func main() {
 	dnsLookup("naver.com")
 	dnsLookup("210.89.164.90")
 	dnsLookup("daum.com")
+	fmt.Println()
+	fmt.Println("--- split host port")
+	ipstr := "10.10.10.10:9999"
+	fmt.Println(ipstr)
+	host, port, err := net.SplitHostPort(ipstr)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(host)
+		fmt.Println(port)
+	}
 }
+
 func myip() string {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
