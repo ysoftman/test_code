@@ -37,16 +37,16 @@ extern "C"
 // lua에서 호출 할 수 있는 함수(int funcname(lua_State* L) 형식이어야 한다)
 int DoSomethingForLua(lua_State *L)
 {
-	std::cout << "DoSomethingForLua() called." << std::endl;
+	std::cout << "[C] DoSomethingForLua() called." << std::endl;
 
 	// lua에서 들어온 인자들 파악
 	int a = luaL_checkinteger(L, 1);
 	int b = luaL_checkinteger(L, 2);
 	int c = luaL_checkinteger(L, 3);
 
-	std::cout << "a = " << a << std::endl;
-	std::cout << "b = " << b << std::endl;
-	std::cout << "c = " << c << std::endl;
+	std::cout << "[C] a = " << a << std::endl;
+	std::cout << "[C] b = " << b << std::endl;
+	std::cout << "[C] c = " << c << std::endl;
 
 	// lua에 스택에 결과 넣기
 	lua_pushinteger(L, a + b + c);
@@ -57,43 +57,42 @@ int DoSomethingForLua(lua_State *L)
 
 void printCurrentLuaStack(lua_State *L)
 {
-	lua_Debug dbg;
 	int top = lua_gettop(L);
-	std::cout << "stack top position = " << top << std::endl;
+	std::cout << "[C] stack top position = " << top << std::endl;
 	// for (int i = 1; i < LUAI_MAXSTACK; i++)
 	for (int i = 1; i <= top; i++)
 	{
 		if (lua_isnil(L, -i))
 		{
-			std::cout << "stack(-" << i << ") = nil  " << std::endl;
+			std::cout << "[C] stack(-" << i << ") = nil  " << std::endl;
 			break;
 		}
 		else if (lua_isboolean(L, -i))
 		{
-			std::cout << "stack(-" << i << ") = bool,  " << lua_toboolean(L, -i) << std::endl;
+			std::cout << "[C] stack(-" << i << ") = bool,  " << lua_toboolean(L, -i) << std::endl;
 		}
 		else if (lua_isinteger(L, -i))
 		{
-			std::cout << "stack(-" << i << ") = integer, " << lua_tointeger(L, -i) << std::endl;
+			std::cout << "[C] stack(-" << i << ") = integer, " << lua_tointeger(L, -i) << std::endl;
 		}
 		else if (lua_isnumber(L, -i))
 		{
-			std::cout << "stack(-" << i << ") = number, " << lua_tonumber(L, -i) << std::endl;
+			std::cout << "[C] stack(-" << i << ") = number, " << lua_tonumber(L, -i) << std::endl;
 		}
 		else if (lua_isstring(L, -i))
 		{
-			std::cout << "stack(-" << i << ") = string, " << lua_tostring(L, -i) << std::endl;
+			std::cout << "[C] stack(-" << i << ") = string, " << lua_tostring(L, -i) << std::endl;
 		}
 		else if (lua_istable(L, -i))
 		{
-			std::cout << "stack(-" << i << ") = table, " << lua_topointer(L, -i) << std::endl;
+			std::cout << "[C] stack(-" << i << ") = table, " << lua_topointer(L, -i) << std::endl;
 		}
 	}
 }
 
 int main(int argc, char *argv[])
 {
-	std::cout << "c_for_lua test start..." << std::endl;
+	std::cout << "[C] c_for_lua test start..." << std::endl;
 
 	// lua state 생성
 	lua_State *L = luaL_newstate();
@@ -110,6 +109,8 @@ int main(int argc, char *argv[])
 	// lua 스크립트의 myfunc1 함수 가져오기
 	lua_getglobal(L, "myfunc1");
 
+	std::cout << "[C] C --> Stack --> Lua" << std::endl;
+
 	// lua 함수에 전달할 파라미터 스택에 넣기
 	lua_pushboolean(L, true);
 	lua_pushinteger(L, 99999);
@@ -117,8 +118,6 @@ int main(int argc, char *argv[])
 	lua_pushstring(L, "string");
 
 	printCurrentLuaStack(L);
-
-	std::cout << "C --> Lua" << std::endl;
 
 	// lua 함수 호출
 	// 파라미터 4개를 전달하고 리턴 1개 받음
@@ -128,7 +127,7 @@ int main(int argc, char *argv[])
 	printCurrentLuaStack(L);
 
 	// 스택(minus indexing)에 쌓인 리턴 결과 파악
-	std::cout << "result from Lua = " << lua_tonumber(L, -1) << std::endl;
+	std::cout << "[C] result from Lua = " << lua_tonumber(L, -1) << std::endl;
 
 	// pop 을 해주지 않으면 스택이 계속 쌓인다.
 	// lua_pop 은 내부적으로 lua_settop 으로 스택 위치를 설정
@@ -137,7 +136,7 @@ int main(int argc, char *argv[])
 
 	printCurrentLuaStack(L);
 
-	std::cout << "---------------------------" << std::endl;
+	std::cout << "[C] ---------------------------" << std::endl;
 
 	// lua 스크립트의 myfunc2 함수 가져오기
 	lua_getglobal(L, "myfunc2");
@@ -163,7 +162,9 @@ int main(int argc, char *argv[])
 	// 스택 top은 실제 신규 테이블 포인터 값을 가진다.
 	lua_newtable(L);
 
-	lua_pushstring(L, "this is title");
+	std::cout << "[C] C --> Stack --> Lua" << std::endl;
+
+	lua_pushstring(L, "title data");
 	lua_setfield(L, -2, "title");
 	lua_pushstring(L, "2010-12-31");
 	lua_setfield(L, -2, "date");
@@ -192,8 +193,6 @@ int main(int argc, char *argv[])
 
 	printCurrentLuaStack(L);
 
-	std::cout << "C --> Lua" << std::endl;
-
 	// lua 함수 호출
 	// 파라미터 1개를 전달하고 리턴 1개 받은
 	lua_call(L, 1, 1);
@@ -201,7 +200,7 @@ int main(int argc, char *argv[])
 	printCurrentLuaStack(L);
 
 	// 스택(minus indexing)에 쌓인 리턴 결과 파악
-	std::cout << "result from Lua = " << lua_tostring(L, -1) << std::endl;
+	std::cout << "[C] result from Lua = " << lua_tostring(L, -1) << std::endl;
 
 	// pop 을 해주지 않으면 스택이 계속 쌓인다.
 	// lua_pop 은 내부적으로 lua_settop 으로 스택 위치를 설정
