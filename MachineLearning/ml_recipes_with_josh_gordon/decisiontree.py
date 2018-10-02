@@ -1,6 +1,6 @@
 # coding: utf-8
 # ysoftman
-# 머신 러닝 튜토리얼
+# Machine Learning Recipes with Josh Gordon
 # https://www.youtube.com/watch?v=cKxRvEZd3Mw
 
 # sudo pip install sklearn scikit-learn
