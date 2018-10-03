@@ -2,7 +2,6 @@
 # ysoftman
 # Machine Learning Recipes with Josh Gordon
 # https://www.youtube.com/watch?v=cKxRvEZd3Mw
-
 # sudo pip install sklearn scikit-learn
 from sklearn import tree
 

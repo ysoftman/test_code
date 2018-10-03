@@ -2,7 +2,6 @@
 # ysoftman
 # Machine Learning Recipes with Josh Gordon
 # https://www.youtube.com/watch?v=tNa99PG8hR8
-
 # sudo pip install sklearn scikit-learn numpy graphviz
 import numpy as np
 import graphviz
