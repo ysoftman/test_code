@@ -23,13 +23,13 @@ def euc(a, b):
 # 레이블(정답)으로 선택하는 알고리즘
 class ScrappyKNN():
 
-    # trainning 을 위한 함수로, trainning data 파타미터를 받는다.
+    # training 을 위한 함수로, training data 파타미터를 받는다.
     def fit(self, x_train, y_train):
-        # trainning 데이터를 멤버변수로 기억해 둔다.
+        # training 데이터를 멤버변수로 기억해 둔다.
         self.x_train = x_train
         self.y_train = y_train
 
-    # trainning 된 classifier 로 test(feature) 데이터를 받아 예측 수행하여 결과(label) 출력
+    # training 된 classifier 로 test(feature) 데이터를 받아 예측 수행하여 결과(label) 출력
     def predict(self, x_test):
         predictions = []
         # 훈련데이터의 label 을 하나를 랜덤하게 선태해 예측결과로 사용한다.
@@ -49,7 +49,7 @@ class ScrappyKNN():
         # 가까운 거리를 찾을때 기준의 되는 초기 거리를 하나 정한다.
         best_dist = euc(d, self.x_train[0])
         best_index = 0
-        # 모든 trainning data 들 대해서
+        # 모든 training data 들 대해서
         for i in range(1, len(self.x_train)):
             # 가까운 거리를 가지는것을 찾는다.
             dist = euc(d, self.x_train[i])
@@ -86,7 +86,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.5)
 # decisiontree classifier 생성
 from sklearn import tree
 dt_clf = tree.DecisionTreeClassifier()
-# classifier 를 trainning
+# classifier 를 training
 dt_clf.fit(x_train, y_train)
 
 # test 데이터로 예측해보자
