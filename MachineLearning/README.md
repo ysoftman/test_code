@@ -12,7 +12,7 @@ sudo pip install sklearn scikit-learn numpy graphviz
 sudo pip3 install numpy matplotlib pandas seaborn tensorflow jupyter
 
 # .ipynb 인경우 jupyter notebook 실행
-# http://localhost:8888/?token=xxxxx 으로 접속
+# http://localhost:8888/?token=xxx 으로 접속
 jupyter notebook
 ```
 
