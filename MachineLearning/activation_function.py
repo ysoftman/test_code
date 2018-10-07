@@ -4,6 +4,7 @@ author: ysoftman
 python version : 3.x
 desc : 활성화 함수 테스트
 '''
+# pip3 install numpy matplotlib
 import numpy as np
 import matplotlib.pylab as plt
 
