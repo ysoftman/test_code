@@ -49,9 +49,11 @@ var2="123"
 var3="${var1} ${var2}"
 echo "\${var3}:" ${var3}
 
-# 명령 실행 후 응답 받기
+# `` 으로 명령 실행 후 응답 받기
+output=`echo "ysoftman_99s"`
+echo "\${output}:" ${output}
+# () 으로 명령 실행 후 응답 받기
 output=$(echo "ysoftman_99s")
-# 응답 내용 출력
 echo "\${output}:" ${output}
 
 # predefined variable
