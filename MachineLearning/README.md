@@ -5,19 +5,15 @@ ML(MachineLearning) 관련 테스트 코드들입니다.
 ## 실행 환경
 
 ```bash
-# 파이썬2
-python -m pip install --upgrade pip
-# 파이썬3
-python3 -m pip install --upgrade pip
-# pip 파이썬3 로 설정되어 있다면 파이썬2는 pip2 를 사용해야 한다.
-sudo pip install sklearn scikit-learn numpy matplotlib pandas seaborn graphviz
-sudo pip3 install sklearn scikit-learn numpy matplotlib pandas seaborn graphviz
+# pip 설치
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+sudo python get-pip.py
+sudo python3 get-pip.py
+# 패키지 설치
+# tensorflow 는 아직 python3.7 지원에 문제가 있다.
+sudo pip3 install sklearn scikit-learn numpy matplotlib pandas seaborn graphviz tensorflow jupyter
 # jupyter 는 설치 에러 발생시
 sudo pip3 install --upgrade --force-reinstall --no-cache-dir jupyter
-# python3.7 tensorflow 는 아직 지원하지 않는다.
-# sudo pip3 install tensorflow
-# 3.6 버전을 강제로 설치하는 경우
-sudo pip3 install https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.11.0-py3-none-any.whl
 
 # .ipynb 인경우 jupyter notebook 실행
 # http://localhost:8888/?token=xxx 으로 접속
