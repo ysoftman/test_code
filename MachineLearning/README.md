@@ -26,6 +26,11 @@ jupyter notebook
 
 - tensorflow r1.0 정식 릴리즈 이후 버전과 이전은 몇몇 api 들이 인자들의 개수나 순서가 다르다.
 - 인터넷의 많은 자료가 아직 1.0 정식 릴리즈전의 tensorflow 버전으로 설명하고 있다.
+- ipython(jupyter) notebok(.ipynb) -> python(.py) 변환
+
+```bash
+bash convert_ipynb_to_py.sh
+```
 
 ## 책,강의 내용 정리
 
