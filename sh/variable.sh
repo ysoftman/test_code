@@ -49,9 +49,11 @@ var2="123"
 var3="${var1} ${var2}"
 echo "\${var3}:" ${var3}
 
-# 명령 실행 후 응답 받기
+# `` 으로 명령 실행 후 응답 받기
+output=`echo "ysoftman_99s"`
+echo "\${output}:" ${output}
+# () 으로 명령 실행 후 응답 받기
 output=$(echo "ysoftman_99s")
-# 응답 내용 출력
 echo "\${output}:" ${output}
 
 # predefined variable
@@ -72,6 +74,8 @@ echo "\${0}:" ${0}
 echo "\${1}:" ${1}
 # 현재 디랙토리 전체 경로 출력
 echo "\${PWD}:" ${PWD}
+# ${var#Pattern} 변수 앞에서부터 패턴과 매치되는 가장 짧은 부분 제거
+# ${var##Pattern} 변수 앞에서부터 패턴과 매치되는 가장 긴 부분 제거
 # 현재 디렉토리만 출력
 echo "\${PWD##*/}:" ${PWD##*/}
 # bash 버전
@@ -102,3 +106,42 @@ echo ${#var3}
 if [[ ${#var3} == 5 ]]; then
     echo "len(${var3}) == 5"
 fi
+
+
+var1="1"
+var2="2"
+if [[ ${var1} == "1" ]] && [[ ${var2} == "2" ]]; then
+    echo 'condition 1'
+fi
+if [[ ${var1} == "1" ]] && [[ ${var2} == "3" ]]; then
+    echo 'condition 2'
+fi
+if [[ ${var1} == "5" ]] || [[ ${var2} == "2" ]]; then
+    echo 'condition 3'
+fi
+if [[ ${var1} == "5" ]] || [[ ${var2} == "10" ]]; then
+    echo 'condition 4'
+fi
+
+
+num1=1
+num2=2
+if [[ $num1 < $num2 ]]; then
+    echo "$num1 < $num2"
+fi
+num1=1
+num2=1
+# 이중소괄호는 C형태의 산술연산이 가능하다.
+if (( $num1 <= $num2 )); then
+    echo "$num1 <= $num2"
+fi
+# $를 생략해도 된다.
+(( ++num1 ))
+(( num1++ ))
+echo $num1
+(( --num1 ))
+(( num1-- ))
+echo $num1
+# 삼항 연산도 가능
+(( out = num1==1?99:100 ))
+echo $out

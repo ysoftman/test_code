@@ -5,6 +5,7 @@
 package main
 
 import (
+	"fmt"
 	"sync"
 	"time"
 
@@ -24,24 +25,31 @@ func main() {
 		// 로그 파일당 최대 허용 크기(megabytes) - rotate 조건
 		// MaxSize is the maximum size in megabytes of the log file before it gets
 		// rotated. It defaults to 100 megabytes.
-		MaxSize: 999999,
-		// 로그 파일 변경 간격(days) - rotate 조건
+		// MaxSize 보다 커야만 rotate 된다.
+		// MaxSize: 999999,
+		MaxSize: 1,
+
+		// old 로그 유지 조건 - MaxAge or MaxBackups
+		// old 로그 유지 기간(days)
 		// MaxAge is the maximum number of days to retain old log files based on the
 		// timestamp encoded in their filename.  Note that a day is defined as 24
 		// hours and may not exactly correspond to calendar days due to daylight
 		// savings, leap seconds, etc. The default is not to remove old log files
 		// based on age.
 		MaxAge: 1,
-		// 지난 로그 백업 개수
+
+		// old 로그 유지 개수
 		// MaxBackups is the maximum number of old log files to retain.  The default
 		// is to retain all old log files (though MaxAge may still cause them to get
 		// deleted.)
-		MaxBackups: 5,
+		MaxBackups: 10,
+
 		// 로컬 시간으로 파일명(타임스탬프)사용, 기본 UTC
 		// LocalTime determines if the time used for formatting the timestamps in
 		// backup files is the computer's local time.  The default is to use UTC
 		// time.
 		LocalTime: true,
+
 		// 압축여부
 		// Compress determines if the rotated log files should be compressed
 		// using gzip. The default is not to perform compression.
@@ -52,23 +60,34 @@ func main() {
 	// 디버그 레벨 이상의 로그는 출력 하도록 설정
 	log.SetLevel(log.DebugLevel)
 
+	fmt.Printf("luberjack rotate options\n%#v\n", lj)
+	fmt.Println("Press Ctrl + c to stop to rotate log...")
 	// json 형식으로 로그 출력
 	log.SetFormatter(&log.JSONFormatter{})
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		for i := 0; i < 10; i++ {
-			// 로그 파일 로테이션
-			// 현재 사용 중인 로그는 ysoftman.log
-			// 지난 로그는 ysoftman-타임스탬프.log 로 변경됨
-			<-time.After(time.Second * 2)
-			lj.Rotate()
+
+		// 강제로 로그 로테이션
+		// for i := 0; i < 10; i++ {
+		// 	// 로그 파일 로테이션
+		// 	// 현재 사용 중인 로그는 ysoftman.log
+		// 	// 지난 로그는 ysoftman-타임스탬프.log 로 변경됨
+		// 	<-time.After(time.Second * 2)
+		// 	lj.Rotate()
+		// 	printlog()
+		// }
+
+		// 로그 파일을 1MB write 해서 로테이션하기
+		for true {
 			printlog()
+			time.Sleep(10 * time.Microsecond)
 		}
 		defer wg.Done()
-	}()
 
+	}()
 	wg.Wait()
+
 }
 
 func printlog() {

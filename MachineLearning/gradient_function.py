@@ -4,6 +4,7 @@ author: ysoftman
 python version : 3.x
 desc : 미분, 기울기(gradient) 함수
 '''
+# pip3 install numpy matplotlib
 import numpy as np
 import matplotlib.pylab as plt
 # for 3d graph

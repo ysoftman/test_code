@@ -1,5 +1,6 @@
 #!/bin/bash
 # ysoftman
+
 # sed test1
 # 하위 디렉토리(파일을 제외)만 출력하기
 # ls -lR ./ ysoftman : ./ysoftman 디렉토리에서 -l : 리스트, -R : 하위 디렉토리
@@ -43,3 +44,20 @@ echo 'delete pattern ccc ~ ggg and print'
 cat ${TEMP_FILE} | sed "/^ccc/,/^ggg/d;"
 # 임시 텍스트  파일 삭제
 rm -f ${TEMP_FILE}
+
+
+# sed test3
+# @뒤로 삭제
+# Substitute 형식 : s/regular expression/replacement/flag
+out=`(echo "ysoftman @open (12345)" | sed "s/@.*$//")`
+echo "$out"___result
+# 공백@ 뒤로 삭제
+out=`(echo "ysoftman @open (12345)" | sed "s/ @.*$//")`
+echo "$out"___result
+# 컬문자의 경우
+reset_color='\033[0m'
+green='\033[0;32m'
+# 공백이 아닌 컬러 문자가 포함되어 공백 뒤 삭제가 안된다.
+echo -e "ysoftman ${green}color${reset_color} string " | sed "s/ color.*$//"
+# 중간에 컬러 문자를 제거해줘야 한다.
+echo -e "ysoftman ${green}color${reset_color} string " | sed "s,$(printf '\033')\\[[0-9;]*[a-zA-Z],,g" | sed "s/ color.*$//"

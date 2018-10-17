@@ -8,3 +8,8 @@
 # . : 시작할 디렉토리
 grep -rn --include=*.txt -E "ysoftman|bill" .
 
+# 현재 계정으로 실행중인 프로세스들에서 grep 빼고 보기
+ps | grep "" | grep -v "grep"
+
+# -i --ignore-care 대소문자 구별 없이 찾기
+echo 'fruite lemon apple' | grep -i "LEMON"

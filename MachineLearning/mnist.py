@@ -1,4 +1,7 @@
 # coding: utf-8
+# ysoftman
+# python version : 3.x
+
 try:
     import urllib.request
 except ImportError:

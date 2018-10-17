@@ -17,6 +17,7 @@ def test_print_list(val):
             print("element = ", idx)
 
 
+# list(리스트)는 []로 표현
 val1 = ["한글", 123, "bbb"]
 fruits_list = ["apple", "banana", "grape", "lemon", "fineapple"]
 
@@ -41,20 +42,32 @@ val1.extend(fruits_list)
 # 리스트 내용 출력
 test_print_list(val1)
 
+print('------')
 
-# 튜플(원소 수정 불가)
-val1 = "한글 , def , 123 ,456"
-
-# 구분자로 구분하기
-print(val1.split(","))
-
-
-val1 = [7, 8, 6, 8, 4, 3, 2, 1]
-# va1 리스트 출력
+val1 = [8, 7, 6, 5, 4, 3, 2, 1]
+# val1 리스트 출력
 print(val1)
 
-# 2~3번째만 출력하기
+# 리스트는 slicing(슬라이싱)이 가능하다.
+# slice(start:stop[:step]) 의 형태(step 은 optional)
+# 모든 요소
+print(val1[:])
+# 2~3번째만
 print(val1[2:4])
+# 4번째 이전(0~3)까지
+print(val1[:4])
+# 모든 요소에 대해서 1씩 증가하는 위치
+print(val1[::])
+# 모든 요소에 대해서 2씩 증가하는 위치
+print(val1[::2])
+# 0~4 위치에 대해서 2씩 증가하는 위치
+print(val1[0:5:2])
+# 모든 요소에 대해서 뒤에서 부터 -1씩 증가하는 위치
+print(val1[::-1])
+# 모든 요소에 대해서 뒤에서 부터 -2씩 증가하는 위치
+print(val1[::-2])
+
+print('------')
 
 # 원본 데이터는 그대로 두고 val2 에 정렬
 val2 = sorted(val1)

@@ -23,7 +23,7 @@ unset ysoftmanvar2
 
 # export 는 현재 쉘과 현재 쉘에서 파생된 쉘에 환경변수를 적용한다.
 # sh ysoftman.sh 로 실행하면 ysoftman.sh 쉘과 그 자식쉘에만 export 가 반영된다.
-# source ysoftman.sh 로 실행해야 현재 쉘에 export 내용이 반영된다.
+# . ysoftman.sh 또는 source ysoftman.sh 로 실행해야 현재 쉘에 export 내용이 반영된다.
 export ysoftmanvar1='ysoftmanvar1'
 export ysoftmanvar2='ysoftmanvar2'
 

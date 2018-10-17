@@ -7,7 +7,7 @@ mnist 데이터 다운로드민 넘파이 배열러 리턴하는 소스를 사�
 https://github.com/WegraLee/deep-learning-from-scratch/tree/master/ch03/sample_weight.pkl 가중치 값 저장
 https://github.com/WegraLee/deep-learning-from-scratch/blob/master/dataset/mnist.py 내용을 mnist.py 로 저장
 '''
-
+# pip3 install numpy matplotlib image
 import numpy as np
 import pickle
 from mnist import load_mnist

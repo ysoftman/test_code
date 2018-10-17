@@ -4,6 +4,7 @@ author: ysoftman
 python version : 3.x
 desc : 손실(오차) 함수 
 '''
+# pip3 install numpy matplotlib
 import numpy as np
 from mnist import load_mnist
 
