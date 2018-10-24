@@ -12,7 +12,7 @@ ML(MachineLearning) 관련 테스트 코드들입니다.
   sudo python get-pip.py
   sudo python3 get-pip.py
   # 패키지 설치
-  sudo pip3 install sklearn scikit-learn numpy matplotlib pandas seaborn graphviz tensorflow jupyter
+  sudo pip3 install sklearn scikit-learn numpy matplotlib pandas pillow seaborn graphviz tensorflow jupyter
   # jupyter 는 설치 에러 발생시
   sudo pip3 install --upgrade --force-reinstall --no-cache-dir jupyter
 
