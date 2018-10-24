@@ -343,20 +343,12 @@ def plot_with_labels(low_dim_embs, labels, filename):
 
     plt.savefig(filename)
 
-
-try:
-    # pylint: disable=g-import-not-at-top
-    from sklearn.manifold import TSNE
-    import matplotlib.pyplot as plt
-
-    tsne = TSNE(
-        perplexity=30, n_components=2, init='pca', n_iter=5000, method='exact')
-    plot_only = 500
-    low_dim_embs = tsne.fit_transform(final_embeddings[:plot_only, :])
-    labels = [reverse_dictionary[i] for i in xrange(plot_only)]
-    plot_with_labels(low_dim_embs, labels,
-                     os.path.join(os.path.abspath(__file__), 'tsne.png'))
-
-except ImportError as ex:
-    print('Please install sklearn, matplotlib, and scipy to show embeddings.')
-    print(ex)
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+tsne = TSNE(
+    perplexity=30, n_components=2, init='pca', n_iter=5000, method='exact')
+plot_only = 500
+low_dim_embs = tsne.fit_transform(final_embeddings[:plot_only, :])
+labels = [reverse_dictionary[i] for i in xrange(plot_only)]
+plot_with_labels(low_dim_embs, labels,
+                 os.path.join(os.path.curdir, 'tsne.png'))
