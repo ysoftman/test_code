@@ -37,9 +37,9 @@ cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
 # loss minimize 를 위해서는 경사하강법을 사용하고 이때의 경사하강법시 움직이는 폭(학습비율은) 0.01로 잡는다.
 train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
 
-# 변수 초기화를 위한 노드
-init = tf.initialize_all_variables()
-
+# 전역 변수 초기화를 위한 노드
+# init = tf.initialize_all_variables() # deprecated
+init = tf.global_variables_initializer()
 # 실행 준비
 sess = tf.Session()
 sess.run(init)
