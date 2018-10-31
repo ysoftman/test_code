@@ -45,8 +45,8 @@ sess = tf.Session()
 sess.run(init)
 
 
-# 학습 획수 500번
-for i in range(500):
+# 학습 획수 1000번
+for i in range(1000):
     # 100개 묶음(배치) 데이터를 가져온다.
     batch_xs, batch_ys = mnist.train.next_batch(100)
     # 위 placeholder 로 생성한 노드들 자리에 배치데이터를 셋팅
@@ -59,7 +59,7 @@ for i in range(500):
     # 100번의 훈련마다
     if i % 100 == 0:
         # 현재의 훈련 스텝에서의 정확도를 출력
-        print("[%d/%d]" % (i, 500), sess.run(accuracy, feed_dict={
+        print("[%d/%d]" % (i, 1000), sess.run(accuracy, feed_dict={
               x: mnist.test.images, y_: mnist.test.labels}))
 
 sess.close()
