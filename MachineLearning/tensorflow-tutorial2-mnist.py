@@ -59,7 +59,7 @@ for i in range(500):
     # 100번의 훈련마다
     if i % 100 == 0:
         # 현재의 훈련 스텝에서의 정확도를 출력
-        print("[%d/%d]" % (i+100, 500), sess.run(accuracy, feed_dict={
+        print("[%d/%d]" % (i, 500), sess.run(accuracy, feed_dict={
               x: mnist.test.images, y_: mnist.test.labels}))
 
 sess.close()
