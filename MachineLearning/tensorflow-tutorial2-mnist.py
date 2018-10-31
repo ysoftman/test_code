@@ -45,18 +45,21 @@ sess = tf.Session()
 sess.run(init)
 
 
-# 학습 획수 1000번
-for i in range(1000):
+# 학습 획수 500번
+for i in range(500):
     # 100개 묶음(배치) 데이터를 가져온다.
     batch_xs, batch_ys = mnist.train.next_batch(100)
     # 위 placeholder 로 생성한 노드들 자리에 배치데이터를 셋팅
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
     # 입력y와 실제 정답y  각각에서 최대값을 찾아서 이둘이 같으면 예측이 맞은것이다.(정답을 찾은경우)
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
-    # correct_prediction 를 1.0. 0.0 등의 수치로 캐스팅하여 이들의 평균을 계산하면 정확도(accuracy)가 된다.
+    # correct_prediction 를 1.0. 0.0 등의 수치로 캐스팅하여 이들의 평균을 계산하면 정확도(accuracy)가
+    # 된다.
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     # 100번의 훈련마다
     if i % 100 == 0:
         # 현재의 훈련 스텝에서의 정확도를 출력
-        print(sess.run(accuracy, feed_dict={
+        print("[%d/%d]" % (i+100, 500), sess.run(accuracy, feed_dict={
               x: mnist.test.images, y_: mnist.test.labels}))
+
+sess.close()
