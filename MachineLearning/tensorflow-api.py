@@ -62,7 +62,25 @@ z3 = z1 + z2
 print(sess.run([z3], feed_dict={z1: [5.], z2: [7.]}))
 
 # 같은 shape 의 값만 명시해야 한다.
-z3 = tf.placeholder(tf.float32, shape=[1, 2]) # 1x2 차원
-z4 = tf.placeholder(tf.float32, shape=[1, 2]) # 1x2 차원
+z3 = tf.placeholder(tf.float32, shape=[1, 2])  # 1x2 차원
+z4 = tf.placeholder(tf.float32, shape=[1, 2])  # 1x2 차원
 z5 = z3 + z4
 print(sess.run([z5], feed_dict={z3: [[5., 6.]], z4: [[7., 8.]]}))
+
+
+#####
+# reduce_sum : 차원내 모든 요소들의 합
+# reduce_mean : 차원내 모든 요소들의 평균
+x = tf.constant([[1., 1.], [2., 2.]])
+# (1+1+2+2)
+print(sess.run(tf.reduce_sum(x)))
+# 0번째 차원은 제외하고 더한다. [(1+2), (1+2)]
+print(sess.run(tf.reduce_sum(x, axis=0)))
+# 1번째 차원은 제외하고 더한다. [(1+1), (2+2)]
+print(sess.run(tf.reduce_sum(x, axis=1)))
+# (1+1+2+2)/4
+print(sess.run(tf.reduce_mean(x)))
+# 0번째 차원은 제외하고 평균을 구한다. [(1+2)/2, (1+2)/2]
+print(sess.run(tf.reduce_mean(x, axis=0)))
+# 1번째 차원은 제외하고 평균을 구한다. [(1+1)/2, (2+2)/2]
+print(sess.run(tf.reduce_mean(x, axis=1)))
