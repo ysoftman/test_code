@@ -12,7 +12,7 @@ import "strconv"
 import "time"
 
 func main() {
-	fmt.Println("[Usage] " + os.Args[0] + " limit-MBytes loop-cnt")
+	fmt.Println("[Usage] " + os.Args[0] + " max-MB loop-cnt")
 	fmt.Println("ex) write 100 MBytes to current drive for 50 times")
 	fmt.Println(os.Args[0] + " 100 50")
 
@@ -25,9 +25,9 @@ func main() {
 	fmt.Println("Args[1]:", os.Args[1])
 	fmt.Println("Args[2]:", os.Args[2])
 
-	limit, err := strconv.Atoi(os.Args[1])
+	maxSize, err := strconv.Atoi(os.Args[1])
 	if err != nil {
-		fmt.Println("can't read limit bytes size")
+		fmt.Println("can't read max-MB size")
 		os.Exit(1)
 	}
 
@@ -38,8 +38,7 @@ func main() {
 	}
 
 	// MB 단위로 취급
-	limit *= 1000 * 1000
-	data := make([]byte, limit)
+	data := make([]byte, 1000*1000)
 
 	startSec := time.Now().UnixNano()
 
@@ -48,12 +47,14 @@ func main() {
 		fmt.Printf("%d/%d\n", i, loopcnt)
 
 		// 더미 파일 생성
-		fpDummy, err := os.Create("dummyfile")
+		fpDummy, err := os.OpenFile("dummyfile", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
 			fmt.Println("can't create file")
 			os.Exit(1)
 		}
-		fpDummy.Write(data)
+		for j := 1; j <= maxSize; j++ {
+			fpDummy.Write(data)
+		}
 		fpDummy.Close()
 
 	}
