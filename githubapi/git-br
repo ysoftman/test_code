@@ -21,46 +21,61 @@ import subprocess
 
 
 # github 접속 정보를 명시
+# https://developer.github.com/v3/issues/
 user = "ysoftman"
 passwd = ""
 baseurl = "https://api.github.com"
 owner = "ysoftman"
 repo = "test_code"
+issue_base_url = "https://github.com/{}/{}/issues/".format(
+    owner, repo)
+
+
+class color:
+    reset_color = '\033[0m'
+    black = '\033[0;30m'
+    red = '\033[0;31m'
+    green = '\033[0;32m'
+    yellow = '\033[0;33m'
+    blue = '\033[0;34m'
+    purple = '\033[0;35m'
+    cyan = '\033[0;36m'
+    white = '\033[0;37m'
 
 
 def issue_list(branches):
-    # https://github.com/api/v3/repos/오너/저장소/issues?state=open
+    # state=all 에 로컬 이슈번호가 없는 경우가 있어, open, closed 로 나눠서 요청
     url = "{}/repos/{}/{}/issues?state=open".format(baseurl, owner, repo)
     resp = requests.get(url, auth=(user, passwd))
-    result = json.loads(resp.content)
+    open_issue_result = json.loads(resp.content)
 
-    open_issue = {}
+    url = "{}/repos/{}/{}/issues?state=closed".format(baseurl, owner, repo)
+    resp = requests.get(url, auth=(user, passwd))
+    closed_issue_result = json.loads(resp.content)
+
     for br_name in branches:
-        # xxx-111 의 뒤부분은 이슈번호인 경우
         tokens = br_name.split('-')
         if len(tokens) == 2:
-            for item in result:
-                if tokens[1] == str(item['number']):
-                    print br_name, item['title'], item['state']
-                    idx = result.index(item)
-                    open_issue[br_name] = 'open'
-                    del result[idx]
+            for item in open_issue_result:
+                if tokens[1] == str(item['number']) and item['state'] == 'open':
+                    print color.yellow + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color
+                    del open_issue_result[open_issue_result.index(item)]
+                    del branches[branches.index(br_name)]
                     break
-        elif len(tokens) == 1:
-            print tokens[0]
-            open_issue[br_name] = 'open'
+    for br_name in branches:
+        tokens = br_name.split('-')
+        if len(tokens) == 2:
+            for item in closed_issue_result:
+                if tokens[1] == str(item['number']) and item['state'] == 'closed':
+                    print color.cyan + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color
+                    del closed_issue_result[closed_issue_result.index(item)]
+                    del branches[branches.index(br_name)]
+                    break
 
     for br_name in branches:
-        if open_issue.get(br_name) == None:
-            print br_name
+        print br_name
 
 if __name__ == '__main__':
-    if len(passwd) == 0:
-        print 'password is empty.'
-        sys.exit(0)
-
-    # 로컬 브랜치 리스트를 얻어 온다.
     result = subprocess.Popen("git branch", shell=True,
                               stdout=subprocess.PIPE).stdout.read()
-    # 브랜치들은 라인으로 구분해서 리스트 파라미터로 넘긴다.
     issue_list(result.splitlines())
