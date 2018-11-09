@@ -19,6 +19,11 @@ import json
 import sys
 import subprocess
 
+# utf8 인코딩을 기본으로 하지 않으면
+# git br | grep ysoftman
+# 과 같은 파이프라인 처리시 UnicodeEncodeError 가 발생한다.
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 # github 접속 정보를 명시
 # https://developer.github.com/v3/issues/
