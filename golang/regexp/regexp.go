@@ -24,7 +24,7 @@ func main() {
 	fmt.Println(re.ReplaceAllString("1234 lemonz ysoftmanlaazysoftman", "___replaced___"))
 
 	// 정규 표현식으로 문자열 검색해서 매치된 문자열 [0]
-	// 중에서 정규표현식 하위-괄호() 에 해당하는 부분 찾는다. [1] ... [n]
+	// 중에서 하위식subexpressions 인 괄호() 에 해당하는 부분 찾는다. [1] ... [n]
 	subMatched := re.FindStringSubmatch("aalaaazllzzz")
 	for i := 0; i < len(subMatched); i++ {
 		fmt.Println(subMatched[i])
