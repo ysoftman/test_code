@@ -25,7 +25,8 @@ strJson = '''
     },
     "obj2" : {
         "key1": "bbb-한글이 들어있습니다.",
-        "key2": 9999
+        "key2": 9999,
+        "arr" : [ "apple","lemon","banana" ]
     }
 }
 '''
@@ -53,6 +54,11 @@ def parse_json():
         print "obj:", obj
         for key, value in jsonData[obj].items():
             print "key: {}  value: {}".format(key, value)
+            # json의 arry -> loads -> python의 리스트
+            if isinstance(value, list):
+                print "array value:", value
+                for l in value:
+                    print l
 
     # file 로 쓰기
     print "outfile :", outfile
