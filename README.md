@@ -1,8 +1,7 @@
 # ysoftman 테스트 코드
 
 
-[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)](https://github.com/ysoftman/test_code)
-[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg?style=for-the-badge)](https://github.com/ysoftman/test_code)
+[![GitHub license](https://img.shields.io/github/license/ysoftman/test_code.svg?style=for-the-badge)](https://github.com/ysoftman/test_code/blob/develop/LICENSE)
 
 ```text
                     ______
