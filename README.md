@@ -2,6 +2,8 @@
 
 
 [![GitHub license](https://img.shields.io/github/license/ysoftman/test_code.svg?style=for-the-badge)](https://github.com/ysoftman/test_code/blob/develop/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/ysoftman/test_code.svg?style=for-the-badge)](https://github.com/ysoftman/test_code/issues)
+
 
 ```text
                     ______
