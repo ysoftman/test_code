@@ -2,7 +2,8 @@
 # author: ysoftman
 # factorial test
 
-
+# 5 * 4 * 3 * 2 * 1 = 120
+# 현재팩토리얼값 = (현재팩토리얼값) * (현재팩토리얼값-1) 가 반복된다.
 def factorial(n):
     # print n
     if n == 1 or n == 0:
