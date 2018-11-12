@@ -14,22 +14,38 @@
 #     print("[resp.read()]\n", resp.read())
 
 
+from urlparse import urlparse, parse_qs  # python2
+# from urllib import parse  # python3
 
 # 참고 http://docs.python-requests.org/en/master/
-import requests 
+import requests
+
 
 def url_request(url):
     resp = requests.get(url)
-    
-    # 4xx client error or 5xx server error 응답시 raise 발생 
+
+    # 4xx client error or 5xx server error 응답시 raise 발생
     resp.raise_for_status()
-    print '['+url+']'
+    print '[' + url + ']'
     print 'encoding:', resp.encoding
     print 'text:', resp.text
     print 'headers:', resp.headers
     print 'headers[server]:', resp.headers['server']
 
+
+def url_parse_param(url):
+    # params = parse.urlsplit(url)  # python3
+    # url을 sheme(http,https), netloc(www.google.com), path(/search),
+    # query(a=1&b=aaa) 로 분리
+    result = urlparse(url)
+    print result
+    # 쿼리 파라미터를 dictionary 로 파싱
+    params = parse_qs(result.query)
+    print params
+    print params["a"]
+    print params["b"]
+
 # url 요청
 url_request("http://www.google.com")
 url_request("http://www.naver.com")
-
+url_parse_param("http://www.google.com/search?a=1&b=aaa")
