@@ -42,8 +42,11 @@ def url_parse_param(url):
     # 쿼리 파라미터를 dictionary 로 파싱
     params = parse_qs(result.query)
     print params
+    # 각 파라미터의 값은 여러개가 될 수 있어 list 형태로 담겨있다.
     print params["a"]
+    print params["a"][0]
     print params["b"]
+    print params["b"][0]
 
 # url 요청
 url_request("http://www.google.com")
