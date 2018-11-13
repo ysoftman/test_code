@@ -27,6 +27,6 @@ func main() {
 	// 중에서 하위식subexpressions 인 괄호() 에 해당하는 부분 찾는다. [1] ... [n]
 	subMatched := re.FindStringSubmatch("aalaaazllzzz")
 	for i := 0; i < len(subMatched); i++ {
-		fmt.Println(subMatched[i])
+		fmt.Printf("%v, %v\n", i, subMatched[i])
 	}
 }
