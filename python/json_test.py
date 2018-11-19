@@ -77,6 +77,12 @@ def parse_json():
     print "fromJSONFile['obj2']['key1']:", fromJSONFile['obj2']['key1']
     print "fromJSONFile['obj2']['key2']:", fromJSONFile['obj2']['key2']
 
+    # key3 필드가 없으면
+    if fromJSONFile['obj2'].get('key3') == None:
+        print "fromJSONFile['obj2']['key3'] is null"
+    # key3 필드가 없으면 0 값으로 대체
+    print "set 0 if null field, fromJSONFile['obj2'].get('key3', 0)", fromJSONFile['obj2'].get('key3', 0)
+
     # json.load 로 읽은 데이터는 u(유니코드 한글이 깨져 출력된다.)
     print "fromJSONFile:\n", fromJSONFile
     # json.load 로 fp 는 fflush/file pointer 가 EOF 로 간것으로 추측, 따라서 다시 오픈해야한다.
