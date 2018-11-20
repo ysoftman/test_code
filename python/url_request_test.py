@@ -27,10 +27,29 @@ def url_request(url):
     # 4xx client error or 5xx server error 응답시 raise 발생
     resp.raise_for_status()
     print '[' + url + ']'
-    print 'encoding:', resp.encoding
-    print 'text:', resp.text
-    print 'headers:', resp.headers
-    print 'headers[server]:', resp.headers['server']
+    print "resp.status_code:", resp.status_code
+    print 'resp.encoding:', resp.encoding
+    print 'resp.headers:', resp.headers
+    print 'resp.headers[server]:', resp.headers['server']
+    # 내용 출력이 많아 생략
+    # print 'text:', resp.text
+
+
+def url_post_request(url):
+
+    # dictionary 로 표현
+    data = {'mydata1': '123', 'mydata2': 'aaaa'}
+    headers = {'Content-Type': 'application/json'}
+    cookies = {'mycookie': 'this is test 쿠키'}
+    # resp = requests.post(url, data=data, headers=headers, cookies=cookies)
+    # 또는
+    resp = requests.request('POST', url, data=data,
+                            headers=headers, cookies=cookies)
+    print '[' + url + ']'
+    print "resp.status_code:", resp.status_code
+    print 'resp.encoding:', resp.encoding
+    print 'resp.headers:', resp.headers
+    print "resp.text:", resp.text
 
 
 def url_parse_param(url):
@@ -47,8 +66,10 @@ def url_parse_param(url):
     print params["a"][0]
     print params["b"]
     print params["b"][0]
-
 # url 요청
 url_request("http://www.google.com")
-url_request("http://www.naver.com")
+print ''
+url_post_request("http://httpbin.org/post")
+print ''
 url_parse_param("http://www.google.com/search?a=1&b=aaa")
+print ''
