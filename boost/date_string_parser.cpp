@@ -15,13 +15,13 @@ bool parseDateString(string datestring)
 	std::locale loc("");
 	// 그레고리안 달력 타입으로 파싱
 	// format_date_parser 는 년,월,일,달력등의 date_type 만 받을 수 있음
-	boost::date_time::format_date_parser<boost::gregorian::date, char> *parser = new boost::date_time::format_date_parser<boost::gregorian::date, char>("", loc);
+	boost::date_time::format_date_parser<boost::gregorian::date, char> parser("", loc);
 	boost::date_time::special_values_parser<boost::gregorian::date, char> svp;
 
 	boost::gregorian::date d;
 	try
 	{
-		d = parser->parse_date(datestring, dateformat, svp);
+		d = parser.parse_date(datestring, dateformat, svp);
 		cout << d << endl;
 	}
 	catch (...)
