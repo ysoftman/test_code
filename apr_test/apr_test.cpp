@@ -2,46 +2,13 @@
 // apr(Apache Portable Runtime) library test
 /*
 # openssl 설치
-wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
-tar zxvf openssl-1.0.2k.tar.gz
-cd openssl-1.0.2k
-./config
-make clean
-make -j4
-sudo make install
-cd ..
+bash install_openssl.sh
 
+# apr 설치
+bash install_apr.sh
 
-# apr 설치 방법1
-# apche httpd 설치하면 생성되는 apr 사용
-wget http://mirror.apache-kr.org//httpd/httpd-2.2.34.tar.gz
-tar zxvf httpd-2.2.34.tar.gz
-cd httpd-2.2.34
-./configure --prefix="${HOME}/workspace/httpd" --with-mpm-prefork
-make && make install
 # 빌드
-g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/httpd/include -I/usr/local/ssl/include -L${HOME}/workspace/httpd/lib -L/usr/local/ssl/lib -lapr-1 -lssl -lcrypto -ldl
-
-
-# apr 설치 방법2
-wget http://apache.mirror.cdnetworks.com//apr/apr-1.6.3.tar.gz
-tar zxvf apr-1.6.3.tar.gz
-cd apr-1.6.3
-./configure --prefix="${HOME}/workspace/apr"
-make && make install
-# apr-util 설치
-wget http://apache.mirror.cdnetworks.com//apr/apr-util-1.6.1.tar.gz
-tar zxvf apr-util-1.6.1.tar.gz
-cd apr-util-1.6.1
-./configure --prefix="${HOME}/workspace/apr" --with-apr="${HOME}/workspace/apr/bin/apr-1-config"
-# make 시 expat.h 가 없어 에러가 난다면 
-# centos : yum install expat-devel
-# ubuntu : apt-get install libexpat1-dev
-make && make install
-cd ..
-# 빌드
-g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/apr/include/apr-1 -I/usr/local/ssl/include -L${HOME}/workspace/apr/lib -L/usr/local/ssl/lib -lapr-1 -lssl -lcrypto -ldl
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/workspace/apr/lib:
+bash build.sh
 */
 
 #include "apr.h"
