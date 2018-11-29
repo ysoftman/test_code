@@ -10,6 +10,9 @@ echo $?
 # 현재 프로세스 ID
 echo $$
 
+# 마지막 백그라운드 프로세스 ID
+echo $!
+
 var1="ysoftman"
 
 # 변수 사용시 ${}와 같이 curly brace 로 감싸는 이유는 변수 확장(variable expansion)하기 위함이다.
@@ -145,3 +148,13 @@ echo $num1
 # 삼항 연산도 가능
 (( out = num1==1?99:100 ))
 echo $out
+
+# a,b,c 출력
+echo {a,b,c}
+
+# 1 ~ 10 까지 출력
+echo {1..20}
+for v in {1..5}
+do
+    echo $(($v*100))
+done
