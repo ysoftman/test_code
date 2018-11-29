@@ -15,8 +15,8 @@ def deletePrefixHttp(url):
     return url
 
 
-if len(sys.argv) != 3:
-    print 'ex) python', sys.argv[0], "'httpbin.org/get' 80"
+if len(sys.argv) != 2:
+    print 'ex) python', sys.argv[0], "'httpbin.org/get'"
     sys.exit(0)
 
 method = "GET"
@@ -29,8 +29,18 @@ try:
 except ValueError as err:
     host = url
     pass
+port = 80
+try:
+    portindex = url.index(':')
+    portstr = url[portindex+1:].split('/')[0]
+    temp = url[:portindex]
+    url = temp
+    url += url[portindex+1+len(portstr):]
+    port = int(portstr)
+    host = url[:portindex]
+except ValueError as err:
+    pass
 
-port = int(sys.argv[2])
 headers = '''User-Agent: python-socket-http\r\n\
 Accept-Language: ko,en-US;q=0.9,en;q=0.8\r\n'''
 
