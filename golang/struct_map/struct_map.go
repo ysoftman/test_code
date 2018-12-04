@@ -16,15 +16,17 @@ type Data struct {
 func main() {
 	// 구조체 생성(원소 설정 안함, 기본 숫자형은 0 스트링형은 nil)
 	myData1 := Data{}
-	fmt.Println("myData1.a = ", myData1.a, "\tmyData1.b = ", myData1.b, "\tmyData1.c = ", myData1.c)
+	fmt.Printf("%v\n", myData1)
+	fmt.Printf("%+v\n", myData1)
+	fmt.Printf("myData1 %#v\n", myData1)
 
 	// 구조체 생성(모든 원소 설정)
 	myData2 := Data{123, 3.141592, "ysoftman"}
-	fmt.Println("myData2.a = ", myData2.a, "\tmyData2.b = ", myData2.b, "\tmyData2.c = ", myData2.c)
+	fmt.Printf("myData2 %#v\n", myData2)
 
 	// 구조체 생성(특정 원소만 설정)
 	myData3 := Data{b: 123}
-	fmt.Println("myData3.a = ", myData3.a, "\tmyData3.b = ", myData3.b, "\tmyData3.c = ", myData3.c)
+	fmt.Printf("myData3 %#v\n", myData3)
 
 	// 맵 생성1
 	// 초기화 안된 원소의 기본값은 숫자형은 0 스트링형은 nil
