@@ -1,6 +1,13 @@
 // author : ysoftman
 // encoding : utf-8
 // title : array slice 테스트
+// array(배열)은 길이가 고정되어 추가 삭제를 할 수 없다.
+// slice(슬라이스) 는
+// 내부 배열을 가리키는 포인터,
+// 슬라이의 길이,
+// 슬라이스 용량(내부배열의 크기가 변경을 용이하기 위해서 미리 용량만큰 할당),
+// 으로 구성된 데이터 구조다.
+
 package main
 
 import "fmt"
@@ -8,32 +15,35 @@ import "fmt"
 func main() {
 
 	func() {
-		// slice(슬라이스) 는
-		// 내부 배열을 가리키는 포인터,
-		// 슬라이의 길이,
-		// 슬라이스 용량(내부배열의 크기가 변경을 용이하기 위해서 미리 용량만큰 할당),
-		// 으로 구성된 데이터 구조다.
-		// 리터털을 사용한 일반적인 슬라이스 선언
-		sliceTest := [5]int{11, 22, 33, 44, 55}
-		fmt.Println("sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), "sliceTest = ", sliceTest)
+		// 5길이를 가진 배열 생성
+		arrayTest := [5]int{11, 22, 33, 44, 55}
+		fmt.Println("arrayTest len = ", len(arrayTest), "arrayTest cap = ", cap(arrayTest), "arrayTest = ", arrayTest)
+		// 배열은 추가할 수 없다.
+		// arrayTest = append(arrayTest, 9)
+		// fmt.Println("append", arrayTest)
 	}()
 
 	func() {
-		// 슬라이스 생성시 2번째는 7값, 5번째는 99값을 넣는다.
-		// 이때 설정안된 곳은 0값으로 채워지고 마지막으로 설정된 n번째가 배열의 크기가 된다.
-		sliceTest := []int{2: 7, 5: 99}
-		fmt.Println("sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), "sliceTest = ", sliceTest)
-		sliceTest = append(sliceTest, 5)
-	}()
-
-	func() {
+		// variadic 으로 배열 생성
 		// ... 파라미터는 variadic 으로, 0 이상의 파라미터가 올수 있다는 의미
 		// https://golang.org/ref/spec#Function_types
 		// [...] 로 구체적 원소개수를 명시하지 않아도 된다.
-		sliceTest := [...]int{11, 22, 33, 44, 55}
+		arrayTest := [...]int{11, 22, 33, 44, 55}
 		// 슬라이스 크기가 고정되어 있어 자기 자신에게 append 사용할 수 없다.
-		// sliceTest = append(sliceTest, 6, 7)
+		// arrayTest = append(arrayTest, 6, 7)
+		fmt.Println("arrayTest len = ", len(arrayTest), "arrayTest cap = ", cap(arrayTest), "arrayTest = ", arrayTest)
+		// 배열은 추가할 수 없다.
+		// arrayTest = append(arrayTest, 9)
+	}()
+
+	func() {
+		// [] 리터털을 사용한 일반적인 슬라이스 선언
+		// 슬라이스 생성시 2번째는 7값, 4번째는 99값을 넣는다.
+		// 이때 설정안된 곳은 0값으로 채워지고 마지막으로 설정된 n번째가 배열의 크기가 된다.
+		sliceTest := []int{2: 7, 4: 99}
 		fmt.Println("sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), "sliceTest = ", sliceTest)
+		sliceTest = append(sliceTest, 9)
+		fmt.Println("append", sliceTest)
 	}()
 
 	func() {
