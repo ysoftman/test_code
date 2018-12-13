@@ -134,8 +134,8 @@ void ReadJson(string strJSON)
 	cout << "성별: " << sex << endl;
 
 	// 없는 필드 체크
-	string zzz = root.get("xxx", "defaultvalue").asString();
-	cout << "xxx: " << zzz << endl;
+	string zzz = root.get("zzz", "defaultvalue").asString();
+	cout << "zzz: " << zzz << endl;
 	zzz = root["zzz"].asString();
 	if (zzz == "")
 	{
