@@ -104,8 +104,26 @@ void ReadJson(string strJSON)
 	ageValue = ageValue.asInt() - 5;
 	cout << "나이: " << ageValue.asInt() << endl;
 
+	if (root["a"].isObject())
+	{
+		cout << "a isObject" << endl;
+	}
+	// 없는 필드를 오브젝트로 가져오기
+	if (root["zzz"].isObject())
+	{
+		cout << "a isObject" << endl;
+	}
+	else
+	{
+		cout << "zzz is not exist field" << endl;
+	}
+
 	Json::Value friends;
 	friends = root["친구"];
+	if (friends.isArray())
+	{
+		cout << "친구 isArray" << endl;
+	}
 	cout << "친구: " << endl;
 	for (unsigned int i = 0; i < friends.size(); ++i)
 	{
@@ -113,8 +131,18 @@ void ReadJson(string strJSON)
 	}
 
 	string sex = root.get("성별", "defaultvalue").asString();
-	cout << "성별: " << sex << endl
-		 << endl;
+	cout << "성별: " << sex << endl;
+
+	// 없는 필드 체크
+	string zzz = root.get("xxx", "defaultvalue").asString();
+	cout << "xxx: " << zzz << endl;
+	zzz = root["zzz"].asString();
+	if (zzz == "")
+	{
+		cout << "zzz is not exist field" << endl;
+	}
+
+	cout << endl;
 }
 
 void TraverseJson(Json::Value root)
