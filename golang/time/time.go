@@ -14,6 +14,8 @@ func main() {
 
 	// 현재 시간
 	fmt.Println("time.Now():", time.Now())
+	// Now() 자체가 로커 타임이라서 굳이 Now().Local() 로 사용할 필요는 없다.
+	fmt.Println("time.Now().Local():", time.Now().Local())
 	fmt.Println("time.Now().UnixNano() (nanosec):", time.Now().UnixNano())
 	fmt.Println("time.Now().Unix() (sec):", time.Now().Unix())
 	fmt.Println("time.Now().Year():", time.Now().Year())
