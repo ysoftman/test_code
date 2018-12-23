@@ -4,6 +4,8 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -68,10 +70,10 @@ func startClientReq(jobNum int) {
 		if err != nil {
 			log.Println(err.Error())
 		}
-		// resp.Body 를 읽지 못해서 time_wait 가 발생하는 경우 resp.Body 를 무시하도록 한다.
-		// io.Copy(ioutil.Discard, resp.Body)
 		reqCnt++
 		fmt.Println("Client (", jobNum, "-", reqCnt, ")", resp)
+		// resp.Body 는 다음 http 연결(소켓)에 재사용되기 때문에 devNull 로 만들어야 한다.
+		io.Copy(ioutil.Discard, resp.Body)
 		resp.Body.Close()
 	}
 }
@@ -84,10 +86,10 @@ func startCustomClientReq(jobNum int) {
 		if err != nil {
 			log.Println(err.Error())
 		}
-		// resp.Body 를 읽지 못해서 time_wait 가 발생하는 경우 resp.Body 를 무시하도록 한다.
-		// io.Copy(ioutil.Discard, resp.Body)
 		reqCnt++
 		fmt.Println("myClient (", jobNum, "-", reqCnt, ")", resp)
+		// resp.Body 는 다음 http 연결(소켓)에 재사용되기 때문에 devNull 로 만들어야 한다.
+		io.Copy(ioutil.Discard, resp.Body)
 		resp.Body.Close()
 	}
 }
