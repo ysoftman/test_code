@@ -110,7 +110,7 @@ done
 # # 또는
 # for (( ; ; ))
 # do
-#     sleep 1π
+#     sleep 1
 #     cnt=$(($cnt+1))
 #     echo $cnt
 # done
