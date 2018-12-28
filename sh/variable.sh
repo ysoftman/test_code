@@ -104,6 +104,16 @@ do
     echo ${v}
 done
 
+# 무한 루프
+# cnt=0
+# while :
+# # 또는
+# for (( ; ; ))
+# do
+#     sleep 1π
+#     cnt=$(($cnt+1))
+#     echo $cnt
+# done
 
 var1="aaa"
 var2="bb"
