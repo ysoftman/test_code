@@ -79,8 +79,12 @@ echo "\${1}:" ${1}
 echo "\${PWD}:" ${PWD}
 # ${var#Pattern} 변수 앞에서부터 패턴과 매치되는 가장 짧은 부분 제거
 # ${var##Pattern} 변수 앞에서부터 패턴과 매치되는 가장 긴 부분 제거
-# 현재 디렉토리만 출력
-echo "\${PWD##*/}:" ${PWD##*/}
+# ${var%Pattern} 변수 뒤에서부터 패턴과 매치되는 가장 짧은 부분 제거
+# ${var%%Pattern} 변수 뒤에서부터 패턴과 매치되는 가장 긴 부분 제거
+echo "\${PWD#*/}" ${PWD#*/}
+echo "\${PWD##*/}:" ${PWD##*/}  # 현재 디렉토리만 출력
+echo "\${PWD%/*}" ${PWD%/*} # 현재 디록토리 상위 디렉토리까지의 full path
+echo "\${PWD%%/*}" ${PWD%%/*}
 # bash 버전
 echo "\${BASH_VERSION}:" ${BASH_VERSION}
 # 하드웨어 타입
