@@ -6,9 +6,11 @@ CFLAGS = -pg -O3 -fPIC -Wall -lpthread
 SRCS = linux_rwlock_test.cpp \
 # 	aaa.cpp 
 
-
 all:
-	clear
+	# @ suppress shell command output
+	@clear
+	@ls $(SRCS)
+	@echo "Make..."
 	$(CXX) $(SRCS) $(CFLAGS) -o $(OUTPUT)
 
 clean:
