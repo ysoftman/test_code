@@ -3,10 +3,13 @@
 // title : log 테스트
 package main
 
-import "fmt"
-import "os"
-import "bytes"
-import "log"
+import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+)
 
 func main() {
 	// fmt 를 이용한 출력
@@ -56,4 +59,15 @@ func main() {
 	// Fatal 을 사용하면 os.Exit(1) 로 종료 된다
 	//mylogger2.Fatalln("aaa")
 
+	// stdout 로 로그 출력
+	log.SetOutput(os.Stdout)
+	log.Println("aaa")
+
+	// stderr 로 로그 출력
+	log.SetOutput(os.Stderr)
+	log.Println("bbb")
+
+	// 로그 출력 않하기
+	log.SetOutput(ioutil.Discard)
+	log.Println("xxx")
 }
