@@ -27,6 +27,7 @@ func main() {
 	// 공백의 경우 %20 대신 + 가 된다.
 	v := url.Values{}
 	v.Set("key", "aaa bbb")
+	v.Add("key", "ccc")
 	fmt.Println(v)
 	fmt.Println(v.Get("key"))
 	fmt.Println(v.Encode())
