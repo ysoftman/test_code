@@ -106,9 +106,37 @@ func main() {
 
 		// delete
 		// append 에서 ... 는 해당 타입의 모든(0 이상) 원소들을 의미
-		// 3번째 값만 삭제 효과
-		sliceTest = append(sliceTest[:3], sliceTest[4:]...)
-		fmt.Println("delete idx=3 sliceTest =", sliceTest)
+		// 3번째 값만 삭제
+		idx := 3
+		fmt.Printf("slice = %v ", sliceTest)
+		if len(sliceTest) >= idx {
+			if len(sliceTest) > idx+1 {
+				sliceTest = append(sliceTest[:idx], sliceTest[idx+1:]...)
+			} else {
+				sliceTest = append(sliceTest[:idx])
+			}
+			fmt.Println("delete idx =", idx, "sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), " sliceTest =", sliceTest)
+		}
+		// 한번더 3번째 값만 삭제
+		fmt.Printf("slice = %v ", sliceTest)
+		if len(sliceTest) >= idx {
+			if len(sliceTest) > idx+1 {
+				sliceTest = append(sliceTest[:idx], sliceTest[idx+1:]...)
+			} else {
+				sliceTest = append(sliceTest[:idx])
+			}
+			fmt.Println("delete idx =", idx, "sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), " sliceTest =", sliceTest)
+		}
+
+		// addSlice, deleteSlice 로 결과를 리턴 받지 않으면
+		// 이곳의 sliceTest 는 len 이 갱신되지 않아 유효하지 않는 인덱스를 액세스할 위험이 있다.
+		for i := 0; i < 3; i++ {
+			sliceTest = addSlice(i, sliceTest)
+		}
+		for i := 0; i < 3; i++ {
+			sliceTest = deleteSlice(0, sliceTest)
+		}
+
 	}()
 
 	func() {
@@ -127,4 +155,24 @@ func main() {
 		str = string(strslice)
 		fmt.Printf("str = string(strslice), str = %s\n", str)
 	}()
+}
+
+func addSlice(v int, slice []int) []int {
+	fmt.Printf("slice = %v ", slice)
+	slice = append(slice, v)
+	fmt.Println("add v =", v, "slice len = ", len(slice), "slice cap = ", cap(slice), " slice =", slice)
+	return slice
+}
+
+func deleteSlice(idx int, slice []int) []int {
+	fmt.Printf("slice = %v ", slice)
+	if len(slice) >= idx {
+		if len(slice) > idx+1 {
+			slice = append(slice[:idx], slice[idx+1:]...)
+		} else {
+			slice = append(slice[:idx])
+		}
+		fmt.Println("delete idx =", idx, "slice len = ", len(slice), "slice cap = ", cap(slice), " slice =", slice)
+	}
+	return slice
 }
