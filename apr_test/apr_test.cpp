@@ -12,6 +12,7 @@ bash build.sh
 */
 
 #include "apr.h"
+#include "apr_portable.h"
 #include "apr_file_io.h"
 #include "apr_strings.h"
 #include "apr_network_io.h"
@@ -78,13 +79,13 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    // rc = apr_socket_opt_set(sock, APR_SO_NONBLOCK, 1);
-    // if (rc != APR_SUCCESS)
-    // {
-    //     cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " " << errmsg(rc) << endl;
-    //     apr_socket_close(sock);
-    //     return -1;
-    // }
+    rc = apr_socket_opt_set(sock, APR_SO_NONBLOCK, 1);
+    if (rc != APR_SUCCESS)
+    {
+        cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " " << errmsg(rc) << endl;
+        apr_socket_close(sock);
+        return -1;
+    }
 
     rc = apr_sockaddr_info_get(&sa, ip.c_str(), APR_INET, port, 0, pool);
     if (rc != APR_SUCCESS)
@@ -108,11 +109,24 @@ int main(int argc, char **argv)
     SSL *ssl = SSL_new(ssl_ctx);
 
     // apr socket 을 SSL 에 연결할 수 없다???
-    // SSL_set_fd(ssl, sock->socketdes);
+    // apr_os_sock_t fd;
+    // apr_os_sock_get(&fd, sock);
+    // SSL_set_fd(ssl, fd);
+    // // SSL_set_fd(ssl, sock->socketdes);
     // int ssl_err = SSL_connect(ssl);
     // if (ssl_err != 1)
     // {
-    //     cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " fail ssl connection err(" << ssl_err << ")" << endl;
+    //     cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " fail ssl connection err(" << ssl_err << ")  " << endl;
+    //     cout << "SSL_ERROR_NONE " << SSL_ERROR_NONE << endl;                         // 0
+    //     cout << "SSL_ERROR_SSL " << SSL_ERROR_SSL << endl;                           // 1
+    //     cout << "SSL_ERROR_WANT_READ " << SSL_ERROR_WANT_READ << endl;               // 2
+    //     cout << "SSL_ERROR_WANT_WRITE " << SSL_ERROR_WANT_WRITE << endl;             // 3
+    //     cout << "SSL_ERROR_WANT_X509_LOOKUP " << SSL_ERROR_WANT_X509_LOOKUP << endl; // 4
+    //     cout << "SSL_ERROR_SYSCALL " << SSL_ERROR_SYSCALL << endl;                   // 5
+    //     cout << "SSL_ERROR_ZERO_RETURN " << SSL_ERROR_ZERO_RETURN << endl;           // 6
+    //     cout << "SSL_ERROR_WANT_CONNECT " << SSL_ERROR_WANT_CONNECT << endl;         // 7
+    //     cout << "SSL_ERROR_WANT_ACCEPT " << SSL_ERROR_WANT_ACCEPT << endl;           // 8
+    //     cout << "SSL_get_error(ssl, ssl_err) " << SSL_get_error(ssl, ssl_err) << endl;
     //     apr_socket_close(sock);
     //     return -1;
     // }
