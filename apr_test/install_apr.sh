@@ -16,8 +16,8 @@ aprver="1.6.5"
 wget http://apache.mirror.cdnetworks.com/apr/apr-${aprver}.tar.gz
 tar zxvf apr-${aprver}.tar.gz
 cd apr-${aprver}
-./configure --prefix="${HOME}/workspace/apr"
-make && make install
+./configure --prefix="${HOME}/workspace/apr-${aprver}"
+make -j4 && make install
 cd ..
 rm -rf apr-${aprver}.tar.gz apr-${aprver} 
 
@@ -26,11 +26,11 @@ aprutilver="1.6.1"
 wget http://apache.mirror.cdnetworks.com//apr/apr-util-${aprutilver}.tar.gz
 tar zxvf apr-util-${aprutilver}.tar.gz
 cd apr-util-${aprutilver}
-./configure --prefix="${HOME}/workspace/apr" --with-apr="${HOME}/workspace/apr/bin/apr-1-config"
+./configure --prefix="${HOME}/workspace/apr-${aprver}" --with-apr="${HOME}/workspace/apr-${aprver}/bin/apr-1-config"
 # make 시 expat.h 가 없어 에러가 난다면 
 # centos : yum install expat-devel
 # ubuntu : apt-get install libexpat1-dev
-make && make install
+make -j4 && make install
 cd ..
 rm -rf apr-util-${aprutilver}.tar.gz apr-util-${aprutilver}
 
