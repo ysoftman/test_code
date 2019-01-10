@@ -17,7 +17,7 @@
 
 using namespace std;
 
-bool isMember(Json::Value v, string key)
+bool ul_isMember(Json::Value v, string key)
 {
 	string uk = key;
 	std::transform(key.begin(), key.end(), key.begin(), ::tolower);
@@ -59,12 +59,6 @@ string WriteJson()
 
 	string strJSON;
 
-	cout << "root.isMember(\"float_value\") : " << root.isMember("float_value") << endl;
-	cout << "root.isMember(\"FLOAT_VALUE\") : " << root.isMember("FLOAT_VALUE") << endl;
-	cout << "isMember(root, \"float_Value\") : " << isMember(root, "float_Value") << endl;
-	cout << "isMember(root, \"float_value\") : " << isMember(root, "float_value") << endl;
-	cout << "isMember(root, \"FLOAT_VALUE\") : " << isMember(root, "FLOAT_VALUE") << endl;
-
 	// StyledWriter deprecated
 	// Json::StyledWriter writer;
 	// strJSON = writer.write(root);
@@ -85,6 +79,15 @@ string WriteJson()
 
 	cout << "JSON StreamWriteBuilder" << endl
 		 << strJSON << endl;
+
+	cout << "root.isMember(\"a\") : " << root.isMember("a") << endl;
+	cout << "root.isMember(\"aa\") : " << root.isMember("aa") << endl;
+	cout << "root.isMember(\"친구\") : " << root.isMember("친구") << endl;
+	cout << "root.isMember(\"float_value\") : " << root.isMember("float_value") << endl;
+	cout << "root.isMember(\"FLOAT_VALUE\") : " << root.isMember("FLOAT_VALUE") << endl;
+	cout << "ul_isMember(root, \"float_Value\") : " << ul_isMember(root, "float_Value") << endl;
+	cout << "ul_isMember(root, \"float_value\") : " << ul_isMember(root, "float_value") << endl;
+	cout << "ul_isMember(root, \"FLOAT_VALUE\") : " << ul_isMember(root, "FLOAT_VALUE") << endl;
 
 	return strJSON;
 }
