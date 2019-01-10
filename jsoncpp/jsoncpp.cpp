@@ -12,10 +12,22 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
+#include <algorithm>
 #include <json/json.h>
 
 using namespace std;
+
+bool isMember(Json::Value v, string key)
+{
+	string uk = key;
+	std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+	std::transform(uk.begin(), uk.end(), uk.begin(), ::toupper);
+	if (v.isMember(key) || v.isMember(uk))
+	{
+		return true;
+	}
+	return false;
+}
 
 string WriteJson()
 {
@@ -46,6 +58,12 @@ string WriteJson()
 	root["성별"] = "남";
 
 	string strJSON;
+
+	cout << "root.isMember(\"float_value\") : " << root.isMember("float_value") << endl;
+	cout << "root.isMember(\"FLOAT_VALUE\") : " << root.isMember("FLOAT_VALUE") << endl;
+	cout << "isMember(root, \"float_Value\") : " << isMember(root, "float_Value") << endl;
+	cout << "isMember(root, \"float_value\") : " << isMember(root, "float_value") << endl;
+	cout << "isMember(root, \"FLOAT_VALUE\") : " << isMember(root, "FLOAT_VALUE") << endl;
 
 	// StyledWriter deprecated
 	// Json::StyledWriter writer;
