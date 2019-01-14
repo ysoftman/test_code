@@ -75,7 +75,9 @@ echo "\${#}:" ${#}
 echo "\${0}:" ${0}
 # 1번째 인자
 echo "\${1}:" ${1}
-# 현재 디랙토리 전체 경로 출력
+# 이전 디랙토리 전체 경로 출력
+echo "\${OLDPWD}:" ${OLDPWD}
+# 현재 디랙토리 전체 경로 출력(Print Workding Directoy)
 echo "\${PWD}:" ${PWD}
 # ${var#Pattern} 변수 앞에서부터 패턴과 매치되는 가장 짧은 부분 제거
 # ${var##Pattern} 변수 앞에서부터 패턴과 매치되는 가장 긴 부분 제거
