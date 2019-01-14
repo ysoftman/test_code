@@ -7,8 +7,7 @@
 # crontab -e 으로 등록
 # macOS 의 경우 "operation not permitted" 발생시
 # system preferences -> security & privacy -> privacy 에서 iterm2 를 추가해준다.
-# zsh 에서 noclobber 설정때문에 강제(!) 추가
-# 0 * * * * bash /Users/ysoftman/workspace/test_code/speedtestcron/speedtestcron.sh 2>>! $HOME/speedtestcron.log
+# 0 * * * * bash /Users/ysoftman/workspace/test_code/speedtestcron/speedtestcron.sh 2>> $HOME/speedtestcron.log
 
 
 # cron 환경설정
