@@ -105,15 +105,19 @@ void regex_url()
 	// 전체 매칭인 경우
 	if (boost::regex_match(url, match_result, url_pattern))
 	{
-		cout << "(regex_match) url: " << match_result[0] << endl;
+		for (int i = 0; i < match_result.size(); i++)
+		{
+			cout << "(regex_match)[" << i << "]: " << match_result[i] << endl;
+		}
 	}
-	cout << "match_result.size(): " << match_result.size() << endl;
 	// 부분 매칭인 경우
 	if (boost::regex_search(url, match_result, host_pattern))
 	{
-		cout << "(regex_search) host: " << match_result[0] << endl;
+		for (int i = 0; i < match_result.size(); i++)
+		{
+			cout << "(regex_search)[" << i << "]: " << match_result[i] << endl;
+		}
 	}
-	cout << "match_result.size(): " << match_result.size() << endl;
 }
 
 int main()
