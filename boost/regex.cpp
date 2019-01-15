@@ -11,10 +11,8 @@
 
 using namespace std;
 
-int main()
+string make_regex_format()
 {
-	cout << "boost regex test" << endl;
-
 	string url_param = "aa=aaa&bb=bbb&cc=123&dd=ddd";
 	cout << "url_param: " << url_param << endl;
 
@@ -44,7 +42,16 @@ int main()
 	regex_format << ")([^\\&]+)";
 	cout << "regex_format: " << regex_format.str() << endl;
 
+	return regex_format.str();
+}
+
+void regex_url_param()
+{
+	string url_param = "aa=aaa&bb=bbb&cc=123&dd=ddd";
+	cout << "url_param: " << url_param << endl;
+
 	// url 에서 정규 표현식으로 찾아 변경하기
+	ostringstream regex_format(make_regex_format());
 	boost::regex re(regex_format.str());
 	boost::smatch match;
 	string url_param_replaced;
@@ -64,7 +71,10 @@ int main()
 		url_param = match.suffix().str();
 	}
 	cout << "replaced url param: " << url_param_replaced + url_param << endl;
+}
 
+void regex_ua()
+{
 	// useragent 에서 찾기
 	string ua = "Mozilla/5.0 (Linux; Android 7.0; SM-G955N Build/NRD90M; wv) AppleWebKit/537.36(KHTML,like Gecko) Version/4.0 Chrome/61.0.3163.98 Mobile Safari/537.36;KAKAOTALK 1600297";
 	cout << "useragent = " << ua << endl;
@@ -82,6 +92,11 @@ int main()
 	{
 		cout << "not matched" << endl;
 	}
+}
 
-	return 0;
+int main()
+{
+	cout << "boost regex test" << endl;
+	regex_url_param();
+	regex_ua();
 }
