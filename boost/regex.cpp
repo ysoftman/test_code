@@ -94,9 +94,30 @@ void regex_ua()
 	}
 }
 
+void regex_url()
+{
+	string url = "http://test.ysoftman.com/aaa/bbb/ccc";
+	cout << "url: " << url << endl;
+	boost::regex url_pattern("^https?://[^/]+(/*).*");
+	// boost::regex host_pattern("//.+/");
+	boost::regex host_pattern("//[^/]+(/*)");
+	boost::smatch match_result;
+	// 전체 매칭인 경우
+	if (boost::regex_match(url, match_result, url_pattern))
+	{
+		cout << "(regex_match) url: " << match_result[0] << endl;
+	}
+	// 부분 매칭인 경우
+	if (boost::regex_search(url, match_result, host_pattern))
+	{
+		cout << "(regex_search) host: " << match_result[0] << endl;
+	}
+}
+
 int main()
 {
 	cout << "boost regex test" << endl;
 	regex_url_param();
 	regex_ua();
+	regex_url();
 }
