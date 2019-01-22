@@ -26,4 +26,4 @@ outfile="$HOME/speedtestcron.out"
 date | tr '\n' '\t' >> ${outfile}
 uptime | tr '\n' '\t' >> ${outfile}
 # speedtest output(stdout) 을 tee 로 stderr 로 출력하고 Download 라인만 grep 해서 파일로 기록 한다.
-speedtest --no-upload | tee /dev/stderr | grep -E "Download|ERROR" >> ${outfile}
+speedtest --no-upload | tee /dev/stderr | grep -i -E "download|error" >> ${outfile}
