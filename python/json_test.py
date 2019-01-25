@@ -38,7 +38,9 @@ outfile = outfile + "_out.json"
 
 def parse_json():
     # json 스트링 로드(파싱)
-    jsonData = json.loads(strJson)
+    # utf-8 외 euc-kr 등 2개 이상의 인코딩값들이 들어 있을 경우 무시한다.
+    unicodedstrJson = unicode(strJson, errors='ignore')
+    jsonData = json.loads(unicodedstrJson)
 
     # 해당 키 출력
     print "jsonData['obj1']['key1']:", jsonData['obj1']['key1']
@@ -81,7 +83,8 @@ def parse_json():
     if fromJSONFile['obj2'].get('key3') == None:
         print "fromJSONFile['obj2']['key3'] is null"
     # key3 필드가 없으면 0 값으로 대체
-    print "set 0 if null field, fromJSONFile['obj2'].get('key3', 0)", fromJSONFile['obj2'].get('key3', 0)
+    print "set 0 if null field, fromJSONFile['obj2'].get('key3', 0)", fromJSONFile['obj2'].get(
+        'key3', 0)
 
     # json.load 로 읽은 데이터는 u(유니코드 한글이 깨져 출력된다.)
     print "fromJSONFile:\n", fromJSONFile
