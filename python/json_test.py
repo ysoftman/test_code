@@ -54,11 +54,15 @@ def parse_json():
     # 탐색
     for obj in jsonData:
         print "obj:", obj
+        # json object -> python dict 타입
+        print type(jsonData[obj])
         for key, value in jsonData[obj].items():
             print "key: {}  value: {}".format(key, value)
-            # json의 arry -> loads -> python의 리스트
+            # json array -> python list 타입
+            # if type(value) == 'list':
+            # 또는
             if isinstance(value, list):
-                print "array value:", value
+                print "array{} value:{}".format(type(value), value)
                 for l in value:
                     print l
 
