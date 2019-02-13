@@ -13,3 +13,6 @@ ps | grep "" | grep -v "grep"
 
 # -i --ignore-care 대소문자 구별 없이 찾기
 echo 'fruite lemon apple' | grep -i "LEMON"
+
+# -m --max-count=num 개수만큼 매칭하고 reading 중지
+ls -1 | grep .sh -m 5
