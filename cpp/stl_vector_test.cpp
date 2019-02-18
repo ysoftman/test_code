@@ -1,13 +1,13 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // stl vector 의 값(클래스) 삭제 테스트
-////////////////////////////////////////////////////////////////////////////////////
+// g++ -std=c++11 stl_vector_test.cpp && ./a.out
 #include <stdio.h>
 #include <vector>
+#include <string>
 
 class Dummy
 {
-public:
+  public:
 	Dummy()
 	{
 		a = 1;
@@ -30,9 +30,9 @@ int main()
 	delete dummy2;
 
 	printf("\n\n");
-	
+
 	std::vector<Dummy> vecDummy1;
-	for (int i=0; i<5; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Dummy dummy3;
 		vecDummy1.push_back(dummy3);
@@ -42,8 +42,8 @@ int main()
 
 	printf("\n\n");
 
-	std::vector<Dummy*> vecDummy2;
-	for (int i=0; i<5; i++)
+	std::vector<Dummy *> vecDummy2;
+	for (int i = 0; i < 5; i++)
 	{
 		Dummy *dummy4 = new Dummy();
 		vecDummy2.push_back(dummy4);
@@ -60,8 +60,8 @@ int main()
 		vecDummy2.pop_back();
 	}
 	// 방법2
-	std::vector<Dummy*>::iterator iter;
-	std::vector<Dummy*>::iterator iterTemp;
+	std::vector<Dummy *>::iterator iter;
+	std::vector<Dummy *>::iterator iterTemp;
 	for (iter = vecDummy2.begin(); iter != vecDummy2.end();)
 	{
 		iterTemp = iter;
@@ -70,7 +70,50 @@ int main()
 		// 원소 삭제
 		iter = vecDummy2.erase(iter++);
 	}
-	
-	printf("\n\n");
-}
 
+	printf("\n\n");
+
+	//////////
+	std::vector<std::string> vec_my_data;
+	vec_my_data.insert(vec_my_data.begin(), "ccc");
+	vec_my_data.insert(vec_my_data.begin(), "bbb");
+	vec_my_data.insert(vec_my_data.begin(), "aaa");
+
+	vec_my_data.push_back("ddd");
+	vec_my_data.push_back("eee");
+	vec_my_data.push_back("fff");
+
+	for (auto i : vec_my_data)
+	{
+		printf("%s\n", i.c_str());
+	}
+
+	// 특정 위치 찾아서 추가
+	std::vector<std::string>::iterator myiter;
+	for (myiter = vec_my_data.begin(); myiter < vec_my_data.end(); ++myiter)
+	{
+		if (*myiter == "fff")
+		{
+			printf("find --> %s\n", (*myiter).c_str());
+			break;
+		}
+	}
+
+	// 마지막 원소라면 추가
+	// if (myiter == vec_my_data.end() - 1)
+	if (std::next(myiter) == vec_my_data.end())
+	{
+		vec_my_data.push_back("___");
+	}
+	else
+	{
+		vec_my_data.insert(myiter, "___");
+	}
+
+	for (auto i : vec_my_data)
+	{
+		printf("%s\n", i.c_str());
+	}
+
+	return 0;
+}
