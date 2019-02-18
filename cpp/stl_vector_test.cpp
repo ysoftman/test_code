@@ -92,7 +92,7 @@ int main()
 	std::vector<std::string>::iterator myiter;
 	for (myiter = vec_my_data.begin(); myiter < vec_my_data.end(); ++myiter)
 	{
-		if (*myiter == "fff")
+		if (*myiter == "ccc")
 		{
 			printf("find --> %s\n", (*myiter).c_str());
 			break;
@@ -107,7 +107,9 @@ int main()
 	}
 	else
 	{
-		vec_my_data.insert(myiter, "___");
+		vec_my_data.insert(myiter, "_3_");
+		vec_my_data.insert(myiter, "_2_");
+		vec_my_data.insert(myiter, "_1_");
 	}
 
 	for (auto i : vec_my_data)
