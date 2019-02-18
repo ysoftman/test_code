@@ -99,22 +99,33 @@ int main()
 		}
 	}
 
-	// 마지막 원소라면 추가
-	// if (myiter == vec_my_data.end() - 1)
-	if (std::next(myiter) == vec_my_data.end())
+	// 찾지 못해 myiter 가 끝까지 간경우
+	if (myiter == vec_my_data.end())
 	{
-		vec_my_data.push_back("___");
+		vec_my_data.push_back("_not_found_");
 	}
+	// 마지막 원소로 찾은 경우
+	else if (std::next(myiter) == vec_my_data.end())
+	{
+		vec_my_data.push_back("_last_found_");
+	}
+	// 마지막 원소로 찾은게 아니면 찾은것 다음에 끼워 넣기
 	else
 	{
-		vec_my_data.insert(myiter, "_3_");
-		vec_my_data.insert(myiter, "_2_");
-		vec_my_data.insert(myiter, "_1_");
+		std::vector<std::string>::iterator next_iter = std::next(myiter);
+		// insert 된 원소를 리턴한다.
+		next_iter = vec_my_data.insert(next_iter, "_7_");
+		next_iter = vec_my_data.insert(next_iter, "_6_");
+		next_iter = vec_my_data.insert(next_iter, "_5_");
+		next_iter = vec_my_data.insert(next_iter, "_4_");
+		next_iter = vec_my_data.insert(next_iter, "_3_");
+		next_iter = vec_my_data.insert(next_iter, "_2_");
+		next_iter = vec_my_data.insert(next_iter, "_1_");
 	}
 
 	for (auto i : vec_my_data)
 	{
-		printf("%s\n", i.c_str());
+		printf("%s\n", (i).c_str());
 	}
 
 	return 0;
