@@ -75,6 +75,7 @@ func main() {
 	fmt.Println("time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix():", time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix())
 
 	countDown()
+	checkPeriodically()
 }
 
 func countDown() {
@@ -83,4 +84,21 @@ func countDown() {
 		time.Sleep(1 * time.Second)
 		fmt.Println(i)
 	}
+}
+
+func checkPeriodically() {
+	fmt.Println("Check Periodically")
+
+	// 0.5초마다 ticker.C(channel) 로 time 값이 배달된다.
+	ticker := time.NewTicker(time.Millisecond * 500)
+	fmt.Println("ticker start")
+	// tick 이 0.5 초마다 계속 발생하기 때문에 go 루틴으로 돌리고 5초후에 멈춘다.
+	go func() {
+		for t := range ticker.C {
+			fmt.Println("tick ", t)
+		}
+	}()
+	time.Sleep(time.Second * 5)
+	ticker.Stop()
+	fmt.Println("ticker stop")
 }
