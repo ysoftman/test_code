@@ -92,6 +92,30 @@ echo "\${BASH_VERSION}:" ${BASH_VERSION}
 # 하드웨어 타입
 echo "\${HOSTTYPE}:" ${HOSTTYPE}
 
+var1="10.10.10.1:111 10.10.10.2:222 10.10.10.3:333"
+cnt=0
+for v in ${var1}; do
+    # 변수 뒤에서부터 :* 매칭부분 제거
+    ip=${v%:*}
+    # 변수 앞에서부터 *: 매칭부분 제거
+    port=${v#*:}
+    echo "var1[$cnt] = ip-> ${ip} , port-> ${port}"
+    (( cnt+=1 ))
+done
+echo "var1 = ${var1}"
+
+# 배열 변수의 경우
+var1=("10.10.10.1:111" "10.10.10.2:222" "10.10.10.3:333")
+echo "var1[0] = ${var1[0]}"
+echo "var1[1] = ${var1[1]}"
+echo "var1[2] = ${var1[2]}"
+# [@] 배열의 모든 것
+echo "var1[@] = ${var1[@]}"
+# 배열 개수(크기)
+echo "#var1[@] = ${#var1[@]}"
+# 원소의 크기
+echo "#var1[0] = ${#var1[0]}"
+
 echo "\${IFS}:" ${IFS}
 for v in `cat variable.txt`
 do
