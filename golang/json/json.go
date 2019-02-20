@@ -67,6 +67,7 @@ func main() {
 	unmarshalJSON()
 	unmarshalJSONFile()
 	encodeJSON()
+	HasAIsAJSON()
 }
 
 func marshalJSON() {
