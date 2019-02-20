@@ -14,6 +14,8 @@ type obj1 struct {
 }
 
 type obj2 struct {
+	// https://golang.org/ref/spec#Struct_types
+	// embedded field
 	obj1
 }
 
