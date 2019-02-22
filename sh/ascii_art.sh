@@ -21,3 +21,23 @@ cat << "zzz"
  \__, |___/\___/|_|  \__|_| |_| |_|\__,_|_| |_|
  |___/
 zzz
+
+# 출력하고 파일로 저장
+filename=${0##*/}
+filename=${filename%%.sh}.out
+echo "outfilename : ${filename}"
+# ysoftman 입력 테스트
+cat > ${filename} << zzz
+ysoftman input test
+zzz
+# `', 등이 명령어로 처리되면서
+# _: command not found
+# 과 같은 에러가 발생함녀 온저한 내용으로 입력되지 못한다.
+cat >> ${filename} << zzz
+                  __ _
+ _   _ ___  ___  / _| |_ _ __ ___   __ _ _ __
+| | | / __|/ _ \| |_| __| '_ ` _ \ / _` | '_ \
+| |_| \__ \ (_) |  _| |_| | | | | | (_| | | | |
+ \__, |___/\___/|_|  \__|_| |_| |_|\__,_|_| |_|
+ |___/
+zzz
