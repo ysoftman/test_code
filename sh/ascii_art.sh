@@ -26,7 +26,7 @@ zzz
 filename=${0##*/}
 filename=${filename%%.sh}.out
 echo "outfilename : ${filename}"
-# ysoftman 입력 테스트
+# ysoftman 파일로 입력
 cat > ${filename} << zzz
 ysoftman input test
 zzz
