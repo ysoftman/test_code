@@ -9,7 +9,7 @@ import "fmt"
 var Var1 string
 
 func PringHello() {
-	fmt.Println("hello ~%v", Var1)
+	fmt.Println("hello plugin Var1=", Var1)
 }
 
 func Add(a, b int) int {
