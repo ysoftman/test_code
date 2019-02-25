@@ -27,3 +27,8 @@ testfunc1() {
 
 # 함수 호출
 testfunc1 ${main_arg1} ${main_arg2}
+
+# 함수 호출 후 stdout 값을 리턴으로 사용한다.
+ret=$(testfunc1 ${main_arg1} ${main_arg2})
+echo "testfunc1 retuns
+$ret"
