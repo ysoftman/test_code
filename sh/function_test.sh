@@ -23,6 +23,9 @@ testfunc1() {
 
     echo "func_arg1 =" ${func_arg1}
     echo "func_arg2 =" ${func_arg2}
+
+    # return 은 종료 상태 코드로 원하는 값을 리턴할 수 없다.
+    return 0
 }
 
 # 함수 호출
@@ -30,5 +33,5 @@ testfunc1 ${main_arg1} ${main_arg2}
 
 # 함수 호출 후 stdout 값을 리턴으로 사용한다.
 ret=$(testfunc1 ${main_arg1} ${main_arg2})
-echo "testfunc1 retuns
+echo "testfunc1 returns
 $ret"
