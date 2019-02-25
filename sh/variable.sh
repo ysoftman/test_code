@@ -193,7 +193,7 @@ echo $out
 echo {a,b,c}
 
 # 1 ~ 10 까지 출력
-echo {1..20}
+echo "{1..20}" {1..20}
 for v in {1..5}
 do
     echo $(($v*100))
