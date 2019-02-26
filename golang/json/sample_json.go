@@ -17,6 +17,7 @@ type obj2 struct {
 	// https://golang.org/ref/spec#Struct_types
 	// embedded field
 	obj1
+	Bb string `json:"b"`
 }
 
 type obj3 struct {
@@ -34,7 +35,9 @@ func HasAIsAJSON() {
 	// is a 관계로 marshal
 	var o2 obj2
 	o2.Aa = "apple"
-	o2.Bb = 100
+	o2.Bb = "100"
+	// o2.obj1.Bb json 필드명이 같게 되면 marshal 되지 않음.
+	o2.obj1.Bb = 200
 	ms2, _ := json.Marshal(o2)
 	fmt.Println("o2 = ", o2)
 	fmt.Println("marshal(o2) = ", string(ms2))
