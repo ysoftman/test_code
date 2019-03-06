@@ -10,7 +10,7 @@
 # 1분후에 명령 실행, 명령은 프롬프트에서 입력 후 ctrl+d
 # 시간 단위(자세한 설명은 man page 참고)
 # tody 또는 tommorow
-# now + 시간 minutes, hours, days, weeks, months, years
+# now + minutes, hours, days, weeks, months, years
 # now + 초는 지원안함
 # at now + 1 minute
 # at> cd /Users/ysoftman; rm -f at_job.out; echo "at jobs ysoftman" > at_job.out

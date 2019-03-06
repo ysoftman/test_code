@@ -5,7 +5,7 @@
 ls -ahl | awk '{print $3}'
 
 # 출력 구분시 공백 사용 default(new line)
-# ORS(Ouput Record Separator)
+# ORS(Output Record Separator)
 ls -ahl | awk '{print $3}' ORS=' '
 
 # ls -ahl 결과에서 NF(Num of Fields) 마지막 컬럼(파일이름)만 출력
