@@ -32,3 +32,5 @@ at -r
 
 # 예약된 작업들 모두 삭제
 at -r $(at -l | awk '{print $1}' ORS=' ')
+# 또는
+at -l | awk '{print $1}' ORS=' ' | xargs ar -r
