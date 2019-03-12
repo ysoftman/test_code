@@ -6,7 +6,7 @@
 # -E : 확장 정규식 사용 or(|) 연산을 사용하기 위해
 # "ysoftman|bill" : ysoftman 또는 bill 문자열이 있는 경우
 # . : 시작할 디렉토리
-grep -rn --include=*.txt -E "ysoftman|bill" .
+grep -rn --include="*.txt" -E "ysoftman|bill" .
 
 # 현재 계정으로 실행중인 프로세스들에서 grep 빼고 보기
 ps | grep "" | grep -v "grep"
