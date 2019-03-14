@@ -66,6 +66,7 @@ func main() {
 	marshalJSON()
 	unmarshalJSON()
 	unmarshalJSONwithMapInterface()
+	decodeJSON()
 	unmarshalJSONFile()
 	encodeJSON()
 	HasAIsAJSON()
@@ -163,7 +164,7 @@ func unmarshalJSONwithMapInterface() {
 	json.Unmarshal([]byte(strJSON), &mi)
 	fmt.Println("mi:", mi)
 	fmt.Println("mi.name = ", mi["name"])
-	fmt.Println("mi.name = ", mi["age"])
+	fmt.Println("mi.age = ", mi["age"])
 	fmt.Println("mi.source = ", mi["source"])
 	miArr1 := mi["array1"].([]interface{})
 	fmt.Println("mi.array1[0] = ", miArr1[0])
@@ -173,6 +174,21 @@ func unmarshalJSONwithMapInterface() {
 	miHistory := mi["history"].(map[string]interface{})
 	fmt.Println("mi.history.date:", miHistory["date"])
 	fmt.Println("mi.history.action:", miHistory["action"])
+}
+
+func decodeJSON() {
+	jd := &JSONData{}
+	// unmarshal 대신 decode 함수 사용
+	r := bytes.NewReader([]byte(strJSON))
+	if err := json.NewDecoder(r).Decode(jd); err != nil {
+		panic(err)
+	}
+	fmt.Println("jd:", jd)
+	fmt.Println("jd.UserName = ", jd.UserName)
+	fmt.Println("jd.Age = ", jd.Age)
+	fmt.Println("jd.Source = ", jd.Source)
+	fmt.Println("jd.array1 = ", jd.Array1)
+	fmt.Println("jd.history = ", jd.History)
 }
 
 func unmarshalJSONFile() {
