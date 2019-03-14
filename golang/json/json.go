@@ -65,6 +65,7 @@ func main() {
 	fmt.Println("json test...")
 	marshalJSON()
 	unmarshalJSON()
+	unmarshalJSONwithMapInterface()
 	unmarshalJSONFile()
 	encodeJSON()
 	HasAIsAJSON()
@@ -154,6 +155,24 @@ func unmarshalJSON() {
 	ss = strings.Replace(ss, "\\", "", -1)
 	fmt.Println(`encoder.SetEscapeHTML(false) - strconv.Unquote = `, ss)
 	//////////
+}
+
+func unmarshalJSONwithMapInterface() {
+	// json 내용을 모를 경우 map[string]interface{} 구조로 unmarshal 할 수 있다.
+	var mi map[string]interface{}
+	json.Unmarshal([]byte(strJSON), &mi)
+	fmt.Println("mi:", mi)
+	fmt.Println("mi.name = ", mi["name"])
+	fmt.Println("mi.name = ", mi["age"])
+	fmt.Println("mi.source = ", mi["source"])
+	miArr1 := mi["array1"].([]interface{})
+	fmt.Println("mi.array1[0] = ", miArr1[0])
+	fmt.Println("mi.array1[1] = ", miArr1[1])
+	fmt.Println("mi.array1[2] = ", miArr1[2])
+	// json object 필드는 map[string]interface{} 중첩된 형태로 볼 수 있다.
+	miHistory := mi["history"].(map[string]interface{})
+	fmt.Println("mi.history.date:", miHistory["date"])
+	fmt.Println("mi.history.action:", miHistory["action"])
 }
 
 func unmarshalJSONFile() {
