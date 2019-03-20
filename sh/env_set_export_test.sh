@@ -14,6 +14,7 @@ echo $ysoftmanvar1
 # env 만 사용하면 zzz 값으로 되지 않는다.
 env ysoftmanvar1="zzz" echo $ysoftmanvar1
 # ysoftmanvar1=zzz 로 명령 수행하기
+# -c 옵션은 뒤에 스트링을 쉘 명령으로 수행한다.
 ysoftmanvar1="zzz" bash -c 'echo $ysoftmanvar1'
 
 
