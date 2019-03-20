@@ -5,6 +5,8 @@
 #include <stdio.h>
 
 
+int switch_enum_test_func();
+
 int main()
 {
 	int a = 1;
@@ -34,25 +36,30 @@ int main()
 		break;
 	}
 
+	switch_enum_test_func();
+	return 0;
+}
 
+enum myenum {
+	my_enum_1 = 1,
+	my_enum_2,
+	my_enum_3,
+};
 
-	enum myenum {
-		my_enum_1 = 1,
-		my_enum_2,
-		my_enum_3,
-	};
-	myenum var1 = my_enum_3;
+int switch_enum_test_func()
+{
+	myenum var1 = my_enum_1;
 	switch(var1)
 	{
 		case my_enum_1: printf("return 1\n"); return 1;
 		case my_enum_2: printf("return 2\n"); return 2;
 		case my_enum_3: printf("return 3\n"); return 3;
-		// enum 을 switch 할때 컴파일러에 따라 default 를 사용하거나 case 마다 break 를 써야 한다.
+		// enum 을 switch 할때 다음 에러가 발생하는 경우가 있다.
 		// c++ warning: enumeration value not handled in switch [-Wswitch]
+		//  default 를 사용하거나 case 마다 break 를 써야 한다.
 		default:
 			break;
 	}
 
 	return 0;
 }
-
