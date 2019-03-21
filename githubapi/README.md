@@ -5,7 +5,7 @@
 curl -s --user "ysoftman:password123" https://api.github.com/user/repos
 
 # 해당 저장소에서 사용되는 언어별 사용 bytes
- curl -s --user "ysoftman:password123" https://api.github.com/repos/ysoftman/test_code/languages
+curl -s --user "ysoftman:password123" https://api.github.com/repos/ysoftman/test_code/languages
 
 # github api 를 이용해 이슈 정보 파악하기
 # https://developer.github.com/v3/issues/
@@ -17,7 +17,32 @@ curl -s --user "ysoftman:password123" https://api.github.com/repos/ysoftman/test
 curl -s --user "ysoftman:password123" https://api.github.com/repos/ysoftman/test_code/releases
 ```
 
-## git-br
+## git subprogram(custom) command 사용하기
+
+```bash
+# git-명령이름 으로 실행할 파일을 만들고
+vi git-ysoftman
+
+#!/bin/bash
+echo "ysoftman's custom git command test"
+chmod +x git-ysoftman
+
+# 다음과 같이 명시하면 현재 위치에서는 커스텀 명령이 실행된다.
+git ysoftman
+
+# 만약 현재경로에서 git ysoftman 실행시 다음과 같은 에러가 발생한다면
+git: 'ysoftman' is not a git command.
+
+# GIT_EXEC_PATH 환경변수를 현재디렉토리로 설정해 실행한다.
+# https://git-scm.com/book/ko/v2/Git%EC%9D%98-%EB%82%B4%EB%B6%80-%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98
+GIT_EXEC_PATH=$(pwd) git ysoftman
+
+# 참고로 다음 옵션으로 현재 사용중인 subprogram 경로를 알 수 있다.
+git --exec-path
+/usr/libexec/git-core
+```
+
+### git-br
 
 브랜치명이 xxx-이슈번호 인 경우, github 의 이슈타이틀을 파악해서 현재 로컬 브랜치에 정보에 같이 표시한다.
 
