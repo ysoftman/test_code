@@ -53,10 +53,9 @@ int switch_enum_test_func()
 	{
 		case my_enum_1: printf("return 1\n"); return 1;
 		case my_enum_2: printf("return 2\n"); return 2;
-		case my_enum_3: printf("return 3\n"); return 3;
-		// enum 을 switch 할때 다음 에러가 발생하는 경우가 있다.
+		// enum 을 switch 할때 enum 의 모든 경우를 case 로 만들지 않으면 다음과 같은 경고 메시지가 나온다.
 		// c++ warning: enumeration value not handled in switch [-Wswitch]
-		//  default 를 사용하거나 case 마다 break 를 써야 한다.
+		// enum 의 값에 대한 case 를 만들던가 default 를 사용하면 된다.
 		default:
 			break;
 	}
