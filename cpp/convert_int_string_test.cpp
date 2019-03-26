@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // int -> string, string -> int 로 변환하기
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string>
 #include <stdlib.h>
@@ -29,21 +27,12 @@ int main()
 	cout << "stringstream:" << s.str() << endl;
 
 	// 방법3
-	
 	double a = 12.3456789;
-	// 자리수 3개로 고정 -> 12.3 출력
-	cout.precision(3);
-	cout << "a:" << a << endl;
 	// double -> string
+	// Numeric Type (int, float, double)을 string으로 변환해주기 위한 객체
 	ostringstream ss;
 	ss << a;
 	cout << "ostringstream:" << ss.str() << endl;
-
-	// double b = 12.3456789123456789;
-	// ostringstream ss2;
-	// ss2 << "b:" << fixed << b;
-	// cout.precision(1);
-	// cout << "ostringstream:" << ss2.str() << endl;
 
 
 	/////////////////////////////
@@ -67,20 +56,6 @@ int main()
 	// string -> double
 	double new_num_double = std::stod(str, nullptr);
 	cout << "std::stod():" << new_num_double << endl;
-
-
-
-	int int_num = 0;
-	// Numeric Type (int, float, double)을 string으로 변환해주기 위한 객체
-	ostringstream ostr;
-	for (int_num = 1; int_num <= 10; int_num++)
-	{
-		// 초기화
-		ostr.str("");
-		// int를 string으로 변환
-		ostr << int_num;
-		printf("[int -> string] ostr = %s\n", ostr.str().c_str());
-	}
 
 	return 0;
 }
