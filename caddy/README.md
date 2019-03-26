@@ -41,7 +41,6 @@ go run build.go -goos=darwin
 - 플러그인 빌드
 
 ```bash
-
 # run.go 에 ysoftmandirective 패키지 (init 수행되도록) _ 로 import
 vi $GOPATH/src/github.com/mholt/caddy/caddy/caddymain/run.go
 _ "github.com/ysoftman/ysoftmandirective"
