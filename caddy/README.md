@@ -41,33 +41,32 @@ go run build.go -goos=darwin
 - 플러그인 빌드
 
 ```bash
-# ysoftmanhellocaddy.go 파일 위치하기
-mkdir -p $GOPATH/src/github.com/ysoftman/ysoftmanhellocaddy
-cp -fv ./ysoftmanhellocaddy.go $GOPATH/src/github.com/ysoftman/ysoftmanhellocaddy
 
-# run.go 에 ysoftmanhellocaddy 패키지 (init 수행되도록) _ 로 import
+# run.go 에 ysoftmandirective 패키지 (init 수행되도록) _ 로 import
 vi $GOPATH/src/github.com/mholt/caddy/caddy/caddymain/run.go
-_ "github.com/ysoftman/ysoftmanhellocaddy"
+_ "github.com/ysoftman/ysoftmandirective"
 
 # 플러그인 이름을 directive 로 추가한다.
 vi $GOPATH/src/github.com/mholt/caddy/caddyhttp/httpserver/plugin.go
 # var directives = []string { 부분에 추가
-"ysoftman",
+"ysoftmandirective",
+
+# ysoftmandirective.go 파일 위치하기
+mkdir -p $GOPATH/src/github.com/ysoftman/ysoftmandirective && cp -fv ./ysoftmandirective.go $GOPATH/src/github.com/ysoftman/ysoftmandirective
 
 # mac 에서 빌드 및 실행
-cd $GOPATH/src/github.com/mholt/caddy/caddy/build.go
-go run build.go -goos=darwin
+cd $GOPATH/src/github.com/mholt/caddy/caddy && go run build.go -goos=darwin && cd -
 
 # 플러그인 리스트 확인
-./caddy -plugins
+$GOPATH/src/github.com/mholt/caddy/caddy/caddy -plugins
 
 # 플러그인 지시자 포함 설정 파일 생성
 echo '# port
 :8080
 # 플러그인 지시자 사용
-ysoftman hello_Caddy
+ysoftmandirective hello_Caddy
 ' | tee $GOPATH/src/github.com/mholt/caddy/caddy/caddyfile
 
 # 실행
-./caddy -conf ./caddyfile
+$GOPATH/src/github.com/mholt/caddy/caddy/caddy -conf $GOPATH/src/github.com/mholt/caddy/caddy/caddyfile
 ```

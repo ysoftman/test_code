@@ -2,7 +2,7 @@
 // caddy 의 거의 모든 기능(지시자)는 플러그인으로 만들어져 있고 caddy 컴파일시 추가된다.
 // 소스에 함께 들어 있는 기본 플러그인들은 /mholt/caddy/caddyhttp 에 있으니 참고
 // https://github.com/mholt/caddy/wiki/Extending-Caddy
-package ysoftmanhellocaddy
+package ysoftmandirective
 
 import (
 	"fmt"
@@ -34,7 +34,7 @@ func init() {
 	// httpserver.AddListenerMiddleware(myListenerMiddleware)
 
 	// 플러그인 이름 및 동작 함수 설정
-	caddy.RegisterPlugin("ysoftman", caddy.Plugin{
+	caddy.RegisterPlugin("ysoftmandirective", caddy.Plugin{
 		ServerType: "http",
 		Action:     setup,
 	})
@@ -47,7 +47,7 @@ func setup(c *caddy.Controller) error {
 			return c.ArgErr() // otherwise it's an error
 		}
 		value := c.Val() // use the value
-		fmt.Println("ysoftman plugin value : ", value)
+		fmt.Println("ysoftmandirective plugin value : ", value)
 	}
 	return nil
 }
