@@ -1,0 +1,8 @@
+# [[ ]] 로 리스트를 표현
+[[song]]
+name = "Thunder Road"
+duration = "4m49s"
+
+[[song]]
+name = "Stairway to Heaven"
+duration = "8m03s"

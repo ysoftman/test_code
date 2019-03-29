@@ -17,4 +17,8 @@ func main() {
 	fmt.Println()
 
 	parseFruitsMapChild()
+	fmt.Println()
+
+	parseSongs()
+	fmt.Println()
 }
