@@ -39,9 +39,13 @@ GIT_EXEC_PATH=$(pwd) git ysoftman
 # 또는
 git --exec-path=. br
 # 또는
-# 언제부터인가 git-subcommand 를 현재 디렉토리에서 실행하기 위해
-# PATH 환경변수 마지막에 구분자(:)가 있거나 PATH 중간에 :: 부분이 있어야 한다.
+# bash, zsh 등에서 git-subcommand 를 현재 디렉토리에서 실행하기 위해
+# PATH 환경변수 처음이나 마지막에 구분자(:)가 있거나
+# PATH 중간에 :: 부분이 있어야 한다.
+# ./a.sh 대신 a.sh 실행 가능해야 한다.
 export PATH=$PATH:
+# 또는
+export PATH=:$PATH
 # 또는
 export PATH=::$PATH
 
