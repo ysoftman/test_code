@@ -30,16 +30,24 @@ chmod +x git-ysoftman
 # 다음과 같이 명시하면 현재 위치에서는 커스텀 명령이 실행된다.
 git ysoftman
 
-# 만약 현재경로에서 git ysoftman 실행시 다음과 같은 에러가 발생한다면
+# 만약 현재경로에서 git ysoftman 실행시 다음과 같은 에러가 발생한다.
 git: 'ysoftman' is not a git command.
+
+# 다음 옵션으로 현재 사용중인 subprogram 경로를 알 수 있다.
+git --exec-path
+/usr/libexec/git-core
+# 또는
+/Library/Developer/CommandLineTools/usr/libexec/git-core
 
 # GIT_EXEC_PATH 환경변수를 현재디렉토리로 설정해 실행한다.
 # https://git-scm.com/book/ko/v2/Git%EC%9D%98-%EB%82%B4%EB%B6%80-%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98
 GIT_EXEC_PATH=$(pwd) git ysoftman
+# 또는
+git --exec-path=. br
 
-# 참고로 다음 옵션으로 현재 사용중인 subprogram 경로를 알 수 있다.
-git --exec-path
-/usr/libexec/git-core
+# 참고로 git 명령이 어떻게 수행되는지 trace 해볼 수 있다.
+# 2값이상을 주면 open file descriptor 번호로 파악해서 해당 파일로 trace를 기록한다.
+GIT_TRACE=2 git ysoftman
 ```
 
 ### git-br
