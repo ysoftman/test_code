@@ -47,7 +47,7 @@ export PATH=$PATH:
 # 또는
 export PATH=:$PATH
 # 또는
-export PATH=::$PATH
+export PATH=/bin::$PATH
 
 # 참고
 # 다음 옵션으로 현재 사용중인 command 경로를 알 수 있다.
