@@ -26,13 +26,13 @@
     - my_role3
 
 # local -> ysoftman.server.com 로 위임
-# ysoftman.server.com 의 /home/ysoftman/z/ -> 내 PC(로컬) ./b 로 복사
+# ysoftman.server.com 의 /home/ysoftman/z/ -> ysoftman@local(127.0.0.1) 의 ./b 로 복사
 - name: inventory(remote) z -> local b 로 synchronize
   synchronize:
     mode: push
     src: "/home/ysoftman/z/"
     dest: "./b"
-  remote_user: "deploy"
+  remote_user: "ysoftman"
   delegate_to: ysoftman.server.com
   tags:
     - my_role3
