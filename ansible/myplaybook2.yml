@@ -9,3 +9,9 @@
   roles:
   - role: my_role2
   tags: [ my_role2 ]
+
+- name: myplaybook test3
+  hosts: localhost
+  roles:
+  - role: my_role3
+  tags: [ my_role3 ]

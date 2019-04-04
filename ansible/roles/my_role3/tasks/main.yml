@@ -1,0 +1,13 @@
+---
+- name: Check service_env
+  # set_fact 로 변수 값을 변경할 수 있다.
+  set_fact:
+    my_var1: "master"
+  when: service_env == "sandbox" or service_env == "production"
+  tags:
+    - my_role3
+
+- name: print service_env
+  shell: echo "{{ my_var1 }}"
+  tags:
+    - my_role3
