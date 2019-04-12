@@ -67,7 +67,7 @@ echo "\${MACHTYPE}:" ${MACHTYPE}
 echo "\${EDITOR}:" ${EDITOR}
 # 설정된 경로
 echo "\${PATH}:" ${PATH}
-# 스클비트 수행 시간
+# 쉘 경과 시간(초)
 echo "\${SECONDS}:" ${SECONDS}
 # 인자 개수
 echo "\${#}:" ${#}
@@ -75,6 +75,12 @@ echo "\${#}:" ${#}
 echo "\${0}:" ${0}
 # 1번째 인자
 echo "\${1}:" ${1}
+# 디폴트 프롬프트
+echo "\${PS1}:" ${PS1}
+# continue 프롬프트, 커맨드라인에더 다음줄에 계속 입력할때 표시되는 프롬프트
+echo "\${PS2}:" ${PS2}
+# select 명령 수행시 선택입력을 위해 표시되는 프롬프트
+echo "\${PS3}:" ${PS3}
 # 이전 디랙토리 전체 경로 출력
 echo "\${OLDPWD}:" ${OLDPWD}
 # 현재 디랙토리 전체 경로 출력(Print Working Directoy)
@@ -104,7 +110,7 @@ for v in ${var1}; do
 done
 echo "var1 = ${var1}"
 
-# 배열 변수의 경우
+# 배열(리스트) 변수의 경우
 var1=("10.10.10.1:111" "10.10.10.2:222" "10.10.10.3:333")
 echo "var1[0] = ${var1[0]}"
 echo "var1[1] = ${var1[1]}"
