@@ -14,9 +14,11 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	// 셔플1 - Perm()
+	// 0~n-1 까지의 숫자를 랜덤 치환해서 리턴한다.
 	fmt.Println("Perm():", rand.Perm(len(l)))
 
 	// 셔플2 - Shuffle() golang 1.10 에서 생김
+	// Shuffle 내부적으로 Fisher Yates shuffle algorithm 사용
 	l2 := make([]int, len(l))
 	copy(l2, l)
 	rand.Shuffle(len(l2), func(i, j int) {
