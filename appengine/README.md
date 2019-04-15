@@ -1,6 +1,7 @@
 # go-appengine
 
 - google appengine test using golang
+- app.yml 설명 https://cloud.google.com/appengine/docs/standard/go/config/appref
 
 ## go-appengine 환경 구성
 
