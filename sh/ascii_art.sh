@@ -26,6 +26,7 @@ zzz
 filename=${0##*/}
 filename=${filename%%.sh}.out
 echo "outfilename : ${filename}"
+rm -rf ${filename}
 # ysoftman 파일로 입력
 cat > ${filename} << zzz
 ysoftman input test
@@ -41,3 +42,12 @@ cat >> ${filename} << zzz
  \__, |___/\___/|_|  \__|_| |_| |_|\__,_|_| |_|
  |___/
 zzz
+
+
+# $(dollar sign)을 살리기 위해선 구분자를 quote 로 묶어야 한다. 'zzz'
+cat >> ${filename} << 'zzz'
+a="ysoftman"
+echo ${a}
+zzz
+
+cat ${filename}
