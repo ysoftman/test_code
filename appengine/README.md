@@ -36,6 +36,10 @@ sudo apt-get install google-cloud-sdk-app-engine-go
 ## appengine 관리
 
 ```bash
+# google cloud 올리기전에 로컬에서 테스트 해볼 수 있다.
+# 아래 명령을 실행해두면 .go 소스 수정때마다 자동 빌드되어 된다.
+dev_appserver.py app.yaml --port 9999
+
 # google cloud 초기화
 # url 링크 후 verification code 확인하여 입력
 # 기존 프로젝트 또는 신규 프로젝트 생성 선택
