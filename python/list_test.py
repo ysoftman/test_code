@@ -52,6 +52,10 @@ print(val1)
 # slice(start:stop[:step]) 의 형태(step 은 optional)
 # 모든 요소
 print(val1[:])
+# 마지막 요소
+print(val1[-1])
+# 마지막 두번째 요소
+print(val1[-2])
 # 2~3번째만
 print(val1[2:4])
 # 4번째 이전(0~3)까지
