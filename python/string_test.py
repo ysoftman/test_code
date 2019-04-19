@@ -66,6 +66,13 @@ hoon'''
     # 첫문자만 대문자로
     str = str.capitalize()
     print str
+    # 시작문자 존재 체크
+    # false
+    print "str.startswith", str.startswith("aaaaaaaaaaaaaaaaaaa")
+    # 0번째 위치에서 찾기
+    print "str.startswith", str.startswith("Yoon b")
+    # 5번째 위치에서 찾기
+    print "str.startswith", str.startswith("byoung", 5)
 
     str = "윤\n병\n훈"
     print 'str = {}'.format(str)
