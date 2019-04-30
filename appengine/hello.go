@@ -15,9 +15,19 @@ func handlerHello(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	resp := `
-	ysoftman first appengine test<br>
+	resp := `ysoftman first appengine test<br>
 	appengine /<br>
+	<br>
+	<H2>filebase 파일</H2>
+	xelloss image<br>
+	<img src="https://firebasestorage.googleapis.com/v0/b/ysoftman-test.appspot.com/o/xelloss.jpg?alt=media&token=498bde0a-1802-40fb-b51a-c3c0c814eec6">
+	<br>
+	박카스<br>
+	<img src="https://firebasestorage.googleapis.com/v0/b/ysoftman-test.appspot.com/o/%E1%84%87%E1%85%A1%E1%86%A8%E1%84%8F%E1%85%A1%E1%84%89%E1%85%B3.jpg?alt=media&token=79f4c9ce-5269-478f-a402-12e41a7e9d0e">
+	<br>
+	filebase gs(google) url로 파일 다운로드<br>
+	gsutil cp -v gs://ysoftman-test.appspot.com/xelloss.jpg . <br>
+	gsutil cp -v gs://ysoftman-test.appspot.com/박카스.jpg . <br>
 	`
 	fmt.Fprint(w, resp)
 }

@@ -59,3 +59,18 @@ gcloud app browse
 # 앱 로그 확인
 gcloud app logs tail -s default
 ```
+
+## firebase 업로드된 파일 사용
+
+```bash
+# firebae 에 파일 업로드
+# gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
+https://console.firebase.google.com/project/ysoftman-test/storage/ysoftman-test.appspot.com/files
+
+# gs(googlestorage) url 는 gsutil(google-cloud-sdk)로 접근할 수 있다.
+# gsutil 명령어 참고
+# https://cloud.google.com/storage/docs/gsutil/commands/cp
+# gs(googlestorage) url 파일 보기
+gsutil ls -ahl gs://ysoftman-test.appspot.com
+# gs(googlestorage) url 파일로 로컬로 복사(다운로드)
+gsutil cp -v gs://ysoftman-test.appspot.com/xelloss.jpg .
