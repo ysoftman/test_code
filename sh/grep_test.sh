@@ -8,6 +8,10 @@
 # . : 시작할 디렉토리
 grep -rn --include="*.txt" -E "ysoftman|bill" .
 
+# -e 로 패턴 여러개를 명시해도 된다.
+# ps 컬럼명과 포함해서 보기
+ps -ef | grep -e "PID" -e "grep"
+
 # 현재 계정으로 실행중인 프로세스들에서 grep 빼고 보기
 ps | grep "" | grep -v "grep"
 
