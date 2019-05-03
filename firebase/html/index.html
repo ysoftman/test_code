@@ -4,10 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <title>ysoftman-firebase</title>
 
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-storage.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -21,15 +26,7 @@
         firebase.initializeApp(config);
     </script>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/5.11.1/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/5.11.1/firebase-auth.js"></script>
-    <script defer src="/__/firebase/5.11.1/firebase-database.js"></script>
-    <script defer src="/__/firebase/5.11.1/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/5.11.1/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+
 
     <style media="screen">
         body {
@@ -105,23 +102,61 @@
 </head>
 
 <body>
-    <title></title>
-    ysoftman<br>
-    <div id=box1>
-
-    </div>
+    <h1>ysoftman - firebase test</h1>
+    <div id=box1></div>
+    <div id=box2></div>
     <script>
         // Create a reference with an initial file path and name
         var storage = firebase.storage();
         //var pathReference = storage.ref('xelloss.jpg');
         var gsReference = storage.refFromURL('gs://ysoftman-test.appspot.com/xelloss.jpg')
         gsReference.getDownloadURL().then(function(url) {
-            console.log('File available at', url);
-            document.getElementById('box1').innerHTML = 'xelloss<br><img src="' + url + '"></img>';
+            //console.log('File available at', url);
+            document.getElementById('box1').innerHTML = 'xelloss from firebase storage<br><img src="' + url + '"></img>';
         }).catch(function(error) {
             // Handle any errors
             console.error('download failed:', error);
         });
+
+        var db = firebase.firestore();
+        var doc1_likeCnt = 0
+        console.log("doc1_likeCnt", doc1_likeCnt)
+        readCnt();
+        //setCnt();
+
+        function readCnt() {
+            // users 전체 문서 가져오기
+            //db.collection("users").get().then((querySnapshot) => {
+            //    querySnapshot.forEach((doc) => {
+            //        console.log(doc.id, doc.data().name);
+            //        document.getElementById('box2').innerHTML = `${doc.data().name} ${doc.data().likeCnt}`;
+            //        cnt = `${doc.data().likeCnt}`
+            //        console.log("doc1_likeCnt", doc1_likeCnt)
+            //    });
+            //});
+
+            // users->doc1 하나만 가져오기
+            db.collection("users").doc("doc1").onSnapshot(function(doc) {
+                console.log("Current data: ", doc.data());
+                document.getElementById('box2').innerHTML = `${doc.data().name} ${doc.data().likeCnt}`;
+                doc1_likeCnt = `${doc.data().likeCnt}`;
+                console.log("doc1_likeCnt", doc1_likeCnt)
+
+            });
+        }
+
+        function setCnt() {
+            db.collection("users").doc("doc1").set({
+                    name: "ysoftman",
+                    likeCnt: doc1_likeCnt
+                })
+                .then(function() {
+                    console.log("Document written!");
+                })
+                .catch(function(error) {
+                    console.error("Error adding document: ", error);
+                });
+        }
     </script>
 </body>
 

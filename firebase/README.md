@@ -7,7 +7,7 @@
 https://console.firebase.google.com/u/0/project/ysoftman-test/settings/general/
 
 # firebase -> storage -> 규칙
-# 읽기 공개 허용으로 설정
+# 읽기 허용으로 설정
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
@@ -16,7 +16,19 @@ service firebase.storage {
   }
 }
 
+# firebase -> database(cloud firestore) -> 규칙
+# 읽기, 쓰기 허용으로 설정
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+
 # 참고
+https://firebase.google.com/docs/storage/web/start
+https://firebase.google.com/docs/firestore/quickstart
 https://github.com/firebase/quickstart-js/blob/master/storage/index.html
 
 ```
