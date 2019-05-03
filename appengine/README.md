@@ -47,11 +47,12 @@ dev_appserver.py app.yaml --port 9999
 gcloud init
 
 # glcoud  구글 app engine 에 배포하기
+# --promote 옵션을 사용하면 현재 배포된 버전으로 서비스(모든 트랙픽을 받는)하게 한다.
 # 배포 종료시 접속 가능한 url 이 표시된다.
 gcloud app deploy ./app.yaml --promote
 
 # 배포가 완료되면 확인
-https://strategic-ivy-120508.appspot
+https:///ysoftman-test.appspot.com/
 
 # 배포 후 접속 URL 확인 하기
 gcloud app browse
@@ -63,7 +64,7 @@ gcloud app logs tail -s default
 ## firebase 업로드된 파일 사용
 
 ```bash
-# firebae 에 파일 업로드
+# firebae storage
 # gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
 https://console.firebase.google.com/project/ysoftman-test/storage/ysoftman-test.appspot.com/files
 
@@ -74,3 +75,4 @@ https://console.firebase.google.com/project/ysoftman-test/storage/ysoftman-test.
 gsutil ls -ahl gs://ysoftman-test.appspot.com
 # gs(googlestorage) url 파일로 로컬로 복사(다운로드)
 gsutil cp -v gs://ysoftman-test.appspot.com/xelloss.jpg .
+```

@@ -5,7 +5,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"text/template"
 
 	"google.golang.org/appengine" // Required external App Engine library
 )
@@ -15,21 +17,16 @@ func handlerHello(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	resp := `ysoftman first appengine test<br>
-	appengine /<br>
-	<br>
-	<H2>filebase 파일</H2>
-	xelloss image<br>
-	<img src="https://firebasestorage.googleapis.com/v0/b/ysoftman-test.appspot.com/o/xelloss.jpg?alt=media&token=498bde0a-1802-40fb-b51a-c3c0c814eec6">
-	<br>
-	박카스<br>
-	<img src="https://firebasestorage.googleapis.com/v0/b/ysoftman-test.appspot.com/o/%E1%84%87%E1%85%A1%E1%86%A8%E1%84%8F%E1%85%A1%E1%84%89%E1%85%B3.jpg?alt=media&token=79f4c9ce-5269-478f-a402-12e41a7e9d0e">
-	<br>
-	filebase gs(google) url로 파일 다운로드<br>
-	gsutil cp -v gs://ysoftman-test.appspot.com/xelloss.jpg . <br>
-	gsutil cp -v gs://ysoftman-test.appspot.com/박카스.jpg . <br>
-	`
-	fmt.Fprint(w, resp)
+	var data struct {
+		Title string
+	}
+	data.Title = "ysoftman first appengine test"
+	templateMain, err := template.ParseFiles("hello.html")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	templateMain.Execute(w, data)
 }
 
 func handlerTest(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +43,11 @@ func handlerTest(w http.ResponseWriter, r *http.Request) {
 	// slackMsg := "슬랙봇테스트입니다"
 	// data := strings.NewReader(slackMsg)
 	// url := "https://" + url + "?token=" + slackToken + "&channel=%23" + slackChannel
+	// appengine 에서는 기본 http client 를 할 수 없다.
+	// google.golang.org/appengine/urlfetch 를 사용해야 하나.
+	// http.DefaultTransport and http.DefaultClient are not available in App Engine. See https://cloud.google.com/appengine/docs/go/urlfetch/
 	// resp, err := http.Post(url, "text/html", data)
+	// resp, err := client.Post(url, "text/html", data)
 	// if err != nil {
 	// 	log.Println(err)
 	// 	return
