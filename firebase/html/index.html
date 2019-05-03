@@ -136,12 +136,12 @@
             //});
 
             // users->doc1 하나만 가져오기
+            // onSnapshot(콜백함수) 로 수신대기 후 완료되면 콜백함수가 수행된다.
             db.collection("users").doc("doc1").onSnapshot(function(doc) {
                 console.log("Current data: ", doc.data());
                 document.getElementById('box2').innerHTML = `${doc.data().name} ${doc.data().likeCnt}`;
                 doc1_likeCnt = `${doc.data().likeCnt}`;
                 console.log("doc1_likeCnt", doc1_likeCnt)
-
             });
         }
 
