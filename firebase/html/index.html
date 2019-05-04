@@ -5,29 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ysoftman-firebase</title>
-
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-storage.js"></script>
-
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyDNZCVxYjUU_-YrA-BNuLvYoYZBM_AWYU0",
-            authDomain: "ysoftman-test.firebaseapp.com",
-            databaseURL: "https://ysoftman-test.firebaseio.com",
-            projectId: "ysoftman-test",
-            storageBucket: "ysoftman-test.appspot.com",
-            messagingSenderId: "366021551206"
-        };
-        firebase.initializeApp(config);
-    </script>
-
-
-
+    <script src="common.js"></script>
     <style media="screen">
         body {
             background: #ECEFF1;
@@ -105,79 +89,14 @@
 
 <body>
     <h1>ysoftman - firebase test</h1>
+    <a href="restaurant_pangyo.html">restaurant_pangyo.html</a><br>
+    loadImage from firebase storage<br>
     <div id=box1></div>
-    <div id=box2></div>
+    increaseCnt firestore<br>
+    ysoftman likeCnt<div id=box2></div>
     <script>
-        // Create a reference with an initial file path and name
-        var storage = firebase.storage();
-        //var pathReference = storage.ref('xelloss.jpg');
-        var gsReference = storage.refFromURL('gs://ysoftman-test.appspot.com/xelloss.jpg')
-        gsReference.getDownloadURL().then(function (url) {
-            //console.log('File available at', url);
-            document.getElementById('box1').innerHTML = 'xelloss from firebase storage<br><img src="' + url + '"></img>';
-        }).catch(function (error) {
-            // Handle any errors
-            console.error('download failed:', error);
-        });
-
-        var db = firebase.firestore();
-        var doc1_likeCnt = 0
-        //readCnt();
-        //setCnt();
-        increaseCnt();
-
-        function readCnt() {
-            // users 전체 문서 가져오기
-            //db.collection("users").get().then((querySnapshot) => {
-            //    querySnapshot.forEach((doc) => {
-            //        console.log(doc.id, doc.data().name);
-            //        document.getElementById('box2').innerHTML = `${doc.data().name} ${doc.data().likeCnt}`;
-            //        cnt = `${doc.data().likeCnt}`
-            //        console.log("doc1_likeCnt", doc1_likeCnt)
-            //    });
-            //});
-
-            // users->doc1 하나만 가져오기
-            // onSnapshot(콜백함수) 로 수신대기하면서 현재 내용(변수등)값들을 스냅샷(문서)으로 저장 한다.
-            // 그리고 내용이 변경될때마다 콜백함수(문서가져오기)가 실행되어 스냅샷을 업데이트한다.
-            // (주의) doc1_likeCnt++ 등변수값을 변경하게 되면 매번 내용이 변경되서 문서가져오기가 무한으로 수행돼 과금될 수 있다.
-            db.collection("users").doc("doc1").onSnapshot(function (doc) {
-                console.log("Current data: ", doc.data());
-                document.getElementById('box2').innerHTML = `${doc.data().name} likeCnt: ${doc.data().likeCnt}`;
-            });
-        }
-
-        function setCnt() {
-            db.collection("users").doc("doc1").set({
-                name: "ysoftman",
-                likeCnt: doc1_likeCnt
-            }).then(function () {
-                console.log("Document written!");
-            }).catch(function (error) {
-                console.error("Error adding document: ", error);
-            });
-        }
-
-
-        function increaseCnt() {
-            var doc1ref = db.collection("users").doc("doc1");
-            // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
-            db.runTransaction(function (transaction) {
-                // This code may get re-run multiple times if there are conflicts.
-                return transaction.get(doc1ref).then(function (doc1) {
-                    if (!doc1.exists) {
-                        throw "Document doest not exist!";
-                    }
-                    var newCnt = doc1.data().likeCnt + 1;
-                    transaction.update(doc1ref, { likeCnt: newCnt });
-
-                    document.getElementById('box2').innerHTML = `${doc1.data().name} likeCnt: ${newCnt}`;
-                });
-            }).then(function () {
-                console.log("Transaction successfully committed!");
-            }).catch(function (error) {
-                console.log("Transaction failed: ", error);
-            });
-        }
+        loadImage("box1");
+        setDoc("test", "ysoftman");
+        increaseCnt("test", "ysoftman", "likeCnt", "box2");
     </script>
 </body>

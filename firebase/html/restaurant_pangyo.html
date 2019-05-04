@@ -1,0 +1,1241 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <title>resaturant pangyo</title>
+
+
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-storage.js"></script>
+    <script src="common.js"></script>
+
+</head>
+
+<body>
+    <!-- <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#navigation").load("navbar.html", function () {
+                console.log("navbar.html loaded");
+            });
+            console.log("document ready");
+        });
+    </script>
+    <div id="navigation"></div> -->
+
+    <script>
+        var namelist = [
+            '다연',
+            '만복 국수',
+            '미정 국수',
+            '소바니 우동',
+            '이태원 천상',
+            '상록면',
+            '차이나 오라',
+            '락앤웍',
+            '찌개애',
+            '킹콩 부대 찌개',
+            '진진반상',
+            '더 집밥',
+            '서경 백반집',
+            '맛있다',
+            '소호정',
+            '상황 삼계탕',
+            '정원 오리부추 구이',
+            '명인 만두',
+            '강남 교자',
+            '군산 오징어',
+            '오징어랑',
+            '마키노 차야',
+            '매드 포 갈릭',
+            '순남 시래기',
+            '모모 카페',
+            '짱가네 포크포크',
+            '됐소',
+            '담소사골순대',
+            '차이엔',
+            '빽다방',
+            '더 피크닉',
+            '기름 짜는 김밥집',
+            '반장 떡볶이',
+            '오군 식당',
+            '브랜든 돈까스',
+            '서호 돈까스',
+            '샤보텐',
+            '생어거스틴',
+            '아세야마',
+            '채선당 플러스',
+            '맥도날드',
+            '버거킹',
+            '찬장',
+            '더 냄비',
+            '메콩타이',
+            '준영',
+            '다루마 라멘',
+            '두부가 보쌈애',
+            '홍대 돈부리',
+            '카레 뜰에',
+            '김밥 천국',
+            '미쓰 싸이공',
+            '낭 싸이공',
+            '전주 콩나물 국밥',
+            '죠샌드위치',
+            '포메인',
+            '써브웨이',
+            '봉편메밀촌 뜨락',
+            '광남 포차',
+            '영심이 떡볶이',
+            '나고미',
+            '밥볶다',
+            '오덮',
+            '스시쿤',
+            '림꼬또',
+            '등심촌',
+            '챠오바라이트'];
+
+        function readLikeCnt(doc, htmlId) {
+            console.log("readLike", doc, htmlId)
+            readCnt("users", doc, 'likeCnt', htmlId)
+        }
+        function readDisLikeCnt(doc, htmlId) {
+            console.log("readDisLike", doc, htmlId)
+            readCnt("users", doc, 'dislikeCnt', htmlId)
+        }
+        function onLikeClick(doc, htmlId) {
+            console.log("onLikeClick", doc, htmlId)
+            increaseCnt("users", doc, 'likeCnt', htmlId);
+        }
+        function onDisLikeClick(doc, htmlId) {
+            console.log("onDisLikeClick", doc, htmlId)
+            increaseCnt("users", doc, 'dislikeCnt', htmlId);
+        }
+
+        window.onload = function () {
+            readAll("users")
+            namelist.forEach((name) => {
+                // 리셋
+                //setDoc(name)
+            });
+        }
+    </script>
+
+
+
+    <div class="card-columns">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">다연
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 681 H스퀘어 N동 1층</p>
+                <p class="card-text">제육쌈밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=kksd77&logNo=220730376755" class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('다연', '다연_좋아요')" class="btn btn-success">좋아요<div id='다연_좋아요'>
+                    </div></button>
+                <button type="button" onClick="onDisLikeClick('다연', '다연_싫어요')" class="btn btn-danger">싫어요<div
+                        id='다연_싫어요'></div></button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">만복 국수
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-13-heart.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 681번지 H스퀘어 N동 108호</p>
+                <p class="card-text">비빔국수, 주먹밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/jjiem/110182511126" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('만복 국수', '만복 국수_좋아요')" class="btn btn-success">좋아요<div
+                        id='만복 국수_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('만복 국수', '만복 국수_싫어요')" class="btn btn-danger">싫어요<div
+                        id='만복 국수_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">미정 국수
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 680 판교 H스퀘어S동 지하1층</p>
+                <p class="card-text">비빔국수, 닭조림 덮밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://www.0410noodle.com/noodle/menu.asp" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('미정 국수', '미정 국수_좋아요')" class="btn btn-success">좋아요<div
+                        id='미정 국수_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('미정 국수', '미정 국수_싫어요')" class="btn btn-danger">싫어요<div
+                        id='미정 국수_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">소바니 우동
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 682 유스페이스2 B동 지하 1층</p>
+                <p class="card-text">돈까스, 생선까스, 우동, 김치알방</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://madjudy.tistory.com/62" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('소바니 우동', '소바니 우동_좋아요')" class="btn btn-success">좋아요<div
+                        id='소바니 우동_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('소바니 우동', '소바니 우동_싫어요')" class="btn btn-danger">싫어요<div
+                        id='소바니 우동_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">이태원 천상</h4>
+                <p class="card-text">분당구 대왕판교로 660(삼평동) B122호</p>
+                <p class="card-text">소바니 우동, 카레 우동</p>
+            </div>
+            <div class="card-footer">
+                <a href="https://m.blog.naver.com/PostView.nhn?blogId=yunian80&logNo=220039678760&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F"
+                    class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('이태원 천상', '이태원 천상_좋아요')" class="btn btn-success">좋아요<div
+                        id='이태원 천상_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('이태원 천상', '이태원 천상_싫어요')" class="btn btn-danger">싫어요<div
+                        id='이태원 천상_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">상록면</h4>
+                <p class="card-text">분당구 삼평동 670 유스페이스 1동 지하1층 B109호</p>
+                <p class="card-text">우동, 소바, 닭고기 덮밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/katari4310/220657469660" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('상록면', '상록면_좋아요')" class="btn btn-success">좋아요<div
+                        id='상록면_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('상록면', '상록면_싫어요')" class="btn btn-danger">싫어요<div
+                        id='상록면_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">차이나 오라</h4>
+                <p class="card-text">분당구 삼평동 670 유스페이스몰 1동 2층 234</p>
+                <p class="card-text">짜장면, 짱뽕</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=pandasoft&logNo=220615097723"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('차이나 오라', '차이나 오라_좋아요')" class="btn btn-success">좋아요<div
+                        id='차이나 오라_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('차이나 오라', '차이나 오라_싫어요')" class="btn btn-danger">싫어요<div
+                        id='차이나 오라_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">락앤웍
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 H스퀘어 S동 지하1층</p>
+                <p class="card-text">짜장면, 짱뽕</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/m100409/10189497568" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('락앤웍', '락앤웍_좋아요')" class="btn btn-success">좋아요<div
+                        id='락앤웍_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('락앤웍', '락앤웍_싫어요')" class="btn btn-danger">싫어요<div
+                        id='락앤웍_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">찌개애
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 유스페이스1 204호</p>
+                <p class="card-text">된장찌개, 생선구이</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=k-odo&logNo=220720740520" class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('찌개애', '찌개애_좋아요')" class="btn btn-success">좋아요<div
+                        id='찌개애_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('찌개애', '찌개애_싫어요')" class="btn btn-danger">싫어요<div
+                        id='찌개애_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">킹콩 부대 찌개
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스A동 2층</p>
+                <p class="card-text">킹콩 부대찌개</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/zadoz/220594946347" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('킹콩 부대 찌개', '킹콩 부대 찌개_좋아요')" class="btn btn-success">좋아요<div
+                        id='킹콩 부대 찌개_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('킹콩 부대 찌개', '킹콩 부대 찌개_싫어요')" class="btn btn-danger">싫어요
+                    <div id='킹콩 부대 찌개_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">진진반상</h4>
+                <p class="card-text">분당구 삼평동 670 유스페이스1 A동 지하1층 127호</p>
+                <p class="card-text">진진반상(한식)</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://mumukmumuk.tistory.com/46" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('진진반상', '진진반상_좋아요')" class="btn btn-success">좋아요<div
+                        id='진진반상_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('진진반상', '진진반상_싫어요')" class="btn btn-danger">싫어요<div
+                        id='진진반상_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">더 집밥
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 삼환 하이펙스 A동 지하 1층</p>
+                <p class="card-text">백반</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/credit9352/220554462126" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('더 집밥', '더 집밥_좋아요')" class="btn btn-success">좋아요<div
+                        id='더 집밥_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('더 집밥', '더 집밥_싫어요')" class="btn btn-danger">싫어요<div
+                        id='더 집밥_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">서경 백반집
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 삼환 하이펙스 A동 지하 1층</p>
+                <p class="card-text">백반</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=dkhysb2&logNo=220616584744"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('서경 백반집', '서경 백반집_좋아요')" class="btn btn-success">좋아요<div
+                        id='서경 백반집_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('서경 백반집', '서경 백반집_싫어요')" class="btn btn-danger">싫어요<div
+                        id='서경 백반집_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">맛있다</h4>
+                <p class="card-text">판교 테크노밸리 유스페이스 1A동 지하 1층</p>
+                <p class="card-text">집밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/tndud728/220509437017" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('맛있다', '맛있다_좋아요')" class="btn btn-success">좋아요<div
+                        id='맛있다_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('맛있다', '맛있다_싫어요')" class="btn btn-danger">싫어요<div
+                        id='맛있다_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">소호정
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 유스페이스 2B동 지하 1층</p>
+                <p class="card-text">집밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=haoa&logNo=220816672006" class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('소호정', '소호정_좋아요')" class="btn btn-success">좋아요<div
+                        id='소호정_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('소호정', '소호정_싫어요')" class="btn btn-danger">싫어요<div
+                        id='소호정_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">상황 삼계탕
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 유스페이스 2B동 2층</p>
+                <p class="card-text">삼계탕</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=gooodsf&logNo=220019461409"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('상황 삼계탕', '상황 삼계탕_좋아요')" class="btn btn-success">좋아요<div
+                        id='상황 삼계탕_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('상황 삼계탕', '상황 삼계탕_싫어요')" class="btn btn-danger">싫어요<div
+                        id='상황 삼계탕_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">정원 오리부추 구이</h4>
+                <p class="card-text">판교 테크노밸리 유스페이스 2B동 2층</p>
+                <p class="card-text">오리구이,볶음밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=chewpine&logNo=220609519790"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('정원 오리부추 구이', '정원 오리부추 구이_좋아요')" class="btn btn-success">좋아요
+                    <div id='정원 오리부추 구이_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('정원 오리부추 구이', '정원 오리부추 구이_싫어요')"
+                    class="btn btn-danger">싫어요<div id='정원 오리부추 구이_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">명인 만두
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 유스페이스1 1층</p>
+                <p class="card-text">비빔밤, 라면, 만두, 돈까스, 오므라이스, 기타 분식</p>
+            </div>
+            <div class="card-footer">
+                <a href="https://m.blog.naver.com/PostView.nhn?blogId=seoil84&logNo=220982633167&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F"
+                    class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('명인 만두', '명인 만두_좋아요')" class="btn btn-success">좋아요<div
+                        id='명인 만두_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('명인 만두', '명인 만두_싫어요')" class="btn btn-danger">싫어요<div
+                        id='명인 만두_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">강남 교자</h4>
+                <p class="card-text">판교 테크노밸리 유스페이스 1A동 311호</p>
+                <p class="card-text">만두국, 칼국수</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/cella485/220549996239" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('강남 교자', '강남 교자_좋아요')" class="btn btn-success">좋아요<div
+                        id='강남 교자_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('강남 교자', '강남 교자_싫어요')" class="btn btn-danger">싫어요<div
+                        id='강남 교자_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">군산 오징어</h4>
+                <p class="card-text">판교 테크노밸리 유스페이스 1A동 310호</p>
+                <p class="card-text">오징어 불고기</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://ldahlia.tistory.com/291" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('군산 오징어', '군산 오징어_좋아요')" class="btn btn-success">좋아요<div
+                        id='군산 오징어_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('군산 오징어', '군산 오징어_싫어요')" class="btn btn-danger">싫어요<div
+                        id='군산 오징어_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">오징어랑</h4>
+                <p class="card-text">분당구 삼평동 670 삼환아이펙스 B동 지하 1층</p>
+                <p class="card-text">오징어 볶음, 고등어 구이</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/timeloader/220192079156" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('오징어랑', '오징어랑_좋아요')" class="btn btn-success">좋아요<div
+                        id='오징어랑_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('오징어랑', '오징어랑_싫어요')" class="btn btn-danger">싫어요<div
+                        id='오징어랑_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">마키노 차야</h4>
+                <p class="card-text">판교역로 알파리움 2단지 지하1층</p>
+                <p class="card-text">씨푸드 뷔페</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://clala70.blog.me/220878325619" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('마키노 차야', '마키노 차야_좋아요')" class="btn btn-success">좋아요<div
+                        id='마키노 차야_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('마키노 차야', '마키노 차야_싫어요')" class="btn btn-danger">싫어요<div
+                        id='마키노 차야_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">매드 포 갈릭</h4>
+                <p class="card-text">판교역로 알파리움 1단지 2층</p>
+                <p class="card-text">갈릭 피자, 파스타, 스테이크</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=hao_ho&logNo=220893036227" class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('매드 포 갈릭', '매드 포 갈릭_좋아요')" class="btn btn-success">좋아요<div
+                        id='매드 포 갈릭_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('매드 포 갈릭', '매드 포 갈릭_싫어요')" class="btn btn-danger">싫어요<div
+                        id='매드 포 갈릭_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">순남 시래기</h4>
+                <p class="card-text">판교역로 235 H스퀘어 N동 1층</p>
+                <p class="card-text">시래기국, 반찬 셀프</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=rssangchu&logNo=220906222851"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('순남 시래기', '순남 시래기_좋아요')" class="btn btn-success">좋아요<div
+                        id='순남 시래기_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('순남 시래기', '순남 시래기_싫어요')" class="btn btn-danger">싫어요<div
+                        id='순남 시래기_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">모모 카페</h4>
+                <p class="card-text">판교역로 192번길 12 판교 메리어트 8층</p>
+                <p class="card-text">뷔페</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=rssangchu&logNo=220906222851"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('모모 카페', '모모 카페_좋아요')" class="btn btn-success">좋아요<div
+                        id='모모 카페_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('모모 카페', '모모 카페_싫어요')" class="btn btn-danger">싫어요<div
+                        id='모모 카페_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">짱가네 포크포크
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 682 유스페이스 2A동 지하1층</p>
+                <p class="card-text">냉면 돈까스</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=alravang26&logNo=220725371354"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('짱가네 포크포크', '짱가네 포크포크_좋아요')" class="btn btn-success">좋아요<div
+                        id='짱가네 포크포크_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('짱가네 포크포크', '짱가네 포크포크_싫어요')" class="btn btn-danger">싫어요
+                    <div id='짱가네 포크포크_싫어요'></div></button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">됐소
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 682 유스페이스 2A동 지하1층</p>
+                <p class="card-text">차돌된장찌개(점심),김치째게(점심)</p>
+            </div>
+            <div class="card-footer">
+                <a href="https://m.blog.naver.com/PostView.nhn?blogId=yak709&logNo=220990287645&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('됐소', '됐소_좋아요')" class="btn btn-success">좋아요<div id='됐소_좋아요'>
+                    </div></button>
+                <button type="button" onClick="onDisLikeClick('됐소', '됐소_싫어요')" class="btn btn-danger">싫어요<div
+                        id='됐소_싫어요'></div></button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">담소사골순대</h4>
+                <p class="card-text">판교역로 235 H스퀘어 S동 1층</p>
+                <p class="card-text">순대국밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=01117166657&logNo=220836702933"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('담소사골순대', '담소사골순대_좋아요')" class="btn btn-success">좋아요<div
+                        id='담소사골순대_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('담소사골순대', '담소사골순대_싫어요')" class="btn btn-danger">싫어요<div
+                        id='담소사골순대_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">차이엔
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">성남시 분당구 판교역로 235 H스퀘어 N동 126호</p>
+                <p class="card-text">짜장면, 짱뽕, 탕수육, 깐풍기, 누룽지탕</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=tablestorystudio&logNo=221310940991"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('차이엔', '차이엔_좋아요')" class="btn btn-success">좋아요<div
+                        id='차이엔_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('차이엔', '차이엔_싫어요')" class="btn btn-danger">싫어요<div
+                        id='차이엔_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">빽다방
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 대왕판교로 660 유스페이스1 134호</p>
+                <p class="card-text">커피, 사라다빵, 딸바쥬스, 초코쥬스</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=effortpeople&logNo=220749400288"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('빽다방', '빽다방_좋아요')" class="btn btn-success">좋아요<div
+                        id='빽다방_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('빽다방', '빽다방_싫어요')" class="btn btn-danger">싫어요<div
+                        id='빽다방_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">더 피크닉
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 670 유스페이스 1A동 130호</p>
+                <p class="card-text">오므라이스, 오믈렛, 리코타치즈 샐러드</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=sunnaomi&logNo=220694860864"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('더 피크닉', '더 피크닉_좋아요')" class="btn btn-success">좋아요<div
+                        id='더 피크닉_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('더 피크닉', '더 피크닉_싫어요')" class="btn btn-danger">싫어요<div
+                        id='더 피크닉_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">기름 짜는 김밥집</h4>
+                <p class="card-text">판교역로 235 H스퀘어 S동 1층</p>
+                <p class="card-text">김밥, 쫄면, 분식</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=mn1020&logNo=220634966407" class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('기름 짜는 김밥집', '기름 짜는 김밥집_좋아요')" class="btn btn-success">좋아요
+                    <div id='기름 짜는 김밥집_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('기름 짜는 김밥집', '기름 짜는 김밥집_싫어요')" class="btn btn-danger">싫어요
+                    <div id='기름 짜는 김밥집_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">반장 떡볶이</h4>
+                <p class="card-text">판교역로 235 H스퀘어 S동 1층</p>
+                <p class="card-text">반장떡볶이, 부반장떡볶이, 전학생떡볶이</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=helloc_&logNo=221061537689"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('반장 떡볶이', '반장 떡볶이_좋아요')" class="btn btn-success">좋아요<div
+                        id='반장 떡볶이_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('반장 떡볶이', '반장 떡볶이_싫어요')" class="btn btn-danger">싫어요<div
+                        id='반장 떡볶이_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">오군 식당</h4>
+                <p class="card-text">분당구 삼평동 678 삼환아이펙스 A동 1층 105호</p>
+                <p class="card-text">오군 카레</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://berazard.tistory.com/102" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('오군 식당', '오군 식당_좋아요')" class="btn btn-success">좋아요<div
+                        id='오군 식당_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('오군 식당', '오군 식당_싫어요')" class="btn btn-danger">싫어요<div
+                        id='오군 식당_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">브랜든 돈까스
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 678 삼환아이펙스 A동 1층 105호</p>
+                <p class="card-text">돈까스, 치킨까스, 생선까스</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://waggo.tistory.com/166" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('브랜든 돈까스', '브랜든 돈까스_좋아요')" class="btn btn-success">좋아요<div
+                        id='브랜든 돈까스_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('브랜든 돈까스', '브랜든 돈까스_싫어요')" class="btn btn-danger">싫어요<div
+                        id='브랜든 돈까스_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">서호 돈까스</h4>
+                <p class="card-text">판교 테크노밸리 H스퀘어 S동 지하 1층</p>
+                <p class="card-text">돈까스</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://waggo.tistory.com/134" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('서호 돈까스', '서호 돈까스_좋아요')" class="btn btn-success">좋아요<div
+                        id='서호 돈까스_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('서호 돈까스', '서호 돈까스_싫어요')" class="btn btn-danger">싫어요<div
+                        id='서호 돈까스_싫어요'></div></button>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">샤보텐
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 아비뉴프랑 A동 1층 105호</p>
+                <p class="card-text">돈까스, 치킨까스, 우동</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=sumerpa&logNo=220588558603"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('샤보텐', '샤보텐_좋아요')" class="btn btn-success">좋아요<div
+                        id='샤보텐_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('샤보텐', '샤보텐_싫어요')" class="btn btn-danger">싫어요<div
+                        id='샤보텐_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">생어거스틴</h4>
+                <p class="card-text">판교 아비뉴프랑 A동 1층 105호</p>
+                <p class="card-text">팟타이, 나시고랭, 파인애플 볶음밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=nobbogle&logNo=220866275715"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('생어거스틴', '생어거스틴_좋아요')" class="btn btn-success">좋아요<div
+                        id='생어거스틴_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('생어거스틴', '생어거스틴_싫어요')" class="btn btn-danger">싫어요<div
+                        id='생어거스틴_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><strike>아세야마</strike>라멘집으로 바뀐것 같음</h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스 A동 지하1층 123호</p>
+                <p class="card-text">덴푸라 카레, 가아라게 카레</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/dosel91078/220851530776" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('아세야마', '아세야마_좋아요')" class="btn btn-success">좋아요<div
+                        id='아세야마_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('아세야마', '아세야마_싫어요')" class="btn btn-danger">싫어요<div
+                        id='아세야마_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">채선당 플러스
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">성남시 분당구 삼평동 대왕판교로606번길 47</p>
+                <p class="card-text">샤브샤브, 뷔페</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=achellnet&logNo=220878489803&categoryNo=0&parentCategoryNo=0&viewDate=&currentPage=1&postListTopCurrentPage=1&from=postView"
+                    class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('채선당 플러스', '채선당 플러스_좋아요')" class="btn btn-success">좋아요<div
+                        id='채선당 플러스_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('채선당 플러스', '채선당 플러스_싫어요')" class="btn btn-danger">싫어요<div
+                        id='채선당 플러스_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">맥도날드</h4>
+                <p class="card-text">판교 테크노밸리 H스퀘어 S동 1층</p>
+                <p class="card-text">버거, 감자튀김, 아이스크림, 쉐이크</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://pengu.tistory.com/39" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('맥도날드', '맥도날드_좋아요')" class="btn btn-success">좋아요<div
+                        id='맥도날드_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('맥도날드', '맥도날드_싫어요')" class="btn btn-danger">싫어요<div
+                        id='맥도날드_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">버거킹</h4>
+                <p class="card-text">판교 테크노밸리 유스페이스 1A동 1층</p>
+                <p class="card-text">버거, 감자튀김</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=ekdud5689&logNo=220756847298"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('버거킹', '버거킹_좋아요')" class="btn btn-success">좋아요<div
+                        id='버거킹_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('버거킹', '버거킹_싫어요')" class="btn btn-danger">싫어요<div
+                        id='버거킹_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">찬장</h4>
+                <p class="card-text">판교 알파리움 1단지 라스트스트리트 2층</p>
+                <p class="card-text">고등어 구이, 순두부찌개</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=mingus329&logNo=220868243308"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('찬장', '찬장_좋아요')" class="btn btn-success">좋아요<div id='찬장_좋아요'>
+                    </div></button>
+                <button type="button" onClick="onDisLikeClick('찬장', '찬장_싫어요')" class="btn btn-danger">싫어요<div
+                        id='찬장_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">더 냄비</h4>
+                <p class="card-text">판교 유스페이스 1A동 1층</p>
+                <p class="card-text">닭고기 정식, 쭈꾸미, 제육볶음</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/starblue2/220366107165" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('더 냄비', '더 냄비_좋아요')" class="btn btn-success">좋아요<div
+                        id='더 냄비_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('더 냄비', '더 냄비_싫어요')" class="btn btn-danger">싫어요<div
+                        id='더 냄비_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">메콩타이
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 N동 1층</p>
+                <p class="card-text">소고기 쌀국수, 파인애플 볶음밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/yunian80/220167259217" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('메콩타이', '메콩타이_좋아요')" class="btn btn-success">좋아요<div
+                        id='메콩타이_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('메콩타이', '메콩타이_싫어요')" class="btn btn-danger">싫어요<div
+                        id='메콩타이_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">준영
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-13-heart.png">
+                </h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스 A동 지하1층</p>
+                <p class="card-text">파이탄라멘, 매운라멘, 차슈동</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://bbs.ruliweb.com/hobby/board/300117/read/30589956" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('준영', '준영_좋아요')" class="btn btn-success">좋아요<div id='준영_좋아요'>
+                    </div></button>
+                <button type="button" onClick="onDisLikeClick('준영', '준영_싫어요')" class="btn btn-danger">싫어요<div
+                        id='준영_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">다루마 라멘
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스 A동 지하1층</p>
+                <p class="card-text">돈코츠 라멘, 쯔께멘</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=01117166657&logNo=221327702513"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('다루마 라멘', '다루마 라멘_좋아요')" class="btn btn-success">좋아요<div
+                        id='다루마 라멘_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('다루마 라멘', '다루마 라멘_싫어요')" class="btn btn-danger">싫어요<div
+                        id='다루마 라멘_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">두부가 보쌈애</h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 N동 지하 1층</p>
+                <p class="card-text">두부 김치짹, 해물 된장찌개</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.daum.net/_blog/BlogTypeView.do?blogid=0qhO9&articleno=44"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('두부가 보쌈애', '두부가 보쌈애_좋아요')" class="btn btn-success">좋아요<div
+                        id='두부가 보쌈애_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('두부가 보쌈애', '두부가 보쌈애_싫어요')" class="btn btn-danger">싫어요<div
+                        id='두부가 보쌈애_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">홍대 돈부리</h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 S동 1층</p>
+                <p class="card-text">새우튀김우동, 믹스가츠동, 사케우나기동</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=ilooli0901&logNo=220653228895"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('홍대 돈부리', '홍대 돈부리_좋아요')" class="btn btn-success">좋아요<div
+                        id='홍대 돈부리_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('홍대 돈부리', '홍대 돈부리_싫어요')" class="btn btn-danger">싫어요<div
+                        id='홍대 돈부리_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">카레 뜰에</h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 S동 지하 1층</p>
+                <p class="card-text">돈까스 카레, 치킨까스 카레</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=yonseifeeldc&logNo=220638902327"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('카레 뜰에', '카레 뜰에_좋아요')" class="btn btn-success">좋아요<div
+                        id='카레 뜰에_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('카레 뜰에', '카레 뜰에_싫어요')" class="btn btn-danger">싫어요<div
+                        id='카레 뜰에_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">김밥 천국</h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 S동 지하 1층</p>
+                <p class="card-text">김밥, 떡볶이, 기타 분식</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/manjjang210/220372070010" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('김밥 천국', '김밥 천국_좋아요')" class="btn btn-success">좋아요<div
+                        id='김밥 천국_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('김밥 천국', '김밥 천국_싫어요')" class="btn btn-danger">싫어요<div
+                        id='김밥 천국_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">미쓰 싸이공</h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 S동 지하 1층</p>
+                <p class="card-text">소고기 쌀국수, 사이공 볶음밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=bizmlab&logNo=220615577058&categoryNo=33&parentCategoryNo=0&viewDate=&currentPage=1&postListTopCurrentPage=1&from=postView"
+                    class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('미쓰 싸이공', '미쓰 싸이공_좋아요')" class="btn btn-success">좋아요<div
+                        id='미쓰 싸이공_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('미쓰 싸이공', '미쓰 싸이공_싫어요')" class="btn btn-danger">싫어요<div
+                        id='미쓰 싸이공_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">낭 싸이공
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 S동 지하 1층</p>
+                <p class="card-text">쌀국수, 볶음밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://daily-junghwa.tistory.com/8" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('낭 싸이공', '낭 싸이공_좋아요')" class="btn btn-success">좋아요<div
+                        id='낭 싸이공_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('낭 싸이공', '낭 싸이공_싫어요')" class="btn btn-danger">싫어요<div
+                        id='낭 싸이공_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">전주 콩나물 국밥
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 S동 지하 1층</p>
+                <p class="card-text">김치찌개, 제육볶음, 김치찜</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://mumukmumuk.tistory.com/12" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('전주 콩나물 국밥', '전주 콩나물 국밥_좋아요')" class="btn btn-success">좋아요
+                    <div id='전주 콩나물 국밥_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('전주 콩나물 국밥', '전주 콩나물 국밥_싫어요')" class="btn btn-danger">싫어요
+                    <div id='전주 콩나물 국밥_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">죠샌드위치
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+
+                </h4>
+                <p class="card-text">판교 테크노밸리 H스퀘에 S동 지하 1층</p>
+                <p class="card-text">샌드위치</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://weble.net/post/226668" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('죠샌드위치', '죠샌드위치_좋아요')" class="btn btn-success">좋아요<div
+                        id='죠샌드위치_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('죠샌드위치', '죠샌드위치_싫어요')" class="btn btn-danger">싫어요<div
+                        id='죠샌드위치_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">포메인</h4>
+                <p class="card-text">분당구 삼평동 682 유스페이스1 제3층 313호</p>
+                <p class="card-text">쌀국수, 볶음밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/k-odo/220618465416" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('포메인', '포메인_좋아요')" class="btn btn-success">좋아요<div
+                        id='포메인_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('포메인', '포메인_싫어요')" class="btn btn-danger">싫어요<div
+                        id='포메인_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">써브웨이
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-13-heart.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 682 유스페이스2 제1층 119호</p>
+                <p class="card-text">샌드위치, 샐러드</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=ekdud5689&logNo=220780524458"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('써브웨이', '써브웨이_좋아요')" class="btn btn-success">좋아요<div
+                        id='써브웨이_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('써브웨이', '써브웨이_싫어요')" class="btn btn-danger">싫어요<div
+                        id='써브웨이_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">봉편메밀촌 뜨락</h4>
+                <p class="card-text">분당구 서판교로 164 훼미리빌딩1층</p>
+                <p class="card-text">비빔막국수, 메밀소바, 메밀칼국수</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://ppoda.tistory.com/312" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('봉편메밀촌 뜨락', '봉편메밀촌 뜨락_좋아요')" class="btn btn-success">좋아요<div
+                        id='봉편메밀촌 뜨락_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('봉편메밀촌 뜨락', '봉편메밀촌 뜨락_싫어요')" class="btn btn-danger">싫어요
+                    <div id='봉편메밀촌 뜨락_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">광남 포차</h4>
+                <p class="card-text">분당구 판교로319번길 13 디테라스 1층</p>
+                <p class="card-text">떡복이, 순대, 돈까스, 라면</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://m.blog.naver.com/likessu/220851940289" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('광남 포차', '광남 포차_좋아요')" class="btn btn-success">좋아요<div
+                        id='광남 포차_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('광남 포차', '광남 포차_싫어요')" class="btn btn-danger">싫어요<div
+                        id='광남 포차_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">영심이 떡볶이</h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스A동 105호</p>
+                <p class="card-text">떡복이, 순대</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/dailylife1119/220891796909" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('영심이 떡볶이', '영심이 떡볶이_좋아요')" class="btn btn-success">좋아요<div
+                        id='영심이 떡볶이_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('영심이 떡볶이', '영심이 떡볶이_싫어요')" class="btn btn-danger">싫어요<div
+                        id='영심이 떡볶이_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">나고미</h4>
+                <p class="card-text">분당구 판교역로 230 삼환하이펙스B동 지하1층 103호</p>
+                <p class="card-text">카레 돈부리, 제육덮밥, 참치덮밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="https://m.blog.naver.com/PostView.nhn?blogId=nanhanah&logNo=220939877700&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('나고미', '나고미_좋아요')" class="btn btn-success">좋아요<div
+                        id='나고미_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('나고미', '나고미_싫어요')" class="btn btn-danger">싫어요<div
+                        id='나고미_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">밥볶다
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-50-star.png">
+                </h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스 A동 지하 1층</p>
+                <p class="card-text">불고기 밴반 볶음</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=djdu102&logNo=221257754980"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('밥볶다', '밥볶다_좋아요')" class="btn btn-success">좋아요<div
+                        id='밥볶다_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('밥볶다', '밥볶다_싫어요')" class="btn btn-danger">싫어요<div
+                        id='밥볶다_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">오덮</h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스 A동 지하 114-1호</p>
+                <p class="card-text">오징어덮밥, 제육덮밥, 참치덮밥</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/PostView.nhn?blogId=popobro&logNo=220799778026"
+                    class="btn btn-primary">상세
+                    정보</a>
+                <button type="button" onClick="onLikeClick('오덮', '오덮_좋아요')" class="btn btn-success">좋아요<div id='오덮_좋아요'>
+                    </div></button>
+                <button type="button" onClick="onDisLikeClick('오덮', '오덮_싫어요')" class="btn btn-danger">싫어요<div
+                        id='오덮_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">스시쿤</h4>
+                <p class="card-text">분당구 대왕판교로 660 유스페이스몰1차 지하1층 115호</p>
+                <p class="card-text">스시</p>
+            </div>
+            <div class="card-footer">
+                <a href="http://egloos.zum.com/redfish/v/1422078" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('스시쿤', '스시쿤_좋아요')" class="btn btn-success">좋아요<div
+                        id='스시쿤_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('스시쿤', '스시쿤_싫어요')" class="btn btn-danger">싫어요<div
+                        id='스시쿤_싫어요'></div></button>
+            </div>
+        </div>
+        <div class="card card-inverse" style="background-color: #fa0000cb">
+            <div class="card-body">
+                <h4 class="card-title">림꼬또
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-198-remove-circle.png">
+                </h4>
+                <p class="card-text">분당구 판교역로 240 삼환하이펙스 A동 지하 1층</p>
+                <p class="card-text">치킨 덮밥, 소고기 덮밥
+                    <g-emoji alias="smile"
+                        fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f620.png?v5">😠
+                    </g-emoji>
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="http://blog.naver.com/limcotto" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('림꼬또', '림꼬또_좋아요')" class="btn btn-success">좋아요<div
+                        id='림꼬또_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('림꼬또', '림꼬또_싫어요')" class="btn btn-danger">싫어요<div
+                        id='림꼬또_싫어요'></div></button>
+            </div>
+        </div>
+
+        <div class="card card-inverse" style="background-color: #fa0000cb">
+            <div class="card-body">
+                <h4 class="card-title">등심촌
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-198-remove-circle.png">
+                </h4>
+                <p class="card-text">분당구 삼평동 681 H스퀘어 N동 1층</p>
+                <p class="card-text">밀면 (고무줄)
+                    <g-emoji alias="smile"
+                        fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f620.png?v5">😠
+                    </g-emoji>
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="http://waggo.tistory.com/717" class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('등심촌', '등심촌_좋아요')" class="btn btn-success">좋아요<div
+                        id='등심촌_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('등심촌', '등심촌_싫어요')" class="btn btn-danger">싫어요<div
+                        id='등심촌_싫어요'></div></button>
+            </div>
+        </div>
+
+        <div class="card card-inverse" style="background-color: #fa0000cb">
+            <div class="card-body">
+                <h4 class="card-title">챠오바라이트
+                    <img src="glyphicons_free/glyphicons/png/glyphicons-198-remove-circle.png">
+                </h4>
+                <p class="card-text">판교역로192번길 14-2</p>
+                <p class="card-text">파스타 (서비스,음식 엉망)
+                    <g-emoji alias="smile"
+                        fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f620.png?v5">😠
+                    </g-emoji>
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="https://m.blog.naver.com/PostView.nhn?blogId=kmdlsj&logNo=10185269303&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F"
+                    class="btn btn-primary">상세 정보</a>
+                <button type="button" onClick="onLikeClick('챠오바라이트', '챠오바라이트_좋아요')" class="btn btn-success">좋아요<div
+                        id='챠오바라이트_좋아요'></div></button>
+                <button type="button" onClick="onDisLikeClick('챠오바라이트', '챠오바라이트_싫어요')" class="btn btn-danger">싫어요<div
+                        id='챠오바라이트_싫어요'></div></button>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
