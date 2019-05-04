@@ -36,7 +36,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         #message {
             background: white;
             max-width: 360px;
@@ -44,27 +44,27 @@
             padding: 32px 24px;
             border-radius: 3px;
         }
-        
+
         #message h2 {
             color: #ffa100;
             font-weight: bold;
             font-size: 16px;
             margin: 0 0 8px;
         }
-        
+
         #message h1 {
             font-size: 22px;
             font-weight: 300;
             color: rgba(0, 0, 0, 0.6);
             margin: 0 0 16px;
         }
-        
+
         #message p {
             line-height: 140%;
             margin: 16px 0 24px;
             font-size: 14px;
         }
-        
+
         #message a {
             display: block;
             text-align: center;
@@ -75,25 +75,27 @@
             padding: 16px;
             border-radius: 4px;
         }
-        
+
         #message,
         #message a {
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
         }
-        
+
         #load {
             color: rgba(0, 0, 0, 0.4);
             text-align: center;
             font-size: 13px;
         }
-        
+
         @media (max-width: 600px) {
+
             body,
             #message {
                 margin-top: 0;
                 background: white;
                 box-shadow: none;
             }
+
             body {
                 border-top: 16px solid #ffa100;
             }
@@ -110,19 +112,19 @@
         var storage = firebase.storage();
         //var pathReference = storage.ref('xelloss.jpg');
         var gsReference = storage.refFromURL('gs://ysoftman-test.appspot.com/xelloss.jpg')
-        gsReference.getDownloadURL().then(function(url) {
+        gsReference.getDownloadURL().then(function (url) {
             //console.log('File available at', url);
             document.getElementById('box1').innerHTML = 'xelloss from firebase storage<br><img src="' + url + '"></img>';
-        }).catch(function(error) {
+        }).catch(function (error) {
             // Handle any errors
             console.error('download failed:', error);
         });
 
         var db = firebase.firestore();
         var doc1_likeCnt = 0
-        console.log("doc1_likeCnt", doc1_likeCnt)
-        readCnt();
+        //readCnt();
         //setCnt();
+        increaseCnt();
 
         function readCnt() {
             // users 전체 문서 가져오기
@@ -136,28 +138,46 @@
             //});
 
             // users->doc1 하나만 가져오기
-            // onSnapshot(콜백함수) 로 수신대기 후 완료되면 콜백함수가 수행된다.
-            db.collection("users").doc("doc1").onSnapshot(function(doc) {
+            // onSnapshot(콜백함수) 로 수신대기하면서 현재 내용(변수등)값들을 스냅샷(문서)으로 저장 한다.
+            // 그리고 내용이 변경될때마다 콜백함수(문서가져오기)가 실행되어 스냅샷을 업데이트한다.
+            // (주의) doc1_likeCnt++ 등변수값을 변경하게 되면 매번 내용이 변경되서 문서가져오기가 무한으로 수행돼 과금될 수 있다.
+            db.collection("users").doc("doc1").onSnapshot(function (doc) {
                 console.log("Current data: ", doc.data());
-                document.getElementById('box2').innerHTML = `${doc.data().name} ${doc.data().likeCnt}`;
-                doc1_likeCnt = `${doc.data().likeCnt}`;
-                console.log("doc1_likeCnt", doc1_likeCnt)
+                document.getElementById('box2').innerHTML = `${doc.data().name} likeCnt: ${doc.data().likeCnt}`;
             });
         }
 
         function setCnt() {
             db.collection("users").doc("doc1").set({
-                    name: "ysoftman",
-                    likeCnt: doc1_likeCnt
-                })
-                .then(function() {
-                    console.log("Document written!");
-                })
-                .catch(function(error) {
-                    console.error("Error adding document: ", error);
+                name: "ysoftman",
+                likeCnt: doc1_likeCnt
+            }).then(function () {
+                console.log("Document written!");
+            }).catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
+        }
+
+
+        function increaseCnt() {
+            var doc1ref = db.collection("users").doc("doc1");
+            // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
+            db.runTransaction(function (transaction) {
+                // This code may get re-run multiple times if there are conflicts.
+                return transaction.get(doc1ref).then(function (doc1) {
+                    if (!doc1.exists) {
+                        throw "Document doest not exist!";
+                    }
+                    var newCnt = doc1.data().likeCnt + 1;
+                    transaction.update(doc1ref, { likeCnt: newCnt });
+
+                    document.getElementById('box2').innerHTML = `${doc1.data().name} likeCnt: ${newCnt}`;
                 });
+            }).then(function () {
+                console.log("Transaction successfully committed!");
+            }).catch(function (error) {
+                console.log("Transaction failed: ", error);
+            });
         }
     </script>
 </body>
-
-</html>
