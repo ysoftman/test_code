@@ -29,22 +29,70 @@ function loadImage(htmlId) {
 
 var db = firebase.firestore();
 var doc1_likeCnt = 0
-//readCnt();
-//setDoc();
-//increaseCnt();
 
-function readAll(coll) {
+
+function setTestDoc(coll, doc) {
+    db.collection(coll).doc(doc).set({
+        name: doc,
+        visitCnt: 0
+    }).then(function () {
+        console.log("Document written!");
+    }).catch(function (error) {
+        console.error("Error adding document: ", error);
+    });
+}
+
+function incTestVisitCnt(coll, doc, cntType, htmlId) {
+    var docRef = db.collection(coll).doc(doc);
+    // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
+    db.runTransaction(function (transaction) {
+        // This code may get re-run multiple times if there are conflicts.
+        return transaction.get(docRef).then(function (doc1) {
+            if (!doc1.exists) {
+                throw "Document doest not exist!";
+            }
+            var newCnt = doc1.data().visitCnt + 1;
+            transaction.update(docRef, { visitCnt: newCnt });
+            console.log("incTestVisitCnt", htmlId, `${doc1.data().name} visitCnt: ${newCnt}`)
+            document.getElementById(htmlId).innerHTML = `${newCnt}`;
+        });
+    }).then(function () {
+        console.log("Transaction successfully committed!");
+    }).catch(function (error) {
+        console.log("Transaction failed: ", error);
+    });
+}
+
+
+function setRestaurantDoc(coll, doc) {
+    db.collection(coll).doc(doc.name).set({
+        name: doc.name,
+        glyphicons: "",
+        location: "",
+        menu: "",
+        detailInfo: "",
+        likeCnt: 0,
+        dislikeCnt: 0
+    }).then(function () {
+        console.log("Document written!");
+    }).catch(function (error) {
+        console.error("Error adding document: ", error);
+    });
+}
+
+
+function readRestaurantAll(coll) {
     // collection 전체 문서 가져오기
     db.collection(coll).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             console.log(doc.data().name);
-            document.getElementById(doc.data().name+'_좋아요').innerHTML = `${doc.data().likeCnt}`;
-            document.getElementById(doc.data().name+'_싫어요').innerHTML = `${doc.data().dislikeCnt}`;
+            document.getElementById(doc.data().name + '_좋아요').innerHTML = `${doc.data().likeCnt}`;
+            document.getElementById(doc.data().name + '_싫어요').innerHTML = `${doc.data().dislikeCnt}`;
         });
     });
 }
 
-function readCnt(coll, doc, cntType, htmlId) {
+function readRestaurantCnt(coll, doc, cntType, htmlId) {
     // collection->doc1 하나만 가져오기
     // onSnapshot(콜백함수) 로 수신대기하면서 현재 내용(변수등)값들을 스냅샷(문서)으로 저장 한다.
     // 그리고 내용이 변경될때마다 콜백함수(문서가져오기)가 실행되어 스냅샷을 업데이트한다.
@@ -60,20 +108,7 @@ function readCnt(coll, doc, cntType, htmlId) {
     });
 }
 
-function setDoc(coll, doc) {
-    db.collection(coll).doc(doc).set({
-        name: doc,
-        likeCnt: 0,
-        dislikeCnt: 0
-    }).then(function () {
-        console.log("Document written!");
-    }).catch(function (error) {
-        console.error("Error adding document: ", error);
-    });
-}
-
-
-function increaseCnt(coll, doc, cntType, htmlId) {
+function incRestaurantCnt(coll, doc, cntType, htmlId) {
     var docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
