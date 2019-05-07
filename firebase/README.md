@@ -17,14 +17,16 @@ service firebase.storage {
 }
 
 # firebase -> database(cloud firestore) -> 규칙
-# 읽기, 쓰기 허용으로 설정
+# 앱에서 로그인한 사용자만 데이터 쓰기 허용
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.auth.uid != null;
     }
   }
 }
+
 
 # 참고
 https://firebase.google.com/docs/storage/web/start
