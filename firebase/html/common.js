@@ -17,9 +17,13 @@ var db = firebase.firestore();
 var auth = firebase.auth();
 var doc1_likeCnt = 0;
 var loginBoxID = "google_login_result";
-var loginText = "Google 로그인";
+var loginText = `<button class="btn btn-dark" onClick="loginGoogle()">Google 로그인</button>`;
 var userEmail = "";
 var userToken = "";
+
+var makeLogoutText = function (userName) {
+    return `<button class="btn btn-dark" onClick="logout()">${userName} (로그아웃)</button>`;
+}
 
 // firestorage 에 저장된 이미지 url 불러오기
 var loadImage = function (htmlId) {
@@ -121,8 +125,14 @@ var updateRestaurantDoc = function (coll, doc) {
     });
 }
 
+var onLikeClick = function (doc, htmlId) {
+    incRestaurantCnt(coll, doc, 'likeCnt', htmlId);
+}
 
-// firestore 컬렉션(판교식당) 문서 전체 읽기
+var onDisLikeClick = function (doc, htmlId) {
+    incRestaurantCnt(coll, doc, 'dislikeCnt', htmlId);
+}
+
 var readRestaurantAll = function (coll) {
     // collection 전체 문서 가져오기
     db.collection(coll).get().then((querySnapshot) => {
@@ -131,17 +141,18 @@ var readRestaurantAll = function (coll) {
             html += `
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">${doc.data().name}
+        <h4 class="card-title">
+            ${doc.data().name}
             <img src="glyphicons_free/glyphicons/png/${doc.data().glyphicons}">
         </h4>
         <p class="card-text">${doc.data().location}</p>
         <p class="card-text">${doc.data().menu}</p>
     </div>
-    <div class="card-footer">
-        <a href="${doc.data().detailInfo}" target="_blank" class="btn btn-primary">상세<br>정보</a>
-        <button type="button" onClick="onLikeClick('${doc.data().name}', '${doc.data().name}_좋아요')" class="btn btn-success">좋아요<div id='${doc.data().name}_좋아요'>${doc.data().likeCnt}</div></button>
-        <button type="button" onClick="onDisLikeClick('${doc.data().name}', '${doc.data().name}_싫어요')" class="btn btn-danger">싫어요<div id='${doc.data().name}_싫어요'>${doc.data().dislikeCnt}</div></button>
-    </div>
+    <p class="text-center">
+        <a href="${doc.data().detailInfo}" target="_blank" class="btn btn-primary">상세정보</a>
+        <button type="button" onClick="onLikeClick('${doc.data().name}', '${doc.data().name}_좋아요')" class="btn btn-success"><div id='${doc.data().name}_좋아요'>좋아요 ${doc.data().likeCnt}</div></button>
+        <button type="button" onClick="onDisLikeClick('${doc.data().name}', '${doc.data().name}_싫어요')" class="btn btn-danger"><div id='${doc.data().name}_싫어요'>싫어요 ${doc.data().dislikeCnt}</div></button>
+    </p>
 </div>
 `
         });
@@ -171,6 +182,7 @@ var readRestaurantCnt = function (coll, doc, cntType, htmlId) {
 var incRestaurantCnt = function (coll, doc, cntType, htmlId) {
     console.log("userEmail:", userEmail)
     if (userEmail == "") {
+        alert("로그인이 필요합니다.");
         return
     }
     var docRef = db.collection(coll).doc(doc);
@@ -200,7 +212,7 @@ var incRestaurantCnt = function (coll, doc, cntType, htmlId) {
                     likeCntUsers: lcUsers
                 });
                 console.log("incRestaurantCnt", htmlId, `${doc1.data().name} likeCnt: ${newCnt}`)
-                document.getElementById(htmlId).innerHTML = `${newCnt}`;
+                document.getElementById(htmlId).innerHTML = `좋아요 ${newCnt}`;
             } else if (cntType == 'dislikeCnt') {
                 var dlcUsers = doc1.data().dislikeCntUsers;
                 console.log("dlcUsers", dlcUsers)
@@ -218,7 +230,7 @@ var incRestaurantCnt = function (coll, doc, cntType, htmlId) {
                     dislikeCntUsers: dlcUsers
                 });
                 console.log("incRestaurantCnt", htmlId, `${doc1.data().name} dislikeCnt: ${newCnt}`)
-                document.getElementById(htmlId).innerHTML = `${newCnt}`;
+                document.getElementById(htmlId).innerHTML = `싫어요 ${newCnt}`;
             }
         });
     }).then(function () {
@@ -245,7 +257,7 @@ auth.onAuthStateChanged(function (user) {
         // ...
         userEmail = user.email
         var userName = user.displayName + " " + user.email
-        document.getElementById(loginBoxID).innerHTML = userName
+        document.getElementById(loginBoxID).innerHTML = makeLogoutText(userName)
     } else {
         // User is signed out.
         // ...
@@ -296,7 +308,7 @@ var loginGoogle = function () {
         // ...
         console.log("loginGoogle result.user:", result.user)
         var userName = result.user.displayName + " " + result.user.email
-        document.getElementById(loginBoxID).innerHTML = userName
+        document.getElementById(loginBoxID).innerHTML = makeLogoutText(userName)
         // 사용자 토큰 파악해두기
         getToken()
         //GoogleLoginResult()
@@ -332,7 +344,6 @@ var GoogleLoginResult = function () {
         // The signed-in user info.
         var user = result.user;
         console.log("GoogleLoginResult result.user:", result.user)
-        document.getElementById(loginBoxID).innerHTML = `${result.user}`
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;

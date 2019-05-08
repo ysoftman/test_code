@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <!-- bootstrap css -->
     <link href="common.css" rel="stylesheet" type="text/css" media="all">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <title>resaturant pangyo</title>
-
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
@@ -18,27 +15,17 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-storage.js"></script>
     <script src="common.js"></script>
     <link href="common.css" rel="stylesheet" type="text/css" media="all">
+
+    <title>resaturant pangyo</title>
 </head>
 
 <body>
-    <!-- <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#navigation").load("navbar.html", function () {
-                console.log("navbar.html loaded");
-            });
-            console.log("document ready");
-        });
-    </script>
-    <div id="navigation"></div> -->
-
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">판교식당</a>
             </div>
-            <button class="btn btn-info navbar-btn" onClick="loginGoogle()" id='google_login_result'>Google 로그인</button>
-            <button class="btn btn-danger navbar-btn" onClick="logout()">로그아웃</button>
+            <div id='google_login_result'></div>
         </div>
     </nav>
 

@@ -696,7 +696,7 @@ var restaurantlist = [{
     glyphicons: "glyphicons-50-star.png",
     location: "분당구 판교역로 240 삼환하이펙스A동 105호",
     menu: "떡복이, 순대",
-    detailInfo: "http://blog.naver.com/dailylife1119/220891796909",
+    detailInfo: "https://m.blog.naver.com/PostView.nhn?blogId=starblue2&logNo=220543607742&proxyReferer=https%3A%2F%2Fwww.google.com%2F",
     likeCntUsers: [],
     dislikeCntUsers: [],
     likeCnt: 0,
@@ -790,12 +790,4 @@ window.onload = function () {
         // 좋아요, 싫어요 외 기본 정보들 업데이트가 필요할때, 식당 추가할때
         // updateRestaurantDoc(coll, r)
     });
-}
-
-var onLikeClick = function (doc, htmlId) {
-    incRestaurantCnt(coll, doc, 'likeCnt', htmlId);
-}
-
-var onDisLikeClick = function (doc, htmlId) {
-    incRestaurantCnt(coll, doc, 'dislikeCnt', htmlId);
 }
