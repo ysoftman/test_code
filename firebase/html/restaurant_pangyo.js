@@ -758,6 +758,17 @@ var restaurantlist = [{
     dislikeCnt: 0
 },
 {
+    name: '슈퍼타이',
+    glyphicons: "",
+    location: "",
+    menu: "",
+    detailInfo: "",
+    likeCntUsers: [],
+    dislikeCntUsers: [],
+    likeCnt: 0,
+    dislikeCnt: 0
+},
+{
     name: '밥먹은 닭',
     glyphicons: "",
     location: "",
