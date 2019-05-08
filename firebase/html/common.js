@@ -91,15 +91,63 @@ var setRestaurantDoc = function (coll, doc) {
     });
 }
 
+
+// firestore 컬렉션(판교식당) 문서 필드 없데이트
+var updateRestaurantDoc = function (coll, doc) {
+    // console.log("userEmail:", userEmail)
+    // if (userEmail == "") {
+    //     return
+    // }
+    var docRef = db.collection(coll).doc(doc.name);
+    db.runTransaction(function (transaction) {
+        // This code may get re-run multiple times if there are conflicts.
+        return transaction.get(docRef).then(function (doc1) {
+            if (!doc1.exists) {
+                throw "Document doest not exist!";
+            }
+            transaction.update(docRef, {
+                name: doc.name,
+                glyphicons: doc.glyphicons,
+                location: doc.location,
+                menu: doc.menu,
+                detailInfo: doc.detailInfo
+            });
+            console.log("updateRestaurantDoc", doc)
+        });
+    }).then(function () {
+        console.log("Transaction successfully committed!");
+    }).catch(function (error) {
+        console.log("Transaction failed: ", error);
+    });
+}
+
+
 // firestore 컬렉션(판교식당) 문서 전체 읽기
 var readRestaurantAll = function (coll) {
     // collection 전체 문서 가져오기
     db.collection(coll).get().then((querySnapshot) => {
+        var html = `<div class="card-columns">`;
         querySnapshot.forEach((doc) => {
-            console.log(doc.data().name);
-            document.getElementById(doc.data().name + '_좋아요').innerHTML = `${doc.data().likeCnt}`;
-            document.getElementById(doc.data().name + '_싫어요').innerHTML = `${doc.data().dislikeCnt}`;
+            html += `
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">${doc.data().name}
+            <img src="glyphicons_free/glyphicons/png/${doc.data().glyphicons}">
+        </h4>
+        <p class="card-text">${doc.data().location}</p>
+        <p class="card-text">${doc.data().menu}</p>
+    </div>
+    <div class="card-footer">
+        <a href="${doc.data().detailInfo}" target="_blank" class="btn btn-primary">상세<br>정보</a>
+        <button type="button" onClick="onLikeClick('${doc.data().name}', '${doc.data().name}_좋아요')" class="btn btn-success">좋아요<div id='${doc.data().name}_좋아요'>${doc.data().likeCnt}</div></button>
+        <button type="button" onClick="onDisLikeClick('${doc.data().name}', '${doc.data().name}_싫어요')" class="btn btn-danger">싫어요<div id='${doc.data().name}_싫어요'>${doc.data().dislikeCnt}</div></button>
+    </div>
+</div>
+`
         });
+        html += `</div>`
+        document.getElementById('html_out').innerHTML = html;
+        // console.log(html);
     });
 }
 
@@ -121,11 +169,11 @@ var readRestaurantCnt = function (coll, doc, cntType, htmlId) {
 
 // firestore 컬렉션(판교식당) 해당하는 문서 카운트 증가시키기
 var incRestaurantCnt = function (coll, doc, cntType, htmlId) {
-    var docRef = db.collection(coll).doc(doc);
     console.log("userEmail:", userEmail)
     if (userEmail == "") {
         return
     }
+    var docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
