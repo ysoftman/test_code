@@ -14,6 +14,7 @@ int main()
     vecStr.push_back("apple");
     vecStr.push_back("banana");
 
+    cout << "find(\"na\")" << endl;
     for (auto i : vecStr)
     {
         // "na" 문자열이 포함된 경우만 찾는다.
@@ -23,6 +24,18 @@ int main()
         }
     }
 
+    cout << "find(\"ap\")" << endl;
+    for (auto i : vecStr)
+    {
+        // cout << sizeof("ap") << endl;
+        // "ap" 문자열로 시작하는 문자열만 찾는다.
+        if (i.find("ap", 0, sizeof("ap") - 1) != string::npos)
+        {
+            cout << i << endl;
+        }
+    }
+
+    cout << "find_first_of(\"ml\")" << endl;
     for (auto i : vecStr)
     {
         // m 또는 l 이 포함된 포함된 경우만 찾는다.
