@@ -663,7 +663,7 @@ var restaurantlist = [{
     glyphicons: "glyphicons-13-heart.png",
     location: "분당구 삼평동 682 유스페이스2 제1층 119호",
     menu: "샌드위치, 샐러드",
-    detailInfo: "http://blog.naver.com/PostView.nhn?blogId=ekdud5689&logNo=220780524458",
+    detailInfo: "https://m.blog.naver.com/sweetbellaaa/220255004713",
     likeCntUsers: [],
     dislikeCntUsers: [],
     likeCnt: 0,

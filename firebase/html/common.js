@@ -135,7 +135,8 @@ var onDisLikeClick = function (doc, htmlId) {
 
 var readRestaurantAll = function (coll) {
     // collection 전체 문서 가져오기
-    db.collection(coll).get().then((querySnapshot) => {
+    // likeCnt 많은 순으로
+    db.collection(coll).orderBy("likeCnt", "desc").get().then((querySnapshot) => {
         var html = `<div class="card-columns">`;
         querySnapshot.forEach((doc) => {
             html += `
