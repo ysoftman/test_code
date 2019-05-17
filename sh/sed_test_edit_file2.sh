@@ -38,7 +38,7 @@ cat ${TEMP_FILE} | sed "/^ccc/,/^ggg/d;"
 
 # ${TEMP_FILE} 에서 ysoftman -> bill 로 변경해서 저장
 echo 'replace ysoftman to bill in '${TEMP_FILE}
-# -i '' 로 빈값을 면시하면 원복 백업 파일을 생성하지 않는다.
+# -i '' 또는 -i 로 옵션값이 없으면 원본 백업 파일을 생성하지 않고 대상 파일을 변경한다.
 sed -i '' -e 's/ysoftman/bill/g' ${TEMP_FILE}
 cat ${TEMP_FILE}
 
