@@ -1,6 +1,6 @@
 // javascript 는 함수,변수 선언부분을 hoisting(끌어올린다.)한다.
 
-// 함수 선언으로 함수 작성
+// 함수 선언(declaration)으로 함수 작성
 // 함수 선언부가 맨위로 끌여올려지기 때문에 실행시 다음과 같이 처리된다.
 // function aaa() {
 //     document.getElementById('resultbox1').innerHTML = "aaa";
@@ -14,7 +14,7 @@ function aaa() {
     console.log("aaa")
 }
 
-// 함수 표현식으로 함수 작성
+// 함수 표현식(expression)으로 함수 작성
 // bbb 함수 표현식은 다음과 같이 var bbb 부분만 위로 hoisting 된다.
 // var bbb 
 // bbb = function () {
