@@ -33,13 +33,40 @@ if [ 1 -ne $argc ]
 then
 	echo "argc != 1"
 	echo "ex) $0 ysoftman"
-	exit 1
 
 elif [ 1 -eq $argc ]
 then
 	echo "argc == 1 .. ok"
 	echo "argv0 = $0"
 	echo "argv1 = $1"
+fi
+
+
+# 산순 연산시 (()) 사용
+if (( $argc > 1 )); then
+	echo "argc > 1 .. ok"
+fi
+if (( $argc >= 1 )); then
+	echo "argc >= 1 .. ok"
+fi
+if (( $argc < 3 )); then
+	echo "argc < 3 .. ok"
+fi
+if (( $argc <= 3 )); then
+	echo "argc <= 3 .. ok"
+fi
+
+if [ $argc -gt 1 ]; then
+	echo "argc > 1 .. ok"
+fi
+if [ $argc -ge 1 ]; then
+	echo "argc >= 1 .. ok"
+fi
+if [ $argc -lt 3 ]; then
+	echo "argc < 3 .. ok"
+fi
+if [ $argc -le 3 ]; then
+	echo "argc <= 3 .. ok"
 fi
 
 arg1=$1
