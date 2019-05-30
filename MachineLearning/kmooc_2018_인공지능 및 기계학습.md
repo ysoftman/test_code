@@ -1,5 +1,7 @@
 # K-MOOC '인공지능 및 기계학습'
 
+2018년 KAIST 오혜연 교수
+
 ## 1주차 - 확률론 및 나이브 베이즈(Probability and Naive Bayes)
 
 ### Bayes Rules
