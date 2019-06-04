@@ -157,13 +157,13 @@ a
   - 매 상태 에서 좀더 나은 상태로만 가보자. 시간, 메모리 절약
   - hill-climbing(언덕 오르기) search 방법
     - 예) 에베레스트 산을 올라 가는데 주변에 안개가 있어 시야확보가 되지 않는다, 기억상실에걸려있다.
-    - steepest(가파른) ascent(오르기) : 주변 상태중에 가장 경사가 급한 곳(목적함수가 가장 높은) 곳으로 가는 방법
+    - steepest(가파른) ascent(오르기) : 주변 상태중에 가장 경사가 급한 곳(목적함수가 가장 높은) 곳으로 가는 방법
     - greedy local search : 지금 내가 취할 수 있는 행동줄 가장 좋은 행동을 취하는 방법
     - initial point 을 어디로 잡느냐에 따라 결과가 매우 달라진다.
     - shoulder : 경사가 없는 평평한 영역이지만 이웃하는 곳에 더 높은 곳으로 갈 수 있다.
     - flat : 경사가 없는 평평한 영역이지만 이웃하는 곳에 더 높은 곳으로 갈 수 없다.
     - local maximum,optimum 에 빠지는 문제가 생길 수 있다.
-    - 8-queens 문제, 체크 퀸이 서러 공격하지 않는 위치로 만들기
+    - 8-queens 문제, 체크 퀸이 서로 공격하지 않는 위치로 만들기
   - simluated annealing(쇠담금질) search 방법
     - hill-climinb 의 문제를 해결하기 위해 고안한 방법
     - 중간중간 현상태보다 안좋은 상태 이동을 허용(임의의, 처음엔 크게, 점점 작게만 허용)한다.
@@ -172,7 +172,7 @@ a
 ## 4주차 - 강화학습(reinforcement learning, RL)
 
 - RL이란? AI agent 에 잘했으면 reward(보상), 못했으면 punishment(벌)을 줘서 학습시키는 방법
-- reward funcion : 보상
+- reward funcion : 보상을 주는 함수
 - fills in the details : AI(agent) 가 스스로 채워(배워)야 한다.
 - 기본 RL model
   - agent 가 최대의 보상을 받을 수 잇는 제어 정책을 찾는것
@@ -196,7 +196,7 @@ a
   - value function : 각 상태가 얼마나 값을 가지고 있는지 나타낸다.
 - exploration(탐험) and exploitation(개척,활용,이용)
   - exploration 예: 가보지 않는 식당을 시도해본다.
-  - exploitation 예: 이미 알고 있는 좋은 식당에 간다.
+  - exploitation 예: 이미 알고 있는 좋은 식당에 간다.
 - prediction(예측) and control(제어)
   - prediction : policy 가 주어졌을때 value function 를 구하는 과정
   - contorl : reward 를 최대화 할 수 있는 policy 를 찾는 과정
@@ -208,7 +208,7 @@ a
   - P : transition function 상태 전이 확률, NxN 행렬로 표현, 확률 분포의 합은 1이다
   - episode(에피소드) : 초기 state 주어진 transition function 을 이용해 하나의 경험를 샘플링해보는 것(하나의 경우를 따져보는것)
 
-- markove reward process(MRP,마르코프 과정)
+- markov reward processes(MRP,마르코프 과정)
   - MDP에서 한단계 더 나간 모델
   - MDP 외 추가적으로 다음이 주어진다.
     - reward function : state 에 reward 를 매핑해주는 함수
@@ -229,7 +229,7 @@ RL agent의 구성 요소로 옳지 않은 것을 고르시오.
 정답 : state  (구성요소는 policy, model. value function)
 
 다음 graph의 노드 A에서 노드 J로 가는 최단 경로를 찾는 경우, A* Search를 실행하였을 때 도출되는 최단 경로를 순서대로 기입한 것을 고르시오.
-(그래프 생략ㅠ)
+(그래프 생략)
 정답 : afgij  (A 근접 노드 중 가장 비용이 적는 노드를 선택해간다.)
 
 Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고르시오.
@@ -244,4 +244,17 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
 정답 : Simulated Annealing serach는 항상 임의의 경로를 선택하여 이동한다.
 ```
 
-## 5주차 -
+## 5주차 - 마르코프 결정 과정(markov decision process, MDP)
+
+- MRP 에서 A(action 집합)요소가 추가됨
+- policy : 어떤 state 에서 어떤 action 을 취할 확률 분포 로 정의 가능
+  - 현재 state 에만 의존
+  - policy 는 stataionary(고정), 시간에 따라 변화되지 않는다.
+- value function
+  - policy 에 의존적이며, 아래 첨자로 pi(policy) 가 추가되었다.
+  - 또다른 형태의 value fuction Qpi(s,a) 가 추가되었다.
+    - V 는 state value function 이라 부르고
+    - Q 는 state action value function 이라고 부른다.
+- Bellman Equation
+  - Bellman Expecation Equation : 현재 state 의 value function 과 다음 state 의 value function 의 상관관계를 정의
+  - Bellman Optimality Equation(이 강의에서 제외)

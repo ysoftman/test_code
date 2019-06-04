@@ -45,5 +45,6 @@ bash convert_ipynb_to_py.sh
 
 ## 책,강의 내용 정리
 
-- [deeplearning from scratch 정리](deeplearning_from_scratch.md)
-- [kmooc - 기계학습 정리](kmooc_machine_learning.md)
+- [book - deeplearning from scratch 정리](deeplearning_from_scratch.md)
+- [kmooc - kmooc_2018_인공지능_및_기계학습](kmooc_2018_인공지능_및_기계학습.md)
+- [kmooc - kmooc_2019_인공지능의_기초](kmooc_2019_인공지능의_기초.md)
