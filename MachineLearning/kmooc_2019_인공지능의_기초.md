@@ -199,7 +199,7 @@ a
   - exploitation 예: 이미 알고 있는 좋은 식당에 간다.
 - prediction(예측) and control(제어)
   - prediction : policy 가 주어졌을때 value function 를 구하는 과정
-  - contorl : reward 를 최대화 할 수 있는 policy 를 찾는 과정
+  - contorl : reward 를 최대화 할 수 있는 policy 를 찾는 과정(optimal policy를 구하는 과정)
   - V* : optimal value function
   - pi* : optimal policy(수많은 policy 중 reward 를 maximizing)
 
@@ -255,6 +255,57 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
   - 또다른 형태의 value fuction Qpi(s,a) 가 추가되었다.
     - V 는 state value function 이라 부르고
     - Q 는 state action value function 이라고 부른다.
-- Bellman Equation
-  - Bellman Expecation Equation : 현재 state 의 value function 과 다음 state 의 value function 의 상관관계를 정의
+- Bellman Equation(MDP 에서 가장 중요한 식)
   - Bellman Optimality Equation(이 강의에서 제외)
+  - Bellman Expectation Equation : 현재 state 의 value function 과 다음 state 의 value function 의 상관관계를 정의
+    - state 에서 actcion 을 취해 다른 state 로 가는 과정을 V, Q 의 2 step으로 구분
+    - V value function : state 에서 취할 모든 action 에 대해서 확률분포(weighted sum) 에 Q 를 곱한것
+    - Q value function : state(S)에서 action(A)를 취했을때 reward + gamma(discount) * (Pss'(action 에서 여러개의 state 로 갈 수 있는, state 확률분포)의 weighted sum 에) = expectation(기대값)
+    - V 는 Q 로 정의가 되고, Q는 다음 step 의 state 의 V 값으로 정의 된다.
+    - state 마다 value 가 주어지지 않았을때
+      - n 개의 state, V = Nx1, P = nxn matrix 로 표현할 수 있다.
+      - 구하는 방법1: MDP 에선 P, R 이 주어지고 random initialization 한 V 로 새로운 V 를 구하고, V 를 matrix 식에 맞게 계속 반복해 나가는 방법을 수렴된 V 를 구한다.
+      - 구하는 방법2: indentity matrix(단위행렬) matrix 식을 역행렬고 변환해서 구한다.(nxn 역행렬의 복작도는 n^3 으로 추천하는 방법은 아니다.)
+      - 구하는 방법3: 위 두 방법보다 효율적인 dynamic programming 로 구한다.
+- optimal value functions
+  - 주어진 문제에선 모든 policy 를 다 고려했을대 가장 최대가 되는 value function
+  - MDP 에선 optimal policy 는 항상 존재한다.
+  - optimal policy 를 따랐을때 value function = optimal value function
+    - optimal value function 을 찾고 그에 대한 optimal policy 를 구해도 되고
+    - optimal policy 를 찾고 그에 대한 value function 을 구해도 된다.
+  - optimal policy 를 찾는 과정 => optimal value 를 찾으면 된다.
+
+- dynamic programming(DP) 을 통한 MDP
+  - 주어진 문제를 sub-problem 날 수 있고, sub-problem 을 구하면 전에 문제를 풀수 있을대 dynamic programming 을 사용한다.
+  - MDP 가 이와 같은 조건을 만족하기 때문에 DP 로 Bellman Expectation Equation  을 풀 수 있다.
+  - prediction : policy 가 주어졌을때 value function 를 구하는 과정
+    - MDP 의 S, A, P, R, r 과 policy pi 가 주어졌을때 알 수 있다.
+  - control : optimal policy를 구하는것 (=optimal value function 구하면 쉽게 알 수 있다.)
+    - MDP 의 S, A, P, R, r 이 주어졌을때 알 수 있다.
+  - iterative policy evaluation 
+    - policy 가 주어졌을대 이걸 evaluation 하는것(V pi 를 구하는 과정이다.)
+    - v 초기화후 matrix muliplication 으로 주어진 수식대로 반복하면 V 가 수렴한다. 수렴된 결과가 policy 에 대한 evaluation 이 끝났것
+    - 예제 4x4 grid world
+      - 조건1 MDP r = 1
+      - 조건2 terminal state(종료 state) : 맨왼쪽 맨위, 맨오른쪽 맨아래 2개가 있음
+      - 조건3 girid 끝을 벗어나라는 action 있다면 그자리에 머무른다.
+      - 조건4 reward 는 move 할때마다 -1
+      - 조건5 random policy로 동,서,남,북 가는 확률을 0.25로 동이하게 했다.
+      - next step value function = reward + gamma + state transition probability P + V
+        - 처음에는 iteration 0 에서는 V k(policy) 를 모두 0 으로 초기화
+        - 다음 stop value function(V) = R + (P * gamma * V)
+        - K(policy) = 1,2,... 까지 위 과정을 반복 => greedy policy 를 구하는것
+        - 계속 V 를 구해가면서 각 state 에서 value function 이 최대가 되는 방향으로 화살표(이동방향)을 표시하면, greedy policy 를 구할 수 있다.
+        - greedy policy 경우 step 3정도까지만 V 를 구해가면 optimal policy 에 수렴된 greepy policy 를 구할 수 있다.
+        - policy 만 구하는 경우 적은 iteration  으로 구할 수 있다.
+        - evaluation 을 한다면 충붛나 iteration 으로 V 가 바뀌지 않을때 까지 수행해야 한다.
+        - policy improvement : pi(policy) 가 주어졌을대, V pi 를 가지고 policy 를 improve 하는것
+          - 않좋은 policy -> 좋은 policy 를 구하는 힌트
+          - 특별한 아이디어 없다면 random policy(보통 0으로)로 시작
+          - 현재 policy 에 대한 value function을 구한다음 greedy(각 state 의 action 에서 value function 이 최대가 되는것을 취하는것)으로 policy 로 바꾼다.
+    - prediction 문제 푸는 방법
+      - bellman expectation equation 과 iterative policy evaluation(algorithm)을 사용
+    - control 문제 푸는 방법
+      - bellman expectation equation + greedy policy improvement) 와 policy iteration(algorithm = iterative policy evaluation 과 greedy policy improvement를 반복하는 과정)
+      - V 에 대헛 설명했지만 Q 에 대해서도 적용할 수 있다.
+        - V (action=m x state=n 의 제곱 복잡도)를 주로 다루는 이유는 복잡도가 Q (m제곱 x n제곱)보다 적다.
