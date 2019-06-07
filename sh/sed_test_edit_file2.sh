@@ -22,8 +22,8 @@ echo 'delete line 2 and print'
 cat ${TEMP_FILE} | sed  "2d;"
 # 2~4 라인만 출력
 # -n 는 sed 가 입력받은 각라인의 에코 출력을 막는다.
-# echo "ysoftman" | sed '$p'   는 ysoftman 2번 출력
-# echo "ysoftman" | sed -n '$p'  는 ysoftman 1번 출력
+# echo "ysoftman" | sed 'p'  는 ysoftman 2번 출력
+# echo "ysoftman" | sed -n 'p'  는 ysoftman 1번 출력
 # '2,4p' 2~4라인 프린트2~4라인 프린트
 echo 'print only line 2~4'
 cat ${TEMP_FILE} | sed -n "2,4p"
