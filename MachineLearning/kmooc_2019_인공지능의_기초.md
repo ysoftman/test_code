@@ -282,7 +282,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
     - MDP 의 S, A, P, R, r 과 policy pi 가 주어졌을때 알 수 있다.
   - control : optimal policy를 구하는것 (=optimal value function 구하면 쉽게 알 수 있다.)
     - MDP 의 S, A, P, R, r 이 주어졌을때 알 수 있다.
-  - iterative policy evaluation 
+  - iterative policy evaluation
     - policy 가 주어졌을대 이걸 evaluation 하는것(V pi 를 구하는 과정이다.)
     - v 초기화후 matrix muliplication 으로 주어진 수식대로 반복하면 V 가 수렴한다. 수렴된 결과가 policy 에 대한 evaluation 이 끝났것
     - 예제 4x4 grid world
@@ -309,3 +309,86 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       - bellman expectation equation + greedy policy improvement) 와 policy iteration(algorithm = iterative policy evaluation 과 greedy policy improvement를 반복하는 과정)
       - V 에 대헛 설명했지만 Q 에 대해서도 적용할 수 있다.
         - V (action=m x state=n 의 제곱 복잡도)를 주로 다루는 이유는 복잡도가 Q (m제곱 x n제곱)보다 적다.
+
+## 6주차 - 게임이론(game theory)
+
+- game theory 가정
+  - player 들은 모두 이성적이다. 각자의 utility(효용함수)을 극대화하기를 원한다.
+  - 각 플레이어들은 utility 를 최대화하 하기 위한 목적으로 선택한다.
+  - 모든 player 은 다른 player 들이 rational(이성적)이라는것을 모두 알고 있다.
+  - 예) 체스, 부르마블, 나라들끼리 경재하는 모습(정치학, 경제학에서도 활용), 투표
+- 죄수의 딜레마(prisoner's dilemma)
+  - 2명의 죄수가 있고, 각각 조사를 받는다.
+  - 조용이 있거간 상대방을 밀고(implicate)하거나 조용히 있거나(silent) 액션을 취할 수 있다.
+  - -1 : 1년 징역,... -n : n년 징역
+                                죄수2
+                      silent         implicate
+    죄수1  silent       -1, -1          -5, 0
+          implicate     0, -5          -3, -3
+    게임 전체에서 보면 (silent, silent) 액션이 합리적
+    각각의 player 에서 보면(dominant 한 policy 또는 strategy) 서로 밀고(implicate,  implicate)를 선택한다.
+    - 또다른 죄수의 딜레마
+      - nuclear arms race(핵무기 경쟁)
+      - climate change(기후협약 탈퇴), 지구 전체를 위해선 협약을 지켜야 되지만 개인의 이득을 위해선 탈퇴하는게 좋을 수 있다.
+- 게임을 정규 형태로 표현을 위한 3가지 component
+  - N : 참여자(player) 개수, indexed by i
+  - A : A1... An 로 action 집합
+  - U : utility function(효용함수), ui(a) : player i 가 action a 를 취했을대의 효용성
+  - 죄수의 딜레마에 적용해보면
+    - N : 2
+    - A : {Silent, Implicate} x {Silent, Implicate}
+    - U u(a) 는 다음과 같은 경우가 된다. 2x1 벡터이다.
+
+      ```text
+      = [-1
+         -1] if = (S,S)
+      = [-5
+          0] if = (S,I)
+      = [0
+        -5] if = (I,S)
+      = [-3
+        -3] if = (I,I)
+      ```
+
+- 제로썸게임(zero sum)
+  - 부가 새로 생기지도 않고 사라지지 않는다. 누가가가 1을 얻으면 누군가는 1을 잃는다.
+  - 둘을 합치면 0(효용의 합은 0이다.)
+  - player2 utility 를 최대하는것은 player1 utility 를 최소하는것과 같다.
+  - 예) 가위바위보
+- pure and mixed strategies
+  - palyer i 의 strategy(전략)  si : ai(action 에 대한 확률분포) 로 표현
+    - 각각의 액션에 대한 전략의 값의 항상 0보다 크거나 같다
+    - action 집합에 대한 확률 분표
+    - support : 확률분포가 있을때 확률의 값이 0보다 큰영역
+      - 전략에 적용해보면 action 들 중에 그 확률이 0이 아닌 action 들을 support 한다라고 말한다.
+    - pure strategy : 모든 player 에서 si((어떤 action 을 취하는 확률분포상)가 시간에 따라 변하지 않고 고정
+    - mixed strategy : si(어떤 action 을 취하는 확률분포상)에서 randomness 를 추가적으로 넣는 경우
+      - 어떤 player 가 선택을 할때 si 를 따라가지 않고 가끔 그걸 벗어나는 무작위성을 가지고 있다.
+- nash equilibrium(내시 평형)
+  - best response : 나를 제외한 모든 플레이어들의 전략이 주어졌을때 내가 취할 수 있는 최선의 전략
+  - profile(strategy) S 가 nash equilibrium 에 있다.
+    - 자신(player)을 제외한 모든 player 들의 전략이 주어졌을때 최선의 전략이라는 뜻
+  - nash equilibrium : player1 ... playerN 다 best response 로만 이루어진 전략 profile 을 의미
+    - 나도, 남도 모두 최선을 다해서 평형 상태를 이루고 있어 내가 전략을 조금만 수정하더라도 나는 더이상 얻는게 없고 잃게 되는 경우
+- player가 2명인 제로썸 게임 가위바위보 예제
+
+  ```text
+        R(rock)  P(paper)   (scissors)
+     R      0,0      -1,1      1,-1
+     P      1,-1      0,0      -1,1
+     S     -1,1       1,-1      0,0
+
+     첫번째 숫자만 취해서 일반적인 행렬을 만들 수 있다.
+     player2 입장에선 값에 -값만 곱하면 된다.
+           0,     -1,      1
+           1,      0,     -1
+          -1,      1,      0
+  ```
+
+  - pure maxmin(minmax) strategies
+    - 상대방은 자신에게 가장 유리한 action 을 취할것이다. 이걸 모든 플레이어가 알고 있다.
+    - player1 입장에선 매트릭트에서의 각 행(액션)의 최솟(min)값들 선택하고 그 중에 최대(max)가 되는것을 택하는것을 maxmin 전략이라고 한다.(이것이 player1 의 utility 를 최선으로 하는 방법이다)
+    - player2 는 player1 의 값에 -값을 곱하고, 각 열의 최대(max)값들 선택하고 그중 최솟(min)값이 되는것을 택하는것 minmax 전략이라고 한다.
+    - player 입장에 따라 maxmin, minmax 가 된다.
+    - player1 과 player2 가 maxmin 전략을 통해 얻을 수 있는 것을 이 게임의 가치(value)라고 정의 한다.
+    - player1 의 액션과 player2 의 액션을 모아서 maxmin solution 또는 minmax solution 이라고 한다.
