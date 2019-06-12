@@ -249,12 +249,12 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
 - MRP 에서 A(action 집합)요소가 추가됨
 - policy : 어떤 state 에서 어떤 action 을 취할 확률 분포 로 정의 가능
   - 현재 state 에만 의존
-  - policy 는 stataionary(고정), 시간에 따라 변화되지 않는다.
+  - policy 는 stationary(고정), 시간에 따라 변화되지 않는다.
 - value function
   - policy 에 의존적이며, 아래 첨자로 pi(policy) 가 추가되었다.
   - 또다른 형태의 value fuction Qpi(s,a) 가 추가되었다.
-    - V 는 state value function 이라 부르고
-    - Q 는 state action value function 이라고 부른다.
+    - Vpi(S) 는 state value function 이라 부르고
+    - Qpi(s,a) 는 state action value function 이라고 부른다.
 - Bellman Equation(MDP 에서 가장 중요한 식)
   - Bellman Optimality Equation(이 강의에서 제외)
   - Bellman Expectation Equation : 현재 state 의 value function 과 다음 state 의 value function 의 상관관계를 정의
@@ -290,7 +290,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       - 조건2 terminal state(종료 state) : 맨왼쪽 맨위, 맨오른쪽 맨아래 2개가 있음
       - 조건3 girid 끝을 벗어나라는 action 있다면 그자리에 머무른다.
       - 조건4 reward 는 move 할때마다 -1
-      - 조건5 random policy로 동,서,남,북 가는 확률을 0.25로 동이하게 했다.
+      - 조건5 random policy(현재 상태에서 취할 수 있는 액션을 같게)로 동,서,남,북 가는 확률을 0.25로 동일하게 했다.
       - next step value function = reward + gamma + state transition probability P + V
         - 처음에는 iteration 0 에서는 V k(policy) 를 모두 0 으로 초기화
         - 다음 stop value function(V) = R + (P * gamma * V)
@@ -379,7 +379,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
      S     -1,1       1,-1      0,0
 
      첫번째 숫자만 취해서 일반적인 행렬을 만들 수 있다.
-     player2 입장에선 값에 -값만 곱하면 된다.
+     player2 입장에선 값(utility)에 만 곱하면 된다.
            0,     -1,      1
            1,      0,     -1
           -1,      1,      0
@@ -392,3 +392,92 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
     - player 입장에 따라 maxmin, minmax 가 된다.
     - player1 과 player2 가 maxmin 전략을 통해 얻을 수 있는 것을 이 게임의 가치(value)라고 정의 한다.
     - player1 의 액션과 player2 의 액션을 모아서 maxmin solution 또는 minmax solution 이라고 한다.
+    - saddle(안장) point : 안장모양으로 어떤 방향으로는 minimum 이 되고 어떤 방향으로는 maximum 이 되는 포인트(2 그래프가 만나는 점)
+      - maxmin solution 의 경우 row의 minimum 이고 column 의 maximum 이기 때문에 saddle point 라고 얘기한다.
+    - two  player zero-sum game 에선 maxmin solution 을 구하게 되면 이건 항상 nash equilibrium 이 된다.
+    - iff(if and only if, 필요 충분 조건) = equivalent(동치)
+      - 만약 a,b 가 zero-sum game 의 solution 이면 a,b 는 nash equilibrium 만족
+      - 만약 a,b 가 nash equilibrium 이면 a,b 는 zero-sum game 의 solution 만족
+    - player1,2 모두 이성적 선택을 한경우 nash equilibrium 이 된다.
+  - multi player 가 되면 갑자기 어려워져서 이번 강의에선 다루진 않습니다.
+    - N 명의 player 에 있어서의 명확한 이론은 아직 개발 되지 못했다.
+  - non-zero-sum game 의 경우
+    - 특정 게임에서 nash equilibrium(ne) 을 찾을 수 있지만 모든 non-zero-sum 통일해서 ne 를 찾는건 어렵다.
+    - stag hunt(수사슴 사냥) 게임
+      - 2명의 사냥꾼은 사슴을 잡던지, 산토끼를 잡는 선택한다.
+      - 사슴은 항상 2명의 사냥꾼이 있어야 잡는다.
+      - 산토끼는 1명의 사냥꾼이 잡을 수 있다. 하지만 사슴보다 utility 보다 훨씬 낮다.
+      - (stag,stag) (hare,hare) 의 경우가 nash equilibrium 이다.
+
+      ```text
+                        Stag(수사슴)    Hare(산토끼)
+        Stag(수사슴)         2,2           0,1
+        Hare(산토끼)         1,0           1,1
+      ```
+
+    - battle of the sexes(성대결) 게임
+      - 남편은 풋볼을 보러 가는걸 원한다.
+      - 부인의 경우 발레를 보러 가는걸 원한다.
+      - 부부가 서로 얘기하지 않는 상황
+
+      ```text
+                                Ballet(발레)    Football(풋볼)  wife
+        husband  Ballet(발레)         2,3           0,0
+                Football(풋볼)        1,1           3,2
+      ```
+
+    - game of chicken(치킨게임)
+      - 갈등이 증폭되는 과정을 표현하는 모델로 많이 사용된다.
+      - 사거리에서 두마의 (닭)사람이 있는 경우 둘다 직진하면 서로 나고, 둘다 양보하면 둘다 못가지만 사고는 막을 수 있다.
+
+      ```text
+                                straight    chicken
+        straight                 -10,-10       1,-1
+        chicken(겁쟁이,양보)        -1,1         0,0
+      ```
+
+- Quiz
+
+```text
+아래 graph가 random policy를 만족하며 𝛾=1일 때, 붉은 색 노드의 𝑉_𝜋(𝑠)를 구하시오. (𝜋(𝑎|𝑠)=0.5)
+value function(V) = R + (P * gamma * V)
+R(reward=3)
+P(state transition probability=0.5)
+gamma(𝛾=1)
+V(state value function)
+붉은색 노드에서 갈 수 있는 상태는 2개로 각각 0.5 확률로 7 또는 3 의 reward 를 받는다.
+7 reward 의 경우 진행할 action 없어 끝
+3 reward 의 경우 0.3 의 확률로 4.1 노드로 간다.(이전 3으로 왔을떄의 0.5 확률을 곱해해야 한다.)
+3 reward 의 경우 0.4 의 확률로 -2.1 노드로 간다.(이전 3으로 왔을떄의 0.5 확률을 곱해해야 한다.)
+3 reward 의 경우 0.3 의 확률로 3.1 노드로 간다.(이전 3으로 왔을떄의 0.5 확률을 곱해해야 한다.)
+정답 : (7*0.5)+(3*0.5)+((0.5*0.3*4.1)+(0.5*0.4*-2.1)+(0.5*0.3*3.2)) = 5.675
+
+
+Zero-sum game을 아래와 같이 matrix로 나타내었을 때, Pure Maxmin Strategy를 사용하여 solution을 구하시오.
+      b1    b2    b3
+a1    -1     1     2
+a1     2    -3     4
+a1     2     3     5
+player1 입장에선 각행(a-action)의 utility 값중 최소값을 찾고(-1, -3, 2) 이중 가장 큰 값(3)이 있는 a3 액션을 선택 (maxmin 전략)
+player2 입장에선 각열(b-action)의 utility 값중 최대값을 찾고(2, 3, 5) 이중 최소값(2)이 있는 b1 액션을 선택 (minmax 전략)
+정답 : (a3, b1)
+
+
+다음 Stag Hunt 중, Nash Equilibrium을 모두 고르시오.
+a) (Stag, Stag) b) (Stag, Hare) c) (Hare, Stag) d) (Hare, Hare)
+                Stag(수사슴)    Hare(산토끼)
+Stag(수사슴)         3,3           0,2
+Hare(산토끼)         2,0           1,1
+두명의 플레이어가 서로 평행을 이루는 경우를 선택하면 된다.
+정답 : a, d
+
+
+다음 중 옳지 않은 것을 고르시오.
+iteration 해도 변화가 없으면 멈춰야 된다.
+정답 : Iterative policy evaluation은 value function이 diverge할 때까지 계속한다.
+
+
+다음 게임이론에 대한 설명으로 옳지 않은 것을 고르시오.
+게임이론에서는 플레이어들은 이성적으로 행동한다고 가정한다.
+정답 : 플레이어는 이성적으로 행동하지 않고, 임의의 행동을 반복한다.
+```
