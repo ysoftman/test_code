@@ -194,6 +194,8 @@ echo $num1
 # 삼항 연산도 가능
 (( out = num1==1?99:100 ))
 echo $out
+# modular 연산
+echo "9%8 = $((9%8))"
 
 # a,b,c 출력
 echo {a,b,c}
