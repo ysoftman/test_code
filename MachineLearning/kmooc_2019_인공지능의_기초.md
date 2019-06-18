@@ -481,3 +481,115 @@ iteration 해도 변화가 없으면 멈춰야 된다.
 게임이론에서는 플레이어들은 이성적으로 행동한다고 가정한다.
 정답 : 플레이어는 이성적으로 행동하지 않고, 임의의 행동을 반복한다.
 ```
+
+## 7주차 - 자연어 처리
+
+- 자연어 처리는 사람이 사용하는 언어를 기계도 이해하고 활용할 수 있도록 하는 학문
+- mostly solved(많이 풀린 문제)
+  - spam detection
+  - part-of-speech(POS) 단어어 품사 알아내기
+  - named entity recogntion(NER) 사람 이름, 단체 이름등의 고유 명사 찾아내기
+- making good progress(어느정도 진척된 문제)
+  - sentiment analysis 문장에서 감정 알아내기
+  - coreference resoultion 지시 대명사 그, 그것, 등이 뭐를 의미하는지 찾기
+  - word sense disambiguation 어떤 단어가 어떻게 쓰였는지
+    - ex) mouse 가 컴퓨터 마우스인지, 쥐를 뜻하는것지 찾기
+  - parsing 문장 구조 알아내기
+  - machine translation(MT) 기계 번역
+  - information extraction(IE) 문장으로 보고 정보를 뽑아 내는 일
+- still really hard(아직 어려운 문제)
+  - question ansering(QA) 질의 응답
+  - paraphrase 문장을 써놓기 그 문장과 같은 뜻이지만 다른 형태로 표현하는 과정
+  - summarization task 문서 요약
+  - dialog 기계와 대화화기
+    - ex) 인공지능 스피커
+- 자연어 처리가 어려운 이유
+  - 모호성(ambiguity) : 사람은 완벽하지 문장을 대충 말해도 알아 듣지만 기계는 그렇지 못한다.
+    - ex) Teacher Strikes Idle Kids
+      - 첫번째 Strikes 를 동사로 보면, "선생님이 놀고(idle) 있는 아이들 때렸다(strike)"
+      - 두번째 Idle 을 동사로 보면, "선생님이 파업(strike)을 해서 아이들이 놀고(idle) 있다."
+  - 비문(non-standard english)
+  - segmentation issue (분절을 어떻게 해야 하는지)
+    - ex) the new york-new haven railroad, 어디를 끊어서 읽어야 하는지, 어디를 합여하는지 알기 쉽지 않다.
+  - idioms(관용어구)
+    - ex) dark horse, 검은말이라고 해석하면 의미를 제대로 전달 할 수 없다.
+  - neologisms(신조어)
+    - ex) unfriend, SNS 상에서 친구를 끊다.
+  - world knowledge(지식 체계 필요)
+    - ex) mary and sue are sisters. mary 와 sue 가 누구인지 알아야 한다.
+  - tricky entity names (요소를 얘기할 때 어려운 경우)
+    - ex) Bug's life , 3개의 단어가 영화제목을 나타내는 명사다.
+    - ex) let it be, 3개의 단어가 팝송 제목의 명사다.
+- Question Answering(QA) : IBM's Waston
+  - 문제가 어렵다. 하나의 지식을 알면 안되고, 여러개의 지식을 알아야한다.
+  - ex) william wilkinson 이 '왈라키아와 몰도비아 공국에 대한 설명'의 어떤 유명한 작가의 영감을 받고 책을 썼는가?
+    - william wilkinson 누구인가? 영국의 외교관
+    - 왈라키아, 몰도비아는 어디인가? 루마니아 근처로 드라큘라 소설의 배경
+    - 그래서 드라큘라의 저자가 누구인가? bram stoker (정답)
+  - factoid questions(사실관계에 대한 질의)
+    - 단답형으로 알 수 있다.
+      - ex) 사과의 칼로리는 얼마인가?
+  - complex (narrative) question, 어려운 문제
+    - ex) xx 를 설명해보시오.
+- Information Extraction
+  - ex) 미팅에 대한 메일을 주고받는다고 했을대 장소와 시간에 대한 정보를 자동으로 뽑아서 개인의 달력에 entry 로 자동으로 등록해주는 시스템
+- Relation Extraction from Text
+  - information 중 특히 관곅를 뽑아 내는것
+  - ex) 회사의 보고서에서 회사와 위치의 관계(회사는 어디에 있는지), 회사의 설립일의 관계 (회사의 설립일은 언제인지)
+  - ex) 위키피디아 페이지의 수많은 관계
+- Information Extraction & Sentiment Analysis
+  - 자연어에서 정보를 뽑아내고 감정을 분석하는 일
+  - ex) 쇼핑 사이트에서 어떤 카메러에 리뷰가 있을때, "값은 싸지만 기능은 별로다" 로 부터 카마레가 좋다 나쁘다도 판단, 기능이 어떻다는 정보도 파악
+- Sentiment Analysis(감정 분석)
+  - ex) 단순히 영화 리뷰가 positive 한지 negative 한지 파악
+  - ex) 어떤 제품에 대한 설문 대신 트위터 상의 사람들의 감정을 분석해 파악
+  - 감정분석은 여러가지 다른이름으로 불린다.
+    - opinion extraction
+    - opinion mining
+    - sentiment mining
+    - subjectivity analysis
+  - 감정분석이 어려운 이유
+    - ex) "그녀의 감정 표현이 A부터 B까지 되게 화려했다."
+      - 언뜻 들으면 좋은 뜻같지만 A부터 B까지를 봤을때 비꼬는 내용이다.
+      - 단순희 좋은 단어를 보고 판단하면 positive 같지만 사실은 아니다.
+- Named Entity Recognition(NER)
+  - 고유명사를 찾아내는 일
+  - ex) labor 라고 하면 '노동' 의 뜻도 이씨만 context(문맥)으로 보면 '정당' 의 뜻
+- Part-of-Speech Tagging
+  - 단어의 품사를 찾아 내는 일
+  - 자연어 처리에서 가장 기본적인 task 중의 하나
+- Structure Parsing(구조 파싱)
+  - 문장에서 문법적인 구조를 알아내는 과정
+  - ex) I saw a girl with a telescope.
+    - saw 가 with a telescope 와 연결되면, 난 저소녀를 망원경으로 봤다.
+    - girl 과 telescope 가 연결되면, 난 망원경으로 가지고 있는 소녀를 봤다.
+    - 문장 구조를 파싱해보면 saw 가 with, girl에 종속될 수 있어 위와 두경우 모두 해석될 수 있다.
+  - constituency(phrase structure) : 어떤 구가 어떤 구성으로 되어 있냐 봐야 한다.
+  - dependency struct : 단어가 어떤 따른 단어에 의존되어 있느냐를 파악해야 한다.
+- Word Meaning and Simliarity
+  - 단어의 의미파악, 영어의 경우 한단어가 하나의 뜻을 가지는 경우는 거의 없다.
+  - homonymy(동음의) : 형태는 같고 뜻은 다른
+    - ex) bank : 은행, 강둑
+    - 은행, 강둑 은 원래 이런 근원이 다른데 어쩌다 보니 두개가 알파벳이 같다.
+  - polysymy(다의성) : 단어 1개가 여러뜻 가진
+    - ex) Jane Austen : 저자일 수 있고, 저작의 작품일 수도 있다.
+  - synonymy(동의어) : 같은 뜻을 가진 다른 말
+    - ex) couch , sofa : 둘다 같은 소파
+    - ex) how bigt 또는 how large is that plane?
+      - big 이랑 large 랑 똑같다.
+    - ex) big Sister(나이많은 언니), large sister(뚱뚱한 자매)
+      - 상황에 따라 뉘앙스가 달라진다.
+  - antonymy(반의성) : 반대말
+    - 문법적으로 완전히 같은데 단어만 반대인 경우가 많다.
+- Machine Translation(기계 번역)
+  - 구글에서 깊은 신경망을 토대로 만든 GNMT 모델이 있다.
+    - Sequence to Sequece 라는 모델 기반, attention mechanism 을 활용해서 아주 놀라운 기계번역기가 나오게 됐다.
+- Text Summarization
+  - single document summarization : 아주 긴 기사를 한 문장으로 요약
+  - multiple document summarization : 여러 문서를 참조해서 요약(ex. 리포트)
+  - generic summarization : 일반적 요약, 대표하는 문장 혹은 5개미만의 문장으로 요약
+  - query-focused summarization : 질의에 기반한 요약
+    - ex) 영화에서 xxx 인물의 중심으로 요약
+  - extractive summarization : 특정 구 또는 단어 뽑아 가면서 요약
+  - abstractive summarization : 전체글을 다 이해한 후에 하나로 표현
+  - ex) snippets(단편) : 구글 검색에서 주어진 키워드에 대해서 여러가지 문서가 검색되는데 문서 링크외에 조그맣게 문서의 주어진 query 에 대한 정보가 짧게 요약되어 있다.
