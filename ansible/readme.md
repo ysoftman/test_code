@@ -9,6 +9,9 @@ ansible -i ./inventory testhost1 -u hanadmin -m command -a "ls -ahl"
 ### myplaybook.yml
 
 ```bash
+# 적용될 task, tag 파악
+ansible-playbook -i ./inventory myplaybook.yml -vv --list-tasks --list-tags
+
 ansible-playbook -i ./inventory myplaybook.yml -t clearall -vv
 
 ansible-playbook -i ./inventory myplaybook.yml -t helloworld -vv
