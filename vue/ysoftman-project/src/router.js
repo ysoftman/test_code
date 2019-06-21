@@ -6,7 +6,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Alert from '@/components/Alert'
 import BindMessage from '@/components/BindMessage'
 import DataList from '@/components/DataList'
-import Component from '@/components/Component'
+import MyComponent from '@/components/MyComponent'
 import ModifyArray from '@/components/ModifyArray'
 import Draggable from '@/components/Draggable'
 import NotFound from '@/components/NotFound'
@@ -42,9 +42,9 @@ export default new Router({
     name: 'DataList',
     component: DataList
   }, {
-    path: '/component',
-    name: 'Component',
-    component: Component
+    path: '/mycomponent',
+    name: 'MyComponent',
+    component: MyComponent
   }, {
     path: '/draggable',
     name: 'Draggable',

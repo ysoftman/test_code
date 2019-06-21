@@ -5,7 +5,7 @@
     <li><router-link to = "/">HelloWorld</router-link></li>
     <li><router-link to = "/Alert">Alert</router-link></li>
     <li><router-link to = "/BindMessage">BindMessage</router-link></li>
-    <li><router-link to = "/Component">Component</router-link></li>
+    <li><router-link to = "/MyComponent">MyComponent</router-link></li>
     <li><router-link to = "/DataList">DataList</router-link></li>
     <li><router-link to = "/ModifyArray">ModifyArray</router-link></li>
     <li><router-link to = "/Draggable">Draggable</router-link></li>
