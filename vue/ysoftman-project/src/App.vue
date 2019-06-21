@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <router-link to = "/">HelloWorld</router-link>
-    <router-link to = "/Alert">Alert</router-link>
-    <router-link to = "/BindMessage">BindMessage</router-link>
-    <router-link to = "/Component">Component</router-link>
-    <router-link to = "/DataList">DataList</router-link>
-    <router-link to = "/ModifyArray">ModifyArray</router-link>
-    <router-link to = "/Draggable">Draggable</router-link>
-    <router-link to = "*">NotFound</router-link>
+    <ul>
+    <li><router-link to = "/">HelloWorld</router-link></li>
+    <li><router-link to = "/Alert">Alert</router-link></li>
+    <li><router-link to = "/BindMessage">BindMessage</router-link></li>
+    <li><router-link to = "/Component">Component</router-link></li>
+    <li><router-link to = "/DataList">DataList</router-link></li>
+    <li><router-link to = "/ModifyArray">ModifyArray</router-link></li>
+    <li><router-link to = "/Draggable">Draggable</router-link></li>
+    <li><router-link to = "/VuetifyDark">VuetifyDark</router-link></li>
+    <li><router-link to = "*">NotFound</router-link></li>
+    </ul>
     <router-view/>
   </div>
 </template>

@@ -1,5 +1,5 @@
 {
-  "name": "ysoftman2-project",
+  "name": "ysoftman-project",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuedraggable": "^2.21.0",
+    "vuetify": "^1.5.16",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

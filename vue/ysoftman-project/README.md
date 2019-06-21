@@ -1,4 +1,4 @@
-# ysoftman2-project
+# ysoftman-project
 
 ## Project setup
 ```
