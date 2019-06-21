@@ -47,12 +47,13 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   </script>
   ```
 
-- Vue.component 사용시 콘솔에 다음과 같은 경고가 발생하는 경우
+- npm run serve 에서 component 관련 콘솔에 다음 경고가 발생하는 경우는 런타임용 파일(vue.runtime.esm.js)을 사용하기 때문이다.
 
   ```text
   [Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
   ```
-  - 전체빌드 사용을 위해 webpack, browserify 같은 번들러에서 [alias 설정](https://kr.vuejs.org/v2/guide/installation.html#%EA%B0%81-%EB%8B%A4%EB%A5%B8-%EB%B9%8C%EB%93%9C%EA%B0%84-%EC%B0%A8%EC%9D%B4%EC%A0%90)
+
+  - npm run build 빌드 후 vue.esm.js 파일을 webpack 같은 번들러에서 [alias 설정](https://kr.vuejs.org/v2/guide/installation.html#%EA%B0%81-%EB%8B%A4%EB%A5%B8-%EB%B9%8C%EB%93%9C%EA%B0%84-%EC%B0%A8%EC%9D%B4%EC%A0%90)
 
 ## references
 
