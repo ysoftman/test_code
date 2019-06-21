@@ -37,6 +37,7 @@ export default {
 
 #app {
   margin: 10px 10px 10px 10px;
+  height: 200px;
 }
 
 </style>

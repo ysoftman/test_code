@@ -4,7 +4,7 @@
 
 ```bash
 # vue-cli 등 필요 패키 설치
-npm install -g @vue/cli vuetify bootstrap-vue vuedraggable
+npm install -g @vue/cli vuetify bootstrap-vue bootstrap vuedraggable
 
 # webpack (번들러, 의존성을 가진 모듈들을 묶어 정적인 asset 생성) template 를 이용해 프로젝트 생성
 vue create ysoftman-project
@@ -35,7 +35,7 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-## tip
+## troubleshooting
 
 - npm run dev 실행 후 ysoftman-project/src 소스 수정 후 저장하면 바로 컴파일되어 오류 또는 결과를 볼 수 있다.
 
@@ -46,6 +46,13 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   /* eslint-disable */
   </script>
   ```
+
+- Vue.component 사용시 콘솔에 다음과 같은 경고가 발생하는 경우
+
+  ```text
+  [Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
+  ```
+  - 전체빌드 사용을 위해 webpack, browserify 같은 번들러에서 [alias 설정](https://kr.vuejs.org/v2/guide/installation.html#%EA%B0%81-%EB%8B%A4%EB%A5%B8-%EB%B9%8C%EB%93%9C%EA%B0%84-%EC%B0%A8%EC%9D%B4%EC%A0%90)
 
 ## references
 
