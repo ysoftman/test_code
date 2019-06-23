@@ -53,7 +53,23 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   [Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
   ```
 
-  - npm run build 빌드 후 vue.esm.js 파일을 webpack 같은 번들러에서 [alias 설정](https://kr.vuejs.org/v2/guide/installation.html#%EA%B0%81-%EB%8B%A4%EB%A5%B8-%EB%B9%8C%EB%93%9C%EA%B0%84-%EC%B0%A8%EC%9D%B4%EC%A0%90)
+  - npm run build 빌드 후 vue.esm.js 파일을 webpack 같은 번들러에서 [alias 설정](https://kr.vuejs.org/v2/guide/installation.html#Runtime-Compiler-vs-Runtime-only)
+
+  - vuecli3의 프로젝트를 생성한 경우 webpack 설정 파일이 없어 프로젝트 루트 에서 다음처럼 만들어 준다.
+
+  ```bash
+  cat > vue.config.js <<zzz
+  module.exports = {
+    configureWebpack: {
+      resolve: {
+        alias: {
+          'vue$': 'vue/dist/vue.esm.js'
+        }
+      }
+    }
+  }
+  zzz
+  ```
 
 ## references
 
