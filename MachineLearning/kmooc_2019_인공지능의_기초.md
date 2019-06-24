@@ -503,7 +503,7 @@ iteration 해도 변화가 없으면 멈춰야 된다.
   - summarization task 문서 요약
   - dialog 기계와 대화화기
     - ex) 인공지능 스피커
-- 자연어 처리가 어려운 이유
+- challenges : 자연어 처리가 어려운 이유
   - 모호성(ambiguity) : 사람은 완벽하지 문장을 대충 말해도 알아 듣지만 기계는 그렇지 못한다.
     - ex) Teacher Strikes Idle Kids
       - 첫번째 Strikes 를 동사로 보면, "선생님이 놀고(idle) 있는 아이들 때렸다(strike)"
@@ -593,3 +593,88 @@ iteration 해도 변화가 없으면 멈춰야 된다.
   - extractive summarization : 특정 구 또는 단어 뽑아 가면서 요약
   - abstractive summarization : 전체글을 다 이해한 후에 하나로 표현
   - ex) snippets(단편) : 구글 검색에서 주어진 키워드에 대해서 여러가지 문서가 검색되는데 문서 링크외에 조그맣게 문서의 주어진 query 에 대한 정보가 짧게 요약되어 있다.
+
+## 8주차 - 컴퓨터 비전
+
+- 사람의 시각지능을 기계도 할 수 있도로 가르치는게 목적 및 정의다.
+- 사람 시각의 단점
+  - 착시현상이 있다.
+  - 세부디테일 및 기억하는 것은 떨어진다.
+  - 개인적은 감정이 작용된다.
+  - 주변환경을 정확하게 측정하지 목한다. ex) 방의 크기가 몇 미터인지등..
+- 대뇌에서 시각연결을 담당하는 visual cortex 를 인공적으로만들어 보자.
+- inverse optics : 이미지가 주어졌을대 빛이 어디에 있는지 판단하는 것
+- low level : input/output 둘다 이미지인 경우
+  - deblurring : 흐릿한 이미지를 선명한 이미지로 만드는것
+  - edge detection : 밝기 변화(가장자리)를 나타내는 이미지를 만드는
+  - super resolution : 저해상도->고해상도 이미지로 만드는것
+  - colorization : 흑백이지를 컬러이미지로 만드는것
+- mid level : image 가 주어졌을때 features 를 추출하는것
+  - boundary detection : 경계부분은 찾아내는것
+  - segmentation : 문체를 구분해주는것
+  - shape from shading : 그림자만 있는 이미지에서 모양을 찾아내는것
+  - alignment : 같은 부분은 매칭시키는것, ex) 2장의 나비 사진에서 날개을 찾아서매칭
+- high level : image 가 주어졌을때 semantics 을 유추하는것
+  - image classification : 이미지 구분
+  - object dectection : 영역을 위치를 찾아내고 무엇인지 판단
+  - image captioning : 이미지를 문잔으로 번역한다.
+  - pose detection : 어떤 자세로 있는디 구분하는것
+- image processing : image -> image 변환하는 과정을 주로 다룬다.
+- computer vision : image processing 기술을 많이 사용하지만 인식을 하는 high level 까지 적용하는 학문이다.
+- challenges : 컴퓨터 비전이 어려운 이유
+  - view point variation : 어디서 어떻게 찍었냐에 따라 사진이 달라진다.(3d -> 2d, projection from 3d to 2d)
+  - illumination : 조명(광원)이 어디에 있느냐에 따라 사진이 달라진다. ex) shadow, relections, Fog, rain
+  - occlusion(폐쇄, 가림) : 물체거 가려져 있는 사진. ex) 사람, 자동차가 가려져 있을때 몇명, 몇대가 있나?
+  - scale : 같은 물체라도 사진에 따라 크거나 작게 보인다. ex) 길거리 사신에서 걸어 가는 물체가 사람인지 안다. 사람 부분만 떼어본다면 너무 작아서 사람인지 알 수 없지만, 주변 정보들(길거리 사진에 건물, 거리, 가로수등)의 context 를 보고 사람인지 안다.
+  - deformation (변형,기형) : 같은 물체라도 모양이 정해져 있다. ex) 사람, 말등 모양이 바뀌는 경우
+  - background clutter(혼란) : 배경이미지가 너무 혼란스럽다. ex) 수많은 빨간색 간판이 있는 거리 사진은 신호등과 간판등을 헷갈린다.
+  - object intra-class varation : 물체 내부의 변화가 너무 큰 경우 ex) 다양한 종류의 의자가 있는 경우, 겉모습(겉모습은 모두 다르다)보다 의자의 앉는 기능으로 의자로 인식하게 된다.
+
+- Quiz
+
+```text
+문제 1번.
+1점 획득가능 (성적반영)
+다음 중 synonym(동의어)의 예로 알맞지 않은 것을 고르시오.
+comical / humorous
+innocent / guilty
+clever / smart
+brave / courageous
+정답 : innocent(죄없는) / guilty(유죄는)는 antonymy(반대어)이다.
+
+문제 2번.
+1점 획득가능 (성적반영)
+다음 중 antonym(반대어)의 예로 알맞은 것을 고르시오.
+push / fail
+dead / alive
+gift / box
+borrow / lend
+정답 : dead(죽은) / alive(살다) 는 antonymy(반대어)이다.
+
+문제 3번.
+1점 획득가능 (성적반영)
+다음 중 Image → Image인 low-level vision의 예시로 알맞은 것을 고르시오.
+Edge detection
+Image captioning  (high level, image -> semantics)
+Object detection (high level, image -> semantics)
+Segmentation (mid level, image -> features)
+정답 : Edge detection
+
+문제 4번.
+1점 획득가능 (성적반영)
+다음 중 Natural Language Processing의 challenge로 적절하지 않은 것은 무엇인지 선택하시오.
+Segmentation issues (분절문제는 NLP의 도전 분야다.)
+Idioms (관용어구 NLP의 도전 분야다.)
+Illuminations (광원 무제는 컴퓨터 비전의 도전 분야다.)
+Neologisms (신조어 NLP의 도전 분야다.)
+정답 : Illuminations
+
+문제 5번.
+1점 획득가능 (성적반영)
+다음 중 Computer Vision의 challenge로 적절하지 않은 것은 무엇인지 선택하시오.
+View point Variation
+Deformation
+Neologisms
+Object Intra-Class Variation
+정답 : Neologisms 신조어 문제는 자연어처리(NLP)의 도전 분야다.
+```
