@@ -26,22 +26,24 @@ sudo pip3 install --upgrade --force-reinstall --no-cache-dir jupyter
 jupyter notebook
 ```
 
-- 2018-10 현재 tensowflow 는 python 3.7 을 지원하지 않아 python 3.6.5 로 다운그레이드가 필요하다.
+## troubleshooting
 
-```bash
-# 현재 python 3.7 링크 제거
-brew unlink python
-# python 3.6.5 버전 설치
-brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/f2a764ef944b1080be64bd88dca9a1d80130c558/Formula/python.rb
-```
+- ~~2018-10 현재 tensowflow 는 python 3.7 을 지원하지 않아 python 3.6.5 로 다운그레이드가 필요하다.~~
 
-- tensorflow r1.0 정식 릴리즈 이후 버전과 이전은 몇몇 api 들이 인자들의 개수나 순서가 다르다.
-- 인터넷의 많은 자료가 아직 1.0 정식 릴리즈전의 tensorflow 버전으로 설명하고 있다.
+  ```bash
+  # 현재 python 3.7 링크 제거
+  brew unlink python
+  # python 3.6.5 버전 설치
+  brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/f2a764ef944b1080be64bd88dca9a1d80130c558/Formula/python.rb
+  ```
+
+- ~~tensorflow r1.0 정식 릴리즈 이후 버전과 이전은 몇몇 api 들이 인자들의 개수나 순서가 다르다. 인터넷의 많은 자료가 아직 1.0 정식 릴리즈전의 tensorflow 버전으로 설명하고 있다.~~
+- [tensorflow v1.13.1](https://github.com/tensorflow/tensorflow/releases/tag/v1.13.1) 부터 python 3.7 을 지원한다.
 - ipython(jupyter) notebok(.ipynb) -> python(.py) 변환
 
-```bash
-bash convert_ipynb_to_py.sh
-```
+  ```bash
+  bash convert_ipynb_to_py.sh
+  ```
 
 ## 책,강의 내용 정리
 
