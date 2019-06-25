@@ -2,7 +2,7 @@
 touch ./-aa.txt
 touch ./-bb.txt
 
-# - (dash, hyper) 으로 시작하는 파일은
+# - (dash, hypen) 으로 시작하는 파일은
 # -- (stop parsing) 옵션을 사용해서 지우거나
 rm -- -aa.txt
 
