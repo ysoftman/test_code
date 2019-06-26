@@ -296,11 +296,19 @@ h3.post-title, .comments h4 {
 }
 .blog-pager {
   background: transparent none no-repeat scroll top center;
-}
-.blog-pager-older-link .home-link .blog-pager-newer-link {
   padding: 0px 10px 0px 10px;
-  font-size: 120%;
+  font-size: 2em;
 }
+.blog-pager-home-link {
+  float: none;
+}
+.blog-pager-older-link {
+  float: right;
+}
+.blog-pager-newer-link {
+  float: left;
+}
+
 .footer-outer {
   border-top: 0 dashed #bbbbbb;
   padding: 20px 0 0 0;
@@ -1150,32 +1158,28 @@ head.appendChild(script);
                           </b:includable>
                           <b:includable id='nextprev'>
                             <div class='blog-pager' id='blog-pager'>
+                              <b:if cond='data:blog.homepageUrl'>
+                                <div class='blog-pager-home-link'>
+                                  <a expr:href='data:blog.homepageUrl'>
+                                    <data:homeMsg/>
+                                  </a>
+                                </div>
+                              </b:if>
                               <b:if cond='data:newerPageUrl'>
-                                <span id='blog-pager-newer-link'>
-                                  <a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-newer-link&quot;' expr:title='data:newerPageTitle'>
+                                <div class='blog-pager-newer-link'>
+                                  <a expr:href='data:newerPageUrl'>
                                     <data:newerPageTitle/>
                                   </a>
-                                </span>
+                                </div>
                               </b:if>
                               <b:if cond='data:olderPageUrl'>
-                                <span id='blog-pager-older-link'>
-                                  <a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-older-link&quot;' expr:title='data:olderPageTitle'>
+                                <div class='blog-pager-older-link'>
+                                  <a expr:href='data:olderPageUrl'>
                                     <data:olderPageTitle/>
-                                  </a>
-                                </span>
-                              </b:if>
-                              <a class='home-link' expr:href='data:blog.homepageUrl'>
-                                <data:homeMsg/>
-                              </a>
-                              <b:if cond='data:mobileLinkUrl'>
-                                <div class='blog-mobile-link'>
-                                  <a expr:href='data:mobileLinkUrl'>
-                                    <data:mobileLinkMsg/>
                                   </a>
                                 </div>
                               </b:if>
                             </div>
-                            <div class='clear'/>
                           </b:includable>
                           <b:includable id='post' var='post'>
                             <div class='post hentry uncustomized-post-template' itemprop='blogPost' itemscope='itemscope' itemtype='https://schema.org/BlogPosting'>
