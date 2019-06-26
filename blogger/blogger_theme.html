@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='https://www.w3.org/1999/xhtml' xmlns:b='https://www.google.com/2005/gml/b' xmlns:data='https://www.google.com/2005/gml/data' xmlns:expr='https://www.google.com/2005/gml/expr'>
 
 <head>
   <meta expr:content='data:blog.isMobile? &quot;width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0&quot; : &quot;width=1100&quot;' name='viewport'/>
@@ -306,10 +306,10 @@ border-left: 1px solid #eeeeee;
 .blog-pager {
 background: transparent none no-repeat scroll top center;
 }
-.blog-pager-older-link, .home-link,
-.blog-pager-newer-link {
-background-color: #222;
-padding: 0px 10px 0px 10px;
+.blog-pager-older-link .home-link .blog-pager-newer-link {
+  background-color: #222;
+  padding: 0px 10px 0px 10px;
+  font-size: 120%;
 }
 .footer-outer {
   border-top: 0 dashed #bbbbbb;
@@ -499,7 +499,7 @@ head.appendChild(script);
     </b:widget>
   </b:section>
   <b:if cond='data:blog.pageType == &quot;index&quot;'>
-    <div itemscope='itemscope' itemtype='http://schema.org/Blog' style='display: none;'>
+    <div itemscope='itemscope' itemtype='https://schema.org/Blog' style='display: none;'>
       <meta expr:content='data:blog.title' itemprop='name'/>
       <b:if cond='data:blog.metaDescription'>
         <meta expr:content='data:blog.metaDescription' itemprop='description'/>
