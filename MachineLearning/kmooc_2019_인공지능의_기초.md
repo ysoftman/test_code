@@ -722,6 +722,7 @@ Object Intra-Class Variation
 1점 획득가능 (성적반영)
 다음 그래프의 노드 A에서 Depth-First search를 실행하였을 때 탐색 과정에서 방문하는 노드를 순서대로 기입한 것을 고르시오.
 정답 : A-H-F-G-E-B-D-C
+Depth-First Search는 깊이를 우선적으로 탐색하는 알고리즘입니다.
 
 문제 6번.
 1점 획득가능 (성적반영)
@@ -730,7 +731,8 @@ State space는 무엇을 의미하는지 다음 중 고르시오.
 2. 문제에 대한 나의 정의
 3. 설계된 문제
 4. 문제를 variable과 parameter로 표현한 것
-정답 : 1,2번 아님. 3 or 4 ???
+정답 : 4 State space란 문제의 입력, 출력, 상태를 간결하게 표현하기 위해 변수와 매개변수로 표현한 것입니다.
+
 
 문제 7번.
 1점 획득가능 (성적반영)
@@ -740,6 +742,9 @@ State space는 무엇을 의미하는지 다음 중 고르시오.
 3. Simulated Annealing search 탐색할 때 항상 최적의 경로를 선택하여 이동한다.
 4. Hill-Climbing search는 초기 상태와 관계 없이 항상 global maxima를 잘 찾아낸다.
 정답 : 1 (A* 는 best-fist search 기반(greedy best-first search 아님)
+A* search는 best-first search의 장점을 가지고 온 알고리즘입니다.
+Local search algorithm은 적은 양의 메모리를 사용하며, Simulated Annealing search는 항상 임의의 경로를 선택하여 이동합니다. Hill-Climbing search는 초기 상태에 따라 local maxima에 빠질 수 있습니다.
+
 
 문제 8번.
 1점 획득가능 (성적반영)
@@ -749,6 +754,7 @@ b) Exploration은 reward를 최대화하기 위해 알려진 정보를 이용한
 c) Exploitation은 environment에 대한 정보를 찾는데 사용된다.
 d) Markov Reward Process는 Markov process에 reward와 discount factor가 포함된 것이다.
 정답 : a, d  Exploration(알지 못하는것 시도,탐색), Exploitation(이미 알고 있는 정보를 활용)
+Reward를 최대화하기 위해 알려진 정보를 이용하는 것은 exploitation이며, environment에 대한 정보를 찾는데 사용되는 것은 exploration입니다.
 
 
 문제 9번.
@@ -768,7 +774,12 @@ C1 – FB – C1 – C2 – Sleep
 C1 – FB – FB – C1 – C2 – Sleep
 C1 – C2 – C3 – Pub – C2 – C3 – Pass – Sleep
 C1 – C2 – C3 – Pub – C3 – Pass – Slee
-정답 :
+1. -2-1*(1/2)-2*(1/4)-2*(1/8) = -3.25
+2. -2-1*(1/2)-1*(1/4)-2*(1/8)-2*(1/16) = -3.125
+3. -2-2*(1/2)-2*(1/4)+1*(1/8)-2*(1/16)-2*(1/32)+10*(1/64) = -3.40625
+4. -2-2*(1/2)-2*(1/4)+1*(1/8)-2*(1/16)+10*(1/32) = -3.1875
+정답 : C1 – FB – FB – C1 – C2 – Sleep
+
 
 문제 11번.
 1점 획득가능 (성적반영)
@@ -791,6 +802,7 @@ C1 – C2 – C3 – Pub – C3 – Pass – Slee
 문제 13번.
 1점 획득가능 (성적반영)
 Zero-sum game을 아래와 같이 matrix로 나타내었을 때, Pure Maxmin Strategy를 사용하여 solution을 구하시오.
+a=player1, b=player2
     b1  b2  b3
 a1  4   -5   3
 a2  -2  -3   4
@@ -799,7 +811,8 @@ a3  2   3    1
 (a1, b1)
 (a2, b3)
 (a3, b2)
-정답 : (a1, b1) (a2, b3)  아님.....???
+정답 : (a3, b2)
+Player 1의 maxmin strategy로부터 a3가 선택되고, player 2의 minmax strategy로부터 b2가 선택됩니다.
 
 문제 14번.
 1점 획득가능 (성적반영)
