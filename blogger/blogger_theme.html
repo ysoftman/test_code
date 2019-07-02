@@ -253,7 +253,7 @@ h3.post-title, .comments h4 {
   padding: 0px 0px;
   color: #98c379;
   background-color: #222;
-  line-height: 1.0;
+  line-height: 1.4;
   font-size: 125%;
 }
 #comments .comment-author {
@@ -388,20 +388,17 @@ body.mobile .AdSense {
 
   ]]></b:skin>
   <b:template-skin>
-    /* 컨텐츠 전체 최소 고정 폭 */
-    <b:variable default='500px' name='content.width' type='length' value='800px'/>
     /* 컨텐츠 왼쪽 부분 폭 */
     <b:variable default='0px' name='main.column.left.width' type='length' value='0px'/>
     /* 컨텐츠 오른쪽 부분 여백 값 */
     <b:variable default='0px' name='main.column.right.width' type='length' value='0px'/>
     <![CDATA[
 body {
-  min-width: $(content.width);
+  min-width: 100%;
 }
 .content-outer, .content-fauxcolumn-outer, .region-inner {
-  min-width: $(content.width);
+  min-width: 100%;
   max-width: none;
-  _width: $(content.width);
   padding: 0 0 0 0;
 }
 .main-inner .columns {
