@@ -15,7 +15,7 @@
 # 블로그 백업(.xml)을 vscode 로 열고,
 # <title type='text'> 부분들 선택후 엔터(newline추가)
 # line-height 적용된 포스트의 타이틀 파악
-rg 'line-height' blog-07-02-2019.xml | awk '{print $2$3$4}' | sed "s/type=\'text\'\>//"
+rg 'line-height' blog-07-02-2019.xml | sed -e "s/<title type=\'text\'>//g" -e "s/<\/title>.*//"
 ```
 
 - 파악된 blogger post line-height 수정
