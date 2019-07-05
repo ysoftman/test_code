@@ -19,4 +19,4 @@ sed -i '.zzz' -e 's/<title type/\
 rg 'line-height' blog-07-03-2019.xml | sed -e "s/<title type=\'text\'>//g" -e "s/<\/title>.*//"
 ```
 
-- 파악된 blogger post line-height, diev, span, style 속성등 수정
+- 파악된 blogger post line-height, div, span, style 속성등 수정
