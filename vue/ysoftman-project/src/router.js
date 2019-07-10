@@ -10,6 +10,7 @@ import MyComponent from '@/components/MyComponent'
 import ModifyArray from '@/components/ModifyArray'
 import Draggable from '@/components/Draggable'
 import NotFound from '@/components/NotFound'
+// import ToolBar from '@/components/ToolBar'
 import VuetifyDark from '@/components/VuetifyDark'
 
 Vue.use(Router)
@@ -22,6 +23,9 @@ export default new Router({
   // 라우팅 정보
   routes: [{
     path: '/',
+    default: true,
+  }, {
+    path: '/helloworld',
     default: true,
     name: 'HelloWorld',
     component: HelloWorld

@@ -1,29 +1,37 @@
 <template>
-  <b-container  class="fluid container">
+  <b-container class="fluid container">
+    <h1>{{msg}}</h1>
 
-  <h1>{{msg}}</h1>
-
-  <div class="form-group form-group-lg panel panel-default">
-    <div class="panel-body">
-      <div class = "checkbox">
-        <label><input type = "checkbox" v-model="editable">드레그 활성화</label>
+    <div class="form-group form-group-lg panel panel-default">
+      <div class="panel-body">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="editable" />드레그 활성화
+          </label>
+        </div>
+        <button type="button" class="btn btn-primary" @click="orderList">원래 순서로 되돌리기</button>
       </div>
-      <button type="button" class="btn btn-primary" @click="orderList">원래 순서로 되돌리기</button>
     </div>
-  </div>
 
     <b-row>
-
       <div class="col-md-3">
-          <draggable class="list-group" element="ul" v-model="myList" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-            <transition-group type="transition" :name="'flip-list'">
-              <li class="list-group-item" v-for="element in myList" :key="element.order">
-                <!-- {{element}} -->
-                <!-- {{ Element2JsonString(element) }} -->
-                {{element.order}}
-                {{element.mydata.name}},{{element.mydata.desc}}
-              </li>
-            </transition-group>
+        <draggable
+          class="list-group"
+          element="ul"
+          v-model="myList"
+          :options="dragOptions"
+          :move="onMove"
+          @start="isDragging=true"
+          @end="isDragging=false"
+        >
+          <transition-group type="transition" :name="'flip-list'">
+            <li class="list-group-item" v-for="element in myList" :key="element.order">
+              <!-- {{element}} -->
+              <!-- {{ Element2JsonString(element) }} -->
+              {{element.order}}
+              {{element.mydata.name}},{{element.mydata.desc}}
+            </li>
+          </transition-group>
         </draggable>
       </div>
 
@@ -31,23 +39,14 @@
         <h3>json 결과</h3>
         <pre>{{myListString}}</pre>
       </div>
-
     </b-row>
-
-  </b-container >
+  </b-container>
 </template>
 
 <script>
 /* eslint-disable */
 // Vue.js는 렌더링 된 DOM을 기본 Vue 인스턴스의 데이터에 선언적으로 바인딩 할 수있는 HTML 기반 템플릿 구문을 사용합니다
-import Vue from "vue";
-
 import draggable from "vuedraggable";
-import BootstrapVue from "bootstrap-vue";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
-
-Vue.use(BootstrapVue);
 
 const myData = [
   { id: 111, name: "사과", desc: "맛있다." },

@@ -58,7 +58,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   - vuecli3의 프로젝트를 생성한 경우 webpack 설정 파일이 없어 프로젝트 루트 에서 다음처럼 만들어 준다.
 
   ```bash
-  cat > vue.config.js <<zzz
+  cat > vue.config.js << 'zzz'
   module.exports = {
     configureWebpack: {
       resolve: {

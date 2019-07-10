@@ -10,23 +10,22 @@
 </template>
 
 <script>
-/* eslint-disable */
-import Vue from "vue";
-import BootstrapVue from "bootstrap-vue";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+// 컴포넌트를 전역으로 등록해서 사용할때
+// import Vue from "vue";
+// // 전역 컴포넌트를 먼저 선언(등록)
+// Vue.component("fruitCom", {
+//   // props 으로 선언된 키값으로 component 객체의 데이터를 전달 받는다.
+//   props: ["item"],
+//   template: "<li> {{ item.index }} {{ item.name }} </li>"
+// });
 
-Vue.use(BootstrapVue);
 
-// 전역 컴포넌트를 먼저 선언(등록)
-Vue.component("fruitCom", {
-  // props 으로 선언된 키값으로 component 객체의 데이터를 전달 받는다.
-  props: ["item"],
-  template: "<li> {{ item.index }} {{ item.name }} </li>"
-});
-
+import FruitCom from "@/components/FruitCom.vue";
 export default {
   name: "MyComponent",
+  components: {
+    FruitCom
+  },
   data() {
     return {
       fruitList: [
@@ -39,3 +38,4 @@ export default {
   }
 };
 </script>
+Î
