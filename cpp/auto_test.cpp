@@ -10,6 +10,17 @@ using namespace std;
 int main()
 {
     cout << "auto test" << endl;
+    // c++ 11 이전까진 auto 는 지역변수 유효기간을 나타내느 automatic duration 의미였지만
+    // c++ 11 이후부터는 타입 추론(type inference) 용도로 사용된다.
+    // string 타입으로 추론
+    auto i = "lemon_orange_apple";
+    cout << "sizeof(i):" << sizeof(i) << " i:" << i << endl;
+    // int 타입으로 추론
+    auto j = 1;
+    cout << "sizeof(j):" << sizeof(j) << " j:" << j << endl;
+    // double 타입으로 추론
+    auto k = 1.0;
+    cout << "sizeof(k):" << sizeof(k) << " k:" << k << endl;
 
     std::vector<int> vecNum;
     vecNum.push_back(1);
