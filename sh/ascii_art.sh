@@ -28,7 +28,7 @@ filename=${filename%%.sh}.out
 echo "outfilename : ${filename}"
 rm -rf ${filename}
 # ysoftman 파일로 입력
-cat > ${filename} << zzz
+cat > ${filename} << 'zzz'
 ysoftman input test
 zzz
 # _`', 등이 명령어로 처리되면서

@@ -67,7 +67,11 @@ echo "\${MACHTYPE}:" ${MACHTYPE}
 echo "\${EDITOR}:" ${EDITOR}
 # 설정된 경로
 echo "\${PATH}:" ${PATH}
-# 쉘 경과 시간(초)
+# 디폴트로 지정된 쉘
+echo "\${SHELL}:" ${SHELL}
+# 현재 사용중인 쉘(커맨드라인에서는 echo $0 만 실행해도 된다.)
+echo "current shell:" $(ps $(echo $$) | awk '{print $5}' | sed -n "2p")
+# 쉘 시작 후 경과 시간(초)
 echo "\${SECONDS}:" ${SECONDS}
 # 인자 개수
 echo "\${#}:" ${#}

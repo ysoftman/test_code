@@ -32,7 +32,7 @@ cat ${TEMP_FILE} | sed -n "2,4p"
 echo 'print only line 3~5, 7~8'
 cat ${TEMP_FILE} | sed -n "3,5p;7,8p;"
 # ccc ~ ggg 패턴 사이의 내용 출력
-echo 'print only pattern ccc ~ ggg '
+echo 'print only pattern ccc ~ ggg'
 cat ${TEMP_FILE} | sed  -n "/^ccc/,/^ggg/p;"
 # ccc ~ ggg 패턴 사이의 내용만 삭제하고 출력
 echo 'delete pattern ccc ~ ggg and print'

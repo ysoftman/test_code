@@ -4,7 +4,7 @@
 TEMP_FILE="${0}.tmp"
 
 # 테스트를 위한 임시 파일 생성
-cat > ${TEMP_FILE} << zzz
+cat > ${TEMP_FILE} << 'zzz'
 lemon apple orange lemon
 banana mango lemon
 zzz
