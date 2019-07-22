@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='https://www.w3.org/1999/xhtml' xmlns:b='https://www.google.com/2005/gml/b' xmlns:data='https://www.google.com/2005/gml/data' xmlns:expr='https://www.google.com/2005/gml/expr'>
+<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
   <b:include data='blog' name='all-head-content'/>
   <title>
     <data:blog.pageTitle/>
@@ -231,6 +231,8 @@ h3.post-title, .comments h4 {
   box-shadow: none;
   border: none;
   margin: 0 0 0 0;
+  max-width: 100%;
+  height: auto;
 }
 .post-body .tr-caption-container {
   color: #222222;
@@ -1249,7 +1251,7 @@ head.appendChild(script);
                                     <b:if cond='data:post.emailPostUrl'>
                                       <span class='item-action'>
                                         <a expr:href='data:post.emailPostUrl' expr:title='data:top.emailPostMsg'>
-                                          <img alt='' class='icon-action' style="height:1em;" src='https://resources.blogblog.com/img/icon18_email.gif'/>
+                                          <img alt='' class='icon-action' src='https://resources.blogblog.com/img/icon18_email.gif' style='height:1em;'/>
                                         </a>
                                       </span>
                                     </b:if>
@@ -1692,14 +1694,14 @@ head.appendChild(script);
                 </macro:include>
                 <!-- outside of the include in order to lock Attribution widget -->
                 <b:section class='foot' id='footer-3' name='Footer' showaddelement='no'>
-                  <b:widget id='Attribution1' locked='true' title='' type='Attribution'>
+                  <b:widget id='Attribution1' locked='true' title='' type='Attribution' version='1'>
                     <b:widget-settings>
                       <b:widget-setting name='copyright'/>
                     </b:widget-settings>
                     <b:includable id='main'>
     <div class='widget-content' style='text-align: center;'>
       <b:if cond='data:attribution != &quot;&quot;'>
-      <data:attribution/>
+       <data:attribution/>
       </b:if>
     </div>
 

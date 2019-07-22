@@ -20,3 +20,12 @@ rg 'line-height' blog-07-03-2019.xml | sed -e "s/<title type=\'text\'>//g" -e "s
 ```
 
 - 파악된 blogger post line-height, div, span, style 속성등 수정
+
+## 모바일 블로그 화면에서 포스트에 삽입된 이미지가 포스트 영역을 넘어서 보이는 경우 수정
+
+```css
+/* 포스트 이미지 속성 최대폭 및 그에 따른 높이 비율 자동 설정 */
+.post-body img
+max-width: 100%;
+height: auto;
+```
