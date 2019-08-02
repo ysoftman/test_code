@@ -2,7 +2,7 @@
 // string literal test
 // gcc 빌드 참고
 // gcc .c 파일은 c 로, .cpp 파일은 c++ 으로 빌드한다.
-// -x <langunage> 옵션으로 강제로 언어를 설정할 수 있다.
+// -x <language> 옵션으로 강제로 언어를 설정할 수 있다.
 // gcc -x c string_literal_test.cpp && ./a.out
 // gcc -x c++ string_literal_test.c && ./a.out
 
