@@ -1,9 +1,13 @@
 FROM ubuntu:latest
 # change root password 
 RUN echo "root:docker!" | chpasswd
-RUN apt-get update && apt-get install -y locales sudo vim tar git rsync gcc net-tools man python curl wget \
+# tzdata 설치시 사용자 인터페이스(사용자 입력을 기다리게 됨)를 비활성화하기 위해
+# DEBIAN_FRONTEND=noninteractive 설정
+# 참고 https://www.debian.org/releases/sarge/s390/ch05s02.html.ko
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get upgrade -y && apt-get install -y locales sudo vim tar git rsync gcc net-tools man python curl wget tzdata \
 && rm -rf /var/lib/apt/lists/* \
-&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+&& localedef -f UTF-8 -i ko_KR ko_KR.utf8 && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 ENV LANG en_US.utf8
 RUN groupadd programmer && useradd -m -d /home/ysoftman -g programmer -p ysoftman ysoftman
 RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbin/halt, !/usr/bin/poweroff, !/usr/bin/halt' >> /etc/sudoers
