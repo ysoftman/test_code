@@ -6,8 +6,8 @@ RUN pacman -Sy && pacman -S sudo git vim gcc tar python curl rsync wget man man-
 ENV LANG en_US.utf8
 RUN groupadd programmer && useradd -m -d /home/ysoftman -g programmer -p ysoftman ysoftman
 RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbin/halt, !/usr/bin/poweroff, !/usr/bin/halt' >> /etc/sudoers
-# USER ysoftman
-# # 환경설정 저장소 클론 받아 놓기
+USER ysoftman
+# 환경설정 저장소 클론 받아 놓기
 RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv
 COPY .bashrc /home/ysoftman/.bashrc
 COPY .vimrc /home/ysoftman/.vimrc
