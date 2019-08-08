@@ -3,14 +3,20 @@ FROM archlinux/base:latest
 RUN echo "root:docker!" | chpasswd
 RUN pacman -Sy && pacman -S sudo git vim gcc tar python curl rsync wget man man-pages zsh which --noconfirm \ 
 && localedef -f UTF-8 -i ko_KR ko_KR.utf8 && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-ENV LANG en_US.utf8
+ENV LANG ko_KR.utf8
 RUN groupadd programmer && useradd -m -d /home/ysoftman -g programmer -p ysoftman ysoftman
 RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbin/halt, !/usr/bin/poweroff, !/usr/bin/halt' >> /etc/sudoers
 USER ysoftman
-# 환경설정 저장소 클론 받아 놓기
-RUN mkdir -p /home/ysoftman/workspace && cd /home/ysoftman/workspace && git clone https://github.com/ysoftman/myenv
 COPY .bashrc /home/ysoftman/.bashrc
 COPY .vimrc /home/ysoftman/.vimrc
+# 환경설정 저장소 클론 받아 놓기
+RUN mkdir -p /home/ysoftman/workspace \
+&& cd /home/ysoftman/workspace \
+&& git clone https://github.com/ysoftman/myenv \
+&& cd /home/ysoftman/workspace/myenv \
+&& bash ./installcommon.sh \
+&& bash ./installconfig.sh \
+&& zsh ./installprezto.zsh
 EXPOSE 80
 # 컨테이너 실행시 실행할 명령들
 CMD /bin/bash

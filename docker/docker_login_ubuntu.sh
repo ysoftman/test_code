@@ -4,4 +4,4 @@
 # docker exec -u ysoftman -e COLUMNS=$COLUMNS -e LINES=$LINES -it ysoftman_ubuntu /bin/bash
 
 # .sh 로 실행해야 할 경우 $COLUMNS, $LINES 는 사용할 수 없어 tput 을 사용한다.
-docker exec -u ysoftman -e COLUMNS=$(tput cols) -e LINES=$(tput lines) -it ysoftman_ubuntu /bin/bash
+docker exec -u ysoftman -e COLUMNS=$(tput cols) -e LINES=$(tput lines) -it ysoftman_ubuntu /bin/zsh
