@@ -7,8 +7,8 @@ ENV LANG ko_KR.utf8
 RUN groupadd programmer && useradd -m -d /home/ysoftman -g programmer -p ysoftman ysoftman
 RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbin/halt, !/usr/bin/poweroff, !/usr/bin/halt' >> /etc/sudoers
 USER ysoftman
-COPY .bashrc /home/ysoftman/.bashrc
-COPY .vimrc /home/ysoftman/.vimrc
+COPY --chown=ysoftman:programmer .bashrc /home/ysoftman/.bashrc
+COPY --chown=ysoftman:programmer .vimrc /home/ysoftman/.vimrc
 # 환경설정 저장소 클론 받아 놓기
 RUN mkdir -p /home/ysoftman/workspace \
 && cd /home/ysoftman/workspace \
