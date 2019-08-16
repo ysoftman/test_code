@@ -1,6 +1,7 @@
 // ysoftman
 // breadth first search test
 // depth first search test
+// g++ -std=c++11 search_bfs_dfs.cpp && ./a.out
 #include "iostream"
 #include "string"
 #include "map"
