@@ -70,6 +70,19 @@ void dfs(Node *n)
     }
 }
 
+void dfs_recursive(Node *n)
+{
+    if (n->nodes.empty())
+    {
+        return;
+    }
+    for (auto i : n->nodes)
+    {
+        cout << "Node : " << i.second->name << endl;
+        dfs_recursive(i.second);
+    }
+}
+
 int main()
 {
     cout << "make graph(tree)" << endl;
@@ -91,5 +104,9 @@ int main()
 
     bfs(&root);
     dfs(&root);
+    cout << "dfs_recursive" << endl;
+    cout << "Node : " << root.name << endl;
+    dfs_recursive(&root);
+
     return 0;
 }
