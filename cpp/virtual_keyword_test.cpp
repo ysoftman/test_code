@@ -26,7 +26,11 @@ private:
 	}
 };
 
-class Child : public Parent // public 을 사용하지 않으면 기본 private 으로 상속됨
+// public 상속 : 부모의 public, protected, private 그대로 사용
+// protected 상속 : 부모의 public -> protected 로 변경해 사용
+// private 상속 : 부모의 public, protected -> private 로 변경해 사용
+// public 을 사용하지 않으면 기본 private 으로 상속됨
+class Child : public Parent
 {
 public:
 	void public_func() // Parent public_func() 오버라이딩
