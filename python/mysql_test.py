@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 3.x
+# python version : 2.x 3.x
 # desc : mysql db test
 
-# mysql-python 설치 (2.x 버전)
+# mysql-python 설치 (2.x)
 # pip install mysql-python
 
-# mysql-python 설치 (3.x 버전)
+# mysql-python 설치 (3.x)
 # pip install pymysql
 
 # mysql-python 설치 확인

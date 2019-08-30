@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 2.x
+# python version : 2.x 3.x
 # desc : 파이썬 기본 테스트
 
 import os
@@ -31,7 +31,7 @@ def test_file_read1():
     myfile = open(filename, "r")
     line = myfile.readline()
     while line:
-        print line
+        print(line)
         # 라인별 읽기
         line = myfile.readline()
 
@@ -56,8 +56,8 @@ def test_file_read2():
 
 
 test_file_write("파일에 쓰기 테스트")
-print '-----'
+print('-----')
 test_file_read1()
-print '-----'
+print('-----')
 test_file_read2()
 os.remove(filename)

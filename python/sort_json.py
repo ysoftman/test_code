@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 2.x
+# python version : 2.x 3.x
 # desc : sort json test
-import sys
+# import sys
 import json
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# python 2.x 에서만 unicode 로 변경이 필요하다.
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 jsonstr = """
 {
@@ -28,13 +29,15 @@ jsonstr = """
 }
 """
 
-jsonstr = unicode(jsonstr, errors='ignore')
+# python 2.x 에서만 unicode 로 변경이 필요하다.
+# jsonstr = unicode(jsonstr, errors='ignore')
+
 data = json.loads(jsonstr)
-print data
+print(data)
 for obj in data['data']:
-    print obj['name'], obj['uptime']
+    print(obj['name'], obj['uptime'])
 
 
 # data 부분 uptime 필드 기준으로 내림차순
 result = sorted(data['data'], key=lambda x: x['uptime'], reverse=True)
-print result[0]['name']
+print(result[0]['name'])
