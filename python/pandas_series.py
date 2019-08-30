@@ -7,7 +7,7 @@ import pandas as pd
 
 fruits = ["lemon", "orange", "apple"]
 print("fruits = ", fruits)
-# series(시리즈)는 표처럼 키(rows)에 해당하는 여러개의 name을 가진 리스트들(cols)이 있는 자료 구조다.
+# series(시리즈)는 키(rows)에 해당하는 여러개의 name을 가진 리스트들(cols)이 있는 자료 구조다.
 print("pd.Series(fruits) =\n", pd.Series(fruits), sep="")
 print()
 
