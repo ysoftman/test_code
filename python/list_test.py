@@ -3,9 +3,6 @@
 # python version : 2.x 3.x
 # desc : 리스트 테스트
 
-#import os
-#import sys
-
 
 def test_print_list(val):
     #     print("func1")
@@ -34,7 +31,7 @@ val1.insert(0, 'english')
 val1.remove('english')
 
 # 원소 위치 파악
-print "index of 'bbb' =", val1.index('bbb')
+print("index of 'bbb' =", val1.index('bbb'))
 
 # 리스트에 리스트 추가
 val1.extend(fruits_list)
