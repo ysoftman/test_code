@@ -30,9 +30,15 @@ def answer_five():
 print(answer_five())
 
 
-# 인구가 가장 많은 county 3개 찾기(CENSUS2010POP 컬럼 사용)
+# 각 State 마다 인구(CENSUS2010POP)가 가장 많은 3개의 county 를 찾고
+# 이중 가장 큰 State 3개 찾기
+# list 로 리턴
 def answer_six():
-    return census_df.set_index('CENSUS2010POP').sort_index(ascending=False)[:3]['CTYNAME'].values
+    # SUMLEV = 50 COUNTY 만 필터링 후 STNAME 컬럼으로 그룹핑
+    cdf = census_df[census_df['SUMLEV'] == 50].groupby(census_df['STNAME'])
+    # CENSUS2010POP 컬럼중 가장큰 3개를 합한다. -> 이것들중 가장큰 값 3개만 가져온다.
+    cdf = cdf['CENSUS2010POP'].apply(lambda x: x.nlargest(3).sum()).nlargest(3)
+    return list(cdf.index.values)
 
 
 print(type(answer_six()))
@@ -43,6 +49,8 @@ print(answer_six())
 # POPESTIMATE2010 ~ POPESTIMATE2015 6개 컬럼 모두 고려
 # ex) 5 year period is 100, 120, 80, 105, 100, 130, then its largest change in the period would be |130-80| = 50.
 def answer_seven():
+    # SUMLEV = 50 COUNTY 만 필터링
+    cdf = census_df[(census_df['SUMLEV'] == 50)]
     columns_to_keep = ['CTYNAME',
                        'POPESTIMATE2010',
                        'POPESTIMATE2011',
@@ -50,7 +58,7 @@ def answer_seven():
                        'POPESTIMATE2013',
                        'POPESTIMATE2014',
                        'POPESTIMATE2015']
-    cdf = census_df[columns_to_keep].set_index('CTYNAME')
+    cdf = cdf[columns_to_keep].set_index('CTYNAME')
     # print(cdf.loc[cdf.index[0]])
     # print(cdf.loc['Texas'])
     cdf['max_pop'] = cdf.max(axis=1)
@@ -74,7 +82,7 @@ def answer_eight():
               (cdf['CTYNAME'].str.startswith('Washington')) &
               (cdf['POPESTIMATE2015'] > cdf['POPESTIMATE2014'])]
 
-    return cdf[['STNAME','CTYNAME']]
+    return cdf[['STNAME', 'CTYNAME']]
 
 
 print(answer_eight())
