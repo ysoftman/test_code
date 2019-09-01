@@ -7,6 +7,7 @@ import pandas as pd
 
 
 # dataframe 은 데이터들을 컬럼 모양으로 묶어 표처럼 나탄낸다.
+# 시리즈의를 묶어 2차원의 dataframe 구조를 만들 수 있다.
 dic1 = {"name": "jane", "fruit": "lemon", "price": 1000}
 dic2 = {"name": "bill", "fruit": "orange", "price": 2000}
 dic3 = {"name": "tom", "fruit": "apple", "price": 3000}
