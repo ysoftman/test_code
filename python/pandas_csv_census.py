@@ -19,6 +19,11 @@ print(df.columns)
 print()
 
 # SUMLEV 컬럼의 유니크값
+# SUMLEV(Summary Level) 인구 통계청에서 지역구분에 쓰는 코드다
+# 040 : state
+# 050 : county
+# 140 : census trac
+# 참고 https://blog.cubitplanning.com/2011/03/census-summary-level-sumlev/
 print("df['SUMLEV'].unique() =", df['SUMLEV'].unique())
 print()
 

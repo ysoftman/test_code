@@ -52,13 +52,13 @@ print("only_god =\n", only_gold)
 print()
 
 # 하계올림픽(Gold) or 동계올림픽(Gold.1)  에서 금메달 딴 나라
-print("(df[(df['Gold'] > 0) | (df['Gold.1'] > 0)]) = \n",
-      (df[(df['Gold'] > 0) | (df['Gold.1'] > 0)]))
+print("df[(df['Gold'] > 0) | (df['Gold.1'] > 0)] = \n",
+      df[(df['Gold'] > 0) | (df['Gold.1'] > 0)])
 print()
 
 # 하계올림픽(Gold) 금메달 못 따고 and 동계올림픽(Gold.1) 금메달 딴 나라
-print("(df[(df['Gold'] == 0) & (df['Gold.1'] > 0)]) = \n",
-      (df[(df['Gold'] == 0) & (df['Gold.1'] > 0)]))
+print("df[(df['Gold'] == 0) & (df['Gold.1'] > 0)] = \n",
+      df[(df['Gold'] == 0) & (df['Gold.1'] > 0)])
 print()
 
 

@@ -30,8 +30,11 @@ df = df.set_index(['time', 'user'])
 print(df)
 print()
 
+# missing data 처리
 # NA, NaN 상태의 값들을
+# NaN -999 값으로 채우기
+df = df.fillna(-999)
 # ffill(forward to next:이전의 유효한 값들을 사용) 방식으로 채워넣는다.
-df = df.fillna(method='ffill')
+# df = df.fillna(method='ffill')
 print(df)
 print()

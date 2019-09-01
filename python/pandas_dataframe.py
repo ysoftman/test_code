@@ -52,6 +52,14 @@ df1["date"] = None
 print("df1=\n", df1, sep="")
 print()
 
+# 다중 컬럼만 조회
+print("df1[['name','price']]=\n", df1[['name', 'price']], sep="")
+print("type(df1[['name','price']])=\n", type(df1[['name', 'price']]), sep="")
+# 인덱스 제외하고 출력
+print("df1[['name','price']].values=\n", df1[['name', 'price']].values, sep="")
+print("type(df1[['name','price']].values)=\n", type(df1[['name', 'price']].values), sep="")
+print()
+
 # 복사하기
 df2 = df1.copy()
 print("df2=\n", df2, sep="")
