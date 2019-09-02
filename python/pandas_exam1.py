@@ -5,85 +5,98 @@
 import numpy as np
 import pandas as pd
 
-
-print("load census.csv ... ")
+print("load olympics.csv ... ")
 print()
 
 # csv 파일 읽기
-census_df = pd.read_csv('census.csv')
-print("census_df.head()=\n", census_df.head(), sep="")
+# 첫번째 줄을 건너뛰고 로딩
+# csv 파일의 나라명(첫번째)을 인덱스로 한다.
+df = pd.read_csv('olympics.csv', skiprows=1, index_col=0)
+# Totals 라인은 제거하고 시작
+df = df.drop('Totals')
+# '(' 부분제거
+names_ids = df.index.str.split('\s\(')
+# names_ids.str[0] 는 나라이름이 들어 있다.
+df.index = names_ids.str[0]
+# 3자리수 나라명을 ID 컬럼으로 추가
+df['ID'] = names_ids.str[1].str[:3]
+# 컬럼 이름들을 변경
+for col in df.columns:
+    if col[:2] == '01':
+        df.rename(columns={col: 'Gold' + col[4:]}, inplace=True)
+    if col[:2] == '02':
+        df.rename(columns={col: 'Silver' + col[4:]}, inplace=True)
+    if col[:2] == '03':
+        df.rename(columns={col: 'Bronze' + col[4:]}, inplace=True)
+    if col[:1] == '№':
+        df.rename(columns={col: '#' + col[1:]}, inplace=True)
+
+print("df.head()=\n", df.head(), sep="")
 print()
 
 
-# County 가 가장 많은 state 파악
-# SUMLEV(Summary Level) 인구 통계청에서 지역구분에 쓰는 코드다
-# 040 : state
-# 050 : county
-# 140 : census trac
-# 참고 https://blog.cubitplanning.com/2011/03/census-summary-level-sumlev/
-
-def answer_five():
-    # index 가 여러개 있을때 count 의 level 옵션사용
-    return census_df.set_index(['SUMLEV', 'STNAME']).count(level='STNAME')['COUNTY'].idxmax()
-
-
-print(answer_five())
+# 하계올림픽 금메달 가장 많이 딴 나라
+def answer_one_1():
+    maxi = 0
+    max_country = ""
+    for index, row in df.iterrows():
+        if row['Gold'] > maxi:
+            maxi = row['Gold']
+            max_country = index
+    return max_country
 
 
-# 각 State 마다 인구(CENSUS2010POP)가 가장 많은 3개의 county 를 찾고
-# 이중 가장 큰 State 3개 찾기
-# list 로 리턴
-def answer_six():
-    # SUMLEV = 50 COUNTY 만 필터링 후 STNAME 컬럼으로 그룹핑
-    cdf = census_df[census_df['SUMLEV'] == 50].groupby(census_df['STNAME'])
-    # CENSUS2010POP 컬럼중 가장큰 3개를 합한다. -> 이것들중 가장큰 값 3개만 가져온다.
-    cdf = cdf['CENSUS2010POP'].apply(lambda x: x.nlargest(3).sum()).nlargest(3)
-    return list(cdf.index.values)
+print(answer_one_1())
 
 
-print(type(answer_six()))
-print(answer_six())
+# 하계올림픽 금메달 가장 많이 딴 나라(gold 인덱싱해서 처리)
+# 인덱스 변경전 현재의 인덱스(나라명)을 값을 컬럼으로 보존하기
+# 인덱스 소팅후 마지막 인덱스의 나라 리턴
+def answer_one_2():
+    df2 = df.copy()
+    df2['Country'] = df2.index
+    df2 = df2.set_index('Gold')
+    return df2.loc[df2.sort_index().index[-1]]['Country']
 
 
-# 2010~2015 까지 인구 변화가 가장 큰 County 찾기
-# POPESTIMATE2010 ~ POPESTIMATE2015 6개 컬럼 모두 고려
-# ex) 5 year period is 100, 120, 80, 105, 100, 130, then its largest change in the period would be |130-80| = 50.
-def answer_seven():
-    # SUMLEV = 50 COUNTY 만 필터링
-    cdf = census_df[(census_df['SUMLEV'] == 50)]
-    columns_to_keep = ['CTYNAME',
-                       'POPESTIMATE2010',
-                       'POPESTIMATE2011',
-                       'POPESTIMATE2012',
-                       'POPESTIMATE2013',
-                       'POPESTIMATE2014',
-                       'POPESTIMATE2015']
-    cdf = cdf[columns_to_keep].set_index('CTYNAME')
-    # print(cdf.loc[cdf.index[0]])
-    # print(cdf.loc['Texas'])
-    cdf['max_pop'] = cdf.max(axis=1)
-    cdf['min_pop'] = cdf.min(axis=1)
-    cdf['gap'] = cdf['max_pop'] - cdf['min_pop']
-    # sort_values 는 column 값으로 소팅할때 사용
-    # print(cdf['gap'].sort_values())
-    return cdf['gap'].idxmax()
+print(answer_one_2())
 
 
-print(answer_seven())
+# 하계올림픽 금메달 가장 많이 딴 나라
+# idxmax() 는 Gold 컬럼의 숫가 최대인 인덱스를 리턴한다.
+def answer_one():
+    return (df['Gold'].idxmax())
 
 
-# REGION 이 1 또는 2 에 속하고 CTYNAME 가 Washington 이름으로 시작하고
-# POPESTIMATE2015 > POPESTIMATE2014 보다 큰
-# ['STNAME', 'CTYNAME'] 컬럼을 가지는 5x2 dateframe (인덱스 오름차순) 을 리턴
-def answer_eight():
-    cdf = census_df[['STNAME', 'CTYNAME', 'REGION',
-                     'POPESTIMATE2014', 'POPESTIMATE2015']]
-    cdf = cdf[((cdf['REGION'] == 1) | (cdf['REGION'] == 2)) &
-              (cdf['CTYNAME'].str.startswith('Washington')) &
-              (cdf['POPESTIMATE2015'] > cdf['POPESTIMATE2014'])]
-
-    return cdf[['STNAME', 'CTYNAME']]
+print(answer_one())
 
 
-print(answer_eight())
-print(type(answer_eight()))
+# 하계올림픽과 동계올림픽의 차이가 가장 큰 나라
+def answer_two():
+    return (abs(df['Gold'] - df['Gold.1']).idxmax())
+
+
+print(answer_two())
+
+
+# 전체 금메달중 하계 동계 금메달 차이가 가장 큰나라
+# 하계, 동계 금메달이 0 인 경우 제외
+def answer_three():
+    df2 = df.copy()
+    for index, row in df2.iterrows():
+        if row['Gold'] == 0 or row['Gold.1'] == 0:
+            df2 = df2.drop(index)
+
+    return ((abs(df2['Gold'] - df2['Gold.1'])/df2['Gold.2']).idxmax())
+
+
+print((answer_three()))
+
+
+# 금,은,동 각 3,2,1 가중치를 부한 점수를 가진 series 생성
+def answer_four():
+    return pd.Series((df['Gold.2'] * 3) + (df['Silver.2'] * 2) + (df['Bronze.2'] * 1))
+
+
+print(type(answer_four()))
+print(answer_four())
