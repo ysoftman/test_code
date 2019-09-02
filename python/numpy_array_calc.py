@@ -55,6 +55,16 @@ def calculate_array():
 
     print('')
 
+    ar5 = [i for i in range(1, 11)]
+    print(ar5)
+    print(np.mean(ar5))
+    # min, max -> amin(), amax() 의 별명
+    print(np.min(ar5))
+    print(np.amin(ar5))
+    print(np.max(ar5))
+    print(np.amax(ar5))
+    print()
+
 
 if __name__ == '__main__':
     calculate_array()

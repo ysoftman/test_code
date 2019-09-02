@@ -19,6 +19,6 @@ df = df.set_index('STNAME').groupby(level=0)[
     'CENSUS2010POP'].agg({'avg': np.average})
 print(df)
 
-# 3개의 범주(bin)나루고 각각 레이블을 붙인다.
+# 3개의 범주(bin)나누고 각각 레이블을 붙인다.
 print(pd.cut(df['avg'], 3))
 print(pd.cut(df['avg'], 3, labels=['Small', 'Medium', 'Large']))
