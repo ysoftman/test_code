@@ -57,7 +57,8 @@ print("df1[['name','price']]=\n", df1[['name', 'price']], sep="")
 print("type(df1[['name','price']])=\n", type(df1[['name', 'price']]), sep="")
 # 인덱스 제외하고 출력
 print("df1[['name','price']].values=\n", df1[['name', 'price']].values, sep="")
-print("type(df1[['name','price']].values)=\n", type(df1[['name', 'price']].values), sep="")
+print("type(df1[['name','price']].values)=\n",
+      type(df1[['name', 'price']].values), sep="")
 print()
 
 # 복사하기
@@ -68,3 +69,15 @@ print("df2=\n", df2, sep="")
 # inplace = True 현재 df 를 drop 내용을 반영한다.(df2 = df2.drop('user3') 와 같다.)
 df2.drop('user3', axis=0, inplace=True)
 print("df2 =\n", df2, sep="")
+print()
+
+# 컬럼 이름 fruit -> my-favorite-fruits 바꾸기
+df2.rename(columns={'fruit': 'my-favorite-fruits'}, inplace=True)
+print("df2 =\n", df2, sep="")
+print()
+
+# 인덱스 이름 바꾸기
+df2.index.name = "new_index"
+# df2.index.names = ["new_index"]
+print("df2 =\n", df2, sep="")
+print()

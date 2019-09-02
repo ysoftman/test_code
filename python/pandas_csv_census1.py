@@ -65,6 +65,6 @@ print("df.loc['Michigan', 'Washtenaw County'] =\n",
       df.loc['Michigan', 'Washtenaw County'])
 
 # 2개의 도시이니경우 다음과 같이 2차원으료 표현된다.
-print("df.loc[[('Michigan', 'Washtenaw County'),('Michigan', 'Wayne County')]]=\n", df.loc[[('Michigan', 'Washtenaw County'),
-                                                                                            ('Michigan', 'Wayne County')]])
+print("df.loc[[('Michigan', 'Washtenaw County'),('Michigan', 'Wayne County')]]=\n",
+      df.loc[[('Michigan', 'Washtenaw County'), ('Michigan', 'Wayne County')]])
 print()
