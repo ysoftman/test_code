@@ -94,3 +94,8 @@ hoon'''
     }}
     """.format(123, "ysoftman")
     print('str =', str)
+
+    # 문자열 앞,뒤 공백 제거
+    str = "   ysoftman     "
+    print('str =', str, "okay")
+    print('str =', str.strip(), "okay")
