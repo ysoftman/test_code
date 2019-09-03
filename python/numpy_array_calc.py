@@ -65,6 +65,12 @@ def calculate_array():
     print(np.amax(ar5))
     print()
 
+    # -10 ~ 10 상의 숫자 10개 랜덤 생성
+    rar = np.random.randint(-10, 10, 10)
+    print(rar)
+    # 이전 원소값 + 현재 원소값 => 현재원소값
+    print(rar.cumsum())
+
 
 if __name__ == '__main__':
     calculate_array()
