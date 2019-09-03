@@ -41,6 +41,19 @@ test_print_list(val1)
 
 print('------')
 
+# list() builtin 함수로 리스트 만들기
+# empty list
+print("list() = ", list())
+print("list('abcdefghij') =", list('abcdefghij'))
+print("list('123456789') =", list('123456789'))
+print("list(var+'0' for var in '123456789') =",
+      list(var+'0' for var in '123456789'))
+
+# list comprehensions(파이썬에서는 함축 이라는 의미로 사용한다.)로 리스트 만들기
+print("[i for i in range(1, 10)] =", [i for i in range(1, 10)])
+
+print('------')
+
 val1 = [8, 7, 6, 5, 4, 3, 2, 1]
 # val1 리스트 출력
 print(val1)
