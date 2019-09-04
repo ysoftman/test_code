@@ -23,7 +23,9 @@ print("df1=\n", df1, sep="")
 print("df1['name'] =\n", df1['name'], sep="")
 print()
 
-# row (lable) 인덱싱할때는 loc 를 사용해야 한다.
+# row (lable) 인덱싱 방법1
+print("df1['user2'] =\n", df1.loc['user2'], sep="")
+# row (lable) 인덱싱 방법2, loc 를 사용하길 권고한다.
 print("df1.loc['user2'] =\n", df1.loc['user2'], sep="")
 print("df1.loc['user2']['price'] = ", df1.loc['user2']['price'])
 print()
