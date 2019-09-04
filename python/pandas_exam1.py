@@ -9,7 +9,7 @@ print("load olympics.csv ... ")
 print()
 
 # csv 파일 읽기
-# 첫번째 줄을 건너뛰고 로딩
+# 첫 2줄을 건너뛰고 로딩(skiprows 0번째 라인 인덱스부터 시작)
 # csv 파일의 나라명(첫번째)을 인덱스로 한다.
 df = pd.read_csv('olympics.csv', skiprows=1, index_col=0)
 # Totals 라인은 제거하고 시작
