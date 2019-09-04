@@ -48,7 +48,7 @@ df = df[columns_to_keep]
 print(df)
 print()
 
-# STNAME, CTYNAME 2개의 컬럼을 인덱스로 설정
+# STNAME, CTYNAME 2개의 컬럼을 인덱스로 설정(MultiIndex 멀티 인덱스)
 df = df.set_index(['STNAME', 'CTYNAME'])
 # 기존 디폴트 인덱스에 추가할 수 도 있지만
 # 디폴트는 숫자 카운트 형이라 조회시 불편하다.

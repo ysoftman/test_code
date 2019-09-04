@@ -87,12 +87,17 @@ hoon'''
     print('str =', str)
 
     # 멀티라인에서 {} 자체를 출력하기 위해선 {{ }} 사용
+    # .3f 소수점3째자리로 표현
+    # , 천단위 ,로 구
+    # ,.3ㄹ 천단위 ,로 구분하고 .3f 소수점3째자리로 표현
     str = """
     {{
-        "number:{},
-        "name":{}
+        "number:{0:.3f},
+        "number:{0:,},
+        "number:{0:,.3f},
+        "name":{1}
     }}
-    """.format(123, "ysoftman")
+    """.format(123456789, "ysoftman")
     print('str =', str)
 
     # 문자열 앞,뒤 공백 제거
