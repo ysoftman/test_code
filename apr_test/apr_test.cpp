@@ -54,6 +54,20 @@ void apreq_test()
 
     cout << str << endl;
     cout << urlencoded_str << endl;
+    string urlencoded_str2;
+    // boost::replace_all 를 사용하지 않고 + -> %20  로 바꿔보자
+    for (auto i : urlencoded_str)
+    {
+        if (i == '+')
+        {
+            urlencoded_str2 += "%20";
+        }
+        else
+        {
+            urlencoded_str2 += i;
+        }
+    }
+    cout << urlencoded_str2 << endl;
 }
 
 int main(int argc, char **argv)
