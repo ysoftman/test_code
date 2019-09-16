@@ -15,3 +15,6 @@ g++ -O2 -g -fPIC apr_test.cpp -o aprtest -std=c++11 \
 -lssl \
 -lcrypto \
 -ldl
+
+# aprtest 실행 환경 설정필요
+echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/workspace/apr-${aprver}/lib:${HOME}/workspace/libapreq2-${libapreq2ver}/lib:"
