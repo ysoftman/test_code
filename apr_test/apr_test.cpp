@@ -18,6 +18,8 @@ bash build.sh
 #include "apr_network_io.h"
 #include "apr_pools.h"
 #include "apr_poll.h"
+#include "apreq.h"
+#include "apreq_util.h"
 #include "openssl/ssl.h"
 #include <iostream>
 #include <sstream>
@@ -35,6 +37,25 @@ char *errmsg(apr_status_t rc)
     return errbuff;
 }
 
+void apreq_test()
+{
+    cout << "apreq library test" << endl;
+    apr_pool_t *pool;
+    apr_initialize();
+    apr_pool_create(&pool, NULL);
+
+    string str = "apple lemon orange";
+    // libapreq2(apreq_util.h) 의 url 인코딩 함수를 사용하면 공백이 + 로 처리 된다.
+    // URI 스펙상으로는 + 는 reserved word 이고 공백은 %20 이다.
+    // https://tools.ietf.org/html/rfc3986#section-2.2
+    string urlencoded_str = apreq_escape(pool, str.c_str(), str.size());
+
+    apr_pool_destroy(pool);
+
+    cout << str << endl;
+    cout << urlencoded_str << endl;
+}
+
 int main(int argc, char **argv)
 {
     string ip = "www.json.org";
@@ -49,6 +70,7 @@ int main(int argc, char **argv)
     else
     {
         cout << argv[0] << " \"www.json.org\" " << 80 << " \"/json-ko.html\"" << endl;
+        apreq_test();
         exit(0);
     }
     stringstream portstr;
