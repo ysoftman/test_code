@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir -p ${HOME}/workspace
+
 # apche httpd
 # libapreq 설치시 apxs(apxs - APache eXtenSion tool) 실행파일이 필요하다.
 httpdver="2.2.34"
