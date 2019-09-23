@@ -1,13 +1,14 @@
 // ysoftman
 // Sort
+// BigO Complexity
+// O(1) < O(logN) < O(N) < O(NlogN) < O(N^2) < O(2^N) < O(N!)
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctime>
 
-#if defined(_WIN32) || defined(_WIN64)
-#include <Windows.h>
-#endif
+using namespace std;
 
 // Maximum Size
 const int MAX = 50000;
@@ -22,14 +23,14 @@ void HeapSort(int arr[], int size);
 void Print(FILE *fp, int arr[], int size, const char *msg)
 {
 	int i = 0;
-	fprintf(stderr, "file writting..........");
-	fprintf(fp, "%s = { ", msg);
+	fprintf(stdout, "writing %s result to file...", msg);
+	fprintf(fp, "%s = [ ", msg);
 	for (i = 0; i < size; i++)
 	{
 		fprintf(fp, "%d ", arr[i]);
 	}
-	fprintf(fp, "}\n");
-	fprintf(stderr, "end\n");
+	fprintf(fp, "]\n");
+	fprintf(stdout, "end\n");
 }
 
 int main()
@@ -38,80 +39,47 @@ int main()
 	int input[MAX];
 	int temp[MAX];
 	memset(temp, 0, sizeof(int) * MAX);
-
 	srand((unsigned int)time(NULL));
+	FILE *fp = fopen("sort_test_result.txt", "w");
 
-	FILE *fp = fopen("sort.txt", "w");
-
-#if defined(_WIN32) || defined(_WIN64)
-	DWORD start = 0, end = 0;
-#endif
-
-	// 랜덤 숫자 생성
-#if defined(_WIN32) || defined(_WIN64)
-	start = GetTickCount();
-#endif
+	clock_t start = clock();
 	for (i = 0; i < MAX; i++)
 	{
 		input[i] = rand() % MAX;
 	}
-#if defined(_WIN32) || defined(_WIN64)
-	end = GetTickCount();
-	printf("Random Number(%d) Elapsed Time %f\n", MAX, (float)(end - start) / (float)1000);
-#endif
-	Print(fp, input, MAX, "Random  Number");
+	printf("Random Number(%d) Elapsed Time %f\n", MAX, double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, input, MAX, "Random Number");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Bubble Sort
-#if defined(_WIN32) || defined(_WIN64)
-	start = GetTickCount();
-#endif
+	start = clock();
 	BubbleSort(temp, MAX);
-#if defined(_WIN32) || defined(_WIN64)
-	end = GetTickCount();
-	printf("Bubble Sort Elapsed Time %f\n", (float)(end - start) / (float)1000);
-#endif
-	Print(fp, temp, MAX, "Bubble    Sort");
+	printf("Bubble Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, temp, MAX, "Bubble Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Selection Sort
-#if defined(_WIN32) || defined(_WIN64)
-	start = GetTickCount();
-#endif
+	start = clock();
 	SelectionSort(temp, MAX);
-#if defined(_WIN32) || defined(_WIN64)
-	end = GetTickCount();
-	printf("Selection Sort Elapsed Time %f\n", (float)(end - start) / (float)1000);
-#endif
+	printf("Selection Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Selection Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Quick Sort
-#if defined(_WIN32) || defined(_WIN64)
-	start = GetTickCount();
-#endif
+	start = clock();
 	QuickSort(temp, 0, MAX - 1);
-#if defined(_WIN32) || defined(_WIN64)
-	end = GetTickCount();
-	printf("Quick Sort Elapsed Time %f\n", (float)(end - start) / (float)1000);
-#endif
-	Print(fp, temp, MAX, "Quick     Sort");
+	printf("Quick Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, temp, MAX, "Quick Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Heap Sort
-#if defined(_WIN32) || defined(_WIN64)
-	start = GetTickCount();
-#endif
+	start = clock();
 	HeapSort(temp, MAX);
-#if defined(_WIN32) || defined(_WIN64)
-	end = GetTickCount();
-	printf("Heap Sort Elapsed Time %f\n", (float)(end - start) / (float)1000);
-#endif
-	Print(fp, temp, MAX, "Heap      Sort");
+	printf("Heap Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, temp, MAX, "Heap Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	fclose(fp);
-
 	return 0;
 }
 
@@ -124,9 +92,10 @@ void Swap(int *a, int *b)
 	*b = temp;
 }
 
-// Bubble Sort
+// Bubble Sort - best: O(N) average: O(N^2) worsㅕt: O(N^2)
 void BubbleSort(int arr[], int size)
 {
+	int swap_cnt = 0;
 	int i = 0, j = 0;
 	bool bSwap = false;
 	for (i = 0; i < size; i++)
@@ -137,6 +106,7 @@ void BubbleSort(int arr[], int size)
 			if (arr[j] > arr[j + 1])
 			{
 				Swap(&arr[j], &arr[j + 1]);
+				swap_cnt++;
 				bSwap = true;
 			}
 		}
@@ -146,11 +116,14 @@ void BubbleSort(int arr[], int size)
 			break;
 		}
 	}
+	printf("swap_cnt : %d\n", swap_cnt);
 }
 
-// Selection Sort
+// Selection Sort - best: O(N^2) average: O(N^2) worst: O(N^2)
+// 평균적으로, swap bubble sort 보다 적게 발생해 빠르다
 void SelectionSort(int arr[], int size)
 {
+	int swap_cnt = 0;
 	int i = 0, j = 0, MinIdx = 0;
 	for (i = 0; i < size - 1; i++)
 	{
@@ -165,10 +138,12 @@ void SelectionSort(int arr[], int size)
 		}
 		// 현재 원소를 가장 작은 원소와 교환한다.
 		Swap(&arr[i], &arr[MinIdx]);
+		swap_cnt++;
 	}
+	printf("swap_cnt : %d\n", swap_cnt);
 }
 
-// Quick Sort
+// Quick Sort - best: O(NlogN) average: O(NlogN) worst: O(N^2)
 void QuickSort(int arr[], int left, int right)
 {
 	int i = 0, j = 0, k = 0;
@@ -255,7 +230,7 @@ void MakeMaxHeap(int arr[], int CurIdx, int EndIdx)
 	}
 }
 
-// Heap Sort
+// Heap Sort - best: O(NlogN) average: O(NlogN) worst: O(NlogN)
 void HeapSort(int arr[], int size)
 {
 	// Heap Sort 는 배열을 이진 트리로 매칭한다.
