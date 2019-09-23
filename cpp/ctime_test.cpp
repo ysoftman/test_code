@@ -1,4 +1,4 @@
-// ysofmtan
+// ysoftman
 // ctime test
 #include <unistd.h> // for sleep()
 #include <iostream>
