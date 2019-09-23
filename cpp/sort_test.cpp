@@ -13,6 +13,8 @@ using namespace std;
 // Maximum Size
 const int MAX = 50000;
 
+int swap_cnt = 0;
+
 void Swap(int *a, int *b);
 void BubbleSort(int arr[], int size);
 void SelectionSort(int arr[], int size);
@@ -53,28 +55,36 @@ int main()
 
 	// Bubble Sort
 	start = clock();
+	swap_cnt = 0;
 	BubbleSort(temp, MAX);
+	printf("swap_cnt : %d\n", swap_cnt);
 	printf("Bubble Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Bubble Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Selection Sort
 	start = clock();
+	swap_cnt = 0;
 	SelectionSort(temp, MAX);
+	printf("swap_cnt : %d\n", swap_cnt);
 	printf("Selection Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Selection Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Quick Sort
 	start = clock();
+	swap_cnt = 0;
 	QuickSort(temp, 0, MAX - 1);
+	printf("swap_cnt : %d\n", swap_cnt);
 	printf("Quick Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Quick Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Heap Sort
 	start = clock();
+	swap_cnt = 0;
 	HeapSort(temp, MAX);
+	printf("swap_cnt : %d\n", swap_cnt);
 	printf("Heap Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Heap Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
@@ -90,12 +100,12 @@ void Swap(int *a, int *b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
+	swap_cnt++;
 }
 
 // Bubble Sort - best: O(N) average: O(N^2) worsㅕt: O(N^2)
 void BubbleSort(int arr[], int size)
 {
-	int swap_cnt = 0;
 	int i = 0, j = 0;
 	bool bSwap = false;
 	for (i = 0; i < size; i++)
@@ -106,7 +116,6 @@ void BubbleSort(int arr[], int size)
 			if (arr[j] > arr[j + 1])
 			{
 				Swap(&arr[j], &arr[j + 1]);
-				swap_cnt++;
 				bSwap = true;
 			}
 		}
@@ -116,14 +125,12 @@ void BubbleSort(int arr[], int size)
 			break;
 		}
 	}
-	printf("swap_cnt : %d\n", swap_cnt);
 }
 
 // Selection Sort - best: O(N^2) average: O(N^2) worst: O(N^2)
 // 평균적으로, swap bubble sort 보다 적게 발생해 빠르다
 void SelectionSort(int arr[], int size)
 {
-	int swap_cnt = 0;
 	int i = 0, j = 0, MinIdx = 0;
 	for (i = 0; i < size - 1; i++)
 	{
@@ -138,9 +145,7 @@ void SelectionSort(int arr[], int size)
 		}
 		// 현재 원소를 가장 작은 원소와 교환한다.
 		Swap(&arr[i], &arr[MinIdx]);
-		swap_cnt++;
 	}
-	printf("swap_cnt : %d\n", swap_cnt);
 }
 
 // Quick Sort - best: O(NlogN) average: O(NlogN) worst: O(N^2)
