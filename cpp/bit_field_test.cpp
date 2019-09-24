@@ -1,14 +1,13 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // bit field 테스트
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 int main()
 {
-	struct bitField {
+	struct bitField
+	{
 		unsigned int nNum;
-		unsigned char bitNum : 1;	// 8비트가 아닌 1비트만 메모리 할당한다.
+		unsigned char bitNum : 1; // 8비트가 아닌 1비트만 메모리 할당한다.
 	};
 
 	bitField bf;
@@ -34,5 +33,3 @@ int main()
 
 	return 0;
 }
-
-

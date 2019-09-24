@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // atoi() 만들기
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 int main()
@@ -15,10 +13,9 @@ int main()
 	while (*pValue != '\0')
 	{
 		// 전에 변환된 값은 자리수를 올리고 여기에 대상 ASCII ()값 - ASCII 0(48) 을 뺀 값을 더한다.
-		Result = (Result*10) + (*pValue - '0');
+		Result = (Result * 10) + (*pValue - '0');
 		pValue++;
 	}
 	fprintf(stdout, "Result = %ld\n", Result);
 	return 0;
 }
-
