@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // utf-8 인코딩으로 한글(11172자) 출력
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 using namespace std;
@@ -19,8 +17,8 @@ int main()
 		// 참고
 		// http://www.codeguru.com/cpp/misc/misc/multi-lingualsupport/article.php/c10451/The-Basics-of-UTF8.htm
 		hangul[0] = ((char)(0xE0 | i >> 12));
-		hangul[1] = ((char)(0x80 | i >> 6 & 0x3F));
-		hangul[2] = ((char)(0x80 | i & 0x3F));
+		hangul[1] = ((char)(0x80 | i >> (6 & 0x3F)));
+		hangul[2] = ((char)(0x80 | (i & 0x3F)));
 		fprintf(fp, "%X = %c%c%c\n", i, hangul[0], hangul[1], hangul[2]);
 		++cnt;
 	}

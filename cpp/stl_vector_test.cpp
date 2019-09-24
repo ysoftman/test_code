@@ -7,7 +7,7 @@
 
 class Dummy
 {
-  public:
+public:
 	Dummy()
 	{
 		a = 1;
@@ -21,7 +21,7 @@ class Dummy
 	int a;
 };
 
-int main()
+void vector_test1()
 {
 	Dummy dummy1;
 	printf("dummy1.a = %d\n", dummy1.a);
@@ -72,8 +72,10 @@ int main()
 	}
 
 	printf("\n\n");
+}
 
-	//////////
+void vector_test2()
+{
 	std::vector<std::string> vec_my_data;
 	vec_my_data.insert(vec_my_data.begin(), "ccc");
 	vec_my_data.insert(vec_my_data.begin(), "bbb");
@@ -127,6 +129,12 @@ int main()
 	{
 		printf("%s\n", (i).c_str());
 	}
+}
+
+int main()
+{
+	vector_test1();
+	vector_test2();
 
 	return 0;
 }

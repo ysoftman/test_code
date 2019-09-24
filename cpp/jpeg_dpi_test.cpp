@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // jpeg 헤더의 dpi 정보를 바꾼다.
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,10 +50,10 @@ int main(int argc, char *argv[])
 	}
 	// 입력 파일크기 얻기
 	int size = GetFileSize(fpIn);
-	char *pBuffer = (char*)malloc(sizeof(char)*size);
-	memset(pBuffer, 0, sizeof(char)*size);
+	char *pBuffer = (char *)malloc(sizeof(char) * size);
+	memset(pBuffer, 0, sizeof(char) * size);
 	// 입력 파일 메모리로 복사하기
-	fread(pBuffer, sizeof(char)*size, 1, fpIn);
+	fread(pBuffer, sizeof(char) * size, 1, fpIn);
 
 	char readbyte = 0;
 
@@ -67,7 +65,7 @@ int main(int argc, char *argv[])
 	pBuffer[17] = dpi;
 
 	// 출력 파일 만들기
-	fwrite(pBuffer, sizeof(char)*size, 1, fpOut);
+	fwrite(pBuffer, sizeof(char) * size, 1, fpOut);
 	fprintf(stderr, "%s(%d) -> %s(%d) dpi Completed.\n", argv[2], readbyte, argv[3], dpi);
 
 	free(pBuffer);
@@ -76,5 +74,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-
-

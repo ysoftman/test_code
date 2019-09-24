@@ -1,10 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // SummationOfFourPrimeNumbers
 // 소수 4 개의 합
 // 주어진 정수를 정확하게 소수 4 개의 합으로 표현하기
 // 입력 정수 n<=10000000
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <math.h>
 
@@ -18,13 +16,13 @@ bool IsPrime(long a)
 	long i;
 
 	// 0과 1은 소수가 아니다.
-	if (a<2)
+	if (a < 2)
 	{
 		return false;
 	}
-	for (i=2; i<=sqrt(double(a)); i++)
+	for (i = 2; i <= sqrt(double(a)); i++)
 	{
-		if (a%i == 0)
+		if (a % i == 0)
 		{
 			return false;
 		}
@@ -38,22 +36,22 @@ bool PrimeSum(int a)
 {
 	long i;
 
-	if (a<0)
+	if (a < 0)
 	{
-		if (sum = n)
+		if (sum == n)
 		{
 			return true;
 		}
 		return false;
 	}
 
-	for (i=n-sum-2*a; i>=2; i--)
+	for (i = n - sum - 2 * a; i >= 2; i--)
 	{
 		if (IsPrime(i))
 		{
 			selected[a] = i;
 			sum += i;
-			if (PrimeSum(a-1))
+			if (PrimeSum(a - 1))
 			{
 				return true;
 			}
@@ -72,7 +70,7 @@ int main()
 	{
 		if (n == 0)
 		{
-			printf ("Exit Program...\n");
+			printf("Exit Program...\n");
 			break;
 		}
 		sum = 0;
@@ -89,5 +87,3 @@ int main()
 
 	return 0;
 }
-
-

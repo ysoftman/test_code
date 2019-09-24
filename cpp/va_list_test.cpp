@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // 가변인자를 통한 printf() 함수 구현
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -9,7 +7,7 @@
 void TestPrintf(const char *format, ...)
 {
 	// va_list 는 char* 로 선언되어 있다.
-	va_list args = NULL;
+	va_list args;
 	// 가변인자 리스트의 첫번째를 args로 위치시킨다.
 	va_start(args, format);
 	// format 에 맞게 arg 리스트를 출력한다.
@@ -20,11 +18,9 @@ void TestPrintf(const char *format, ...)
 
 int main()
 {
-	int a=10, b=20;
-	char *pTemp="YoonByoungHoon";
+	int a = 10, b = 20;
+	char pTemp[] = "YoonByoungHoon";
 	TestPrintf("%d %d %s\n", a, b, pTemp);
 
 	return 0;
 }
-
-

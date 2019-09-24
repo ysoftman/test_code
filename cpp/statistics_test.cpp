@@ -1,29 +1,27 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // 통계 값 계산
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <math.h>
 
-float GetAverage(float* set, int num)
+float GetAverage(float *set, int num)
 {
 	float average = 0.0;
 	int i = 0;
-	for (i=0; i<num; i++)
+	for (i = 0; i < num; i++)
 	{
 		average += set[i];
 	}
-	//평균 (average) : 수들의 총합을 개수로 나눈 수 
-	average = float(average/num);
+	//평균 (average) : 수들의 총합을 개수로 나눈 수
+	average = float(average / num);
 	return average;
 }
 
-float GetVariance(float* set, int num, float average)
+float GetVariance(float *set, int num, float average)
 {
 	float deviation = 0.0;
 	float variance = 0.0;
 	int i = 0;
-	for (i=0; i<num; i++)
+	for (i = 0; i < num; i++)
 	{
 		// 편차(deviation) : 평균에서 각각의 수가 떨어진 정도
 		deviation = set[i] - average;
@@ -32,7 +30,7 @@ float GetVariance(float* set, int num, float average)
 		variance += deviation * deviation;
 	}
 	// 분산(variance) : 편차의 제곱들의 합을 개수로 나눈 수
-	variance = float(variance/num);
+	variance = float(variance / num);
 	return variance;
 }
 
@@ -44,17 +42,17 @@ float GetStandardDeviation(float variance)
 	return sd;
 }
 
-float GetCoVariance(float* setX, float* setY, int num, float averageX, float averageY)
+float GetCoVariance(float *setX, float *setY, int num, float averageX, float averageY)
 {
 	float deviation = 0.0;
 	float covariance = 0.0;
 	int i = 0;
-	for (i=0; i<num; i++)
+	for (i = 0; i < num; i++)
 	{
 		covariance += (setX[i] - averageX) * (setY[i] - averageY);
 	}
 	// 공분산(covariance) : setX와 setY의 편차곱들의 합을 개수로 나눈 수
-	covariance = float(covariance/num);
+	covariance = float(covariance / num);
 	return covariance;
 }
 
@@ -67,7 +65,7 @@ float GetPCC(float covariance, float sdX, float sdY)
 {
 	float pcc = 0.0;
 	// 피어슨 상관계수(Pearson Correlation Coefficient) : 공분산을 setX와 setY의 표준편차의 곱으로 나눈 수
-	pcc = covariance/(sdX*sdY);
+	pcc = covariance / (sdX * sdY);
 	return pcc;
 }
 
@@ -86,7 +84,8 @@ int main()
 	int num = 4;
 
 	printf("setX = { ");
-	for (i=0; i<num; i++) printf("%.2f ", setX[i]);
+	for (i = 0; i < num; i++)
+		printf("%.2f ", setX[i]);
 	printf("}\n");
 
 	averageX = GetAverage(setX, num);
@@ -99,7 +98,8 @@ int main()
 	printf("\n");
 
 	printf("setY = { ");
-	for (i=0; i<num; i++) printf("%.2f ", setY[i]);
+	for (i = 0; i < num; i++)
+		printf("%.2f ", setY[i]);
 	printf("}\n");
 
 	averageY = GetAverage(setY, num);
@@ -119,5 +119,3 @@ int main()
 
 	return 0;
 }
-
-

@@ -9,11 +9,8 @@
 
 using namespace std;
 
-int main()
+string number2string(long num)
 {
-	long num;
-	cin >> num, cout << "number:" << num << endl;
-
 	// 숫자 -> 문자
 	// 방법1
 	// long -> string
@@ -27,20 +24,22 @@ int main()
 	cout << "stringstream:" << s.str() << endl;
 
 	// 방법3
-	double a = 12.3456789;
 	// double -> string
 	// Numeric Type (int, float, double)을 string으로 변환해주기 위한 객체
+	// double a = 12.3456789;
 	ostringstream ss;
-	ss << a;
+	ss << num;
 	cout << "ostringstream:" << ss.str() << endl;
 
+	return s.str();
+}
 
-	/////////////////////////////
-
+long string2number(string str)
+{
 	// 문자 -> 숫자
 	// 방법1
 	// string -> int
-	num = atoi(str.c_str());
+	long num = atoi(str.c_str());
 	printf("atoi number:%ld\n", num);
 
 	// 방법2
@@ -57,5 +56,16 @@ int main()
 	double new_num_double = std::stod(str, nullptr);
 	cout << "std::stod():" << new_num_double << endl;
 
+	return new_num_int;
+}
+
+int main()
+{
+	cout << "input nubmer(to convert to string) : ";
+	long num;
+	cin >> num;
+	cout << "number:" << num << endl;
+	string str = number2string(num);
+	long num2 = string2number(str);
 	return 0;
 }

@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // 난수 발생
 // srand() 와 rand() 소스
@@ -23,12 +22,11 @@
 // rand() 로 나올 수 있는 값은 0 ~ RAND_MAX
 // 윈도우 RAND_MAX -> 0x7fff -> 32,767 -> 2^15-1
 // 리눅스 RAND_MAX -> 0x7fffffff -> 2147483647 -> 2^31-1
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
- 
+
 int main()
 {
 	int num = 0;
@@ -38,14 +36,13 @@ int main()
 	// 랜덤 씨드를 현재 unix epoch time(초) 으로 한번만 설정
 	seed = (unsigned int)time(NULL);
 	srand(seed);
-	for (int i=0; i<10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		num = rand();
 		printf("random number is %d\n", num);
-		num = num%100;
+		num = num % 100;
 		printf("random number is %d\n", num);
 	}
 
 	return 0;
 }
-

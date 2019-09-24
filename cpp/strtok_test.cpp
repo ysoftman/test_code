@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // 아래는 strtok() 함수를 이용해서 토큰을 가져오는 코드이다.
 // strtok()은 입력문자열(첫번째인자)에서 구분자문자(두번째인자)로 구분될 수 있는 토큰을 찾아 준다.
@@ -10,7 +9,6 @@
 // strtok() 내부에서는 토큰을 찾고 찾은 토큰 바로 뒤의 문자를 NULL 로 만들어 버린다.
 // 처음 strtok() 를 호출할 때 strtok() 함수 내부에서 첫번째 토큰을 리턴하기 전 NULL 다음부터의 문자열을 기억하고 있는다.
 // 두번째 strtok() 를 호출할 때 입력문자열 대신 NULL 값을 주면 바로 이전에 사용되었던 문자열을 끄집어내서 사용하게 된다.
-/////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
 
@@ -18,14 +16,12 @@ int main()
 {
 	char Str[50] = "My name is Byoung Hoon Yoon";
 	char *pToken = NULL;
-	char *pSeparator = " ";
-	pToken = strtok(Str, pSeparator);
+	char Separator = ' ';
+	pToken = strtok(Str, &Separator);
 	printf("%s\n", pToken);
-	while ((pToken = strtok(NULL, pSeparator)) != NULL)
+	while ((pToken = strtok(NULL, &Separator)) != NULL)
 	{
 		printf("%s\n", pToken);
 	}
 	return 0;
 }
-
-
