@@ -74,6 +74,6 @@ int main()
 	scanf("%d", &target);
 
 	BinarySearch(array, 0, array_length - 1, target);
-	BinarySearch2(array, array_length, target);
+	BinarySearch2(array, array_length - 1, target);
 	return 0;
 }
