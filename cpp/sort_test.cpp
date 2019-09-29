@@ -26,7 +26,7 @@ void Print(FILE *fp, int arr[], int size, const char *msg)
 {
 	int i = 0;
 	fprintf(stdout, "writing %s result to file...", msg);
-	fprintf(fp, "%s = [ ", msg);
+	fprintf(fp, "%s\n[ ", msg);
 	for (i = 0; i < size; i++)
 	{
 		fprintf(fp, "%d ", arr[i]);
@@ -128,7 +128,7 @@ void BubbleSort(int arr[], int size)
 }
 
 // Selection Sort - best: O(N^2) average: O(N^2) worst: O(N^2)
-// 평균적으로, swap bubble sort 보다 적게 발생해 빠르다
+// 평균적으로, bubble sort 보다 swap 이 적게 발생해 빠르다
 void SelectionSort(int arr[], int size)
 {
 	int i = 0, j = 0, MinIdx = 0;
