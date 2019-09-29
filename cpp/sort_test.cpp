@@ -151,38 +151,27 @@ void SelectionSort(int arr[], int size)
 // Quick Sort - best: O(NlogN) average: O(NlogN) worst: O(N^2)
 void QuickSort(int arr[], int left, int right)
 {
-	int i = 0, j = 0, k = 0;
 	// 왼쪽과 오른쪽이 교차되면 재귀를 빠져 나간다.
-	if (right - left < 1)
+	if (left >= right)
 	{
 		return;
 	}
-	// 현재 가장 오른쪽 원소의 값을 기준으로 삼는다.
-	k = arr[right];
-	i = left;
-	j = right - 1;
-	for (;;)
+	int i = left;
+	for (int j = left; j < right; ++j)
 	{
-		// 왼쪽부터 오른쪽 방향으로 기준값 보다 큰 원소를 찾는다.
-		while (arr[i] < k)
-			i++;
-		// 오른쪽부터 왼쪽 방향으로 기준값 보다 작은 원소를 찾는다.
-		while (arr[j] > k)
-			j--;
-		// 큰 원소 값이 작은 원소 값보다 크거나 같으면 현재 루프를 빠져나간다.
-		if (i >= j)
+		// 가장 오른쪽 원소의 값을 기준값으로 삼는다.
+		// 기준값보다 작은원소값들이 왼쪽으로 위치하도록 한다.
+		if (arr[j] < arr[right])
 		{
-			break;
+			Swap(&arr[i], &arr[j]);
+			// 최종 i 위치는 기준값이 들어갈 자리이다.
+			// i 왼쪽의 원소값들은 모두 i 보다 작은 값을 가진것들만 존재하게 된다.
+			i++;
 		}
-		// 작은 원소 값이 큰 원소 값보다 크면 둘을 교환한다.
-		Swap(&arr[i], &arr[j]);
-		// 큰 원소 값이 작은 원소 값보다 클때까지 반복한다.
-		i++;
-		j--;
 	}
-	// 위에서 찾은 i 번째 원소 값과 제일 오른쪽 원소의 값을 교환한다.
+	// 위에서 찾은 i 번째의 원소값과 기준값을 교환한다.
 	Swap(&arr[i], &arr[right]);
-	// 현재 시점에서 왼쪽부분과 오른쪽부분에 대해서 반복 수행한다.(분할 정복)
+	// i 를 기준으로 왼쪽부분과 오른쪽부분에 대해 반복 수행한다.	(분할 정복)
 	QuickSort(arr, left, i - 1);
 	QuickSort(arr, i + 1, right);
 }
