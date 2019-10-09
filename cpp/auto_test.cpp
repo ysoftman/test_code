@@ -28,9 +28,8 @@ int main()
     // 일반 배열에서는 값을 액세스할 수 있다.
     for (auto i : alphabet)
     {
-        i = a;
+        i = a++;
         cout << i << "  ";
-        ++a;
     }
     cout << endl;
     for (int i = 0; i < 26; i++)
