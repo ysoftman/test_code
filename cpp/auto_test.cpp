@@ -22,8 +22,8 @@ int main()
     auto k = 1.0;
     cout << "sizeof(k):" << sizeof(k) << " k:" << k << endl;
 
+    cout << "generate alphabet by auto syntax" << endl;
     char alphabet[26];
-    cout << "generate alphabet using auto syntax" << endl;
     char a = 'a';
     // 일반 배열에서는 값을 액세스할 수 있다.
     for (auto i : alphabet)
@@ -35,6 +35,22 @@ int main()
     for (int i = 0; i < 26; i++)
     {
         cout << alphabet[i] << " ";
+    }
+    cout << endl;
+
+    cout << "initialize point array by auto syntax" << endl;
+    int *pArr[26];
+    // point 배열에서는 i 가 pi(pointer) 타입으로
+    // 포인터 변수 자체 주소를 참조해서 값을 변경해야 한다.
+    for (auto &i : pArr)
+    {
+        printf("type: %s  address: %p\n", typeid(i).name(), i);
+        i = NULL;
+    }
+    cout << endl;
+    for (int i = 0; i < 26; i++)
+    {
+        cout << pArr[i] << " ";
     }
     cout << endl;
 
