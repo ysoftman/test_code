@@ -22,6 +22,23 @@ int main()
     auto k = 1.0;
     cout << "sizeof(k):" << sizeof(k) << " k:" << k << endl;
 
+    char alphabet[26];
+    cout << "generate alphabet using auto syntax" << endl;
+    char a = 'a';
+    // 일반 배열에서는 값을 액세스할 수 있다.
+    for (auto i : alphabet)
+    {
+        i = a;
+        cout << i << "  ";
+        ++a;
+    }
+    cout << endl;
+    for (int i = 0; i < 26; i++)
+    {
+        cout << alphabet[i] << " ";
+    }
+    cout << endl;
+
     std::vector<int> vecNum;
     vecNum.push_back(1);
     vecNum.push_back(2);
