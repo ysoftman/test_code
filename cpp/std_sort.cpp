@@ -15,8 +15,16 @@ int main()
         cout << arr[i] << " ";
     }
     cout << endl;
-    std::sort(arr, arr + length);
 
+    std::sort(arr, arr + length);
+    for (int i = 0; i < length; ++i)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    // reverse sort
+    std::sort(arr, arr + length, std::greater<int>());
     for (int i = 0; i < length; ++i)
     {
         cout << arr[i] << " ";
