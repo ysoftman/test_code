@@ -1,6 +1,7 @@
 // ysoftman
 // stl sort test
 #include <iostream>
+#include <algorithm>  // sort()
 
 using namespace std;
 
