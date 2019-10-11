@@ -2,8 +2,12 @@
 // stl vector 의 값(클래스) 삭제 테스트
 // g++ -std=c++11 stl_vector_test.cpp && ./a.out
 #include <stdio.h>
+#include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm> // std::copy()
+#include <iterator>  // back_inserter()
+using namespace std;
 
 class Dummy
 {
@@ -131,10 +135,47 @@ void vector_test2()
 	}
 }
 
+void vector_test3()
+{
+	int arr[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+	int len = sizeof(arr) / sizeof(int);
+	cout << "len: " << len << endl;
+
+	// array to vector
+	vector<int> vec(arr, arr + len);
+	for (auto i : vec)
+	{
+		cout << i << ",";
+	}
+	cout << endl;
+
+	// copy array
+
+	// method1 - 생성시 다음과 같은 방식들 사용
+	// vector<int> vec2(vec);
+	// vector<int> vec2(vec.begin(), vec.end());
+
+	// method2 - assign
+	// vector<int> vec2;
+	// vec2.assign(vec.begin(), vec.end());
+
+	// method2 - std::copy
+	// copy() 는 #include <algorithm> 필요
+	// back_inserter() 는 #include <iterator> 필요
+	vector<int> vec2;
+	std::copy(vec.begin(), vec.end(), back_inserter(vec2));
+
+	vec.clear();
+	for (auto i : vec2)
+	{
+		cout << i << ",";
+	}
+	cout << endl;
+}
 int main()
 {
 	vector_test1();
 	vector_test2();
-
+	vector_test3();
 	return 0;
 }
