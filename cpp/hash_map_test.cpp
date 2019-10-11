@@ -37,5 +37,10 @@ int main()
     {
         cout << i.first << endl;
     }
+    if (hashmap.find(3) != hashmap.end())
+    {
+        cout << "found: " << hashmap[3] << endl;
+    }
+
     return 0;
 }
