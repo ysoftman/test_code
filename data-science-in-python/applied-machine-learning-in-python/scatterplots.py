@@ -1,3 +1,4 @@
+from matplotlib.artist import Artist
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 import matplotlib.pyplot as plt
@@ -8,12 +9,14 @@ x = np.array([1, 2, 3, 4, 5, 6, 7, 8])
 y = x
 # 새 그림 생성
 plt.figure()
+
+# scatter(산포 그래프)
 # x,y 같은 값이 점찍기 y=x 그래프
 # similar to plt.plot(x, y, '.'), but the underlying child objects in the axes are not Line2D
 # plt.plot(x, y, '.')
 plt.scatter(x, y)
 # plot 을 표시
-# plt.show()
+plt.show()
 
 
 # y=x 점들이 green, green ... 마지막 점만 red 색깔로 표시
@@ -50,7 +53,7 @@ print(list(zip((1, 6), (2, 7), (3, 8), (4, 9), (5, 10))))
 # the above prints:
 # [(1, 2, 3, 4, 5), (6, 7, 8, 9, 10)]
 
-# x값들, y값들로 각각 뽑는다.
+# 튜플 2개를 각각 x값들, y값들로 사용할 수 있다.
 zip_generator = zip([1, 2, 3, 4, 5], [6, 7, 8, 9, 10])
 # let's turn the data back into 2 lists
 # This is like calling zip((1, 6), (2, 7), (3, 8), (4, 9), (5, 10))
@@ -60,3 +63,45 @@ print(y)
 # the above prints:
 # (1, 2, 3, 4, 5)
 # (6, 7, 8, 9, 10)
+
+
+# 새 그림 생성
+plt.figure()
+# 마커의 크기는 100, (x1,y1) (x2,y2) 까지는 마커의 색상은 빨간색, 이후는 파란색으로 표시
+# plot a data series 'Tall students' in red using the first two elements of x and y
+plt.scatter(x[:2], y[:2], s=100, c='red', label='Tall students')
+# plot a second data series 'Short students' in blue using the last three elements of x and y
+plt.scatter(x[2:], y[2:], s=100, c='blue', label='Short students')
+# plot 을 표시
+plt.show()
+
+
+# 범례 추가
+# add a legend (uses the labels from plt.scatter)
+# plt.legend()
+# 범베를 그래프의 오른쪽 아래 부분에 표시한다.
+# add the legend to loc=4 (the lower right hand corner), also gets rid of the frame and adds a title
+plt.legend(loc=4, frameon=False, title='Legend')
+
+
+# get children from current axes (the legend is the second to last item in this list)
+plt.gca().get_children()
+# get the legend from the current axes
+legend = plt.gca().get_children()[-2]
+# you can use get_children to navigate through the child artists
+legend.get_children()[0].get_children()[1].get_children()[0].get_children()
+
+# import the artist class from matplotlib
+
+
+def rec_gc(art, depth=0):
+    if isinstance(art, Artist):
+        # increase the depth for pretty printing
+        print("  " * depth + str(art))
+        for child in art.get_children():
+            rec_gc(child, depth+2)
+# Call this function on the legend artist to see what the legend is made up of
+rec_gc(plt.legend())
+
+# plot 을 표시
+plt.show()
