@@ -26,23 +26,28 @@ plt.show()
 # png 파일로 저장시
 # plt.savefig("test1.png")
 
+
 # figure 생성
 # First let's set the backend without using mpl.use() from the scripting layer
 # create a new figure
 fig = Figure()
-
 # fig 를 백엔드에 연결
 # associate fig with the backend
 canvas = FigureCanvasAgg(fig)
+# subplot: figure 에 들어 있는 plot 들
+# subplot 추가 한다.
 # add a subplot to the fig
-ax = fig.add_subplot(111)
+# ax = fig.add_subplot(111)
+# 2x1 에서 첫번째에 plot 추가한다.
+ax = fig.add_subplot(2,1,1)
 # plot the point (3,2)
 ax.plot(3, 2, '.')
-# 백엔드 그려진 내용을 test.png 파일로 출력
+# 백엔드 그려진 내용을 파일로 출력
 # save the figure to test.png
 # you can see this figure in your Jupyter workspace afterwards by going to
 # https://hub.coursera-notebooks.org/
 canvas.print_png('test.png')
+
 
 
 # 새 그래프 생성

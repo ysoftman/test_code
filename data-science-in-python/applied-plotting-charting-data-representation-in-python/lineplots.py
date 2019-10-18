@@ -34,6 +34,7 @@ plt.xlabel('Some data')
 plt.ylabel('Some other data')
 plt.title('A title')
 # 범례 추가
+# 범례 위치 참고 https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.legend.html
 # add a legend with legend entries (because we didn't have labels when we plotted the data series)
 plt.legend(['Baseline', 'Competition', 'Us'])
 

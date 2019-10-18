@@ -20,8 +20,12 @@ plt.figure()
 # stackoverflow 프로그래밍 인기 데이터로 막대 그래프 그리기
 languages = ['Python', 'SQL', 'Java', 'C++', 'JavaScript']
 pos = np.arange(len(languages))
+# print("pos:", pos)
 popularity = [56, 39, 34, 34, 29]
 plt.bar(pos, popularity, align='center')
+# x축 간격 설정
+# pos => [0,1,2,3,4] 위치 설정
+# languages = ['Python', 'SQL', 'Java', 'C++', 'JavaScript'] 위치에 들어갈 값
 plt.xticks(pos, languages)
 plt.ylabel('% Popularity')
 plt.title('Top 5 Languages for Math & Data \nby % Popularity on Stack Overflow')
