@@ -3,12 +3,16 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-# matplotlib 가 어떤 백엔드(Qt, GTK, macosx...)를 사용하고 있는지 파악
+# matplotlib 에서 백엔드는 그래프를 출력을 위한 시스템을 말하며
+# agg, Qt, GTK, macosx 등이 있고 macosx 를 제외하곤 대부분 agg 기반이다.
+# matplotlib 가 어떤 백엔드를 사용하고 있는지 파악
 print(mpl.get_backend())
+# agg 백엔드 사용(백엔드 이름은 대소문자 구분 안한다.)
+# mpl.use('agg')
 
 # jupyter notebook 사용시 설명 보기
 # plt.plot?
- 
+
 # x=3, y=2 위치에 점찍기
 # 디폴트 라인스타일이 - 라서 보이지 않는다.
 # because the default is the line style '-',
@@ -19,6 +23,8 @@ plt.plot(3, 2, ".")
 
 # plot 을 표시
 plt.show()
+# png 파일로 저장시
+# plt.savefig("test1.png")
 
 # figure 생성
 # First let's set the backend without using mpl.use() from the scripting layer
@@ -39,7 +45,7 @@ ax.plot(3, 2, '.')
 canvas.print_png('test.png')
 
 
-# 새 그림 생성
+# 새 그래프 생성
 # create a new figure
 plt.figure()
 # o 마커를 이용해서 x=3,y=2 지점에 점찍기
@@ -50,12 +56,12 @@ plt.plot(3, 2, 'o')
 ax = plt.gca()
 # 현재 축ㅈ을 x=0~6, y=0~10 의 범위를 갖도록 한다.
 # Set axis properties [xmin, xmax, ymin, ymax]
-ax.axis([0,6,0,10])
+ax.axis([0, 6, 0, 10])
 
 plt.show()
 
 
-# 새 그림 생성
+# 새 그래프 생성
 # create a new figure
 plt.figure()
 
