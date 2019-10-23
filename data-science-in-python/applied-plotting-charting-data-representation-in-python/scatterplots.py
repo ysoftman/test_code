@@ -94,7 +94,7 @@ plt.title('Relationship between ball kicking and grades')
 # 범례 위치 참고 https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.legend.html
 # add a legend (uses the labels from plt.scatter)
 # plt.legend()
-# 범베를 그래프의 오른쪽 아래 부분에 표시한다.
+# 범례를 그래프의 오른쪽 아래 부분에 표시한다.
 # add the legend to loc=4 (the lower right hand corner), also gets rid of the frame and adds a title
 plt.legend(loc=4, frameon=False, title='Legend')
 
