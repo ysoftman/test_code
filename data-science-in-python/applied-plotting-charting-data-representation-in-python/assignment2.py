@@ -50,10 +50,6 @@ import numpy as np
 # leaflet_plot_stations(
 #     400, 'fb441e62df2d58994928907a91895ec62c2c42e6cd075c2700843b89')
 
-import matplotlib.pyplot as plt
-import mplleaflet
-import numpy as np
-import pandas as pd
 
 binsize = 400
 hashid = 'fb441e62df2d58994928907a91895ec62c2c42e6cd075c2700843b89'
