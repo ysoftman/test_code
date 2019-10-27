@@ -15,5 +15,9 @@ print("using enumerate() => index and value")
 for index, value in enumerate(l):
     print("l[{}] = {}".format(index, value))
 
+print("using enumerate() => tuple")
+for ele in enumerate(l):
+    print(ele)
+
 print("using enumerate() => into a list of tuple")
 print(list(enumerate(l)))
