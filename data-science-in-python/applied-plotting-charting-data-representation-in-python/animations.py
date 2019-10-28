@@ -26,7 +26,7 @@ x = np.random.randn(n)
 # 랜덤값 x(100개) 1개씩 추가되는 히스토그램을 새로 그린다.
 # create the function that will do the plotting, where curr is the current frame
 def update(curr):
-    # 마지막 프렘임인 경우 애니메이션을 멈춘다.
+    # 마지막 프레임인 경우 애니메이션을 멈춘다.
     # check if animation is at the last frame, and if so, stop the animation a
     if curr == n:
         a.event_source.stop()
@@ -42,6 +42,6 @@ def update(curr):
 
 
 fig = plt.figure()
-# 1ms 마다 update() 함수를 호출한다.
+# 100ms 마다 update() 함수를 호출한다.
 a = animation.FuncAnimation(fig, update, interval=100)
 plt.show()

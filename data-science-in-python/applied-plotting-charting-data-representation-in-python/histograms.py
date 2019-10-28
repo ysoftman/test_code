@@ -28,7 +28,7 @@ for n in range(0, len(axs)):
 plt.show()
 
 
-# bin(막대의 개수)를 100 로 주면 n 의 크기에따라 더 세밀한 히스토그래매을 볼 수 있다.(추이를 분석시 너무 세밀하다고 막대그래프는 큰 도움이 안된다.)
+# bin(막대의 개수)를 100 로 주면 n 의 크기에따라 더 세밀한 히스토그램을 볼 수 있다.(추이를 분석시 너무 세밀하다고 막대그래프는 큰 도움이 안된다.)
 # repeat with number of bins set to 100
 fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharex=True)
 axs = [ax1, ax2, ax3, ax4]
