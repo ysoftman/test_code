@@ -1,0 +1,18 @@
+FROM centos:7
+
+# 기본 root 계정으로 실행한다.
+RUN whoami
+# root 의 HOME 디렉토리인 /root 가 찍한다.
+RUN echo ${HOME}
+
+# ENV 에선 HOME 변수가 설정된것이 없다.
+ENV mypath="${HOME}:aa"
+# :aa 로 찍힌다.
+RUN echo ${mypath}
+
+# HOME 환경변수를 별도로 설정해야 한다.
+ENV HOME="/root"
+ENV mypath="${HOME}:aa"
+# /root:aa 로 찍힌다.
+RUN echo ${mypath}
+
