@@ -26,6 +26,12 @@ docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase:communit
 # 접속, 계정, database, bucket, document 등 생성
 http://localhost:8091
 
+# 일반서버(centos) 환경에서 설치 할때
+wget https://packages.couchbase.com/releases/6.0.0/couchbase-server-community-6.0.0-centos7.x86_64.rpm
+sudo rpm -ivh couchbase-server-community-6.0.0-centos7.x86_64.rpm
+sudo systemctl start couchbase-server
+# dash 보드 접속 후 add-server 로 다른 couchbase ip  추가
+http://ysoftman-server:8091/
 
 # golang SDK
 https://developer.couchbase.com/documentation/server/5.1/sdk/go/start-using-sdk.html
