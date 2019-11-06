@@ -25,7 +25,9 @@ v2 = pd.Series(2*v1 + np.random.normal(60, 15, 1000), name='v2')
 # 히스토그램 그리기
 # plot a kernel density estimation over a stacked barchart
 plt.figure()
-plt.hist([v1, v2], histtype='barstacked', normed=True)
+# normed 인자는 deprecated -> density
+# plt.hist([v1, v2], histtype='barstacked', normed=True)
+plt.hist([v1, v2], histtype='barstacked', density=True)
 plt.show()
 # seaborn 으로 KDE(kernel density estimation) 그래프 생성
 # kde 는 히스토그램들의 높이를 잇는 선을 그린다.

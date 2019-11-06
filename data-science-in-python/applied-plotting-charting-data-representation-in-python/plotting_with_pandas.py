@@ -77,9 +77,14 @@ iris = pd.read_csv('iris.csv')
 print(iris.head())
 
 
-# AttributeError: module 'pandas' has no attribute 'tools' 에러 발생
+# 윈도우에서는 AttributeError: module 'pandas' has no attribute 'tools' 에러 발생
 # 산점도 매트릭스는 다른 변수와 대각선을 따라 있는 히스토그램 사이의 산점도 그래프를 만든다.
+# pd.tools 는 deprecated 됐다.
 # pd.tools.plotting.scatter_matrix(iris);
-# plt.figure()
+pd.plotting.scatter_matrix(iris)
+
+plt.figure()
 # 평행?병렬? 좌표 그래프
 # pd.tools.plotting.parallel_coordinates(iris, 'Name');
+pd.plotting.parallel_coordinates(iris, 'Name');
+plt.show()
