@@ -13,9 +13,9 @@ print(mpl.get_backend())
 # mpl.use('agg')
 
 # see the pre-defined styles provided.
-plt.style.available
+print(plt.style.available)
 
-# seaborn-colorblind 사용해 더 많은 컬러로 표현할 수 있다.
+# plt 의 스타일로 seaborn-colorblind 사용해 더 많은 컬러로 표현할 수 있다.
 # use the 'seaborn-colorblind' style
 plt.style.use('seaborn-colorblind')
 
