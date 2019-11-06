@@ -30,8 +30,9 @@ Example
 Looking for an example? Here's what our course assistant put together for the Ann Arbor, MI, USA area using sports and athletics as the topic. Example Solution File
 """
 
-
+# pip3 install mplleaflet
 from matplotlib import cm
+from matplotlib.ticker import FuncFormatter
 import mpl_toolkits.axes_grid1.inset_locator as mpl_il
 import pandas as pd
 import mplleaflet
@@ -54,8 +55,15 @@ Since 1970, How many passengers carried by air transport in China, Japan and Kor
 http://data.un.org/Data.aspx?q=air&d=WDI&f=Indicator_Code%3aIS.AIR.PSGR
 """
 
-# pip3 install mplleaflet
 
+# 너쿠 커서 자연상수(e) 표시를 M(million,100만) 단위로 포맷팅
+# https://matplotlib.org/examples/pylab_examples/custom_ticker1.html
+def millions(x, pos):
+    # return '%1.1fM' % (x*1e-6)
+    return '%1dM' % (x*1e-6)
+
+
+plt.figure()
 plt.style.use('seaborn-colorblind')
 
 # index_col=0 0번째 컬럼을 인덱스로
@@ -85,10 +93,12 @@ df_temp = df.sort_values(by=['passengers'])
 minPassengers = df_temp['passengers'].iloc[0]
 maxPassengers = df_temp['passengers'].iloc[len(df_temp)-1]
 # print(df_temp)
+# minPassengers: 710000
+# maxPassengers: 551234509
 print("minPassengers:", minPassengers)
 print("maxPassengers:", maxPassengers)
 
-# 날라 별로 분리
+# 나라 별로 분리
 df_china = df[df['country'] == 'China']
 df_japan = df[df['country'] == 'Japan']
 df_korea = df[df['country'] == 'Korea']
@@ -125,16 +135,26 @@ ax.set_title('Air transport, passengers carried (1970~2017)')
 
 # 배경 격자 설정
 # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.grid.html
-plt.grid(color='r', linestyle='--', linewidth=1, alpha=0.5)
+plt.grid(color='r', linestyle=':', linewidth=1, alpha=0.5)
+
 
 # 축 범위
 # Set axis properties [xmin, xmax, ymin, ymax]
-ax.axis([1970, 2017, minPassengers, maxPassengers])
-ax.ticklabel_format(useOffset=False)
+ax.axis([1970, 2020, minPassengers, maxPassengers])
+# x 눈끔 간격 5 로 설정
+plt.xticks(np.arange(1970, 2017, 5))
+# 2017년 위치에 수직선으로 표시
+plt.axvline(x=2017, color='black')
+# 수직선 위치(x,y, 텍스트, 90도회전)에 2017 텍스트 표시
+plt.text(2017.1, maxPassengers/2, '2017', rotation=90)
+
+# 너무 커서 자연상수(e)로 표현되는것을 막기
+# plt.ticklabel_format(style='plain')
+formatter = FuncFormatter(millions)
+# 너무 커서 자연상수(e)로 표현되는것을 백만(M)단위로 표시
+ax.yaxis.set_major_formatter(formatter)
+
 # ink junk(데이터 필요에 불편한 잉크들) 제거하기 위해서 위쪽, 오른쪽 테두리를 제거
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 plt.show()
-# df.plot()
-# df.plot.hist(alpha=0.7)
-# plt.show()
