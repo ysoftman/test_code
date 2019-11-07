@@ -112,6 +112,8 @@ tu_korea = [tuple(x) for x in df_korea[['years', 'passengers']].values]
 
 # year(xval) 별 value(yval) 으로 구분
 labels = ['China', 'Japan', 'Korea']
+# 마커 사용 https://matplotlib.org/3.1.1/api/markers_api.html
+markers = ['-s', '-X', '-o']
 tu_list = []
 tu_list.append(tu_china)
 tu_list.append(tu_japan)
@@ -120,8 +122,7 @@ i = 0
 for tu in tu_list:
     xval = [x[0] for x in tu]
     yval = [x[1] for x in tu]
-    # o- : 서클을 이어가는 마크 사용
-    plt.plot(xval, yval, 'o-', label=labels[i])
+    plt.plot(xval, yval, markers[i], label=labels[i])
     i = i+1
 
 # 범례 표시
@@ -158,3 +159,4 @@ ax.yaxis.set_major_formatter(formatter)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 plt.show()
+# plt.savefig("assignment4.png")
