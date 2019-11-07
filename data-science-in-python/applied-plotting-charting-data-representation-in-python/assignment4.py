@@ -42,6 +42,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
+import sys
 
 """
 1. region and domain 
@@ -52,12 +53,28 @@ domain: Air transport, passengers carried (1970~2017)
 Since 1970, How many passengers carried by air transport in China, Japan and Korea.
 
 3. Links
-http://data.un.org/Data.aspx?q=air&d=WDI&f=Indicator_Code%3aIS.AIR.PSGR
+china http://data.un.org/Data.aspx?d=WDI&f=Indicator_Code:IS.AIR.PSGR;Country_Code:CHN;Time_Code:1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017&c=0,1,2,3,4,5&s=Country_Name:asc,Year:desc&v=1
+
+japan http://data.un.org/Data.aspx?d=WDI&f=Indicator_Code:IS.AIR.PSGR;Country_Code:JPN;Time_Code:1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017&c=0,1,2,3,4,5&s=Country_Name:asc,Year:desc&v=1
+
+korea http://data.un.org/Data.aspx?d=WDI&f=Indicator_Code:IS.AIR.PSGR;Country_Code:KOR;Time_Code:1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017&c=0,1,2,3,4,5&s=Country_Name:asc,Year:desc&v=1
 """
 
+# dataframe 에서 필요없는 컬럼, 로우 제거
+
+
+def remove_extra_cols_rows(df):
+    df = df[df['Indicator Code'] != 'footnoteSeqID']
+    df = df[df['Indicator Code'] != '1']
+    # axis=1:컬럼, 0:로우
+    df.drop(['Indicator Code', 'Time Code',
+             'Value Footnotes'], axis=1, inplace=True)
+    return df
 
 # 너쿠 커서 자연상수(e) 표시를 M(million,100만) 단위로 포맷팅
 # https://matplotlib.org/examples/pylab_examples/custom_ticker1.html
+
+
 def millions(x, pos):
     # return '%1.1fM' % (x*1e-6)
     return '%1dM' % (x*1e-6)
@@ -66,11 +83,15 @@ def millions(x, pos):
 plt.figure()
 plt.style.use('seaborn-colorblind')
 
-# index_col=0 0번째 컬럼을 인덱스로
-df = pd.read_csv('UNdata_Export_20191106_081137985.csv')
+df1 = pd.read_csv('UNdata_Export_china.csv')
+df1 = remove_extra_cols_rows(df1)
+df2 = pd.read_csv('UNdata_Export_japan.csv')
+df2 = remove_extra_cols_rows(df2)
+df3 = pd.read_csv('UNdata_Export_korea.csv')
+df3 = remove_extra_cols_rows(df3)
+# df row 로 합치기, 기존 인덱스 무시
+df = pd.concat([df1, df2, df3], ignore_index=True, axis=0)
 
-# Value Footnotes 컬럼 제거
-df.drop(['Value Footnotes'], axis=1, inplace=True)
 # 컬럼 이름 변경
 for col in df.columns:
     if col == 'Country or Area':
@@ -86,6 +107,7 @@ for col in df.columns:
 # print(df)
 # print(df.dtypes)
 df['passengers'] = df['passengers'].astype('int64')
+print(df)
 
 
 # 최소, 최대 승객 수 파악
