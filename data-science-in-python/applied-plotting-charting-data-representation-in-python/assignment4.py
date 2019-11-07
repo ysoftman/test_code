@@ -58,11 +58,26 @@ china http://data.un.org/Data.aspx?d=WDI&f=Indicator_Code:IS.AIR.PSGR;Country_Co
 japan http://data.un.org/Data.aspx?d=WDI&f=Indicator_Code:IS.AIR.PSGR;Country_Code:JPN;Time_Code:1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017&c=0,1,2,3,4,5&s=Country_Name:asc,Year:desc&v=1
 
 korea http://data.un.org/Data.aspx?d=WDI&f=Indicator_Code:IS.AIR.PSGR;Country_Code:KOR;Time_Code:1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017&c=0,1,2,3,4,5&s=Country_Name:asc,Year:desc&v=1
+
+4.Provide a short (1-2 paragraphs) justification of how your visual addresses your research question.
+This visualization was concerned with answering the question how many people carried by air transport. Due to the large difference in passenger numbers by country, the y-axis of the graph is displayed as 'e' by default, which is expressed in millions(M) for better readability. The x-axis of the graph used vertical lines to represent the last 2017 years of data. And I used the dot grid to guide you through the yearly data.
+This graph shows the increase in aircraft use by Korean, Chinese and Japanese passengers from 1970 to 2017. Korean and Japanese passenger growth has been modest, while Chinese passengers have increased rapidly since 2000.
+
+5.Describe your design choices for your visual in regards to Cairo's principle of truthfulness.
+Describe your design choices for your visual in regards to Cairo's principle of beauty.
+Describe your design choices for your visual in regards to Cairo's principle of functionality.
+Describe your design choices for your visual in regards to Cairo's principle of insightfulness.
+
+truthfulness : The number of passengers in different countries is expressed as it is.
+beauty : I used harmonious colors.
+functionality : Different country colors and legends were used to distinguish them.
+insightfulness : It clearly shows the difference between the number of Chinese passengers and the number of passengers in other countries.
+
+
 """
 
+
 # dataframe 에서 필요없는 컬럼, 로우 제거
-
-
 def remove_extra_cols_rows(df):
     df = df[df['Indicator Code'] != 'footnoteSeqID']
     df = df[df['Indicator Code'] != '1']
@@ -133,7 +148,7 @@ tu_japan = [tuple(x) for x in df_japan[['years', 'passengers']].values]
 tu_korea = [tuple(x) for x in df_korea[['years', 'passengers']].values]
 
 # year(xval) 별 value(yval) 으로 구분
-labels = ['China', 'Japan', 'Korea']
+labels = ['Chinese passengers', 'Japanese passengers', 'Korean passengers']
 # 마커 사용 https://matplotlib.org/3.1.1/api/markers_api.html
 markers = ['-s', '-X', '-o']
 tu_list = []

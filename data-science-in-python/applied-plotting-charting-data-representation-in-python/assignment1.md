@@ -1,6 +1,6 @@
 # Graphics Lies, Misleading Visuals
 
-- cairo 가 제시하는 잘못된 그래프 사용 사례를 찾아보기
+- cairo(데이터 시각화 전문가 카이로 교수) 가 제시하는 잘못된 그래프 사용 사례를 찾아보기
 - <https://infovis.fh-potsdam.de/readings/Cairo2015.pdf>
 
 ## Q & A
