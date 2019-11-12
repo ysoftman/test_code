@@ -7,6 +7,9 @@ clear
 # clear(이전 명령) 실행 후 리턴 값
 echo $?
 
+# 현재 쉘 옵션들(set -o 으로 설정된 옵션들 파악)
+echo $-
+
 # 현재 프로세스 ID
 echo $$
 
