@@ -4,6 +4,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"sync"
 	"time"
 )
 
@@ -12,14 +14,9 @@ func main() {
 
 	channelBuffer1()
 
-	fmt.Println("channel buffer 2 - start")
-	ch := make(chan int, 10)
-	for i := 1; i <= 10; i++ {
-		ch <- i
-	}
-	channelBuffer2(ch)
-	fmt.Println("channel buffer 2 - end")
+	channelBuffer2()
 
+	channelBytes()
 }
 
 func channelUnbuffered() {
@@ -35,6 +32,7 @@ func channelUnbuffered() {
 	// unbuffered channel 로 부터 수신될때까지 기다리게 된다.
 	fmt.Println(<-channel0)
 	fmt.Println("channelUnbuffered - end")
+	close(channel0)
 }
 
 func channelBuffer1() {
@@ -77,24 +75,55 @@ func channelBuffer1() {
 	fmt.Println("channel buffer 1 - end")
 }
 
-func channelBuffer2(queue chan int) {
+func channelBuffer2() {
+	fmt.Println("channel buffer 2 - start")
+	var wg sync.WaitGroup
+	wg.Add(10)
+	queue := make(chan int, 10)
+	for i := 1; i <= 10; i++ {
+		queue <- i
+	}
+
 	fmt.Println("len(queue):", len(queue))
 	// for i := 0; i < 10; i++ {
 	// 	fmt.Println(<-queue)
 	// }
 	// range 로 채널을 조회하려면 채널을 닫아 송신이 없도록 보장해야 한다.
-	// 채널을 닫지 않으면 range 마지막 루프에서 채널을 기다리면 deadlock 이 발생한다.
+	// 채널을 닫지 않으면 range 마지막 루프에서 채널을 기다리며 deadlock 이 발생한다.
 	close(queue)
 	for i := range queue {
 		fmt.Println("i", i)
 		// 고루틴에 전달하기 위해 현재 루프에서의 인스턴스틀 생성해야 한다.
 		// 현재 루프 변수와 같은 이름의 변수를 사용해도 된다.
 		// 인스턴스가 없다면 range i 의 값이 루프마다 재사용되어 고루틴에 중복값(마지막 푸르의 i=10)이 전달 된다.
+		// 10개의 고루틴이 한꺼번에 실행되서 모두 1초안에 완료된다.
 		i := i
 		go func() {
 			time.Sleep(1 * time.Second)
 			fmt.Println("closure:", i)
+			wg.Done()
 		}()
 	}
-	time.Sleep(3 * time.Second)
+	wg.Wait()
+	fmt.Println("channel buffer 2 - end")
+}
+
+func channelBytes() {
+	var wg sync.WaitGroup
+	wg.Add(10)
+	data := []byte("ysoftman0")
+	ch := make(chan []byte)
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(string(<-ch))
+			wg.Done()
+		}
+	}()
+	for i := 0; i < 10; i++ {
+		data[len(data)-1] = []byte(strconv.Itoa(i))[0]
+		time.Sleep(1 * time.Second)
+		ch <- data
+	}
+	wg.Wait()
+	close(ch)
 }
