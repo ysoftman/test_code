@@ -155,6 +155,13 @@ func main() {
 		str = string(strslice)
 		fmt.Printf("str = string(strslice), str = %s\n", str)
 	}()
+
+	func() {
+		// reference 으로 넘긴 slice 파라미터 결과로 받기
+		var aaa []int
+		addInt(&aaa)
+		fmt.Println("addInt = ", aaa)
+	}()
 }
 
 func addSlice(v int, slice []int) []int {
@@ -175,4 +182,12 @@ func deleteSlice(idx int, slice []int) []int {
 		fmt.Println("delete idx =", idx, "slice len = ", len(slice), "slice cap = ", cap(slice), " slice =", slice)
 	}
 	return slice
+}
+
+func addInt(s *[]int) {
+	for i := 0; i < 10; i++ {
+		// slice 가 reference 인경우
+		// append 를 쓰려면 역참조로 slice 타입을 가리키도록 해야 한다.
+		*s = append(*s, i)
+	}
 }
