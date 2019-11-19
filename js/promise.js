@@ -1,4 +1,4 @@
-// javascript promise 패턴 방식 테스트
+// javascript promise 패턴 방식 테스트
 // promise 는 비동기 처리가 완료된후 결과를 주겠다는 약속이다.
 // pt 는 파라미터에 따라 5초후 성공, 실패 결과가 된다.
 var pt = function (param) {
