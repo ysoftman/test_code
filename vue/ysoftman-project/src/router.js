@@ -1,7 +1,6 @@
 /* eslint-disable */
 import Vue from 'vue'
 import Router from 'vue-router'
-import Vuetify from 'vuetify'
 import HelloWorld from '@/components/HelloWorld'
 import Alert from '@/components/Alert'
 import BindMessage from '@/components/BindMessage'
@@ -15,7 +14,6 @@ import NotFound from '@/components/NotFound'
 import VuetifyDark from '@/components/VuetifyDark'
 
 Vue.use(Router)
-Vue.use(Vuetify)
 
 export default new Router({
   // 디폴트 hash mode ;  http://localhost:8080/# 와 같이 hash 가 붙는다.
