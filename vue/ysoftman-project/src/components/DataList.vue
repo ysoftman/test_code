@@ -1,7 +1,7 @@
 <template>
   <div id="datalist">
     <!-- 반복문과 조건문 테스트 -->
-    <!-- vue 2.2.0 이상에서는 v-bind:key 로 키를 명시해햐 한다. -->
+    <!-- vue 2.2.0 이상에서는 :key 로 키를 명시해햐 한다. -->
     <h3 v-for="aaa in aaa_list" :key="aaa.a">
       <div id="customtag1" v-if="aaa.a == 111">
         첫번째 조건 {{ aaa.a }} {{ aaa.b }}

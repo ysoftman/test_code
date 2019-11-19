@@ -1,6 +1,6 @@
 <template>
   <!-- 레이아웃 구조 v-container > v-layout > v-flex 순이다. -->
-  <v-container grid-list-xl>
+  <v-container fluid class="m-1 p-1">
     <b-alert show>Default Alert</b-alert>
     <b-alert variant="success" show>Success Alert</b-alert>
     <b-alert

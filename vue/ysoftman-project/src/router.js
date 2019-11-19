@@ -5,6 +5,7 @@ import Vuetify from 'vuetify'
 import HelloWorld from '@/components/HelloWorld'
 import Alert from '@/components/Alert'
 import BindMessage from '@/components/BindMessage'
+import DataTable from '@/components/DataTable'
 import DataList from '@/components/DataList'
 import MyComponent from '@/components/MyComponent'
 import ModifyArray from '@/components/ModifyArray'
@@ -23,41 +24,56 @@ export default new Router({
   // 라우팅 정보
   routes: [{
     path: '/',
+    name: "Main",
     default: true,
-  }, {
+  },
+  {
     path: '/helloworld',
     default: true,
     name: 'HelloWorld',
     component: HelloWorld
-  }, {
+  },
+  {
     path: '/alert',
     name: 'Alert',
     component: Alert
-  }, {
+  },
+  {
     path: '/modifyarray',
     name: 'ModifyArray',
     component: ModifyArray
-  }, {
+  },
+  {
     path: '/bindmessage',
     name: 'BindMessage',
     component: BindMessage
-  }, {
+  },
+  {
     path: '/datalist',
     name: 'DataList',
     component: DataList
-  }, {
+  },
+  {
+    path: '/datatable',
+    name: 'DataTable',
+    component: DataTable
+  },  
+  {
     path: '/mycomponent',
     name: 'MyComponent',
     component: MyComponent
-  }, {
+  },
+  {
     path: '/draggable',
     name: 'Draggable',
     component: Draggable
-  }, {
+  },
+  {
     path: '/vuetifydark',
     name: 'VuetifyDark',
     component: VuetifyDark
-  }, {
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: NotFound

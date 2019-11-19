@@ -1,6 +1,6 @@
 <template>
   <v-toolbar color="light-blue lighten-1">
-    <v-toolbar-side-icon></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click="linkItem('Main')"></v-toolbar-side-icon>
     <v-toolbar-title>vue test toolbar</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
@@ -44,6 +44,7 @@ export default {
         "BindMessage",
         "MyComponent",
         "DataList",
+        "DataTable",
         "ModifyArray",
         "Draggable",
         "VuetifyDark"

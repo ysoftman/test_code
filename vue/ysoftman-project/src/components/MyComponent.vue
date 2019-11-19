@@ -4,7 +4,10 @@
     <ol>
       <!-- app 인스턴스 데이터를 fruitCom 컴포넌트를 사용하여 출력 -->
       <!-- vue 2.2.0 이상에서는 v-bind:key 로 키를 명시해햐 한다. -->
-      <fruitCom v-for="it in fruitList" v-bind:key="it.name" v-bind:item="it"></fruitCom>
+      <!-- <fruitCom v-for="it in fruitList" v-bind:key="it.name" v-bind:item="it"></fruitCom> -->
+      <!-- v-bind 축약표현 -->
+      <!-- v-on 축약표현 @ -->
+      <fruitCom v-for="it in fruitList" :key="it.name" :item="it"></fruitCom>
     </ol>
   </div>
 </template>
@@ -18,7 +21,6 @@
 //   props: ["item"],
 //   template: "<li> {{ item.index }} {{ item.name }} </li>"
 // });
-
 
 import FruitCom from "@/components/FruitCom.vue";
 export default {
