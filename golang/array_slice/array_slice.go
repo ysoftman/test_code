@@ -12,7 +12,35 @@ package main
 
 import "fmt"
 
+type Dummy struct {
+	strlist []string
+}
+
 func main() {
+
+	func() {
+		dummy1 := Dummy{
+			strlist: []string{"lemon", "apple", "orange"},
+		}
+		dummy2 := Dummy{}
+		dummy2 = dummy1
+		// 참조 복사
+		fmt.Printf("dummy1:%v, %p\n", dummy1, dummy1.strlist)
+		fmt.Printf("dummy2:%v, %p\n", dummy2, dummy2.strlist)
+		// deep copy
+		dummy2.strlist = make([]string, len(dummy1.strlist))
+		copy(dummy2.strlist, dummy1.strlist)
+		fmt.Printf("dummy1:%v, %p\n", dummy1, dummy1.strlist)
+		fmt.Printf("dummy2:%v, %p\n", dummy2, dummy2.strlist)
+	}()
+
+	func() {
+		var sliceStr []string
+		sliceStr = append(sliceStr, "aaa")
+		sliceStr = append(sliceStr, "bbb")
+		sliceStr = append(sliceStr, "ccc")
+		fmt.Println(sliceStr)
+	}()
 
 	func() {
 		// 5길이를 가진 배열 생성
