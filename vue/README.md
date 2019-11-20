@@ -12,16 +12,10 @@ cd ysoftman-project
 
 
 # 2019-11-20
-# vuetify 버전 2로 업그레이드
+# vuetify 버전 2 업그레이드
 cd ysoftman-project
-# 최신 버전 확인
-npm outdated
-# package.json package-lock.json 내용이 자동 업데이트 된다.
-npm update
-npm audit fix
-# vuetify 버전 2로 update 제대로 안돼서 새로 적용(app.vue, hellow.vue 소스가 수정되니 주의)
-vue add vuetify
-# 또는
+vue upgrade vuetify
+# 기타 업그레이드
 vue upgrade
 ```
 
