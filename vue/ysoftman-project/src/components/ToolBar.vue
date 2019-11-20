@@ -1,6 +1,6 @@
 <template>
   <v-toolbar color="light-blue lighten-1">
-    <v-toolbar-side-icon @click="linkItem('Main')"></v-toolbar-side-icon>
+    <v-app-bar-nav-icon @click.stop="linkItem('Main')"></v-app-bar-nav-icon>
     <v-toolbar-title>vue test toolbar</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
@@ -16,14 +16,16 @@
 
       <!-- v-menu 컴포넌트 이용해서 드롭다운 메뉴  -->
       <v-menu :nudge-width="200" left offset-y>
-        <v-toolbar-title slot="activator">
-          drop down menu
-          <v-icon dark>arrow_drop_down</v-icon>
-        </v-toolbar-title>
+        <template v-slot:activator="{ on }">
+          <v-btn text v-on="on">
+            drop down menu
+            <v-icon dark>arrow_drop_down</v-icon>
+          </v-btn>
+        </template>
         <v-list>
-          <v-list-tile v-for="item in examples" :key="item">
-            <v-list-tile-title v-text="item" @click="linkItem(item)"></v-list-tile-title>
-          </v-list-tile>
+          <v-list-item v-for="item in examples" :key="item" @click="linkItem(item)">
+            <v-list-item-title>{{item}}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-toolbar-items>
@@ -53,7 +55,7 @@ export default {
   },
   methods: {
     linkItem(iname) {
-      this.$router.push({ name: iname });
+      this.$router.push({ name: iname }).catch(err => {});
     }
   }
 };
