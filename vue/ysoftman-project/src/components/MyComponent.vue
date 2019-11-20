@@ -24,6 +24,7 @@
 
 import FruitCom from "@/components/FruitCom.vue";
 export default {
+  // 컴포넌트 네임은 파스칼(MyComponent)나 케밥(kebab, my-component)로 만들어야 한다. 케밥스타일 지향
   name: "MyComponent",
   components: {
     FruitCom
