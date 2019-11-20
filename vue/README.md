@@ -3,12 +3,21 @@
 ## 초기 환경 설정
 
 ```bash
-# vue-cli 등 필요 패키 설치
+# vue-cli(vue 자동 설치)등 필요 패키 설치
 npm install -g @vue/cli vuetify bootstrap-vue bootstrap vuedraggable
 
 # webpack (번들러, 의존성을 가진 모듈들을 묶어 정적인 asset 생성) template 를 이용해 프로젝트 생성
 vue create ysoftman-project
 cd ysoftman-project
+
+# vuetify 버전 2로 업그레이드(2019-11-20)
+cd ysoftman-project
+# 최신 버전 확인
+npm outdated
+# package.json package-lock.json 내용이 자동 업데이트 된다.
+npm update
+npm audit fix
+
 ```
 
 ## ysoftman-project Build Setup
