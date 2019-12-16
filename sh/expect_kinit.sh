@@ -1,4 +1,4 @@
-#!/usr/bin/expect 
+#!/usr/bin/expect
 # ysoftman
 # bash 가 아닌  expect 로 실행해야 한다.
 
