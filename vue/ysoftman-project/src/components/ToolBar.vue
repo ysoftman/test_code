@@ -69,7 +69,7 @@ export default {
     toggleDark() {
       if (this.$vuetify.theme.dark === true) {
         this.$vuetify.theme.dark = false;
-        // value 는 스트링으로 취급되 저장된다.
+        // value 는 스트링으로 저장된다.
         localStorage.setItem("dark_theme", false);
       } else {
         this.$vuetify.theme.dark = true;
