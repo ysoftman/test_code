@@ -14,6 +14,15 @@
       <v-btn :to="'/vuetifydark'" flat>VuetifyDark</v-btn>
       <v-btn :to="'/notfound'" flat>NotFound</v-btn>-->
 
+      <!-- toolip 으로 mouse over 시 메시지 표시 -->
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon>
+            <v-icon v-on="on" @click="toggleDark">mdi-brightness-4</v-icon>
+          </v-btn>
+        </template>
+        <span>dark theme</span>
+      </v-tooltip>
       <!-- v-menu 컴포넌트 이용해서 드롭다운 메뉴  -->
       <v-menu :nudge-width="200" left offset-y>
         <template v-slot:activator="{ on }">
@@ -56,6 +65,15 @@ export default {
   methods: {
     linkItem(iname) {
       this.$router.push({ name: iname }).catch(err => {});
+    },
+    toggleDark() {
+      if (this.$vuetify.theme.dark === true) {
+        this.$vuetify.theme.dark = false;
+        localStorage.setItem("dark_theme", false);
+      } else {
+        this.$vuetify.theme.dark = true;
+        localStorage.setItem("dark_theme", true);
+      }
     }
   }
 };

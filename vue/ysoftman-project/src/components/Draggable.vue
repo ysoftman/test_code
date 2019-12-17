@@ -1,9 +1,9 @@
 <template>
-  <v-container class="fluid container">
+  <v-container fluid>
     <h1>{{msg}}</h1>
     <v-row>
-      <v-col cols="6">
-        <button type="button" class="btn btn-primary" @click="orderList1">정렬하기</button>
+      <v-col xs4 class="elevation-1 pa-3 ma-2">
+        <v-btn class="blue" @click="orderList1">정렬하기</v-btn>
         <draggable
           class="list-group"
           v-model="myList1"
@@ -24,8 +24,8 @@
         <pre>{{myListString1}}</pre>
       </v-col>
 
-      <v-col cols="6">
-        <button type="button" class="btn btn-primary" @click="orderList2">정렬하기</button>
+      <v-col xs4 class="elevation-1 pa-3 ma-2">
+        <v-btn class="blue" @click="orderList2">정렬하기</v-btn>
         <draggable
           class="list-group"
           v-model="myList2"
