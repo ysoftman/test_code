@@ -1,5 +1,5 @@
 <template>
-  <div id="datalist">
+  <v-container fluid>
     <!-- 반복문과 조건문 테스트 -->
     <!-- vue 2.2.0 이상에서는 :key 로 키를 명시해햐 한다. -->
     <h3 v-for="aaa in aaa_list" :key="aaa.a">
@@ -13,7 +13,7 @@
       </div>
       <div id="customtag3" v-if="aaa.a == 333"></div>
     </h3>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <!-- template 안에는 하나의 root element 만 있어야 한다. -->
-  <div>
+  <v-container fluid>
     <v-switch :label="`dark/light`" v-model="enable_dark"></v-switch>
     <v-btn :dark="enable_dark">Success</v-btn>
     <v-btn color="green" :dark="enable_dark">Error</v-btn>
@@ -15,7 +15,7 @@
     <v-btn color="error" :dark="enable_dark">Error</v-btn>
     <v-btn color="warning" :dark="enable_dark">Warning</v-btn>
     <v-btn color="info" :dark="enable_dark">Info</v-btn>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <!-- 레이아웃 구조 v-container > v-layout > v-flex 순이다. -->
-  <v-container fluid class="m-1 p-1">
+  <v-container fluid>
     <b-alert show>Default Alert</b-alert>
     <b-alert variant="success" show>Success Alert</b-alert>
     <b-alert
@@ -21,11 +21,12 @@
       <b-progress variant="warning" :max="dismissSecs" :value="dismissCountDown" height="4px"></b-progress>
     </b-alert>
 
-    <b-btn @click="showAlert" variant="info" class="m-1">Show alert with count-down timer</b-btn>
+    <b-btn @click="showAlert" variant="info">Show alert with count-down timer</b-btn>
+    <!-- m-1 모든 지만 1 설정, ml-10 왼쪽 마진 10으로 설정 -->
     <b-btn
       @click="showDismissibleAlert=true"
       variant="info"
-      class="m-1"
+      class="ml-10"
     >Show dismissible alert ({{showDismissibleAlert?'visible':'hidden'}})</b-btn>
   </v-container>
 </template>

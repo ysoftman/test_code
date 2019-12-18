@@ -2,10 +2,9 @@
   <v-container fluid>
     <h1>{{msg}}</h1>
     <v-row>
-      <v-col xs4 class="elevation-1 pa-3 ma-2">
-        <v-btn class="blue" @click="orderList1">정렬하기</v-btn>
+      <v-col xs4 class="elevation-0 pa-3 ma-2">
+        <v-btn class="blue darken-1" @click="orderList1">정렬하기</v-btn>
         <draggable
-          class="list-group"
           v-model="myList1"
           group="ysoftman-group"
           ghostClass="ghost"
@@ -21,13 +20,12 @@
           </div>
         </draggable>
         <h3>json 결과</h3>
-        <pre>{{myListString1}}</pre>
+        <pre class="list-group-json-result">{{myListString1}}</pre>
       </v-col>
 
-      <v-col xs4 class="elevation-1 pa-3 ma-2">
+      <v-col xs4 class="elevation-0 pa-3 ma-2">
         <v-btn class="blue" @click="orderList2">정렬하기</v-btn>
         <draggable
-          class="list-group"
           v-model="myList2"
           group="ysoftman-group"
           ghostClass="ghost"
@@ -43,7 +41,7 @@
           </div>
         </draggable>
         <h3>json 결과</h3>
-        <pre>{{myListString2}}</pre>
+        <pre class="list-group-json-result">{{myListString2}}</pre>
       </v-col>
     </v-row>
   </v-container>
@@ -126,6 +124,30 @@ export default {
         this.delayedDragging = false;
       });
     }
+  },
+  mounted() {
+    // draggable list-group-item , list-group-json-result 가 dark theme 에서 숫자가 보이지 않아
+    // dark theme 일때 background 색상 조정
+    // let lgitem = document.querySelector(".list-group-item");
+    let lgitem = document.querySelectorAll(".list-group-item");
+    for (let i = 0; i < lgitem.length; i++) {
+      if (this.$vuetify.theme.dark === true) {
+        lgitem[i].style.background = "#d4edda";
+        lgitem[i].style.color = "black";
+      } else {
+        lgitem[i].style.background = "white";
+      }
+    }
+    // let lgjsonresult = document.querySelector(".list-group-json-result");
+    let lgjsonresult = document.querySelectorAll(".list-group-json-result");
+    for (let i = 0; i < lgjsonresult.length; i++) {
+      if (this.$vuetify.theme.dark === true) {
+        lgjsonresult[i].style.background = "#d4edda";
+        lgjsonresult[i].style.color = "black";
+      } else {
+        lgjsonresult[i].style.background = "white";
+      }
+    }
   }
 };
 </script>
@@ -148,14 +170,5 @@ export default {
 .ghost {
   opacity: 0.5;
   background: #0066ff;
-}
-.list-group {
-  min-height: 20px;
-}
-.list-group-item {
-  cursor: move;
-}
-.list-group-item i {
-  cursor: pointer;
 }
 </style>

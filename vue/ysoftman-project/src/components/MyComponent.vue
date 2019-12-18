@@ -1,5 +1,5 @@
 <template>
-  <div id="aaa">
+  <v-container fluid>
     {{ name }}
     <ol>
       <!-- app 인스턴스 데이터를 fruitCom 컴포넌트를 사용하여 출력 -->
@@ -9,7 +9,7 @@
       <!-- v-on 축약표현 @ -->
       <fruitCom v-for="it in fruitList" :key="it.name" :item="it"></fruitCom>
     </ol>
-  </div>
+  </v-container>
 </template>
 
 <script>

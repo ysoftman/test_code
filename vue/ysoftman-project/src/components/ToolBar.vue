@@ -75,6 +75,29 @@ export default {
         this.$vuetify.theme.dark = true;
         localStorage.setItem("dark_theme", "true");
       }
+
+      // draggable list-group-item , list-group-json-result 가 dark theme 에서 숫자가 보이지 않아
+      // dark theme 일때 background 색상 조정
+      // let lgitem = document.querySelector(".list-group-item");
+      let lgitem = document.querySelectorAll(".list-group-item");
+      for (let i = 0; i < lgitem.length; i++) {
+        if (this.$vuetify.theme.dark === true) {
+          lgitem[i].style.background = "#d4edda";
+          lgitem[i].style.color = "black";
+        } else {
+          lgitem[i].style.background = "white";
+        }
+      }
+      // let lgjsonresult = document.querySelector(".list-group-json-result");
+      let lgjsonresult = document.querySelectorAll(".list-group-json-result");
+      for (let i = 0; i < lgjsonresult.length; i++) {
+        if (this.$vuetify.theme.dark === true) {
+          lgjsonresult[i].style.background = "#d4edda";
+          lgjsonresult[i].style.color = "black";
+        } else {
+          lgjsonresult[i].style.background = "white";
+        }
+      }
     }
   }
 };

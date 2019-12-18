@@ -1,13 +1,13 @@
 <template>
   <!-- v-app 은 항상 포함돼야 한다. -->
   <v-app>
-    <v-container fluid ma-0 pa-0>
+    <v-card tile class="elevation-0">
       <toolbar flat height="80px"></toolbar>
-      <v-card>
-        <v-img src="./assets/logo.png" aspect-ratio="1" center max-width="300" max-height="300"></v-img>
-      </v-card>
+      <v-row align="center" justify="center">
+        <v-img src="./assets/logo.png" aspect-ratio="1" max-width="300" max-height="300"></v-img>
+      </v-row>
       <router-view></router-view>
-    </v-container>
+    </v-card>
   </v-app>
 </template>
 

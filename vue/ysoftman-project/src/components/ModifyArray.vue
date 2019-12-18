@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid>
     <div id="customtag1">
       arr = {{ arr }}
       <br />
@@ -14,9 +14,11 @@
         placeholder="추가할 값을 입력해주세요."
       ></b-form-input>
     </b-form-group>
-    <b-btn @click="pushElement(form.val1)" variant="info" class="m-1">추가</b-btn>
-    <b-btn @click="popElement" variant="info" class="m-1">삭제</b-btn>
-  </div>
+
+    <b-btn @click="pushElement(form.val1)" variant="info">추가</b-btn>
+    <!-- m-1 모든 지만 1 설정, ml-10 왼쪽 마진 10으로 설정 -->
+    <b-btn @click="popElement" variant="info" class="ml-10">삭제</b-btn>
+  </v-container>
 </template>
 
 <script>
