@@ -10,15 +10,21 @@ func main() {
 	//	array := []int{7, 3, 8, 2, 4, 1, 6, 9, 0, 5}
 	//	array := []int{5, 3, 7, 6, 2, 1, 4}
 
+	array2 := make([]int, len(array))
+	copiedcnt := copy(array2, array)
+	fmt.Println("copied cnt:", copiedcnt)
+
 	fmt.Println("array before =", array)
-	quick_sort(&array, 0, len(array)-1, 1)
+	quickSort(array, 0, len(array)-1, 1)
 	fmt.Println("array after  =", array)
+
+	fmt.Println("array2 before  =", array2)
+	quickSort2(array2, 0, len(array2)-1)
+	fmt.Println("array2 after  =", array2)
+
 }
 
-func quick_sort(input *[]int, left int, right int, depth int) {
-
-	arr := *input
-
+func quickSort(arr []int, left int, right int, depth int) {
 	// 왼쪽 인덱스가 오른쪽 인덱스 보다 커지는 순간 그만둔다.
 	if left >= right {
 		return
@@ -73,8 +79,30 @@ func quick_sort(input *[]int, left int, right int, depth int) {
 
 	// 위 과정이 끝나면 j 값을 기준으로 왼쪽, 오른쪽부분으로 구분
 	// 왼쪽부분 퀵정렬 수행
-	quick_sort(&arr, left, j-1, depth+1)
+	quickSort(arr, left, j-1, depth+1)
 	// 오른쪽부분 퀵정렬 수행
-	quick_sort(&arr, j+1, right, depth+1)
+	quickSort(arr, j+1, right, depth+1)
 
+}
+
+func quickSort2(arr []int, left, right int) {
+	if left >= right {
+		return
+	}
+	i := left
+	for j := left; j < right; j++ {
+		if arr[j] < arr[right] {
+			temp := arr[i]
+			arr[i] = arr[j]
+			arr[j] = temp
+			i++
+		}
+	}
+	temp := arr[right]
+	arr[right] = arr[i]
+	arr[i] = temp
+
+	fmt.Println("array trace  =", arr, "pivot=", arr[right], "left=", left, "right=", right, "i=", i)
+	quickSort2(arr, left, i-1)
+	quickSort2(arr, i+1, right)
 }
