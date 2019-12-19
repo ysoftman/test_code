@@ -10,6 +10,10 @@ Vue.use(vuetify);
 
 Vue.config.productionTip = false
 
+
+// silbling component 들간의 통신을 위한 이벤트 버스
+export const eventBus = new Vue();
+
 new Vue({
   router,
   store,

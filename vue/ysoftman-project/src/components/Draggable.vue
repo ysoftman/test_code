@@ -51,6 +51,7 @@
 /* eslint-disable */
 // Vue.js는 렌더링 된 DOM을 기본 Vue 인스턴스의 데이터에 선언적으로 바인딩 할 수있는 HTML 기반 템플릿 구문을 사용합니다
 import draggable from "vuedraggable";
+import { eventBus } from "../main";
 
 const myData1 = [
   { id: 111, name: "사과", desc: "맛있다." },
@@ -104,6 +105,30 @@ export default {
     },
     Element2JsonString(ele) {
       return JSON.stringify(ele, null, 2);
+    },
+    changeDraggableColor() {
+      // draggable list-group-item , list-group-json-result 가 dark theme 에서 숫자가 보이지 않아
+      // dark theme 일때 background 색상 조정
+      // let lgitem = document.querySelector(".list-group-item");
+      let lgitem = document.querySelectorAll(".list-group-item");
+      for (let i = 0; i < lgitem.length; i++) {
+        if (this.$vuetify.theme.dark === true) {
+          lgitem[i].style.background = "#00ACC1";
+          lgitem[i].style.color = "black";
+        } else {
+          lgitem[i].style.background = "white";
+        }
+      }
+      // let lgjsonresult = document.querySelector(".list-group-json-result");
+      let lgjsonresult = document.querySelectorAll(".list-group-json-result");
+      for (let i = 0; i < lgjsonresult.length; i++) {
+        if (this.$vuetify.theme.dark === true) {
+          lgjsonresult[i].style.background = "#d4edda";
+          lgjsonresult[i].style.color = "black";
+        } else {
+          lgjsonresult[i].style.background = "white";
+        }
+      }
     }
   },
   computed: {
@@ -126,34 +151,21 @@ export default {
     }
   },
   mounted() {
-    // draggable list-group-item , list-group-json-result 가 dark theme 에서 숫자가 보이지 않아
-    // dark theme 일때 background 색상 조정
-    // let lgitem = document.querySelector(".list-group-item");
-    let lgitem = document.querySelectorAll(".list-group-item");
-    for (let i = 0; i < lgitem.length; i++) {
-      if (this.$vuetify.theme.dark === true) {
-        lgitem[i].style.background = "#00ACC1";
-        lgitem[i].style.color = "black";
-      } else {
-        lgitem[i].style.background = "white";
-      }
-    }
-    // let lgjsonresult = document.querySelector(".list-group-json-result");
-    let lgjsonresult = document.querySelectorAll(".list-group-json-result");
-    for (let i = 0; i < lgjsonresult.length; i++) {
-      if (this.$vuetify.theme.dark === true) {
-        lgjsonresult[i].style.background = "#d4edda";
-        lgjsonresult[i].style.color = "black";
-      } else {
-        lgjsonresult[i].style.background = "white";
-      }
-    }
+    this.changeDraggableColor();
+  },
+  created() {
+    let self = this;
+    // changeDraggableColor 이벤트 발생시 처리로직 구현
+    // 참고로 $on 은 자식에서 호출되는 경우 감지 하지 않는다.
+    eventBus.$on("changeDraggableColor", function() {
+      // this.changeDraggableColor();
+      self.changeDraggableColor();
+    });
   }
 };
 </script>
 
 <style>
-
 .flip-list-move {
   transition: transform 0.5s;
 }
