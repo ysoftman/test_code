@@ -107,7 +107,6 @@ export default {
       return JSON.stringify(ele, null, 2);
     },
     changeDraggableColor() {
-      // draggable list-group-item , list-group-json-result 가 dark theme 에서 숫자가 보이지 않아
       // dark theme 일때 background 색상 조정
       // let lgitem = document.querySelector(".list-group-item");
       let lgitem = document.querySelectorAll(".list-group-item");
@@ -141,6 +140,7 @@ export default {
   },
   watch: {
     isDragging(newValue) {
+      this.changeDraggableColor();
       if (newValue) {
         this.delayedDragging = true;
         return;
