@@ -82,7 +82,7 @@ export default {
       let lgitem = document.querySelectorAll(".list-group-item");
       for (let i = 0; i < lgitem.length; i++) {
         if (this.$vuetify.theme.dark === true) {
-          lgitem[i].style.background = "#d4edda";
+          lgitem[i].style.background = "#00ACC1";
           lgitem[i].style.color = "black";
         } else {
           lgitem[i].style.background = "white";

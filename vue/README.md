@@ -81,11 +81,13 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ## references
 
-- vue : https://kr.vuejs.org/
-- webpack : https://webpack.js.org/
-- vue-router : https://github.com/vuejs/vue-router/tree/dev/examples
-- vue-router history mode : https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configuration
-- vue-component : https://bootstrap-vue.js.org/docs/components
-- vue examples : https://vuejsexamples.com/
-- vuetifyjs : https://vuetifyjs.com
-- eslint : https://eslint.org/docs/rules/space-before-function-paren
+- vue : <https://kr.vuejs.org/>
+- webpack : <https://webpack.js.org/>
+- vue-router : <https://github.com/vuejs/vue-router/tree/dev/examples>
+- vue-router history mode : <https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configuration>
+- vue-component : <https://bootstrap-vue.js.org/docs/components>
+- vue examples : <https://vuejsexamples.com/>
+- vuetifyjs : <https://vuetifyjs.com>
+- eslint : <https://eslint.org/docs/rules/space-before-function-paren>
+- material icons : <https://cdn.materialdesignicons.com/4.7.95/>
+- material colors : <https://vuetifyjs.com/en/styles/colors#>

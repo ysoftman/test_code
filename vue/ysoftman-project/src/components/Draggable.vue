@@ -132,7 +132,7 @@ export default {
     let lgitem = document.querySelectorAll(".list-group-item");
     for (let i = 0; i < lgitem.length; i++) {
       if (this.$vuetify.theme.dark === true) {
-        lgitem[i].style.background = "#d4edda";
+        lgitem[i].style.background = "#00ACC1";
         lgitem[i].style.color = "black";
       } else {
         lgitem[i].style.background = "white";
@@ -153,13 +153,6 @@ export default {
 </script>
 
 <style>
-#myList {
-  color: cornflowerblue;
-  outline-style: solid;
-  margin: 10px;
-  /* width: fit-content; */
-  width: 25%;
-}
 
 .flip-list-move {
   transition: transform 0.5s;
