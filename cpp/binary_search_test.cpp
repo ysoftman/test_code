@@ -6,31 +6,31 @@
 int cnt = 0;
 
 // 이진 탐색(Condition : 정렬된 배열에 대해서만)
-// parameter : arr - 배열, head - 배열시작(0), end - 배열끝, k - 찾을 데이터)
-int BinarySearch(int arr[], int head, int end, int k)
+// parameter : arr - 배열, left - 배열시작(0), right - 배열끝, k - 찾을 데이터)
+int BinarySearch(int arr[], int left, int right, int k)
 {
 	int mid;
-	if (head > end)
+	mid = left + (right - left) / 2;
+	if (left > right)
 	{
-		printf("Head > End Error -> There Is No Target Number...\n");
-		return 0;
+		printf("There Is No Target Number...\n\n");
+		return -1;
 	}
-	mid = (head + end) / 2;
-	printf("\n[Count %2d]Searching.... %2d", ++cnt, arr[mid]);
+	printf("left:%d mid:%d right:%d [Count %2d]Searching... %2d\n", left, mid, right, ++cnt, arr[mid]);
 	if (arr[mid] == k)
 	{
-		printf("\nFound %d arr[%d]\n\n", k, mid);
+		printf("Found %d arr[%d]\n\n", k, mid);
 		return mid;
 	}
 	else
 	{
 		if (arr[mid] > k)
 		{
-			return BinarySearch(arr, head, mid, k);
+			return BinarySearch(arr, left, mid - 1, k);
 		}
 		else
 		{
-			return BinarySearch(arr, mid, end, k);
+			return BinarySearch(arr, mid + 1, right, k);
 		}
 	}
 }
@@ -39,23 +39,33 @@ int BinarySearch(int arr[], int head, int end, int k)
 int BinarySearch2(int arr[], int length, int k)
 {
 	int cnt = 0;
-	int i = length;
+	int mid = 0;
 	int left = 0, right = length - 1;
-	while (arr[i] != k)
+	while (1)
 	{
-		i = (left + right) / 2;
-		if (arr[i] < k)
+		mid = left + (right - left) / 2;
+		if (left > right)
 		{
-			left = i;
+			printf("There Is No Target Number...\n\n");
+			return -1;
+		}
+		printf("left:%d mid:%d right:%d ", left, mid, right);
+		printf("[Count %2d]Searching... %2d\n", ++cnt, arr[mid]);
+		if (arr[mid] == k)
+		{
+			break;
+		}
+		if (arr[mid] < k)
+		{
+			left = mid + 1;
 		}
 		else
 		{
-			right = i;
+			right = mid - 1;
 		}
-		printf("\n[Count %2d]Searching.... %2d", ++cnt, arr[i]);
 	}
-	printf("\nFound %d arr[%d]\n\n", k, i);
-	return i;
+	printf("Found %d arr[%d]\n\n", k, mid);
+	return mid;
 }
 
 int main()
@@ -69,11 +79,11 @@ int main()
 	{
 		printf("%d ", array[i]);
 	}
-	printf("\nArray length : %d", array_length);
-	printf("\n\nInput Target Number : ");
+	printf("\nArray length : %d\n", array_length);
+	printf("Input Target Number : ");
 	scanf("%d", &target);
 
 	BinarySearch(array, 0, array_length - 1, target);
-	BinarySearch2(array, array_length - 1, target);
+	BinarySearch2(array, array_length, target);
 	return 0;
 }
