@@ -4,7 +4,7 @@
 
 ```bash
 # static binary 로 빌드함
-bash  ./make_curl_supports_https.sh
+bash ./make_curl_supports_https.sh
 ```
 
 - 테스트

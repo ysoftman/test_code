@@ -25,7 +25,8 @@ git clone https://github.com/curl/curl
 cd curl
 ./buildconf
 # --disable-shared 로 바이너리 파일 하나로 작동되도록 한다.
+# 하지만 quiche dynamic library 가 있어야 한다.
 ./configure --disable-shared LDFLAGS="-Wl,-rpath,$PWD/../quiche/target/release" --with-ssl=$PWD/../quiche/deps/boringssl/.openssl --with-quiche=$PWD/../quiche/target/release
 make -j8
 
-cp -v ./src/curl ../curl-http3-mac
+cp -fv ./src/curl ../curl-http3-mac
