@@ -3,7 +3,7 @@
 - 빌드
 
 ```bash
-# static binary 로 빌드함
+# 스크립트 실행 후 curl 이 ./quiche/target/release/libquiche.dylib 라이브러리를 참조한다.
 bash ./make_curl_supports_https.sh
 ```
 
