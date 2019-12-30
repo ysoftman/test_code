@@ -27,7 +27,7 @@ fn another_fn(x: i32, y: &str) -> &str {
     let bb = {
         let bbb = 30;
         println!("bbb:{}", bbb);
-        // 표현시의 마지막에 ; 를 붙이지 말아야 리턴된다.
+        // 표현시의 마지막에 ; 를 붙이지 말아야 리턴된다.(암묵적 리턴)
         // 만약 마지막에 ; 을 붙이면 구문으로 취급되면 리턴되지 않는다.
         bbb - 10
     };
@@ -36,6 +36,9 @@ fn another_fn(x: i32, y: &str) -> &str {
     // let cc = if bb == 20 { 30 } else { "40" };
     println!("aa:{}, bb:{}, cc:{}", aa, bb, cc);
 
-    // 리턴값 ; 을 붙이면 안된다.
+    // 리턴
+    // return "okay";
+    // 또는 암묵적 리턴
+    // 마지막에 ; 을 붙이지 않으면 리턴
     "okay"
 }
