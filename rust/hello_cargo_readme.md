@@ -12,11 +12,11 @@ cargo fmt
 # 코드 체크
 cargo check
 
-# 빌드없이 실행만
-cargo run
-
 # 빌드
 cargo build
+
+# 빌드 및 실행
+cargo run
 
 # hello_cargo/target/ 이 생성된다.
 # 실행 파일
@@ -27,5 +27,4 @@ cargo update
 
 # 문서화
 cargo doc --open
-
 ```
