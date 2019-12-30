@@ -32,4 +32,9 @@ fn main() {
     for n in 1..=10 {
         println!("n:{}", n);
     }
+
+    // 10-1 역순으로 반복
+    for n in (1..11).rev() {
+        println!("n:{}", n);
+    }
 }
