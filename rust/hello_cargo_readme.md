@@ -1,4 +1,4 @@
-# cargo 로 프로젝트 구조 생성
+# cargo 사용방법
 
 ```bash
 # --bin 은 library 가 아닌 binary(실행파일)을 만들기 위한 것
@@ -8,6 +8,12 @@ cd hello_cargo
 
 # 코드 포맷팅
 cargo fmt
+
+# 코드 체크
+cargo check
+
+# 빌드없이 실행만
+cargo run
 
 # 빌드
 cargo build
