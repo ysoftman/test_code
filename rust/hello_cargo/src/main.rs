@@ -2,7 +2,7 @@
 // cargo.toml 에 명시된 외부의 rand crate(크레이트) 는 패키지를 가져온다
 extern crate rand;
 
-// prelude 로 std 내의 타입 가져오기
+// prelude(직접 명시해서 가져오 않더라도 이미 포함되어 있는 표준라이브러리들) 로 std 내의 타입 가져오기
 // 표준 입출력
 use std::cmp::Ordering;
 use std::io;
@@ -51,6 +51,7 @@ fn main() {
         println!("generate random...");
 
         // guess 를 usinged int 32 로 받는다.
+        // expect 는 파싱결과(enum Result 의 Err 리턴)가 숫자가 아니면 패닉을 발생한다.
         let guess_u32: u32 = guess.trim().parse().expect("Please type a number!");
 
         // 입력 숫자와 랜덤 값과 크기 비교
