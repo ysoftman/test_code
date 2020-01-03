@@ -12,6 +12,9 @@ cargo fmt
 # 코드 체크
 cargo check
 
+# 테스트 코드 수행
+cargo test
+
 # 빌드
 cargo build
 

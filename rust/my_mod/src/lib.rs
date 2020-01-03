@@ -1,8 +1,24 @@
+// 테스트를 위한 테스트 모듈
 #[cfg(test)]
 mod tests {
+
+    // 테스트 함수
     #[test]
     fn it_works() {
         assert_eq!(2 + 2, 4);
+
+        // 모듈 경로는 상대적이다.
+        // test 모듈입장에선 fruit, friend 모두 상위 모듈에서 명시되야(찾아야)하고
+        // 이때 super 로 상위 모듈 부터 명시할 수 있다.
+        // 즉 형제 모듈을 가져올때 super 사용
+        super::fruit::list();
+        super::friend::list();
+
+        // 또는 use 로 미리 스코르를 선언해 둘 수도 있다.
+        use super::friend;
+        use super::fruit;
+        fruit::list();
+        friend::list();
     }
 }
 

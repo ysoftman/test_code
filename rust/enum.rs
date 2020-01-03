@@ -15,7 +15,7 @@ enum YsoftmanEnum {
     V4Digit(u32, u32, u32, u32),
     Cnt(u32),
     // struct 타입 지정 가능
-    Fruit(Fruit),
+    FruitData(Fruit),
 
     // 데이터 타입을 지정하지 않을 수 있다.
     Quit,
@@ -33,12 +33,29 @@ impl YsoftmanEnum {
     }
 }
 
+// enum 도 use 를 통해 스코프를 줄일 수 있다.
+// enum variant 개별 명시 하는 경우
+// use YsoftmanEnum::{Cnt, FruitData, V4Digit, V4, V6};
+// enum variant 모두 명시 하는 경우
+use YsoftmanEnum::*;
+
 fn main() {
     let ipv4 = YsoftmanEnum::V4(String::from("127.0.0.1"));
     let ipv4_digit = YsoftmanEnum::V4Digit(127, 0, 0, 1);
     let ipv6 = YsoftmanEnum::V6(String::from("::1"));
     let cnt = YsoftmanEnum::Cnt(123);
-    let fruit = YsoftmanEnum::Fruit(Fruit {
+    let fruit = YsoftmanEnum::FruitData(Fruit {
+        name: String::from("lemon"),
+        value: 123,
+    });
+
+    // use 로 스코프를 줄여 Cnt 바로 사용
+    // _변수명으로 사용은 하지 않도록 함.
+    let _ipv4 = V4(String::from("127.0.0.1"));
+    let _ipv4_digit = V4Digit(127, 0, 0, 1);
+    let _ipv6 = V6(String::from("::1"));
+    let _cnt = Cnt(123);
+    let _fruit = FruitData(Fruit {
         name: String::from("lemon"),
         value: 123,
     });
