@@ -2,7 +2,7 @@
 
 ```bash
 # --bin 은 library 가 아닌 binary(실행파일)을 만들기 위한 것
-cargo new hello_cargo --bin  
+cargo new --bin hello_cargo
 
 cd hello_cargo
 
