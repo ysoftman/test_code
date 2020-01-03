@@ -61,6 +61,7 @@ fn main() {
     println!("-----");
     // 가변 참조로 값을 변경할 수 있다.
     for i in &mut v {
+        // *역참조로 값을 변경
         *i += 10;
         println!("for {}", i);
     }
