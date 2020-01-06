@@ -43,7 +43,7 @@ fn calc_length(s: &mut String) -> usize {
 }
 
 // s 참조자값  dangling() 스코프를 벗어나면 drop 되서 무효화 된다.
-// 결곡 dangling pointer 값을 리턴하는 꼴이 된다.
+// 결국 dangling pointer 값을 리턴하는 꼴이 된다.
 // fn dangling() -> &String {
 //     let s = String::from("apple");
 //     &s

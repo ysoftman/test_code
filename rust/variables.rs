@@ -1,5 +1,17 @@
+// static 으로 global 변수
+static GLOBAL_STRING: &str = "ysoftman";
+static GLOBAL_INT: i32 = 123123;
+
 // 불변 변수를 통해 쉽게 안정성과 동시성을 취할 수 있다.
 fn main() {
+    println!("GLOBAL_STRING : {}", GLOBAL_STRING);
+    // 같은 이름의 변수라면 global 보다 local 이 우선한다.
+    static GLOBAL_INT: i32 = 9999;
+    println!("GLOBAL_INT : {}", GLOBAL_INT);
+    // static 가변은 쓸 수 없다.
+    static GLOBAL_INT2: i32 = 7777;
+    println!("GLOBAL_INT2 : {}", GLOBAL_INT2);
+
     // 데이터 타임을 명시할 수도 있따.
     let a: u8;
     // 최초 초기화
