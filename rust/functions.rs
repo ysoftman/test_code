@@ -1,9 +1,26 @@
 fn main() {
-    println!("Hello, world!");
+    // 여러개 값 리턴 받기
+    let (a, b, c) = ret_n_values();
+    println!("{} {} {}", a, b, c);
+    // 리턴값들을 각각 인덱싱할 수도 있다.
+    println!("{}", ret_n_values().0);
+    println!("{}", ret_n_values().1);
+    println!("{}", ret_n_values().2);
+    // 리턴값 여러개를 한번에 찍을 수도 있다.
+    println!("{:?}", ret_n_values());
+
     let ret = another_fn(123, "ysoftman");
     println!("another_fn returns:{}", ret);
+
+    unit_function();
+    // 1번째 리턴값만 출력
+    println!("return {}", unit_function2().1);
 }
 
+fn ret_n_values() -> (u32, String, f32) {
+    // 여러개 값 리턴
+    (123, "ysoftman".to_string(), 1.12)
+}
 // 함수 파라미터 사용시,  str 는 참조자(&) 사용
 // -> 리턴타입
 fn another_fn(x: i32, y: &str) -> &str {
@@ -41,4 +58,15 @@ fn another_fn(x: i32, y: &str) -> &str {
     // 또는 암묵적 리턴
     // 마지막에 ; 을 붙이지 않으면 리턴
     "okay"
+}
+
+// () 는 유닛(unit) 또는 nil 이라불리는 타입으로 ()라는 값 하나만 가진다.
+// 의미있는 값이 리턴될 필요가 없을때 사용하며 리턴이 없는 경우와 같은데,
+// fn unit_function() {
+fn unit_function() -> () {
+    println!("unit function");
+}
+// 다음과 같이 2개 이상 리턴할때 리턴인덱스를 맞추기 위해서 사용할 수 있다.
+fn unit_function2() -> ((), String) {
+    ((), "aaa".to_string())
 }
