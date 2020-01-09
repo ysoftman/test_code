@@ -17,11 +17,13 @@ use std::process;
 fn main() {
     // args() 의 결과는 반복자(iterator)인데 이를 collect() 로 벡터로 변환한다.
     // collect() 사용시 타임 추론을 할수 없어 Vec<String> 타입을 명시해야 한다.
-    let args: Vec<String> = env::args().collect();
+    // let args: Vec<String> = env::args().collect();
 
     // config new 로 생성시 cli arguments 파싱
     // unwrap_or_else() 는 Err 발생시 Err 값을 err 인자로 전달하고 클로저(익명함수) 수행
-    let config = Config::new(&args).unwrap_or_else(|err| {
+    // let config = Config::new(&args).unwrap_or_else(|err| {
+    // Config new 에서 반복자로 env::args()의 소유권을 넘겨받도록 한다.
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
         // stderr 로 출력
         eprintln!("파싱 에러:{}", err);
         // panic! 의 불필요한 메시지를 출력하지 않기 위해 exit()사용

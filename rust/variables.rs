@@ -12,10 +12,10 @@ fn main() {
     static GLOBAL_INT2: i32 = 7777;
     println!("GLOBAL_INT2 : {}", GLOBAL_INT2);
 
-    // 데이터 타임을 명시할 수도 있따.
+    // 데이터 타입을 명시할 수도 있다.
     let a: u8;
-    // 최초 초기화
-    a = 123;
+    // 최초 초기화(u8로 선언되어 있어 0~255값만 가능한다.)
+    a = 255;
     println!("a : {}", a);
     // immutable 이라 변경할 수 없다.
     // a = 456;
