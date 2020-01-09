@@ -11,3 +11,11 @@ edition = "2018"
 # crate(크레이트) 는 패키지
 # rand 크레이트 사용
 rand = "0.4.0"
+
+[profile.dev]
+# 최적화 레벨(0~3:최대)
+opt-level = 0
+
+[profile.release]
+# 최적화 레벨
+opt-level = 3
