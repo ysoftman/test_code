@@ -4,6 +4,8 @@
 // hello_world 처럼 단어 사이는 _ 사용
 // 들여쓰기는 space 사용
 // rustfmt(${HOME}/.cargo/bin/rustfmt) 으로 코드 포맷팅할 수 있다.
+// rustfmt 가 없다면 cargo 로 설치 할 수 있다.
+// cargo install rustfmt
 // 코드 포맷팅
 // rustfmt ./hello_world.rs
 // 빌드 및 실행
