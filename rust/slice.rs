@@ -2,6 +2,11 @@
 // slice test
 
 fn main() {
+    // 0으로 초기화된 512 바이트 크기의 버퍼
+    let buffer = [0; 512];
+    println!("buffer: {}", buffer.len());
+    println!("buffer: {}", buffer[0]);
+
     let num = [1, 2, 3, 4, 5];
     println!("num:{}", num[1]);
     // 슬라이스는 &로 참조해서 사용해야 한다.
