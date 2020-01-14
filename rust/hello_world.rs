@@ -22,8 +22,18 @@ fn main() {
 
     // println 포맷팅 종류
     println!("{}", 1);
+    // binary 출력
+    println!("{:b}", 255);
+    // argument 위치별 출력
+    println!("{0} {1} {0}", 123, "abc");
+    // argument 이름별 출력
     println!("{val1:} {val2:}", val1 = 1, val2 = "ysoftman");
+    // 오른쪽으로 10 들여쓰기 해서 출력
+    println!("{val1:>a$}", val1 = 1, a = 10);
+    // 오른쪽으로 10 들여쓰기 해서 출력, 공백 0 으로 채우기(padding)
+    println!("{val1:>0a$}", val1 = 1, a = 10);
     let vec1 = vec![1, 2, 3];
+    // debug formatting
     println!("{:?}", vec1);
     // pretty formatting(indent)
     println!("{:#?}", vec1);
