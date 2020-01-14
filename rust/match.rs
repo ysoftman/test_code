@@ -36,6 +36,7 @@ fn main() {
     multi_match();
     some_ref_match();
     match_guard();
+    at_binding_match();
 }
 
 fn value_in_cents(coin: Coin) -> u32 {
@@ -159,5 +160,20 @@ fn match_guard() {
         // match 뒤에 if 조건을 추가 할 수 있다.(match guard)
         10 | 9 | 8 if tf => println!("10 or 9 or 8 s:{}", num),
         _ => (),
+    }
+}
+
+fn at_binding_match() {
+    enum Message {
+        Hello { id: i32 },
+    }
+    let msg = Message::Hello { id: 5 };
+    match msg {
+        Message::Hello {
+            // @ 는 패턴 매칭을 확인 하는 동시에 해당 값을 갖는 변수를 생성한다.
+            id: id_variable @ 3..=7,
+        } => println!("3~7 {}", id_variable),
+        Message::Hello { id: 8..=10 } => println!("8~10"),
+        Message::Hello { id } => println!("other"),
     }
 }
