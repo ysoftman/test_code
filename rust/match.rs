@@ -32,6 +32,8 @@ fn main() {
     println!("some u8 value 3 : {}", some_u8_value(3));
     println!("some u8 value 4 : {}", some_u8_value(4));
     println!("some u8 value 5 : {}", some_u8_value(5));
+
+    multi_match();
 }
 
 fn value_in_cents(coin: Coin) -> u32 {
@@ -78,5 +80,40 @@ fn some_u8_value(u: u8) -> String {
         _ => String::from("greater than 3"),
         // 리턴이 없는 경우라면 다음과 같이 () 로 단위값만 명사하면 아무것도 처리하지 않을 수 있다.
         // _ => (),
+    }
+}
+
+fn multi_match() {
+    let x = 2;
+    match x {
+        // 1 또는 99 일때
+        1 | 99 => println!("1 or 99"),
+        // 1 ~ 10 범위 일때(deprecated 되었다.)
+        // 2...10 => println!("1 or 99"),
+        // 대신 ..= 를 사용한다.
+        2..=10 => println!("2 ~ 10"),
+        _ => println!("i don't know!"),
+    }
+
+    let c = 'd';
+    match c {
+        // a 또는 z 일때
+        'a' | 'z' => println!("'a' or 'z'"),
+        // b ~ f 사이 일때
+        'b'..='f' => println!("'b' ~ 'f'"),
+        _ => println!("i don't know!"),
+    }
+
+    struct Point {
+        x: u32,
+        y: u32,
+        z: u32,
+    }
+
+    let point = Point { x: 0, y: 1, z: 2 };
+    println!("x:{}, y:{}, z:{}", point.x, point.y, point.z);
+    match point {
+        // x 외 다른 필드는 .. 무시하기
+        Point { x, .. } => println!("x:{}", x),
     }
 }
