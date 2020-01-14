@@ -19,4 +19,12 @@
 fn main() {
     // ! 는 매크로 의미
     println!("hello, world!");
+
+    // println 포맷팅 종류
+    println!("{}", 1);
+    println!("{val1:} {val2:}", val1 = 1, val2 = "ysoftman");
+    let vec1 = vec![1, 2, 3];
+    println!("{:?}", vec1);
+    // pretty formatting(indent)
+    println!("{:#?}", vec1);
 }
