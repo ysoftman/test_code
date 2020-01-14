@@ -34,6 +34,8 @@ fn main() {
     println!("some u8 value 5 : {}", some_u8_value(5));
 
     multi_match();
+    some_ref_match();
+    match_guard();
 }
 
 fn value_in_cents(coin: Coin) -> u32 {
@@ -115,5 +117,47 @@ fn multi_match() {
     match point {
         // x 외 다른 필드는 .. 무시하기
         Point { x, .. } => println!("x:{}", x),
+    }
+}
+
+fn some_ref_match() {
+    let fruit = Some(String::from("lemon"));
+    match fruit {
+        // s 소유권이 이동되어 이후에는 사용하지 못한다.
+        // Some(s) => println!("s:{}", s),
+        // ref 로 s 를 소유권이동없ㄷ이 빌림으로 사용할 수도 있다.
+        Some(ref s) => println!("s:{}", s),
+        None => (),
+    }
+    println!("fruit:{:?}", fruit);
+
+    let mut mut_fruit = Some(String::from("lemon"));
+    match mut_fruit {
+        // ref mut 으로 소유권이동없이(빌림) mut_fruit 를 변경할 수 있다.
+        Some(ref mut s) => {
+            println!("s:{}", s);
+            *s = String::from("orange")
+        }
+        None => (),
+    }
+    println!("mut_fruit:{:?}", mut_fruit);
+}
+
+fn match_guard() {
+    let x = Some(5);
+    match x {
+        // match 뒤에 if 조건을 추가 할 수 있다.(match guard)
+        Some(s) if s == 5 => println!("{} is 5", s),
+        Some(s) if s > 3 => println!("greater than 3 :{}", s),
+        Some(s) => println!("s:{}", s),
+        None => (),
+    }
+
+    let num = 10;
+    let tf = true;
+    match num {
+        // match 뒤에 if 조건을 추가 할 수 있다.(match guard)
+        10 | 9 | 8 if tf => println!("10 or 9 or 8 s:{}", num),
+        _ => (),
     }
 }
