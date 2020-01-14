@@ -1,13 +1,14 @@
 fn main() {
-    // 여러개 값 리턴 받기
-    let (a, b, c) = ret_n_values();
+    // 튜플(여러개 값)파라미터로 넘기로 튜플로리턴 받기
+    let (x, y) = (-100, 100);
+    let (a, b, c) = ret_n_values((x, y));
     println!("{} {} {}", a, b, c);
     // 리턴값들을 각각 인덱싱할 수도 있다.
-    println!("{}", ret_n_values().0);
-    println!("{}", ret_n_values().1);
-    println!("{}", ret_n_values().2);
+    println!("{}", ret_n_values((x, y)).0);
+    println!("{}", ret_n_values((x, y)).1);
+    println!("{}", ret_n_values((x, y)).2);
     // 리턴값 여러개를 한번에 찍을 수도 있다.
-    println!("{:?}", ret_n_values());
+    println!("{:?}", ret_n_values((x, y)));
 
     let ret = another_fn(123, "ysoftman");
     println!("another_fn returns:{}", ret);
@@ -17,7 +18,8 @@ fn main() {
     println!("return {}", unit_function2().1);
 }
 
-fn ret_n_values() -> (u32, String, f32) {
+fn ret_n_values((a, b): (i32, i32)) -> (u32, String, f32) {
+    println!("tuple paramter({}, {})", a, b);
     // 여러개 값 리턴
     (123, "ysoftman".to_string(), 1.12)
 }
