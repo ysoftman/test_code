@@ -37,4 +37,10 @@ fn main() {
     for n in (1..11).rev() {
         println!("n:{}", n);
     }
+
+    let vec = vec!["lemon", "orange", "banana"];
+    // enumerate()로 반복자값에 대한 index 를 추가해 튜플을 만들어 준다.
+    for (index, value) in vec.iter().enumerate() {
+        println!("index:{} value:{}", index, value);
+    }
 }
