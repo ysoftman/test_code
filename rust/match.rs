@@ -81,7 +81,7 @@ fn some_u8_value(u: u8) -> String {
         2 => String::from("two"),
         3 => String::from("three"),
         _ => String::from("greater than 3"),
-        // 리턴이 없는 경우라면 다음과 같이 () 로 단위값만 명사하면 아무것도 처리하지 않을 수 있다.
+        // 리턴이 없는 경우라면 다음과 같이 () 로 단위값만 명시하면 아무것도 처리하지 않을 수 있다.
         // _ => (),
     }
 }
@@ -126,7 +126,7 @@ fn some_ref_match() {
     match fruit {
         // s 소유권이 이동되어 이후에는 사용하지 못한다.
         // Some(s) => println!("s:{}", s),
-        // ref 로 s 를 소유권이동없ㄷ이 빌림으로 사용할 수도 있다.
+        // ref 로 s 를 소유권 이동 없이 빌림으로 사용할 수도 있다.
         Some(ref s) => println!("s:{}", s),
         None => (),
     }
