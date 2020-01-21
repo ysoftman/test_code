@@ -11,7 +11,9 @@ int main()
     vector<string> add_fruits = {"mango", "banana"};
 
     // 기존 벡터 뒤에 새로운 벡터를 추가할 수 있다.
-    std::copy(begin(add_fruits), end(add_fruits), std::back_inserter(vec));
+    // std::copy(begin(add_fruits), end(add_fruits), std::back_inserter(vec));
+    // 또는
+    std::copy(add_fruits.begin(), add_fruits.end(), std::back_inserter(vec));
 
     for (auto i : vec)
     {
