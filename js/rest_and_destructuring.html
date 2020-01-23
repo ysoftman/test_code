@@ -28,11 +28,14 @@
         }
         // 오브젝트의 모든 필드를 명시하지 않고 ...(rest) 를 사용하면 된다.
         let my_lemon1 = {
-            ...lemon
+            ...lemon,
+            additional: "ysoftman", // 추가 필드
         };
-        // 참고로 다음과 같이 사용하면 참조형식이라 lemon 값이 변경되면 my_lemon2 값도 변경된다.
+        // 참고로 다음과 같이 사용하면 참조형식(주소공유)이라 
+        // lemon, my_lemon2 값을 서로 공유한다.
         let my_lemon2 = lemon
-        lemon.cost = 150
+        lemon.cost = 150    // lemon 값을 변경함녀 my_lemon2 에도 반영
+        my_lemon2.year = 2010 // my_lemon2 에 추가하면 lemon 에도 반영
         console.log("lemon:", lemon)
         console.log("my_lemon1:", my_lemon1)
         console.log("my_lemon2:", my_lemon2)
