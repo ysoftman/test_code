@@ -81,7 +81,8 @@ export default {
         localStorage.setItem("dark_theme", "true");
       }
       // changeDraggableColor 이벤트 발생
-      eventBus.$emit("changeDraggableColor", 1);
+      // emit( eventName, […args] )
+      eventBus.$emit("changeDraggableColor", "val1");
     }
   }
 };

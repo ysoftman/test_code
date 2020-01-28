@@ -82,7 +82,8 @@ export default {
       }),
 
       isDragging: false,
-      delayedDragging: false
+      delayedDragging: false,
+      forEvnetDebugging: "디버깅을 위한 메시지"
     };
   },
   methods: {
@@ -128,6 +129,7 @@ export default {
           lgjsonresult[i].style.background = "white";
         }
       }
+      console.log("forEvnetDebugging:", this.forEvnetDebugging);
     }
   },
   computed: {
@@ -154,10 +156,18 @@ export default {
     this.changeDraggableColor();
   },
   created() {
+    // 현재 컴포넌트(this) 를 아래 callback function 에서 사용하기 위해 self 변수로 로 this 를 참조하도록 한다.
     let self = this;
     // changeDraggableColor 이벤트 발생시 처리로직 구현
     // 참고로 $on 은 자식에서 호출되는 경우 감지 하지 않는다.
-    eventBus.$on("changeDraggableColor", function() {
+    // on( event, callback )
+    eventBus.$on("changeDraggableColor", function(param) {
+      console.log(
+        "[event on changeDraggableColor] forEvnetDebugging:",
+        self.forEvnetDebugging
+      );
+      console.log("[event on changeDraggableColor] param:", param);
+      self.forEvnetDebugging = param;
       // this.changeDraggableColor();
       self.changeDraggableColor();
     });
