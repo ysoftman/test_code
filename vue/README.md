@@ -4,7 +4,7 @@
 
 ```bash
 # vue-cli(vue 자동 설치)등 필요 패키 설치
-npm install -g @vue/cli vuetify bootstrap-vue bootstrap vuedraggable
+npm install -g @vue/cli vuetify bootstrap-vue bootstrap vuedraggable eslint eslint-plugin-vue
 
 # webpack (번들러, 의존성을 가진 모듈들을 묶어 정적인 asset 생성) template 를 이용해 프로젝트 생성
 vue create ysoftman-project
@@ -17,6 +17,9 @@ cd ysoftman-project
 vue upgrade vuetify
 # 기타 업그레이드
 vue upgrade
+
+# .eslintrc 설정 파일 생성
+eslinit --init
 ```
 
 ## ysoftman-project Build Setup

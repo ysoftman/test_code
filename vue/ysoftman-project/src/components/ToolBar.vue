@@ -42,7 +42,7 @@
 </template>
 
 <script>
-// eventBus 가 export 시 default 가 아니면 import 중괄호를 써양 한다. - ES6
+// eventBus 가 export 시 default 가 아니면 import 중괄호를 써야 한다. - ES6
 // @ 는  /src 경로로 webpack 에처 처리한다.
 // @/main 는 ../main 과도 같다.
 import { eventBus } from "@/main";

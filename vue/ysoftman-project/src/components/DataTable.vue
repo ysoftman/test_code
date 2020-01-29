@@ -57,6 +57,13 @@ export default {
       this.desserts.push({ id: "3", name: "ysoftman", fruit: "orange" });
       this.desserts.push({ id: "4", name: "aaa", fruit: "banana" });
       this.desserts.push({ id: "5", name: "bbb", fruit: "grape" });
+
+      let addid = 6;
+      // vuex 에 저장된 arr 도 추가
+      this.$store.state.arr.forEach((element, index) => {
+        this.desserts.push({ id: addid+index, name: element, fruit: "ModifyArray 컴포넌트" });
+      });
+
     }
   },
 

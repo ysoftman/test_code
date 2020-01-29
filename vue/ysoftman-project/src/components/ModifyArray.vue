@@ -29,15 +29,24 @@ export default {
         va1: "",
         va2: ""
       },
-      arr: []
+      // arr: []
+      // vuex 로 이 컴포넌트의 arr 상태 공유
+      arr : this.$store.state.arr
     };
   },
   methods: {
     pushElement(ele) {
-      this.arr.push(ele);
+      // this.arr.push(ele);
+      // vuex 로 이 컴포넌트의 arr 상태 저장
+      this.$store.commit('pushArray', {
+        element: ele,
+      });
     },
-    popElement() {
-      this.arr.pop();
+    popElement(ele) {
+      // this.arr.pop();
+      this.$store.commit('popArray', {
+        element: ele,
+      });
     }
   }
 };
