@@ -2,6 +2,7 @@
 // boost bind() 기능이 -> c++11 bind() 로 포함되었다.
 // g++ -std=c++11 bind_test.cpp
 #include <iostream>
+#include <functional>
 
 using namespace std;
 
