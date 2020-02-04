@@ -79,24 +79,4 @@ fn main() {
     let ch2: char = 'z';
     println!("ch1:{}", ch1);
     println!("ch2:{}", ch2);
-
-    // tuple 타입(형식이 다른 데이터 묶음)
-    let tup1: (i32, f64, u8) = (500, 12.34, 10);
-    let tup2 = (550, 34.56, 9);
-    println!("tup1.0:{}", tup1.0);
-    println!("tup1.1:{}", tup1.1);
-    println!("tup1.2:{}", tup1.2);
-    // 구조해체(destructing)
-    let (aa, bb, cc) = tup2;
-    println!("tup2:{}", aa);
-    println!("tup2:{}", bb);
-    println!("tup2:{}", cc);
-
-    // array 타입(고정 크기의 모두 같은 타입)
-    let arr1 = [1, 2, 3, 4, 5];
-    println!("arr1[0]:{}", arr1[0]);
-    println!("arr1[1]:{}", arr1[1]);
-    // &으로 배열 슬라이싱할 수 있다.
-    // {:?} 로 n 개의 값 출력
-    println!("&arr1[1..3]:{:?}", &arr1[1..3]);
 }
