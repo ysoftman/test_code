@@ -4,7 +4,7 @@
 
 ```bash
 # api키, 프로젝트 정보 참고해 var config {} 설정
-https://console.firebase.google.com/u/0/project/ysoftman-fb/settings/general/
+https://console.firebase.google.com/u/0/project/ysoftman-firebase/settings/general/
 
 
 # firebase -> storage -> rules
@@ -35,7 +35,7 @@ service cloud.firestore {
 
 컬렉션: restaurant 문서 "강남 교자" 만 추가
 1. setRestaurantDoc() 주석 해제 후 firebase deploy
-2. https://ysoftman-fb.firebaseapp.com/restaurant_pangyo.html 접속
+2. https://ysoftman-firebase.firebaseapp.com/restaurant_pangyo.html 접속
 3. 강제 refresh(ctrl+shift+r)
 4. 식당리스트가 firestore 에 자동 추가되어 보인다.
 
@@ -55,7 +55,7 @@ npm install -g firebase-tools
 # 프로젝트 초기화(프로젝스 환경구성을 위해 최초 한번만)
 firebase init
 - hosting 선택(스페이스바) 후 엔터
-- ysoftman-fb 프로젝트 선택 후 엔터
+- 프로젝트 선택 후 엔터
 하면 기본 환경파일들이 구성된다.
 
 # firebase 구글 로그인
@@ -72,7 +72,7 @@ firebase login --reauth
 firebase deploy
 
 # 확인
-https://ysoftman-fb.firebaseapp.com/
+https://ysoftman-firebase.firebaseapp.com/
 ```
 
 ## firebase 업로드된 파일 사용
@@ -80,13 +80,13 @@ https://ysoftman-fb.firebaseapp.com/
 ```bash
 # firebae storage
 # gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
-https://console.firebase.google.com/project/ysoftman-fb/storage/ysoftman-fb.appspot.com/files
+https://console.firebase.google.com/project/ysoftman-firebase/storage/ysoftman-firebase.appspot.com/files
 
 # gs(googlestorage) url 는 gsutil(google-cloud-sdk)로 접근할 수 있다.
 # gsutil 명령어 참고
 # https://cloud.google.com/storage/docs/gsutil/commands/cp
 # gs(googlestorage) url 파일 보기
-gsutil ls -ahl gs://ysoftman-fb.appspot.com
+gsutil ls -ahl gs://ysoftman-firebase.appspot.com
 # gs(googlestorage) url 파일로 로컬로 복사(다운로드)
-gsutil cp -v gs://ysoftman-fb.appspot.com/xelloss.jpg .
+gsutil cp -v gs://ysoftman-firebase.appspot.com/xelloss.jpg .
 ```

@@ -3,10 +3,10 @@
 // Initialize Firebase
 var config = {
     apiKey: "",
-    authDomain: "ysoftman-fb.firebaseapp.com",
-    databaseURL: "https://ysoftman-fb.firebaseio.com",
-    projectId: "ysoftman-fb",
-    storageBucket: "ysoftman-fb.appspot.com",
+    authDomain: "ysoftman-firebase.firebaseapp.com",
+    databaseURL: "https://ysoftman-firebase.firebaseio.com",
+    projectId: "ysoftman-firebase",
+    storageBucket: "ysoftman-firebase.appspot.com",
     messagingSenderId: ""
 };
 firebase.initializeApp(config);
@@ -28,7 +28,7 @@ var makeLogoutText = function (userName) {
 // firestorage 에 저장된 이미지 url 불러오기
 var loadImage = function (htmlId, imageName) {
     //var pathReference = storage.ref('xelloss.jpg');
-    var gsReference = storage.refFromURL('gs://ysoftman-fb.appspot.com/' + imageName)
+    var gsReference = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + imageName)
     gsReference.getDownloadURL().then(function (url) {
         //console.log('File available at', url);
         document.getElementById(htmlId).innerHTML = '<img src="' + url + '"></img>';
