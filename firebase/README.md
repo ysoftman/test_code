@@ -1,12 +1,12 @@
 # firebase test
 
-## firebase 프로젝트 설정
+## firebase 프로젝트 생성 후 최초 설정
 
 ```bash
 # 앱키, 프로젝트 정보
-https://console.firebase.google.com/u/0/project/ysoftman-test/settings/general/
+https://console.firebase.google.com/u/0/project/ysoftman-fb/settings/general/
 
-# firebase -> storage -> 규칙
+# firebase -> storage -> rules
 # 읽기 허용으로 설정
 service firebase.storage {
   match /b/{bucket}/o {
@@ -16,7 +16,7 @@ service firebase.storage {
   }
 }
 
-# firebase -> database(cloud firestore) -> 규칙
+# firebase -> database(cloud firestore) -> rules
 # 앱에서 로그인한 사용자만 데이터 쓰기 허용
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -27,6 +27,16 @@ service cloud.firestore {
   }
 }
 
+# firebase -> 데이터 -> 컬렉션시작
+컬렉션: test 문서 ysoftman
+필드: name , 유형: string, 값: ysoftman
+필드: visitCnt , 유형: number, 값: 0
+
+컬렉션: restaurant 문서 "강남 교자" 만 추가
+1. setRestaurantDoc() 주석 해제 후 firebase deploy
+2. https://ysoftman-fb.firebaseapp.com/restaurant_pangyo.html 접속
+3. 강제 refresh(ctrl+shift+r)
+4. 식당리스트가 firestore 에 자동 추가되어 보인다.
 
 # 참고
 https://firebase.google.com/docs/storage/web/start
@@ -41,24 +51,27 @@ https://github.com/firebase/quickstart-js/blob/master/storage/index.html
 # firebase-tools 설치
 npm install -g firebase-tools
 
-# 테스트를 위해 로컬에서 서빙
-firebase serve
+# 프로젝트 초기화(프로젝스 환경구성을 위해 최초 한번만)
+firebase init
+- hosting 선택(스페이스바) 후 엔터
+- ysoftman-fb 프로젝트 선택 후 엔터
+하면 기본 환경파일들이 구성된다.
 
 # firebase 구글 로그인
 # (브라우저가 열리고 firebase 승인하면된다.)
 firebase login
 
-# 프로젝트 초기화(프로젝스 환경구성을 위해 최초 한번만)
-firebase init
-- hosting 선택(스페이스바) 후 엔터
-- ysoftman-test 프로젝트 선택 후 엔터
-하면 기본 환경파일들이 구성된다.
+# 테스트를 위해 로컬에서 서빙
+firebase serve
+
+# 401 OAuth 관련 에러 발생시 재인증
+firebase login --reauth
 
 # 배포
 firebase deploy
 
 # 확인
-https://ysoftman-test.firebaseapp.com/
+https://ysoftman-fb.firebaseapp.com/
 ```
 
 ## firebase 업로드된 파일 사용
@@ -66,13 +79,13 @@ https://ysoftman-test.firebaseapp.com/
 ```bash
 # firebae storage
 # gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
-https://console.firebase.google.com/project/ysoftman-test/storage/ysoftman-test.appspot.com/files
+https://console.firebase.google.com/project/ysoftman-fb/storage/ysoftman-fb.appspot.com/files
 
 # gs(googlestorage) url 는 gsutil(google-cloud-sdk)로 접근할 수 있다.
 # gsutil 명령어 참고
 # https://cloud.google.com/storage/docs/gsutil/commands/cp
 # gs(googlestorage) url 파일 보기
-gsutil ls -ahl gs://ysoftman-test.appspot.com
+gsutil ls -ahl gs://ysoftman-fb.appspot.com
 # gs(googlestorage) url 파일로 로컬로 복사(다운로드)
-gsutil cp -v gs://ysoftman-test.appspot.com/xelloss.jpg .
+gsutil cp -v gs://ysoftman-fb.appspot.com/xelloss.jpg .
 ```

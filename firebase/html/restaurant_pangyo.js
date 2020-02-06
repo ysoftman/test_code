@@ -785,7 +785,7 @@ var coll = "restaurant";
 window.onload = function () {
     readRestaurantAll(coll);
     restaurantlist.forEach((r) => {
-        // 리셋이 필요할때
+        // 리셋(식당 정보 추가)이 필요할때
         // setRestaurantDoc(coll, r)
         // 좋아요, 싫어요 외 기본 정보들 업데이트가 필요할때, 식당 추가할때
         // updateRestaurantDoc(coll, r)
