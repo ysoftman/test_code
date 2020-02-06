@@ -37,7 +37,7 @@ sudo apt-get install google-cloud-sdk-app-engine-python google-cloud-sdk-app-eng
 ```bash
 export GO111MODULE=on
 # google cloud 올리기전에 로컬에서 테스트 해볼 수 있다.
-# 아래 명령을 실행해두면 .go 소스 수정때마다 자동 빌드되어 된다.
+# 아래 명령을 실행해두면 .go 소스 수정때마다 자동 빌드 된다.
 dev_appserver.py app.yaml --port 9999
 
 # google cloud 초기화
