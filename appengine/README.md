@@ -1,9 +1,9 @@
 # go-appengine
 
 - google appengine test using golang
-- google cloud sdk https://cloud.google.com/sdk/docs/
-- 애플리케이션  https://cloud.google.com/appengine/docs/standard/go/building-app/creating-your-application
-- app.yaml 설명 https://cloud.google.com/appengine/docs/standard/go/config/appref
+- google cloud sdk <https://cloud.google.com/sdk/docs/>
+- 애플리케이션 <https://cloud.google.com/appengine/docs/standard/go/building-app/creating-your-application>
+- app.yaml 설명 <https://cloud.google.com/appengine/docs/standard/go/config/appref>
 
 ## go-appengine 환경 구성
 
@@ -29,13 +29,13 @@ export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
 echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 sudo apt-get update && sudo apt-get install google-cloud-sdk
-sudo apt-get install google-cloud-sdk-app-engine-java
-sudo apt-get install google-cloud-sdk-app-engine-go
+sudo apt-get install google-cloud-sdk-app-engine-python google-cloud-sdk-app-engine-go google-cloud-sdk-datastore-emulator
 ```
 
 ## appengine 관리
 
 ```bash
+export GO111MODULE=on
 # google cloud 올리기전에 로컬에서 테스트 해볼 수 있다.
 # 아래 명령을 실행해두면 .go 소스 수정때마다 자동 빌드되어 된다.
 dev_appserver.py app.yaml --port 9999
@@ -46,10 +46,10 @@ dev_appserver.py app.yaml --port 9999
 # Compute Region and Zone 선택
 gcloud init
 
-# glcoud  구글 app engine 에 배포하기
+# glcoud 구글 app engine 에 배포하기
 # --promote 옵션을 사용하면 현재 배포된 버전으로 서비스(모든 트랙픽을 받는)하게 한다.
 # 배포 종료시 접속 가능한 url 이 표시된다.
-gcloud app deploy ./app.yaml --promote
+GO111MODULE=on gcloud app deploy ./app.yaml --promote
 
 # 배포가 완료되면 확인
 https:///ysoftman-test.appspot.com/
