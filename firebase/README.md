@@ -3,8 +3,9 @@
 ## firebase 프로젝트 생성 후 최초 설정
 
 ```bash
-# 앱키, 프로젝트 정보
+# api키, 프로젝트 정보 참고해 var config {} 설정
 https://console.firebase.google.com/u/0/project/ysoftman-fb/settings/general/
+
 
 # firebase -> storage -> rules
 # 읽기 허용으로 설정

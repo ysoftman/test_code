@@ -2,12 +2,12 @@
 // firebase api 사용
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyDaSeyDsDuSbaIS8u7_2zWRW2B50zc3sfg",
+    apiKey: "",
     authDomain: "ysoftman-fb.firebaseapp.com",
     databaseURL: "https://ysoftman-fb.firebaseio.com",
     projectId: "ysoftman-fb",
     storageBucket: "ysoftman-fb.appspot.com",
-    messagingSenderId: "474095481599"
+    messagingSenderId: ""
 };
 firebase.initializeApp(config);
 
