@@ -3,7 +3,7 @@
 ## firebase 프로젝트 생성 후 최초 설정
 
 ```bash
-# api키, 프로젝트 정보 참고해 var config {} 설정
+# api키, 프로젝트 정보 참고해 common.js -> var config {} 설정
 https://console.firebase.google.com/u/0/project/ysoftman-firebase/settings/general/
 
 
@@ -39,11 +39,24 @@ service cloud.firestore {
 3. 강제 refresh(ctrl+shift+r)
 4. 식당리스트가 firestore 에 자동 추가되어 보인다.
 
-# 참고
-https://firebase.google.com/docs/storage/web/start
-https://firebase.google.com/docs/firestore/quickstart
-https://github.com/firebase/quickstart-js/blob/master/storage/index.html
-
+# firebase storage 업로드
+# gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
+# gs(googlestorage) url 는 gsutil(google-cloud-sdk)로 접근할 수 있다.
+# gcloud gsutil 설치 참고
+# https://cloud.google.com/storage/docs/gsutil_install#mac
+# gcloud 로 컴포넌트 업데이트
+gcloud components update
+# gcloud 인증(브라우저 열리고 로그인)
+gcloud auth login
+# gsutil 명령어 참고
+# https://cloud.google.com/storage/docs/gsutil/commands/cp
+# gs(googlestorage) url 파일 보기
+gsutil ls -ahl gs://ysoftman-firebase.appspot.com
+# *.jpg 파일 업로드
+gsutil cp -v *.jpg gs://ysoftman-firebase.appspot.com/
+# 다운로드 참고
+gsutil cp -v gs://ysoftman-firebase.appspot.com/xelloss.jpg .
+gsutil cp -v gs://ysoftman-firebase.appspot.com/박카스.jpg .
 ```
 
 ## firebase 프로젝트 배포
@@ -75,18 +88,8 @@ firebase deploy
 https://ysoftman-firebase.firebaseapp.com/
 ```
 
-## firebase 업로드된 파일 사용
+## 참고
 
-```bash
-# firebae storage
-# gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
-https://console.firebase.google.com/project/ysoftman-firebase/storage/ysoftman-firebase.appspot.com/files
-
-# gs(googlestorage) url 는 gsutil(google-cloud-sdk)로 접근할 수 있다.
-# gsutil 명령어 참고
-# https://cloud.google.com/storage/docs/gsutil/commands/cp
-# gs(googlestorage) url 파일 보기
-gsutil ls -ahl gs://ysoftman-firebase.appspot.com
-# gs(googlestorage) url 파일로 로컬로 복사(다운로드)
-gsutil cp -v gs://ysoftman-firebase.appspot.com/xelloss.jpg .
-```
+- <https://firebase.google.com/docs/storage/web/start>
+- <https://firebase.google.com/docs/firestore/quickstart>
+- <https://github.com/firebase/quickstart-js/blob/master/storage/index.html>
