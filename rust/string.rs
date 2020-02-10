@@ -16,6 +16,14 @@ fn main() {
     println!("s3 {}", s3);
     println!("s4 {}", s4);
 
+    // string -> str 로 참조
+    // as_str() 사용
+    let str1 = s4.as_str();
+    println!("str1 {}", str1);
+    // 슬라이싱 사용
+    let str2 = &s4[..];
+    println!("str2 {}", str2);
+
     // String 갱신
     let mut s5 = String::from("ysoftman");
     s5.push_str(",");

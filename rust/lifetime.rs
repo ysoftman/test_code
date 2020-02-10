@@ -25,7 +25,7 @@ fn main() {
     let b = "lemon_apple_orange";
     println!("longest_string : {}", longest_string(a, b));
 
-    // 'static 전 전체 생애주기(lifetime)를 갖는다.
+    // 'static 전체 생애주기(lifetime)를 갖는다.
     let mystr: &'static str = "ysoftman my string";
     println!("{}", mystr)
 }
