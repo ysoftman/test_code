@@ -37,9 +37,30 @@ fn main() {
     println!("hm.get(\"apple\") -> {:#?}", hm.get(k));
     let k = String::from("mango");
     println!("hm.get(\"mango\") -> {:#?}", hm.get(&k));
-    let k = String::from("aaa");
-    println!("hm.get(\"aaa\") -> {:#?}", hm.get(&k));
-
+    println!(
+        "hm.get_key_value(\"mango\") -> {:#?}",
+        hm.get_key_value("mango")
+    );
+    // 값 제거하면 None 으로 된다.
+    hm.remove("mango");
+    println!(
+        "remove() mango, hm.get_key_value(\"mango\") -> {:#?}",
+        hm.get_key_value("mango")
+    );
+    // 값 변경
+    // 원래 값의 타입으로만 변경할 수 있다.
+    // 제거된 값(None)은 변경할 수 없다.
+    *hm.get_mut("apple").unwrap() = 9999;
+    println!(
+        "get_mut() apple, nmango, hm.get_key_value(\"apple\") -> {:#?}",
+        hm.get_key_value("apple")
+    );
+    // and_modify(클로저함수명시)로 변경
+    hm.entry("apple".to_string()).and_modify(|v| *v = 2222);
+    println!(
+        "entry().and_modify(), hm.get_key_value(\"apple\") -> {:#?}",
+        hm.get_key_value("apple")
+    );
     // 벡터들의 값을 추가
     let fruit = vec![String::from("orange"), String::from("grape")];
     let cost = vec![200, 220];
