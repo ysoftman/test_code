@@ -1,7 +1,9 @@
 // ysoftman
 // args test
 // 빌드 및 테스트
+// cargo run --  -o foo.txt -dvvvs 1337 -l alice -l bob --nb-cars 4 bar.txt baz.txt
 // cargo build && ./target/debug/args -o foo.txt -dvvvs 1337 -l alice -l bob --nb-cars 4 bar.txt baz.txt
+
 use std::path::PathBuf;
 use structopt::StructOpt;
 
