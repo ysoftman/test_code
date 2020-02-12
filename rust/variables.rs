@@ -1,6 +1,8 @@
 // static 으로 global 변수
 static GLOBAL_STRING: &str = "ysoftman";
 static GLOBAL_INT: i32 = 123123;
+// static mutable 로 사용할수 있지만 unsafe 영역내에서만 사용 할 수 있다.
+static mut GLOBAL_AAA: i32 = 123123;
 
 // 불변 변수를 통해 쉽게 안정성과 동시성을 취할 수 있다.
 fn main() {
@@ -10,6 +12,10 @@ fn main() {
     println!("GLOBAL_INT : {}", GLOBAL_INT);
     // static 가변은 쓸 수 없다.
     static GLOBAL_INT2: i32 = 7777;
+    unsafe {
+        GLOBAL_AAA = 11111;
+        println!("GLOBAL_AAA : {}", GLOBAL_AAA);
+    }
     println!("GLOBAL_INT2 : {}", GLOBAL_INT2);
 
     // 데이터 타입을 명시할 수도 있다.
