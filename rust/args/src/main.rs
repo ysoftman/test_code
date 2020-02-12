@@ -49,10 +49,17 @@ fn main() {
         /// admin_level to consider
         #[structopt(short, long)]
         level: Vec<String>,
+        // Files to process
+        // - 가 없는 인자
+        // #[structopt(name = "FILE", parse(from_os_str))]
+        // files: Vec<PathBuf>,
 
-        /// Files to process
-        #[structopt(name = "FILE", parse(from_os_str))]
-        files: Vec<PathBuf>,
+        // - 가 없는 인자
+        #[structopt(default_value = "lemon")]
+        name1: String,
+        // - 가 없는 인자
+        #[structopt(default_value = "orange")]
+        name2: String,
     }
     let opt = Opt::from_args();
     println!("{:#?}", opt);
@@ -62,4 +69,6 @@ fn main() {
     }
     println!("opt.speed: {}", opt.speed);
     println!("opt.level: {:?}", opt.level);
+    println!("opt.name1: {}", opt.name1);
+    println!("opt.name2: {}", opt.name2);
 }
