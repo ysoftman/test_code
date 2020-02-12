@@ -31,10 +31,21 @@ cargo doc --open
 # 패키지 업데이트
 cargo update
 
+# cargo 에 github 계정 연동하고, email 확인 받고
+# https://crates.io/me 에서 토큰 생성(한번 생성하고 없어지기 때문에 따로 저장해둬야 한다.)
+# cargo 로그인
+cargo login 토큰값
+
 # crates.io 에 배포하기
 # 한번 배포된 크레이트는 수정, 삭제할 수 없어 주의해야 한다.
 # 대신 버전을 계속 변경해서 올릴 수 있다.
+# Cargo.toml 체크
+# - [package] name,version,authors,description,license 필수 필드가 채워져 있어야 배포 된다.
+# - [dependencies] 패키지 버전을 정확한 값을 명시해야 한다. "*" 사용하면 안됨.
 cargo publish
+# 또는
+# --allow-dirty 로컬 변경 사항이 있는채로 배포 허용
+cargo publish --allow-dirty
 
 # crates.io 올라간 버전을 제거할 수 없지만 yank(홱 잡아 당기다.)로
 # 특정 버전을 종속성으로 사용할 수 없도록 막아준다.
