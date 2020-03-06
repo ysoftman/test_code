@@ -16,8 +16,8 @@ fn main() {
 
 #[derive(Debug)]
 enum List {
-    // Cons i32, List 의 쌍을 갖는데, List 자신을 포함하는 재귀적으로 구성
-    // rust List 열거형이 얼마큼의 공가이 필요하지 컴파일시 파악하게 되는데
+    // Cons i32, List 에서 List 는 자신을 포함해 재귀적으로 구성된다.
+    // rust List 열거형이 얼마큼의 공간이 필요한지 컴파일시 파악하게 되는데
     // List -> List -> ... 무한 반복 돼서 에러가 발생한다.
     // Cons(i32, List),
     // Box , Rc , & 등의 사용해 포인터크기만 필요하다는것 알게 할 수 있게 한다.

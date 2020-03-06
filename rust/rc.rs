@@ -16,7 +16,7 @@ use List::{Nil, Node};
 use RcList::{RcNil, RcNode};
 
 fn main() {
-    // a 리스트를 만들고 b와 c가 a 참조하도록 한다.
+    // a 리스트를 만들고
     let a = Node(5, Box::new(Node(10, Box::new(Nil))));
     // a 는 b로 이동해서 b가 소유한다.
     let b = Node(3, Box::new(a));
