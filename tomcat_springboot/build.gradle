@@ -35,7 +35,9 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-    
+	implementation "org.springframework.boot:spring-boot-starter-web" {
+		exclude module: "spring-boot-starter-tomcat"
+	}
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     // https://mvnrepository.com/artifact/org.springframework/spring-web
