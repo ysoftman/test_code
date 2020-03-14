@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.1.RELEASE'
+        springBootVersion = '2.2.5.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -31,17 +31,13 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	implementation "org.springframework.boot:spring-boot-starter-web" {
-		exclude module: "spring-boot-starter-tomcat"
-	}
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    // https://mvnrepository.com/artifact/org.springframework/spring-web
-    implementation group: 'org.springframework', name: 'spring-web', version: '5.0.5.RELEASE'
-    // https://mvnrepository.com/artifact/org.springframework/spring-webmvc
-    implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.0.5.RELEASE'
+    implementation('org.springframework.boot:spring-boot-starter-data-rest')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    testImplementation('org.junit.jupiter:junit-jupiter:5.4.2')
+    // implementation('org.springframework.boot:spring-boot-configuration-processor')
 }

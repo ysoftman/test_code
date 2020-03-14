@@ -29,19 +29,19 @@ brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk12
 
 # JVM 12.0.1 (AdoptOpenJDK 12.0.1+12) 환경에 동작하는 gradle 설치
-wget https://services.gradle.org/distributions/gradle-5.6.4-bin.zip
-unzip gradle-5.6.4-bin.zip
+wget https://services.gradle.org/distributions/gradle-6.2.2-bin.zip
+unzip gradle-6.2.2-bin.zip
 # JVM 확인
-./gradle-5.6.4/bin/gradle --version
+./gradle-6.2.2/bin/gradle --version
 
 # sprint boot 기본 생성 참고
 https://start.spring.io/
 
 # gradle init(최초1회)
-./gradle-5.6.4/ init
+./gradle-6.2.2/ init
 
 # gradle 로 빌드 -> .war 복사 후 tomcat 재시작
-./gradle-5.6.4/bin/gradle clean build -b build.gradle --warning-mode all; \
+./gradle-6.2.2/bin/gradle clean build -b build.gradle --warning-mode all; \
 cp -fv ./build/libs/tomcat_springboot.war ./apache-tomcat-9.0.31/webapps/; \
 ./apache-tomcat-9.0.31/bin/catalina.sh stop; \
 ./apache-tomcat-9.0.31/bin/catalina.sh run
@@ -50,7 +50,7 @@ cp -fv ./build/libs/tomcat_springboot.war ./apache-tomcat-9.0.31/webapps/; \
 http://localhost:8080/tomcat_springboot/hello
 
 # war 에 문제가 있는지 체크할때
-./gradle-5.6.4/bin/gradle clean build -b build.gradle --warning-mode all; \
+./gradle-6.2.2/bin/gradle clean build -b build.gradle --warning-mode all; \
 java -jar ./build/libs/tomcat_springboot.war
 
 # 동작확인
