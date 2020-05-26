@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -5,8 +7,16 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:flutter/services.dart';
 
-void main() => runApp(new MyApp());
+// void main() => runApp(new MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]).then((_) {
+    runApp(MyApp());
+  });
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -41,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
     decoration: new BoxDecoration(
         color: Colors.purple,
         borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 3.0)),
+        border: Border.all(color: Colors.blue, width: 5.0)),
     child: new Icon(
       Icons.person,
       color: Colors.amber,
@@ -104,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
       markedDatesMap: _markedDateMap,
       weekFormat: false,
       firstDayOfWeek: 1,
-      daysHaveCircularBorder: false,
+      // daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: true,
       weekDayBackgroundColor: Colors.black,
       weekdayTextStyle: TextStyle(
@@ -114,44 +124,47 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       inactiveDaysTextStyle: TextStyle(
         color: Colors.black,
-        fontSize: 30,
+        fontSize: 28,
       ),
       weekendTextStyle: TextStyle(
         fontStyle: FontStyle.italic,
-        fontSize: 30,
-        color: Colors.red,
+        fontSize: 28,
+        color: Colors.white,
+        backgroundColor: Colors.black,
       ),
       inactiveWeekendTextStyle: TextStyle(
         fontStyle: FontStyle.italic,
-        fontSize: 30,
-        color: Colors.red,
+        fontSize: 28,
+        color: Colors.white,
+        // backgroundColor: Colors.black,
       ),
+      thisMonthDayBorderColor: Colors.white,
       daysTextStyle: TextStyle(
         fontStyle: FontStyle.normal,
-        fontSize: 30,
+        fontSize: 28,
         color: Colors.black,
       ),
-      thisMonthDayBorderColor: Colors.black,
       // 이 값을 낮추면 아래에 달력이 하나 더 보인다.
       height: 1000.0,
       selectedDateTime: _currentDate,
       targetDateTime: _targetDateTime,
-      // customGridViewPhysics: NeverScrollableScrollPhysics(),
+      customGridViewPhysics: NeverScrollableScrollPhysics(),
+      pageScrollPhysics: NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
-          CircleBorder(side: BorderSide(color: Colors.redAccent)),
+          CircleBorder(side: BorderSide(color: Colors.greenAccent)),
       markedDateCustomTextStyle: TextStyle(
-        fontSize: 30,
+        fontSize: 28,
         color: Colors.blue,
       ),
       showHeader: true,
       headerTextStyle: TextStyle(
-        fontSize: 50.0,
-        color: Colors.blue,
+        fontSize: 45.0,
+        color: Colors.black,
       ),
       todayBorderColor: Colors.black,
-      // todayButtonColor: Colors.blueAccent,
+      todayButtonColor: Colors.green,
       todayTextStyle: TextStyle(
-        fontSize: 30,
+        fontSize: 28,
         color: Colors.yellow,
       ),
       markedDateShowIcon: true,
@@ -163,14 +176,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // selectedDayBorderColor: Colors.black,
       selectedDayButtonColor: Colors.black,
       selectedDayTextStyle: TextStyle(
-        fontSize: 35,
+        fontSize: 28,
         color: Colors.yellow,
-        backgroundColor: Colors.black,
+        // backgroundColor: Colors.black,
       ),
       minSelectedDate: _currentDate.subtract(Duration(days: 360)),
       maxSelectedDate: _currentDate.add(Duration(days: 360)),
       prevDaysTextStyle: TextStyle(
-        fontSize: 30,
+        fontSize: 28,
         color: Colors.pinkAccent,
       ),
       onCalendarChanged: (DateTime date) {
@@ -189,70 +202,26 @@ class _MyHomePageState extends State<MyHomePage> {
           title: new Text(widget.title),
         ),
         body: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              // Container(
-              //   margin: EdgeInsets.only(
-              //     top: 5.0,
-              //     bottom: 10.0,
-              //     left: 10.0,
-              //     right: 10.0,
-              //   ),
-              //   child: new Row(
-              //     children: <Widget>[
-              //       Expanded(
-              //           child: Text(
-              //         _currentMonth,
-              //         style: TextStyle(
-              //           fontWeight: FontWeight.bold,
-              //           fontSize: 25.0,
-              //         ),
-              //       )),
-              //       FlatButton(
-              //         child: Text('PREV'),
-              //         onPressed: () {
-              //           setState(() {
-              //             _targetDateTime = DateTime(
-              //                 _targetDateTime.year, _targetDateTime.month - 1);
-              //             _currentMonth =
-              //                 DateFormat.yMMM().format(_targetDateTime);
-              //           });
-              //         },
-              //       ),
-              //       FlatButton(
-              //         child: Text('NEXT'),
-              //         onPressed: () {
-              //           setState(() {
-              //             _targetDateTime = DateTime(
-              //                 _targetDateTime.year, _targetDateTime.month + 1);
-              //             _currentMonth =
-              //                 DateFormat.yMMM().format(_targetDateTime);
-              //           });
-              //         },
-              //       )
-              //     ],
-              //   ),
-              // ),
-
-              Container(
-                child: FlatButton(
-                  color: Colors.greenAccent,
-                  child: Text('오늘'),
-                  onPressed: () {
-                    setState(() {
-                      _targetDateTime = DateTime.now();
-                      _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-                    });
-                  },
+              FlatButton(
+                // color: Colors.greenAccent,
+                child: Text(
+                  '오늘',
+                  style: TextStyle(fontSize: 30),
                 ),
+                onPressed: () {
+                  setState(() {
+                    _targetDateTime = DateTime.now();
+                    _currentDate = _targetDateTime;
+                    _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+                  });
+                },
               ),
-
-              Container(
-                // margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarouselNoHeader,
-              ),
+              _calendarCarouselNoHeader,
             ],
           ),
         ));
