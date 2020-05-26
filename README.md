@@ -43,7 +43,7 @@ flutter pub get
 
 # 빌드 및 배포
 # android build
-# open build/app/outputs/apk/release/app-release.apk 파일 폰으로 복사해 실행
+# build/app/outputs/apk/release/app-release.apk 파일 폰으로 복사해 실행
 flutter build apk
 # ios build
 open ios/Runner.xcworkspace
