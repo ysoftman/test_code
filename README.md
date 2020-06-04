@@ -1,6 +1,6 @@
 # concal
 
-## 개발 환경
+## 초기 개발 환경 설정
 
 ```bash
 # flutter 설치(mac 기준)
@@ -27,11 +27,12 @@ https://developer.android.com/studio
 # flutter plugin 설치
 
 # app 생성
-flutter create concal
+./flutter/bin/flutter create concal
+cd concal
 # ios simulator 열기(spotlight 에서 simulator 실행해도됨)
 open -a Simulator
 # simulator 에 앱 실행
-flutter run
+../flutter/bin/flutter run
 
 # pubspec.yaml -> dependencies 에 패키지 명시 후 설치
 flutter pub get
@@ -40,11 +41,15 @@ flutter pub get
 # 자동 yaml 변화를 감지해 자동 설치
 # F5 빌드하면 simulator 자동실행
 # 변화 자동 감지 반영("hot reload" (press "r"))
+```
 
-# 빌드 및 배포
+## 빌드 및 배포
+
+```bash
 # android build
-# build/app/outputs/apk/release/app-release.apk 파일 폰으로 복사해 실행
 flutter build apk
+# open build/app/outputs/apk/release/app-release.apk 파일 폰으로 복사해 실행
+
 # ios build
 open ios/Runner.xcworkspace
 # Project navigator -> Runner -> signing & capabilites -> team -> add accont 또는 development 계정

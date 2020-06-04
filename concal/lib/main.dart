@@ -42,25 +42,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // DateTime _currentDate = DateTime(2020, 5, 3);
   DateTime _currentDate = DateTime.now();
-  // String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 5, 3));
-  String _currentMonth = DateFormat.yMMM().format(DateTime.now());
   // DateTime _targetDateTime = DateTime(2020, 5, 3);
   DateTime _targetDateTime = DateTime.now();
   // List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
-  static Widget _eventIcon = new Container(
-    decoration: new BoxDecoration(
-        color: Colors.purple,
-        borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 5.0)),
-    child: new Icon(
-      Icons.person,
-      color: Colors.amber,
-    ),
-  );
+  // static Widget _eventIcon = new Container(
+  //   decoration: new BoxDecoration(
+  //       color: Colors.purple,
+  //       borderRadius: BorderRadius.all(Radius.circular(1000)),
+  //       border: Border.all(color: Colors.blue, width: 5.0)),
+  //   child: new Icon(
+  //     Icons.person,
+  //     color: Colors.amber,
+  //   ),
+  // );
 
-  EventList<Event> _markedDateMap = new EventList<Event>(
-    events: {},
-  );
+  // EventList<Event> _markedDateMap = new EventList<Event>(
+  //   events: {},
+  // );
 
   // CalendarCarousel _calendarCarousel;
   CalendarCarousel _calendarCarouselNoHeader;
@@ -110,8 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
         this.setState(() => _currentDate = date);
         events.forEach((event) => print(event.title));
       },
-      locale: "en",
-      markedDatesMap: _markedDateMap,
+      locale: "ko",
+      // markedDatesMap: _markedDateMap,
       weekFormat: false,
       firstDayOfWeek: 1,
       // daysHaveCircularBorder: true,
@@ -180,8 +178,8 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.yellow,
         // backgroundColor: Colors.black,
       ),
-      minSelectedDate: _currentDate.subtract(Duration(days: 360)),
-      maxSelectedDate: _currentDate.add(Duration(days: 360)),
+      minSelectedDate: _currentDate.subtract(Duration(days: 365)),
+      maxSelectedDate: _currentDate.add(Duration(days: 365)),
       prevDaysTextStyle: TextStyle(
         fontSize: 28,
         color: Colors.pinkAccent,
@@ -189,11 +187,11 @@ class _MyHomePageState extends State<MyHomePage> {
       onCalendarChanged: (DateTime date) {
         this.setState(() {
           _targetDateTime = date;
-          _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+          print("onCalendarChanged $date");
         });
       },
       onDayLongPressed: (DateTime date) {
-        print('long pressed date $date');
+        print('onDayLongPressed $date');
       },
     );
 
@@ -208,16 +206,15 @@ class _MyHomePageState extends State<MyHomePage> {
             // mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               FlatButton(
-                // color: Colors.greenAccent,
+                //   color: Colors.greenAccent,
                 child: Text(
                   '오늘',
                   style: TextStyle(fontSize: 30),
                 ),
                 onPressed: () {
                   setState(() {
-                    _targetDateTime = DateTime.now();
-                    _currentDate = _targetDateTime;
-                    _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+                    _currentDate = DateTime.now();
+                    _targetDateTime = _currentDate;
                   });
                 },
               ),
