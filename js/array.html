@@ -4,7 +4,17 @@
     let arr = [1, 1, 2, 3, 4, 'a', "abc"]
     debug = "arr=" + arr + " arr.length=" + arr.length
     debug += "\n"
+    // 기본 쉼표(,) 를 구분자로 스트링으로 변환
+    debug += "arr.join()=" + arr.join()
+    debug += "\n"
+    debug += "arr.join(-)=" + arr.join('-')
+    debug += "\n"
     debug += "arr.indexOf(3)=" + arr.indexOf(3)
+    debug += "\n"
+    // find 는 찾는 조건이 있는 콜백함수 구현(찾은 요소를 리턴)
+    debug += "arr.find((item) => {...})=" + arr.find((item) => {
+        return item == 'a'
+    })
     debug += "\n"
     debug += "arr.reverse()=" + arr.reverse()
     debug += "\n"
@@ -31,12 +41,20 @@
     // 원소값 삭제시 해당 값만 undefined 되고 배열의 크기는 변화가 없다.
     debug += "delete arr[3]=" + delete arr[3] + "  arr=" + arr + "  arr[3]=" + arr[3] + " arr.length=" + arr.length
     debug += "\n"
+    console.log(debug)
+
+
+    // 기본 , 구분자로 스트링을 배열로 변환
+    arrstr = "1,2,3,a,b,c"
+    debug = "arrstr.split()=" + arrstr.split()
+    debug += "\n"
+    console.log(debug)
 
     // 빈 배열 생성 방법1
     let myarr1 = []
     // 빈 배열 생성 방법2
     let myarr2 = new Array()
-
+    debug = ""
     debug += "myarr1=" + myarr1 + "\n"
     debug += "myarr2=" + myarr2 + "\n"
 
@@ -57,16 +75,15 @@
     debug += "myarr1.push({first:'lemon', second:'orange'})=" + myarr1 + "\n"
     // 함수도 추가할 수 있다.
     myarr1.push(function () {
-        alert("function in array")
+        console.log("function in array")
     })
     // 스트링을 멀티 라은으로 표시할때는 ` (backtick/backquote/grave) 을 사용하자.
     debug += `myarr1.push(function() {
-        alert("function in array")
+        console.log("function in array")
     })=` + myarr1 + "\n"
 
-    alert(debug)
+    console.log(debug)
 
-    // alert 내용이 너무 길면 짤려서 새로 구성
     debug = ""
     debug += "myarr1[0]=" + myarr1[0] + "\n"
     debug += "myarr1[1]=" + myarr1[1] + "\n"
@@ -75,7 +92,7 @@
     debug += "myarr1[3].second=" + myarr1[3].second + "\n"
     // 배열내의 함수 호출
     debug += "myarr1[4]()=" + myarr1[4]() + "\n"
-    alert(debug)
+    console.log(debug)
 
 
     // 다차원 배열
@@ -89,7 +106,7 @@
     debug += "arr2d[1][1]=" + arr2d[1][1] + "\n"
     // strict equality(===) 는 타입이 다르면 바로 false 를 리턴하는 엄격한 비교 연사자
     debug += "String(arr2d)==='1,2,3,4,5,6' --> " + (String(arr2d) === "1,2,3,4,5,6") + "\n"
-    alert(debug)
+    console.log(debug)
 </script>
 
 </html>
