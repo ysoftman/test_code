@@ -11,13 +11,14 @@
 using namespace std;
 
 // Maximum Size
-const int MAX = 50000;
+const int MAX = 10000;
 
 int swap_cnt = 0;
 
 void Swap(int *a, int *b);
 void BubbleSort(int arr[], int size);
 void SelectionSort(int arr[], int size);
+void MergeSort(int arr[], int left, int right);
 void QuickSort(int arr[], int left, int right);
 void HeapSort(int arr[], int size);
 
@@ -57,8 +58,9 @@ int main()
 	start = clock();
 	swap_cnt = 0;
 	BubbleSort(temp, MAX);
+	printf("----- Bubble Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
-	printf("Bubble Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Bubble Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
@@ -66,17 +68,29 @@ int main()
 	start = clock();
 	swap_cnt = 0;
 	SelectionSort(temp, MAX);
+	printf("----- Selection Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
-	printf("Selection Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Selection Sort");
+	memcpy(temp, input, sizeof(int) * MAX);
+
+	// Merge Sort
+	start = clock();
+	swap_cnt = 0;
+	MergeSort(temp, 0, MAX - 1);
+	printf("----- Merge Sort -----\n");
+	printf("swap_cnt : %d\n", swap_cnt);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, temp, MAX, "Merge Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Quick Sort
 	start = clock();
 	swap_cnt = 0;
 	QuickSort(temp, 0, MAX - 1);
+	printf("----- Quick Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
-	printf("Quick Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Quick Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
@@ -84,8 +98,9 @@ int main()
 	start = clock();
 	swap_cnt = 0;
 	HeapSort(temp, MAX);
+	printf("----- Heap Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
-	printf("Heap Sort Elapsed Time %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Heap Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
@@ -100,10 +115,10 @@ void Swap(int *a, int *b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
-	swap_cnt++;
+	++swap_cnt;
 }
 
-// Bubble Sort - best: O(N) average: O(N^2) worsㅕt: O(N^2)
+// Bubble Sort - best: O(N) average: O(N^2) worst: O(N^2)
 void BubbleSort(int arr[], int size)
 {
 	int i = 0, j = 0;
@@ -148,6 +163,69 @@ void SelectionSort(int arr[], int size)
 	}
 }
 
+void Merge(int arr[], int left, int mid, int right)
+{
+	// 임시 배열 생성1 left ... mid
+	// 임시 배열 생성2 mid+1 ... right
+	int size1 = mid - left + 1;
+	int size2 = right - mid;
+	int arr1[size1];
+	int arr2[size2];
+	for (int i = 0; i < size1; ++i)
+	{
+		arr1[i] = arr[left + i];
+	}
+	for (int i = 0; i < size2; ++i)
+	{
+		arr2[i] = arr[mid + 1 + i];
+	}
+
+	int i = 0, j = 0, k = left;
+	// arr1 와 arr2 의 처음부터 크기를 비교해서 작은쪽의 값을
+	// 원래 배열인 arr 처음부터 할당해 나간다.
+	while (i < size1 && j < size2)
+	{
+		if (arr1[i] <= arr2[j])
+		{
+			arr[k] = arr1[i];
+			++i;
+		}
+		else
+		{
+			arr[k] = arr2[j];
+			++j;
+		}
+		++k;
+		++swap_cnt;
+	}
+
+	// 위 arr1 i 진행 이후 값을 arr 에 할당.
+	for (; i < size1; ++i)
+	{
+		arr[k] = arr1[i];
+		++k;
+	}
+	// 위 arr2 j 진행 이후 값을 arr 에 할당.
+	for (; j < size2; ++j)
+	{
+		arr[k] = arr2[j];
+		++k;
+	}
+}
+
+// Merge Sort - best: O(NlogN) average: O(NlogN) worst: O(NlogN)
+void MergeSort(int arr[], int left, int right)
+{
+	if (left >= right)
+	{
+		return;
+	}
+	int mid = left + ((right - left) / 2);
+	MergeSort(arr, left, mid);
+	MergeSort(arr, mid + 1, right);
+	Merge(arr, left, mid, right);
+}
+
 // Quick Sort - best: O(NlogN) average: O(NlogN) worst: O(N^2)
 void QuickSort(int arr[], int left, int right)
 {
@@ -171,7 +249,7 @@ void QuickSort(int arr[], int left, int right)
 	}
 	// 위에서 찾은 i 번째의 원소값과 기준값을 교환한다.
 	Swap(&arr[i], &arr[right]);
-	// i 를 기준으로 왼쪽부분과 오른쪽부분에 대해 반복 수행한다.	(분할 정복)
+	// i 를 기준으로 왼쪽부분과 오른쪽부분에 대해 반복 수행한다.(분할 정복)
 	QuickSort(arr, left, i - 1);
 	QuickSort(arr, i + 1, right);
 }
