@@ -18,6 +18,7 @@ int swap_cnt = 0;
 void Swap(int *a, int *b);
 void BubbleSort(int arr[], int size);
 void SelectionSort(int arr[], int size);
+void InsertionSort(int arr[], int size);
 void MergeSort(int arr[], int left, int right);
 void QuickSort(int arr[], int left, int right);
 void HeapSort(int arr[], int size);
@@ -33,7 +34,7 @@ void Print(FILE *fp, int arr[], int size, const char *msg)
 		fprintf(fp, "%d ", arr[i]);
 	}
 	fprintf(fp, "]\n");
-	fprintf(stdout, "end\n");
+	fprintf(stdout, "end\n\n");
 }
 
 int main()
@@ -72,6 +73,16 @@ int main()
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Selection Sort");
+	memcpy(temp, input, sizeof(int) * MAX);
+
+	// Insertion Sort
+	start = clock();
+	swap_cnt = 0;
+	InsertionSort(temp, MAX);
+	printf("----- Insertion Sort -----\n");
+	printf("swap_cnt : %d\n", swap_cnt);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, temp, MAX, "Insertion Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Merge Sort
@@ -160,6 +171,28 @@ void SelectionSort(int arr[], int size)
 		}
 		// 현재 원소를 가장 작은 원소와 교환한다.
 		Swap(&arr[i], &arr[MinIdx]);
+	}
+}
+
+// Insertsion Sort - best: O(N^2) average: O(N^2) worst: O(N^2)
+void InsertionSort(int arr[], int size)
+{
+	int i = 0, j = 0;
+	for (i = 0; i < size - 1; i++)
+	{
+		// 현재 오른쪽값(j+1)이 현재(j)~0까지 차례로 비교해나가면서 알맞은 위치에 삽입한다.
+		for (j = i + 1; j >= 0; j--)
+		{
+			if (arr[j] < arr[j - 1])
+			{
+				Swap(&arr[j], &arr[j - 1]);
+			}
+			else
+			{
+				// 스왑이 없으면 그 뒤로는 모두 현재 위치의 값 보다 작은 값들이라 비교할 필요 없다.
+				break;
+			}
+		}
 	}
 }
 
