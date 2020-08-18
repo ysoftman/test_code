@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctime>
+#include <map>
+#include <vector>
 
 using namespace std;
 
@@ -19,6 +21,7 @@ void Swap(int *a, int *b);
 void BubbleSort(int arr[], int size);
 void SelectionSort(int arr[], int size);
 void InsertionSort(int arr[], int size);
+void RadixSort(int arr[], int size);
 void MergeSort(int arr[], int left, int right);
 void QuickSort(int arr[], int left, int right);
 void HeapSort(int arr[], int size);
@@ -83,6 +86,16 @@ int main()
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, temp, MAX, "Insertion Sort");
+	memcpy(temp, input, sizeof(int) * MAX);
+
+	// Radix Sort
+	start = clock();
+	swap_cnt = 0;
+	RadixSort(temp, MAX);
+	printf("----- Radix Sort -----\n");
+	printf("swap_cnt : %d\n", swap_cnt);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, temp, MAX, "Radix Sort");
 	memcpy(temp, input, sizeof(int) * MAX);
 
 	// Merge Sort
@@ -193,6 +206,52 @@ void InsertionSort(int arr[], int size)
 				break;
 			}
 		}
+	}
+}
+
+// Radix Sort - best: O(N*M) average: O(N*M) worst: O(N*M)
+void RadixSort(int arr[], int size)
+{
+	int i = 0, j = 0;
+	// 10진수(radix)라 0~9의 버킷 준비
+	map<int, vector<int>> bucket;
+
+	int digit_cnt = 1;
+	int temp = MAX;
+	while (temp >= 10)
+	{
+		temp /= 10;
+		++digit_cnt;
+	}
+	// printf("digit_cnt = %d\n", digit_cnt);
+	// 1의 자리 부터 max 번째 자리수 만큼
+	for (i = 0; i < digit_cnt; ++i)
+	{
+		for (j = 0; j < size; ++j)
+		{
+			temp = arr[j];
+			int digit_num = 0;
+			// 현재 숫자의 i 번째 자리수를 키로 현재 숫자 저장
+			for (int k = 0; k < i; k++)
+			{
+				digit_num = temp % 10;
+				temp /= 10;
+			}
+			bucket[digit_num].push_back(arr[j]);
+		}
+
+		memset(arr, 0, sizeof(int) * MAX);
+		int k = 0;
+		// buket 에 저장된 순서대로 꺼내서 arr 를 다시 구성
+		// 현재 digit 별
+		for (auto m : bucket)
+		{
+			for (auto val : m.second)
+			{
+				arr[k++] = val;
+			}
+		}
+		bucket.clear();
 	}
 }
 
