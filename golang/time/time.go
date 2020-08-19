@@ -53,6 +53,8 @@ func main() {
 
 	// 현재로 부터 2달 20일 뒤 시간 파악
 	fmt.Println("time.Now()+2months+20days:", time.Now().AddDate(0, 2, 10))
+	// 어제 시간 파악
+	fmt.Println("time.Now()-1days:", time.Now().AddDate(0, 0, -1))
 	// 현재 유닉스 시간을 날짜로 변경
 	fmt.Println("time.Unix(time.Now().Unix(), 0).String() (date):", time.Unix(time.Now().Unix(), 0).String())
 
