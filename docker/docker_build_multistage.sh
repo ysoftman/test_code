@@ -7,7 +7,10 @@ docker rm -f ysoftman_multistage
 docker rmi -f ysoftman/multistage
 
 # dockerfile 로 이미지 빌드
-docker build -f Dockerfile_multistage -t ysoftman/multistage .
+docker build \
+--build-arg myarg1="ysoftman" \
+-f Dockerfile_multistage \
+-t ysoftman/multistage .
 
 # multistage 를 빌드하면 최종 스테이지 말고는 
 # 모두 <none> dangling 이미지가 생성되니 지워준다.

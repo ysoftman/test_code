@@ -10,8 +10,15 @@
 # buildstage 이름의 스테이지로 지정
 FROM ubuntu:latest AS buildstage
 
+ARG myarg1
 WORKDIR /root
-RUN echo "test" > output.txt
+RUN if [ ${myarg1} = "ysoftman" ]; then \
+    echo "test" | tee  output.txt; \
+    else \
+    echo "test2" | tee output.txt; \
+    fi
+
+CMD ["/bin/bash"]
 
 ##########
 
@@ -20,7 +27,14 @@ FROM archlinux/base:latest
 
 # buildstage 의 결과물을 현재 스테이지의 . 위치로 복사
 COPY --from=buildstage /root/output.txt .
-CMD ["/bin/bash"]
+
+RUN echo "alias ll='ls -ahl'" > ~/.bashrc
+
+# ARG 는 도커 빌드 타임동안만 유효하다.
+ARG myarg1
+# CMD 런타임에 인자를 전달 하기 위해서는 ENV 값을 이용해야 한다.
+ENV aaa ${myarg1}
+CMD echo ${aaa} > test.txt && /bin/bash
 
 
 # multistage 를 빌드하면 최종 스테이지 말고는 
