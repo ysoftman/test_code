@@ -6,8 +6,24 @@
 
 
 # Makefile 테스트
+# 메뉴얼 : https://www.gnu.org/software/make/manual/make.html
 # 변수 설정, 실제 사용전에 위치해야 한다.
 # 사용시 ${변수} 또는 $(변수) 로 사용한다.
+var1=123
+# ?= 는 이전에 변수가 선언되어 사용했다면 할당하지 않는다.
+# var1 은 이미 선언되어 ?= 연산으로는 100 할당할 수 없다.
+var1 ?= 100
+# += 값 추가 할당
+var2 += 111
+var2 += 222
+# 변수에 열러값을 할당(확장)시 갑이 변수인 경우 참조하는데
+# 이때 참조하게 자기 자신이면 recusive 하게 값을 참조하게 된다.
+# = 를 사용하면 var3 할당시 자기 자신을 참조해 에러 발생한다.
+# var3 = ${var3} 456
+# 이런 경우 := 를 사용하면 recursive 하지 않과 심플한게 한번만 참조(확장)해 값을 설정할 수 있다.
+var3 := ${var3}333
+
+
 CXX = g++
 OUTPUT = make_sample_exe
 INCLUDES = -I./ -I../
@@ -30,8 +46,10 @@ OBJS = $(SRCS:.cpp=.o)
 # 실제 all, clean, build 파일이 있다면 make 타겟 파일이 존재해서 실행하지 않는다.
 # 이를 방지하고자 .PHONY(가짜) 로 설정하면 타겟 파일 존재여부 없이 실행한다.
 .PHONY: all
+# make 기본 타겟은  all 이다.
 # all 은 여러 타겟을 한번에 생성하기 위해 사용한다.
-all: $(OUTPUT)
+# clean 실행 -> $(OUTPUT) 실행
+all: clean $(OUTPUT)
 
 # 방법1 - 모든 rule 을 일일히 명시한다.
 # $< 현재 타겟보다 최근에 변경된 의존성 파일(첫번째 의존성 파일)을 나타내는 내장변수다.
@@ -50,7 +68,24 @@ all: $(OUTPUT)
 # 방법2 - 변수를 이용해서 간략하게 하다.
 # @ suppress shell command output, 명령어 화면 출력을 하지 않는다.
 # $@ 는 타겟을 나타내는 내장변수다. -o $(OUTPUT) 와 같다.
+# origin 은 변수가 어디서 왔는지 알려준다.
+# file : makefile 에서 정의
+# undefined : 정의 되지 않음
 $(OUTPUT):
+	@echo "origin var0=$(origin var0)"
+	@echo "origin var1=$(origin var1)"
+	@echo "var1=${var1}"
+	@echo "var2=${var2}"
+	@echo "var3=${var3}"
+
+# ifeq 는 들여쓰기 하면 안된다.
+ifeq ($(shell uname),Linux)
+	@echo cond1 - Linux
+else
+	@echo cond2 - $(shell uname)
+endif
+
+
 	@echo "SRCS=$(SRCS)"
 	@echo "OBJS=$(OBJS)"
 	$(CXX) $(CFLAGS) -c $(SRCS)

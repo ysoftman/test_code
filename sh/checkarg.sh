@@ -42,7 +42,7 @@ then
 fi
 
 
-# 산순 연산시 (()) 사용
+# 산술 연산시 (()) 사용
 if (( $argc > 1 )); then
 	echo "argc > 1 .. ok"
 fi
