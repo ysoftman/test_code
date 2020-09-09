@@ -42,13 +42,14 @@ OBJS = $(SRCS:.cpp=.o)
 # 	command
 
 
-# all. clean, build... 등은 타겟은 실제 파일이 아닌데,
-# 실제 all, clean, build 파일이 있다면 make 타겟 파일이 존재해서 실행하지 않는다.
+# all. clean, build... 등 타겟은 실제 파일이 아닌데,
+# 실제 all, clean, build 파일이 있다면 make 타겟 파일이 존재해서 충돌된다.
 # 이를 방지하고자 .PHONY(가짜) 로 설정하면 타겟 파일 존재여부 없이 실행한다.
 .PHONY: all
-# make 기본 타겟은  all 이다.
+# make 기본 타겟은 all 이다.
 # all 은 여러 타겟을 한번에 생성하기 위해 사용한다.
 # clean 실행 -> $(OUTPUT) 실행
+# all 을 만들기 위한 recipes 영역
 all: clean $(OUTPUT)
 
 # 방법1 - 모든 rule 을 일일히 명시한다.
@@ -71,20 +72,40 @@ all: clean $(OUTPUT)
 # origin 은 변수가 어디서 왔는지 알려준다.
 # file : makefile 에서 정의
 # undefined : 정의 되지 않음
+	# recipes 영역에선 탭 들여쓰기 하면 무조건 /bin/sh 로 처리된다.
+
+
 $(OUTPUT):
+	# output recipes
+# 탭 들여쓰기로 /bin/sh 실행
 	@echo "origin var0=$(origin var0)"
 	@echo "origin var1=$(origin var1)"
 	@echo "var1=${var1}"
 	@echo "var2=${var2}"
 	@echo "var3=${var3}"
 
-# ifeq 는 들여쓰기 하면 안된다.
+
+# loop 사용지 /bin/sh 전달시 $i 로 전달하려면 $$i 로 명시해야 한다.
+	@for i in ${var2}; do \
+		echo "for test - $$i"; \
+	done
+
+# 조건 처리 방법1
+# /bin/sh 스크립트 사용시
+	@if [ ${shell whoami} = "ysoftman" ]; then \
+		echo "whoami cond1 - ${shell whoami}"; \
+	else \
+		echo "whoami cond2 - ${shell whoami}"; \
+	fi
+
+# 조건 처리 방법2
+# make 자체 문법 사용
+# ifeq 는 make 문법으로 /bin/sh 로 처리하면 안되기 때문에 탭 들여쓰기 하지 않는다.
 ifeq ($(shell uname),Linux)
 	@echo cond1 - Linux
 else
 	@echo cond2 - $(shell uname)
 endif
-
 
 	@echo "SRCS=$(SRCS)"
 	@echo "OBJS=$(OBJS)"
