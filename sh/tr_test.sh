@@ -8,6 +8,9 @@ set -x
 
 # 소문자를 대문자로 변경
 echo "ysoftman" | tr "[a-z]" "[A-Z]"
+# 또는
+echo "ysoftman" | tr [:lower:] [:upper:]
+
 
 # 개행을 공백으로 변경
 cal | tr "\n" " "
