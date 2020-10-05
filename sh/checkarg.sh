@@ -90,6 +90,10 @@ case $arg1 in
 	ysoftman)
 		echo "case"
 		echo "ysoftman";;
+		# lemon 이 포함된 경우
+	*lemon*)
+		echo "case";
+		echo 'it contains lemon';;
 	*)
 		echo "case"
 		echo "other(*)";;

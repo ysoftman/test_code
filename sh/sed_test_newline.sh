@@ -17,7 +17,7 @@ echo "ysoftman&&lemon" | sed $'s/&&/\\\n/'
 
 
 # delete newline
-# sed 에선 newline 을 삭제 sed 's/\n//' 로 할 수 없다.
+# sed 's/\n//' 로 newline 을 제거할 수 없다.
 # sed ':a;N;$!ba;s/\n//g'\
 # 로 사용해야 하는데 mac에선 안된다.
 # 그래서 tr을 쓰라고한다.
