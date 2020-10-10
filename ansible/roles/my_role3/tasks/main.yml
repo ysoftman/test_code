@@ -1,0 +1,38 @@
+---
+- name: Check service_env
+  # set_fact 로 변수 값을 변경할 수 있다.
+  set_fact:
+    my_var1: "master"
+  when: service_env == "sandbox" or service_env == "production"
+  tags:
+    - my_role3
+
+- name: print service_env
+  shell: echo "{{ my_var1 }}"
+  tags:
+    - my_role3
+
+- name: make dir and file
+  shell: "mkdir -p a && echo test > ./a/file.txt"
+  tags:
+    - my_role3
+
+# 현재 접속한 inventory 호스트 자체(로컬)에서 복사
+- name: local a -> local b 로 synchronize
+  synchronize:
+    src: "./a/"
+    dest: "./b"
+  tags:
+    - my_role3
+
+# local -> ysoftman.server.com 로 위임
+# ysoftman.server.com 의 /home/ysoftman/z/ -> ysoftman@local(127.0.0.1) 의 ./b 로 복사
+- name: inventory(remote) z -> local b 로 synchronize
+  synchronize:
+    mode: push
+    src: "/home/ysoftman/z/"
+    dest: "./b"
+  remote_user: "ysoftman"
+  delegate_to: ysoftman.server.com
+  tags:
+    - my_role3

@@ -27,7 +27,10 @@
     <script language="javascript">
         // ysoftman
         // 인코딩 테스트
-        var inputstr = "http://ysoftman.com/query?key1=abc&key2=윤병훈";
+        // 공백은 %20 으로 처리된다.
+        // 다른언어에서는 공백을 + 로도 인코딩 하지만, URI 스펙상으로는 + 는 예약어로 취급한다.
+        // https://tools.ietf.org/html/rfc3986#section-2.2
+        var inputstr = "http://ysoftman.com/query?key1=abc&key2=윤병훈 lemon apple orange";
 
         // escape 알파벳,숫자 제외한 문자를 유니코드로 인코딩
         // 한글과 같은 2바이트 문자는 %uxxxx 로 인코딩된다.
@@ -58,7 +61,7 @@
 
         enc = '\\u003cdiv\\u003ehello world\\u003c/div\\u003e';
         dec = decodeURIComponent(JSON.parse('"' + enc + '"'));
-        dec2 = dec.replace(/[<]/g,'&lt;');
+        dec2 = dec.replace(/[<]/g, '&lt;');
         document.getElementById("result5").innerHTML =
             "[unicode escape]" + enc + "<BR>" +
             "[decodeURIComponent(JSON.parse())]" + dec +

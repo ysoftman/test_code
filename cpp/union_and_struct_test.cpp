@@ -1,14 +1,12 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // union 과 struct 의 차이
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
 
-struct ST {
+struct ST
+{
 	unsigned char ucChar;
 	unsigned int unInt;
-	
 };
 
 union UI {
@@ -25,14 +23,14 @@ int main()
 	// 멤버 변수를 추가하면 현재 구조체에 할당된 메모리 크기를 넘어가게 될 경우
 	// 가장 큰 멤버 변수의 타입의 크기 단위로 메모리를 할당하게 된다.
 	// 4byte 를 넘어가면 -> 8byte 를 넘어가면 -> 12byte ...
-	printf("stInstance size : %d bytes\n", sizeof(stInstance));
+	printf("stInstance size : %lu bytes\n", sizeof(stInstance));
 
 	UI uiInstance;
 	memset(&uiInstance, 0, sizeof(uiInstance));
 	// 4 byte 출력
 	// 1바이트 char 형이 4바이트 int 형과 같은 4바이트 메모리를 차지하지만 하나의 하나의 4바이트 메모리공간을 공유한다.
-	printf("uiInstance size : %d bytes\n", sizeof(uiInstance));
-	
+	printf("uiInstance size : %lu bytes\n", sizeof(uiInstance));
+
 	printf("\n\n");
 
 	// struct 의 멤버는 각각의 독립적인 메모리 공간이 있어 각각 값을 유지한다.
@@ -61,4 +59,3 @@ int main()
 
 	return 0;
 }
-

@@ -1,8 +1,6 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // InitializeCriticalSectionAndSpinCount 사용하기
 // 릴리즈 빌드로 테스트 하기
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -17,7 +15,7 @@ int g_num = 1;
 void common_job(char *caller)
 {
 	EnterCriticalSection(&g_cs);
-	
+
 	//printf("caller(%s), g_num = %d\n", caller, g_num);
 	g_num++;
 
@@ -70,12 +68,10 @@ int main()
 	// 반대로 spin count 내에 lock 이 풀리지 않으면 spin count 만큼 성능이 느려진다.
 	InitializeCriticalSectionAndSpinCount(&g_cs, 4000);
 
-
 	HANDLE hThreads[2];
 
 	UINT nThread1ID = 0;
 	UINT nThread2ID = 0;
-
 
 	DWORD tick_start;
 	DWORD tick_end;
@@ -83,9 +79,9 @@ int main()
 	// 처리시간 파악
 	tick_start = GetTickCount();
 
-	hThreads[0] = (HANDLE)_beginthreadex(NULL, 0, thread1, (void*)"arg", 0, &nThread1ID);
-	hThreads[1] = (HANDLE)_beginthreadex(NULL, 0, thread2, (void*)"arg", 0, &nThread2ID);
-	
+	hThreads[0] = (HANDLE)_beginthreadex(NULL, 0, thread1, (void *)"arg", 0, &nThread1ID);
+	hThreads[1] = (HANDLE)_beginthreadex(NULL, 0, thread2, (void *)"arg", 0, &nThread2ID);
+
 	// 모든 쓰레드가 종료될때까지 기다린다.
 	WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);
 
@@ -99,7 +95,4 @@ int main()
 	printf("this system is not windows.\n");
 #endif
 	return 0;
-
 }
-
-

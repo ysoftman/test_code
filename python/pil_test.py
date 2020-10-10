@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 2.x
+# python version : 2.x 3.x
 # desc : PIL(python Imaging Library)  test
 # pip install pillow
 

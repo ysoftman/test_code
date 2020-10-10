@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // URL 인코딩/디코딩
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string>
 
@@ -25,7 +23,7 @@ char hex2int(char input)
 	{
 		return input - 'a' + 10;
 	}
-	return NULL;
+	return (char)NULL;
 }
 
 // 10진수 문자값을 16진수 문자값으로 변환
@@ -44,12 +42,12 @@ string URLEncoding(char *pIn)
 	}
 
 	string result;
-	char temp = NULL;
-	while (*pIn != NULL)
+	char temp = 0;
+	while (*pIn != 0)
 	{
 		temp = *pIn;
 		// ASCII 대소문자와 숫자인 경우만 그대로 저장
-		if ((temp>= '0' && temp <= '9') ||
+		if ((temp >= '0' && temp <= '9') ||
 			(temp >= 'a' && temp <= 'z') ||
 			(temp >= 'A' && temp <= 'Z'))
 		{
@@ -82,8 +80,8 @@ string URLDecoding(char *pIn)
 	}
 
 	string result;
-	char temp = NULL;
-	while (*pIn != NULL)
+	char temp = 0;
+	while (*pIn != 0)
 	{
 		temp = *pIn;
 		// ASCII 대소문자와 숫자인 경우만 그대로 저장
@@ -101,16 +99,16 @@ string URLDecoding(char *pIn)
 		// % 로 시작되면 % 빼고 2자리 16진수 문자값을 10진수 문자값으로 변경하여 저장
 		else if (temp == '%')
 		{
-			char buf = NULL;
+			char buf = 0;
 			pIn++;
 			temp = *pIn;
 			buf = hex2int(temp);
-			
+
 			pIn++;
 			temp = *pIn;
 			buf = buf << 4 | hex2int(temp);
 
-			result += buf;			
+			result += buf;
 		}
 		pIn++;
 	}
@@ -120,19 +118,16 @@ string URLDecoding(char *pIn)
 
 int main()
 {
-	char *pInput = "윤병훈 qwer 1234 QWER !@#$";
+	char pInput[] = "윤병훈 qwer 1234 QWER !@#$";
 	string Result;
-	
+
 	fprintf(stdout, "input = %s\n", pInput);
-	
+
 	Result = URLEncoding(pInput);
 	fprintf(stdout, "[URL Encoding] = %s\n", Result.c_str());
-	
-	Result = URLDecoding((char*)Result.c_str());
+
+	Result = URLDecoding((char *)Result.c_str());
 	fprintf(stdout, "[URL Decoding] = %s\n", Result.c_str());
 
 	return 0;
 }
-
-
-

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"net/url"
 	"strconv"
 )
 
@@ -51,6 +52,16 @@ func main() {
 	// imgs 의 파이들에 접급 허용
 	http.Handle("/imgs/", http.StripPrefix("/imgs", http.FileServer(http.Dir("./imgs"))))
 	http.ListenAndServe(":55555", nil)
+
+	// https 로 띄우기(https://localhost/main 로 테스트)
+	// Go 1.6 부터 net/http  에서 http2 지원
+	// crt, key 파일 생성
+	// openssl req -newkey rsa:2048 -nodes -keyout server.key -x509 -days 365 -out server.crt
+	// 기본 https + http2
+	// curl -Iv -k 'https://localhost/main'
+	// https + http1.1 로 요청시
+	// curl -Iv -k 'https://localhost/main' --http1.1
+	// http.ListenAndServeTLS(":443", "server.crt", "server.key", nil)
 
 	// 서버띄우기 방법2
 	// ServeHTTP(이미 정의됨) 함수를 mythttp 핸들로 사용
@@ -118,6 +129,13 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(`ctx.Value("bbb")`, ctx.Value(mykey))
 	mykey = "ccc"
 	fmt.Println(`ctx.Value("ccc")`, ctx.Value(mykey))
+
+	// 헤더 추가
+	w.Header().Set("ysoftman1", "lemon")
+	// w.Header().Set("ysoftman2", "메인페이지 입니다.")
+	// js 에서 사용하기 위해서는 한글은 QueryEscape 해준다.
+	// js decodeURIComponent() 로 디코딩해 사용한다.
+	w.Header().Set("ysoftman2", url.QueryEscape("메인페이지 입니다."))
 
 	// 템플릿 실행(html 응답)
 	//templateMain.Execute(os.Stdout, nil)

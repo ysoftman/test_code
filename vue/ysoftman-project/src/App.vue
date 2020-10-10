@@ -1,23 +1,25 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-link to = "/">HelloWorld</router-link>
-    <router-link to = "/Alert">Alert</router-link>
-    <router-link to = "/BindMessage">BindMessage</router-link>
-    <router-link to = "/Component">Component</router-link>
-    <router-link to = "/DataList">DataList</router-link>
-    <router-link to = "/ModifyArray">ModifyArray</router-link>
-    <router-link to = "/Draggable">Draggable</router-link>
-    <router-link to = "*">NotFound</router-link>
-    <router-view/>
-  </div>
+  <!-- v-app 은 항상 포함돼야 한다. -->
+  <v-app>
+    <v-card tile class="elevation-0">
+      <toolbar flat height="80px"></toolbar>
+      <v-row align="center" justify="center">
+        <v-img src="./assets/logo.png" aspect-ratio="1" max-width="300" max-height="300"></v-img>
+      </v-row>
+      <router-view></router-view>
+    </v-card>
+  </v-app>
 </template>
 
 <script>
+import ToolBar from "@/components/ToolBar";
 /* eslint-disable */
 export default {
-  name: 'App'
-}
+  name: "App",
+  components: {
+    toolbar: ToolBar
+  }
+};
 </script>
 
 
@@ -33,7 +35,7 @@ export default {
 }
 
 #app {
-  margin: 10px 10px 10px 10px;
+  margin: 0px 0px 0px 0px;
+  height: 0px;
 }
-
 </style>

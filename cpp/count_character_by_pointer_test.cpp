@@ -1,14 +1,12 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // 포인터를 이용한 문자열 길이 카운트
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 // 문자열 길이 카운트
 int GetByteLength(char *pByte)
 {
 	int cnt = 0;
-	while ((*pByte) != NULL)
+	while ((*pByte) != '\0')
 	{
 		cnt++;
 		pByte++;
@@ -24,4 +22,3 @@ int main()
 	fprintf(stderr, "Munja = %s\nLen = %d\n", pMunja, Len);
 	return 0;
 }
-

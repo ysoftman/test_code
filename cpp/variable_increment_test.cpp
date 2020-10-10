@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // Difference between ++i and i++
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 int main()
@@ -11,7 +9,7 @@ int main()
 
 	// 전위, 후위 증가 연산자의 결과는 같다
 	printf("for 문에서 i++ 사용\n");
-	for (int i=0; i<max; i++)
+	for (int i = 0; i < max; i++)
 	{
 		printf("%2d", i);
 	}
@@ -19,13 +17,12 @@ int main()
 
 	i = 0;
 	printf("for 문에서 ++i 사용\n");
-	for (int i=0; i<max; ++i)
+	for (int i = 0; i < max; ++i)
 	{
 		printf("%2d", i);
 	}
 	printf("\n");
 
-	
 	i = 0;
 	printf("i : %2d\n", i);
 	printf("++i : %2d\n", ++i);
@@ -40,4 +37,3 @@ int main()
 
 	return 0;
 }
-

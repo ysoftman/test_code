@@ -5,6 +5,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -42,7 +43,7 @@ func main() {
 		// MaxBackups is the maximum number of old log files to retain.  The default
 		// is to retain all old log files (though MaxAge may still cause them to get
 		// deleted.)
-		MaxBackups: 10,
+		MaxBackups: 5,
 
 		// 로컬 시간으로 파일명(타임스탬프)사용, 기본 UTC
 		// LocalTime determines if the time used for formatting the timestamps in
@@ -102,9 +103,19 @@ func printlog() {
 	// log.Panic("panic level log")
 
 	// 필드가 추가된 로그 출력
-	log.WithFields(log.Fields{"id": "ysoftman", "age": "30"}).Info("okay")
+	log.WithFields(log.Fields{"id": "ysoftman", "age": "30"}).Debug("okay")
 
 	// 필드형식의 포맷을 만들어 재사용 사용할 수 있다.
 	mylogformat := log.WithFields(log.Fields{"id": "ysoftman", "age": "30"})
-	mylogformat.Error("oh no!")
+	mylogformat.Info("mylog.info")
+	mylogformat.Warn("mylog.warn")
+	mylogformat.Error("mylog.error")
+
+	// "error" 를 키로 하는 필드를 추가해서 출력한다.
+	err := errors.New("my error")
+	mylogformat2 := log.WithError(err)
+	mylogformat2.Debug(err.Error())
+	mylogformat2.Info(err.Error())
+	mylogformat2.Warn(err.Error())
+	mylogformat2.Error(err.Error())
 }

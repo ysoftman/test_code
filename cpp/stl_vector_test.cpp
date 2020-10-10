@@ -1,9 +1,13 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // stl vector 의 값(클래스) 삭제 테스트
-////////////////////////////////////////////////////////////////////////////////////
+// g++ -std=c++11 stl_vector_test.cpp && ./a.out
 #include <stdio.h>
+#include <iostream>
 #include <vector>
+#include <string>
+#include <algorithm> // std::copy()
+#include <iterator>  // back_inserter()
+using namespace std;
 
 class Dummy
 {
@@ -21,7 +25,7 @@ public:
 	int a;
 };
 
-int main()
+void vector_test1()
 {
 	Dummy dummy1;
 	printf("dummy1.a = %d\n", dummy1.a);
@@ -30,9 +34,9 @@ int main()
 	delete dummy2;
 
 	printf("\n\n");
-	
+
 	std::vector<Dummy> vecDummy1;
-	for (int i=0; i<5; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Dummy dummy3;
 		vecDummy1.push_back(dummy3);
@@ -42,8 +46,8 @@ int main()
 
 	printf("\n\n");
 
-	std::vector<Dummy*> vecDummy2;
-	for (int i=0; i<5; i++)
+	std::vector<Dummy *> vecDummy2;
+	for (int i = 0; i < 5; i++)
 	{
 		Dummy *dummy4 = new Dummy();
 		vecDummy2.push_back(dummy4);
@@ -60,8 +64,8 @@ int main()
 		vecDummy2.pop_back();
 	}
 	// 방법2
-	std::vector<Dummy*>::iterator iter;
-	std::vector<Dummy*>::iterator iterTemp;
+	std::vector<Dummy *>::iterator iter;
+	std::vector<Dummy *>::iterator iterTemp;
 	for (iter = vecDummy2.begin(); iter != vecDummy2.end();)
 	{
 		iterTemp = iter;
@@ -70,7 +74,108 @@ int main()
 		// 원소 삭제
 		iter = vecDummy2.erase(iter++);
 	}
-	
+
 	printf("\n\n");
 }
 
+void vector_test2()
+{
+	std::vector<std::string> vec_my_data;
+	vec_my_data.insert(vec_my_data.begin(), "ccc");
+	vec_my_data.insert(vec_my_data.begin(), "bbb");
+	vec_my_data.insert(vec_my_data.begin(), "aaa");
+
+	vec_my_data.push_back("ddd");
+	vec_my_data.push_back("eee");
+	vec_my_data.push_back("fff");
+
+	for (auto i : vec_my_data)
+	{
+		printf("%s\n", i.c_str());
+	}
+
+	// 특정 위치 찾아서 추가
+	std::vector<std::string>::iterator myiter;
+	for (myiter = vec_my_data.begin(); myiter < vec_my_data.end(); ++myiter)
+	{
+		if (*myiter == "ccc")
+		{
+			printf("find --> %s\n", (*myiter).c_str());
+			break;
+		}
+	}
+
+	// 찾지 못해 myiter 가 끝까지 간경우
+	if (myiter == vec_my_data.end())
+	{
+		vec_my_data.push_back("_not_found_");
+	}
+	// 마지막 원소로 찾은 경우
+	else if (std::next(myiter) == vec_my_data.end())
+	{
+		vec_my_data.push_back("_last_found_");
+	}
+	// 마지막 원소로 찾은게 아니면 찾은것 다음에 끼워 넣기
+	else
+	{
+		std::vector<std::string>::iterator next_iter = std::next(myiter);
+		// insert 된 원소를 리턴한다.
+		next_iter = vec_my_data.insert(next_iter, "_7_");
+		next_iter = vec_my_data.insert(next_iter, "_6_");
+		next_iter = vec_my_data.insert(next_iter, "_5_");
+		next_iter = vec_my_data.insert(next_iter, "_4_");
+		next_iter = vec_my_data.insert(next_iter, "_3_");
+		next_iter = vec_my_data.insert(next_iter, "_2_");
+		next_iter = vec_my_data.insert(next_iter, "_1_");
+	}
+
+	for (auto i : vec_my_data)
+	{
+		printf("%s\n", (i).c_str());
+	}
+}
+
+void vector_test3()
+{
+	int arr[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+	int len = sizeof(arr) / sizeof(int);
+	cout << "len: " << len << endl;
+
+	// array to vector
+	vector<int> vec(arr, arr + len);
+	for (auto i : vec)
+	{
+		cout << i << ",";
+	}
+	cout << endl;
+
+	// copy array
+
+	// method1 - 생성시 다음과 같은 방식들 사용
+	// vector<int> vec2(vec);
+	// vector<int> vec2(vec.begin(), vec.end());
+
+	// method2 - assign
+	// vector<int> vec2;
+	// vec2.assign(vec.begin(), vec.end());
+
+	// method2 - std::copy
+	// copy() 는 #include <algorithm> 필요
+	// back_inserter() 는 #include <iterator> 필요
+	vector<int> vec2;
+	std::copy(vec.begin(), vec.end(), back_inserter(vec2));
+
+	vec.clear();
+	for (auto i : vec2)
+	{
+		cout << i << ",";
+	}
+	cout << endl;
+}
+int main()
+{
+	vector_test1();
+	vector_test2();
+	vector_test3();
+	return 0;
+}

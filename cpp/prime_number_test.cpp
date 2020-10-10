@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // PrimeNumber(소수) 구하기
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,7 +7,7 @@ void PrimeNumber(int);
 
 int main()
 {
-	int num=0;
+	int num = 0;
 
 	printf("Input Number : ");
 	scanf("%d", &num);
@@ -31,12 +29,12 @@ void PrimeNumber(int num)
 		exit(1);
 	}
 
-	for (i=2; i<=num; i++)
+	for (i = 2; i <= num; i++)
 	{
 		isPrime = 1;
-		for (j=2; j<=i-1; j++)
+		for (j = 2; j <= i - 1; j++)
 		{
-			if (i%j == 0)
+			if (i % j == 0)
 			{
 				isPrime = 0;
 				printf("%3d is not PrimeNumber(devide by %d ...etc)\n", i, j);
@@ -49,4 +47,3 @@ void PrimeNumber(int num)
 		}
 	}
 }
-

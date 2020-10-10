@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // linux function test
-////////////////////////////////////////////////////////////////////////////////////
 #ifdef linux
 #include <errno.h>
 #include <fcntl.h>
@@ -56,7 +54,7 @@ void SignalHandler(int sig)
 int main()
 {
 	// set signalhandler
-	//signal(SIGINT, SignalHandler);	
+	//signal(SIGINT, SignalHandler);
 
 	// get host name
 	char hostname[256];
@@ -78,7 +76,7 @@ int main()
 		return -1;
 	}
 	struct ifaddrs *ifa = NULL;
-	for (ifa=ifp; ifa; ifa = ifa->ifa_next)
+	for (ifa = ifp; ifa; ifa = ifa->ifa_next)
 	{
 		socklen_t salen;
 		char ip[125];
@@ -103,17 +101,17 @@ int main()
 	struct tm *stCurrentTime = localtime(&CurrentTime);
 	char szDate[32];
 	memset(szDate, 0, sizeof(szDate));
-	snprintf(szDate, sizeof(szDate), "%04d-%02d-%02d %02d-%02d-%02d", stCurrentTime->tm_year+1900, stCurrentTime->tm_mon+1, stCurrentTime->tm_mday, stCurrentTime->tm_hour, stCurrentTime->tm_min, stCurrentTime->tm_sec);
+	snprintf(szDate, sizeof(szDate), "%04d-%02d-%02d %02d-%02d-%02d", stCurrentTime->tm_year + 1900, stCurrentTime->tm_mon + 1, stCurrentTime->tm_mday, stCurrentTime->tm_hour, stCurrentTime->tm_min, stCurrentTime->tm_sec);
 	printf("%s\n", szDate);
 
 	// get current path
 	char resolved_path[256];
 	memset(resolved_path, 0, sizeof(resolved_path));
 	realpath(".", resolved_path);
-	printf("%s\n", resolved_path);	
+	printf("%s\n", resolved_path);
 
 	// get file status
-	char *path = (char*)"/home/ysoftman/a.txt";
+	char *path = (char *)"/home/ysoftman/a.txt";
 	struct stat filest;
 	if (stat(path, &filest) == 0)
 	{
@@ -134,7 +132,7 @@ int main()
 	printf("%s\n", resolved_path);
 
 	// create directory
-	char *path2 = (char*)"/home/ysoftman/abcd";
+	char *path2 = (char *)"/home/ysoftman/abcd";
 	if (mkdir(path2, 0755) == 0)
 	{
 		printf("create directory success => %s\n", path2);
@@ -146,7 +144,7 @@ int main()
 
 	// ctrl+c
 	printf("press Ctrl+C to exit program...\n");
-	while(1)
+	while (1)
 	{
 		sleep(1);
 	}
@@ -154,4 +152,3 @@ int main()
 	return 0;
 }
 #endif
-

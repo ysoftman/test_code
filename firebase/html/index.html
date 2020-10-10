@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="common.css" rel="stylesheet" type="text/css" media="all">
+    <title>ysoftman-firebase</title>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-storage.js"></script>
+    <script src="common.js"></script>
+</head>
+
+<body>
+    <h1>ysoftman - firebase test</h1>
+    <a href="restaurant_pangyo.html">restaurant_pangyo.html</a><br>
+    <h3>
+        loadImage from firebase storage<br>
+        xelloss.jpg<br>
+        <div id=box1-1></div>
+        박카스.jpg<br>
+        <div id=box1-2></div>
+    </h3>
+    <h3>
+        incTestVisitCnt from firestore<br>VisitCnt
+        <div id=box2></div>
+    </h3>
+
+    <button type="button" onClick="loginGoogle('google_login_result')" id='google_login_result'>
+    </button>
+    <script>
+        loadImage("box1-1", "xelloss.jpg");
+        loadImage("box1-2", "박카스.jpg");
+        //setTestDoc("test", "ysoftman");
+        incTestVisitCnt("test", "ysoftman", "likeCnt", "box2");
+    </script>
+</body>

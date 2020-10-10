@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // 문자열 토큰나이즈
-////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,15 +16,15 @@ void StringTokenize(string str, vector<string> &tokens, string delimiter)
 	string::size_type topos = str.find_first_of(delimiter, frompos);
 	while (topos != string::npos)
 	{
-		// substr(offset, count) 
-		tokens.push_back(str.substr(frompos, topos-frompos));
+		// substr(offset, count)
+		tokens.push_back(str.substr(frompos, topos - frompos));
 		frompos = str.find_first_not_of(delimiter, topos);
-		topos = str.find_first_of(delimiter, frompos);		
+		topos = str.find_first_of(delimiter, frompos);
 	}
 	// 마지막에 구분자가 없을때는 현재까지의 frompos 부터 끝까지를 하나의 토큰을 본다.
 	if (frompos != string::npos)
 	{
-		tokens.push_back(str.substr(frompos, topos-frompos));
+		tokens.push_back(str.substr(frompos, topos - frompos));
 	}
 }
 
@@ -41,7 +39,6 @@ int main()
 	{
 		cout << (*iter).c_str() << endl;
 	}
-
 
 	// string find 테스트
 	string aa = "yoon\nbyoung\nhoon\n";

@@ -1,0 +1,11 @@
+[package]
+name = "b_crate"
+version = "0.1.0"
+authors = ["ysoftman <ysoftman@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# b_crate 는 a_crate 가 있어야 하며,  a_crate 의 위치를 명시한다.
+a_crate = { path = "../a_crate"}

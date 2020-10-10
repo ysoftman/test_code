@@ -1,0 +1,43 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.5.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+compileJava {
+    options.warnings = false
+    options.deprecation = false
+    options.compilerArgs += [ "-Xdoclint:none", "-Xlint:unchecked"]
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
+
+war {
+    archiveBaseName = 'tomcat_springboot'
+    archiveVersion = '0.0.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-data-rest')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    testImplementation('org.junit.jupiter:junit-jupiter:5.4.2')
+    // implementation('org.springframework.boot:spring-boot-configuration-processor')
+}

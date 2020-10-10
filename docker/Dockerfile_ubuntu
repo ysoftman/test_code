@@ -1,0 +1,27 @@
+FROM ubuntu:latest
+# change root password 
+RUN echo "root:docker!" | chpasswd
+# tzdata 설치시 사용자 인터페이스(사용자 입력을 기다리게 됨)를 비활성화하기 위해
+# DEBIAN_FRONTEND=noninteractive 설정
+# 참고 https://www.debian.org/releases/sarge/s390/ch05s02.html.ko
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get upgrade -y && apt-get install -y locales sudo vim tar git rsync gcc net-tools man python curl wget tzdata \
+&& rm -rf /var/lib/apt/lists/* \
+&& localedef -f UTF-8 -i ko_KR ko_KR.utf8 && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+ENV LANG ko_KR.utf8
+RUN groupadd programmer && useradd -m -d /home/ysoftman -g programmer -p ysoftman ysoftman
+RUN echo 'ysoftman      ALL=NOPASSWD: ALL, !/sbin/reboot, !/sbin/shutdown, !/sbin/halt, !/usr/bin/poweroff, !/usr/bin/halt' >> /etc/sudoers
+USER ysoftman
+# 환경설정 저장소 클론 받아 놓기
+COPY --chown=ysoftman:programmer .bashrc /home/ysoftman/.bashrc
+COPY --chown=ysoftman:programmer .vimrc /home/ysoftman/.vimrc
+RUN mkdir -p /home/ysoftman/workspace \
+&& cd /home/ysoftman/workspace \
+&& git clone https://github.com/ysoftman/myenv \
+&& cd /home/ysoftman/workspace/myenv \
+&& bash ./installcommon.sh \
+&& bash ./installconfig.sh \
+&& zsh ./installprezto.zsh
+EXPOSE 80
+# 컨테이너 실행시 실행할 명령들
+CMD /bin/bash

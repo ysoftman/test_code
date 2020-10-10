@@ -1,0 +1,7 @@
+# workspace 들 공유할 crate 를 명시
+# workspace 가 있으면 [package], [dependencies]  등으 다른 메타 정보는 사용할 수 없다.
+[workspace]
+members = [
+    "a_crate",
+    "b_crate",
+]

@@ -1,39 +1,77 @@
 // author : ysoftman
 // encoding : utf-8
 // title : array slice 테스트
+// array(배열)은 길이가 고정되어 추가 삭제를 할 수 없다.
+// slice(슬라이스) 는
+// 내부 배열을 가리키는 포인터,
+// 슬라이의 길이,
+// 슬라이스 용량(내부배열의 크기가 변경을 용이하기 위해서 미리 용량만큰 할당),
+// 으로 구성된 데이터 구조다.
+
 package main
 
 import "fmt"
 
+type Dummy struct {
+	strlist []string
+}
+
 func main() {
 
 	func() {
-		// slice(슬라이스) 는
-		// 내부 배열을 가리키는 포인터,
-		// 슬라이의 길이,
-		// 슬라이스 용량(내부배열의 크기가 변경을 용이하기 위해서 미리 용량만큰 할당),
-		// 으로 구성된 데이터 구조다.
-		// 리터털을 사용한 일반적인 슬라이스 선언
-		sliceTest := [5]int{11, 22, 33, 44, 55}
-		fmt.Println("sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), "sliceTest = ", sliceTest)
+		dummy1 := Dummy{
+			strlist: []string{"lemon", "apple", "orange"},
+		}
+		dummy2 := Dummy{}
+		dummy2 = dummy1
+		// 참조 복사
+		fmt.Printf("dummy1:%v, %p\n", dummy1, dummy1.strlist)
+		fmt.Printf("dummy2:%v, %p\n", dummy2, dummy2.strlist)
+		// deep copy
+		dummy2.strlist = make([]string, len(dummy1.strlist))
+		copy(dummy2.strlist, dummy1.strlist)
+		fmt.Printf("dummy1:%v, %p\n", dummy1, dummy1.strlist)
+		fmt.Printf("dummy2:%v, %p\n", dummy2, dummy2.strlist)
 	}()
 
 	func() {
-		// 슬라이스 생성시 2번째는 7값, 5번째는 99값을 넣는다.
-		// 이때 설정안된 곳은 0값으로 채워지고 마지막으로 설정된 n번째가 배열의 크기가 된다.
-		sliceTest := []int{2: 7, 5: 99}
-		fmt.Println("sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), "sliceTest = ", sliceTest)
-		sliceTest = append(sliceTest, 5)
+		var sliceStr []string
+		sliceStr = append(sliceStr, "aaa")
+		sliceStr = append(sliceStr, "bbb")
+		sliceStr = append(sliceStr, "ccc")
+		fmt.Println(sliceStr)
 	}()
 
 	func() {
+		// 5길이를 가진 배열 생성
+		arrayTest := [5]int{11, 22, 33, 44, 55}
+		fmt.Println("arrayTest len = ", len(arrayTest), "arrayTest cap = ", cap(arrayTest), "arrayTest = ", arrayTest)
+		// 배열은 추가할 수 없다.
+		// arrayTest = append(arrayTest, 9)
+		// fmt.Println("append", arrayTest)
+	}()
+
+	func() {
+		// variadic 으로 배열 생성
 		// ... 파라미터는 variadic 으로, 0 이상의 파라미터가 올수 있다는 의미
 		// https://golang.org/ref/spec#Function_types
 		// [...] 로 구체적 원소개수를 명시하지 않아도 된다.
-		sliceTest := [...]int{11, 22, 33, 44, 55}
+		arrayTest := [...]int{11, 22, 33, 44, 55}
 		// 슬라이스 크기가 고정되어 있어 자기 자신에게 append 사용할 수 없다.
-		// sliceTest = append(sliceTest, 6, 7)
+		// arrayTest = append(arrayTest, 6, 7)
+		fmt.Println("arrayTest len = ", len(arrayTest), "arrayTest cap = ", cap(arrayTest), "arrayTest = ", arrayTest)
+		// 배열은 추가할 수 없다.
+		// arrayTest = append(arrayTest, 9)
+	}()
+
+	func() {
+		// [] 리터털을 사용한 일반적인 슬라이스 선언
+		// 슬라이스 생성시 2번째는 7값, 4번째는 99값을 넣는다.
+		// 이때 설정안된 곳은 0값으로 채워지고 마지막으로 설정된 n번째가 배열의 크기가 된다.
+		sliceTest := []int{2: 7, 4: 99}
 		fmt.Println("sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), "sliceTest = ", sliceTest)
+		sliceTest = append(sliceTest, 9)
+		fmt.Println("append", sliceTest)
 	}()
 
 	func() {
@@ -96,9 +134,37 @@ func main() {
 
 		// delete
 		// append 에서 ... 는 해당 타입의 모든(0 이상) 원소들을 의미
-		// 3번째 값만 삭제 효과
-		sliceTest = append(sliceTest[:3], sliceTest[4:]...)
-		fmt.Println("delete idx=3 sliceTest =", sliceTest)
+		// 3번째 값만 삭제
+		idx := 3
+		fmt.Printf("slice = %v ", sliceTest)
+		if len(sliceTest) >= idx {
+			if len(sliceTest) > idx+1 {
+				sliceTest = append(sliceTest[:idx], sliceTest[idx+1:]...)
+			} else {
+				sliceTest = append(sliceTest[:idx])
+			}
+			fmt.Println("delete idx =", idx, "sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), " sliceTest =", sliceTest)
+		}
+		// 한번더 3번째 값만 삭제
+		fmt.Printf("slice = %v ", sliceTest)
+		if len(sliceTest) >= idx {
+			if len(sliceTest) > idx+1 {
+				sliceTest = append(sliceTest[:idx], sliceTest[idx+1:]...)
+			} else {
+				sliceTest = append(sliceTest[:idx])
+			}
+			fmt.Println("delete idx =", idx, "sliceTest len = ", len(sliceTest), "sliceTest cap = ", cap(sliceTest), " sliceTest =", sliceTest)
+		}
+
+		// addSlice, deleteSlice 로 결과를 리턴 받지 않으면
+		// 이곳의 sliceTest 는 len 이 갱신되지 않아 유효하지 않는 인덱스를 액세스할 위험이 있다.
+		for i := 0; i < 3; i++ {
+			sliceTest = addSlice(i, sliceTest)
+		}
+		for i := 0; i < 3; i++ {
+			sliceTest = deleteSlice(0, sliceTest)
+		}
+
 	}()
 
 	func() {
@@ -117,4 +183,39 @@ func main() {
 		str = string(strslice)
 		fmt.Printf("str = string(strslice), str = %s\n", str)
 	}()
+
+	func() {
+		// reference 으로 넘긴 slice 파라미터 결과로 받기
+		var aaa []int
+		addInt(&aaa)
+		fmt.Println("addInt = ", aaa)
+	}()
+}
+
+func addSlice(v int, slice []int) []int {
+	fmt.Printf("slice = %v ", slice)
+	slice = append(slice, v)
+	fmt.Println("add v =", v, "slice len = ", len(slice), "slice cap = ", cap(slice), " slice =", slice)
+	return slice
+}
+
+func deleteSlice(idx int, slice []int) []int {
+	fmt.Printf("slice = %v ", slice)
+	if len(slice) >= idx {
+		if len(slice) > idx+1 {
+			slice = append(slice[:idx], slice[idx+1:]...)
+		} else {
+			slice = append(slice[:idx])
+		}
+		fmt.Println("delete idx =", idx, "slice len = ", len(slice), "slice cap = ", cap(slice), " slice =", slice)
+	}
+	return slice
+}
+
+func addInt(s *[]int) {
+	for i := 0; i < 10; i++ {
+		// slice 가 reference 인경우
+		// append 를 쓰려면 역참조로 slice 타입을 가리키도록 해야 한다.
+		*s = append(*s, i)
+	}
 }

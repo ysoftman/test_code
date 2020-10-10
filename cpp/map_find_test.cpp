@@ -1,33 +1,32 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // map find test
-////////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <string>
 #include <map>
 
 using namespace std;
 
-void FindNumInMap(std::map<int,int> mapTemp, int num)
+void FindInMap(std::map<string, int> &mapTemp, string key)
 {
 	cout << "map size : " << mapTemp.size() << endl;
-	if (mapTemp.find(num) == mapTemp.end())
+	if (mapTemp.find(key) == mapTemp.end())
 	{
-		cout << "can't find the " << num << endl;
+		cout << "can't find the " << key << endl;
 	}
 	else
 	{
-		cout << "found the " << num << endl;
+		cout << "found the " << key << endl;
 	}
 }
 
 int main()
 {
-	std::map<int, int> mapTemp;
+	std::map<string, int> mapTemp;
 
-	FindNumInMap(mapTemp, 123);
-	mapTemp[123] = 999;
-	FindNumInMap(mapTemp, 123);
+	FindInMap(mapTemp, "lemon");
+	mapTemp["lemon"] = 999;
+	FindInMap(mapTemp, "lemon");
+	FindInMap(mapTemp, "");
 
 	return 0;
 }
-

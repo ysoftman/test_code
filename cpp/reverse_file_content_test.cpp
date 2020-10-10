@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // 파일 내용 거꾸로 출력하기
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,13 +21,13 @@ int main()
 		printf("Can't open text-reverse.txt\n");
 		exit(1);
 	}
-	
+
 	fseek(fp, 0, SEEK_END);
 	length = ftell(fp);
 	printf("File Size : %d Bytes\n", length);
 
 	while (1)
-	{	
+	{
 		c = fgetc(fp);
 		fseek(fp, --i, SEEK_END);
 
@@ -48,4 +46,3 @@ int main()
 
 	return 0;
 }
-

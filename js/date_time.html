@@ -1,0 +1,38 @@
+<html>
+<script>
+    let now = new Date();
+    // Tue May 14 2019 17:08:44 GMT+0900 (한국 표준시)
+    console.log("now:", now)
+
+    let Jan01_1970 = new Date(0);
+    console.log(Jan01_1970)
+
+    let Jan02_1970 = new Date(24 * 3600 * 1000);
+    console.log(Jan02_1970);
+
+    let date = new Date("2017-01-26");
+    console.log(date);
+
+    // 2011년 1월(0) 1일 2시 3분 4초 5밀리초
+    date = new Date(2011, 0, 1, 14, 3, 4, 5);
+    console.log(date);
+    // 0~59 초
+    console.log(date.getSeconds())
+    // 0~59 분
+    console.log(date.getMinutes())
+    // 0~23 시
+    console.log(date.getHours())
+    // 1~31 일
+    console.log(date.getDate())
+    // 0(Jan)~11(Dec) 월
+    console.log(date.getMonth() + 1)
+    // YYYY 년
+    console.log(date.getFullYear())
+    // date -> unix time
+    console.log(date.getTime() / 1000)
+    // unix time -> date
+    date = new Date(date.getTime())
+    console.log(date)
+</script>
+
+</html>

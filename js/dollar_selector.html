@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
+</head>
+
+<body>
+    <h1 id=aaa>123</h1>
+    <h1 id=bbb>123</h1>
+    <script>
+        // id 를 찾아서 선택하는 경우
+        console.log(document.getElementById('aaa').id)
+        console.log(document.getElementById('bbb').id)
+        document.getElementById('aaa').innerHTML = "ccc"
+        document.getElementById('bbb').innerHTML = "ddd"
+
+        // #id 로 검색해서 찾는 경우
+        console.log(document.querySelector("#bbb").id)
+        document.querySelector("#bbb").innerHTML = "eee"
+
+        // jquery $ 는 querySelector 를 축약해서 사용한다.
+        // https://www.w3schools.com/jquery/jquery_selectors.asp
+        console.log($("#bbb")[0].id)
+        $("#bbb")[0].innerHTML = "fff"
+    </script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 2.x
+# python version : 2.x 3.x
 # desc : 셀레니움 테스트
 
 # 설치
@@ -13,7 +13,7 @@ from selenium.webdriver.common.keys import Keys
 # from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 if __name__ == '__main__':
-    print "selenium test"
+    print("selenium test")
 
     # 크롬 드라이버 다운로드받아서 사용해야 한다.
     # https://sites.google.com/a/chromium.org/chromedriver/getting-started
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     elem.send_keys("ysoftman")
     # 엘리먼트에 엔터 입력
     elem.send_keys(Keys.RETURN)
-    # 결과가 없는 경우 assert 
+    # 결과가 없는 경우 assert
     assert "No results found." not in driver.page_source
 
     # 브라우저 결과 확인을 위해 바로 닫하기 전 5초간 여유를 둔다.

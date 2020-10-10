@@ -30,7 +30,7 @@ func main() {
 	fmt.Println(resp)
 	fmt.Println("resp.body to string -------------------------")
 	defer resp.Body.Close()
-	// ioutil.ReadAll 로 resp.Body 읽고 나면 resp.Body 내용은 사라진다.
+	// ioutil.ReadAll 로 resp.Body 읽고 나면 resp.Body 내용은 사라진다.(read 시 offset 이 EOF 로 이동되어서)
 	bodybtyes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal("can't read resp.Body")

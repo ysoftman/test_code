@@ -1,9 +1,7 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // ELO rating
 // http://en.wikipedia.org/wiki/Elo_rating_system
 // http://webpd77.egloos.com/4102040
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <math.h>
 
@@ -30,22 +28,20 @@ int main()
 
 	float NewLevelA = 0;
 	float NewLevelB = 0;
-	
+
 	NewLevelA = EloRating(PlayerLevelA, PlayerLevelB, ELO_GAME_RESULT_WIN);
 	printf("A Win... NewLevel = %f\n", NewLevelA);
 	NewLevelA = EloRating(PlayerLevelA, PlayerLevelB, ELO_GAME_RESULT_DRAW);
 	printf("A Draw... NewLevel = %f\n", NewLevelA);
 	NewLevelA = EloRating(PlayerLevelA, PlayerLevelB, ELO_GAME_RESULT_LOSE);
 	printf("A Lose... NewLevel = %f\n", NewLevelA);
-	
+
 	NewLevelB = EloRating(PlayerLevelB, PlayerLevelA, ELO_GAME_RESULT_WIN);
 	printf("B Win... NewLevel = %f\n", NewLevelB);
 	NewLevelB = EloRating(PlayerLevelB, PlayerLevelA, ELO_GAME_RESULT_DRAW);
 	printf("B Draw... NewLevel = %f\n", NewLevelB);
 	NewLevelB = EloRating(PlayerLevelB, PlayerLevelA, ELO_GAME_RESULT_LOSE);
 	printf("B Lose... NewLevel = %f\n", NewLevelB);
-	
+
 	return 0;
 }
-
-

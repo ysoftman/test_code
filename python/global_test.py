@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 2.x
+# python version : 2.x 3.x
 # desc : 전역변수 사용하기
 
 # 전역변수 선언
@@ -11,12 +11,12 @@ somelist = [1, 2, 3, 4, 5]
 def func1():
     # 지역변수
     val1 = 5
-    print val1
+    print(val1)
 
     # 전역변수를 사용하려면 global을 명시해야 한다.
     global val0
     val0 += 9
-    print val0
+    print(val0)
 
 
 def func2():
@@ -27,12 +27,12 @@ def func2():
     # 따라서 somelist 가 글로벌 변수로 이미 선언되어 있고 지역변수에 같은 이름이 없으면 전역변수를 사용한다.
     somelist.append(100)
 
-    print somelist
+    print(somelist)
 
 
 if __name__ == "__main__":
     func1()
-    print val0
+    print(val0)
 
     func2()
-    print somelist
+    print(somelist)

@@ -18,7 +18,7 @@ string func2()
 
 // warning: address of stack memory associated with local variable 'str' returned
 // value 타압의 로컬 변수는 값 자체가 리턴되어 문제가 없지만
-// reference(pointer, arrary) 타입의 로컬 변수는 실제 값을 가르키는 메모리 주소 값이 리턴되는데
+// reference(pointer, array) 타입의 로컬 변수는 실제 값을 가르키는 메모리 주소 값이 리턴되는데
 // 함수 리턴시 로컬 변수의 메모리는 이미 해제되어
 // caller 에서는 리턴된 메모리 주소에 해당 되는 값은 이미 유실된 상태이다.
 // 참고

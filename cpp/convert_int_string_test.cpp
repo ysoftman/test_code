@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // int -> string, string -> int 로 변환하기
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string>
 #include <stdlib.h>
@@ -11,46 +9,63 @@
 
 using namespace std;
 
+string number2string(long num)
+{
+	// 숫자 -> 문자
+	// 방법1
+	// long -> string
+	string str = std::to_string(num);
+	cout << "std::to_string():" << str << endl;
+
+	// 방법2
+	// long -> string
+	stringstream s;
+	s << num;
+	cout << "stringstream:" << s.str() << endl;
+
+	// 방법3
+	// double -> string
+	// Numeric Type (int, float, double)을 string으로 변환해주기 위한 객체
+	// double a = 12.3456789;
+	ostringstream ss;
+	ss << num;
+	cout << "ostringstream:" << ss.str() << endl;
+
+	return s.str();
+}
+
+long string2number(string str)
+{
+	// 문자 -> 숫자
+	// 방법1
+	// string -> int
+	long num = atoi(str.c_str());
+	printf("atoi number:%ld\n", num);
+
+	// 방법2
+	// string -> long
+	int new_num_int = std::stoi(str, nullptr);
+	cout << "std::stoi():" << new_num_int << endl;
+	// string -> long
+	long new_num_long = std::stol(str, nullptr);
+	cout << "std::stol():" << new_num_long << endl;
+	// string -> float
+	float new_num_float = std::stof(str, nullptr);
+	cout << "std::stof():" << new_num_float << endl;
+	// string -> double
+	double new_num_double = std::stod(str, nullptr);
+	cout << "std::stod():" << new_num_double << endl;
+
+	return new_num_int;
+}
+
 int main()
 {
-	int num = 0;
-
-	// Numeric Type (int, float, double)을 string으로 변환해주기 위한 객체
-	ostringstream ostr;
-	for (num = 1; num <= 10; num++)
-	{
-		// 초기화
-		ostr.str("");
-		// int를 string으로 변환
-		ostr << num;
-		printf("[int -> string] ostr = %s\n", ostr.str().c_str());
-	}
-
-	// atoi 로 string 형을 int 로 변환
-	string str = "12345";
-	num = atoi(str.c_str());
-	printf("[string -> int] num = %d\n", num);
-
-
-	// double 형을 string 으로 변환
-	double a = 0.0000000000000123456789;
-	ostringstream ss;
-	ss << "a:" << a;
-	string str1 = ss.str();
-	cout << str1 << endl;
-
-	double b = 0.0000000000012345678912345678912346;
-	ostringstream ss2;
-	ss2 << "b:" << fixed << b;
-	string str2 = ss2.str();
-	cout << str2 << endl;
-
-	// stringstream 으로 int -> string 로 변환
-	int i = 99;
-	cout << "i:" << i << endl;
-	stringstream s;
-	s << i;
-	cout << "s:" << s.str() << endl;
-
+	cout << "input nubmer(to convert to string) : ";
+	long num;
+	cin >> num;
+	cout << "number:" << num << endl;
+	string str = number2string(num);
+	long num2 = string2number(str);
 	return 0;
 }

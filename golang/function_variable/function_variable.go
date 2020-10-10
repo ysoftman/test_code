@@ -4,8 +4,10 @@
 
 package main
 
-import "fmt"
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 // 함수 밖에서는 := 를 사용할 수 없다.
 // non-declaration statement outside function body
@@ -38,11 +40,14 @@ func main() {
 	adder_function := adder
 	fmt.Println("adder_function() = ", adder_function(2, 2))
 
-	// 익명 함수 변수 사용
-	anonymous_function := func(x, y int) int {
+	// 익명 함수 사용
+	fmt.Println("anonymous_function1() = ", func(x, y int) int {
+		return x + y
+	}(1, 4))
+	anonymous_function2 := func(x, y int) int {
 		return x + y
 	}
-	fmt.Println("anonymous_function() = ", anonymous_function(1, 4))
+	fmt.Println("anonymous_function2() = ", anonymous_function2(1, 4))
 
 }
 

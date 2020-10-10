@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // Precision : 우리말로 하자면 정확률, 결과가 얼마나 정확한지를 나타낸다.
 // Recall : 우리말로 하자면 재현률, 결과에 정답이 얼마나 많이 포함되어 있는지를 나타낸다.
@@ -12,7 +11,6 @@
 // 결과 = 갸나다라마뱌 (R = 6 , C = 4)
 // Precision = 4 / 6 = 0.66 (66%)
 // Recall = 4 / 10 = 0.4 (40%)
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <string.h>
 
@@ -24,19 +22,19 @@ int main()
 	float fPrecision = 0.0f;
 	float fRecall = 0.0f;
 
-	char *szAnswer = "가나다라마바사아자차";
-	char *szResult = "갸나다라마뱌";
+	char szAnswer[] = "가나다라마바사아자차";
+	char szResult[] = "갸나다라마뱌";
 	printf("szAnswer = %s\n", szAnswer);
 	printf("szResult = %s\n", szResult);
-	
+
 	nA = strlen(szAnswer);
 	nR = strlen(szResult);
-	for (int i=0; i<nR; i+=2)
+	for (int i = 0; i < nR; i += 2)
 	{
 		if (i < nA)
 		{
 			if (szResult[i] == szAnswer[i] &&
-				szResult[i+1] == szAnswer[i+1])
+				szResult[i + 1] == szAnswer[i + 1])
 			{
 				++nC;
 			}
@@ -50,5 +48,3 @@ int main()
 	printf("fRecall = %d / %d = %.2f\n", nC, nA, fRecall);
 	return 0;
 }
-
-

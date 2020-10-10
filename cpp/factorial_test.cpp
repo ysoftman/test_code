@@ -1,28 +1,21 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // Calculate Factorial
 // Factorial Number Range : 0 ~ 16
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 //Using Recursive Function To Get Factorial.
-int Fact_method1(int input)
+int fact_recursive(int input)
 {
-	int output = 1;
 	// 0! = 1 and 1! = 1
-	if (input == 1 || input == 0)
+	if (input < 1)
 	{
-		output = 1;
-		return output;
+		return 1;
 	}
-	else
-	{
-		output = input * Fact_method1(input-1);
-		return output;
-	}
+	return input * fact_recursive(input - 1);
 }
+
 //Using Iteration Function To Get Factorial.
-int Fact_method2(int input)
+int fact_iteration(int input)
 {
 	int output = 1;
 	while (input > 1)
@@ -35,14 +28,14 @@ int Fact_method2(int input)
 
 int main()
 {
-	unsigned int result=0;
-	unsigned int in_number=0;
-	printf ("[Factorial]Input Number : ");
+	unsigned int result = 0;
+	unsigned int in_number = 0;
+	printf("[Factorial]Input Number : ");
 	scanf("%d", &in_number);
-	result = Fact_method1(in_number);
-	printf ("recursive method %d! = %d\n", in_number, result);
-	result = Fact_method2(in_number);
-	printf ("iteration method %d! = %d\n", in_number, result);
+	result = fact_recursive(in_number);
+	printf("recursive method %d! = %d\n", in_number, result);
+	result = fact_iteration(in_number);
+	printf("iteration method %d! = %d\n", in_number, result);
 
 	return 0;
 }

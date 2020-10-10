@@ -1,8 +1,6 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // Primary Arithmetic
 // 두 수의 덧셈에서 자리올림(각 단위의 합이 10이 넘을 경우 carry 발생)의 발생 알려주기
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 
 int main()
@@ -14,7 +12,6 @@ int main()
 	int i1, i2, d1, d2, carry, carrycnt;
 	char line[256];
 	char *c;
-	
 
 	printf("Primary Arithmetic...\n");
 	printf("[Input 0 0 to Exit]\n");
@@ -49,10 +46,10 @@ int main()
 		// 아무수도 입력된 것이 없으면 종료
 		if (num1[0] == 0 && num2[0] == 0)
 		{
-			printf ("Exit Program...\n");
+			printf("Exit Program...\n");
 			break;
 		}
-		
+
 		carry = 0;
 		carrycnt = 0;
 
@@ -94,4 +91,3 @@ int main()
 
 	return 0;
 }
-

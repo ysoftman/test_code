@@ -1,7 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // strcpy() 초기화 착각...
-////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,22 +13,18 @@ int main()
 	strcpy(str, "");
 
 	// 따라서 진짜 초기화하기 위해서는 memset 을 사용하자.
-	memset(str, 0, sizeof(char)*5);
-
-
+	memset(str, 0, sizeof(char) * 5);
 
 	// 런타임 에러 발생
 	//char *aa = "0123456789";
 	//char *bb = "ysoftman";
-	
+
 	char aa[100] = "0123456789";
 	char bb[100] = "ysoftman";
 	strcpy(aa, bb);
 
 	printf("aa=%s\n", aa);
 	printf("bb=%s\n", bb);
-	
+
 	return 0;
 }
-
-

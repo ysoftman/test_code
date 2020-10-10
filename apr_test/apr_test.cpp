@@ -2,54 +2,24 @@
 // apr(Apache Portable Runtime) library test
 /*
 # openssl 설치
-wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
-tar zxvf openssl-1.0.2k.tar.gz
-cd openssl-1.0.2k
-./config
-make clean
-make -j4
-sudo make install
-cd ..
+bash install_openssl.sh
 
+# apr 설치
+bash install_apr.sh
 
-# apr 설치 방법1
-# apche httpd 설치하면 생성되는 apr 사용
-wget http://mirror.apache-kr.org//httpd/httpd-2.2.34.tar.gz
-tar zxvf httpd-2.2.34.tar.gz
-cd httpd-2.2.34
-./configure --prefix="${HOME}/workspace/httpd" --with-mpm-prefork
-make && make install
 # 빌드
-g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/httpd/include -I/usr/local/ssl/include -L${HOME}/workspace/httpd/lib -L/usr/local/ssl/lib -lapr-1 -lssl -lcrypto -ldl
-
-
-# apr 설치 방법2
-wget http://apache.mirror.cdnetworks.com//apr/apr-1.6.3.tar.gz
-tar zxvf apr-1.6.3.tar.gz
-cd apr-1.6.3
-./configure --prefix="${HOME}/workspace/apr"
-make && make install
-# apr-util 설치
-wget http://apache.mirror.cdnetworks.com//apr/apr-util-1.6.1.tar.gz
-tar zxvf apr-util-1.6.1.tar.gz
-cd apr-util-1.6.1
-./configure --prefix="${HOME}/workspace/apr" --with-apr="${HOME}/workspace/apr/bin/apr-1-config"
-# make 시 expat.h 가 없어 에러가 난다면 
-# centos : yum install expat-devel
-# ubuntu : apt-get install libexpat1-dev
-make && make install
-cd ..
-# 빌드
-g++ -O2 -g -fPIC apr_test.cpp -o aprtest -I${HOME}/workspace/apr/include/apr-1 -I/usr/local/ssl/include -L${HOME}/workspace/apr/lib -L/usr/local/ssl/lib -lapr-1 -lssl -lcrypto -ldl
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/workspace/apr/lib:
+bash build.sh
 */
 
 #include "apr.h"
+#include "apr_portable.h"
 #include "apr_file_io.h"
 #include "apr_strings.h"
 #include "apr_network_io.h"
 #include "apr_pools.h"
 #include "apr_poll.h"
+#include "apreq.h"
+#include "apreq_util.h"
 #include "openssl/ssl.h"
 #include <iostream>
 #include <sstream>
@@ -67,6 +37,39 @@ char *errmsg(apr_status_t rc)
     return errbuff;
 }
 
+void apreq_test()
+{
+    cout << "apreq library test" << endl;
+    apr_pool_t *pool;
+    apr_initialize();
+    apr_pool_create(&pool, NULL);
+
+    string str = "apple lemon orange";
+    // libapreq2(apreq_util.h) 의 url 인코딩 함수를 사용하면 공백이 + 로 처리 된다.
+    // URI 스펙상으로는 + 는 reserved word 이고 공백은 %20 이다.
+    // https://tools.ietf.org/html/rfc3986#section-2.2
+    string urlencoded_str = apreq_escape(pool, str.c_str(), str.size());
+
+    apr_pool_destroy(pool);
+
+    cout << str << endl;
+    cout << urlencoded_str << endl;
+    string urlencoded_str2;
+    // boost::replace_all 를 사용하지 않고 + -> %20  로 바꿔보자
+    for (auto i : urlencoded_str)
+    {
+        if (i == '+')
+        {
+            urlencoded_str2 += "%20";
+        }
+        else
+        {
+            urlencoded_str2 += i;
+        }
+    }
+    cout << urlencoded_str2 << endl;
+}
+
 int main(int argc, char **argv)
 {
     string ip = "www.json.org";
@@ -81,6 +84,7 @@ int main(int argc, char **argv)
     else
     {
         cout << argv[0] << " \"www.json.org\" " << 80 << " \"/json-ko.html\"" << endl;
+        apreq_test();
         exit(0);
     }
     stringstream portstr;
@@ -111,13 +115,13 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    // rc = apr_socket_opt_set(sock, APR_SO_NONBLOCK, 1);
-    // if (rc != APR_SUCCESS)
-    // {
-    //     cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " " << errmsg(rc) << endl;
-    //     apr_socket_close(sock);
-    //     return -1;
-    // }
+    rc = apr_socket_opt_set(sock, APR_SO_NONBLOCK, 1);
+    if (rc != APR_SUCCESS)
+    {
+        cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " " << errmsg(rc) << endl;
+        apr_socket_close(sock);
+        return -1;
+    }
 
     rc = apr_sockaddr_info_get(&sa, ip.c_str(), APR_INET, port, 0, pool);
     if (rc != APR_SUCCESS)
@@ -141,11 +145,24 @@ int main(int argc, char **argv)
     SSL *ssl = SSL_new(ssl_ctx);
 
     // apr socket 을 SSL 에 연결할 수 없다???
-    // SSL_set_fd(ssl, sock->socketdes);
+    // apr_os_sock_t fd;
+    // apr_os_sock_get(&fd, sock);
+    // SSL_set_fd(ssl, fd);
+    // // SSL_set_fd(ssl, sock->socketdes);
     // int ssl_err = SSL_connect(ssl);
     // if (ssl_err != 1)
     // {
-    //     cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " fail ssl connection err(" << ssl_err << ")" << endl;
+    //     cout << "[ERROR] " << __FILE__ << ":" << __LINE__ << " fail ssl connection err(" << ssl_err << ")  " << endl;
+    //     cout << "SSL_ERROR_NONE " << SSL_ERROR_NONE << endl;                         // 0
+    //     cout << "SSL_ERROR_SSL " << SSL_ERROR_SSL << endl;                           // 1
+    //     cout << "SSL_ERROR_WANT_READ " << SSL_ERROR_WANT_READ << endl;               // 2
+    //     cout << "SSL_ERROR_WANT_WRITE " << SSL_ERROR_WANT_WRITE << endl;             // 3
+    //     cout << "SSL_ERROR_WANT_X509_LOOKUP " << SSL_ERROR_WANT_X509_LOOKUP << endl; // 4
+    //     cout << "SSL_ERROR_SYSCALL " << SSL_ERROR_SYSCALL << endl;                   // 5
+    //     cout << "SSL_ERROR_ZERO_RETURN " << SSL_ERROR_ZERO_RETURN << endl;           // 6
+    //     cout << "SSL_ERROR_WANT_CONNECT " << SSL_ERROR_WANT_CONNECT << endl;         // 7
+    //     cout << "SSL_ERROR_WANT_ACCEPT " << SSL_ERROR_WANT_ACCEPT << endl;           // 8
+    //     cout << "SSL_get_error(ssl, ssl_err) " << SSL_get_error(ssl, ssl_err) << endl;
     //     apr_socket_close(sock);
     //     return -1;
     // }

@@ -16,3 +16,10 @@ do
     done
     echo ""
 done
+
+# 이중 루프 테스트
+for i in 'lemon' 'apple' 'orange'; do
+    for j in "good" 100; do
+        echo "$i --> $j"
+    done
+done
