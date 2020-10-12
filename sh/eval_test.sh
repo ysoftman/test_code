@@ -11,5 +11,4 @@ var2="$"var1
 echo $var2
 
 # 문자열에 포함된 변수(또는 명령)를 실행하여 var1의 값을 출력하게 된다.
-eval var2="$"var1
-echo $var2
+eval echo $var2
