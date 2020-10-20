@@ -16,10 +16,12 @@ import (
 // gorm 은 PascalCase 인 struct와 필드 이름을 snake_case 로 변경해 테이블/컬럼명으로 사용한다.
 type TestInfo struct {
 	ID       int64
-	Age      int
-	Name     string
 	LastDate time.Time
-	// Enable   bool `gorm:"not null;default:1"`
+	// Age      int    `gorm:"default:99"`
+	// Name     string `gorm:"default:lemon"`
+	// Enable   bool   `gorm:"not null;default:1"`
+	Age    int
+	Name   string
 	Enable bool `gorm:"not null"`
 }
 
@@ -46,7 +48,7 @@ func DoGorm() {
 
 	// gorm 으로 mysql 접속
 	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{NamingStrategy: schema.NamingStrategy{SingularTable: true},
-		Logger: logger.Default.LogMode(logger.Error)})
+		Logger: logger.Default.LogMode(logger.Info)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -79,12 +81,25 @@ func DoGorm() {
 	fmt.Println(user.LastDate)
 	fmt.Println(user.Enable)
 
-	user.Age = 23
-	user.Enable = false
 	db.Delete(TestInfo{}, "id = ?", user.ID)
+
+	// Save() 는 update 후 select 로 레코드를 확인하는데
+	// Delete() 로 해당 레코드가 없으면 insert(gorm create함수)를 수행한다.
+	// 이때 만약 구조체 필드 중 `gorm:"default:xxx"` 값이 설정되어 있고
+	// 그 필드가 초기값 bool = false, int = 0, string = "" 등인 경우
+	// Save() -> Create() -> Execute() -> f() ->
+	// callbacks/create.go Create() ->
+	// ConvertToCreateValues() -> case reflect.Struct ->
+	// isZero() 로 해당 필드가 값이 설정되지 않은 것으로 판단해
+	// 다음과 같이 default 값으로 insert 구문을 생성해 실행한다.
+	//  INSERT INTO `test_info` (`age`,`name`,`last_date`,`enable`,`id`) VALUES (99,'lemon','2020-10-20 23:37:54',true,89)
+	// 만약  bool = false, int = 0, string = "" 인 상태로 저장하고 싶다면
+	// default:xxx 태그를 명시하면 안된다.
+	user.Name = ""
+	user.Age = 0
+	user.Enable = false
 	// 현재 user.Enable 의 값은 false 인데 db 에는 default:1 로 저장된다.
 	fmt.Println("user.Enable:", user.Enable)
-	// Enable   bool `gorm:"not null;default:1"`
 	db.Save(&user)
 
 	// 레코드 삭제 및 저장(update)를 트랜잭션으로 처리

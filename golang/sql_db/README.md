@@ -3,12 +3,15 @@
 ## local mysql 준비
 
 ```bash
+# local mysqld 실행(mac)
+mysqld &
+
 # db 및 테이블 생성
 mysql -u root < mytest.sql
 
 # mysql 접속해서 확인
 mysql -u root
-mysql> describe mytest.test_info; select * from mytest.test_info;
+describe mytest.test_info; select * from mytest.test_info;
 ```
 
 ## 실행
