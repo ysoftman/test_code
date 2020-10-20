@@ -10,7 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql" // mysql 드라이버를 소스에서 직접 명시해서 사용하지 않기 때문에 alias 를 _ 로 설정
 )
 
-func main() {
+func DoSqlDriver() {
 	// 현재 사용할 수 있는 sql 드라이버 파악
 	drivers := sql.Drivers()
 	for i := range drivers {
