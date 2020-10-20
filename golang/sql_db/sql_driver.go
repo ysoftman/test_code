@@ -1,28 +1,3 @@
-// author : ysoftman
-// encoding : utf-8
-// title : sql 관련 테스트
-// 참고
-// http://golang.org/pkg/database/sql/
-//
-// golang 은 database/sql 로 인터페이스만 제공한다.
-// 각 db 별 driver 는 직접 설치해야 한다.
-// sql drivers
-// https://github.com/golang/go/wiki/SQLDrivers
-//
-// github sql driver 다운로드
-// go get github.com/go-sql-driver/mysql
-
-// db 및 table 생성 쿼리
-// CREATE DATABASE `mytest` /*!40100 DEFAULT CHARACTER SET utf8 */;
-// use mytest;
-// CREATE TABLE `test_info` (
-// 	`id` varchar(45) NOT NULL,
-// 	`age` int(11) DEFAULT NULL,
-// 	`name` varchar(45) DEFAULT NULL,
-// 	`last_date` datetime DEFAULT NULL,
-// 	PRIMARY KEY (`id`)
-//   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 package main
 
 import (
@@ -31,13 +6,11 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/go-sql-driver/mysql"
 	_ "github.com/go-sql-driver/mysql" // mysql 드라이버를 소스에서 직접 명시해서 사용하지 않기 때문에 alias 를 _ 로 설정
 )
 
 func main() {
-
-	fmt.Println("sql db test...")
-
 	// 현재 사용할 수 있는 sql 드라이버 파악
 	drivers := sql.Drivers()
 	for i := range drivers {
@@ -45,16 +18,16 @@ func main() {
 	}
 
 	// sql 접속 정보 설정
-	host_ip := "127.0.0.1"
-	host_port := 13306
+	hostIP := "127.0.0.1"
+	hostPort := 3306
 	protocol := "tcp"
 	dbname := "mytest"
 	id := "root"
-	pass := "ysoftman"
+	pass := ""
 
 	// DSN(Data Source Name) 설정
 	// username:password@protocol(address)/dbname?param=value
-	DSN := id + ":" + pass + "@" + protocol + "(" + host_ip + ":" + strconv.Itoa(host_port) + ")/" + dbname
+	DSN := id + ":" + pass + "@" + protocol + "(" + hostIP + ":" + strconv.Itoa(hostPort) + ")/" + dbname
 
 	fmt.Println("DNS=" + DSN)
 
@@ -76,7 +49,7 @@ func main() {
 	fmt.Println(result.RowsAffected())
 
 	// 컬럼명이 order 등과 같은 mysql 에약어인 경우가 있을 수 있어 ``(grave) 로 묶어주는게 좋다.
-	result, err = db.Exec("insert into test_info(`id`, `age`, `name`, `last_date`) values(?,?,?,now())", "ysoftman", 20, "윤병훈")
+	result, err = db.Exec("insert into test_info(`age`, `name`, `last_date`, `enable`) values(?,?,now(),?)", 20, "ysoftman", 0)
 	if err != nil {
 		fmt.Println("insert error!")
 		log.Fatal(err)
@@ -85,7 +58,7 @@ func main() {
 	fmt.Println(result.RowsAffected())
 
 	// prepare 로 sql 처리 하고 살행하면 좀더 빠르게 처리할 수 있다.
-	q := fmt.Sprintf("insert into test_info(`id`, `age`, `name`, `last_date`) values('%s','%d','%s',now())", "ysoftman2", 20, "윤병훈2")
+	q := fmt.Sprintf("insert into test_info(`age`, `name`, `last_date`) values('%d','%s',now())", 20, "윤병훈")
 	fmt.Println(q)
 	stmt, err := db.Prepare(q)
 	if err != nil {
@@ -99,7 +72,7 @@ func main() {
 	}
 
 	// read 경우 Query() 사용
-	rows, err := db.Query("select id, age, name from test_info where id = ?", "ysoftman")
+	rows, err := db.Query("select id, age, name, last_date, enable from test_info where name = ?", "ysoftman")
 	if err != nil {
 		fmt.Println("error1")
 		log.Fatal(err)
@@ -108,10 +81,12 @@ func main() {
 
 	// 쿼리 결과 파악
 	for rows.Next() {
-		var id string
+		var id int64
 		var age int
 		var name string
-		err := rows.Scan(&id, &age, &name)
+		var lastdate mysql.NullTime
+		var enable bool
+		err := rows.Scan(&id, &age, &name, &lastdate, &enable)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -119,6 +94,8 @@ func main() {
 		log.Println("id:", id)
 		log.Println("age:", age)
 		log.Println("name:", name)
+		log.Println("lastdate:", lastdate)
+		log.Println("lastdate:", lastdate.Time)
+		log.Println("enable:", enable)
 	}
-
 }
