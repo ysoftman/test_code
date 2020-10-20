@@ -6,6 +6,6 @@ CREATE TABLE `test_info` (
 `age` int(11) DEFAULT NULL,
 `name` varchar(45) DEFAULT NULL,
 `last_date` datetime DEFAULT NULL,
-`enable` tinyint(4) DEFAULT 1,
+`enable` tinyint(1) DEFAULT 1,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
