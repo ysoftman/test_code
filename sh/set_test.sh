@@ -26,3 +26,15 @@ echo "aaa" > set_test.txt
 # set -o 옵션명 : 옵션 활성화(on)
 # set -o no옵션명 : 옵션 비활성화(off)
 # set -o(옵션 출력)설명 http://linuxcommand.org/lc3_man_pages/seth.html
+
+# vi 스타일로 line 편집(w,W,b,B,i,a,... 등)
+set -o vi
+# set 옵션 on/off 상태 표시
+set -o
+# vi 스타일 비활성화
+# bash-> novi 하면 invalid option name 에러
+# zsh -> novi 하면 vi off 표시되지만 vi 스타일이 아직 적용되어 있다.
+# set -o novi
+# emacs 모드 (alt+left,alt+right,.. 등) 를 활성화 해야 한다.
+set -o emacs
+
