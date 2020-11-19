@@ -15,14 +15,16 @@ import (
 // TestInfo => test_info
 // gorm 은 PascalCase 인 struct와 필드 이름을 snake_case 로 변경해 테이블/컬럼명으로 사용한다.
 type TestInfo struct {
-	ID       int64
-	LastDate time.Time
+	ID int64
 	// Age      int    `gorm:"default:99"`
 	// Name     string `gorm:"default:lemon"`
 	// Enable   bool   `gorm:"not null;default:1"`
 	Age    int
 	Name   string
 	Enable bool `gorm:"not null"`
+	// CreatedAt string
+	CreatedAt time.Time
+	LastDate  time.Time
 }
 
 func DoGorm() {
@@ -37,7 +39,8 @@ func DoGorm() {
 	// DSN(Data Source Name) 설정
 	// username:password@protocol(address)/dbname?param=value
 	// parseTime=True 를 사용해야 datetime uint8 대신 time.Time 으로 가져올 수 있다.
-	DSN := id + ":" + pass + "@" + protocol + "(" + hostIP + ":" + strconv.Itoa(hostPort) + ")/" + dbname + "?charset=utf8&parseTime=True"
+	// loc=Asia/Seoul (loc=Asia%2FSeoul) 로 설정해야 로컬 시간값으로 설정된다.
+	DSN := id + ":" + pass + "@" + protocol + "(" + hostIP + ":" + strconv.Itoa(hostPort) + ")/" + dbname + "?charset=utf8&parseTime=True&loc=Asia%2FSeoul"
 
 	// gorm v1.9.16 이전 방식
 	// db, err := gorm.Open("mysql", DSN)
@@ -57,8 +60,10 @@ func DoGorm() {
 	db.Exec("DELETE FROM test_info")
 
 	user := TestInfo{
-		Age:      21,
-		Name:     "bill",
+		Age:  21,
+		Name: "bill",
+		// CreatedAt: time.Now().Format("2006-01-02 15:04:05"),
+		// CreatedAt: time.Now().Format("2006-01-02 15:04:05"),
 		LastDate: time.Now(),
 		Enable:   true,
 	}
@@ -98,6 +103,10 @@ func DoGorm() {
 	user.Name = ""
 	user.Age = 0
 	user.Enable = false
+	// loc=Asia%2F/Seoul 로컬 파라미터로 연결됐을때
+	user.CreatedAt = time.Now()
+	// loc=Asia%2F/Seoul 로컬 파라미터로 연결되지 않았을때 그냥 string 포맷으로 저장
+	// user.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 	// 현재 user.Enable 의 값은 false 인데 db 에는 default:1 로 저장된다.
 	fmt.Println("user.Enable:", user.Enable)
 	db.Save(&user)
