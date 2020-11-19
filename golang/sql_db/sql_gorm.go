@@ -106,6 +106,7 @@ func DoGorm() {
 	// loc=Asia%2F/Seoul 로컬 파라미터로 연결됐을때
 	user.CreatedAt = time.Now()
 	// loc=Asia%2F/Seoul 로컬 파라미터로 연결되지 않았을때 그냥 string 포맷으로 저장
+	// 기존 저장된 데이터 포맷에 의존적이라 비추
 	// user.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 	// 현재 user.Enable 의 값은 false 인데 db 에는 default:1 로 저장된다.
 	fmt.Println("user.Enable:", user.Enable)
