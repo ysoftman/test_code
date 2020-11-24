@@ -223,4 +223,17 @@ func encodeJSON() {
 	encoder.SetIndent("", "  ")
 	encoder.Encode("<script>ysoftman</script>")
 	fmt.Println("jsonString = ", bytesbuffer1.String())
+
+	// struct -> json
+	bytesbuffer2 := new(bytes.Buffer)
+	encoder2 := json.NewEncoder(bytesbuffer2)
+	aaa := struct {
+		Str string `json:"str"`
+		Num int    `json:"num"`
+	}{
+		Str: " lemon",
+		Num: 123,
+	}
+	encoder2.Encode(aaa)
+	fmt.Println("jsonString = ", bytesbuffer2.String())
 }
