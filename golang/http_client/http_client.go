@@ -69,6 +69,8 @@ func post() {
 	if err != nil {
 		log.Fatal("can't create NewRequeset()")
 	}
+	// Content-Type 에 json 을 명시하지 않으면 서버에서 data 값을 사용하지 못할 수 있다.
+	req.Header.Set("Content-Type", "application/json")
 	fmt.Println("req:", req)
 
 	// 참고로 req 생성후 req.Form 을 설정하면 http.Client 에 의해 무시되기 때문에 body 추가해야 한다.
