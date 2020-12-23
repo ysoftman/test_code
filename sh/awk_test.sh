@@ -21,14 +21,16 @@ echo -e $msg | awk '{print $(NF-0)}'
 # 결과에서 마지막 -1 번째 컬럼만 출력
 echo -e $msg | awk '{print $(NF-1)}'
 
-# 라인별(레코드별) 순서 번호
+# NR(Num of Record) 레코드(라인)번호
 echo -e $msg | awk '{print NR}'
 
-# tolwer
-echo -e $msg | awk '{print tolower($msg)}'
+# 전체 tolower
+echo -e $msg | awk '{print tolower($0)}'
+# 첫번째 필드만 tolower
+echo -e $msg | awk '{print tolower($1)}'
 
-# toupper
-echo -e $msg | awk '{print toupper($msg)}'
+# 전체 toupper
+echo -e $msg | awk '{print toupper($0)}'
 
 # (days xx) 부분 앞으로 옮기기
 # -F 필드 구분을 '(' 으로 한다.
