@@ -1,8 +1,8 @@
 # blogger 관리
 
-## blogger theme
+## 테마 파일(.html) 관련
 
-- blogger 테마를 파일을 vscode 로 수정 후 적용하기 위해 파일로 저장함
+- 테마 파일을 vscode 로 수정 후 적용하기 위해 blogger_theme.html 로 저장함
 - 모바일 편의성 관련 오류 수정, 리포팅 : [google search console](https://search.google.com/search-console/?resource_id=sc-domain:yoonbh2714.blogspot.com)
   - 클릭할 수 있는 요소가 서로 너무 가까움
   - 표시 영역이 '기기 폭'으로 설정되어 있지 않음
@@ -18,13 +18,13 @@
   height: auto;
   ```
 
-## 블로그 백업(.xml) 관련
+## 포스트 백업 파일(.xml) 관련
 
 - 포스팅 중 line-height 스타일 제거
 
   ```bash
   #  <title type='text'> 부분들 엔터(newline추가)
-  sed -i '.zzz' -e 's/<title type/\
+  sed -i '.backup' -e 's/<title type/\
   <title type/g' blog-07-03-2019.xml
   # line-height 적용된 포스트의 타이틀 파악
   rg 'line-height' blog-07-03-2019.xml | sed -e "s/<title   type=\'text\'>//g" -e "s/<\/title>.*//"
