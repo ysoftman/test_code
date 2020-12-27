@@ -179,8 +179,12 @@ h2 {
   background-color: transparent;
   color: #d19a66;
   padding: inherit;
-  letter-spacing: inherit;
-  margin: inherit;
+}
+
+.post-timestamp {
+  background-color: transparent;
+  color: #d19a66;
+  padding: inherit;
 }
 
 /* 메인영역 여백 */
@@ -623,7 +627,7 @@ head.appendChild(script);
                 <div class='columns-inner'>
                   <div class='column-center-outer'>
                     <div align='center' class='ysoftman-home'>
-                        <a href='https://yoonbh2714.blogspot.com'>Sentimental Programmer</a>
+                        <a href='/'>Sentimental Programmer</a>
                     </div>
                     <div class='column-center-inner'>
                       <b:section class='main' id='main' name='Main' showaddelement='no'>
@@ -657,7 +661,8 @@ head.appendChild(script);
                               <div class='blog-posts hfeed'>
                                 <b:include data='top' name='status-message'/>
                                 <b:loop values='data:posts' var='post'>
-                                  <b:if cond='data:post.isDateStart and not data:post.isFirstPost'>
+                                  <!-- ysoftman 날짜 표시 부분 제거 -->
+                                  <!-- <b:if cond='data:post.isDateStart and not data:post.isFirstPost'>
                                     &lt;/div&gt;&lt;/div&gt;
                                   </b:if>
                                   <b:if cond='data:post.isDateStart'>
@@ -672,7 +677,7 @@ head.appendChild(script);
                                   </b:if>
                                   <b:if cond='data:post.isDateStart'>
                                     &lt;div class=&quot;date-posts&quot;&gt;
-                                  </b:if>
+                                  </b:if> -->
                                   <div class='post-outer'>
                                     <b:include data='post' name='post'/>
                                     <b:include cond='data:blog.pageType in {&quot;static_page&quot;,&quot;item&quot;}' data='post' name='comment_picker'/>
@@ -972,13 +977,14 @@ head.appendChild(script);
                           </b:includable>
                           <b:includable id='mobile-index-post' var='post'>
                             <div class='mobile-date-outer date-outer'>
-                              <b:if cond='data:post.dateHeader'>
+                              <!-- ysoftman 날짜 표시 부분 제거 -->
+                              <!-- <b:if cond='data:post.dateHeader'>
                                 <div class='date-header'>
                                   <span>
                                     <data:post.dateHeader/>
                                   </span>
                                 </div>
-                              </b:if>
+                              </b:if> -->
                               <div class='mobile-post-outer'>
                                 <a expr:href='data:post.url'>
                                   <h3 class='mobile-index-title entry-title' itemprop='name'>
@@ -1056,13 +1062,14 @@ head.appendChild(script);
                           </b:includable>
                           <b:includable id='mobile-post' var='post'>
                             <div class='date-outer'>
-                              <b:if cond='data:post.dateHeader'>
+                              <!-- ysoftman 날짜 표시 부분 제거 -->
+                              <!-- <b:if cond='data:post.dateHeader'>
                                 <h2 class='date-header'>
                                   <span>
                                     <data:post.dateHeader/>
                                   </span>
                                 </h2>
-                              </b:if>
+                              </b:if> -->
                               <div class='date-posts'>
                                 <div class='post-outer'>
                                   <div class='post hentry uncustomized-post-template' itemscope='itemscope' itemtype='https://schema.org/BlogPosting'>
@@ -1218,6 +1225,7 @@ head.appendChild(script);
                               <div class='post-footer'>
                                 <div class='post-footer-line post-footer-line-1'>
                                   <!--
+                                      ysoftman
                                       post-footer-line post-footer-line-1 에서 사용하지 않는 코드는 삭제하여 여백 없애기
                                       post-footer-line post-footer-line-2 post-labels 내용 이동
                                       -->
@@ -1228,9 +1236,7 @@ head.appendChild(script);
                                         <a expr:href='data:label.url' rel='tag'>
                                           <data:label.name/>
                                         </a>
-                                        <b:if cond='not data:label.isLast'>
-                                          ,
-                                        </b:if>
+                                        <b:if cond='not data:label.isLast'>,</b:if>
                                       </b:loop>
                                     </b:if>
                                   </span>
@@ -1262,6 +1268,12 @@ head.appendChild(script);
                                   <div class='post-share-buttons goog-inline-block'>
                                     <b:include cond='data:post.sharePostUrl' data='post' name='shareButtons'/>
                                   </div>
+
+                                  <!-- ysoftman post timestamp 표시 -->
+                                  <span class='post-timestamp'>
+                                    <data:post.timestamp/>
+                                  </span>
+
                                 </div>
 
                                 <div class='post-footer-line post-footer-line-2'>
