@@ -6,10 +6,12 @@
 // 성능(시간) 측정 추가
 package main
 
-import "fmt"
-import "os"
-import "strconv"
-import "time"
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"time"
+)
 
 func main() {
 	fmt.Println("[Usage] " + os.Args[0] + " max-MB loop-cnt")
@@ -42,12 +44,15 @@ func main() {
 
 	startSec := time.Now().UnixNano()
 
+	os.Remove("dummyfile")
+
 	// 반복해서 파일 생성(다시쓰기)
 	for i := 1; i <= loopcnt; i++ {
 		fmt.Printf("%d/%d\n", i, loopcnt)
 
 		// 더미 파일 생성
 		fpDummy, err := os.OpenFile("dummyfile", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+
 		if err != nil {
 			fmt.Println("can't create file")
 			os.Exit(1)
@@ -56,7 +61,6 @@ func main() {
 			fpDummy.Write(data)
 		}
 		fpDummy.Close()
-
 	}
 
 	endSec := time.Now().UnixNano()
@@ -72,5 +76,4 @@ func main() {
 	remainder := elapsed % 1000
 	elapsed /= 1000
 	fmt.Printf("Elapsed: %d.%d sec", elapsed, remainder)
-
 }
