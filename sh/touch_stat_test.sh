@@ -19,6 +19,12 @@ touch -m -d "5 min ago" $filename
 # stat 메타 정보 파악
 stat $filename
 
-# touch 수정날짜
+# 2020-12-31 07:25 로 변경
+touch -t 202012310725 $filename
+stat $filename
+
+# 2020-12-31 07:25.05 로 변경
+touch -t 202012310725.05 $filename
+stat $filename
 
 rm -f $filename
