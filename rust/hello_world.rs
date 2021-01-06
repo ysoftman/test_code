@@ -20,7 +20,8 @@ fn main() {
     // ! 는 매크로 의미
     println!("hello, world!");
 
-    // println 포맷팅 종류
+    // println 포맷팅
+    // 참고 https://doc.rust-lang.org/std/fmt/index.html#formatting-parameters
     println!("{}", 1);
     // binary 출력
     println!("{:b}", 255);
@@ -28,10 +29,16 @@ fn main() {
     println!("{0} {1} {0}", 123, "abc");
     // argument 이름별 출력
     println!("{val1:} {val2:}", val1 = 1, val2 = "ysoftman");
-    // 오른쪽으로 10 들여쓰기 해서 출력
+    // 오른쪽 맞춤(왼쪽에 10 공백을 두고 출력)
+    println!("{val1:>10}", val1 = 1);
+    // 오른쪽 맞춤(왼쪽에 10 공백을 두고 출력, 변수 뒤에 $를 붙여 usize(unsigned integer)로 취급할 수 있다.)
     println!("{val1:>a$}", val1 = 1, a = 10);
-    // 오른쪽으로 10 들여쓰기 해서 출력, 공백 0 으로 채우기(padding)
-    println!("{val1:>0a$}", val1 = 1, a = 10);
+    // 오른쪽 맞춤(왼쪽에 10 공백을 두고 출력, 공백 0 으로 채우기(padding))
+    println!("{val1:>010}", val1 = 1);
+    // 가운데 맞춤(10 공백 중간에 두고 출력)
+    println!("{val1:^10}", val1 = 1);
+    // 왼쪽 맞춤(오른쪽에 10 공백을 두고 출력)
+    println!("{val1:<10}", val1 = 1);
     let vec1 = vec![1, 2, 3];
     // debug formatting
     println!("{:?}", vec1);
