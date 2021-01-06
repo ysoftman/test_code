@@ -62,6 +62,13 @@ fn main() {
         println!("for {}", i);
     }
     println!("-----");
+
+    // index(정확히는 원소 카운트), value 둘다 파악할때
+    for (cnt, value) in v.iter().enumerate() {
+        println!("for {} : {}", cnt, value);
+    }
+    println!("-----");
+
     // 가변 참조로 값을 변경할 수 있다.
     for i in &mut v {
         // *역참조로 값을 변경
