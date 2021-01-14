@@ -34,27 +34,11 @@ fn main() {
     // 오른쪽 맞춤(왼쪽에 10 공백을 두고 출력, 변수 뒤에 $를 붙여 usize(unsigned integer)로 취급할 수 있다.)
     println!("{val1:>a$}", val1 = 1, a = 10);
     // 오른쪽 맞춤(왼쪽에 10 공백을 두고 출력, 공백 0 으로 채우기(padding))
-    println!("{val1:>010}", val1 = 123);
-    println!("{val1:0>10}", val1 = 123);
+    println!("{val1:>010}", val1 = 1);
     // 가운데 맞춤(10 공백 중간에 두고 출력)
     println!("{val1:^10}", val1 = 1);
     // 왼쪽 맞춤(오른쪽에 10 공백을 두고 출력)
     println!("{val1:<10}", val1 = 1);
-
-    // align 되더라도 한글과 영문의 width 차이는 있다.
-    println!(
-        "{0:_<10} {1:<10} {2:<10}",
-        val1 = "aaa",
-        val2 = "123",
-        val3 = "lemon"
-    );
-    println!(
-        "{0:_<10} {1:<10} {2:<10}",
-        val1 = "가나다라마바사",
-        val2 = "123456",
-        val3 = "apple"
-    );
-
     let vec1 = vec![1, 2, 3];
     // debug formatting
     println!("{:?}", vec1);
