@@ -6,8 +6,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
-	"strings"
 )
 
 func main() {
@@ -47,34 +45,19 @@ func main() {
 	fmt.Println("bb3:", string(bb3))
 
 	//////////////////////////
-	// reader test
-	apple := strings.NewReader("apple")
-	fmt.Println("apple.Len():", apple.Len())
-
-	// Read 한 만큼 Len() 은 줄어든다.
-	applelen := apple.Len()
-	// for i := 0; i < apple.Len(); i++ {
-	for i := 0; i < applelen; i++ {
-		applebyte, err := apple.ReadByte()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("apple.Len():%v  offset:%v applebyte:%v\n", apple.Len(), i, string(applebyte))
-	}
-
-	//////////////////////////
-	// io.ReadCloser test
+	// readcloser 생성 및 사용
 	lemon := new(bytes.Buffer)
 	lemon.WriteString("lemon")
-	fmt.Println("lemon:", lemon.String())
 
-	// NopCloser() 는 (Reader 를 공유하는) ReadCloser 를 생성하는데,
-	// ReadCloser 의 Closer 인터페이스 구현체인 Close() 가 nil 을 리턴해
+	fmt.Println("lemon:", lemon.String())
+	// io.ReadCloser 생성
+	// NopCloser() 는 Close() 실제 버퍼 데이터를 변경하지 않고
+	// nil만 리턴해서 rc readall 로 offset 이동되어도
 	// lemon 과 공유되는 버퍼에는 영향을 주지 않는다.
 	rc := ioutil.NopCloser(bytes.NewBuffer(lemon.Bytes()))
 	fmt.Println("lemon:", lemon.String())
 
-	// readadll 하면 read 시 버퍼 offset 이 EOF 로 이동돼
+	// readadll 하면 read 시 버퍼에 대한 offset 이 EOF 로 이동돼
 	// rc 로는 버퍼 내용을 읽을 수 없게 된다.
 	bytes1, err1 := ioutil.ReadAll(rc)
 	if err1 == nil {
@@ -84,7 +67,7 @@ func main() {
 	if err2 == nil {
 		fmt.Println("ReadAll(rc):", string(bytes2))
 	}
-	// rc 버퍼 구조체의 offset 만 EOF 로 이동된것이라 lemon 버퍼 구조체의 값은 유지 된다.
+	// rc EOF 만 이동된것이라 lemon 값은 유지 된다.
 	fmt.Println("lemon:", lemon.String())
 
 	// bytes 로 새로 새로 만들어야 한다.
