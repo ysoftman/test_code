@@ -3,7 +3,7 @@
 // title : array slice 테스트
 // array(배열)은 길이가 고정되어 추가 삭제를 할 수 없다.
 // slice(슬라이스) 는
-// 내부 배열을 가리키는 포인터,
+// 내부 배열, underlying array (beginning at the element referred to by the slice pointer)을 가리키는 포인터
 // 슬라이의 길이,
 // 슬라이스 용량(내부배열의 크기가 변경을 용이하기 위해서 미리 용량만큰 할당),
 // 으로 구성된 데이터 구조다.
@@ -206,10 +206,15 @@ func main() {
 	}()
 
 	func() {
+		aaa := []int{99, 100}
 		// reference 으로 넘긴 slice 파라미터 결과로 받기
-		var aaa []int
-		addInt(&aaa)
-		fmt.Println("addInt:", aaa)
+		fmt.Printf("addInt1 aaa(%p) cap(aaa)%v : %v\n", &aaa, cap(aaa), aaa)
+		aaa = addInt1(aaa)
+		fmt.Printf("addInt1 aaa(%p) cap(aaa)%v : %v\n", &aaa, cap(aaa), aaa)
+		// reference 으로 넘긴 slice 파라미터 결과로 받기
+		fmt.Printf("addInt2 aaa(%p) cap(aaa)%v : %v\n", &aaa, cap(aaa), aaa)
+		addInt2(&aaa)
+		fmt.Printf("addInt2 aaa(%p) cap(aaa)%v : %v\n", &aaa, cap(aaa), aaa)
 	}()
 }
 
@@ -247,10 +252,23 @@ func deleteSlice(idx int, slice []int) []int {
 	return slice
 }
 
-func addInt(s *[]int) {
+// slice 구조체(포인터,len,cap)값을 받는다.
+func addInt1(s []int) []int {
+	for i := 0; i < 10; i++ {
+		fmt.Printf("s(%p) cap(s)%v : %v\n", &s, cap(s), s)
+		// append() returns updated slice
+		s = append(s, i)
+	}
+	// 업데이트된 slice 를 리턴해야 한다.
+	return s
+}
+
+// * 로 &(reference) 값을 받으면 역참조로 바로 업데이트 한다.
+func addInt2(s *[]int) {
 	for i := 0; i < 10; i++ {
 		// slice 가 reference 인경우
 		// append 를 쓰려면 역참조로 slice 타입을 가리키도록 해야 한다.
+		fmt.Printf("s(%p) cap(s)%v : %v\n", s, cap(*s), s)
 		*s = append(*s, i)
 	}
 }
