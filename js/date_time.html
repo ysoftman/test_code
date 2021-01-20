@@ -53,6 +53,14 @@
     console.log(date.toLocaleString())
     // 2:03:04 PM
     console.log(date.toLocaleTimeString())
+
+    let t = date.getFullYear().toString() +
+        (date.getMonth() + 1 > 9 ? '' : '0') + (date.getMonth() + 1).toString() +
+        (date.getDate() > 9 ? '' : '0') + date.getDate().toString() +
+        (date.getHours() > 9 ? '' : '0') + date.getHours().toString() +
+        (date.getMinutes() > 9 ? '' : '0') + date.getMinutes().toString()
+    // 201101011403
+    console.log(t)
 </script>
 
 </html>
