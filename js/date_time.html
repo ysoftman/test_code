@@ -33,9 +33,24 @@
     console.log(date.getTime() / 1000)
     // unix time -> date
     date = new Date(date.getTime())
+    // Sat Jan 01 2011 14:03:04 GMT+0900 (Korean Standard Time)
     console.log(date)
     // 2011-01-01T05:03:04.005Z
     console.log(date.toISOString())
+    // 2011-01-01T05:03:04.005Z
+    console.log(date.toJSON())
+    // Sat, 01 Jan 2011 05:03:04 GMT
+    console.log(date.toGMTString())
+    // Sat, 01 Jan 2011 05:03:04 GMT
+    console.log(date.toUTCString())
+    // Sat Jan 01 2011 14:03:04 GMT+0900 (Korean Standard Time)
+    console.log(date.toString())
+    // Sat Jan 01 2011
+    console.log(date.toDateString())
+    // 1/1/2011, 2:03:04 PM
+    console.log(date.toLocaleString())
+    // 2:03:04 PM
+    console.log(date.toLocaleTimeString())
 </script>
 
 </html>
