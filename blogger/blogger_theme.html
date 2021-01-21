@@ -279,6 +279,11 @@ h3.post-title, .comments h4 {
   border: 1px solid #eeeeee;
 }
 
+/* 편집 버튼내 a 속성 */
+.edit-post-text a {
+  color: #c678dd;
+}
+
 /* Comments
 ----------------------------------------------- */
 .comments .comments-content .icon.blog-author {
@@ -1313,7 +1318,7 @@ head.appendChild(script);
                           </b:includable>
                           <b:includable id='postQuickEdit' var='post'>
                             <b:if cond='data:post.editUrl'>
-                              <span expr:class='&quot;item-control &quot; + data:post.adminClass'>
+                              <span expr:class='&quot;edit-post-text &quot; + data:post.adminClass'>
                                 <a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>편집</a>
                               </span>
                             </b:if>
