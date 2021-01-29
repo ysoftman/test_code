@@ -30,4 +30,21 @@ func main() {
 	for i := 0; i < len(subMatched); i++ {
 		fmt.Printf("%v, %v\n", i, subMatched[i])
 	}
+	checkK8SName("")
+	checkK8SName("ysoftman.123")
+	checkK8SName("ysoftman-123")
+	checkK8SName("999abc")
+	checkK8SName("1")
+	checkK8SName("a-b-c-d-1-2-3-4-5")
+}
+
+func checkK8SName(name string) bool {
+	// k8s deployment 이름 규칙
+	// a DNS-1123 label must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc', regex used for validation is '[a-z0-9]([-a-z0-9]*[a-z0-9])?')"
+	matched, err := regexp.MatchString("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$", name)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println("matched:", matched, "name:", name)
+	return matched
 }
