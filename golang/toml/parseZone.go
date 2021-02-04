@@ -33,7 +33,7 @@ type ZoneInfo2 struct {
 func parseZone() {
 	var conf Config
 	// 파일로 부터 파싱해서 conf 로 저장하기
-	_, err := toml.DecodeFile("zone.toml", &conf)
+	_, err := toml.DecodeFile("./config/zone.toml", &conf)
 	if err != nil {
 		fmt.Printf("can't parse...\n")
 		os.Exit(1)

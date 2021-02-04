@@ -17,8 +17,8 @@ type Songs struct {
 
 func parseSongs() {
 	var songs Songs
-	// 파일로 부터 파싱해서 conf 로 저장하기
-	_, err := toml.DecodeFile("songs.toml", &songs)
+	// 파일로 부터 파싱
+	_, err := toml.DecodeFile("./config/songs.toml", &songs)
 	if err != nil {
 		fmt.Printf("can't parse...\n")
 		os.Exit(1)

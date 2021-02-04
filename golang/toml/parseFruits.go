@@ -49,7 +49,7 @@ type fruits struct {
 
 func parseFruits() {
 	var conf fruits
-	_, err := toml.DecodeFile("fruits.toml", &conf)
+	_, err := toml.DecodeFile("./config/fruits.toml", &conf)
 	if err != nil {
 		fmt.Printf("can't parse...\n")
 		os.Exit(1)
@@ -90,7 +90,7 @@ type priceInfo struct {
 
 func parseFruitsMapChild() {
 	var conf fruitsMapChild
-	if _, err := toml.DecodeFile("fruits.toml", &conf); err != nil {
+	if _, err := toml.DecodeFile("./config/fruits.toml", &conf); err != nil {
 		fmt.Printf("can't parse...  %s\n", err)
 		return
 	}
