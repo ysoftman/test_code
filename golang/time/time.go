@@ -76,6 +76,13 @@ func main() {
 	fmt.Println("time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local):", time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local))
 	fmt.Println("time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix():", time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix())
 
+	fmt.Println("time.Duration(1):", time.Duration(1))
+	fmt.Println("time.Duration(1)*time.Microsecond:", time.Duration(1)*time.Microsecond)
+	fmt.Println("time.Duration(1)*time.Millisecond:", time.Duration(1)*time.Millisecond)
+	fmt.Println("time.Duration(1)*time.Second:", time.Duration(1)*time.Second)
+	fmt.Println("time.Duration(1)*time.Minute:", time.Duration(1)*time.Minute)
+	fmt.Println("time.Duration(1)*time.Hour:", time.Duration(1)*time.Hour)
+
 	countDown()
 	checkPeriodically()
 }
