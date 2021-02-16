@@ -1,6 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type innerAData struct {
+	innera int
+	innerb string
+}
+type AData struct {
+	a int
+	b int
+	c string
+	d innerAData
+}
 
 func main() {
 	// 일반 맵은 make 로 빈맵을 생성해야 한다.
@@ -18,22 +31,11 @@ func main() {
 	mi["num"] = 123
 	mi["num"] = 999
 	mi["string"] = "abc"
-	mi["a"] = struct {
-		a int
-		b int
-		c string
-		d struct {
-			innera int
-			innerb string
-		}
-	}{
+	mi["a"] = AData{
 		a: 1,
 		b: 2,
 		c: "c",
-		d: struct {
-			innera int
-			innerb string
-		}{
+		d: innerAData{
 			innera: 3,
 			innerb: "inner",
 		},
@@ -47,4 +49,42 @@ func main() {
 	}
 	// fmt.Printf("%#v\n", mi)
 	fmt.Println(mi)
+
+	traverseMI(mi)
+}
+
+func traverseMI(mi map[string]interface{}) {
+	for k, v := range mi {
+		switch v.(type) {
+		case string:
+			fmt.Printf("key(%v) : string(%v)\n", k, v.(string))
+		case int:
+			fmt.Printf("key(%v) : int(%v)\n", k, v.(int))
+		case map[string]interface{}:
+			fmt.Printf("map[string]interface{}")
+			traverseMI(v.(map[string]interface{}))
+		case interface{}:
+			fmt.Printf("interface{} --> ")
+			traverseI(v.(interface{}))
+		}
+	}
+}
+
+func traverseI(interf interface{}) {
+	switch v := interf.(type) {
+	case string:
+		fmt.Printf("string(%v)\n", interf.(string))
+	case int:
+		fmt.Printf("int(%v)\n", interf.(int))
+	case map[string]interface{}:
+		fmt.Printf("map[string]interface{}")
+		traverseMI(interf.(map[string]interface{}))
+	case AData:
+		fmt.Printf("Adata\n")
+		temp := interf.(AData)
+		fmt.Println(temp.d.innera)
+		fmt.Println(temp.d.innerb)
+	default:
+		fmt.Println("unkown type:", v)
+	}
 }
