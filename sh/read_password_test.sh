@@ -2,13 +2,18 @@
 # ysoftman
 
 echo 'read command test'
-echo 'input password:'
+echo 'input user and password:'
 
 # -s(slient) 사용자 입력을 표시하지 않는다.
-# password 변수로 stdin 저장
+# stdin 을 user, password 변수로 저장
+# 입력을 공백을 구분 하는 경우
+# read -s user password
+# 입력을 엔터로 구분 하는 경우
+read -s user
 read -s password
 
-echo $password
+echo "user->$user"
+echo "password->$password"
 
 
 # 터미널에서 자동 입력 방법1
