@@ -1,5 +1,5 @@
 // ysoftman
-// 가변인자를 통한 printf() 함수 구현
+// 가변인자(variadic arguments)를 통한 printf() 함수 구현
 #include <stdio.h>
 #include <stdarg.h>
 
