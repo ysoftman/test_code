@@ -1,8 +1,11 @@
 // ysoftman
 // map 사용
+// go builtin map 은 hash table 을 사용해 O(1) 시간 복잡도를 가진다.
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	// mymap 은 맵을 참조하고 있고 nil 상태이다.
