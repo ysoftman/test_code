@@ -24,7 +24,9 @@ fn main() {
 }
 
 // 안전하지 않는 함수로 명시하면 unsafe{} 에서만 호출 할 수 있다.
-unsafe fn dangerous() {}
+unsafe fn dangerous() {
+    println!("dangerous() in unsafe scope")
+}
 
 // extern "C" 로 실제 존재하는 C 표준 라이브러이의 abs()함수를 사용할 수 있다.
 // unsafe{} 에서만 호출 할 수 있다.

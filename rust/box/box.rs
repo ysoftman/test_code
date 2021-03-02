@@ -6,7 +6,7 @@
 use List::{Cons, Nil};
 
 fn main() {
-    // 5 값을 힙에 데이터를 저장, 힙도 스코프를 벗어나면 메모리 해제한다.
+    // 5 값을 힙 데이터로 저장, 힙도 스코프를 벗어나면 메모리 해제한다.
     let b = Box::new(5);
     println!("{}", b);
     // let list = Cons(1, Cons(2, Cons(3, Nil)));
