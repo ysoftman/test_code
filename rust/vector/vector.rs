@@ -14,7 +14,7 @@ use VecData::*;
 fn main() {
     // 벡터 생성
     // let mut v: Vec<i32> = Vec::new();
-    // mutable 이면 push 되는 값으로 타입추론으 가능해 타입을 명시하지 않아도 된다.
+    // mutable 이면 push 되는 값으로 타입추론이 가능해 타입을 명시하지 않아도 된다.
     let mut v = Vec::new();
     v.push(-3);
     v.push(-2);

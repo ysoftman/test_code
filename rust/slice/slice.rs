@@ -14,6 +14,10 @@ fn main() {
     // 슬라이스 1~2까지
     println!("num:{:?}", &num[1..3]);
 
+    // 2~3 슬라이스 값을 참조
+    let num2: &[i32] = &num[2..4];
+    println!("num2:{:?}", &num2);
+
     let mut s = String::from("lemon apple orange");
     println!("s:{}", s);
     // 슬라이스 전체
