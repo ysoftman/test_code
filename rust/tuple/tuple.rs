@@ -11,4 +11,7 @@ fn main() {
     println!("tup2:{}", aa);
     println!("tup2:{}", bb);
     println!("tup2:{}", cc);
+
+    let man: (&str, &str, i32) = ("bill", "lemon", 123);
+    println!("{:?}", man);
 }
