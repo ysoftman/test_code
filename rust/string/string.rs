@@ -11,10 +11,11 @@ fn main() {
     // rust 의 스트링은 utf8로되어 있다.
     let s4 = String::from("안녕하세요.");
 
-    println!("s1 {}", s1);
-    println!("s2 {}", s2);
-    println!("s3 {}", s3);
-    println!("s4 {}", s4);
+    println!("s1: {}, len: {} capacity: {}", s1, s1.len(), s1.capacity());
+    println!("s2: {}, len: {} capacity: {}", s2, s2.len(), s2.capacity());
+    println!("s3: {}, len: {} capacity: {}", s3, s3.len(), s3.capacity());
+    println!("s4: {}, len: {} capacity: {}", s4, s4.len(), s4.capacity());
+    println!("s1 is emtpy(): {}", s1.is_empty());
 
     // string -> str 로 참조
     // as_str() 사용
@@ -35,6 +36,23 @@ fn main() {
     // 그래서 temp 를 출력할 수 있다.
     println!("temp {}", temp);
     println!("s5 {}", s5);
+
+    // replace string
+    println!(
+        "replace(\"bill\", \"BILL\") s5:{} -> {}",
+        s5,
+        s5.replace("bill", "BILL")
+    );
+
+    // split string
+    println!("split(',') s5:{}", s5);
+    for w in s5.split(',') {
+        println!("{}", w);
+    }
+    println!("split_whitespace() s5:{}", s5);
+    for w in s5.split_whitespace() {
+        println!("{}", w);
+    }
 
     // 스트링 더하기
     let s6 = String::from("lemon");
