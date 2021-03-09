@@ -73,9 +73,16 @@ fn main() {
     for i in &mut v {
         // *역참조로 값을 변경
         *i += 10;
-        println!("for {}", i);
+        println!("&mut v {}", i);
+    }
+    // iter_mut() 으로도 변경할 수 있다.
+    for i in v.iter_mut() {
+        // *역참조로 값을 변경
+        *i += 10;
+        println!("iter_mut {}", i);
     }
 
+    println!("-----");
     // enum 으로 다른 데이터 타입을 갖는 벡터를 생성할 수도 있다.
     let v3 = vec![Value1(123), Value2(1.23), Value3(String::from("ysoftman"))];
     println!("{:?}", v3);
