@@ -27,8 +27,14 @@ fn main() {
     // a = 456;
 
     // 같은 이름의 변수를 재정의해 사용할 수 있다.
+    // : f64 와 같이 명시하지 않아도 f64 타입으로 된다.
     let a = 12.3;
     println!("a : {}", a);
+
+    println!("min i32:{}", std::i32::MIN);
+    println!("max i32:{}", std::i32::MAX);
+    println!("min i64:{}", std::i64::MIN);
+    println!("max i64:{}", std::i64::MAX);
 
     // _로시작하는 변수는 unused 해도 워닝이 발생하지 않는다.
     let _asdf = 123;
@@ -37,6 +43,12 @@ fn main() {
     println!("x : {}", x);
     x = 6;
     println!("x : {}", x);
+
+    // multiple variables 할당
+    let (aaa, bbb) = ("lemon", 123);
+    println!("aaa:{}, bbb:{}", aaa, bbb);
+    // () 로 묶어 하나의 placeholder 에 출력
+    println!("aaa,bbb = {:?}", (aaa, bbb));
 
     // 상수 선언, 대문자여야 한다.(소문자면 빌드 에러 발생)
     // 상수 자체가 불변성이라 mut 을 쓰지 않고
