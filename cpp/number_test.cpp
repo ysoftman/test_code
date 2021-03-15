@@ -5,17 +5,26 @@
 #include <cmath>
 using namespace std;
 
+void test_number(double n)
+{
+    // 반올림
+    cout << "round(n): " << round(n) << endl;
+    // 내림
+    cout << "floor(n): " << floor(n) << endl;
+    // 버림
+    cout << "trunc(n): " << trunc(n) << endl;
+    // 올림
+    cout << "ceil(n): " << ceil(n) << endl;
+}
+
 int main()
 {
     double n = 0.56789;
     cout << "n: " << n << endl;
-
-    // 반올림
-    cout << "round(n): " << round(n) << endl;
-    // 버림
-    cout << "floor(n): " << floor(n) << endl;
-    // 올림
-    cout << "ceil(n): " << ceil(n) << endl;
+    test_number(n);
+    n = -0.56789;
+    cout << "n: " << n << endl;
+    test_number(n);
 
     double d = 0.123456789123456789;
     cout << "d: " << d << endl;
