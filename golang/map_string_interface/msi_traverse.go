@@ -15,16 +15,8 @@ type AData struct {
 	d innerAData
 }
 
-func main() {
-	// 일반 맵은 make 로 빈맵을 생성해야 한다.
-	// 값이 정의한 타입으로만 사용할 수 있다.
-	// normalmap := map[string]string
-	normalmap := make(map[string]string)
-	normalmap["aa"] = "lemon"
-	normalmap["aa"] = "lemon-juice"
-	normalmap["bb"] = "orange-juice"
-	fmt.Println(normalmap)
-
+func traverse() {
+	fmt.Println("----- msi traverse -----")
 	// 값이 interface 인 빈맵은 make 없이 생성한다.
 	// 값이 interface{}이면 어떤 타입이도 자유롭게 사용할 수 있다.
 	mi := map[string]interface{}{}
