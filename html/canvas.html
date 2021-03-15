@@ -1,0 +1,19 @@
+<html>
+<canvas id="myCanvas1" width="200" height="100"></canvas>
+<canvas id="myCanvas2" width="200" height="100"></canvas>
+<script>
+    var c = document.getElementById("myCanvas1");
+    var ctx = c.getContext("2d");
+    ctx.font = "30px Arial";
+    ctx.strokeText("Hello World", 10, 50);
+
+    c = document.getElementById("myCanvas2");
+    var ctx = c.getContext("2d");
+    var grd = ctx.createLinearGradient(0, 0, 200, 0);
+    grd.addColorStop(0, "red");
+    grd.addColorStop(1, "white");
+    ctx.fillStyle = grd;
+    ctx.fillRect(10, 10, 150, 80);
+</script>
+
+</html>

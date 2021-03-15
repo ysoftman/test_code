@@ -3,9 +3,11 @@
 // title : go routine, channel, select 테스트
 package main
 
-import "time"
-import "fmt"
-import "sync"
+import (
+	"fmt"
+	"sync"
+	"time"
+)
 
 // Maxcnt 대문자로 시작하면 export 된다.
 const Maxcnt = 10
