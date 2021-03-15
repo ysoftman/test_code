@@ -1,6 +1,7 @@
 FROM centos:7
 
 RUN echo $PATH
+RUN yum install -y sudo vim
 RUN mkdir -p /ysoftman && cd /ysoftman && echo 'echo ysoftman' > ysoftman.sh
 RUN echo "PATH=${PATH}:/ysoftman" >> ${HOME}/.bashrc
 RUN cat ${HOME}/.bashrc
