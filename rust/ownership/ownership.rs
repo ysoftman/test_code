@@ -12,7 +12,7 @@ fn main() {
     // 값은 하나의 오너만이 가지고 있어야 하기 때문에
     // move(s2 로 소유권 이전)가 발생한다.
     let s2 = s1;
-    // 소유권을 읽흔 s1 는 더이상 유효하지 않아 사용할 수 없다.
+    // 소유권을 잃은 s1 는 더이상 유효하지 않아 사용할 수 없다.
     // println!("s1:{}", s1);
     println!("s2:{}", s2);
 
@@ -28,22 +28,44 @@ fn main() {
 
     let s4 = String::from("ysoftman");
     let (n, s5) = takes_ownership(s4);
-    // s4 takes_ownership()로 소유권이 넘어가 유효하지 않다.
+    // s4 힙 변수라 takes_ownership()로 소유권이 넘어가 유효하지 않다.
     // println!("s4:{}", s4);
     println!("n:{} s5:{}", n, s5);
 
-    // x,y 는 값복사가 되서 aaa 호출 이후에도 유효하다.
-    aaa(x, y);
+    let s4 = String::from("ysoftman");
+    let (n, s5) = borrows_ownership(&s4);
+    // 참조로 넘기면 소유권이 넘어가지 않아(빌려주어) s4 가 유효하다.
+    println!("s4:{}", s4);
+    println!("n:{} s5:{}", n, s5);
+
+    let s4 = String::from("ysoftman");
+    let (n, s5) = borrows_ownership2(&s4);
+    // 참조로 넘기면 소유권이 넘어가지 않아(빌려주어) s4 가 유효하다.
+    println!("s4:{}", s4);
+    println!("n:{} s5:{}", n, s5);
+
+    // x,y 는 스택 변수라 값복사가 돼서 copy_values 호출 이후에도 유효하다.
+    copy_values(x, y);
     println!("x:{} y:{}", x, y);
 }
 
-// takes_ownership s 스코프를 벗어나면 s는 drop 되지만 리턴에서 소유권을 넘길 수 있다.
+// 스코프를 벗어나면 s는 drop 되지만 리턴에서 소유권을 넘길 수 있다.
 // 참고로 () 묶어 여러개의 값들을 리턴할 수 있다.
 fn takes_ownership(s: String) -> (u32, String) {
     println!("takes_ownership:{}", s);
     (123, s)
 }
 
-fn aaa(x: u32, y: u32) {
-    println!("aaa:{} {}", x, y);
+fn borrows_ownership(s: &String) -> (u32, String) {
+    println!("borrows_ownership:{}", s);
+    (123, String::from("apple"))
+}
+
+fn borrows_ownership2(s: &String) -> (u32, &str) {
+    println!("borrows_ownership2:{}", s);
+    (123, "apple")
+}
+
+fn copy_values(x: u32, y: u32) {
+    println!("copy_values:{} {}", x, y);
 }
