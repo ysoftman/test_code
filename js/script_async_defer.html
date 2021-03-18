@@ -16,13 +16,17 @@
 
 <!-- async , defer 로 다운로드 중이라면 아직 실행 못함 -->
 
+
+<body onload="b()">
+</body>
+
+<!-- 참고: vscode live server 로 결과 확인시 <body> 태그 기준으로 inject 하는데,
+    body 가 먼저 잇다면 --\> 가 표시되는 문제가 있다. -->
+
 <!-- <body>
     <script>
         b();
     </script>
 </body> -->
-
-<body onload="b()">
-</body>
 
 </html>
