@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <!-- js 다운로드 받을때까지 블럭 -->
+    <!-- <script src="script_async_defer_a.js"></script>
+    <script src="script_async_defer_b.js"></script> -->
+
+    <!-- js 다운로드 병렬로 처리, 다운 받은 순서로 처리 -->
+    <!-- <script async src="script_async_defer_a.js"></script>
+    <script async src="script_async_defer_b.js"></script> -->
+
+    <!-- js 다운로드 병령로 처리하고  a -> b 순서로 실행되되도록 보장 -->
+    <script defer src="script_async_defer_a.js"></script>
+    <script defer src="script_async_defer_b.js"></script>
+</head>
+
+<!-- async , defer 로 다운로드 중이라면 아직 실행 못함 -->
+
+<!-- <body>
+    <script>
+        b();
+    </script>
+</body> -->
+
+<body onload="b()">
+</body>
+
+</html>
