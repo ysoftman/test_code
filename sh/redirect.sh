@@ -17,6 +17,21 @@ var1="ysoftman"
 echo "$var1"
 zzz
 
+# heredoc 은 2단계로 수행된다.
+# 1. open file.txt
+# 2. cat (> or >>) file.txt
+# sudo 명령이 필요한 경우
+# sudo cat > /etc/redirect.test.sh << 'zzz' ...
+# 1. /etc/redirect.test.sh 파일은 현재 사용자 계정으로 오픈하고
+# 2. 그 후에 sudo cat 명령을 실행하게 되어 permission denied 가 된다.
+# 그래서 다음과 같이 bash -c 로 묶어 처리해야 한다.
+sudo bash -c "cat > /etc/redirect.test.sh" << 'zzz'
+#!/bin/sh
+var1="ysoftman"
+echo "$var1"
+zzz
+
+sudo rm /etc/redirect.test.sh
 
 # heredoc 의 내용을 파이프(|)로 전달 할 수 도 있다.
 cat << zzz | xargs echo "args->$*"
@@ -29,6 +44,6 @@ zzz
 
 
 # <<< $'' 을 사용하면 명령에 stdin 을 전달할 수 있다.
-# 다음 pipe 이용 방법과 같다. 
+# 다음 pipe 이용 방법과 같다.
 # echo -e 'bill\npassword123' | bash read_password_test.sh
 bash read_password_test.sh <<< $'bill\npassword123'
