@@ -1,0 +1,48 @@
+<html>
+
+<style>
+    .test_box1 {
+        background: magenta;
+        width: 200px;
+        /* 영문자 단어(띄어쓰기) 단위로 구분 */
+        word-break: normal;
+    }
+
+    .test_box2 {
+        background: cornflowerblue;
+        width: 200px;
+        /* Chinese/Japanese/Korean (CJK) 단어 단위 구분 */
+        word-break: keep-all;
+    }
+
+    .test_box3 {
+        background: darkseagreen;
+        width: 200px;
+        /* 문자단위로 구분 */
+        word-break: break-all;
+    }
+</style>
+<div class="test_box1">
+    [word-break: normal;]<br>
+    가나다 라마사 아자차 카타파하<br>
+    2021-03-30_09:51:12_KST<br>
+    abcde fghij klmno pqrs tuvwsyz
+</div>
+<br><br>
+
+<div class="test_box2">
+    [word-break: keep-all;]<br>
+    가나다 라마사 아자차 카타파하<br>
+    2021-03-30_09:51:12_KST<br>
+    abcde fghij klmno pqrs tuvwsyz
+</div>
+<br><br>
+
+<div class="test_box3">
+    [word-break: break-all;]<br>
+    가나다 라마사 아자차 카타파하<br>
+    2021-03-30_09:51:12_KST<br>
+    abcde fghij klmno pqrs tuvwsyz
+</div>
+
+</html>
