@@ -51,7 +51,7 @@ func main() {
 	select {
 	// context 타임아웃 이후라 발생할 수 없음
 	case time := <-time.After(2000 * time.Millisecond):
-		fmt.Println("overslpet!!!", time)
+		fmt.Println("overslept!!!", time)
 		// nil
 		fmt.Println(ctx.Err())
 	// 채널로부터 작업완료 통보가 된 경우
