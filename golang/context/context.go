@@ -11,9 +11,10 @@ import (
 
 func main() {
 	// https://blog.golang.org/context
-	// context 는 사용자 요청이 취소되거나 타임아웃되었을때 요청에 반응했던 모든 고루틴을 빠르게 정리하여 리소스를 시스템에 반환한다.
+	// 같은 성격의 또는 이어지는 작업들이 맥락(context)을 통해 값을 전달하거나, 작업을 종료하는증의 작업을 할 수 있다.
 	fmt.Println("context test....")
 
+	// WithTimeout 는 사용자 요청이 취소되거나 타임아웃되었을때 요청에 반응했던 모든 고루틴을 빠르게 정리하여 리소스를 시스템에 반환한다.
 	// 부모 context 를 인자로 주고 파생된 새로운 컨텍스를 만든다.
 	// 5초 타임아웃(데드라인)인 context 를 생성한다.
 	// context.Background() 는 빈값으로 최상위 context 로 main(), init() 에서 컨텍스를 만들때 사용된다.
@@ -34,6 +35,7 @@ func main() {
 		ctx2 := context.WithValue(ctx, userkey, 1234)
 		fmt.Println("ctx2.Value", ctx2.Value(userkey))
 
+		// context 데드라인 시간 파악
 		dealine, _ := ctx.Deadline()
 		fmt.Println("deadline", dealine)
 
