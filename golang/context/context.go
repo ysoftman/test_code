@@ -28,12 +28,17 @@ func main() {
 	go func(ctx context.Context) {
 		fmt.Println("----- go routine start")
 
-		type key int
+		// go-lint 에서 context with value 사용시 키는 커스텀 타입을 만들어 사용하라고 한다.
+		type intkey int
 		type value int
-		var userkey key = 1
+		var userintkey intkey = 1
+		type strkey string
+		var userstrkey strkey = "ysoftman"
 		// int32 형식의 1234 값을 가진 자식 context 생성
-		ctx2 := context.WithValue(ctx, userkey, 1234)
-		fmt.Println("ctx2.Value", ctx2.Value(userkey))
+		ctx2 := context.WithValue(ctx, userintkey, 1234)
+		ctx2 = context.WithValue(ctx2, userstrkey, "lemon")
+		fmt.Println("ctx2.Value(userintkey)", ctx2.Value(userintkey))
+		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey))
 
 		// context 데드라인 시간 파악
 		dealine, _ := ctx.Deadline()
