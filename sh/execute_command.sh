@@ -16,3 +16,12 @@ checkexitcode() {
 
 checkexitcode "asdf"  # 찾을 수 없는 명령어로 실패함
 checkexitcode "ls -1" # 명령 실행 성공
+
+
+
+#####
+
+# command 로 실행하면 같은 이름의  alias, function 들은 무시한다.
+echo "command ls | head -5"
+command ls | head -5
+
