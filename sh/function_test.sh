@@ -21,10 +21,11 @@ testfunc1() {
     func_arg1=$1
     func_arg2=$2
 
+    # echo 로 출력 한 값은 caller 에서 받아 사용할 수 있다.
     echo "func_arg1 =" ${func_arg1}
     echo "func_arg2 =" ${func_arg2}
 
-    # return 은 종료 상태 코드로 원하는 값을 리턴할 수 없다.
+    # return 은 종료 상태 코드로 caller 에게 전달 되지 않는다.
     return 0
 }
 
