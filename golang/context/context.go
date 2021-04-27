@@ -9,6 +9,13 @@ import (
 	"time"
 )
 
+type mydata struct {
+	Name   string
+	Number int
+}
+
+type CtxMyData mydata
+
 func main() {
 	// https://blog.golang.org/context
 	// 같은 성격의 또는 이어지는 작업들이 맥락(context)을 통해 값을 전달하거나, 작업을 종료하는증의 작업을 할 수 있다.
@@ -42,10 +49,22 @@ func main() {
 		ctx2 = context.WithValue(ctx2, userstrkey1, "lemon")
 		ctx2 = context.WithValue(ctx2, userstrkey2, "orange")
 		ctx2 = context.WithValue(ctx2, userstrkey3, "apple")
+		// ctx2 구조체로 추가
+		md := CtxMyData{
+			Name:   "ysoftman",
+			Number: 999,
+		}
+		ctx2 = context.WithValue(ctx2, CtxMyData{}, &md)
 		fmt.Println("ctx2.Value(userintkey)", ctx2.Value(userintkey))
 		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey1))
 		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey2))
 		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey3))
+		fmt.Println("ctx2.Value(CtxMyData{})", ctx2.Value(CtxMyData{}))
+		if v, ok := ctx2.Value(CtxMyData{}).(*CtxMyData); ok {
+			fmt.Println("ctx2.Value(CtxMyData{}).(*CtxMyData):", v)
+			fmt.Println("ctx2.Value(CtxMyData{}).(*CtxMyData).Name:", v.Name)
+			fmt.Println("ctx2.Value(CtxMyData{}).(*CtxMyData).Number:", v.Number)
+		}
 
 		// context 데드라인 시간 파악
 		dealine, _ := ctx.Deadline()
