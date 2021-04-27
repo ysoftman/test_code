@@ -33,12 +33,19 @@ func main() {
 		type value int
 		var userintkey intkey = 1
 		type strkey string
-		var userstrkey strkey = "ysoftman"
+		var userstrkey1 strkey = "ysoftman1"
+		var userstrkey2 strkey = "ysoftman2"
+		var userstrkey3 strkey = "ysoftman3"
 		// int32 형식의 1234 값을 가진 자식 context 생성
 		ctx2 := context.WithValue(ctx, userintkey, 1234)
-		ctx2 = context.WithValue(ctx2, userstrkey, "lemon")
+		// ctx2 에 값 추가
+		ctx2 = context.WithValue(ctx2, userstrkey1, "lemon")
+		ctx2 = context.WithValue(ctx2, userstrkey2, "orange")
+		ctx2 = context.WithValue(ctx2, userstrkey3, "apple")
 		fmt.Println("ctx2.Value(userintkey)", ctx2.Value(userintkey))
-		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey))
+		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey1))
+		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey2))
+		fmt.Println("ctx2.Value(userstrkey)", ctx2.Value(userstrkey3))
 
 		// context 데드라인 시간 파악
 		dealine, _ := ctx.Deadline()
