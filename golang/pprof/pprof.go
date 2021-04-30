@@ -21,8 +21,7 @@ func main() {
 	select {}
 }
 
-// pprof.go init()에 이미 다음과 핸들러 들이 등록되 있어 별도 핸들러 등록을 하지 않는다.
-// 만약 /debug/pprof/trace 등을 별도구 선언하면 실행 후 다운로드하려하면 404 NOT FOUND 가 발생한다.
+// pprof.go init()에 이미 다음과 핸들러 들이 등록되 있어 별도로 등록하지 않아도 된다.
 // func init() {
 // 	http.Handle("/debug/pprof/", http.HandlerFunc(Index))
 // 	http.Handle("/debug/pprof/cmdline", http.HandlerFunc(Cmdline))
@@ -30,4 +29,9 @@ func main() {
 // 	http.Handle("/debug/pprof/symbol", http.HandlerFunc(Symbol))
 // 	http.Handle("/debug/pprof/trace", http.HandlerFunc(Trace))
 // }
-// 참고 https://stackoverflow.com/questions/30560859/cant-use-go-tool-pprof-with-an-existing-server
+// 만약 별도 선언 후 /debug/pprof/trace 등 사용시 404 NOT FOUND 가 발생한다면
+// 다음과 같이 pprof.Trace 등을 사용하도록 해야 한다.
+// r.HandleFunc("/pprof/cmdline", pprof.Cmdline)
+// r.HandleFunc("/pprof/symbol", pprof.Symbol)
+// r.HandleFunc("/pprof/profile", pprof.Profile)
+// r.HandleFunc("/pprof/trace", pprof.Trace)
