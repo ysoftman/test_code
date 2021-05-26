@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// syncmap 은 자동 동기화 맵으로 concurrent 환겯에서 사용
+	// syncmap 은 자동 동기화 맵으로 concurrent 환경에서 사용
 	smap := new(syncmap.Map)
 	smap.Store("name", "ysoftman")
 	smap.Store("phone", 123456789)
