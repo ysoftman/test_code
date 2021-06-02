@@ -49,6 +49,23 @@
     debug += "json.d.member1=" + json.d.member1 + "\n"
     debug += "json.d.member2=" + json.d.member2 + "\n"
     alert(debug)
+
+
+    alert("checkJSON('a') ==> " + checkJSON('a'));
+    alert("checkJSON('{\"a\":123}') ==> " + checkJSON('{\"a\":123}'));
+
+    function checkJSON(str) {
+        let ret = "";
+        try {
+            JSON.parse(str);
+            console.log("valid JSON");
+            ret = "valid json";
+        } catch (e) {
+            console.log("invalid JSON, error:", e);
+            ret = "invalid json"
+        }
+        return ret;
+    }
 </script>
 
 </html>
