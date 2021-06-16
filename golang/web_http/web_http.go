@@ -90,6 +90,12 @@ func notfound(w http.ResponseWriter, r *http.Request) {
 	notFoundMsg := "404 not found... :( path: " + r.RequestURI
 	fmt.Println(notFoundMsg)
 	w.WriteHeader(http.StatusNotFound)
+
+	// WriteHeader 를 여러번 쓰면 불필요한(superflous) 구문이라고 다음과 에러가 나고 수행되지 않는다.
+	// http: superfluous response.WriteHeader call from main.notfound
+	// w.WriteHeader(http.StatusBadRequest)
+
+	// Write는 이전에 WriteHeader를 호출하지 않았다면 암묵적으로 WriteHeader(http.StatusOK) 를 호출한다.
 	w.Write([]byte(notFoundMsg))
 }
 
