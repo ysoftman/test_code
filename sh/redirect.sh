@@ -9,7 +9,7 @@ rm -rf cat_delimiter.test.sh
 
 # 또는 구분자를 'zzz' 또는 "zzz" 로 묶어서 구분한다.
 # zzz 를 입력되기 까지 모든 내용을 cat 입력(<<)으로 받고
-# cat 은 입력받은 내용을 stout 출력하는데 > 를 통해 파일에 쓴다.
+# cat 은 입력받은 내용을 stdout으로 출력하는데 > 를 통해 파일에 쓴다.
 # here-document(heredoc, https://en.wikipedia.org/wiki/Here_document)
 cat > redirect.test.sh << 'zzz'
 #!/bin/sh
