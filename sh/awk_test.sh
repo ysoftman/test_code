@@ -35,3 +35,17 @@ echo -e $msg | awk '{print toupper($0)}'
 # (days xx) 부분 앞으로 옮기기
 # -F 필드 구분을 '(' 으로 한다.
 echo -e "$msg" | awk -F '(' '{print "("$2,$1}'
+
+
+# 각 라인의 스트링을 변수로 저장 -> heredoc 으로 설정 -> echo 출력
+msg="lemon
+apple
+orange"
+aa=$(echo "$msg" | tr '\n' ' ' | awk '{print $1}')
+bb=$(echo "$msg" | tr '\n' ' ' | awk '{print $2}')
+cc=$(echo "$msg" | tr '\n' ' ' | awk '{print $3}')
+cat << EOF | xargs echo $*
+first:${aa}
+second:${bb}
+thrid:${cc}
+EOF
