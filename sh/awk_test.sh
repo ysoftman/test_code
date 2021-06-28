@@ -8,9 +8,14 @@ echo -e $msg
 # 결과에서 3번재열만 출력
 echo -e $msg | awk '{print $3}'
 
-# 출력 구분시 공백 사용 default(new line)
-# ORS(Output Record Separator)
-echo -e $msg | awk '{print $3}' ORS=' '
+# 입력 레코드 구분자
+# RS(Record Separator, default newline)
+echo -e $msg | awk '{print $1}' RS=' '
+# 출력 필드 구분자
+# OFS(Output Field Separator, default blank)
+# 출력 레코드 구분자
+# ORS(Output Record Separator, default new line)
+echo -e $msg | awk '{print $1,$2,$3}' OFS=',' ORS=' '
 echo ""
 
 # 결과에서 NF(Num of Fields) 마지막 컬럼(파일이름)만 출력
