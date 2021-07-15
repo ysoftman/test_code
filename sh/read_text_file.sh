@@ -1,6 +1,14 @@
 #!/bin/bash
 # ysoftman
 
+# -p 로 프롬프트 메시지 출력 후 입력받기
+read -p "input:" input
+echo $input
+
+# -n 3 으로 문자 3개만 입력 받기
+read -3 ysoftman
+echo $ysoftman
+
 # 텍스트 파일 만들기
 echo 'create text_file_sample\n'
 echo 'ysoftman 1234 bill
