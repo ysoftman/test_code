@@ -1,3 +1,17 @@
+#!/bin/bash
+
+# file descriptor id
+# 0 - stdin
+# 1 - stdout
+# 2 - stderr
+
+# https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+# [n]<> redirection 은 파일을 read, write 둘다 사용되도록 오픈한다.
+# redirect.open_read_write.txt 파일이 존재 하지 않으면 삭제된다.
+echo "ysoftman" 1<> redirect.open_read_write.txt
+rm -f redirect.open_read_write.txt
+
+
 # shell script 파일을 cat 으로 생성할 경우
 # \ $ ` 는 \ 로 처리해야 누락되지 않는다.
 rm -rf cat_delimiter.test.sh
@@ -16,6 +30,8 @@ cat > redirect.test.sh << 'zzz'
 var1="ysoftman"
 echo "$var1"
 zzz
+echo "[cat redirect.test.sh]"; cat redirect.test.sh
+echo "[rm redirect.test.sh]"; rm -f redirect.test.sh
 
 # heredoc 은 2단계로 수행된다.
 # 1. open file.txt
@@ -30,9 +46,10 @@ sudo bash -c "cat > /etc/redirect.test.sh" << 'zzz'
 var1="ysoftman"
 echo "$var1"
 zzz
+echo "[cat /etc/redirect.test.sh]"; cat /etc/redirect.test.sh
+echo "[rm /etc/redirect.test.sh]"; sudo rm /etc/redirect.test.sh
 
-sudo rm /etc/redirect.test.sh
-
+echo ""
 # heredoc 의 내용을 파이프(|)로 전달 할 수 도 있다.
 cat << zzz | xargs echo "args->$*"
 apple
