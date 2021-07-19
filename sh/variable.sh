@@ -143,16 +143,6 @@ do
     echo ${v}
 done
 
-# 무한 루프
-# cnt=0
-# while :
-# # 또는
-# for (( ; ; ))
-# do
-#     sleep 1
-#     cnt=$(($cnt+1))
-#     echo $cnt
-# done
 
 var1="aaa"
 var2="bb"
@@ -206,10 +196,3 @@ echo "9%8 = $((9%8))"
 
 # a,b,c 출력
 echo {a,b,c}
-
-# 1 ~ 10 까지 출력
-echo "{1..20}" {1..20}
-for v in {1..5}
-do
-    echo $(($v*100))
-done
