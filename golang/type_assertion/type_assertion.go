@@ -23,17 +23,16 @@ func main() {
 	// fmt.Println(illegal)
 
 	// x가 nil 도 아니고 int 타입이라면 int 형의  x 값을 리턴
-	ok1 := x.(int)
-	fmt.Println(ok1)
+	intType, ok := x.(int)
+	fmt.Println(intType, ok)
 
 	// interface x 에 다른 타입의 값을 계속해서 덮어 쓸 수 있다.c/c++ void*와 같음
 	x = 1.23
-	ok2 := x.(float64)
-	fmt.Println(ok2)
-
+	floatType, ok := x.(float64)
+	fmt.Println(floatType, ok)
 	x = float32(1.23)
-	ok3 := x.(float32)
-	fmt.Println(ok3)
+	floatType2 := x.(float32)
+	fmt.Println(floatType2)
 
 	// struct 타입도 가능하다.
 	mt := mytype{
@@ -41,14 +40,14 @@ func main() {
 		y: 2,
 	}
 	x = mt
-	ok4 := x.(mytype)
-	fmt.Println(ok4)
+	mType := x.(mytype)
+	fmt.Println(mType)
 
 	// []struct 타입도 가능하다.
 	var mtlist []mytype
 	mtlist = append(mtlist, mt)
 	mtlist = append(mtlist, mt)
 	x = mtlist
-	ok5 := x.([]mytype)
-	fmt.Println(ok5)
+	mType2 := x.([]mytype)
+	fmt.Println(mType2)
 }
