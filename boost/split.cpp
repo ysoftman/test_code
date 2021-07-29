@@ -17,21 +17,22 @@ int main()
 
     string str = "Yoon,Byoung,Hoon";
     cout << "str = " << str << endl;
-
+    cout << "separator = ," << endl;
     vector<string> vecResult;
+    vector<string>::iterator iter;
     boost::split(vecResult, str, boost::is_any_of(","));
-
-    str = "ysoftman/bill";
-    vector<string> vecTemp;
-    boost::split(vecTemp, str, boost::is_any_of("/"));
-    // auto 는 c++11 버전이상
-    for (auto v : vecTemp)
+    for (iter = vecResult.begin(); iter != vecResult.end(); iter++)
     {
-        vecResult.push_back(v);
+        cout << (*iter).c_str() << endl;
     }
 
     str = "A/B/C/D/E/F/G";
-    vecTemp.clear();
+    cout << "str = " << str << endl;
+    cout << "separator = /" << endl;
+    vector<string> vecTemp;
+    // vecTemp.clear();
+    // 기존 vecResult 내용은 삭제된다.
+    // boost::split(vecResult, str, boost::is_any_of("/"));
     boost::split(vecTemp, str, boost::is_any_of("/"));
     // auto 는 c++11 버전이상
     for (auto v : boost::adaptors::reverse(vecTemp))
@@ -39,9 +40,7 @@ int main()
         vecResult.insert(vecResult.begin(), v);
     }
 
-    cout << "separator = ," << endl;
-    cout << "count = " << vecResult.size() << endl;
-    vector<string>::iterator iter;
+    cout << "---- vecResult --- " << endl;
     for (iter = vecResult.begin(); iter != vecResult.end(); iter++)
     {
         cout << (*iter).c_str() << endl;
