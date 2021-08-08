@@ -1,0 +1,21 @@
+# https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ysoftman-pod-test
+spec:
+  containers:
+  - name: ysoftman-pod-test
+    image: busybox
+    imagePullPolicy: Always
+    command:
+    - /bin/sh
+    - -c
+    - date; echo infinite count; i=1; while true; do echo $i; sleep 1; i=$((i+1)); done;
+    resources:
+      limits:
+        cpu: "500m"
+        memory: "200Mi"
+      requests:
+        cpu: "250m"
+        memory: "100Mi"
