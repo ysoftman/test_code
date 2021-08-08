@@ -19,6 +19,12 @@ for (( i=0; i<5; i++ ))
 do
     echo $i
 done
+
+# sh(일반 리눅스 배포판에서는 sh->bash라 상관없음)에서는 for ((;;)) 문법이 지원되지 않아 while 사용해야 한다.
+echo 'i=0; while [ $i -lt 10 ]; do echo $i; i=$((i+1)); done;'
+i=0; while [ $i -lt 10 ]; do echo $i; i=$((i+1)); done;
+
+
 # 1 ~ 20 까지 출력
 echo "{1..20} =>" {1..20}
 # 1 ~ 20 까지 every 2nd 출력
