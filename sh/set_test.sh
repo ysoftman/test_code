@@ -1,7 +1,10 @@
 #/bin/sh
 # ysoftman
 
+# 참고 https://linuxcommand.org/lc3_man_pages/seth.html
+
 # set -x 옵션을 사용하면 현재 스크립트 명령 자체도 stderr 로 확인 할 수 있다.
+# set - 를 하면 다시 비활성화
 set -x
 fruits="apple banana lemon"
 echo "${fruits}" | awk '{print $2}'
@@ -25,7 +28,7 @@ echo "aaa" > set_test.txt
 # 참고
 # set -o 옵션명 : 옵션 활성화(on)
 # set -o no옵션명 : 옵션 비활성화(off)
-# set -o(옵션 출력)설명 http://linuxcommand.org/lc3_man_pages/seth.html
+# set -o(옵션 출력)설명
 
 # vi 스타일로 line 편집(w,W,b,B,i,a,... 등)
 set -o vi
