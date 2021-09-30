@@ -14,7 +14,9 @@ int main()
 	struct bitField bf;
 
 	bf.nNum = 100;
-	// sizoef(bf.bitNum);	// 1비트 이기때문에 사용할 수 없다.
+	printf("%lu\n", sizeof(bf));
+	printf("%lu\n", sizeof(bf.nNum));
+	// printf("%lu\n", sizeof(bf.bitNum)); // 1비트 이기때문에 사용할 수 없다.
 	printf("bf.nNum = %d\n", bf.nNum);
 
 	// 1비트 0,1 만을 사용할 수 있다.
