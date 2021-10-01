@@ -94,6 +94,7 @@ char* Crypto::RSA_EncryptPublic(RSA *rsa, char *pPlain)
 	// RSA_PKCS1_OAEP_PADDING 사용시 평문의 최대 크기 체크
 	if (PlainLen > KeySize - 41)
 	{
+		printf("error: %d > %d - 41\n", PlainLen, KeySize);
 		return NULL;
 	}
 
