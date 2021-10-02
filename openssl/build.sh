@@ -27,7 +27,7 @@ install_openssl()
 
 echo "install openssl library? [y/n]"
 read yesno
-yesno=$(echo $yesno | tr '[:upper:]' '[:lower:]')
+yesno=$(echo ${yesno} | tr '[:upper:]' '[:lower:]')
 if [ ${yesno} == 'y' ]; then
     install_openssl
 fi
