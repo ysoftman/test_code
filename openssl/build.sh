@@ -1,11 +1,11 @@
 #!/bin/bash
 
 openssl_version="1.0.2k"
-openssl_install_path="openssl-${openssl_version}"
+openssl_install_path="${PWD}/openssl-${openssl_version}-out"
 install_openssl()
 {
-    rm -rfv openssl-${openssl_version}
-    if [ -f 'openssl-${openssl_version}.tar.gz' ]; then
+    rm -rfv openssl-${openssl_version} ${openssl_install_path}
+    if [ -f "openssl-${openssl_version}.tar.gz" ]; then
         echo 'ok'
     else
         echo 'download'
