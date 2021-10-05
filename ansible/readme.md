@@ -1,7 +1,7 @@
 # ansible 테스트
 
 ```bash
-ansible -i ./inventory testhost1 -u hanadmin -m command -a "ls -ahl"
+ansible -i ./inventory testhost1 -u ysoftman -m command -a "ls -ahl"
 ```
 
 ## ansible-playbook 테스트

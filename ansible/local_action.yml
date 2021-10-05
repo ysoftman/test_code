@@ -1,0 +1,13 @@
+- hosts: all
+  vars:
+    query: "ysoftman"
+  tasks:
+    - name: local action test - echo var
+      local_action: "command echo {{ query }}"
+      tags:
+        - local_action_test
+
+    - name: local action test - uri
+      local_action: uri url=https://www.google.com/search?q="{{ query }}"
+      tags:
+        - local_action_test

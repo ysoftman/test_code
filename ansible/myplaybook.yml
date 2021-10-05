@@ -5,7 +5,7 @@
   # 호스트1에서 끝나면 그다음 호스트2에 대해서 수행 = serial 1
   # 호스트1,2 에서 끝나면 그다음 호스트3,4에 대해서 수행 = serial 2
   serial: 1
-  user: hanadmin
+  user: ysoftman
   # 대상 서버에서 수행할 작업들 명시
   tasks:
   - name: print hello world
