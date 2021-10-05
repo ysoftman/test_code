@@ -1,7 +1,7 @@
 #!/bin/bash
 # strings command test
 # 텍스트 파일이 아닌 경우 깬진문자까지 보게 된다.
-cat /bin/ls
+# cat /bin/ls
 
 echo -e '\n-----\n'
 
