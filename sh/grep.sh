@@ -7,9 +7,9 @@
 # "ysoftman|bill" : ysoftman 또는 bill 문자열이 있는 경우
 # . : 시작할 디렉토리
 # 정규식 OR 연사자 |
-grep -rn --include="grep_test.txt" -E "name|yoon" .
+grep -rn --include="grep.txt" -E "name|yoon" .
 # 정규식 AND 연자사는 없어어 "pattern2.*pattern2" 로 찾는다.
-grep -rn --include="grep_test.txt" -E "name.*yoon" .
+grep -rn --include="grep.txt" -E "name.*yoon" .
 
 # -e 로 패턴 여러개를 명시해도 된다.
 # ps 컬럼명과 포함해서 보기

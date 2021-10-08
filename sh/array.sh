@@ -17,8 +17,10 @@ echo ${arr[4]}
 echo ${arr[@]}
 # 모든 원소 index 조회
 echo ${!arr[@]}
-# 원소 개수(사이즈)
+# 원소 개수
 echo ${#arr[@]}
+# 첫번째 원소의 크기
+echo ${#arr[1]}
 
 # 원소 값 변경
 arr[2]="ysoftman"

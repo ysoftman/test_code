@@ -3,7 +3,7 @@
 # 실행 예
 # short(한글자) 옵션명 -a -b
 # long(여러자) 옵션명 --ccc
-# bash ./getopts_test.sh -a lemon -b apple --ccc ysoftman
+# bash ./getopts.sh -a lemon -b apple --ccc ysoftman
 
 # 다음 처리되어야 옵션 index
 # echo ${OPTIND}

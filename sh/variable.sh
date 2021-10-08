@@ -32,24 +32,7 @@ echo $*
 # 매개변수 모두(문자로 취급)
 echo $@
 
-var1=""
-# -z -n 을 뒤에 명시하면 "unary operator expected" 가 발생하니 주의!
-# -z : null(empty) 인경우 체크
-if [ -z "${var1}" ]; then
-    echo "var1 is empty"
-else
-    echo "var1 =" ${var1}
-fi
-
-var1=1
-# -n : non-zero 값이 있는 경우
-if [ -n "${var1}" ]; then
-    echo "var1 is non-zone, var1 =" ${var1}
-else
-    echo "var1 is empty"
-fi
-
-# 변수 값 합차기
+# 변수 값 합치기
 var1="ysoftman"
 var2="123"
 var3="${var1} ${var2}"
@@ -105,6 +88,24 @@ echo "\${BASH_VERSION}:" ${BASH_VERSION}
 # 하드웨어 타입
 echo "\${HOSTTYPE}:" ${HOSTTYPE}
 
+
+var1=""
+# -z -n 을 뒤에 명시하면 "unary operator expected" 가 발생하니 주의!
+# -z : null(empty) 인경우 체크
+if [ -z "${var1}" ]; then
+    echo "var1 is empty"
+else
+    echo "var1 =" ${var1}
+fi
+
+var1=1
+# -n : non-zero 값이 있는 경우
+if [ -n "${var1}" ]; then
+    echo "var1 is non-zone, var1 =" ${var1}
+else
+    echo "var1 is empty"
+fi
+
 var1="10.10.10.1:111 10.10.10.2:222 10.10.10.3:333"
 cnt=0
 for v in ${var1}; do
@@ -116,18 +117,6 @@ for v in ${var1}; do
     (( cnt+=1 ))
 done
 echo "var1 = ${var1}"
-
-# 배열(리스트) 변수의 경우
-var1=("10.10.10.1:111" "10.10.10.2:222" "10.10.10.3:333")
-echo "var1[0] = ${var1[0]}"
-echo "var1[1] = ${var1[1]}"
-echo "var1[2] = ${var1[2]}"
-# [@] 배열의 모든 것
-echo "var1[@] = ${var1[@]}"
-# 배열 개수(크기)
-echo "#var1[@] = ${#var1[@]}"
-# 원소의 크기
-echo "#var1[0] = ${#var1[0]}"
 
 echo "\${IFS}:" ${IFS}
 for v in `cat variable.txt`
@@ -170,29 +159,5 @@ if [[ ${var1} == "5" ]] || [[ ${var2} == "10" ]]; then
 fi
 
 
-num1=1
-num2=2
-if [[ $num1 < $num2 ]]; then
-    echo "$num1 < $num2"
-fi
-num1=1
-num2=1
-# 이중소괄호는 C형태의 산술연산이 가능하다.
-if (( $num1 <= $num2 )); then
-    echo "$num1 <= $num2"
-fi
-# $를 생략해도 된다.
-(( ++num1 ))
-(( num1++ ))
-echo $num1
-(( --num1 ))
-(( num1-- ))
-echo $num1
-# 삼항 연산도 가능
-(( out = num1==1?99:100 ))
-echo $out
-# modular 연산
-echo "9%8 = $((9%8))"
-
-# a,b,c 출력
+# a b c 출력
 echo {a,b,c}
