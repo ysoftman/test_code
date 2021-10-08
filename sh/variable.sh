@@ -16,6 +16,9 @@ echo $$
 # 마지막 백그라운드 프로세스 ID
 echo $!
 
+# a b c 출력
+echo {a,b,c}
+
 var1="ysoftman"
 
 # 변수 사용시 ${}와 같이 curly brace 로 감싸는 이유는 변수 확장(variable expansion)하기 위함이다.
@@ -159,5 +162,16 @@ if [[ ${var1} == "5" ]] || [[ ${var2} == "10" ]]; then
 fi
 
 
-# a b c 출력
-echo {a,b,c}
+
+#!/bin/bash
+# 기본은 전역 변수
+global_val="lemon"
+function aaa() {
+    # local 을 사용하면 해등 스코프에서만 유효한 지역 변수가 된다.
+    local local_val="orange"
+    echo ${global_val}
+    echo ${local_val}
+}
+aaa
+echo ${global_val}
+echo ${local_val} # 지역 변수라 출력되지 않음
