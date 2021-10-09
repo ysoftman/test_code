@@ -26,7 +26,7 @@ int main()
 	s.insert(-9);
 	s.insert(7);
 	s.insert(-2);
-	s.insert(4);
+	s.insert(4);	// 중복된 값은 하나로 취급
 	s.insert(2);
 
 	cout << "The set contains the elements: ";

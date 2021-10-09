@@ -1,5 +1,6 @@
 // ysoftman
 // c++11 hash function test
+// g++ -std=c++ hash_function.cpp
 #include <iostream>
 
 using namespace std;
