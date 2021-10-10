@@ -2,17 +2,23 @@
 // 배열 초기화 하지 않았을 경우
 #include <stdio.h>
 
+void print_array(int *arr, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		printf("[%d]:%d\n", i, arr[i]);
+	}
+	printf("-----\n");
+}
+
 int main()
 {
-	int a[10];
-
-	int i;
-
-	for (i = 0; i < 10; i++)
-	{
-		//a[i] = 0;
-		printf("%d\n", a[i]);
-	}
+	const int size = 100;
+	int a[size];
+	print_array(a, size);
+	// int b[size] = {};  // invalid C but valid C++ way to zero-out a block-scope array
+	int b[size] = {0}; // valid C and C++ way to zero-out a block-scope array
+	print_array(b, size);
 
 	return 0;
 }
