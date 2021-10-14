@@ -9,6 +9,7 @@
 #include <ctime>
 #include <map>
 #include <vector>
+#include <algorithm> // sort()
 
 using namespace std;
 
@@ -24,6 +25,7 @@ void InsertionSort(int arr[], int size);
 void RadixSort(int arr[], int size);
 void MergeSort(int arr[], int left, int right);
 void QuickSort(int arr[], int left, int right);
+void QuickSort2(int arr[], int left, int right);
 void HeapSort(int arr[], int size);
 
 // 배열 출력
@@ -40,12 +42,24 @@ void Print(FILE *fp, int arr[], int size, const char *msg)
 	fprintf(stdout, "end\n\n");
 }
 
+bool validate_by_std_quick_sort(int arr1[], int arr2[])
+{
+	for (int i = 0; i < MAX; i++)
+	{
+		if (arr1[i] != arr2[i])
+		{
+			printf("validate => failed\n");
+			return false;
+		}
+	}
+	printf("validate => passed\n");
+	return true;
+}
+
 int main()
 {
 	int i = 0;
 	int input[MAX];
-	int temp[MAX];
-	memset(temp, 0, sizeof(int) * MAX);
 	srand((unsigned int)time(NULL));
 	FILE *fp = fopen("sort_test_result.txt", "w");
 
@@ -56,77 +70,111 @@ int main()
 	}
 	printf("Random Number(%d) Elapsed Time %f\n", MAX, double(clock() - start) / CLOCKS_PER_SEC);
 	Print(fp, input, MAX, "Random Number");
-	memcpy(temp, input, sizeof(int) * MAX);
+
+	// c++ quick sort
+	start = clock();
+	int c_std_quick_sort[MAX];
+	memcpy(c_std_quick_sort, input, sizeof(int) * MAX);
+	std::sort(c_std_quick_sort, c_std_quick_sort + MAX);
+	printf("----- C++ quick sort -----\n");
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	Print(fp, c_std_quick_sort, MAX, "C++ quick sort");
 
 	// Bubble Sort
 	start = clock();
 	swap_cnt = 0;
-	BubbleSort(temp, MAX);
+	int bubble_sort[MAX];
+	memcpy(bubble_sort, input, sizeof(int) * MAX);
+	BubbleSort(bubble_sort, MAX);
 	printf("----- Bubble Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
-	Print(fp, temp, MAX, "Bubble Sort");
-	memcpy(temp, input, sizeof(int) * MAX);
+	validate_by_std_quick_sort(c_std_quick_sort, bubble_sort);
+	Print(fp, bubble_sort, MAX, "Bubble Sort");
 
 	// Selection Sort
 	start = clock();
 	swap_cnt = 0;
-	SelectionSort(temp, MAX);
+	int selection_sort[MAX];
+	memcpy(selection_sort, input, sizeof(int) * MAX);
+	SelectionSort(selection_sort, MAX);
 	printf("----- Selection Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
-	Print(fp, temp, MAX, "Selection Sort");
-	memcpy(temp, input, sizeof(int) * MAX);
+	validate_by_std_quick_sort(c_std_quick_sort, selection_sort);
+	Print(fp, selection_sort, MAX, "Selection Sort");
 
 	// Insertion Sort
 	start = clock();
 	swap_cnt = 0;
-	InsertionSort(temp, MAX);
+	int insertion_sort[MAX];
+	memcpy(insertion_sort, input, sizeof(int) * MAX);
+	InsertionSort(insertion_sort, MAX);
 	printf("----- Insertion Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
-	Print(fp, temp, MAX, "Insertion Sort");
-	memcpy(temp, input, sizeof(int) * MAX);
+	validate_by_std_quick_sort(c_std_quick_sort, insertion_sort);
+	Print(fp, insertion_sort, MAX, "Insertion Sort");
 
 	// Radix Sort
 	start = clock();
 	swap_cnt = 0;
-	RadixSort(temp, MAX);
+	int radix_sort[MAX];
+	memcpy(radix_sort, input, sizeof(int) * MAX);
+	RadixSort(radix_sort, MAX);
 	printf("----- Radix Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
-	Print(fp, temp, MAX, "Radix Sort");
-	memcpy(temp, input, sizeof(int) * MAX);
+	validate_by_std_quick_sort(c_std_quick_sort, radix_sort);
+	Print(fp, radix_sort, MAX, "Radix Sort");
 
 	// Merge Sort
 	start = clock();
 	swap_cnt = 0;
-	MergeSort(temp, 0, MAX - 1);
+	int merge_sort[MAX];
+	memcpy(merge_sort, input, sizeof(int) * MAX);
+	MergeSort(merge_sort, 0, MAX - 1);
 	printf("----- Merge Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
-	Print(fp, temp, MAX, "Merge Sort");
-	memcpy(temp, input, sizeof(int) * MAX);
+	validate_by_std_quick_sort(c_std_quick_sort, merge_sort);
+	Print(fp, merge_sort, MAX, "Merge Sort");
 
 	// Quick Sort
 	start = clock();
 	swap_cnt = 0;
-	QuickSort(temp, 0, MAX - 1);
+	int quick_sort[MAX];
+	memcpy(quick_sort, input, sizeof(int) * MAX);
+	QuickSort(quick_sort, 0, MAX - 1);
 	printf("----- Quick Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
-	Print(fp, temp, MAX, "Quick Sort");
-	memcpy(temp, input, sizeof(int) * MAX);
+	validate_by_std_quick_sort(c_std_quick_sort, quick_sort);
+	Print(fp, quick_sort, MAX, "Quick Sort");
+
+	// Quick Sort
+	start = clock();
+	swap_cnt = 0;
+	int quick_sort2[MAX];
+	memcpy(quick_sort2, input, sizeof(int) * MAX);
+	QuickSort2(quick_sort2, 0, MAX - 1);
+	printf("----- Quick Sort 2 -----\n");
+	printf("swap_cnt : %d\n", swap_cnt);
+	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
+	validate_by_std_quick_sort(c_std_quick_sort, quick_sort2);
+	Print(fp, quick_sort2, MAX, "Quick Sort 2");
 
 	// Heap Sort
 	start = clock();
 	swap_cnt = 0;
-	HeapSort(temp, MAX);
+	int heap_sort[MAX];
+	memcpy(heap_sort, input, sizeof(int) * MAX);
+	HeapSort(heap_sort, MAX);
 	printf("----- Heap Sort -----\n");
 	printf("swap_cnt : %d\n", swap_cnt);
 	printf("elapsed time : %f\n", double(clock() - start) / CLOCKS_PER_SEC);
-	Print(fp, temp, MAX, "Heap Sort");
-	memcpy(temp, input, sizeof(int) * MAX);
+	validate_by_std_quick_sort(c_std_quick_sort, heap_sort);
+	Print(fp, heap_sort, MAX, "Heap Sort");
 
 	fclose(fp);
 	return 0;
@@ -344,6 +392,36 @@ void QuickSort(int arr[], int left, int right)
 	// i 를 기준으로 왼쪽부분과 오른쪽부분에 대해 반복 수행한다.(분할 정복)
 	QuickSort(arr, left, i - 1);
 	QuickSort(arr, i + 1, right);
+}
+
+void QuickSort2(int *arr, int start, int end)
+{
+	if (start >= end)
+	{
+		return;
+	}
+	int pivot_idx = start;
+	int pivot_val = arr[pivot_idx];
+	int left = start, right = end;
+	while (left <= right)
+	{
+		while (arr[left] < pivot_val)
+		{
+			left++;
+		}
+		while (arr[right] > pivot_val)
+		{
+			right--;
+		}
+		if (left <= right)
+		{
+			Swap(&arr[left], &arr[right]);
+			left++;
+			right--;
+		}
+	}
+	QuickSort2(arr, start, left - 1);
+	QuickSort2(arr, left, end);
 }
 
 // MakeMaxHeap for Heap Sort
