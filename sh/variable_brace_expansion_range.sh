@@ -1,7 +1,18 @@
-#/bin/bash
+#!/bin/bash
+# ysoftman
+# brace expansion
 
-# {}내용 구분해서 조합 : abz acz adz
-echo a{b,c,d}z
+# {} 내에 , 로 구분하면 구분된 개수 만큰 확장(치환)된다.
+# mkdir {a,b}zzz ==> azzz 와 bzzz 생성 으로 많이 사용한다.
+echo LEMON_{aaa,bbb,ccc}_ORANGE
+
+# ,외 공백이 들어가면 확장되지 않는다.
+echo LEMON_{aaa, bbb, ccc}_ORANGE
+
+# 요소에 공백을 포함하는 경우 quote, double-quote 로 감싸준다.
+echo LEMON_{aaa,"b b b",ccc}_ORANGE
+echo LEMON_{aaa,'b b b',ccc}_ORANGE
+
 
 # 2개의 내용{} 조합 3x3=9 가지 생성: ab1z ab2z ab3z ac1z ac2z ac3z ad1z ad2z ad3z
 echo a{b,c,d}{1,2,3}z

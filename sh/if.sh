@@ -29,17 +29,18 @@ if [ ! -z $EDITOR ]; then
     echo "\$EDITOR = $EDITOR"
 fi
 
-
-
 # [[ ]] 내에서는 C 와 같은 연산을 할 수 있다.
 # var="a"
-var="b"
+var="a"
+var2="lemon"
 echo $var
-if [[ $var == 'a' ]]; then
+if [[ $var == 'a' ]] && [[ $var2 == 'lemon1' ]]; then
     echo 'first'
+elif [[ $var == 'a' ]] || [[ $var2 == 'lemon1' ]]; then
+    echo 'second'
 # elif 를 써야 한다. else if 는 syntax error: unexpected end of file
 elif [[ $var == 'b' ]]; then
-    echo 'second'
+    echo 'thrid'
 else
     echo 'last'
 fi
