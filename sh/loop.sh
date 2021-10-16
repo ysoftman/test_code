@@ -20,6 +20,20 @@ do
     echo $i
 done
 
+
+echo 'i=0
+j=10
+while (( i<j )); do
+    echo $i
+    ((i++))
+done'
+i=0
+j=10
+while (( i<j )); do
+    echo $i
+    ((i++))
+done
+
 # sh(일반 리눅스 배포판에서는 sh->bash라 상관없음)에서는 for ((;;)) 문법이 지원되지 않아 while 사용해야 한다.
 echo 'i=0; while [ $i -lt 10 ]; do echo $i; i=$((i+1)); done;'
 i=0; while [ $i -lt 10 ]; do echo $i; i=$((i+1)); done;
