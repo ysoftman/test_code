@@ -400,8 +400,10 @@ void QuickSort2(int *arr, int start, int end)
 	{
 		return;
 	}
+	// pivot 값으로 보통 왼쪽, 중간, 오른쪽 값을 취한다.
 	// int pivot_idx = start;
-	int pivot_idx = start + ((end - start) / 2);
+	// int pivot_idx = start + ((end - start) / 2);
+	int pivot_idx = end;
 	int pivot_val = arr[pivot_idx];
 	int left = start, right = end;
 	while (left <= right)
@@ -421,6 +423,12 @@ void QuickSort2(int *arr, int start, int end)
 			right--;
 		}
 	}
+	// left=right 에서 스왑수 left++로 left 가 마지막 index 를 넘어 가는 경우 계속 같은 파티션에서 recursion 되는것 막기
+	if (left > end)
+	{
+		left--;
+	}
+
 	QuickSort2(arr, start, left - 1);
 	QuickSort2(arr, left, end);
 }
