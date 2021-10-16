@@ -402,7 +402,6 @@ void QuickSort2(int *arr, int start, int end)
 	}
 	// int pivot_idx = start;
 	int pivot_idx = start + ((end - start) / 2);
-	// int pivot_idx = end;  // while (left <= right) , if(left < right) 조건이어야함
 	int pivot_val = arr[pivot_idx];
 	int left = start, right = end;
 	while (left <= right)
