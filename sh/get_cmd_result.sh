@@ -24,3 +24,12 @@ var=`echo lemon \`echo apple\` `
 echo ${var}
 var=$(echo lemon $(echo apple))
 echo ${var}
+
+
+
+function aa() {
+    echo "ysoftman"
+}
+# 함수 호출시에도 사용한다.
+echo "call aa():" `aa`
+echo "call aa():" $(aa)
