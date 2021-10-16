@@ -43,17 +43,19 @@ fi
 
 
 # 산술 연산시 (()) 사용
+# https://tldp.org/LDP/abs/html/dblparens.html
 if (( $argc > 1 )); then
-	echo "argc > 1 .. ok"
+	echo '$argc > 1 .. ok'
 fi
 if (( $argc >= 1 )); then
-	echo "argc >= 1 .. ok"
+	echo '$argc >= 1 .. ok'
 fi
-if (( $argc < 3 )); then
-	echo "argc < 3 .. ok"
+# $를 명시하지 않아도 된다.
+if (( argc < 3 )); then
+	echo 'argc < 3 .. ok'
 fi
-if (( $argc <= 3 )); then
-	echo "argc <= 3 .. ok"
+if (( argc <= 3 )); then
+	echo 'argc <= 3 .. ok'
 fi
 
 if [ $argc -gt 1 ]; then
