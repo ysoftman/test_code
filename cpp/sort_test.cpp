@@ -239,22 +239,25 @@ void SelectionSort(int arr[], int size)
 // Insertsion Sort - best: O(N^2) average: O(N^2) worst: O(N^2)
 void InsertionSort(int arr[], int size)
 {
-	int i = 0, j = 0;
-	for (i = 0; i < size - 1; i++)
+	int i = 0, j = 0, cur_val = 0;
+	for (i = 0; i < size; i++)
 	{
-		// 현재 오른쪽값(j+1)이 현재(j)~0까지 차례로 비교해나가면서 알맞은 위치에 삽입한다.
-		for (j = i + 1; j >= 0; j--)
+		cur_val = arr[i];
+		// cur_val 값을 현재이전(j-1)~0까지 차례로 비교해나가면서 알맞은 위치에 삽입한다.
+		for (j = i - 1; j >= 0;)
 		{
-			if (arr[j] < arr[j - 1])
+			if (arr[j] > cur_val)
 			{
-				Swap(&arr[j], &arr[j - 1]);
+				// 현재값을 오른쪽으로 한칸 이동
+				arr[j + 1] = arr[j];
+				j--;
 			}
 			else
 			{
-				// 스왑이 없으면 그 뒤로는 모두 현재 위치의 값 보다 작은 값들이라 비교할 필요 없다.
 				break;
 			}
 		}
+		arr[j + 1] = cur_val;
 	}
 }
 
