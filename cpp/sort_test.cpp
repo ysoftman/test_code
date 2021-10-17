@@ -191,14 +191,15 @@ void Swap(int *a, int *b)
 }
 
 // Bubble Sort - best: O(N) average: O(N^2) worst: O(N^2)
+// (N*N)/2 의 시간이 걸리지만 빅오표기법은 계수(1/2)와 낮은 항은 제외 시켜야 함으로 N*N = O(N^2) 가 된다.
 void BubbleSort(int arr[], int size)
 {
-	int i = 0, j = 0;
 	bool bSwap = false;
-	for (i = 0; i < size; i++)
+	for (int i = 0; i < size - 1; i++)
 	{
 		bSwap = false;
-		for (j = 0; j < size - 1; j++)
+		// 이 루프가 끝나면 마지막 원소는 가장 큰 값이 되기 때문에 다음 루프에서는 정렬 대상에서 제외 시킨다.
+		for (int j = 0; j < size - 1 - i; j++)
 		{
 			if (arr[j] > arr[j + 1])
 			{
