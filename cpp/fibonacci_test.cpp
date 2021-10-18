@@ -47,6 +47,7 @@ int fibonacci_recursive_with_array(int n, int *arr)
 	{
 		return arr[n];
 	}
+	// 이전 값을 저장해 다음번에 계산없이 사용할 수 있도록 한다.(DynamicProgramming, memoization)
 	result = fibonacci_recursive_with_array(n - 1, arr) + fibonacci_recursive_with_array(n - 2, arr);
 	arr[n] = result;
 	return result;
@@ -75,6 +76,7 @@ int fibonacci_iteration(int n)
 	{
 		debug_count++;
 		result = temp1 + temp2;
+		// 이전 값을 저장해 다음번에 계산없이 사용할 수 있도록 한다.(DynamicProgramming, memoization)
 		temp1 = temp2;
 		temp2 = result;
 		if (result <= 0)
@@ -105,6 +107,7 @@ int main()
 	debug_count = 0;
 	result = fibonacci_recursive_with_array(num, arr);
 	printf("[recursive_with_array] (debug_count:%d) In %d, Fibonacci Number is %d\n", debug_count, num, result);
+	delete arr;
 
 	return 0;
 }
