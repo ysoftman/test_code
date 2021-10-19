@@ -107,7 +107,7 @@ int main()
 	debug_count = 0;
 	result = fibonacci_recursive_with_array(num, arr);
 	printf("[recursive_with_array] (debug_count:%d) In %d, Fibonacci Number is %d\n", debug_count, num, result);
-	delete arr;
+	delete[] arr;
 
 	return 0;
 }
