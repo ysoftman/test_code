@@ -59,7 +59,7 @@ OK
 ```bash
 # 현재 마스터 노드의 포트 파악 후
 ./redis/bin/redis-cli -p 7001 -a "ysoftmanPassword123" -c cluster nodes | grep master | awk '{print $2}' | sed 's/.*://' | sed 's/@.*//' | tr '\n' ' '
-# 설정에서 포트 변경
+# 설정에서 마스터 포트를 변경(명시)해서 sentinel 을 실행시킨다.
 ./redis/bin/redis-sentinel sentinel27001.conf
 ./redis/bin/redis-sentinel sentinel27002.conf
 ./redis/bin/redis-sentinel sentinel27003.conf
