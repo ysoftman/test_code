@@ -54,7 +54,7 @@ OK
 2) "apple"
 ```
 
-- 3개의 sentienl 를 띄워 각각 마스터 노드3개를 모니터링
+- 3개의 sentinel 를 띄워 각각 마스터 노드3개를 모니터링
 
 ```bash
 # 현재 마스터 노드의 포트 파악 후
@@ -130,4 +130,32 @@ master_port:7005
 ```bash
 kill -9 $(ps -ef | grep "redis" | grep -v "grep" | awk '{print $2}')
 rm -rf nodes*.conf *.log *.pid dump.rdb
+```
+
+- 노드 추가 삭제
+
+```bash
+# 127.0.0.1:7001 의 클러스터에 신규 노드 127.0.0.1:7007 추가
+# sentinel도 sentinel.conf 내용 변경 후  다시 적용해야 한다.
+redis-cli -a "ysoftmanPassword123" --cluster add-node 127.0.0.1:7007 127.0.0.1:7001
+
+# 추가된 노드 127.0.0.1:7007 슬롯 재분배
+# 클러스터 마스터 노드 개수 만큼 수행되어 시간이 오래 걸림, 재분배 중에도 클러스터 사용 가능
+redis-cli -a "ysoftmanPassword123" --cluster rebalance 127.0.0.1:7007 --cluster-use-empty-masters
+
+# 127.0.0.1:7007 삭제전 slot 옮기기(옮길 슬롯 개수 선택,어디로 옮겨질 노드 hash id 선택)
+# slave 노드는 reshard가 필요 없음
+redis-cli -a "ysoftmanPassword123" --cluster reshard 127.0.0.1:7007
+# 이제 클러스터에서 노드 127.0.0.1:7001 에서 127.0.0.1:7007(hash:111222333444555)
+redis-cli -a "ysoftmanPassword123" --cluster del-node 127.0.0.1:7001 111222333444555
+
+# shutdown(kill) 된 노드의 경우 삭제
+# 클러스터 각 노드에서 111222333444555 를 제거 한다.
+# 노드 마다 시 1분이 넘어가면 다시 생성되니, 다음과 같이 한번에 수행해야 한다.
+redis-cli -h 127.0.0.1 -p 7001 -a "ysoftmanPassword123" cluster forget 111222333444555
+redis-cli -h 127.0.0.1 -p 7002 -a "ysoftmanPassword123" cluster forget 111222333444555
+redis-cli -h 127.0.0.1 -p 7003 -a "ysoftmanPassword123" cluster forget 111222333444555
+redis-cli -h 127.0.0.1 -p 7004 -a "ysoftmanPassword123" cluster forget 111222333444555
+redis-cli -h 127.0.0.1 -p 7005 -a "ysoftmanPassword123" cluster forget 111222333444555
+redis-cli -h 127.0.0.1 -p 7006 -a "ysoftmanPassword123" cluster forget 111222333444555
 ```
