@@ -129,5 +129,5 @@ master_port:7005
 
 ```bash
 kill -9 $(ps -ef | grep "redis" | grep -v "grep" | awk '{print $2}')
-rm -rf nodes*.conf *.log *.pid
+rm -rf nodes*.conf *.log *.pid dump.rdb
 ```
