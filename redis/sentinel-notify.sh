@@ -17,26 +17,19 @@ event_desc=${2}
 # +promoted-slave : 선정된 슬레이브가 새 마스터로 승격
 # +switch-master : 세 마스터로 변경이 완료
 
-status_color="green"
 if [[ $event_type == "+sdown" ]]; then
     custom_desc="master 노드들 모니터링 시작합니다."
-    status_color="green"
 elif [[ $event_type == "-sdown" ]]; then
     custom_desc="master 노드들 모니터링 해제되었습니다."
-    status_color="red"
 elif [[ $event_type == "+odown" ]]; then
     custom_desc="master 노드가 다운됐습니다."
-    status_color="red"
 elif [[ $event_type == "-odown" ]]; then
     custom_desc="master 노드 다운 해제되었습니다."
-    status_color="green"
 elif [[ $event_type == "+switch-master" ]]; then
     custom_desc="새 마스터로 master 변경됐습니다."
-    status_color="green"
 else
     echo "event_type:${event_type}"
     exit 0
 fi
 
-echo $status_color
 echo $message
