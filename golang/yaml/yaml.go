@@ -24,7 +24,7 @@ func main() {
 	}
 	fmt.Println(string(mYaml))
 
-	// indent 는 space 로 사용해야 한다.
+	// indent 는 space 를 사용해야 한다.
 	// found a tab character that violates indentation
 	yamlStr := `
 name: ysoftman
