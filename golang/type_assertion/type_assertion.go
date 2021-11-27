@@ -22,7 +22,8 @@ func main() {
 	// illegal := x.(float32)
 	// fmt.Println(illegal)
 
-	// x가 nil 도 아니고 int 타입이라면 int 형의  x 값을 리턴
+	// x가 nil 도 아니고 int 타입이라면 int 형의 x 값을 리턴
+	// ok : x 가 실제 int 타입인 경우(구현한 경우) true, 아니면 false
 	intType, ok := x.(int)
 	fmt.Println(intType, ok)
 
@@ -40,14 +41,14 @@ func main() {
 		y: 2,
 	}
 	x = mt
-	mType := x.(mytype)
-	fmt.Println(mType)
+	mType, ok := x.(mytype)
+	fmt.Println(mType, ok)
 
 	// []struct 타입도 가능하다.
 	var mtlist []mytype
 	mtlist = append(mtlist, mt)
 	mtlist = append(mtlist, mt)
 	x = mtlist
-	mType2 := x.([]mytype)
-	fmt.Println(mType2)
+	mType2, ok := x.([]mytype)
+	fmt.Println(mType2, ok)
 }
