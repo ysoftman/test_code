@@ -23,7 +23,7 @@ func NewDB() *SQLDataBase {
 }
 
 func (db *SQLDataBase) CreateTable(stmt string) error {
-	log.Printf("stmt => %q\n", stmt)
+	// log.Printf("stmt => %q\n", stmt)
 	_, err := db.sqlDB.Exec(stmt)
 	if err != nil {
 		log.Printf("stmt => %s, err => %s", stmt, err)
@@ -33,7 +33,7 @@ func (db *SQLDataBase) CreateTable(stmt string) error {
 }
 
 func (db *SQLDataBase) SelectData(query string) (map[int]interface{}, error) {
-	log.Printf("query => %q\n", query)
+	// log.Printf("query => %q\n", query)
 	rows, err := db.sqlDB.Query(query)
 	if err != nil {
 		log.Printf("query => %s, err => %s", query, err)
@@ -44,7 +44,7 @@ func (db *SQLDataBase) SelectData(query string) (map[int]interface{}, error) {
 		log.Printf("query => %s, err => %s", query, err)
 		return nil, err
 	}
-	log.Println("columns:", columns)
+	// log.Println("columns:", columns)
 
 	out := map[int]interface{}{}
 	ptrResults := make([]interface{}, len(columns))
@@ -58,7 +58,7 @@ func (db *SQLDataBase) SelectData(query string) (map[int]interface{}, error) {
 			log.Printf("query => %s, err => %s", query, err)
 			return nil, err
 		}
-		log.Println("results:", results)
+		// log.Println("results:", results)
 		// log.Println("ptrResults:", ptrResults)
 		// out = append(out, results)
 		out[cnt] = results
@@ -68,7 +68,7 @@ func (db *SQLDataBase) SelectData(query string) (map[int]interface{}, error) {
 }
 
 func (db *SQLDataBase) InsertData(prepareStmt string, datas [][]string) error {
-	log.Printf("stmt => %q\n", prepareStmt)
+	// log.Printf("stmt => %q\n", prepareStmt)
 	tx, err := db.sqlDB.Begin()
 	if err != nil {
 		log.Printf("err => %s", err)
@@ -81,7 +81,7 @@ func (db *SQLDataBase) InsertData(prepareStmt string, datas [][]string) error {
 	}
 	defer stmt.Close()
 	for _, d := range datas {
-		log.Println("==>", d)
+		// log.Println("==>", d)
 		temp := make([]interface{}, len(d))
 		for i, j := range d {
 			temp[i] = j
