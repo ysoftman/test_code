@@ -16,7 +16,7 @@ func NewDB() *SQLDataBase {
 	if err != nil {
 		log.Fatal("open sqlite err =>", err)
 	}
-	log.Println("db:", db)
+	// log.Println("db:", db)
 	return &SQLDataBase{
 		sqlDB: db,
 	}
@@ -39,6 +39,7 @@ func (db *SQLDataBase) SelectData(query string) (map[int]interface{}, error) {
 		log.Printf("query => %s, err => %s", query, err)
 		return nil, err
 	}
+	defer rows.Close()
 	columns, err := rows.Columns()
 	if err != nil {
 		log.Printf("query => %s, err => %s", query, err)

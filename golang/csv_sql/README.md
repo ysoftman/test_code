@@ -15,11 +15,12 @@ go build && ./main
 ## 테스트
 
 ```bash
+curl -X GET 'http://localhost:9000/api/getstatus' -v
 curl -X POST -F 'filename=@./cars.csv' 'http://localhost:9000/api/upload' -v
 curl -X POST -F 'filename=@./train.csv' 'http://localhost:9000/api/upload' -v
 curl -X POST http://localhost:9000/api/query -d 'select * from cars_csv'
 curl -X POST http://localhost:9000/api/query -d 'select * from cars_csv where income > 11000;'
-curl -X POST http://localhost:9000/api/query -d 'select * from train_csv'
+rm z.txt; curl -X POST http://localhost:9000/api/query -d 'select * from train_csv' > z.txt
 ```
 
 ## db 확인시

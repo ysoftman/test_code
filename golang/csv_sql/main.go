@@ -16,10 +16,14 @@ func main() {
 	defer sqldb.sqlDB.Close()
 	log.Println("connected db")
 
+	cache = NewCache()
+	log.Println("created cache")
+
 	r := chi.NewRouter()
 	r.Route("/api", func(r chi.Router) {
 		r.HandleFunc("/upload", UploadHandler())
 		r.HandleFunc("/query", QueryDataHandler())
+		r.HandleFunc("/getstatus", GetStatusHandler())
 	})
 
 	go func() {
