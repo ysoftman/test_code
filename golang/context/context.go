@@ -26,6 +26,9 @@ func main() {
 	// 생성된 context 를 취소(리소스 해제)할 수 있는 cancel 함수를 리턴한다.
 	// context 는 여러개의 고루틴에서 동시에 안전하게 사용할 수 있다.
 	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	// context 리소스 해제
+	// 모든 파생된 자식 context 들도 해제된다.
+	defer cancel()
 
 	// 채널 하나 생성
 	ch := make(chan string)
@@ -96,7 +99,4 @@ func main() {
 	}
 
 	fmt.Println("cancel()....")
-	// context 리소스 해제
-	// 모든 파생된 자식 context 들도 해제된다.
-	cancel()
 }
