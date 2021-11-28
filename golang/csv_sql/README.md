@@ -20,7 +20,8 @@ curl -X POST -F 'filename=@./cars.csv' 'http://localhost:9000/api/upload' -v
 curl -X POST -F 'filename=@./train.csv' 'http://localhost:9000/api/upload' -v
 curl -X POST http://localhost:9000/api/query -d 'select * from cars_csv'
 curl -X POST http://localhost:9000/api/query -d 'select * from cars_csv where income > 11000;'
-rm z.txt; curl -X POST http://localhost:9000/api/query -d 'select * from train_csv' > z.txt
+rm -f z.txt; curl -X POST http://localhost:9000/api/query -d 'select * from train_csv' > z.txt
+rm -f z.txt; curl -X POST http://localhost:9000/api/query -d 'select * from train_csv where pixel0 > 0' > z.txt
 ```
 
 ## db 확인시

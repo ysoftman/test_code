@@ -86,7 +86,7 @@ func getStatusHandler(w http.ResponseWriter, r *http.Request) error {
 		CacheKeys: cache.cacheKeys,
 	}
 	log.Printf("status:%#v", status)
-	resp, err := json.Marshal(status)
+	resp, err := json.MarshalIndent(status, "", "  ")
 	if err != nil {
 		err := errors.New("failed to get status")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -156,7 +156,7 @@ func queryData(w http.ResponseWriter, r *http.Request) error {
 		w.Write([]byte("error, failed to select data"))
 		return errors.New("error")
 	}
-	// resp, err := json.MarshalIndent(results, "", "  ")
+
 	resp, err := json.Marshal(results)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

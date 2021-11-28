@@ -16,14 +16,25 @@ var cache *MyCache
 
 func NewCache() *MyCache {
 	cc, err := ristretto.NewCache(&ristretto.Config{
-		NumCounters: 1e7,     // number of keys to track frequency of (10M).
-		MaxCost:     1 << 30, // maximum cost of cache (1GB).
+		NumCounters: 10_000_000, // 10M, LFU(Least-frequently used), num of access frequency information
+		// MaxCost:     1 << 30, // cache total capacity, maximum cost of cache (107374182Bytes=1GiB).
+		// MaxCost:     1 << 20 * 10, // (10485760Bytes=10MiB)
+		MaxCost:     1 << 20, // (1048576Bytes=1MiB)
 		BufferItems: 64,      // number of keys per Get buffer.
+		OnEvict: func(item *ristretto.Item) {
+			log.Println("[OnEvict]", item)
+		},
+		OnReject: func(item *ristretto.Item) {
+			log.Println("[OnReject]", item)
+		},
+		// OnExit: func(val interface{}) {
+		// 	log.Println("[OnExit]", val)
+		// },
 	})
 	if err != nil {
 		panic(err)
 	}
-	log.Println(cc.MaxCost())
+	// log.Println(cc.MaxCost())
 	return &MyCache{
 		cache: cc,
 	}
