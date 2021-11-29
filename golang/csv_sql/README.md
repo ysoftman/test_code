@@ -11,11 +11,23 @@
 ## 빌드 및 실행
 
 ```bash
+go get github.com/dgraph-io/ristretto
+go get github.com/stretchr/testify
+go get github.com/mattn/go-sqlite3
+go get github.com/xwb1989/sqlparser
 go get ./...
 go build && ./main
 ```
 
 ## 테스트
+
+- 테스트 코드로 테스트
+
+```bash
+go test *.go -v
+```
+
+- curl 수동 테스트
 
 ```bash
 curl -X GET "http://localhost:9000/api/getstatus" -v
