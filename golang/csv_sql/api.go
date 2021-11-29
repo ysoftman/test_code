@@ -13,6 +13,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/xwb1989/sqlparser"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -81,7 +83,7 @@ func HandlerContext(mh methodHandler) http.HandlerFunc {
 
 func getStatusHandler(w http.ResponseWriter, r *http.Request) error {
 	status := struct {
-		CacheKeys []string `json:"cacheKeys"`
+		CacheKeys map[string][]string `json:"cacheKeys"`
 	}{
 		CacheKeys: cache.cacheKeys,
 	}
@@ -106,14 +108,15 @@ func uploadData(w http.ResponseWriter, r *http.Request) error {
 	}
 	defer file.Close()
 	log.Println("uploaded filename:" + fileHeader.Filename)
+	tbName := strings.TrimSuffix(fileHeader.Filename, ".csv")
+	tbName = "ds_" + strings.ReplaceAll(tbName, ".", "_")
+	log.Println("tbName:", tbName)
 
 	// buf, _ := ioutil.ReadAll(file)
 	// backup := ioutil.NopCloser(bytes.NewBuffer(buf))
 	// log.Println("-----", string(buf))
 	rows, _ := csv.NewReader(file).ReadAll()
 	// log.Println("-----", rows)
-
-	tbName := strings.ReplaceAll(fileHeader.Filename, ".", "_")
 	if len(rows) < 2 {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("error, no data"))
@@ -163,7 +166,26 @@ func queryData(w http.ResponseWriter, r *http.Request) error {
 		w.Write([]byte("error, failed to marsahl json"))
 		return errors.New("error")
 	}
-	cache.Set(query, string(resp))
+
+	parsedStmt, err := sqlparser.Parse(query)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+		return err
+	}
+
+	tableNames := []string{}
+	_ = sqlparser.Walk(func(node sqlparser.SQLNode) (kontinue bool, err error) {
+		switch node := node.(type) {
+		case sqlparser.TableName:
+			if len(node.Name.CompliantName()) > 0 {
+				tableNames = append(tableNames, node.Name.CompliantName())
+			}
+		}
+		return true, nil
+	}, parsedStmt)
+	cache.Set(query, string(resp), strings.Join(tableNames, ","))
 
 	w.Write(resp)
 	return nil
@@ -198,13 +220,15 @@ func makeSQLInsert(tbName string, colNames []string) string {
 }
 
 func evictCache(tbName string) {
-	updatedCacheKeys := []string{}
-	for _, v := range cache.cacheKeys {
-		if strings.Contains(v, tbName) {
-			cache.Del(v)
-		} else {
-			updatedCacheKeys = append(updatedCacheKeys, v)
+	for tableName, _ := range cache.cacheKeys {
+		if strings.Contains(tableName, tbName) {
+			log.Println("[evictCache] contains:", tableName)
+			if cache.cacheKeys[tableName] != nil {
+				for _, v := range cache.cacheKeys[tableName] {
+					cache.Del(v)
+				}
+				cache.cacheKeys[tableName] = cache.cacheKeys[tableName][:0]
+			}
 		}
 	}
-	cache.cacheKeys = updatedCacheKeys
 }

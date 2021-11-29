@@ -9,7 +9,7 @@ import (
 
 type MyCache struct {
 	cache     *ristretto.Cache
-	cacheKeys []string
+	cacheKeys map[string][]string
 }
 
 var cache *MyCache
@@ -35,16 +35,18 @@ func NewCache() *MyCache {
 		panic(err)
 	}
 	// log.Println(cc.MaxCost())
+	ckeys := make(map[string][]string, 0)
 	return &MyCache{
-		cache: cc,
+		cache:     cc,
+		cacheKeys: ckeys,
 	}
 }
 
-func (cc *MyCache) Set(key, val string) {
+func (cc *MyCache) Set(key, val, tbName string) {
 	cc.cache.Set(key, val, 0)
 	cc.cache.Wait()
-	cc.cacheKeys = append(cc.cacheKeys, key)
-	log.Printf("set cache, cacheKeys: %#v\n", cc.cacheKeys)
+	cc.cacheKeys[tbName] = append(cc.cacheKeys[tbName], key)
+	log.Printf("set cache, cacheKeys: %#v\n", cc.cacheKeys[tbName])
 }
 
 func (cc *MyCache) Get(key string) (interface{}, error) {

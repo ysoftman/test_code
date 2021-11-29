@@ -1,9 +1,12 @@
 # csv 업로드 후 sql 조회
 
-## 데이터 다운로드
+## 데이터 출처
 
-- cars.csv : <https://www.kaggle.com/huseyinrakun/carscsv/version/1>
-- train.csv : <https://www.kaggle.com/ebertolo/mnist-csv>
+- small data size
+  - cars.csv: <https://www.kaggle.com/huseyinrakun/carscsv/version/1>
+  - 2019_Census_US_Population_Data_By_State_Lat_Long.csv: <https://www.kaggle.com/peretzcohen/2019-census-us-population-data-by-state>
+- large data size
+  - train.csv: <https://www.kaggle.com/ebertolo/mnist-csv>
 
 ## 빌드 및 실행
 
@@ -15,13 +18,20 @@ go build && ./main
 ## 테스트
 
 ```bash
-curl -X GET 'http://localhost:9000/api/getstatus' -v
-curl -X POST -F 'filename=@./cars.csv' 'http://localhost:9000/api/upload' -v
-curl -X POST -F 'filename=@./train.csv' 'http://localhost:9000/api/upload' -v
-curl -X POST http://localhost:9000/api/query -d 'select * from cars_csv'
-curl -X POST http://localhost:9000/api/query -d 'select * from cars_csv where income > 11000;'
-rm -f z.txt; curl -X POST http://localhost:9000/api/query -d 'select * from train_csv' > z.txt
-rm -f z.txt; curl -X POST http://localhost:9000/api/query -d 'select * from train_csv where pixel0 > 0' > z.txt
+curl -X GET "http://localhost:9000/api/getstatus" -v
+curl -X POST -F "filename=@./cars.csv" "http://localhost:9000/api/upload" -v
+curl -X POST -F "filename=@./2019_Census_US_Population_Data_By_State_Lat_Long.csv" "http://localhost:9000/api/upload" -v
+curl -X POST -F "filename=@./train.csv" "http://localhost:9000/api/upload" -v
+curl -X POST http://localhost:9000/api/query -d "select * from ds_cars"
+curl -X POST http://localhost:9000/api/query -d "select * from ds_cars where income > '11000'"
+curl -X POST http://localhost:9000/api/query -d "select * from ds_2019_Census_US_Population_Data_By_State_Lat_Long"
+curl -X POST http://localhost:9000/api/query -d "select * from ds_2019_Census_US_Population_Data_By_State_Lat_Long where popestimate2019 > '10000000'"
+curl -X POST http://localhost:9000/api/query -d "select * from ds_cars as a, ds_2019_Census_US_Population_Data_By_State_Lat_Long as b where a.income > '11000' and b.popestimate2019 > '10000000'"
+
+rm -r z.txt; curl -X POST http://localhost:9000/api/query -d "select * from ds_train where pixel0 = '0'" > z.txt
+
+# timeout
+rm -f z.txt; curl -X POST http://localhost:9000/api/query -d "select * from ds_cars as a, ds_train as b where a.income > '11000' and b.pixel0 = '0'" > z.txt
 ```
 
 ## db 확인시
@@ -33,7 +43,7 @@ sqlite sqlite.db
 .tables
 
 # 데이터 확인
-select * from cars_csv;
+select * from ds_cars;
 
 # 종료
 .quit
