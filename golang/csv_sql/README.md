@@ -36,6 +36,7 @@ curl -X POST -F "filename=@./2019_Census_US_Population_Data_By_State_Lat_Long.cs
 curl -X POST -F "filename=@./train.csv" "http://localhost:9000/api/upload" -v
 curl -X POST http://localhost:9000/api/query -d "select * from ds_cars"
 curl -X POST http://localhost:9000/api/query -d "select * from ds_cars where income > '11000'"
+curl -X POST http://localhost:9000/api/query -d "select * from ds_cars order by age desc" | jq '."0"'
 curl -X POST http://localhost:9000/api/query -d "select * from ds_2019_Census_US_Population_Data_By_State_Lat_Long"
 curl -X POST http://localhost:9000/api/query -d "select * from ds_2019_Census_US_Population_Data_By_State_Lat_Long where popestimate2019 > '10000000'"
 curl -X POST http://localhost:9000/api/query -d "select * from ds_cars as a, ds_2019_Census_US_Population_Data_By_State_Lat_Long as b where a.income > '11000' and b.popestimate2019 > '10000000'"
