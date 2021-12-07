@@ -11,6 +11,13 @@ grep -rn --include="grep.txt" -E "name|yoon" .
 # 정규식 AND 연자사는 없어어 "pattern2.*pattern2" 로 찾는다.
 grep -rn --include="grep.txt" -E "name.*yoon" .
 
+# tab 이 포함된 경우 다음과 같은 공백으로는 grep 되지 않는다.
+grep "apple lemon" grep.txt
+# -P, --perl-regexp 는 mac(BSD) grep 에서 지원하지 않는다.
+# grep -P "apple\tlemon" grep.txt
+# printf '\t' 를 출력해서 탭을 표현
+grep "apple$(printf '\t')lemon" ./grep.txt
+
 # -e 로 패턴 여러개를 명시해도 된다.
 # ps 컬럼명과 포함해서 보기
 ps -ef | grep -e "PID" -e "grep"
@@ -21,5 +28,5 @@ ps | grep "" | grep -v "grep"
 # -i --ignore-care 대소문자 구별 없이 찾기
 echo 'fruite lemon apple' | grep -i "LEMON"
 
-# -m --max-count=num 개수만큼 매칭하고 reading 중지
-ls -1 | grep .sh -m 5
+# -m num, --max-count=num 개수만큼 매칭하고 reading 중지
+ls -1 | grep .sh -m 5 -n
