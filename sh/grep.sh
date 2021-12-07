@@ -15,8 +15,9 @@ grep -rn --include="grep.txt" -E "name.*yoon" .
 grep "apple lemon" grep.txt
 # -P, --perl-regexp 는 mac(BSD) grep 에서 지원하지 않는다.
 # grep -P "apple\tlemon" grep.txt
-# printf '\t' 를 출력해서 탭을 표현
+# printf '\t' 나 echo '\t' 로 출력해서 탭을 표현
 grep "apple$(printf '\t')lemon" ./grep.txt
+grep "apple$(echo '\t')lemon" ./grep.txt
 
 # -e 로 패턴 여러개를 명시해도 된다.
 # ps 컬럼명과 포함해서 보기
