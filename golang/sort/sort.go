@@ -21,6 +21,12 @@ func main() {
 	sort.Ints(mynumlist)
 	fmt.Println("after sort:", mynumlist)
 
+	// 간단한 string sort
+	mystrlist := []string{"lemon", "orange", "lemonjuice", "apple"}
+	fmt.Println("before sort:", mystrlist)
+	sort.Strings(mystrlist)
+	fmt.Println("after sort:", mystrlist)
+
 	// sort 인터페이스 사용
 	myarr := []MyData{{1}, {3}, {6}, {4}, {1}, {6}}
 	fmt.Println("before sort:", myarr)
