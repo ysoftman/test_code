@@ -21,7 +21,7 @@ function umm(param) {
     });
 }
 
-// async 를 붙이면 promise 를 리턴받을 수 있다.
+// async 를 붙이면 비동기 함수를 정의되며 promise 를 리턴받을 수 있다.
 async function getSomething() {
     // await 는 async 함수내에서만 사용할 수 있다.
     // await 은 promise 리턴하는 함수에서만 사용할 수 있다.
