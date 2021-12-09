@@ -21,4 +21,14 @@ func main() {
 		}
 	}
 	fmt.Println(arr)
+
+	arrstr := [][]string{}
+	for i := 0; i < 3; i++ {
+		temp := []string{}
+		for j := 0; j < 2; j++ {
+			temp = append(temp, fmt.Sprintf("%v_col", j))
+		}
+		arrstr = append(arrstr, temp)
+	}
+	fmt.Println(arrstr)
 }
