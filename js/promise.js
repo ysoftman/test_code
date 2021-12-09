@@ -2,8 +2,12 @@
 // promise 는 비동기 처리가 완료된후 결과를 주겠다는 약속이다.
 // pt 는 파라미터에 따라 1초후 성공, 실패 결과가 된다.
 var pt = function (param) {
+    // promise 는 pending(진행중), fulfilled(수행완료/성공), rejected(수행실패) 상태가 있다.
     return new Promise(function (success, fail) {
         // 비동기처리를 되고 있음을 가정하기 위해 setTimeout 사용
+        // 1초 후
+        // param 이 있으면 success 함수 호출하고 fulfilled 상태가 되고
+        // param 이 없으면 fail 함수 호출하고 rejected 상태가 되고
         window.setTimeout(function () {
             if (param) {
                 success("000 - ok")
