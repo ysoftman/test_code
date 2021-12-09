@@ -9,7 +9,7 @@ function umm(param) {
         // 비동기처리를 되고 있음을 가정하기 위해 setTimeout 사용
         // 1초 후
         // param 이 있으면 success 함수 호출하고 fulfilled 상태가 되고
-        // param 이 없으면 fail 함수 호출하고 rejected 상태가 되고
+        // param 이 없으면 fail 함수 호출하고 rejected 상태가 된다.
         window.setTimeout(function () {
             if (param) {
                 success(param + "_ok")
@@ -21,7 +21,7 @@ function umm(param) {
     });
 }
 
-// async 를 붙이면 비동기 함수를 정의되며 promise 를 리턴받을 수 있다.
+// async 를 붙이면 비동기 함수로 정의되며 promise 를 리턴받을 수 있다.
 async function getSomething() {
     // await 는 async 함수내에서만 사용할 수 있다.
     // await 은 promise 리턴하는 함수에서만 사용할 수 있다.

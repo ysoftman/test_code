@@ -7,7 +7,7 @@ var pt = function (param) {
         // 비동기처리를 되고 있음을 가정하기 위해 setTimeout 사용
         // 1초 후
         // param 이 있으면 success 함수 호출하고 fulfilled 상태가 되고
-        // param 이 없으면 fail 함수 호출하고 rejected 상태가 되고
+        // param 이 없으면 fail 함수 호출하고 rejected 상태가 된다.
         window.setTimeout(function () {
             if (param) {
                 success("000 - ok")
