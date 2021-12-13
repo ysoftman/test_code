@@ -8,7 +8,13 @@ func main() {
 	fmt.Println("2D array test.")
 	arr0 := [][]int{{0, 1}, {1, 2}, {3, 4}}
 	arr0 = append(arr0, []int{})
-	arr0[3] = []int{9, 9}
+	fmt.Println(arr0[2][0])
+	fmt.Println(arr0[2][1])
+	fmt.Println(arr0[2:][0][0])
+	// insert 1 index
+	i := 1
+	copy(arr0[i+1:], arr0[i:])
+	arr0[i] = []int{9, 9}
 	fmt.Println(arr0)
 
 	width := 3
