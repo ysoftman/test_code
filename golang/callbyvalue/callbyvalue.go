@@ -59,12 +59,14 @@ func funcCallByReference1(a *int) {
 	fmt.Printf("funcCallByReference1, %p a: %#v\n", a, *a)
 }
 
+// caller 쪽에 변경된 값이 반영되지 않는다.
 func funcCallByValue2(data myData) {
 	data.valint = 20
 	data.valstr = "lemon"
 	fmt.Printf("funcCallByValue2, %p data: %#v\n", &data, data)
 }
 
+// 포인터 파라메터를 받아 caller 쪽에 변경된 값이 보인다.
 func funcCallByReference2(data *myData) {
 	// To access the field X of a struct when we have the struct pointer p we could write (*p).X. However, that notation is cumbersome, so the language permits us instead to write just p.X, without the explicit dereference.
 	// https://tour.golang.org/moretypes/4
@@ -84,13 +86,17 @@ func funcCallByReference3(arr *[5]int) {
 	fmt.Printf("funcCallByReference3, %p arr: %#v\n", arr, arr)
 }
 
-// slice 의 내부 포인터가 있기 때문에 다음과 같은 형태로도 수정된값이 반영된다.
 func funcCallByValue4(slice []int) {
+	// slice 의 내부 포인터가 있기 때문에 다음과 같은 형태로도 수정된값이 반영된다.
 	slice[1] = 100
+	// 하지만 slice 길이가 변경되면  slice(len,cap)이 변해서 caller slice len 은 변경되지 않는다.
+	slice = append(slice, 99)
 	fmt.Printf("funcCallByValue4, %p slice: %#v\n", &slice, slice)
 }
 
 func funcCallByReference4(slice *[]int) {
 	(*slice)[0] = 90
+	// slice 포인터 파라메터를 사용하면 slice 자체의 (len,cap)도 변경된다.
+	*slice = append(*slice, 99)
 	fmt.Printf("funcCallByReference4, %p slice: %#v\n", slice, slice)
 }
