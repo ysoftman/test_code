@@ -6,6 +6,9 @@ import "fmt"
 
 func main() {
 	fmt.Println("2D array test.")
+	arr0 := [][]int{{0, 1}, {1, 2}, {3, 4}}
+	fmt.Println(arr0)
+
 	width := 3
 	height := 3
 	var arr [][]int
