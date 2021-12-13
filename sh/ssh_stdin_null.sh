@@ -13,7 +13,8 @@ do
     # stdin("hostname") 을 사용하면 기존 stdin(< temp.txt)이 끝나게 되어 루프가 끝나게 된다.
     # out=`ssh ysoftman@server "hostname"`
     # < /dev/null 로 stdin 을 사용하지 않도록 한다.
-    out=`ssh ysoftman@server "hostname" < /dev/null`
+    # -o "StrictHostKeyChecking no" 호스트 체크 안하기
+    out=`ssh -o "StrictHostKeyChecking no" ysoftman@server "hostname" < /dev/null`
     echo ${out}
 done < temp.txt
 
