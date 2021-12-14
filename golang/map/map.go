@@ -8,6 +8,14 @@ import (
 )
 
 func main() {
+	// map 생성시 값 설정
+	tempmap := map[string]string{
+		"aaa": "lemon",
+		"bbb": "apple",
+		"ccc": "orange",
+	}
+	fmt.Printf("%#v\n", tempmap)
+
 	// mymap 은 맵을 참조하고 있고 nil 상태이다.
 	var mymap map[int](string)
 	// nil 상태의 mymap 은 쓸 수 없어 make 로 초기화해야 한다.

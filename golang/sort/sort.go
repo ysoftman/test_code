@@ -20,18 +20,43 @@ func main() {
 	fmt.Println("before sort:", mynumlist)
 	sort.Ints(mynumlist)
 	fmt.Println("after sort:", mynumlist)
+	sort.Sort(sort.Reverse(sort.IntSlice(mynumlist)))
+	fmt.Println("reverse sort:", mynumlist)
 
 	// 간단한 string sort
 	mystrlist := []string{"lemon", "orange", "lemonjuice", "apple"}
 	fmt.Println("before sort:", mystrlist)
 	sort.Strings(mystrlist)
 	fmt.Println("after sort:", mystrlist)
+	sort.Sort(sort.Reverse(sort.StringSlice(mystrlist)))
+	fmt.Println("reverse sort:", mystrlist)
 
 	// sort 인터페이스 사용
-	myarr := []MyData{{1}, {3}, {6}, {4}, {1}, {6}}
+	myarr := DataList{{1}, {3}, {6}, {4}, {1}, {6}}
 	fmt.Println("before sort:", myarr)
-	sort.Sort(DataList(myarr))
+	sort.Sort(myarr)
 	fmt.Println("after sort:", myarr)
+
+	// sort map
+	mymap := map[string]string{
+		"aaa": "orang",
+		"bbb": "lemon",
+		"ccc": "apple",
+		"ddd": "banana",
+	}
+	fmt.Println(mymap)
+	// mymap 과 같은 key, value 타입의 데이터 구조에 넣는다.
+	myCustomMap := make(MyMapList, len(mymap))
+	cnt := 0
+	for k, v := range mymap {
+		myCustomMap[cnt] = MyMap{k, v}
+		cnt++
+	}
+	// myCustomMap 으로 정렬
+	sort.Sort(myCustomMap)
+	fmt.Println(myCustomMap)
+	sort.Sort(sort.Reverse(myCustomMap))
+	fmt.Println(myCustomMap)
 }
 
 // MyData 내용
@@ -58,4 +83,27 @@ func (receiver DataList) Len() int {
 // Swap sort Swap 인터페이스 구현
 func (receiver DataList) Swap(a, b int) {
 	receiver[a], receiver[b] = receiver[b], receiver[a]
+}
+
+type MyMap struct {
+	Key   string
+	Value string
+}
+
+type MyMapList []MyMap
+
+// Value 기준으로 정렬
+func (mml MyMapList) Less(a, b int) bool {
+	if mml[a].Value < mml[b].Value {
+		return true
+	}
+	return false
+}
+
+func (mml MyMapList) Len() int {
+	return len(mml)
+}
+
+func (mml MyMapList) Swap(a, b int) {
+	mml[a], mml[b] = mml[b], mml[a]
 }
