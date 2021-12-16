@@ -42,4 +42,24 @@ func main() {
 	fmt.Println("delete element(key:20)")
 	delete(mymap, 20)
 	fmt.Println(mymap)
+
+	// nested map
+	mm := map[string]map[string]string{}
+	// 초기화 방법들
+	mm["orange"] = make(map[string]string)
+	mm["lemon"] = make(map[string]string)
+	mm["apple"] = map[string]string{}
+
+	mm["lemon"]["color"] = "yellow"
+	mm["lemon"]["location"] = "france"
+
+	mm["apple"]["cost"] = "1000"
+	mm["orange"]["location"] = "spain"
+
+	fmt.Printf("mm: %#v\n", mm)
+	for k, v := range mm {
+		for kk, vv := range v {
+			fmt.Printf("%v %v %v\n", k, kk, vv)
+		}
+	}
 }
