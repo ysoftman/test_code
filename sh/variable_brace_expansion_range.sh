@@ -2,6 +2,58 @@
 # ysoftman
 # brace expansion
 
+# https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+# aaa 빈값(unset/null) 이면 aaa 자체가 변경되지는 않고, 확장된 bbb 는 디폴트값으로 변경된다.
+aaa=""
+bbb=${aaa:-default_lemon}
+echo 'bbb=${aaa:-default_lemon}'
+echo '$aaa' $aaa
+echo '$bbb' $bbb
+
+# aaa 빈값(unset/null) 이면 디폴트 값 사용, aaa 자체도 디폴트값으로 변경되고 확장된 bbb 도 디폴트값으로 변경된다.
+aaa=""
+bbb=${aaa:=default_apple}
+echo 'bbb=${aaa:=default_apple}'
+echo '$aaa' $aaa
+echo '$bbb' $bbb
+
+# aaa 빈값(unset/null) 이면 stderr 에 에러가 발생한다.
+# unset aaa
+# aaa=""
+bbb=${aaa:?default_orange}
+echo 'bbb=${aaa:?default_orange}'
+echo '$aaa' $aaa
+echo '$bbb' $bbb
+
+# aaa 빈값(unset/null) 이면 aaa 자체가 변경되지 않고 확장된 bbb 는 빈값이 된다.
+aaa=""
+bbb=${aaa:+default_banana}
+echo 'bbb=${aaa:+default_banana}'
+echo '$aaa' $aaa
+echo '$bbb' $bbb
+
+
+
+aaa="01234567890abcdefg"
+# 0번째 부터 3개
+echo '${aaa:0:3}' ${aaa:0:3}
+# 3번째 부터 끝까지
+echo '${aaa:3}' ${aaa:3}
+
+# 9번째 부터 끝에 -1 위치까지
+echo '${aaa:9:-1}' ${aaa:9:-1}
+# 9번째 부터 끝에 -1 위치까지
+echo '${aaa:9:-2}' ${aaa:9:-2}
+
+# 끝에 -3 위치 부터 끝까지 (:- 가되지 않도록 : - 로 공백이 있어야 한다.)
+echo '${aaa: -3}' ${aaa: -3}
+# 끝에 -3 위치 부터 2개
+echo '${aaa: -3:2}' ${aaa: -3:2}
+
+
+#####
+
+
 # {} 내에 , 로 구분하면 구분된 개수 만큰 확장(치환)된다.
 # mkdir {a,b}zzz ==> azzz 와 bzzz 생성 으로 많이 사용한다.
 echo LEMON_{aaa,bbb,ccc}_ORANGE
