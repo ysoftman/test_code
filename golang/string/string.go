@@ -12,6 +12,14 @@ import (
 func main() {
 
 	func() {
+		str1 := "ysoftman"
+		fmt.Println("str1:", len(str1))
+		// utf8 ==> len returns number of bytes
+		str1 = "가나다"
+		fmt.Println("str1:", len(str1))
+	}()
+
+	func() {
 		fmt.Println("-----")
 		// string 은 변경불가능하기때문에 byte 슬라이스로 변환해서 변경하도록한다.
 		str := "ysoftman ysoftman\tysoftman"
