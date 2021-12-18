@@ -5,6 +5,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -72,5 +73,19 @@ func main() {
 		fmt.Printf("str1 = %s\n", str1)
 		fmt.Printf("str2 = %s\n", str2)
 		fmt.Printf("str3 = %s\n", str3)
+	}()
+
+	func() {
+		fmt.Println("-----")
+		str1 := []string{"1", "2", "3", "4"}
+		str2 := []string{"4", "3", "2", "1"}
+		str1 = append(str1, "5")
+		str2 = append(str2, "5")
+		fmt.Println("str1:", str1)
+		fmt.Println("str2:", str2)
+		// calculate (digit string slice)
+		num1, _ := strconv.Atoi(strings.Join(str1, ""))
+		num2, _ := strconv.Atoi(strings.Join(str2, ""))
+		fmt.Println("num1+num2:", num1+num2)
 	}()
 }
