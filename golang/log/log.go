@@ -57,7 +57,10 @@ func main() {
 	log.Println("파일에 로그기록.")
 
 	// Fatal 을 사용하면 os.Exit(1) 로 종료 된다
-	//mylogger2.Fatalln("aaa")
+	// mylogger2.Fatalln("aaa")
+	// mylogger2.Fatal("aaa")/
+	// Panic 발생 exit status 2
+	// mylogger2.Panic("---aaa---")
 
 	// stdout 로 로그 출력
 	log.SetOutput(os.Stdout)
