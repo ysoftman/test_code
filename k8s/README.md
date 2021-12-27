@@ -32,6 +32,7 @@ kubectl create secret tls ingress-validation-tls -n ingress-nginx \
 --cert validating-webhook-cert.pem
 
 # 등록
+# 참고로 base64 인코딩하면 시작과 끝부분의 ---BEGIN.. ----END.. 없이 LS0... 으로 시작하는 문자열이 된다.
 CA_BUNDLE=$(cat validating-webhook-cert.pem | base64)
 cat ingress_admission.yaml | sed "s/\${CA_BUNDLE}/${CA_BUNDLE}/" | kubectl apply -f -
 
