@@ -96,9 +96,7 @@ webhooks:
   matchPolicy: Equivalent
   rules:
   - apiGroups:
-    # k8s 1.16 이후 apiVersion: extensions/v1beta1 -> networking.k8s.io/v1beta1 등의 변경이 있다.
-    # https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/
-    #- networking.k8s.io
+    - networking.k8s.io
     - extensions
     apiVersions:
     - v1
@@ -117,8 +115,10 @@ webhooks:
     service:
       namespace: ingress-nginx
       name: ingress-nginx-controller-admission
-      #path: /networking.k8s.io/v1beta1/ingresses
-      path: /extensions/v1beta1/ingress
+      # k8s 1.16 이후 apiVersion: extensions/v1beta1 -> networking.k8s.io/v1beta1 등의 변경이 있다.
+      # https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/
+      path: /networking.k8s.io/v1beta1/ingresses
+      # path: /extensions/v1beta1/ingress
     caBundle: ${CA_BUNDLE}
   sideEffects: None
   timeoutSeconds: 10
