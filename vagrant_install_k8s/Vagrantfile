@@ -1,0 +1,57 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+BOX_IMAGE = "bento/ubuntu-18.04"
+NODE_COUNT = 2
+
+$swapoff = <<-SCRIPT
+  echo ">>>> swapoff <<<<"
+  sudo sed -i.bak '/ swap /d' /etc/fstab
+  sudo swapoff -a
+SCRIPT
+
+$install_docker = <<-SCRIPT
+  echo ">>>>> install docker <<<<<<"
+  sudo apt-get update &&
+  sudo apt-get -y install apt-transport-https ca-certificates curl gnupg-agent software-properties-common > /dev/null 2>&1 &&
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
+  sudo apt-get update &&
+  sudo apt-get -y install docker-ce docker-ce-cli containerd.io > /dev/null 2>&1
+SCRIPT
+
+
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "control-plane" do |subconfig|
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.hostname = "control-plane"
+    subconfig.vm.network :private_network, ip: "192.168.100.2"
+    config.vm.provider "virtualbox" do |v|
+      v.memory = 1536
+      v.cpus = 2
+    end
+    subconfig.vm.provision "shell", inline: $swapoff
+    subconfig.vm.provision "shell", inline: $install_docker
+    # k8s master 용 환경 구성(privileged: false -> root 대신 vagrant 로 provision 실행)
+    subconfig.vm.provision "shell", privileged: false, path: "install_k8s.sh", args: "vagrant"
+  end
+
+  (1..NODE_COUNT).each do |i|
+    config.vm.define "worker-node#{i}" do |subconfig|
+      subconfig.vm.box = BOX_IMAGE
+      subconfig.vm.hostname = "worker-node#{i}"
+      subconfig.vm.network :private_network, ip: "192.168.100.#{i + 2}"
+      config.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 2
+      end
+      subconfig.vm.provision "shell", inline: $swapoff
+      subconfig.vm.provision "shell", inline: $install_docker
+      # k8s master 용 환경 구성(privileged: false -> root 대신 vagrant 로 provision 실행)
+      subconfig.vm.provision "shell", privileged: false, path: "install_k8s.sh", args: "vagrant"
+    end
+  end
+
+end
