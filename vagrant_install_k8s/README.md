@@ -53,4 +53,6 @@ kubectl get pods -w
 
 # pod 띄우기 (exit 하면 pod 종료)
 kubectl run -i --tty --image busybox:1.28 ysoftman-test --restart=Never --rm /bin/sh
+# pod 에서 --> 외부로 ping 해보기
+ping 8.8.8.8
 ```

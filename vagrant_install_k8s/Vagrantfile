@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
     subconfig.vm.provision "shell", inline: $swapoff
     subconfig.vm.provision "shell", inline: $install_docker
     # k8s master 용 환경 구성(privileged: false -> root 대신 vagrant 로 provision 실행)
-    subconfig.vm.provision "shell", privileged: false, path: "install_k8s.sh", args: "vagrant"
+    subconfig.vm.provision "shell", privileged: false, path: "install_k8s.sh", args: "eth1 master"
   end
 
   (1..NODE_COUNT).each do |i|
@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
       subconfig.vm.provision "shell", inline: $swapoff
       subconfig.vm.provision "shell", inline: $install_docker
       # k8s master 용 환경 구성(privileged: false -> root 대신 vagrant 로 provision 실행)
-      subconfig.vm.provision "shell", privileged: false, path: "install_k8s.sh", args: "vagrant"
+      subconfig.vm.provision "shell", privileged: false, path: "install_k8s.sh", args: "eth1 worker"
     end
   end
 

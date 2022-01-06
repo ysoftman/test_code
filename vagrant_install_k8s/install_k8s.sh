@@ -1,8 +1,10 @@
 #!/bin/bash
 echo "----- install kubernetes -----"
 echo "whoami:" $(whoami)
-system_name=${1}
-echo ${system_name}
+custom_eth=${1}
+node_name=${2}
+echo ${custom_eth}
+echo ${node_name}
 
 # apt 저장소 추가
 # 참고 https://kubernetes.io/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
@@ -18,20 +20,20 @@ sudo apt-get install -y kubelet=${k8s_version} kubeadm=${k8s_version} kubectl=${
 sudo apt-mark hold kubelet kubeadm kubectl
 
 # vagrant 환경에서 eth0 ip 는  NAT 로 모든 노드가 같은 IP 로 되어 있다.
-# 따라서 k8s 설치에는 eth1 ip 를 사용하도록 설정한다.
-if [[ ${system_name} == "vagrant" ]]; then
-    IP_ADDR=$(ifconfig eth1 | grep netmask | awk '{print $2}')
+# 따라서 k8s 설치에는 eth1 ip(192.168.100.2) 를 사용하도록 설정한다.
+if [[ ${custom_eth} != "" ]]; then
+    IP_ADDR=$(ifconfig ${custom_eth} | grep netmask | awk '{print $2}')
     echo "KUBELET_EXTRA_ARGS=--node-ip=\"$IP_ADDR\"" | sudo tee /etc/default/kubelet
     sudo systemctl restart kubelet
 fi
 
-if [[ $(hostname) =~ ^control.* ]]; then
+if [[ ${node_name} =~ ^master.* ]]; then
     echo "----- master node -----"
     # master 노드에서 kubeadm 으로 클러스터를 구성한다.
     sudo kubeadm init \
     --apiserver-advertise-address=192.168.100.2 \
     --apiserver-cert-extra-sans=192.168.100.2 \
-    --node-name=control-plane \
+    --node-name=${node_name} \
     --pod-network-cidr=10.224.0.0/16 \
     --service-cidr=10.225.0.0/16 | tee /vagrant/kubeadm_stdout.txt
 
@@ -43,15 +45,17 @@ if [[ $(hostname) =~ ^control.* ]]; then
     # flannel 설치
     rm -rf kube-flannel.yml
     wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    # net-conf.json -> network ip 변경
     # eth1 사용하는것으로 yml 설정 변경
-    sed -i '/--kube-subnet-mgr/{a\
+    sed -i -e 's/Network": "10.244.0.0\/16/Network": "10.224.0.0\/16/' \
+    -e '/--kube-subnet-mgr/{a\
         - --iface=eth1
 }' kube-flannel.yml
     # flannel 적용
     kubectl apply -f kube-flannel.yml
 fi
 
-if [[ $(hostname) =~ ^worker.* ]]; then
+if [[ ${node_name} =~ ^worker.* ]]; then
     echo "----- worker node -----"
     # worker --> master 로 조인
     bash -c "sudo $(cat /vagrant/kubeadm_stdout.txt | grep "kubeadm join" -A 1)"
