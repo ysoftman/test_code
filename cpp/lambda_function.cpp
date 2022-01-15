@@ -13,16 +13,42 @@ int main()
     cout << "lambda function test" << endl;
     int a = 1;
     int b = 2;
+    cout << "a:" << a << endl;
+    cout << "b:" << b << endl;
 
     // 람다함수명 = [캡쳐할변수](함수파라미터)->함수리턴타입{함수내용}(외부에서 받을 인자)
-    // [=] 현재함수의 모든 변수를 캡쳐한다는 의미
-    int my_lambda_func1 = [=]() -> int { return a + b; }();
+    // [a, b] 현재(main) 스코프 내의 a, b 변수 캡쳐
+    // a, b를 수정할 수 없다
+    int my_lambda_func1 = [a, b]() -> int {
+        // error: cannot assign to a variable captured by copy in a non-mutable lambda
+        // a = 10;
+        return a + b;
+    }();
     cout << my_lambda_func1 << endl;
+
+    // 주소값으로 캡쳐하면 수정할 수 있다.
+    int my_lambda_func2 = [&a, &b]() -> int {
+        a = 10;
+        b = 20;
+        return a + b;
+    }();
+    cout << my_lambda_func2 << endl;
+    cout << "a:" << a << endl;
+    cout << "b:" << b << endl;
+
+    // [=] 현재(main) 스코프 내의 모든 변수를 캡쳐
+    // a, b를 수정할 수 없다
+    int my_lambda_func3 = [=]() -> int {
+        // error: cannot assign to a variable captured by copy in a non-mutable lambda
+        // a = 10;
+        return a + b;
+    }();
+    cout << my_lambda_func3 << endl;
 
     // [] 아무것도 캡쳐하지 않는다는 의미
     // -std=c++14 부터 파라미터 명시에 auto 를 사용할 수 있다.
     // int my_lambda_func2 = [](auto mya, auto myb) -> int { return mya + myb; }(a, b);
-    int my_lambda_func2 = [](int mya, int myb) -> int { return mya * myb; }(a, b);
-    cout << my_lambda_func2 << endl;
+    int my_lambda_func4 = [](int mya, int myb) -> int { return mya * myb; }(a, b);
+    cout << my_lambda_func4 << endl;
     return 0;
 }
