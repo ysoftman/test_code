@@ -8,13 +8,6 @@ import (
 )
 
 func main() {
-	num := 10
-	aaa := make([]int, num)
-	for i := 0; i < 10; i++ {
-		aaa[i] = i * 2
-	}
-	fmt.Println("aaa:", aaa)
-
 	// 간단한 int sort
 	mynumlist := []int{2, 3, 6, 45, 6, 246, 1, 12}
 	fmt.Println("before sort:", mynumlist)
@@ -37,6 +30,15 @@ func main() {
 	sort.Sort(myarr)
 	fmt.Println("after sort:", myarr)
 
+	// Slice 를 사용하면 less 함수만 구현하면 된다.
+	// 2D 데이터의 경우, 두번째 원소 기준으로 오름 차순 정렬하는 경우
+	myarr2 := Data2DInt{{1, 99}, {3, 2}, {6, 5}, {4, 0}, {1, 9}, {6, 7}}
+	fmt.Println("before sort:", myarr2)
+	sort.Slice(myarr2, func(i, j int) bool {
+		return myarr2[i][1] < myarr2[j][1]
+	})
+	fmt.Println("after sort:", myarr2)
+
 	// sort map
 	mymap := map[string]string{
 		"aaa": "orang",
@@ -58,6 +60,8 @@ func main() {
 	sort.Sort(sort.Reverse(myCustomMap))
 	fmt.Println(myCustomMap)
 }
+
+type Data2DInt [][]int
 
 // MyData 내용
 type MyData struct {
