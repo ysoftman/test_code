@@ -1,3 +1,4 @@
+// g++ -std=c++11 ./constexpr_test.cpp && ./a.out
 #include <iostream>
 #include <cmath>
 
