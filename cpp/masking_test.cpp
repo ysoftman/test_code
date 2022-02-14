@@ -8,14 +8,14 @@ int main()
     // case1
     printf("### case1\n");
     char szValue1[50] = "ysoftman_123+asdf";
-    printf("szValue1=%s\n", szValue1);   
+    printf("szValue1=%s\n", szValue1);
     char *p = szValue1;
     // a-z, 0-9 인경우 X 로 변환(마스킹)하기
     // 특수문자 전까지만 마스킹 된다.
     while (isalnum(*p))
     {
         *p = 'X';
-        p++;        
+        p++;
     }
     printf("szValue1=%s\n", szValue1);
 
