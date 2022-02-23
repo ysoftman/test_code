@@ -22,16 +22,13 @@ int BinarySearch(int arr[], int left, int right, int k)
 		printf("Found %d arr[%d]\n\n", k, mid);
 		return mid;
 	}
+	if (arr[mid] > k)
+	{
+		return BinarySearch(arr, left, mid - 1, k);
+	}
 	else
 	{
-		if (arr[mid] > k)
-		{
-			return BinarySearch(arr, left, mid - 1, k);
-		}
-		else
-		{
-			return BinarySearch(arr, mid + 1, right, k);
-		}
+		return BinarySearch(arr, mid + 1, right, k);
 	}
 }
 
