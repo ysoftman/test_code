@@ -68,8 +68,23 @@ int BinarySearch2(int arr[], int length, int k)
 	return mid;
 }
 
+void testSample()
+{
+	int sample1[1] = {1};
+	int target1 = 1;
+	BinarySearch(sample1, 0, sizeof(sample1) / sizeof(int) - 1, target1);
+	BinarySearch2(sample1, sizeof(sample1) / sizeof(int), target1);
+
+	int sample2[2] = {1, 2};
+	int target2 = 2;
+	BinarySearch(sample2, 0, sizeof(sample2) / sizeof(int) - 1, target2);
+	BinarySearch2(sample2, sizeof(sample2) / sizeof(int), target2);
+}
+
 int main()
 {
+	testSample();
+
 	int array[10] = {25, 37, 56, 99, 120, 521, 590, 709, 1005, 2506};
 	int i = 0;
 	int target;
