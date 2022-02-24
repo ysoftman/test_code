@@ -12,10 +12,14 @@ int main()
     std::map<string, int> m{{"lemon", 100}, {"apple", 200}};
     m.insert({"orange", 300});
 
-    // i : 복사, 원본m의 값이 변경되지 않음
+    // i : 복사된 값, 원본 m 의 값은 변경되지 않음
     for (auto i : m)
     {
         i.second = -1;
+        cout << i.first << ":" << i.second << endl;
+    }
+    for (auto i : m)
+    {
         cout << i.first << ":" << i.second << endl;
     }
 
@@ -23,6 +27,10 @@ int main()
     for (auto &i : m)
     {
         i.second = -2;
+        cout << i.first << ":" << i.second << endl;
+    }
+    for (auto i : m)
+    {
         cout << i.first << ":" << i.second << endl;
     }
 
