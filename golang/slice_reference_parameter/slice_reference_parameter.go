@@ -5,6 +5,7 @@ import "fmt"
 func main() {
 
 	func() {
+
 		aaa1 := []int{99, 100}
 		fmt.Printf("aaa1(%p) cap(aaa1)%v : %v\n", &aaa1, cap(aaa1), aaa1)
 
@@ -25,13 +26,32 @@ func main() {
 		fmt.Printf("addSlicePointer aaa1(%p) cap(aaa1)%v : %v\n", &aaa1, cap(aaa1), aaa1)
 		addSlicePointer(&aaa1)
 		fmt.Printf("addSlicePointer aaa1(%p) cap(aaa1)%v : %v\n", &aaa1, cap(aaa1), aaa1)
+
+		// map 크기가 변해도 최초 주소 공간이 변하지 않아 caller map과 같은 주소공간으로 유지(공유)된다.
+		hashmap := map[int]int{0: 1}
+		fmt.Printf("hashmap(%p) : %v\n", &hashmap, hashmap)
+		modifyMapValue(hashmap)
+		fmt.Printf("hashmap(%p) : %v\n", &hashmap, hashmap)
+		addMapKeyValue(hashmap)
+		fmt.Printf("hashmap(%p) : %v\n", &hashmap, hashmap)
+
 	}()
+}
+
+func modifyMapValue(hm map[int]int) {
+	hm[0] = 0
+}
+func addMapKeyValue(hm map[int]int) {
+	hm[1] = 10
+	for i := 0; i < 100; i++ {
+		hm[i] = i
+	}
 }
 
 // slice 파라메터는 구조체(포인터,len,cap)값을 받는다.
 func modifySliceVale(s []int) {
 	if len(s) >= 1 {
-		// s 의 크기가 변경되지 않으면 파라메터 s의 메모리가 caller 에게 공유된다.f
+		// s 의 크기가 변경되지 않으면 파라메터 s 는 caller 의 메모리 공간을 그대로 사용(공유)한다.
 		s[0] = 20
 	}
 	if len(s) >= 2 {
