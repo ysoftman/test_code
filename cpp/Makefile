@@ -37,10 +37,10 @@ OBJS = $(SRCS:.cpp=.o)
 # make 기본 형식
 # 타겟파일을 만들기 위해선 의존성파일들이 필요하고
 # 의존성파일이 준비되었으면 커맨드를 실행해서 타겟파일을 생성한다.
-# command 영역에 주석을 쓰면 주석도 출력된다.
 # target : dependency1 dependency2 ... n
 # 	command
-
+#	command 영역에 들여쓰기(tab)가 있으면 주석도 출력된다.
+# command 영역에 들여쓰기(tab)가 없으면 주석처리 된다.(출력되지 않는다.)
 
 # all. clean, build... 등 타겟은 실제 파일이 아닌데,
 # 실제 all, clean, build 파일이 있다면 make 타겟 파일이 존재해서 충돌된다.
