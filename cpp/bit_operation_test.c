@@ -26,6 +26,8 @@ int main()
 {
     int a = 100, b = 128;
     printf("a: %d, b: %d\n", a, b);
+    printf("not operator ~a: %d\n", ~a);
+    printf("not not operator ~~a: %d\n", ~~a);
     int temp = a & b;
     printf("a&b: %d\n", temp);
     temp = a | b;
