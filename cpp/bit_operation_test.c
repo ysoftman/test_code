@@ -28,6 +28,8 @@ int main()
     printf("a: %d, b: %d\n", a, b);
     printf("not operator ~a: %d\n", ~a);
     printf("not not operator ~~a: %d\n", ~~a);
+    printf("(-) -> (+) using not operator ~a+1: %d\n", ~a+1);
+    printf("(+) -> (-) using not operator ~(~a+1)+1: %d\n", ~(~a+1)+1);
     int temp = a & b;
     printf("a&b: %d\n", temp);
     temp = a | b;
