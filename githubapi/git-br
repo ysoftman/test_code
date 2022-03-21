@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 '''
@@ -19,11 +19,12 @@ import json
 import sys
 import subprocess
 
+# python2 인 경우
 # utf8 인코딩을 기본으로 하지 않으면
 # git br | grep ysoftman
 # 과 같은 파이프라인 처리시 UnicodeEncodeError 가 발생한다.
-reload(sys)
-sys.setdefaultencoding('utf8')
+# reload(sys)
+# sys.setdefaultencoding('utf8')
 
 # github 접속 정보를 명시
 # https://developer.github.com/v3/issues/
@@ -59,26 +60,28 @@ def issue_list(branches):
     closed_issue_result = json.loads(resp.content)
 
     for br_name in branches:
+        br_name = br_name.decode()
         tokens = br_name.split('-')
         if len(tokens) == 2:
             for item in open_issue_result:
                 if tokens[1] == str(item['number']) and item['state'] == 'open':
-                    print color.yellow + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color
+                    print (color.yellow + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color)
                     del open_issue_result[open_issue_result.index(item)]
                     del branches[branches.index(br_name)]
                     break
     for br_name in branches:
+        br_name = br_name.decode()
         tokens = br_name.split('-')
         if len(tokens) == 2:
             for item in closed_issue_result:
                 if tokens[1] == str(item['number']) and item['state'] == 'closed':
-                    print color.cyan + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color
+                    print (color.cyan + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color)
                     del closed_issue_result[closed_issue_result.index(item)]
                     del branches[branches.index(br_name)]
                     break
 
     for br_name in branches:
-        print br_name
+        print (br_name)
 
 if __name__ == '__main__':
     result = subprocess.Popen("git branch", shell=True,

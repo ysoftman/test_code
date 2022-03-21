@@ -1,5 +1,6 @@
-# github api 사용하기
+# github api 관련 팁,툴 정리
 
+## github api 사용하기
 ```bash
 # 사용자의 모든 저장소 정보
 curl -s --user "ysoftman:password123" https://api.github.com/user/repos
@@ -17,7 +18,7 @@ curl -s --user "ysoftman:password123" https://api.github.com/repos/ysoftman/test
 curl -s --user "ysoftman:password123" https://api.github.com/repos/ysoftman/test_code/releases
 ```
 
-## git subprogram(custom) command 사용하기
+## git subprogram(custom) command 만들기
 
 ```bash
 # git-명령이름 으로 실행할 파일을 만들고
