@@ -1,6 +1,7 @@
 # github api 관련 팁,툴 정리
 
 ## github api 사용하기
+
 ```bash
 # 사용자의 모든 저장소 정보
 curl -s --user "ysoftman:password123" https://api.github.com/user/repos
@@ -71,4 +72,16 @@ GIT_TRACE=2 git ysoftman
 git co -b ysoftman-10
 # git-br 에 password 명시하고 실행
 git br
+```
+
+### git-copyissue
+
+A 장소 이슈들 -> B 저장소 이슈 복사(생성)
+
+- 예시
+
+```bash
+# 다음과 같이 실행해 원본(From) 저장소, 복사할 이슈 번호들, 대상(To) 저장소정보를 입력한다.
+# 자세한 내용은 입력 프롬프트 메시지 참고
+git copyissue
 ```
