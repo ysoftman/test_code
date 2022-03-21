@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 ysoftman
 
 브랜치명이 xxx-이슈번호 인 경우,
@@ -12,7 +12,7 @@ chmod +x git-br
 git br
 
 참고로 git branch 가 git br 로 alias 로 설정되더라고, 현재 위치에선 git-br 이 실행된다.
-'''
+"""
 
 import requests
 import json
@@ -33,20 +33,19 @@ passwd = ""
 baseurl = "https://api.github.com"
 owner = "ysoftman"
 repo = "test_code"
-issue_base_url = "https://github.com/{}/{}/issues/".format(
-    owner, repo)
+issue_base_url = "https://github.com/{}/{}/issues/".format(owner, repo)
 
 
 class color:
-    reset_color = '\033[0m'
-    black = '\033[0;30m'
-    red = '\033[0;31m'
-    green = '\033[0;32m'
-    yellow = '\033[0;33m'
-    blue = '\033[0;34m'
-    purple = '\033[0;35m'
-    cyan = '\033[0;36m'
-    white = '\033[0;37m'
+    reset_color = "\033[0m"
+    black = "\033[0;30m"
+    red = "\033[0;31m"
+    green = "\033[0;32m"
+    yellow = "\033[0;33m"
+    blue = "\033[0;34m"
+    purple = "\033[0;35m"
+    cyan = "\033[0;36m"
+    white = "\033[0;37m"
 
 
 def issue_list(branches):
@@ -61,29 +60,39 @@ def issue_list(branches):
 
     for br_name in branches:
         br_name = br_name.decode()
-        tokens = br_name.split('-')
+        tokens = br_name.split("-")
         if len(tokens) == 2:
             for item in open_issue_result:
-                if tokens[1] == str(item['number']) and item['state'] == 'open':
-                    print (color.yellow + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color)
+                if tokens[1] == str(item["number"]) and item["state"] == "open":
+                    print(
+                        color.yellow + br_name + " " + item["state"],
+                        color.reset_color + item["title"],
+                        color.green + issue_base_url + tokens[1] + color.reset_color,
+                    )
                     del open_issue_result[open_issue_result.index(item)]
                     del branches[branches.index(br_name)]
                     break
     for br_name in branches:
         br_name = br_name.decode()
-        tokens = br_name.split('-')
+        tokens = br_name.split("-")
         if len(tokens) == 2:
             for item in closed_issue_result:
-                if tokens[1] == str(item['number']) and item['state'] == 'closed':
-                    print (color.cyan + br_name + " " + item['state'], color.reset_color + item['title'], color.green + issue_base_url + tokens[1] + color.reset_color)
+                if tokens[1] == str(item["number"]) and item["state"] == "closed":
+                    print(
+                        color.cyan + br_name + " " + item["state"],
+                        color.reset_color + item["title"],
+                        color.green + issue_base_url + tokens[1] + color.reset_color,
+                    )
                     del closed_issue_result[closed_issue_result.index(item)]
                     del branches[branches.index(br_name)]
                     break
 
     for br_name in branches:
-        print (br_name)
+        print(br_name)
 
-if __name__ == '__main__':
-    result = subprocess.Popen("git branch", shell=True,
-                              stdout=subprocess.PIPE).stdout.read()
+
+if __name__ == "__main__":
+    result = subprocess.Popen(
+        "git branch", shell=True, stdout=subprocess.PIPE
+    ).stdout.read()
     issue_list(result.splitlines())
