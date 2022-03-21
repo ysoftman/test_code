@@ -30,10 +30,16 @@ import subprocess
 # https://developer.github.com/v3/issues/
 user = "ysoftman"
 passwd = ""
-baseurl = "https://api.github.com"
+baseURL = "https://github.com"
 owner = "ysoftman"
 repo = "test_code"
-issue_base_url = "https://github.com/{}/{}/issues/".format(owner, repo)
+issue_base_url = "{}/{}/{}/issues/".format(baseURL, owner, repo)
+if baseURL == "https://github.com":
+    # print("[https://api.github.com]")
+    issue_url = "https://api.github.com/repos/{}/{}/issues".format(owner, repo)
+else:
+    # for github enterprise
+    issue_url = "{}/api/v3/repos/{}/{}/issues".format(baseURL, owner, repo)
 
 
 class color:
@@ -50,11 +56,11 @@ class color:
 
 def issue_list(branches):
     # state=all 에 로컬 이슈번호가 없는 경우가 있어, open, closed 로 나눠서 요청
-    url = "{}/repos/{}/{}/issues?state=open".format(baseurl, owner, repo)
+    url = "{}?state=open".format(issue_url)
     resp = requests.get(url, auth=(user, passwd))
     open_issue_result = json.loads(resp.content)
 
-    url = "{}/repos/{}/{}/issues?state=closed".format(baseurl, owner, repo)
+    url = "{}?state=closed".format(issue_url)
     resp = requests.get(url, auth=(user, passwd))
     closed_issue_result = json.loads(resp.content)
 
