@@ -59,17 +59,28 @@ def get_an_issue(repoInfo, issue_number):
     url = "{}/{}".format(repoInfo.issueURL, issue_number)
     # print(color.yellow + url + color.reset_color)
     resp = requests.get(url, auth=(repoInfo.user, repoInfo.passwd))
-    issue_result = json.loads(resp.content)
+    issue_resp = json.loads(resp.content)
 
-    for key, value in issue_result.items():
+    for key, value in issue_resp.items():
         if key == "message" and value.lower() == "not found":
-            print(color.green + "not found", color.reset_color)
+            print(color.red + "not found", color.reset_color)
             return None
-    return issue_result
+
+    print(
+        color.green
+        + "[{}/{}/{}] get issue, number:{} title:{}".format(
+            repoInfo.baseURL,
+            repoInfo.owner,
+            repoInfo.repo,
+            issue_number,
+            issue_resp["title"],
+        )
+        + color.reset_color
+    )
+    return issue_resp
 
 
 def create_issue(repoInfo, issue):
-    print(color.yellow + "create issue" + color.reset_color)
     # {
     #   "title": "Found a bug",
     #   "body": "I'm having a problem with this.",
@@ -85,23 +96,42 @@ def create_issue(repoInfo, issue):
     data["title"] = issue["title"]
     data["body"] = issue["body"]
     data["assignees"] = []
-    if item in issue["assignees"]:
+    # print("type:", type(issue["assignees"]), len(issue["assignees"]))
+    for item in issue["assignees"]:
         data["assignees"].append(item["login"])
     # data["milestone"] = 0
     data["labels"] = issue["labels"]
-    headers = {"Content-Type": "application/vnd.github.v3+json"}
+    headers = {
+        "Content-Type": "application/vnd.github.v3+json",
+    }
+    url = "{}".format(repoInfo.issueURL)
 
-    url = "{}/".format(repoInfo.issueURL)
-    # curlCommand = "curl -XPOST --user '{}:{}' '{}' -H '{}' -d '{}'".format(
-    #     repoInfo.user, repoInfo.passwd, url, json.dumps(headers), json.dumps(data)
+    # curlCommand = "curl -XPOST --user '{}:{}' -H '{}' -d '{}' '{}'".format(
+    #     repoInfo.user, repoInfo.passwd, json.dumps(headers), json.dumps(data), url
     # )
-    # print(color.yellow, curlCommand, color.reset_color)
+    # print(color.yellow + curlCommand + color.reset_color)
+
     resp = requests.post(
         url, json.dumps(data), headers=headers, auth=(repoInfo.user, repoInfo.passwd)
     )
-    issue_result = json.loads(resp.content)
-    for key, value in issue_result.items():
-        print(color.purple + "[create issue response]", key, value, color.reset_color)
+    issue_resp = json.loads(resp.content)
+    for key, value in issue_resp.items():
+        # print(color.purple + "[create issue response]", key, value, color.reset_color)
+        if key == "message" and value.lower() == "not found":
+            print(color.red + "not found", color.reset_color)
+            return None
+
+    print(
+        color.yellow
+        + "[{}/{}/{}] create issue, number:{} title:{}".format(
+            repoInfo.baseURL,
+            repoInfo.owner,
+            repoInfo.repo,
+            issue_resp["number"],
+            issue_resp["title"],
+        )
+        + color.reset_color
+    )
 
 
 def setRepoInfo(repoInfo, inputStr):
@@ -121,7 +151,7 @@ def setRepoInfo(repoInfo, inputStr):
     repoInfo.repo = inputStr[2]
 
     # 일반 깃헙
-    if repoInfo.baseURL == "github.com":
+    if repoInfo.baseURL == "https://github.com":
         # print("[https://api.github.com]")
         repoInfo.issueURL = "https://api.github.com/repos/{}/{}/issues".format(
             repoInfo.owner, repoInfo.repo
@@ -166,12 +196,12 @@ if __name__ == "__main__":
     setRepoInfo(toRepo, input("To-Repository) ").split("/"))
 
     # for debugging
-    fromRepo.printAll("from")
-    print(color.yellow + "FromIssueNumbers:", inputFromIssueNumbers, color.reset_color)
-    toRepo.printAll("to")
+    # fromRepo.printAll("from")
+    # print(color.yellow + "FromIssueNumbers:", inputFromIssueNumbers, color.reset_color)
+    # toRepo.printAll("to")
 
     for inum in inputFromIssueNumbers:
-        print(color.yellow + "issue:", inum, color.reset_color)
         issue = get_an_issue(fromRepo, inum)
-        if issue != None:
-            create_issue(toRepo, issue)
+        if issue == None:
+            continue
+        create_issue(toRepo, issue)
