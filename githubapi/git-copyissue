@@ -17,8 +17,10 @@ import subprocess
 # 참고 github api
 # https://developer.github.com/enterprise/2.13/v3/issues/#get-a-single-issue
 # https://developer.github.com/enterprise/2.13/v3/issues/#create-an-issue
+# https://developer.github.com/enterprise/2.13/v3/issues/#edit-an-issue
 # https://docs.github.com/en/rest/reference/issues#get-an-issue
 # https://docs.github.com/en/rest/reference/issues#create-an-issue
+# https://docs.github.com/en/rest/reference/issues#update-an-issue
 
 
 class color:
@@ -68,12 +70,13 @@ def get_an_issue(repoInfo, issue_number):
 
     print(
         color.green
-        + "[{}/{}/{}] get issue, number:{} title:{}".format(
+        + "[{}/{}/{}] get issue, number:{} title:{} state:{}".format(
             repoInfo.baseURL,
             repoInfo.owner,
             repoInfo.repo,
-            issue_number,
+            issue_resp["number"],
             issue_resp["title"],
+            issue_resp["state"],
         )
         + color.reset_color
     )
@@ -120,15 +123,46 @@ def create_issue(repoInfo, issue):
         if key == "message" and value.lower() == "not found":
             print(color.red + "not found", color.reset_color)
             return None
-
     print(
         color.yellow
-        + "[{}/{}/{}] create issue, number:{} title:{}".format(
+        + "[{}/{}/{}] create issue, number:{} title:{} state:{}".format(
             repoInfo.baseURL,
             repoInfo.owner,
             repoInfo.repo,
             issue_resp["number"],
             issue_resp["title"],
+            issue_resp["state"],
+        )
+        + color.reset_color
+    )
+    update_issue(repoInfo, issue_resp["number"], issue["state"])
+
+
+def update_issue(repoInfo, issue_number, state):
+    data = {}
+    data["state"] = state
+    headers = {
+        "Content-Type": "application/vnd.github.v3+json",
+    }
+    url = "{}/{}".format(repoInfo.issueURL, issue_number)
+    resp = requests.patch(
+        url, json.dumps(data), headers=headers, auth=(repoInfo.user, repoInfo.passwd)
+    )
+    issue_resp = json.loads(resp.content)
+    for key, value in issue_resp.items():
+        # print(color.purple + "[update issue response]", key, value, color.reset_color)
+        if key == "message" and value.lower() == "not found":
+            print(color.red + "not found", color.reset_color)
+            return None
+    print(
+        color.yellow
+        + "[{}/{}/{}] update issue, number:{} title:{} state:{}".format(
+            repoInfo.baseURL,
+            repoInfo.owner,
+            repoInfo.repo,
+            issue_resp["number"],
+            issue_resp["title"],
+            issue_resp["state"],
         )
         + color.reset_color
     )
