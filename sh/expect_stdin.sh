@@ -5,5 +5,5 @@
 # 사용자가 apple 을 입력하면(apple 입력 될때까지 계속 입력 받는다.)
 expect "apple"
 
-# lemon 출력
+# 입력 프롬프트에서 lemon\n 보내기(입력)
 send "lemon\n"

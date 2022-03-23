@@ -11,7 +11,7 @@ sleep 1
 # password 비슷한 스트링이 나오면
 expect "*assword:*"
 
-# 암호 입력, 엔터
+# ssh password 입력 프롬프트에서 암호 보내기(입력)
 # -- 옵션의 끝(더이상의 옵션은 없음을 의미)
 send -- "qwer1234\r"
 
