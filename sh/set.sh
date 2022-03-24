@@ -41,3 +41,10 @@ set -o
 # emacs 모드 (alt+left,alt+right,.. 등) 를 활성화 해야 한다.
 set -o emacs
 
+
+# -e 옵션을 설정하면 커맨드 실패시(종료 코드!=0) 바로 종료된다.
+# -e 설정 없으면 aaa 명령 실패 이후 echo 명령 계속 진행
+# -e 설정하면 aaa 명령 실패 이후 바로 종료
+set -e
+aaa # aaa: command not found
+echo "set -e test"
