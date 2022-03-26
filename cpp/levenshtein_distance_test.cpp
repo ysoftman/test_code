@@ -62,13 +62,13 @@ int LevenshteinDistance(char *pInStr, char *pDicStr)
 	// kitten 과 sitting 에서 replace cost=1라면 3이 최종 distance 가 된다.
 	//    k i t t e n
 	//  0 1 2 3 4 5 6
-	//s 1 1 2 3 4 5 6
-	//i 2 2 1 2 3 4 5
-	//t 3 3 2 1 2 3 4
-	//t 4 4 3 2 1 2 3
-	//i 5 5 4 3 2 2 3
-	//n 6 6 5 4 3 3 2
-	//g 7 7 6 5 4 4 3 <- distance
+	// s 1 1 2 3 4 5 6
+	// i 2 2 1 2 3 4 5
+	// t 3 3 2 1 2 3 4
+	// t 4 4 3 2 1 2 3
+	// i 5 5 4 3 2 2 3
+	// n 6 6 5 4 3 3 2
+	// g 7 7 6 5 4 4 3 <- distance
 	for (j = 0; j < n; j++)
 	{
 		if (j == 0)
