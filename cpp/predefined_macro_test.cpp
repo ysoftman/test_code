@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 int main()
-{	
+{
 	// ANSI C 에 미리 정의된 매크로
 	// __FILE__ : 현재 소스파일의 전체경로 파일명을 나타낸다.
 	printf("%s\n", __FILE__);
@@ -22,7 +22,7 @@ int main()
 #else
 	printf("not defined __STDC__\n");
 #endif
-	
+
 	// Microsoft C++ 에 미리 정의된 매크로
 	// _DEBUG : 디버그인 경우 1로 정의되고, 그렇지 않으면 정의되지 않는다.
 #if defined(_DEBUG)
@@ -63,4 +63,3 @@ int main()
 	// more ... : 미리정의된 매크로는 MSDN 참고
 	return 0;
 }
-
