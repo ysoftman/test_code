@@ -22,6 +22,11 @@ func main() {
 	fmt.Println("Relfection test...")
 	getFieldInfo()
 	makeStruct()
+
+	strs := []string{"apple", "banana"}
+	for _, v := range strs {
+		fmt.Println("v:", v, " reflect.TypeOf(v)", reflect.TypeOf(v))
+	}
 }
 
 func makeStruct() {
