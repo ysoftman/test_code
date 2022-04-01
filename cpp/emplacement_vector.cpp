@@ -1,4 +1,4 @@
-// g++ -std=c++11 ./emplacement.cpp && ./a.out
+// g++ -std=c++11 ./emplacement_vector.cpp && ./a.out
 #include <iostream>
 #include <vector>
 #include <list>
@@ -12,10 +12,10 @@ bool enableMsg = true;
 class ITEM
 {
 public:
-    // ITEM()
-    // {
-    //     cout << "ITEM() default constructor" << endl;
-    // }
+    ITEM()
+    {
+        cout << "ITEM() default constructor" << endl;
+    }
     ITEM(string n, int v)
     {
         name = n;
