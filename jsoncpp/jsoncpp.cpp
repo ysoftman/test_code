@@ -122,7 +122,7 @@ void ReadJson(string strJSON)
 	// Value 값 변경
 	Json::Value ageValue = root.get("나이", "defaultvalue").asInt();
 	ageValue = ageValue.asInt() - 5;
-	cout << "나이: " << ageValue.asInt() << endl;
+	cout << "나이-5: " << ageValue.asInt() << endl;
 
 	if (root["a"].isObject())
 	{
