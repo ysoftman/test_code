@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // jsoncpp library 테스트 (1.8.3 기준)
 // https://github.com/open-source-parsers/jsoncpp
@@ -6,8 +5,8 @@
 // brew install jsoncpp
 // brew upgrade jsoncpp
 // build
-// g++ ./jsoncpp.cpp -ljsoncpp
-////////////////////////////////////////////////////////////////////////////////////
+// g++ -std=c++11 ./jsoncpp.cpp -ljsoncpp && ./a.out
+
 #include <iostream>
 #include <sstream>
 #include <string>
