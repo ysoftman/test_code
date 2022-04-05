@@ -48,6 +48,7 @@ string WriteJson()
 	root["a"]["b"] = "c";
 	root["이름"] = "윤병훈";
 	root["나이"] = 30;
+	root["strAge"] = "30";
 	root["float_value"] = 0.123456789123456789;
 	root["float_value2"] = 0.00001;
 	Json::Value friends;
@@ -119,10 +120,12 @@ void ReadJson(string strJSON)
 	int age = root.get("나이", "defaultvalue").asInt();
 	cout << "나이: " << age << endl;
 
-	// Value 값 변경
-	Json::Value ageValue = root.get("나이", "defaultvalue").asInt();
-	ageValue = ageValue.asInt() - 5;
-	cout << "나이-5: " << ageValue.asInt() << endl;
+	cout << "root[\"나이\"].isNumeric(): " << root["나이"].isNumeric() << endl;
+	cout << "root[\"나이\"].asInt64(): " << root["나이"].asInt64() << endl;
+	// asString() 는 숫자형도 문자열로 리턴
+	cout << "root[\"나이\"].asString(): " << root["나이"].asString() << endl;
+	cout << "root[\"strAge\"].isNumeric(): " << root["strAge"].isNumeric() << endl;
+	cout << "root[\"strAge\"].asString(): " << root["strAge"].asString() << endl;
 
 	if (root["a"].isObject())
 	{
