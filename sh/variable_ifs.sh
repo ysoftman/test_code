@@ -2,6 +2,8 @@
 # ysoftman
 # IFS(Input Field Separators) test
 
+set -e
+
 # IFS 기본은 공백
 echo "\${IFS}:" ${IFS}
 for v in `cat variable_ifs.txt`
@@ -18,3 +20,31 @@ do
     # 요소를 뉴라인으로 구분해서 출력
     echo ${v}
 done
+
+
+shname=""
+if [[ $(ps -o command $$) == *"bash"* ]]; then
+    shname="bash"
+elif [[ $(ps -o command $$) == *"zsh"* ]]; then
+    shname="zsh"
+fi
+echo "\$shname:" $shname
+
+if [[ $shname == "zsh" ]]; then
+    # zsh 에서는 sh_word_split 활성화야 공백,엔터로 구분할 수 있다.
+    setopt sh_word_split
+fi
+IFS=$' '
+list="lemon apple banana"
+echo $list
+echo "****"
+# for item in ${list}; do
+for item in ${list}; do
+    echo $item
+    echo "---"
+done
+
+if [[ $shname == "zsh" ]]; then
+    # sh_word_split 비활성화
+    unsetopt sh_word_split
+fi
