@@ -51,3 +51,8 @@ if __name__ == "__main__":
     # 특정 포맷으로 출력
     now = datetime.datetime.now()
     print(now.strftime("%H:%M:%S"))
+
+    # 문자->datetime 타입으로 변환
+    now = "2020-12-31"
+    nnow = datetime.datetime.strptime(now, "%Y-%m-%d")
+    print(type(nnow), nnow)
