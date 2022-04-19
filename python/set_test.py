@@ -3,10 +3,9 @@
 # python version : 2.x 3.x
 # desc : set 테스트
 
-
 data = ['aaa', 'bbb', 'aaa', 'ccc']
 print(list(data))
-# set 은 중복 데이터를 제거한다.
+# set 은 중복 데이터를 제거한다.(순서없음)
 set_data = set(data)
 print(set_data)
 

@@ -11,8 +11,7 @@ filename += ".text"
 
 
 def test_file_write(val):
-
-    myfile = open(filename, "w")
+    myfile = open(filename, "w", encoding="utf8")
     for idx in range(1, 5):
         # 숫자를 문자열로 변경하여 문자열 합치기
         strMsg = str(idx) + " " + val + "\n"
@@ -21,6 +20,8 @@ def test_file_write(val):
         # print 함수를 통한 파일 쓰기
         # 3.x
         # print(strMsg, end='', file=myfile)
+        # print(strMsg, end='', file=sys.stdout)
+        # print(strMsg, end='', file=sys.stderr)
         # 2.x
         myfile.write(strMsg)
     myfile.close()
@@ -49,7 +50,11 @@ def test_file_read2():
             print(temp)
     except IOError as err:
         print("can't open file...." + str(err))
+        # pass 아무것도 하지 않고 그냥 넘어간다.
+        # 위 print 없다면 에러가 발생하기 때문에 pass 로 존재만 유지
         pass
+    except Exception as err:
+        print("알수 없는 에러 발생!" + str(err))
     finally:
         if myfile is not None:
             myfile.close()

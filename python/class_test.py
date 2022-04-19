@@ -7,8 +7,12 @@
 # import sys
 
 
-# 클래스 테스트
-class TestClass:
+class Parent:
+    def func1(self):
+        print("parent func1")
+
+# 클래스 테스트(Parent 클래스 상속)
+class TestClass(Parent):
     val1 = 0
 
     # 생성자
@@ -21,6 +25,8 @@ class TestClass:
 
     def func1(self):
         print("func1")
+        # 부모클래스 func1() 호출
+        super().func1()
 
     def func2(self, parameter):
         print("func2 parameter = ", parameter)

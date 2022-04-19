@@ -3,7 +3,6 @@
 # python version : 2.x 3.x
 # desc : 리스트 테스트
 
-
 def test_print_list(val):
     #     print("func1")
     for idx in val:
