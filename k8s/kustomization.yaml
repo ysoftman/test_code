@@ -1,0 +1,24 @@
+# confitmap 생성기
+configMapGenerator:
+  - name: example-from-properties-file
+    files:
+      - kustomize.properties
+  - name: example-from-env-file
+    envs:
+      - kustomize.env
+  - name: example-from-literal
+    literals:
+      - aaa=1a
+      - bbb=2b
+# secret 생성기
+secretGenerator:
+  - name: example-secret-from-file
+    files:
+      - kustomize-password.txt
+  - name: example-secret-literal
+    literals:
+      - username=ysoftman
+      - password=apple
+# kustomize-deployment.yaml 리소스에서
+resources:
+  - kustomize-deployment.yaml

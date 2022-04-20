@@ -26,7 +26,7 @@ bash ./get_container_disk_usage.sh
 # service 에서 사용할 이름이 매칭될 수 있도록 CN을 다음과 같이 설정한다. (CN=${SERVICE_NAME}.${NAMESPACE}.svc)
 openssl req -x509 -newkey rsa:2048 -keyout validating-webhook-key.pem -out validating-webhook-cert.pem -days 100000 -nodes -subj "/CN=ingress-nginx-controller-admission.ingress-nginx.svc"
 
-# secret 리소스를 등록하자.(base64 인코딩돼 등록되기 때문에 secrete 리소스를 보면 LS0... 으로 시작하는 문자열이 된다.)
+# secret 리소스를 등록하자.(base64 인코딩돼 등록되기 때문에 secret 리소스를 보면 LS0... 으로 시작하는 문자열이 된다.)
 kubectl create secret tls ingress-validation-tls -n ingress-nginx \
 --key validating-webhook-key.pem \
 --cert validating-webhook-cert.pem
@@ -38,4 +38,14 @@ cat ingress_admission.yaml | sed "s/\${CA_BUNDLE}/${CA_BUNDLE}/" | kubectl apply
 
 # nginx 문법에러가 있는 ingress 리소스 등록시 admission 에서 탐지되어 리소스로 등록되면 안된다.
 kubectl apply -f syntax_error_ingress.yaml
+```
+
+## kustomize 테스트
+
+<https://kubernetes.io/ko/docs/tasks/manage-kubernetes-objects/kustomization/>
+
+```bash
+# kustomize 로 configmap, secret 와 이를 deployment 에서 참조하는 명세 생성(stdout)
+# kustomization.yaml, kustomization.yml Kustomization 파일이름만 허용
+val4="ysoftman" kubectl kustomize .
 ```
