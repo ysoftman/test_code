@@ -1,4 +1,4 @@
-# 패키지(모듈이 모인 디렉토리)가이닌 모듈이 같은 경로에 있는 경우
+# 패키지(모듈이 모인 디렉토리)가 이닌 모듈이 같은 경로에 있는 경우
 # import fruite_module as fm
 # alias 로 패키지.모듈 사용하기
 import fruite_package.fruit_module as fm
