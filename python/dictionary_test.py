@@ -22,12 +22,14 @@ val1['key2'] = [50, 60, 70]
 print("val1 = ", val1)
 print("val1['key1'] = ", val1["key1"])
 print("val1['key2'] = ", val1["key2"])
+# key2 의 리스트 값중 0번째 출력
+print("val1['key2'][0] = ", val1["key2"][0])
+
 # 없는 키 인덱싱시 에러로 중단
 # print("val1['key32'] = ", val1["key3"])
 # get()을 사용하면 None  값으로 에러없이 계속 실행가능
 print("val1.get('key3'] = ", val1.get("key3"))
 print('val1.keys() = ',val1.keys())
-
 
 # key3 값이 없으면 추가
 if not 'key3' in val1:
@@ -37,13 +39,11 @@ if not 'key3' in val1:
 if 'key3' in val1:
     val1['key3'] = "bbb"
     print("add {key3:bbb}")
-
-
 print("print all in val1", val1)
 
-
-# key2 의 리스트 값중 0번째 출력
-print(val1["key2"][0])
+# key3 요소 삭제
+del val1["key3"]
+print("del val1['key3']\nprint all in val1", val1)
 
 # 정렬 테스트
 print("\n")
