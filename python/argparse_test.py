@@ -1,9 +1,20 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 2.x 3.x
+# python version : 3.x
 # desc : argparse 테스트
 
 import argparse
+
+
+# *args : arguments 로 여러개의 인자를 받아 tuple 로 처리
+# **kwargs : keyword arguments 로 여러개의 인자를 받아 dictionary 로 처리
+def generalArg(*args, **kwargs):
+    print("args:", args)
+    for i in range(len(args)):
+        print(f"args[{i}]: {args[i]}")
+    print(kwargs)
+    for k, v in kwargs.items():
+        print(f"kwargs[{k}]: {v}")
 
 
 def ArgParse():
@@ -25,8 +36,9 @@ def ArgParse():
 
 
 if __name__ == '__main__':
-    args = ArgParse()
+    generalArg(123,456,123, a=123, b="ysoftman")
 
+    args = ArgParse()
     # 옵션 예시
     # python argparse_test.py -h
     # python argparse_test.py -a 1 -b 2

@@ -13,6 +13,14 @@ def tuple_test():
     # 표현시 () 를 사용한다. 리스트는 [] 사용
     tp = (1, 'ysoftman', 7, 'abc')
     print('tuple = ', tp)
+    # 기본은 값에 대한 iterate
+    for v in tp:
+        print("iterate tp(tuple):", v)
+
+    # 인덱스로 iterate 하려면 range 사용
+    for i in range(len(tp)):
+        print("iterate tp(tuple)[{}]:{}".format(i, tp[i]))
+
 
     # 튜플이 리스트와 다른점 2
     # 튜플은 데이터 수정을 할 수 없지만 리스트보다 조회 속도가 빠른다.
