@@ -1,4 +1,4 @@
-// heap (최대 or 최소를 root 로 위치시키는 와전 이진트리 구조) 사용 테스트
+// heap (최대 or 최소를 root 로 위치시키는 완전 이진트리 구조) 사용 테스트
 // https://pkg.go.dev/container/heap#example-package-PriorityQueue
 package main
 
@@ -45,7 +45,7 @@ func main() {
 	// root 1 를 가져오기(제거) O(logN)
 	fmt.Println("pop:", heap.Pop(ih))
 	fmt.Println(*ih)
-	// 1이 마지막 leaf 노느에 추가되고 부모노드와 자리르 바뀌면서 root 노드가 된다. O(logN)
+	// 1이 마지막 leaf 노느에 추가되고 부모노드와 자리를 바뀌면서 root 노드가 된다. O(logN)
 	heap.Push(ih, 1)
 	fmt.Println(*ih)
 }
