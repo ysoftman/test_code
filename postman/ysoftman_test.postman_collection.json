@@ -1,0 +1,33 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ysoftman_test",
+		"_postman_id": "28486554-d1d3-e0be-0fee-775d92caa76a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "www.daum.net",
+			"request": {
+				"url": "www.daum.net",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "www.google.com",
+			"request": {
+				"url": "www.google.com",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
