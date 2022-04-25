@@ -3,9 +3,11 @@
 # python version : 3.5 이상
 # desc : annotation(type hint) 테스트
 
-# a: int = "1" # 타입힌트는 힌트일뿐이라서 실제 타입이 달라로 에러가 발생하진 않는다.
+# annotation 은 힌트일 뿐이라서 실제 타입이 달라로 에러가 발생하진 않는다.
+# a: int = "1" # 변수 타입 힌트를 명시할대는 : 타입사용
 a: int = 1
 b: str = "ysoftman"
+# 리턴 타입을 힌트로 명시할때는 -> 사용
 def func1(param1: int, param2: float, param3: str) -> bool:
     print("{}-{}-{}".format(param1, param2, param3))
     return True
