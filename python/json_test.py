@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
+# python version : 3.x
 # author: ysoftman
-# python version : 2.x
 # desc : json 파싱
 import os
 import json
@@ -8,8 +8,8 @@ import sys
 
 # python 2.x 한글 파일 저장을 위해 필요
 # python 3.x 에서는 필요 없음
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 # 인코딩 상태 확인
 print(("sys.stdin.encoding:", sys.stdin.encoding))
@@ -33,15 +33,15 @@ strJson = '''
 outfile = os.path.basename(__file__)
 outfile = outfile.split('.')[0]
 outfile = outfile + "_out.json"
-
+print("outfile:",outfile)
 
 def parse_json():
     # json 스트링 로드(파싱)
     # python 2.x
     # utf-8 외 euc-kr 등 2개 이상의 인코딩값들이 들어 있을 경우 무시한다.
-    unicodedstrJson = unicode(strJson, errors='ignore')
+    # unicodedstrJson = unicode(strJson, errors='ignore')
     # python 3.x
-    # unicodedstrJson = strJson
+    unicodedstrJson = strJson
     jsonData = json.loads(unicodedstrJson)
 
     # 해당 키 출력
@@ -70,16 +70,21 @@ def parse_json():
 
     # file 로 쓰기
     print("outfile :", outfile)
-    fp = open(outfile, mode='wb')
+    # python 2.x
     # 참고 https://docs.python.org/2/library/json.html
-    # json.dump(jsonData, fp, indent=2) # json 파일에 한글 \uXXX 로 escape 되어 기록된다.
-    json.dump(jsonData, fp, indent=2, ensure_ascii=False)
+    # fp = open(outfile, mode='wb')
+    # json 파일에 한글 \uXXX 로 escape 되어 기록되면 ensure_ascii=Flase로 설정
+    fp = open(outfile, mode='w')
+    jsonDumps = json.dumps(jsonData, indent=2, ensure_ascii=False)
+    print("jsonDumps--->", jsonDumps)
+    fp.write(jsonDumps)
     fp.close()
 
     # 출력된 json 파일 읽기
     print("\n\nload from json file.")
     fp = open(outfile, 'rb')
-    fromJSONFile = json.load(fp, encoding='utf-8')
+    # fromJSONFile = json.load(fp, encoding='utf-8')
+    fromJSONFile = json.load(fp)
     print("fromJSONFile['obj1']['key1']:", fromJSONFile['obj1']['key1'])
     print("fromJSONFile['obj1']['key2']:", fromJSONFile['obj1']['key2'])
     print("fromJSONFile['obj2']['key1']:", fromJSONFile['obj2']['key1'])
@@ -100,13 +105,19 @@ def parse_json():
     print("fp.read():\n", fp.read())
     fp.close()
 
-    # obj1 만 가져와 새 json object 로 기록하기
+    # obj1 만 가져오고
     newjson = {}
     newjson['obj1'] = fromJSONFile['obj1']
     newjson['version'] = "v1.0"
+    # object array 만들기
+    newjson['objarr'] = []
+    newjson['objarr'].append({"name":"lemon", "num":123})
+    newjson['objarr'].append({"name":"apple", "cost":123, "desc":"good!"})
     print("newjson:", newjson)
-    fp = open(outfile, 'wb')
-    json.dump(newjson, fp, indent=2, ensure_ascii=False)
+    fp = open(outfile, 'w')
+    jsonDumps = json.dumps(newjson, indent=2, ensure_ascii=False)
+    print("jsonDumps--->", jsonDumps)
+    fp.write(jsonDumps)
     fp.close()
 
 
