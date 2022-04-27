@@ -1,6 +1,5 @@
 // ysoftman
 // map 사용
-// go builtin map 은 hash table 을 사용해 O(1) 시간 복잡도를 가진다.
 package main
 
 import (
