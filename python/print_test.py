@@ -19,8 +19,16 @@ for i in range(1,11):
 
 for i in range(1,11):
     # 오른쪽기준으로 10자리 공백으로 채우고, 양수+ 음수- 표시
-    print("{0: >+10}".format(i))
+    print("{0:>+10}".format(i))
     print("{0: >+10}".format(i*-1))
+
+for i in range(1,11):
+    # 10자리 기준으로 가운데 정렬
+    print("{0:^10}".format(i))
+
+# 최대 길이를 변수로 받아 설정하는 경우
+max_length=15
+print("{:>{max_len}}".format("ysoftman", max_len=max_length), f'-> max_len:{max_length}')
 
 # , 로 3자리수마다 표현, 양수+ 음수- 표시
 print("{0:>+,}".format(10000000000))
