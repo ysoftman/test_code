@@ -5,9 +5,13 @@
 
 
 def tuple_test():
-    # 변수를 묶어 튜플 생성
-    (name, age, phone) = ("ysoftman", 20, 123)
-    print("name,age,phone=",name,age,phone)
+    # 튜플 생성(packing)
+    tp = ("ysoftman", 20, 123, 111, 222, 333, '123-456-789')
+    print("tp = ", tp)
+    # 튜플을 변수로 할당(unpacking)
+    # etc 에는 age, phone 사이의 값들이 list 타입으로 들어간다.
+    name, age, *etc, phone = tp
+    print("name,age,etc,phone=",name, age, etc, phone)
 
     # 튜플이 리스트와 다른점 1
     # 표현시 () 를 사용한다. 리스트는 [] 사용
