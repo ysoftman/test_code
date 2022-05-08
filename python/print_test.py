@@ -28,6 +28,8 @@ for i in range(1,11):
 
 # 최대 길이를 변수로 받아 설정하는 경우
 max_length=15
+# 3.6 부터 Literal String Interpolation(fstring) 사용
+# https://peps.python.org/pep-0498/#:~:text=In%20Python%20source%20code%2C%20an,%3E%3E%3E%20anniversary%20%3D%20datetime.
 print("{:>{max_len}}".format("ysoftman", max_len=max_length), f'-> max_len:{max_length}')
 
 # , 로 3자리수마다 표현, 양수+ 음수- 표시
