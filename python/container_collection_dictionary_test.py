@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
-# desc : 딕션어리 테스트
+# desc : collection(컨테이너) 중 딕션어리 테스트
 
 # import os
 # import sys
-import collections
 import operator
 
 # dictionary 테스트
