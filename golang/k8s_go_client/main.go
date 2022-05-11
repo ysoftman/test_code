@@ -4,7 +4,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -16,9 +18,11 @@ import (
 )
 
 func main() {
+	// go run ./main.go -kubeconfig /Users/ysoftman/.kube/aaa.yaml -pod
 	var kubeconfig *string
 	if home := homedir.HomeDir(); home != "" {
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+		kubeconfigpaths := strings.Split(os.Getenv("KUBECONFIG"), ":")
+		kubeconfig = flag.String("kubeconfig", kubeconfigpaths[len(kubeconfigpaths)-1], "(optional) absolute path to the kubeconfig file ex)"+filepath.Join(home, ".kube", "config"))
 	} else {
 		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 	}

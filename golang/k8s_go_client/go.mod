@@ -1,4 +1,4 @@
-module myk8s
+module k8s_go_clinet
 
 go 1.16
 
