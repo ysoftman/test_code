@@ -1,11 +1,16 @@
 #!/bin/bash
 #ysoftman
-
+set -ex
 msg="lemon (days 1) 100\napple (days 2) 200"
-
 echo -e $msg
 
-# 결과에서 3번재열만 출력
+# 결과의 모든열 출력
+echo -e $msg | awk '{print $0}'
+
+# 결과에서 1번,3번째 제거한 모든열 출력
+echo -e $msg | awk '{$1=$3=""; print $0}'
+
+# 결과에서 3번째 열만 출력
 echo -e $msg | awk '{print $3}'
 
 # 입력 레코드 구분자
