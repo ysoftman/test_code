@@ -10,8 +10,19 @@ echo -e $msg | awk '{print $0}'
 # 결과에서 1번,3번째 제거한 모든열 출력
 echo -e $msg | awk '{$1=$3=""; print $0}'
 
-# 결과에서 3번째 열만 출력
-echo -e $msg | awk '{print $3}'
+# 결과에서 1,2,3번째 열 모두 붙여서 출력, 이렇게 되면 이후 필드 구분처리(OFS)이 안된다.
+echo -e $msg | awk '{print $1$2$3}'
+# " " 로 필드 사이에 공백을 출력할 수는 있지만 이후에 필드 구분처리(OFS)가 안된다.
+echo -e $msg | awk '{print $1" "$2" "$3}'
+# , 를 주면 공백으로 출력되고 이후에 필드 구분처리(OFS)도 된다.
+echo -e $msg | awk '{print $1,$2,$3}'
+
+# 결과의 모든 열 출력후 ysoftman 추가
+echo -e $msg | awk '{print $0,"ysoftman"}'
+
+# 하나의 print 가 하나의 레코드
+# 아래처럼 print 를 두번쓰면 2개의 레코드(레코드 출력시 엔터구분(ORS 설정)
+echo -e $msg | awk '{print $0; print "ysoftman"}'
 
 # 입력 레코드 구분자
 # RS(Record Separator, default newline)
@@ -20,7 +31,7 @@ echo -e $msg | awk '{print $1}' RS=' '
 # OFS(Output Field Separator, default blank)
 # 출력 레코드 구분자
 # ORS(Output Record Separator, default new line)
-echo -e $msg | awk '{print $1,$2,$3}' OFS=',' ORS=' '
+echo -e $msg | awk '{print $1,$2,$3}' OFS='___' ORS=' '
 echo ""
 
 # 결과에서 NF(Num of Fields) 마지막 컬럼(파일이름)만 출력
