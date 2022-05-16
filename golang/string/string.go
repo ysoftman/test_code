@@ -96,4 +96,12 @@ func main() {
 		num2, _ := strconv.Atoi(strings.Join(str2, ""))
 		fmt.Println("num1+num2:", num1+num2)
 	}()
+
+	func() {
+		fmt.Println("-----")
+		str1 := "lemon apple banana mango orange"
+		// count
+		fmt.Println("strings.Count(str1, \"a\"):", strings.Count(str1, "a"))
+		fmt.Println("strings.Count(str1, \"e\"):", strings.Count(str1, "e"))
+	}()
 }
