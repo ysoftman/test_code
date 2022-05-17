@@ -1,6 +1,6 @@
 // ysoftman
 // stl vector 의 값(클래스) 삭제 테스트
-// g++ -std=c++11 stl_vector_test.cpp && ./a.out
+// g++ -std=c++11 vector_test.cpp && ./a.out
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -84,15 +84,15 @@ void vector_test2()
 	vec_my_data.insert(vec_my_data.begin(), "ccc");
 	vec_my_data.insert(vec_my_data.begin(), "bbb");
 	vec_my_data.insert(vec_my_data.begin(), "aaa");
-
 	vec_my_data.push_back("ddd");
 	vec_my_data.push_back("eee");
-	vec_my_data.push_back("fff");
+	vec_my_data.insert(vec_my_data.end(), "fff");
 
 	for (auto i : vec_my_data)
 	{
 		printf("%s\n", i.c_str());
 	}
+	cout << "---" << endl;
 
 	// 특정 위치 찾아서 추가
 	std::vector<std::string>::iterator myiter;
@@ -101,6 +101,10 @@ void vector_test2()
 		if (*myiter == "ccc")
 		{
 			printf("find --> %s\n", (*myiter).c_str());
+			std::vector<std::string> vec_temp = {"_lemon_", "_apple_", "_orange_"};
+			vec_my_data.insert(myiter, vec_temp.begin(), vec_temp.end());
+			vec_my_data.insert(vec_my_data.begin(), vec_temp.begin(), vec_temp.begin() + 2);
+			vec_my_data.insert(vec_my_data.begin(), vec_temp.begin(), std::next(vec_temp.begin()));
 			break;
 		}
 	}
@@ -114,19 +118,6 @@ void vector_test2()
 	else if (std::next(myiter) == vec_my_data.end())
 	{
 		vec_my_data.push_back("_last_found_");
-	}
-	// 마지막 원소로 찾은게 아니면 찾은것 다음에 끼워 넣기
-	else
-	{
-		std::vector<std::string>::iterator next_iter = std::next(myiter);
-		// insert 된 원소를 리턴한다.
-		next_iter = vec_my_data.insert(next_iter, "_7_");
-		next_iter = vec_my_data.insert(next_iter, "_6_");
-		next_iter = vec_my_data.insert(next_iter, "_5_");
-		next_iter = vec_my_data.insert(next_iter, "_4_");
-		next_iter = vec_my_data.insert(next_iter, "_3_");
-		next_iter = vec_my_data.insert(next_iter, "_2_");
-		next_iter = vec_my_data.insert(next_iter, "_1_");
 	}
 
 	for (auto i : vec_my_data)
@@ -174,8 +165,11 @@ void vector_test3()
 }
 int main()
 {
+	cout << "-----test1-----" << endl;
 	vector_test1();
+	cout << "-----test2-----" << endl;
 	vector_test2();
+	cout << "-----test3-----" << endl;
 	vector_test3();
 	return 0;
 }
