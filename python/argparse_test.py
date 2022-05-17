@@ -13,6 +13,11 @@ def generalArg(*args, **kwargs):
     for i in range(len(args)):
         print(f"args[{i}]: {args[i]}")
     print(kwargs)
+    print(kwargs.get("a", "a_devault_value"))
+    print(kwargs.get("b", "b_default_value"))
+    print(kwargs.get("c", "c_default_value"))
+    print(kwargs.get("d", ""))  # default value: empty
+    print(kwargs.get("e"))  # default value: None
     for k, v in kwargs.items():
         print(f"kwargs[{k}]: {v}")
 
@@ -35,13 +40,15 @@ def ArgParse():
     return args
 
 
-if __name__ == '__main__':
-    generalArg(123,456,123, a=123, b="ysoftman")
+if __name__ == "__main__":
+    # 빌트인 사용시
+    generalArg(123, 456, 123, a=123, b="ysoftman")
 
+    # argparse 사용시
     args = ArgParse()
     # 옵션 예시
     # python argparse_test.py -h
-    # python argparse_test.py -a 1 -b 2
-    # python argparse_test.py -a 1
+    # python argparse_test.py -a=1
+    # python argparse_test.py -a=1 -b 2
     print(args.a)
     print(args.b)
