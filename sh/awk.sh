@@ -44,6 +44,8 @@ echo -e $msg | awk '{print $(NF-1)}'
 
 # NR(Num of Record) 레코드(라인)번호
 echo -e $msg | awk '{print NR}'
+# 두번째 라인에서 첫번째 컬럼만 출력
+echo -e $msg | awk 'NR==2 {print $1}'
 
 # 전체 tolower
 echo -e $msg | awk '{print tolower($0)}'
