@@ -28,7 +28,13 @@ x = next(val1, "aaa")  # StopIteration 발생 하지 않고 기본값 aaa 반환
 print(x)
 
 print("------")
-val1 = iter(["apple", "lemon", "orange"])
-# lemon 값까지 반복
+val1 = ["apple", "lemon", "orange"]
+print(f"val1:{val1}")
+# iterator 가 아니면 next 시 에러 발생
+# x = next(val1)
+# print(x)
+# 하지만 다음과 같은 반복(lemon 값까지)에서는 next 사용 가능
 ret = next(e for e in val1 if e == "lemon")
+print(f"ret:{ret}")
+ret = next((e for e in val1 if e == "banana"), 100)
 print(f"ret:{ret}")
