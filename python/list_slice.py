@@ -3,6 +3,7 @@
 # python version : 2.x 3.x
 # desc : 리스트 테스트
 
+
 def test_print_list(val):
     #     print("func1")
     for idx in val:
@@ -21,16 +22,16 @@ fruits_list = ["apple", "banana", "grape", "lemon", "fineapple"]
 del val1[0]
 
 # 끝에 원소 추가
-val1.append('korean')
+val1.append("korean")
 
 # 특정 위치에  원소 추가
-val1.insert(0, 'english')
+val1.insert(0, "english")
 
 # 값으로 원소 삭제
-val1.remove('english')
+val1.remove("english")
 
 # 원소 위치 파악
-print("index of 'bbb' =", val1.index('bbb'))
+print("index of 'bbb' =", val1.index("bbb"))
 
 # 리스트에 리스트 추가
 val1.extend(fruits_list)
@@ -38,20 +39,19 @@ val1.extend(fruits_list)
 # 리스트 내용 출력
 test_print_list(val1)
 
-print('------')
+print("------")
 
 # list() builtin 함수로 리스트 만들기
 # empty list
 print("list() = ", list())
-print("list('abcdefghij') =", list('abcdefghij'))
-print("list('123456789') =", list('123456789'))
-print("list(var+'0' for var in '123456789') =",
-      list(var+'0' for var in '123456789'))
+print("list('abcdefghij') =", list("abcdefghij"))
+print("list('123456789') =", list("123456789"))
+print("list(var+'0' for var in '123456789') =", list(var + "0" for var in "123456789"))
 
 # list comprehensions(파이썬에서는 함축 이라는 의미로 사용한다.)로 리스트 만들기
 print("[i for i in range(1, 10)] =", [i for i in range(1, 10)])
 
-print('------')
+print("------")
 
 val1 = [8, 7, 6, 5, 4, 3, 2, 1]
 # val1 리스트 출력
@@ -80,7 +80,7 @@ print(val1[::-1])
 # 모든 요소에 대해서 뒤에서 부터 -2씩 증가하는 위치
 print(val1[::-2])
 
-print('------')
+print("------")
 
 # 원본 데이터는 그대로 두고 val2 에 정렬
 val2 = sorted(val1)
