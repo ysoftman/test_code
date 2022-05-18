@@ -24,7 +24,7 @@ print(x)
 x = next(val1)
 print(x)
 # x = next(val1) # iter 마지막을 지났기 때문에 StopIteration 예외 발생
-x = next(val1, "aaa") # StopIteration 발생 하지 않고 기본값 aaa 반환
+x = next(val1, "aaa")  # StopIteration 발생 하지 않고 기본값 aaa 반환
 print(x)
 
 print("------")
