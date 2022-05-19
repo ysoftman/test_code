@@ -2,7 +2,11 @@
 
 # 무한 루프
 # cnt=0
-# while :
+# while : ; do
+#     sleep 1
+#     cnt=$(($cnt+1))
+#     echo $cnt
+# done
 # # 또는
 # for (( ; ; ))
 # do
