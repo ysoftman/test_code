@@ -35,7 +35,7 @@ public:
             return;
         }
         char msg[512];
-        sprintf(msg, "ITEM(ITEM &lhs) Lvalue copy constructor(%s %d)", name.c_str(), val);
+        sprintf(msg, "ITEM(ITEM &lhs) Lvalue constructor(%s %d)", name.c_str(), val);
         cout << msg << endl;
     }
     ITEM(ITEM &&rhs) : name(std::move(rhs.name)), val(std::move(rhs.val))
@@ -45,7 +45,7 @@ public:
             return;
         }
         char msg[512];
-        sprintf(msg, "ITEM(ITEM &&rhs) Rvalue copy constructor(%s %d)", name.c_str(), val);
+        sprintf(msg, "ITEM(ITEM &&rhs) Rvalue constructor(%s %d)", name.c_str(), val);
         cout << msg << endl;
     }
     ~ITEM()
@@ -76,22 +76,21 @@ void printItemList(std::list<ITEM> itemList)
     }
 }
 
+// push_back(), emplace_back() 은 인자가
+// lvalue reference 인 경우 copy 된다.
+// rvalue reference 인 경우 move 된다.
+// 하지만 emplace_back 는 임시 생성없이 벡터내에 바로에 바로 생성할 수 있다.
 int main()
 {
     cout << "----- using vector push_back() -----" << endl;
     std::vector<ITEM> vec1;
-    // push_back() 의 기본 구현은 인자가
-    // lvalue reference 인경우 copy 된다.
-    // rvalue reference 인경우 move 된다.
     // 임시 item 객체 생성 -> rvalue 복사 생성자로 vector 에 추가(복사) -> 임시 item 객체 삭제
     vec1.push_back(ITEM("lemon", 100));
-    vec1.push_back(ITEM("apple", 200));
 
     cout << "----- using vector emplace_back() -----" << endl;
     std::vector<ITEM> vec2;
-    // emplace 를 사용하면 vector 내에 item 이 생성되고 생성된 item 에 값을 설정하기 때문에 임시 item 객체를 생성하지 않아도 된다.
+    // vector 내에 item 이 생성되고 생성된 item 에 값을 설정하기 때문에 임시 item 객체를 생성하지 않아도 된다.
     vec2.emplace_back("lemon", 100);
-    vec2.emplace_back("apple", 200);
 
     cout << endl;
     enableMsg = false;
