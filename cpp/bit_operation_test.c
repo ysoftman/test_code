@@ -24,12 +24,20 @@ void print_binary_digit(int num)
 
 int main()
 {
-    int a = 100, b = 128;
-    printf("a: %d, b: %d\n", a, b);
+    int a = 2;
+    printf("a: %d\n", a);
     printf("not operator ~a: %d\n", ~a);
     printf("not not operator ~~a: %d\n", ~~a);
-    printf("(-) -> (+) using not operator ~a+1: %d\n", ~a+1);
-    printf("(+) -> (-) using not operator ~(~a+1)+1: %d\n", ~(~a+1)+1);
+    a = 10;
+    printf("a: %d\n", a);
+    printf("not operator ~a: %d\n", ~a);
+    printf("not not operator ~~a: %d\n", ~~a);
+    printf("(-) -> (+) using not operator ~a+1: %d\n", ~a + 1);
+    printf("(+) -> (-) using not operator ~(~a+1)+1: %d\n", ~(~a + 1) + 1);
+
+    a = 100;
+    int b = 128;
+    printf("a: %d, b: %d\n", a, b);
     int temp = a & b;
     printf("a&b: %d\n", temp);
     temp = a | b;
