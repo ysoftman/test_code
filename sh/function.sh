@@ -17,7 +17,7 @@ function testfunc0 {
 }
 
 # 사용자 함수 파마리터도 $# $1 $2 .. 으로 받는다.
-# function 을 명시하지 않아도 된다.
+# function 을 명시하지 않아도 되지만 () 를 명시해야 한다.
 testfunc1() {
     if [ $# != 2 ]; then
         echo "func_argc($#) != 2"
