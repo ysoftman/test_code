@@ -12,7 +12,12 @@ main_arg2=$2
 echo "main_arg1 =" ${main_arg1}
 echo "main_arg2 =" ${main_arg2}
 
+function testfunc0 {
+    echo "testfunc0()...$1 $2"
+}
+
 # 사용자 함수 파마리터도 $# $1 $2 .. 으로 받는다.
+# function 을 명시하지 않아도 된다.
 testfunc1() {
     if [ $# != 2 ]; then
         echo "func_argc($#) != 2"
@@ -30,6 +35,7 @@ testfunc1() {
 }
 
 # 함수 호출
+testfunc0 lemon 123
 testfunc1 ${main_arg1} ${main_arg2}
 
 # 함수 호출 후 stdout 값을 리턴으로 사용한다.
