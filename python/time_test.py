@@ -37,10 +37,10 @@ if __name__ == "__main__":
     }
     # 요일 (월요일:0~일요일:6)
     wday = time.localtime().tm_wday
-    print(wday, "->", day_of_week.get(wday))
+    print(f"{wday} -> {day_of_week.get(wday)}")
 
     end = time.perf_counter()
-    print("elapsed time : ", end - start, "sec")
+    print(f"elapsed time : {end - start} sec")
 
     # 현재 타임스탬프
     print(datetime.date.fromtimestamp(time.time()))
@@ -53,6 +53,6 @@ if __name__ == "__main__":
     print(now.strftime("%H:%M:%S"))
 
     # 문자->datetime 타입으로 변환
-    now = "2020-12-31"
-    nnow = datetime.datetime.strptime(now, "%Y-%m-%d")
-    print(type(nnow), nnow)
+    now = "2020-12-31T15:30:50+09:00"
+    nnow = datetime.datetime.strptime(now, "%Y-%m-%dT%H:%M:%S%z")
+    print(f"nnow: {type(nnow)}, {nnow}, {nnow.date()}, {nnow.time()}, {nnow.timestamp()}")
