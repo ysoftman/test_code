@@ -55,4 +55,6 @@ if __name__ == "__main__":
     # 문자->datetime 타입으로 변환
     now = "2020-12-31T15:30:50+09:00"
     nnow = datetime.datetime.strptime(now, "%Y-%m-%dT%H:%M:%S%z")
-    print(f"nnow: {type(nnow)}, {nnow}, {nnow.date()}, {nnow.time()}, {nnow.timestamp()}")
+    print(
+        f"nnow: {type(nnow)}, {nnow}, {nnow.date()}, {nnow.time()}, {nnow.timestamp()}"
+    )
