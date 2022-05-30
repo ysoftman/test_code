@@ -37,63 +37,63 @@ def to_human_readable_timeformat(timestr: str) -> str:
     return f"{int(hours/24/365)} years"
 
 
-print(to_human_readable_timeformat("2010-12-31T17:25:10+09:00"))
-# print((datetime.now() - timedelta(days=10)).strftime("%Y-%m-%dT%H:%M:%S+09:00"))
+TZ = "+09:00"  # KST
+# TZ = "-05:00"  # CDT
+TIME_FORMAT = "%Y-%m-%dT%H:%M:%S" + TZ
+print(to_human_readable_timeformat("2010-12-31T17:25:10" + TZ))
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(weeks=120)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(weeks=120)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(weeks=50)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(weeks=50)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(weeks=3)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(weeks=3)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(days=100)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(days=100)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(days=12)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(days=12)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(hours=5)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(hours=5)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(minutes=30)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(minutes=30)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(seconds=90)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(seconds=90)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(seconds=59)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(seconds=59)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(seconds=0.2)).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        (datetime.now() - timedelta(seconds=0.2)).strftime(TIME_FORMAT)
     )
 )
 print(
     to_human_readable_timeformat(
-        (datetime.now() - timedelta(milliseconds=100)).strftime(
-            "%Y-%m-%dT%H:%M:%S+09:00"
-        )
+        (datetime.now() - timedelta(milliseconds=100)).strftime(TIME_FORMAT)
     )
 )
 
