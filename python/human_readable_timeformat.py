@@ -6,8 +6,6 @@ from sqlite3 import Timestamp
 def to_human_readable_timeformat(timestr: str) -> str:
     if timestr is None:
         return None
-
-    # tz = datetime.strptime(timestr, "%Y-%m-%dT%H:%M:%S%z").utcoffset()
     d = (
         datetime.utcnow().timestamp()
         - datetime.utcfromtimestamp(
