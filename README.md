@@ -1,9 +1,7 @@
 # ysoftman 테스트 코드
 
-
 [![GitHub license](https://img.shields.io/github/license/ysoftman/test_code.svg?style=for-the-badge)](https://github.com/ysoftman/test_code/blob/develop/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/ysoftman/test_code.svg?style=for-the-badge)](https://github.com/ysoftman/test_code/issues)
-
 
 ```text
                     ______
@@ -15,4 +13,3 @@
 ```
 
 주로 이것 저것 관심가는 것들 테스트한 내용입니다.:smile:
-
