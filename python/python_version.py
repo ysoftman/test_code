@@ -14,5 +14,3 @@ if python_major_version >= 3:
     print ("python", python_major_version)
 else:
     print ("python", python_major_version)
-
-
