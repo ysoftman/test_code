@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function MyHeader(props) {
@@ -33,11 +34,24 @@ function MyContents(props) {
 }
 
 function App() {
+  // 초기값 lemon 을 갖는 state 생성
+  // state 는 2길이의 0번째는 값, 1번째는 설정함수를 가진다.
+  const [mode, setMode] = useState("lemon")
+  const [click_name, setId] = useState(null)
   const mylist = [
     { id: 1, name: 'lemon', cost: 100 },
     { id: 2, name: 'apple', cost: 200 },
     { id: 3, name: 'orange', cost: 300 },
   ]
+
+  let message = null
+  if (mode === "lemon") {
+    message = "mode:lemon Yellow, click_id:" + click_name
+  } else if (mode === "apple") {
+    message = "mode:apple, RED, click_id:" + click_name
+  } else if (mode === "orange") {
+    message = "mode:orange, Orange, click_id:" + click_name
+  }
   // return default_App()
   return <div >
     <MyHeader title123="my title" onChangeMode111={() => {
@@ -45,7 +59,10 @@ function App() {
     }}> </MyHeader>
     <MyContents items={mylist} onChangeMode222={(val) => {
       alert("val:" + val)
+      setMode(val) // App() 컴포넌트를 다시 실행한다.
+      setId(val)
     }}></MyContents>
+    {message}
   </div>
 
 }
