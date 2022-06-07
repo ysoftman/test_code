@@ -1,0 +1,70 @@
+#!/bin/sh
+reset_color='\033[0m'
+black='\033[0;30m'
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+blue='\033[0;34m'
+purple='\033[0;35m'
+cyan='\033[0;36m'
+white='\033[0;37m'
+darkgray='\033[1;30m'
+lightred='\033[1;31m'
+lightgreen='\033[1;32m'
+lightyellow='\033[1;33m'
+lightblue='\033[1;34m'
+lightpurple='\033[1;35m'
+lightcyan='\033[1;36m'
+lightwhite='\033[1;37m'
+
+# 참고
+# man githooks
+# This hook is invoked by git-commit(1), and can be bypassed with the --no-verify option.
+
+install_python_pkg() {
+    # echo ${@}
+    for i in $@; do
+        ${1} --version 2>&1 /dev/null
+        if [[ $? != 0 ]]; then
+            set -e
+            pip3 install ${1} > /dev/null
+            set -
+        fi
+    done
+}
+
+install_python_pkg "pylint black"
+
+# --cached(--staged) : 스테이징된것만
+# select only Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), Unmerged (U), Unknown (X)
+# 소문자인로 사용시 exclude
+# --diff-filter=d : 삭제된 파일은 빼고
+# --name-only : diff 내용없이 파일명만 출력
+staging_files=$(git diff --diff-filter=d --cached --name-only | grep ".py$")
+
+if [[ ${staging_files} == "" ]]; then
+    echo -e "[.githooks/pre-commit] there's no staging files..."
+    exit 0
+fi
+
+ok=false
+for file in $staging_files; do
+    pylint --disable="all" --enable="W0611" $file
+    if [[ $? != 0 ]]; then
+        PASS=false
+    fi
+done
+for file in $staging_files; do
+    black $file
+    if [[ $? != 0 ]]; then
+        PASS=false
+    fi
+done
+
+if [[ ok == false ]]; then
+    echo -e "[.githooks/pre-commit] ${red}failed to check..., please check errors/warnings above${reset_color}"
+    exit 1
+fi
+
+echo -e "[.githooks/pre-commit] ${green}succeeded~${reset_color}"
+exit 0
