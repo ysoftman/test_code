@@ -47,6 +47,8 @@ rm -r z.txt; curl -X POST http://localhost:9000/api/query -d "select * from ds_t
 rm -f z.txt; curl -X POST http://localhost:9000/api/query -d "select * from ds_cars as a, ds_train as b where a.income > '11000' and b.pixel0 = '0'" > z.txt
 ```
 
+## [API 명세](./api.md)
+
 ## db 확인시
 
 ```bash

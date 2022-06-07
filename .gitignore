@@ -6,6 +6,8 @@
 *.log
 *.dump
 *.gz
+*.pyc
+*.o
 cpp/*.txt
 golang/*/*.txt
 __pycache__
