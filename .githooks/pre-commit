@@ -21,6 +21,13 @@ lightwhite='\033[1;37m'
 # man githooks
 # This hook is invoked by git-commit(1), and can be bypassed with the --no-verify option.
 
+ECHO="echo"
+# "bash"
+current_shell=$(ps -p $$ | awk 'NR==2')
+if [[ $current_shell == *"bash"* ]]; then
+    ECHO="echo -e"
+fi
+
 install_python_pkg() {
     # echo ${@}
     for i in $@; do
@@ -43,7 +50,7 @@ install_python_pkg "pylint black"
 staging_files=$(git diff --diff-filter=d --cached --name-only | grep ".py$")
 
 if [[ ${staging_files} == "" ]]; then
-    echo -e "[.githooks/pre-commit] there's no staging files..."
+    $ECHO "${cyan}[.githooks/pre-commit] there's no staging files...${reset_color}"
     exit 0
 fi
 
@@ -62,9 +69,9 @@ for file in $staging_files; do
 done
 
 if [[ ok == false ]]; then
-    echo -e "[.githooks/pre-commit] ${red}failed to check..., please check errors/warnings above${reset_color}"
+    $ECHO "[.githooks/pre-commit] ${red}failed to check..., please check errors/warnings above${reset_color}"
     exit 1
 fi
 
-echo -e "[.githooks/pre-commit] ${green}succeeded~${reset_color}"
+$ECHO "[.githooks/pre-commit] ${green}succeeded~${reset_color}"
 exit 0
