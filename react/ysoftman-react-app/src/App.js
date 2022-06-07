@@ -2,7 +2,26 @@ import logo from './logo.svg';
 import React, { useState } from 'react';
 import './App.css';
 
-function MyHeader(props) {
+
+// Create Component, (컴포넌트는 대문자로 시작해야 한다.)
+function Create(props) {
+  return <article>
+    <h2>Create</h2>
+    <form onSubmit={event => {
+      event.preventDefault() // reload 방지
+      const name = event.target.name.value // target(form)의 태그(name)의 값(value)
+      const cost = event.target.cost.value // target(form)의 태그(name)의 값(value)
+      props.onCreate(name, cost)
+    }}>
+      <p><input type="text" name="name" placeholder='title'></input></p>
+      <p><textarea name="cost" placeholder='body'></textarea></p>
+      <p><input type="submit" value="Create"></input></p>
+    </form>
+  </article>
+}
+
+// MyHeader Component, (컴포넌트는 대문자로 시작해야 한다.)
+function MYHeader(props) {
   return <header>
     <h1><a href='/' onClick={(event) => {
       event.preventDefault() // reload 방지
@@ -12,6 +31,7 @@ function MyHeader(props) {
   </header >
 }
 
+// MyContents Component, (컴포넌트는 대문자로 시작해야 한다.)
 function MyContents(props) {
   const mylist = []
   for (let i = 0; i < props.items.length; i++) {
@@ -38,11 +58,12 @@ function App() {
   // state 는 2길이의 0번째는 값, 1번째는 설정함수를 가진다.
   const [mode, setMode] = useState("lemon")
   const [click_name, setId] = useState(null)
-  const mylist = [
+  const [mylist, setMylist] = useState([
     { id: 1, name: 'lemon', cost: 100 },
     { id: 2, name: 'apple', cost: 200 },
     { id: 3, name: 'orange', cost: 300 },
-  ]
+  ])
+  const [nextId, setNextId] = useState(4);
 
   let message = null
   if (mode === "lemon") {
@@ -51,18 +72,36 @@ function App() {
     message = "mode:apple, RED, click_id:" + click_name
   } else if (mode === "orange") {
     message = "mode:orange, Orange, click_id:" + click_name
+  } else if (mode === "create") {
+    message = <Create onCreate={(_name, _cost) => {
+      // 신규 아이템
+      const newItem = { id: nextId, name: _name, cost: _cost }
+      // 기존 mylist 복제
+      const newList = [...mylist]
+      // 신규 아이템 추가
+      newList.push(newItem)
+      // mylist state 변경
+      setMylist(newList)
+      setNextId(nextId + 1)
+    }}></Create> // create 컴포넌트 사용
   }
+
   // return default_App()
   return <div >
-    <MyHeader title123="my title" onChangeMode111={() => {
+    <MYHeader title123="my title" onChangeMode111={() => {
       alert("test")
-    }}> </MyHeader>
+    }}> </MYHeader>
     <MyContents items={mylist} onChangeMode222={(val) => {
       alert("val:" + val)
       setMode(val) // App() 컴포넌트를 다시 실행한다.
       setId(val)
     }}></MyContents>
     {message}
+    <br></br>
+    <a href="/" onClick={(event) => {
+      event.preventDefault()
+      setMode("create")
+    }}>create</a>
   </div>
 
 }
