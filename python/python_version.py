@@ -5,12 +5,12 @@
 import imp
 import sys
 
-print (sys.version_info)
+print(sys.version_info)
 
 python_major_version = sys.version_info[0]
 
 # 3.x 버전대
 if python_major_version >= 3:
-    print ("python", python_major_version)
+    print("python", python_major_version)
 else:
-    print ("python", python_major_version)
+    print("python", python_major_version)
