@@ -54,3 +54,11 @@ fi
 if [[ $var == *"lemon 1"* ]]; then
     echo "contain"
 fi
+
+var="lemon"
+num=2
+if (($num >= 1)) && [[ $var == "lemon" ]]; then
+    echo "$num > 1 && $var == lemon"
+else
+    echo "$num < 1 || $var != lemon"
+fi
