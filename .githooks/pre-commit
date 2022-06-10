@@ -68,6 +68,7 @@ for file in $staging_files; do
     if [[ $? != 0 ]]; then
         PASS=false
     fi
+    git add $file
 done
 
 if [[ ok == false ]]; then
