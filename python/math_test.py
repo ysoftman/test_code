@@ -8,10 +8,13 @@ import math
 
 def do_math():
     # 올립(ceil), 반올림(round), 버림(floor)
-    num = 123.5
+    num = 123.5687281
     print('---\nnum =', num)
     print('math.ceil(num) =', math.ceil(num))
     print('round(num) =', round(num))
+    print('round(num,1) =', round(num,1)) # 소수점1자리까지 표현
+    print('round(num,2) =', round(num,2)) # 소수점2자리까지 표현
+    print('round(num,3) =', round(num,3)) # 소수점3자리까지 표현
     print('math.floor(num) =', math.floor(num))
 
     # 절대값
