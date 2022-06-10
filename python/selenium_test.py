@@ -11,8 +11,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 # from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("selenium test")
 
     # 크롬 드라이버 다운로드받아서 사용해야 한다.
