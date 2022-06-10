@@ -1,5 +1,6 @@
 #!/bin/bash
-#ysoftman
+# ysoftman
+# '' 에 사용하는 프로그래밍은 c 언어 문법과 비슷함
 set -ex
 msg="lemon (days 1) 100\napple (days 2) 200"
 echo -e $msg
@@ -59,6 +60,21 @@ echo -e $msg | awk '{print toupper($0)}'
 # -F 필드 구분을 '(' 으로 한다.
 echo -e "$msg" | awk -F '(' '{print "("$2,$1}'
 
+# 레코드 중 첫번째 필드값이 lemon 이면 aaa 로 레코드 출려, 아니면 레코드 그대로 출력
+echo -e $msg | awk '{if ($1 == "lemon") print "aaa"; else print $0; }' 
+
+# 레코드 중 첫번째 필드값이 apple 이면 첫번째 필드만 very-appley 변경해서 레코드 출려, 아니면 레코드 그대로 출력 를 5번 반복
+echo -e $msg | awk '{
+for (i=0;i<5;i++) {
+    if ($1 == "apple") {
+        $1="very-apple"
+        print $0
+    }
+    else {
+        print $0;
+    }
+}
+}'
 
 # 각 라인의 스트링을 변수로 저장 -> heredoc 으로 설정 -> echo 출력
 msg="lemon
