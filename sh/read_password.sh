@@ -1,5 +1,6 @@
 #!/bin/bash
 # ysoftman
+# -p(prompt text) 프롬프트 메시지 출력
 # -s(slient) 사용자 입력을 표시하지 않는다.
 # stdin 을 user, password 변수로 저장
 # 입력을 공백을 구분 하는 경우
