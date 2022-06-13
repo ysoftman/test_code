@@ -6,8 +6,11 @@ read -p "input:" input
 echo $input
 
 # -n 3 으로 문자 3개만 입력 받기
-read -3 ysoftman
+read -n 3 ysoftman
 echo $ysoftman
+
+# 이스케이프문자 처리 ex) a\t\t\b
+read -r var1; echo $var1
 
 # 텍스트 파일 만들기
 echo 'create text_file_sample\n'
