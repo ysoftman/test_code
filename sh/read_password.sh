@@ -7,6 +7,7 @@
 # read -s user password
 # 입력을 엔터로 구분 하는 경우
 read -p 'user:' -s user
+echo ""
 read -p 'password:' -s password
 
 echo ""
