@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 
@@ -78,6 +78,14 @@ function MyContents(props) {
   </article>
 }
 function App() {
+  // react hook 주의 사항!!!
+  // react hook (사용자 커스텀 훅도) 함수이름은 use로 시작한다.
+  // hook 은 현재 함수 레벨에서만 호출해야한다.
+  // func aa() { const [a, seta] = useState() }
+  // if (true) { const [a, seta] = useState() }
+  // for (let i=0;i<10;i++) { const [a, seta] = useState() }
+  // 와 같이 호출 할 수 없도록되어 되어 있다.
+
   // 초기값 lemon 을 갖는 state 생성
   // state 는 2길이의 0번째는 값, 1번째는 설정함수를 가진다.
   const [mode, setMode] = useState("")
@@ -87,6 +95,21 @@ function App() {
     { id: 2, name: 'apple', cost: 200 },
     { id: 3, name: 'orange', cost: 300 },
   ])
+
+
+  // 컴포넌트가 마운트될때와 렌더딩될때마다 호출
+  // useEffect(() => {
+  //   console.log("useEffect 마운트될때와 렌더딩될때마다 호출")
+  // })
+  // 컴포넌트가 마운트될때와
+  // useEffect(() => {
+  //   console.log("useEffect 마운트될때만 호출됨")
+  // }, [])
+  // 컴포넌트가 마운트될때와 [] 의 값이 변경됐을때만 호출
+  useEffect(() => {
+    console.log("useEffect 컴포넌트가 마운트될때와 [click_id, mode] = %s %s의 값이 변경됐을때만 호출", click_id, mode)
+  }, [click_id, mode])
+
   const [nextId, setNextId] = useState(4);
   let updateDeleteComponent = null
   let message = null
