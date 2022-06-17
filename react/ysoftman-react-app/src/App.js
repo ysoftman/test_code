@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import MyComp1 from "./mycomp1";
 
 
 // Create Component, (컴포넌트는 대문자로 시작해야 한다.)
@@ -184,6 +185,9 @@ function App() {
       setClickID(id) // click_id 변경
     }}></MyContents>
     {message}
+    {/* message 가 있으면 없으면 MyComp1 보이기 */}
+    {/* {message ? <MyComp1 param1={message} param2="ok" /> : null} */}
+    {message && <MyComp1 param1={message} param2="ok" />}
     <br></br>
     <ul>
       <li>
