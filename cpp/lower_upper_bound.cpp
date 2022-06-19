@@ -18,17 +18,15 @@ int main()
     printf("\ntarget --> %d\n", target);
 
     // target 보다 작은 마지막 위치
-    vector<int>::iterator iter_lower = lower_bound(v.begin(), v.end(), target);
+    // vector<int>::iterator iter_lower = lower_bound(v.begin(), v.end(), target);
+    auto iter_lower = lower_bound(v.begin(), v.end(), target);
     // target 보다 커지는 첫번째 위치
-    vector<int>::iterator iter_upper = upper_bound(v.begin(), v.end(), target);
-    printf("lower bound position: %ld\n", (iter_lower-v.begin()));
-    printf("upper bound position: %ld\n", (iter_upper-v.begin()));
-
-    auto lower = lower_bound(v.begin(), v.end(), 3);
-    auto upper = upper_bound(v.begin(), v.end(), 3);
-    printf("lower bound value: %d\n", *lower);
-    printf("upper bound value: %d\n", *upper);
-
+    // vector<int>::iterator iter_upper = upper_bound(v.begin(), v.end(), target);
+    auto iter_upper = upper_bound(v.begin(), v.end(), target);
+    printf("lower bound position: %ld\n", (iter_lower - v.begin()));
+    printf("upper bound position: %ld\n", (iter_upper - v.begin()));
+    printf("lower bound value: %d\n", *iter_lower);
+    printf("upper bound value: %d\n", *iter_upper);
 
     return 0;
 }
