@@ -25,3 +25,24 @@ echo $num1
 echo $out
 # modular 연산
 echo "9%8 = $((9%8))"
+
+echo '-----'
+for ((i=0;i<10;i++)); do
+    printf "i:%d cnt:%d\n" $i $cnt
+    ((cnt++))
+done
+
+echo '-----'
+text='apple
+lemon
+orange'
+echo $text
+# set -e
+line_cnt=0
+for line in ${text}; do
+    echo $line_cnt $line
+    # set -e 설정된 경우 line_cnt=0 부터 시작하는 경우 에러발생해 스크립트가 종료된다.
+    # 따라서 set -e 가 있다면 로 사용하는게 안전하다.
+    # ((line_cnt++))
+    ((line_cnt+=1))
+done
