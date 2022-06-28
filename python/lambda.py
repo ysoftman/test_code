@@ -5,7 +5,7 @@
 
 
 def add(a):
-    return a+1
+    return a + 1
 
 
 print(add(9))
@@ -13,7 +13,8 @@ print(add(9))
 # 람다 문법
 # (lambda 파라미터 : 표현)(파라미터값)
 # 위를 람다식으로 바꾸면
-print((lambda a: a+1)(9))
+print((lambda a: a + 1)(9))
+print((lambda a, b: a + b)(1, 2))
 
 
 def a(a):
