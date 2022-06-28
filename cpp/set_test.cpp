@@ -18,15 +18,22 @@ int main()
 {
 	// set은 저장되는 항목들을 내부적으로 정렬해준다.
 	//내림차순
-	set<int, less<int> > s;
-	set<int, less<int> >::iterator i;
+	set<int, less<int>> s;
+	set<int, less<int>>::iterator i;
 
-	s.insert(4);
+	std::pair<std::set<int>::iterator, bool> ret;
+	// insert 결과로 pair<iterator, bool> 로
+	// first: 값의 iterator, second
+	// second: 값이 추가되면 true, 이미 값이 있었으면 false
+	ret = s.insert(4);
+	cout << *ret.first << endl;			// 4
+	cout << ret.second << endl;			// 처음 추가된거라 true(1)
+	cout << s.insert(4).second << endl; // 이미 존재하는 값이라 false(0)
 	s.insert(0);
 	s.insert(-9);
 	s.insert(7);
 	s.insert(-2);
-	s.insert(4);	// 중복된 값은 하나로 취급
+	s.insert(4); // 중복된 값은 하나로 취급
 	s.insert(2);
 
 	cout << "The set contains the elements: ";

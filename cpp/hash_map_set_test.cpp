@@ -50,7 +50,16 @@ int main()
 
     // Unordered_set are containers that store unique elements in no particular order, and which allow for fast retrieval of individual elements based on their value.
     unordered_set<string> hashset;
-    hashset.insert("lemon");
+
+    std::pair<std::unordered_set<string>::iterator, bool> ret;
+    // insert 결과로 pair<iterator, bool> 로
+    // first: 값의 iterator, second
+    // second: 값이 추가되면 true, 이미 값이 있었으면 false
+    ret = hashset.insert("lemon");
+    cout << *ret.first << endl; // "lemon"
+    cout << ret.second << endl; // 처음 추가된거라 true(1)
+    cout << *(hashset.insert("lemon").first) << endl;
+    cout << hashset.insert("lemon").second << endl; // 이미 존재하는 값이라 false(0)
     hashset.insert("orange");
     hashset.insert("fineapple");
     hashset.insert("apple");
