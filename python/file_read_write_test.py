@@ -4,13 +4,14 @@
 # desc : 파이썬 기본 테스트
 
 import os
+
 # import sys
 
 filename = os.path.basename(__file__)
 filename += ".text"
 
 
-def test_file_write(val):
+def write_file(val):
     myfile = open(filename, "w", encoding="utf8")
     for idx in range(1, 5):
         # 숫자를 문자열로 변경하여 문자열 합치기
@@ -28,7 +29,7 @@ def test_file_write(val):
     return None
 
 
-def test_file_read1():
+def read_file_by_line():
     myfile = open(filename, "r")
     line = myfile.readline()
     while line:
@@ -37,7 +38,7 @@ def test_file_read1():
         line = myfile.readline()
 
 
-def test_file_read2():
+def read_file_at_once():
     myfile = None
     try:
         myfile = open(filename, "r")
@@ -60,9 +61,25 @@ def test_file_read2():
             myfile.close()
 
 
-test_file_write("파일에 쓰기 테스트")
-print('-----')
-test_file_read1()
-print('-----')
-test_file_read2()
+def get_file_size():
+    with open(filename, "r") as f:
+        # fileObject.seek(offset[, whence]) 파일스트림에서 위치 옮기기
+        # offset - This is the position of the read/write pointer within the file.
+        # whence - This is optional and defaults to 0 which means absolute file positioning, other values are 1 which means seek relative to the current position and 2 means seek relative to the file's end.
+        # 파일의 끝에서의 0번째(오프셋) 위치 => 파일 크기
+        f.seek(0, 2)
+        # 파일 스트림에서의 위치 현재 위치
+        return f.tell()
+
+
+write_file("파일에 쓰기 테스트")
+print("-----")
+read_file_by_line()
+print("-----")
+read_file_at_once()
+print("-----")
+print(f"get_file_size:{get_file_size()}")
+
+
 os.remove(filename)
+print(f"{filename} has been removed.")
