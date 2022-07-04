@@ -72,6 +72,11 @@ def get_file_size():
         return f.tell()
 
 
+def get_file_size_by_fstat():
+    with open(filename, "r") as f:
+        return os.fstat(f.fileno()).st_size
+
+
 write_file("파일에 쓰기 테스트")
 print("-----")
 read_file_by_line()
@@ -79,6 +84,7 @@ print("-----")
 read_file_at_once()
 print("-----")
 print(f"get_file_size:{get_file_size()}")
+print(f"get_file_size_by_fstat:{get_file_size_by_fstat()}")
 
 
 os.remove(filename)
