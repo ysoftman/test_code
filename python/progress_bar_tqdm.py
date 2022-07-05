@@ -6,10 +6,11 @@
 
 # tqdm
 # https://github.com/tqdm/tqdm
-# pip install tqdm
-
+# pip install tqdm aiofiles aiohttp
+import chunk
 from tqdm import tqdm
-import requests, time, os, shutil
+import requests, time, os
+import asyncio, aiofiles, aiohttp
 
 
 def sample():
@@ -52,7 +53,7 @@ def download_test(url):
         unit="B",
         unit_scale=True,
         total=content_length,
-        desc=url,
+        desc="[download]" + url,
         mininterval=0.1,
     )
     # iter_content() 는 요청 응답을 chunk 단위로 반복한다.
@@ -66,6 +67,50 @@ def download_test(url):
     pbar.update(content_length - received)
 
 
+async def read_file(filename):
+    file_size = os.path.getsize(filename)
+    # unit : byte (디폴트: 아이템(it))
+    # unit_scale : 단위가 커지면 자동으로 단위 변경
+    # total : 전체 크기
+    # desc : 왼쪽에 설명 표시
+    # mininterval: 최소 갱신 주기
+    pbar = tqdm(
+        unit="B",
+        unit_scale=True,
+        total=file_size,
+        desc="[upload]" + filename,
+        mininterval=0.1,
+    )
+    chunk_size = 1024 * 1024
+    sent = 0
+    async with aiofiles.open(filename, "rb") as f:
+        data = await f.read(chunk_size)
+        while data:
+            # 현재 읽은 데이터 리턴
+            yield data
+            if sent + len(data) <= file_size:
+                pbar.update(len(data))
+                sent += len(data)
+            data = await f.read(chunk_size)
+            # await asyncio.sleep(0.5)
+    pbar.update(file_size - sent)
+
+
+async def upload_test(url, filename):
+    try:
+        async with aiohttp.ClientSession() as session:
+            # read_file 로 읽은 데이터만큼 전송
+            async with session.put(url, data=read_file(filename)) as res:
+                return res
+    except Exception as e:
+        print(e)
+
+
 if __name__ == "__main__":
     sample()
     download_test("https://www.youtube.com")
+    # 업로드 테스트용 더미 파일 생성
+    os.system("dd if=/dev/urandom of=ysoftman_10MB bs=1024 count=10000")
+    # 비동기로 chunk 만큼 파일 데이터를 읽어가며 업로드한다.
+    asyncio.run(upload_test("https://httpbin.org/put", "ysoftman_10MB"))
+    os.remove("ysoftman_10MB")
