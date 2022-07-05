@@ -82,25 +82,26 @@ async def read_file(filename):
         mininterval=0.1,
     )
     chunk_size = 1024 * 1024
-    sent = 0
+    read_data_size = 0
     async with aiofiles.open(filename, "rb") as f:
         data = await f.read(chunk_size)
         while data:
             # 현재 읽은 데이터 리턴
             yield data
-            if sent + len(data) <= file_size:
+            if read_data_size + len(data) <= file_size:
                 pbar.update(len(data))
-                sent += len(data)
+                read_data_size += len(data)
             data = await f.read(chunk_size)
             # await asyncio.sleep(0.5)
-    pbar.update(file_size - sent)
+    pbar.update(file_size - read_data_size)
 
 
 async def upload_test(url, filename):
     try:
-        async with aiohttp.ClientSession() as session:
+        basic_auth = aiohttp.BasicAuth(login="ysoftman", password="test123")
+        async with aiohttp.ClientSession(auth=basic_auth) as session:
             # read_file 로 읽은 데이터만큼 전송
-            async with session.put(url, data=read_file(filename)) as res:
+            async with session.put(url=url, data=read_file(filename)) as res:
                 return res
     except Exception as e:
         print(e)
