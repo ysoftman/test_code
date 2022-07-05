@@ -102,6 +102,8 @@ async def upload_test(url, filename):
         basic_auth = aiohttp.BasicAuth(login="ysoftman", password="test123")
         timeout = aiohttp.ClientTimeout(total=10)
         async with aiohttp.ClientSession(auth=basic_auth, timeout=timeout) as session:
+            # async for d in read_file(filename):
+            #     print(d)
             # read_file 로 읽은 데이터만큼 전송
             async with session.put(url=url, data=read_file(filename)) as res:
                 return res
