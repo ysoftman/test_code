@@ -96,10 +96,12 @@ async def read_file(filename):
     pbar.update(file_size - read_data_size)
 
 
+# aiohttp.ClientSession 참고 <https://docs.aiohttp.org/en/stable/client_quickstart.html>
 async def upload_test(url, filename):
     try:
         basic_auth = aiohttp.BasicAuth(login="ysoftman", password="test123")
-        async with aiohttp.ClientSession(auth=basic_auth) as session:
+        timeout = aiohttp.ClientTimeout(total=10)
+        async with aiohttp.ClientSession(auth=basic_auth, timeout=timeout) as session:
             # read_file 로 읽은 데이터만큼 전송
             async with session.put(url=url, data=read_file(filename)) as res:
                 return res
