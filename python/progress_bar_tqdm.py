@@ -102,7 +102,7 @@ async def upload_test(url, filename):
     try:
         basic_auth = aiohttp.BasicAuth(login="ysoftman", password="test123")
         timeout = aiohttp.ClientTimeout(total=10)
-        # set header blow to hang problem with wsgidav server(https://github.com/mar10/wsgidav)
+        # set header below to hang problem with wsgidav server(https://github.com/mar10/wsgidav)
         # https://yoonbh2714.blogspot.com/2022/07/webdav-chunked-size.html
         # headers = {}
         # headers["X_EXPECTED_ENTITY_LENGTH"] = repr(os.fstat(fileobj.fileno()).st_size) # fileobject case
