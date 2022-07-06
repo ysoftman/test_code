@@ -96,7 +96,9 @@ async def read_file(filename):
     pbar.update(file_size - read_data_size)
 
 
-# aiohttp.ClientSession 참고 <https://docs.aiohttp.org/en/stable/client_quickstart.html>
+# aiohttp.ClientSession
+# <https://docs.aiohttp.org/en/stable/client_quickstart.html>
+# <https://docs.aiohttp.org/en/stable/client_quickstart.html#streaming-uploads>
 async def upload_test(url, filename):
     try:
         basic_auth = aiohttp.BasicAuth(login="ysoftman", password="test123")
