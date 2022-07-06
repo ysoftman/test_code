@@ -7,7 +7,6 @@
 # tqdm
 # https://github.com/tqdm/tqdm
 # pip install tqdm aiofiles aiohttp
-import chunk
 from tqdm import tqdm
 import requests, time, os
 import asyncio, aiofiles, aiohttp
@@ -82,18 +81,18 @@ async def read_file(filename):
         mininterval=0.1,
     )
     chunk_size = 1024 * 1024
-    read_data_size = 0
+    read_chunk_size = 0
     async with aiofiles.open(filename, "rb") as f:
-        data = await f.read(chunk_size)
-        while data:
+        chunk = await f.read(chunk_size)
+        while chunk:
             # 현재 읽은 데이터 리턴
-            yield data
-            if read_data_size + len(data) <= file_size:
-                pbar.update(len(data))
-                read_data_size += len(data)
-            data = await f.read(chunk_size)
+            yield chunk
+            if read_chunk_size + len(chunk) <= file_size:
+                pbar.update(len(chunk))
+                read_chunk_size += len(chunk)
+            chunk = await f.read(chunk_size)
             # await asyncio.sleep(0.5)
-    pbar.update(file_size - read_data_size)
+    pbar.update(file_size - read_chunk_size)
 
 
 # aiohttp.ClientSession
