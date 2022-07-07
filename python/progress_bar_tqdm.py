@@ -101,7 +101,9 @@ async def read_file(filename):
 async def upload_test(url, filename):
     try:
         basic_auth = aiohttp.BasicAuth(login="ysoftman", password="test123")
-        timeout = aiohttp.ClientTimeout(total=10)
+        # default timeout is 300 seconds(5min), None 이나 0으로 하면 타임아웃 없음
+        # https://github.com/aio-libs/aiohttp/pull/5529/files
+        timeout = aiohttp.ClientTimeout(total=None)
         # set header below to hang problem with wsgidav server(https://github.com/mar10/wsgidav)
         # https://yoonbh2714.blogspot.com/2022/07/webdav-chunked-size.html
         # headers = {}
