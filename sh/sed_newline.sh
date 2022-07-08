@@ -12,8 +12,16 @@ echo "ysoftman&&lemon" | sed -e 's/&&/\
 /'
 
 # linux, mac
-# $....는 bash-ism 표현으로 \n 을 뉴라인으로 변환한다.
+# $'표현식' 은 bash-ism 표현으로 \n 을 뉴라인으로 변환한다.
 echo "ysoftman&&lemon" | sed $'s/&&/\\\n/'
+
+# delete empty line(\n 이 아닌 ^$(빈값) 조건으로 지운다.)
+echo "orange_empty_line
+
+lemon_empty_line
+
+apple_empty_line
+" | sed '/^$/d'
 
 
 # delete newline
