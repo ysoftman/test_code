@@ -33,7 +33,7 @@ pbar = tqdm(
 )
 
 path = f"/test/{filename}"
-# / 로 시작하면 업로두 후 파일이 없는것으로 표시된다.
+# / 로 시작하면 업로드 후 파일이 없는것으로 표시된다.
 path = path.lstrip("/")
 
 # upload to s3
