@@ -7,7 +7,7 @@
 
 void handler_sig_int(int sig)
 {
-	printf("%s(%d) signal(%d) received.\n", __FUNCTION__, __LINE__, sig);
+	printf("%s(%d) signal(signo:%d,signame:%s) received.\n", __FUNCTION__, __LINE__, sig, sys_signame[sig]);
 }
 
 int main()
