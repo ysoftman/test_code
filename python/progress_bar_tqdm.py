@@ -98,7 +98,7 @@ async def read_file(filename):
 # aiohttp.ClientSession
 # <https://docs.aiohttp.org/en/stable/client_quickstart.html>
 # <https://docs.aiohttp.org/en/stable/client_quickstart.html#streaming-uploads>
-async def upload_test(url, filename):
+async def upload_test(aiohttpSession, url, filename):
     try:
         basic_auth = aiohttp.BasicAuth(login="ysoftman", password="test123")
         # default timeout is 300 seconds(5min), None 이나 0으로 하면 타임아웃 없음
@@ -110,14 +110,26 @@ async def upload_test(url, filename):
         # headers["X_EXPECTED_ENTITY_LENGTH"] = repr(os.fstat(fileobj.fileno()).st_size) # fileobject case
         # headers["X_EXPECTED_ENTITY_LENGTH"] = repr(os.path.getsize(filename))
         # headers["User-Agent"] = "Darwin"
-        async with aiohttp.ClientSession(auth=basic_auth, timeout=timeout) as session:
-            # async for d in read_file(filename):
-            #     print(d)
-            # read_file 로 읽은 데이터만큼 전송
-            async with session.put(url=url, data=read_file(filename)) as res:
-                return res
+        # async for d in read_file(filename):
+        #     print(d)
+        # read_file 로 읽은 데이터만큼 전송
+        async with aiohttpSession.put(
+            url=url, auth=basic_auth, timeout=timeout, data=read_file(filename)
+        ) as res:
+            return res
     except Exception as e:
         print(e)
+
+
+async def upload_main():
+    aiohttpSession = aiohttp.ClientSession()
+    # 세션은 한번 생성하고 upload_main() 가 종료될때까지 재사용한다.
+    async with aiohttp.ClientSession() as aiohttpSession:
+        # 비동기로 chunk 만큼 파일 데이터를 읽어가며 업로드한다.
+        for i in range(3):
+            await upload_test(
+                aiohttpSession, "https://httpbin.org/put", "ysoftman_10MB"
+            )
 
 
 if __name__ == "__main__":
@@ -125,6 +137,8 @@ if __name__ == "__main__":
     download_test("https://www.youtube.com")
     # 업로드 테스트용 더미 파일 생성
     os.system("dd if=/dev/urandom of=ysoftman_10MB bs=1024 count=10000")
-    # 비동기로 chunk 만큼 파일 데이터를 읽어가며 업로드한다.
-    asyncio.run(upload_test("https://httpbin.org/put", "ysoftman_10MB"))
+    # 다음 구문은 asyncio.run() 로 대체가능
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(upload_main())
+    asyncio.run(upload_main())
     os.remove("ysoftman_10MB")
