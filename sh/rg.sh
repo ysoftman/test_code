@@ -6,7 +6,7 @@
 # -i, --ignore-case
 # -g, --glob GLOB ..
 # -c, --count
-# -t, --type TYPE ... 
+# -t, --type TYPE ...
 # -I, --no-filename
 # -A, --after-context NUM
 # -B, --before-context NUM
@@ -25,6 +25,6 @@ rg ysoftman --no-filename
 rg -i "easy|medium|hard" --glob *.go -c
 
 # .go 파일에서 easy or medium or hard 가 없는 라인 카운트
-# -c 옵션에 zero(0)인 경우 출력되지 않아 
+# -c 옵션에 zero(0)인 경우 출력되지 않아
 # --files-without-match 를 사용해야 한다.
 rg -i "easy|medium|hard" --glob *.go --files-without-match
