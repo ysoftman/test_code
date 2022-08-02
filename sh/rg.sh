@@ -23,8 +23,12 @@ rg ysoftman --no-filename
 
 # .go 파일에서 easy or medium or hard 가 있는 라인 카운트
 rg -i "easy|medium|hard" --glob *.go -c
+# *.cpp *.go 파일에 대해서
+rg -i "easy|medium|hard" -g *.cpp -g *.go -c
+# 또는
+rg -i "easy|medium|hard" -g *.{cpp,go} -c
 
 # .go 파일에서 easy or medium or hard 가 없는 라인 카운트
 # -c 옵션에 zero(0)인 경우 출력되지 않아
 # --files-without-match 를 사용해야 한다.
-rg -i "easy|medium|hard" --glob *.go --files-without-match
+rg -i "easy|medium|hard" -g *.{cpp,go} --files-without-match
