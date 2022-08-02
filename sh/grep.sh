@@ -31,3 +31,10 @@ echo 'fruite lemon apple' | grep -i "LEMON"
 
 # -m num, --max-count=num 개수만큼 매칭하고 reading 중지
 ls -1 | grep .sh -m 5 -n
+
+# easy or medium or hard 단어거 없는 파일명 파악
+# -i --ignore-care 대소문자 구별 없이 찾기
+# -E easy|medium|hard : easy or medium or hard 가 있는 라인 찾기
+# -c : 찾은 라인 카운트
+# | grep ":0" : 앞서 찾은 파일:카운트 중 :0 인것만 파악
+grep -i -E "easy|medium|hard" *.go -c | grep :0
