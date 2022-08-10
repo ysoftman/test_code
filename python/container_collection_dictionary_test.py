@@ -10,13 +10,15 @@ import operator
 # dictionary 테스트
 val1 = {}
 print("val1 = ", val1)
-val1 = {"aa":123, "bb":"lemon"}
+val1 = {"aa": 123, "bb": "lemon"}
 print("val1 = ", val1)
+# ** dictionary key argument 를 파악할 수 있다.
+print("val1 = {aa} {bb}".format(**val1))
 
 # key1 = 문자열 추가
 val1["key1"] = "string value"
 # key2 = 리스트 추가
-val1['key2'] = [50, 60, 70]
+val1["key2"] = [50, 60, 70]
 
 print("val1 = ", val1)
 print("val1['key1'] = ", val1["key1"])
@@ -28,15 +30,15 @@ print("val1['key2'][0] = ", val1["key2"][0])
 # print("val1['key32'] = ", val1["key3"])
 # get()을 사용하면 None  값으로 에러없이 계속 실행가능
 print("val1.get('key3'] = ", val1.get("key3"))
-print('val1.keys() = ',val1.keys())
+print("val1.keys() = ", val1.keys())
 
 # key3 값이 없으면 추가
-if not 'key3' in val1:
-    val1['key3'] = "aaaa"
+if not "key3" in val1:
+    val1["key3"] = "aaaa"
     print("add {key3:aaa}")
 # key3 값이 있으면 값 변경
-if 'key3' in val1:
-    val1['key3'] = "bbb"
+if "key3" in val1:
+    val1["key3"] = "bbb"
     print("add {key3:bbb}")
 print("print all in val1", val1)
 
@@ -54,7 +56,8 @@ for i in val2:
 
 # 내림 차순 정렬
 val3 = collections.OrderedDict(
-    sorted(val2.items(), key=operator.itemgetter(1), reverse=True))
+    sorted(val2.items(), key=operator.itemgetter(1), reverse=True)
+)
 print(val3)
 for i in val3:
     print("val3[%d] = %d" % (i, val3[i]))
