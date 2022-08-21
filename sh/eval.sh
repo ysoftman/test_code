@@ -11,7 +11,6 @@ echo "eval aa=ysoftman, " $aa
 
 # 에제2
 var1="ysoftman"
-
 var2="$"var1
-echo $var2          # $val2 라는 문자열 자체를 출력한다.
-eval "echo $var2"   # 문자열에 포함된 변수(또는 명령)를 실행하여 var1의 값을 출력하게 된다.
+echo $var2          # $val1 라는 문자열로 출력한다.
+eval "echo $var2"   # 문자열에 포함된 변수(또는 명령)를 쉘에 의해 var1변수로 처리하여 var1변수의 값을 출력하게 된다.
