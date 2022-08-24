@@ -2,7 +2,6 @@
 # k8s node 별 디스크 사용량 파악 스크립트
 # prerequisite : kubectl, jq
 
-
 calc_unit="/(1024*1024*1024)"
 nodes=$(kubectl get nodes | grep -vi name | awk '{print $1}')
 for node in ${nodes}; do
