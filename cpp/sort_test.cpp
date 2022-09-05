@@ -261,7 +261,7 @@ void InsertionSort(int arr[], int size)
 	}
 }
 
-// Radix Sort - best: O(N*M) average: O(N*M) worst: O(N*M)
+// Radix Sort (bucket sort 라고도 한다.) - best: O(N*M) average: O(N*M) worst: O(N*M)
 void RadixSort(int arr[], int size)
 {
 	int i = 0, j = 0;
