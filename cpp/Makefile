@@ -13,7 +13,8 @@ var1=123
 # ?= 는 이전에 변수가 선언되어 사용했다면 할당하지 않는다.
 # var1 은 이미 선언되어 ?= 연산으로는 100 할당할 수 없다.
 var1 ?= 100
-# += 값 추가 할당
+# += 값 추가 할당되어 111 222 가 된다.
+# 추가된 값은 공백으로 구분된다.
 var2 += 111
 var2 += 222
 # 변수에 열러값을 할당(확장)시 갑이 변수인 경우 참조하는데
@@ -77,7 +78,7 @@ all: clean $(OUTPUT)
 
 $(OUTPUT):
 	# output recipes
-# 탭 들여쓰기로 /bin/sh 실행
+	# 탭 들여쓰기로 /bin/sh 실행
 	@echo "origin var0=$(origin var0)"
 	@echo "origin var1=$(origin var1)"
 	@echo "var1=${var1}"
