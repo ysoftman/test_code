@@ -63,7 +63,7 @@ echo -e "$msg" | awk -F '(' '{print "("$2,$1}'
 echo -e "orange_abc_lemon_abc_apple" | awk -F "_abc_" '{print $1,$2,$3}'
 
 # 레코드 중 첫번째 필드값이 lemon 이면 aaa 로 레코드 출려, 아니면 레코드 그대로 출력
-echo -e $msg | awk '{if ($1 == "lemon") print "aaa"; else print $0; }' 
+echo -e $msg | awk '{if ($1 == "lemon") print "aaa"; else print $0; }'
 
 # 레코드 중 첫번째 필드값이 apple 이면 첫번째 필드만 very-apple로 변경해 레코드 출려, 아니면 레코드 그대로 출력 를 5번 반복
 echo -e $msg | awk '{
