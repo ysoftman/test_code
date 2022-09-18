@@ -59,6 +59,8 @@ echo -e $msg | awk '{print toupper($0)}'
 # (days xx) 부분 앞으로 옮기기
 # -F 필드 구분을 '(' 으로 한다.
 echo -e "$msg" | awk -F '(' '{print "("$2,$1}'
+# -F 값으로 문자열도 가능
+echo -e "orange_abc_lemon_abc_apple" | awk -F "_abc_" '{print $1,$2,$3}'
 
 # 레코드 중 첫번째 필드값이 lemon 이면 aaa 로 레코드 출려, 아니면 레코드 그대로 출력
 echo -e $msg | awk '{if ($1 == "lemon") print "aaa"; else print $0; }' 
