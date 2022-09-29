@@ -10,19 +10,30 @@ func main() {
 	// -x    negation              is 0 - x
 	// ^x    bitwise complement    is m ^ x  with m = "all bits set to 1" for unsigned x
 	//                                       and  m = -1 for signed x
-	a := 5 // 0101
-	fmt.Printf("%2d(%10b)\n", a, a)
+	// 위 설명대로 ^x 는
+	// x 가 unsigned 라면 0xfffff..(모든비트1) ^ x 로 동작하고
+	// x 가 signed 라면 -1 ^ x 로 동작한다
 
-	// a 는 부호가 있는 int 형이라 위 설명대로 -1 ^ a 로 not 을 구한다.
-	fmt.Printf("%2d(%10b)\n", ^a, ^a)
+	// not 구하기
+	var aa uint = 5 // 0101
+	fmt.Printf("%3d(%10b)\n", aa, aa)
+	// 모든 비트가 1로 설정된 m 과 xor 되어 not(비트 반전, 1의보수)결과를 구할 수 있다.
+	fmt.Printf("%3d(%10b)\n", ^aa, ^aa)
+	// 0xf 등으로 xor 해서 비트 범위를 줄여서 not 결과를 만들 수도 있다.
+	fmt.Printf("%3d(%10b)\n", 0xf^aa, 0xf^aa)
+
+	bb := 5 // 0101
+	// singed 형이라면 위 설명대로 -1 ^ bb 가 된다.
+	fmt.Printf("%3d(%10b)\n", ^bb, ^bb)
 
 	// 양수 -> 음수, MSB(Most Significant Bit) 는 음수가 된다.
-	// a 는 unsigned 라서 위 설명처럼  -1 과 xor 한다.
-	// 0101(5) ^ 1111(-7) => 1110(-6) + (1) => 1101(-5), 참고로 음수는 2의보수로 계산
-	fmt.Printf("%2d(%8b) -> %2d(%8b) -> %2d(%8b)\n", a, a, ^a, ^a, ^a+1, ^a+1)
-	a *= -1
+	// bb 는 signed 라서 위 설명처럼 ^bb 하면 -1 과 xor 된다.
+	// 여기에 +1(2의보수)를 하면 음수가 된다.
+	fmt.Printf("%3d(%8b) -> %3d(%8b) -> %3d(%8b)\n", bb, bb, ^bb, ^bb, ^bb+1, ^bb+1)
+
+	bb = -5
 	// 음수 -> 양수, MSB(Most Significant Bit) 는 양수가 된다.
-	// a 는 signed 라서 위 설명처럼 음수의 경우 -1 과 xor 한다.
-	// 1101(-5) ^ 1001(-1) => 0100(4) + 0001(1) => 0101(5)
-	fmt.Printf("%2d(%8b) -> %2d(%8b) -> %2d(%8b)\n", a, a, ^a, ^a, ^a+1, ^a+1)
+	// bb 는 signed 라서 위 설명처럼 ^bb 하면 -1 과 xor 된다.
+	// 여기에 +1(2의보수)를 하면 양수가 된다.
+	fmt.Printf("%3d(%8b) -> %3d(%8b) -> %3d(%8b)\n", bb, bb, ^bb, ^bb, ^bb+1, ^bb+1)
 }
