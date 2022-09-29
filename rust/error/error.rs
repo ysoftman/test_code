@@ -72,7 +72,7 @@ fn read_from_file() -> Result<String, io::Error> {
     // let mut f = File::open("error3.txt")?;
     // ? 로 read_to_string의 Result 리턴이 Ok 라면 계속 진행, Err 라면 리턴
     // f.read_to_string(&mut s)?;
-    // 다음과 같이 chaining 방식으로도 사용할 수 있다.
+    // 다음과 같이 chaining 방식으로도 사용할 수 있다.
     File::open("error3.txt")?.read_to_string(&mut s)?;
     Ok(s)
 }
