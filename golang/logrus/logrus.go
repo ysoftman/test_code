@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/natefinch/lumberjack"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -64,7 +64,8 @@ func main() {
 	fmt.Printf("luberjack rotate options\n%#v\n", lj)
 	fmt.Println("Press Ctrl + c to stop to rotate log...")
 	// json 형식으로 로그 출력
-	log.SetFormatter(&log.JSONFormatter{})
+	log.SetFormatter(&log.JSONFormatter{PrettyPrint: true})
+	printlog()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
