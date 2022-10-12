@@ -60,9 +60,9 @@ func (mc *MongoDBClient) DeleteDoc(filter interface{}) {
 	log.Println("---DeleteDoc result---")
 }
 
-func (mc *MongoDBClient) Find(filter interface{}, r interface{}) {
+func (mc *MongoDBClient) FindByPageSize(filter interface{}, r interface{}, pageSize int) {
 	// ascending sort by document _id
-	opt1 := options.Find().SetSort(bson.D{{Key: "_id", Value: 1}})
+	opt1 := options.Find().SetSort(bson.D{{Key: "_id", Value: 1}}).SetLimit(int64(pageSize))
 	cursor, err := mc.Client.Database("my_db").Collection("my_coll").Find(context.TODO(), filter, opt1)
 	if err != nil {
 		log.Println("failed to find document", err.Error())
@@ -104,15 +104,42 @@ func main() {
 		c.UpdateDoc(filter, update)
 	}
 
-	num := 5
+	num := 2
 	// find documents where document.Number == num
 	// filter := bson.D{{Key: "number", Value: bson.D{{Key: "$eq", Value: num}}}}
 	// find documents where document.Number < num
 	filter := bson.D{{Key: "number", Value: bson.D{{Key: "$gt", Value: num}}}}
 	docs := make([]samepleDoc1, 0)
-	c.Find(filter, &docs)
+	c.FindByPageSize(filter, &docs, 2)
 	for i := 0; i < len(docs); i++ {
 		fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
+	}
+
+	// documetn _id 다음 포맷으로 구성되어 있어, _id 크기비교로 범위를 탐색할 수 있다.
+	// https://www.mongodb.com/docs/manual/reference/method/ObjectId/#objectid
+	// A 4-byte timestamp + A 5-byte random value + A 3-byte incrementing counter
+	// 가장 오래된 document 파악
+	filter = bson.D{{Key: "number", Value: bson.D{{Key: "$gt", Value: 0}}}}
+	docs = make([]samepleDoc1, 0)
+	// 가장 오래된 document 부터 2개 문서 가져오기
+	c.FindByPageSize(filter, &docs, 2)
+	page := 0
+	lastObjID := docs[len(docs)-1].ObjId
+	for i := 0; i < len(docs); i++ {
+		fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
+	}
+	page++
+	fmt.Printf("lastObjID %v page %v\n", lastObjID, page)
+	for len(docs) > 0 {
+		lastObjID := docs[len(docs)-1].ObjId
+		filter = bson.D{{Key: "_id", Value: bson.D{{Key: "$gt", Value: lastObjID}}}}
+		docs = make([]samepleDoc1, 0)
+		c.FindByPageSize(filter, &docs, 2)
+		for i := 0; i < len(docs); i++ {
+			fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
+		}
+		page++
+		fmt.Printf("lastObjID %v page %v\n", lastObjID, page)
 	}
 
 	filter = bson.D{{Key: "number", Value: bson.D{{Key: "$gt", Value: 0}}}}
