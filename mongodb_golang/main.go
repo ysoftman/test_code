@@ -121,7 +121,7 @@ func main() {
 		fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
 	}
 
-	// documetn _id 다음 포맷으로 구성되어 있어, _id 크기비교로 범위를 탐색할 수 있다.
+	// document _id 다음 포맷으로 구성되어 있어, _id 크기비교로 범위를 탐색할 수 있다.
 	// https://www.mongodb.com/docs/manual/reference/method/ObjectId/#objectid
 	// A 4-byte timestamp + A 5-byte random value + A 3-byte incrementing counter
 	// 가장 오래된 document 파악
