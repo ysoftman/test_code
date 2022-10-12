@@ -88,6 +88,12 @@ type samepleDoc1 struct {
 	Desc   string             `json:"desc"`
 }
 
+func PrintDoc(docs []samepleDoc1) {
+	for i := 0; i < len(docs); i++ {
+		fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
+	}
+
+}
 func main() {
 	c := CreateMongoDBClient()
 
@@ -125,19 +131,16 @@ func main() {
 	c.FindByPageSize(filter, &docs, 2)
 	page := 0
 	lastObjID := docs[len(docs)-1].ObjId
-	for i := 0; i < len(docs); i++ {
-		fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
-	}
+	PrintDoc(docs)
 	page++
 	fmt.Printf("lastObjID %v page %v\n", lastObjID, page)
+	// 페이지당 2개 documents 로 계속 조회
 	for len(docs) > 0 {
 		lastObjID := docs[len(docs)-1].ObjId
 		filter = bson.D{{Key: "_id", Value: bson.D{{Key: "$gt", Value: lastObjID}}}}
 		docs = make([]samepleDoc1, 0)
 		c.FindByPageSize(filter, &docs, 2)
-		for i := 0; i < len(docs); i++ {
-			fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
-		}
+		PrintDoc(docs)
 		page++
 		fmt.Printf("lastObjID %v page %v\n", lastObjID, page)
 	}
