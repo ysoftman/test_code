@@ -1,6 +1,7 @@
 .vscode
 .DS_Store
 .settings
+.vagrant
 *.out
 *.retry
 *.log
@@ -8,6 +9,9 @@
 *.gz
 *.pyc
 *.o
+*.tar.gz
+*.pem
+*.tmp.*
 cpp/*.txt
 golang/*/*.txt
 __pycache__
@@ -20,3 +24,6 @@ curl_with_http3/curl-http3-mac
 curl_with_http3/curl/
 curl_with_http3/quiche/
 rust/*/target
+target/
+openssl-*/
+bin/

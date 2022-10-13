@@ -7,7 +7,7 @@ use std::io::ErrorKind;
 use std::io::Read;
 
 // RUST_BACKTRACE=full 환경변수로 백트레이스를 볼 수 있다.
-// rm -f error.txt error2.txt; rustfmt error.rs && rustc error.rs && RUST_BACKTRACE=full ./error
+// rm -f error.tmp.txt error2.txt; rustfmt error.rs && rustc error.rs && RUST_BACKTRACE=full ./error
 fn main() {
     // panic!("일부러 패닉 발생!");
 
@@ -21,7 +21,7 @@ fn main() {
     //     Err(E),
     // }
 
-    let f = File::open("error.txt");
+    let f = File::open("error.tmp.txt");
     // Result 타입결과에 따라 match 로 분기
     let _f = match f {
         // prelude 되어 있어 Result:: 를 명시하지 않는다.
@@ -41,7 +41,7 @@ fn main() {
         // ref 는 값을 매치하고 그 참조자를 제공
         Err(ref error) if error.kind() == ErrorKind::NotFound => {
             // 파일이 없으면 생성
-            match File::create("error.txt") {
+            match File::create("error.tmp.txt") {
                 Ok(file) => {
                     println!("파일을 새로 생성했습니다!");
                     file

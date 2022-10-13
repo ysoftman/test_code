@@ -16,7 +16,7 @@ print(("sys.stdin.encoding:", sys.stdin.encoding))
 print(("sys.stdout.encoding:", sys.stdout.encoding))
 
 
-strJson = '''
+strJson = """
 {
     "obj1" : {
         "key1": "aaa",
@@ -28,12 +28,13 @@ strJson = '''
         "arr" : [ "apple","lemon","banana" ]
     }
 }
-'''
+"""
 
 outfile = os.path.basename(__file__)
-outfile = outfile.split('.')[0]
-outfile = outfile + "_out.json"
-print("outfile:",outfile)
+outfile = outfile.split(".")[0]
+outfile = outfile + "_out.tmp.json"
+print("outfile:", outfile)
+
 
 def parse_json():
     # json 스트링 로드(파싱)
@@ -45,13 +46,13 @@ def parse_json():
     jsonData = json.loads(unicodedstrJson)
 
     # 해당 키 출력
-    print("jsonData['obj1']['key1']:", jsonData['obj1']['key1'])
-    print("jsonData['obj1']['key2']:", jsonData['obj1']['key2'])
-    print("jsonData['obj2']['key1']:", jsonData['obj2']['key1'])
-    print("jsonData['obj2']['key2']:", jsonData['obj2']['key2'])
+    print("jsonData['obj1']['key1']:", jsonData["obj1"]["key1"])
+    print("jsonData['obj1']['key2']:", jsonData["obj1"]["key2"])
+    print("jsonData['obj2']['key1']:", jsonData["obj2"]["key1"])
+    print("jsonData['obj2']['key2']:", jsonData["obj2"]["key2"])
 
     # 키 인덱싱으로 값 변경
-    jsonData['obj1']['key1'] = 'ysoftman'
+    jsonData["obj1"]["key1"] = "ysoftman"
 
     # 탐색
     for obj in jsonData:
@@ -74,7 +75,7 @@ def parse_json():
     # 참고 https://docs.python.org/2/library/json.html
     # fp = open(outfile, mode='wb')
     # json 파일에 한글 \uXXX 로 escape 되어 기록되면 ensure_ascii=Flase로 설정
-    fp = open(outfile, mode='w')
+    fp = open(outfile, mode="w")
     jsonDumps = json.dumps(jsonData, indent=2, ensure_ascii=False)
     print("jsonDumps--->", jsonDumps)
     fp.write(jsonDumps)
@@ -82,46 +83,48 @@ def parse_json():
 
     # 출력된 json 파일 읽기
     print("\n\nload from json file.")
-    fp = open(outfile, 'rb')
+    fp = open(outfile, "rb")
     # fromJSONFile = json.load(fp, encoding='utf-8')
     fromJSONFile = json.load(fp)
-    print("fromJSONFile['obj1']['key1']:", fromJSONFile['obj1']['key1'])
-    print("fromJSONFile['obj1']['key2']:", fromJSONFile['obj1']['key2'])
-    print("fromJSONFile['obj2']['key1']:", fromJSONFile['obj2']['key1'])
-    print("fromJSONFile['obj2']['key2']:", fromJSONFile['obj2']['key2'])
+    print("fromJSONFile['obj1']['key1']:", fromJSONFile["obj1"]["key1"])
+    print("fromJSONFile['obj1']['key2']:", fromJSONFile["obj1"]["key2"])
+    print("fromJSONFile['obj2']['key1']:", fromJSONFile["obj2"]["key1"])
+    print("fromJSONFile['obj2']['key2']:", fromJSONFile["obj2"]["key2"])
 
     # key3 필드가 없으면
-    if fromJSONFile['obj2'].get('key3') == None:
+    if fromJSONFile["obj2"].get("key3") == None:
         print("fromJSONFile['obj2']['key3'] is null")
     # key3 필드가 없으면 0 값으로 대체
-    print("set 0 if null field, fromJSONFile['obj2'].get('key3', 0)", fromJSONFile['obj2'].get(
-        'key3', 0))
+    print(
+        "set 0 if null field, fromJSONFile['obj2'].get('key3', 0)",
+        fromJSONFile["obj2"].get("key3", 0),
+    )
 
     # json.load 로 읽은 데이터는 u(유니코드 한글이 깨져 출력된다.)
     print("fromJSONFile:\n", fromJSONFile)
     # json.load 로 fp 는 fflush/file pointer 가 EOF 로 간것으로 추측, 따라서 다시 오픈해야한다.
-    fp = open(outfile, 'rb')
+    fp = open(outfile, "rb")
     # 그냥 파일을 읽으면 한글이 깨지 않고 그대로 나온다.
     print("fp.read():\n", fp.read())
     fp.close()
 
     # obj1 만 가져오고
     newjson = {}
-    newjson['obj1'] = fromJSONFile['obj1']
-    newjson['version'] = "v1.0"
+    newjson["obj1"] = fromJSONFile["obj1"]
+    newjson["version"] = "v1.0"
     # object array 만들기
-    newjson['objarr'] = []
-    newjson['objarr'].append({"name":"lemon", "num":123})
-    newjson['objarr'].append({"name":"apple", "cost":123, "desc":"good!"})
+    newjson["objarr"] = []
+    newjson["objarr"].append({"name": "lemon", "num": 123})
+    newjson["objarr"].append({"name": "apple", "cost": 123, "desc": "good!"})
     print("newjson:", newjson)
-    fp = open(outfile, 'w')
+    fp = open(outfile, "w")
     jsonDumps = json.dumps(newjson, indent=2, ensure_ascii=False)
     print("jsonDumps--->", jsonDumps)
     fp.write(jsonDumps)
     fp.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if os.path.exists(outfile):
         os.remove(outfile)
 
