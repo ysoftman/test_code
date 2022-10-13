@@ -12,6 +12,8 @@
 *.tar.gz
 *.pem
 *.tmp.*
+*.wasm
+tags
 cpp/*.txt
 golang/*/*.txt
 __pycache__
