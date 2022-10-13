@@ -11,6 +11,7 @@
 *.o
 *.tar.gz
 *.pem
+*.tmp
 *.tmp.*
 *.wasm
 tags
