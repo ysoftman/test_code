@@ -1,3 +1,6 @@
+// author : ysoftman
+// encoding : utf-8
+// desc : echo web framework test
 package main
 
 import (
@@ -9,6 +12,7 @@ import (
 	"path/filepath"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"golang.org/x/text/message"
 )
 
@@ -60,10 +64,22 @@ func UploadFile(ctx echo.Context) error {
 }
 func main() {
 	e := echo.New()
+
+	// use middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
 	e.GET("/file", GetFile)
 	e.POST("/file", UploadFile)
+
+	// route
+	e.GET("/", root_path)
 
 	if err := e.Start("127.0.0.1:8080"); err != nil {
 		log.Fatal("failed to start echo server")
 	}
+}
+
+func root_path(c echo.Context) error {
+	return c.String(http.StatusOK, "response root path contents")
 }
