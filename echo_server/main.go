@@ -25,7 +25,35 @@ func GetFile(ctx echo.Context) error {
 		Message: "get file(ok)",
 	}
 	fmt.Println("---GetFile---", res)
-	return ctx.JSON(http.StatusOK, &res)
+	// 파일 내용 출력
+	return ctx.File("resp_sample.txt")
+	// 이미지면 inline 처럼 동작
+	// return ctx.File("xelloss.jpg")
+	// binary 파일이면 브라우저에서는 attachment 처럼 동작
+	// return ctx.Inline("ysoftman_100MB.tmp", "resp_sample_inline.txt")
+}
+
+func GetFileInline(ctx echo.Context) error {
+	res := Response{
+		Message: "get file(ok)",
+	}
+	fmt.Println("---GetFileInline---", res)
+	// 브라우저에서 파일을 실행하거,미리보기할 수 있는지 체크한다. 아니면 attachment 처럼 동작
+	// 텍스파일이면 파일 내용이 브라우저에 보인다.
+	// return ctx.Inline("resp_sample.txt", "resp_sample_inline.txt")
+	// 이미지이면 이미지가 브라우저에 보인다.
+	return ctx.Inline("xelloss.jpg", "xellos.jpg")
+	// binary 파일이면 브라우저에서는 attachment 처럼 동작한다.
+	// return ctx.Inline("ysoftman_100MB.tmp", "resp_sample_inline.txt")
+}
+
+func GetFileAttachment(ctx echo.Context) error {
+	res := Response{
+		Message: "get file(ok)",
+	}
+	fmt.Println("---GetFileAttachment---", res)
+	// 브라우저에서 http://localhost:8080/file-attachment 요청하면 파일 저장 팝업이 뜬다.
+	return ctx.Attachment("resp_sample.txt", "save_resp_sample.txt")
 }
 
 func UploadFile(ctx echo.Context) error {
@@ -70,6 +98,8 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/file", GetFile)
+	e.GET("/file-inline", GetFileInline)
+	e.GET("/file-attachment", GetFileAttachment)
 	e.POST("/file", UploadFile)
 
 	// route
