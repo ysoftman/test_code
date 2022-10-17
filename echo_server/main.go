@@ -26,7 +26,7 @@ func GetFile(ctx echo.Context) error {
 	}
 	fmt.Println("---GetFile---", res)
 	// 파일 내용 출력
-	return ctx.File("resp_sample.txt")
+	return ctx.File("sample.txt")
 	// 이미지면 inline 처럼 동작
 	// return ctx.File("xelloss.jpg")
 	// binary 파일이면 브라우저에서는 attachment 처럼 동작
@@ -40,7 +40,7 @@ func GetFileInline(ctx echo.Context) error {
 	fmt.Println("---GetFileInline---", res)
 	// 브라우저에서 파일을 실행하거,미리보기할 수 있는지 체크한다. 아니면 attachment 처럼 동작
 	// 텍스파일이면 파일 내용이 브라우저에 보인다.
-	// return ctx.Inline("resp_sample.txt", "resp_sample_inline.txt")
+	// return ctx.Inline("sample.txt", "resp_sample_inline.txt")
 	// 이미지이면 이미지가 브라우저에 보인다.
 	return ctx.Inline("xelloss.jpg", "xellos.jpg")
 	// binary 파일이면 브라우저에서는 attachment 처럼 동작한다.
@@ -53,7 +53,7 @@ func GetFileAttachment(ctx echo.Context) error {
 	}
 	fmt.Println("---GetFileAttachment---", res)
 	// 브라우저에서 http://localhost:8080/file-attachment 요청하면 파일 저장 팝업이 뜬다.
-	return ctx.Attachment("resp_sample.txt", "save_resp_sample.txt")
+	return ctx.Attachment("sample.txt", "save_sample.txt")
 }
 
 func UploadFile(ctx echo.Context) error {
