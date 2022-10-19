@@ -11,6 +11,7 @@
 # -A, --after-context NUM
 # -B, --before-context NUM
 # -C, --context NUM
+# -N, --no-line-number
 # -v, --invert-match
 # --hidden, Search hidden files and directories. By default, hidden files and directories are skipped.
 # --type-list Show all supported file types and their corresponding globs.
@@ -22,6 +23,7 @@ rg ysoftman
 rg ysoftman --no-filename
 
 # .go 파일에서 easy or medium or hard 가 있는 라인 카운트
+# -i 대소문자 구별 안함
 rg -i "easy|medium|hard" --glob *.go -c
 # *.cpp *.go 파일에 대해서
 rg -i "easy|medium|hard" -g *.cpp -g *.go -c
@@ -29,6 +31,13 @@ rg -i "easy|medium|hard" -g *.cpp -g *.go -c
 rg -i "easy|medium|hard" -g *.{cpp,go} -c
 
 # .go 파일에서 easy or medium or hard 가 없는 라인 카운트
-# -c 옵션에 zero(0)인 경우 출력되지 않아
-# --files-without-match 를 사용해야 한다.
+# -c 옵션은 zero(0)인 경우 출력되지 않아
+# --files-without-match 로 없는 없는 파일을 찾는다.
 rg -i "easy|medium|hard" -g *.{cpp,go} --files-without-match
+
+# bbb 는 빼고 출력
+echo "aaa
+bbb
+ccc
+ddd
+eee" |rg -i -v "bbb|cc"
