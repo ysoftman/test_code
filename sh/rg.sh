@@ -35,9 +35,9 @@ rg -i "easy|medium|hard" -g *.{cpp,go} -c
 # --files-without-match 로 없는 없는 파일을 찾는다.
 rg -i "easy|medium|hard" -g *.{cpp,go} --files-without-match
 
-# bbb 는 빼고 출력
+# bbb 와 ddd 는 빼고 출력
 echo "aaa
 bbb
 ccc
 ddd
-eee" |rg -i -v "bbb|cc"
+eee" |rg -i -v "bbb|ddd"
