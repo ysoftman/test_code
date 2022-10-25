@@ -33,4 +33,11 @@ curl \
 -F 'upload=@ysoftman_100MB2.tmp' \
 -F 'upload=@ysoftman_100MB3.tmp' \
 "http://localhost:8080/file"
+
+# 큰 파일 올려보기
+dd if=/dev/urandom bs=1000000 count=10000 > ysoftman_10GB.tmp
+curl -F 'upload=@ysoftman_10GB.tmp' "http://localhost:8080/file"
+
+# 테스트 끝나고 파일 지우자~
+rm -fv *.tmp
 ```

@@ -60,12 +60,13 @@ func UploadFile(ctx echo.Context) error {
 	// dstfilename := ctx.QueryParam("dstfilename")
 	p := message.NewPrinter(message.MatchLanguage("en"))
 
+	p.Println("(uploadfile) MultipartForm()")
 	// MultipartForm 내용 파악
 	form, err := ctx.MultipartForm()
 	if err != nil {
 		return err
 	}
-
+	p.Println("(uploadfile) form.File[\"upload\"]")
 	// "upload 이름으로 업로드되는 파일 파악"
 	files := form.File["upload"]
 	for _, file := range files {
@@ -74,6 +75,7 @@ func UploadFile(ctx echo.Context) error {
 			return err
 		}
 		defer src.Close()
+		p.Printf("(uploadfile) open file: %v\n", file.Filename)
 
 		dst, err := os.Create(filepath.Join("./", file.Filename+".dst.tmp"))
 		if err != nil {
@@ -84,7 +86,7 @@ func UploadFile(ctx echo.Context) error {
 		if written, err = io.Copy(dst, src); err != nil {
 			return err
 		}
-		p.Printf("(uploadfile) written bytes: %d", written)
+		p.Printf("(uploadfile) written bytes: %d\n", written)
 	}
 	res := Response{
 		Message: "upload file(ok)",
