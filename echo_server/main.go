@@ -62,10 +62,29 @@ func UploadFile(ctx echo.Context) error {
 
 	p.Println("(uploadfile) MultipartForm()")
 	// MultipartForm 내용 파악
+	// os.TempDir($TMPDIR 없으면 /tmp)위치에 multipart-3000453554 형식으로 파일을 다운로드 받는다.
 	form, err := ctx.MultipartForm()
 	if err != nil {
 		return err
 	}
+
+	// form 내용 살펴보기
+	fmt.Println("-----")
+	for k, v := range form.File {
+		p.Println(k)
+		for i := 0; i < len(v); i++ {
+			p.Println(v[i].Filename)
+		}
+	}
+	fmt.Println("-----")
+	for _, v := range form.Value {
+		p.Println(v)
+		for i := 0; i < len(v); i++ {
+			p.Println(v[i])
+		}
+	}
+
+	fmt.Println("-----")
 	p.Println("(uploadfile) form.File[\"upload\"]")
 	// "upload 이름으로 업로드되는 파일 파악"
 	files := form.File["upload"]
