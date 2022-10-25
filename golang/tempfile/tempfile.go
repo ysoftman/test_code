@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	/*
 		// os.TempDir() 는 다음 로직으로 정해진다.
 		dir := Getenv("TMPDIR")
