@@ -57,7 +57,7 @@ func GetFileAttachment(ctx echo.Context) error {
 }
 
 func UploadFile(ctx echo.Context) error {
-	dstfilename := ctx.QueryParam("dstfilename")
+	// dstfilename := ctx.QueryParam("dstfilename")
 	p := message.NewPrinter(message.MatchLanguage("en"))
 
 	// MultipartForm 내용 파악
@@ -74,7 +74,8 @@ func UploadFile(ctx echo.Context) error {
 			return err
 		}
 		defer src.Close()
-		dst, err := os.Create(filepath.Join("./", dstfilename))
+
+		dst, err := os.Create(filepath.Join("./", file.Filename+".dst.tmp"))
 		if err != nil {
 			return err
 		}
