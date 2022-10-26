@@ -65,6 +65,9 @@ func UploadFile(ctx echo.Context) error {
 	// os.TempDir($TMPDIR 없으면 /tmp)위치에 multipart-3000453554 형식으로 임시파일로 다운로드 받는다.
 	// 파일 다운로드는 전송중인 데이터를 on the fly 로 바로 파일로 쓰기 때문에
 	// watch -n 1 dust -c $TMPDIR 로 확인해보면 임시 파일이 늘어나는것을 확인할 수 있다.(추후 자동 삭제)
+	// 추가로 echo MultipartForm() 코드를 확인해본 결과
+	// echo MultipartForm() 에서는 golang http > request > ParseMultipartForm(32MB메모리크기) 호출
+	// ParseMultipartForm > ReadForm > readForm > ... 파일 크기가 32MB 보다 크면 os.CreateTemp("", "multipart-") 수행
 	form, err := ctx.MultipartForm()
 	if err != nil {
 		return err
