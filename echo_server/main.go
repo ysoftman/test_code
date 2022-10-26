@@ -62,7 +62,9 @@ func UploadFile(ctx echo.Context) error {
 
 	p.Println("(uploadfile) MultipartForm()")
 	// MultipartForm 내용 파악
-	// os.TempDir($TMPDIR 없으면 /tmp)위치에 multipart-3000453554 형식으로 파일을 다운로드 받는다.
+	// os.TempDir($TMPDIR 없으면 /tmp)위치에 multipart-3000453554 형식으로 임시파일로 다운로드 받는다.
+	// 파일 다운로드는 전송중인 데이터를 on the fly 로 바로 파일로 쓰기 때문에
+	// watch -n 1 dust -c $TMPDIR 로 확인해보면 임시 파일이 늘어나는것을 확인할 수 있다.(추후 자동 삭제)
 	form, err := ctx.MultipartForm()
 	if err != nil {
 		return err
