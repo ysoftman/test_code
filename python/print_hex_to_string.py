@@ -27,9 +27,7 @@ print("remove nbsp:", test2)
 # Normalization Form Compatibility Composition	Characters are decomposed by compatibility, then recomposed by canonical equivalence.
 
 # NO-BREAK SPACE  U+00A0
-# NARROW NO-BREAK SPACE U+202F
 # NO-BREAK SPACE, NARROW  U+202F
-# ZERO WIDTH NO-BREAK SPACE U+FEFF
 # NO-BREAK SPACE, ZERO WIDTH  U+FEFF
 test = "a \u00a0\u202f\u202f\ufeff\ufeff b"
 print("befere:", test)
