@@ -34,3 +34,11 @@ for i in ${(f)a}; do
     ((cnt++))
     echo "[cnt:$cnt] $i"
 done
+
+echo "-----"
+
+# 다음과 같이 for 에서 사용하면 bash, zsh 모두 사용할 수 있다.
+for i in $(echo $a); do
+    ((cnt++))
+    echo "[cnt:$cnt] $i"
+done
