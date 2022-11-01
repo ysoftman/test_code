@@ -10,7 +10,10 @@ import (
 	"time"
 )
 
+var lock *sync.Mutex
+
 func write_file(wg *sync.WaitGroup, dst io.Writer, src string) {
+	lock.Lock()
 	for i := 0; i < 5; i++ {
 		fmt.Print(src)
 		src := strings.NewReader(src)
@@ -20,18 +23,21 @@ func write_file(wg *sync.WaitGroup, dst io.Writer, src string) {
 		time.Sleep(1 * time.Second)
 	}
 	wg.Done()
+	lock.Unlock()
 }
 
 func main() {
+	lock = &sync.Mutex{}
+
 	dst1, err := os.Create("out.tmp")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer dst1.Close()
 
-	// dst2, err := os.Create("out.tmp")
-	// O_EXCL 파일이 존재하지 않떄만 열 수 있도록 한다.
-	dst2, err := os.OpenFile("out.tmp", os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
+	// O_EXCL 파일이 존재하지 않때만 열 수 있도록 한다.
+	// dst2, err := os.OpenFile("out.tmp", os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
+	dst2, err := os.Create("out.tmp")
 	if err != nil {
 		fmt.Println(err)
 	}
