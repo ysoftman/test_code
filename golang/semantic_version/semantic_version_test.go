@@ -66,6 +66,7 @@ func TestSemver1(t *testing.T) {
 		}
 		vs = append(vs, v)
 	}
-	fmt.Println("after sort versions", vs)
 	sort.Sort(semver.Collection(vs))
+	fmt.Println("after sort versions", vs)
+	assert.Equal(t, "2.0.0", vs[len(vs)-1].String())
 }
