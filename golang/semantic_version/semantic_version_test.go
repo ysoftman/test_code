@@ -55,7 +55,7 @@ func TestSemver1(t *testing.T) {
 	assert.Equal(t, "v1", versions[len(versions)-1])
 
 	// "github.com/Masterminds/semver" NewVersion semantic version 여부를 구분할 수 있다.
-	raw := []string{"1.2.3", "1.0", "1.3", "2", "0.4.2", "a.b.c"}
+	raw := []string{"1.2.3", "1.0", "1.3", "2", "0.4.2", "a.b.c", "2.0.0-rc.1", "2.0.0-fix.1"}
 	fmt.Println("before sort versions", raw)
 	vs := []*semver.Version{}
 	for _, r := range raw {
