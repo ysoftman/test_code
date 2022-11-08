@@ -83,16 +83,12 @@ async def read_file(filename):
     chunk_size = 1024 * 1024
     read_chunk_size = 0
     async with aiofiles.open(filename, "rb") as f:
-        chunk = await f.read(chunk_size)
-        while chunk:
+        while read_chunk_size < file_size:
+            chunk = await f.read(chunk_size)
             # 현재 읽은 데이터 리턴
             yield chunk
-            if read_chunk_size + len(chunk) <= file_size:
-                pbar.update(len(chunk))
-                read_chunk_size += len(chunk)
-            chunk = await f.read(chunk_size)
-            # await asyncio.sleep(0.5)
-    pbar.update(file_size - read_chunk_size)
+            read_chunk_size += len(chunk)
+            pbar.update(len(chunk))
 
 
 # aiohttp.ClientSession
