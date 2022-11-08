@@ -80,7 +80,7 @@ async def read_file(filename):
         desc="[upload]" + filename,
         mininterval=0.1,
     )
-    chunk_size = 1024 * 1024
+    chunk_size = int(file_size / 100)
     read_chunk_size = 0
     async with aiofiles.open(filename, "rb") as f:
         while read_chunk_size < file_size:
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     sample()
     download_test("https://www.youtube.com")
     # 업로드 테스트용 더미 파일 생성
-    os.system("dd if=/dev/urandom of=ysoftman_10MB bs=1024 count=10000")
+    os.system("dd if=/dev/urandom of=ysoftman_10MB bs=1024*1024 count=10")
     # 다음 구문은 asyncio.run() 로 대체가능
     # loop = asyncio.get_event_loop()
     # loop.run_until_complete(upload_main())
