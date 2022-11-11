@@ -14,16 +14,21 @@ for i in $a; do
 done
 
 # bash 로 실행하면 newline, space 로 구분해 다음과 같은 결과를 얻을 수 있다.
+# bash ./parameter_expansion_flags.zsh
 # [cnt:1] a
 # [cnt:2] b
 # [cnt:3] c
 # [cnt:4] d
+# [cnt:5] e
+# [cnt:6] f
 
+# zsh ./parameter_expansion_flags.zsh
 # zsh newline 으로 구분하지 않아 loop 가 한번만 실행되고 다음과 같이 하나로 출력 된다.
 # [cnt:1] a
 # b
 # c
-# d
+# d e f
+echo "-----"
 
 # bash 로 실행시 에러 발생
 # 다음과 같이 Parameter Expansion Flags 중 f 를 명시해야 된다.
