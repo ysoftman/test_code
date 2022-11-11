@@ -5,7 +5,7 @@
 a="a
 b
 c
-d"
+d e f"
 
 cnt=0
 for i in $a; do
@@ -13,7 +13,7 @@ for i in $a; do
     echo "[cnt:$cnt] $i"
 done
 
-# bash 로 실행하면 원하는 결과를 얻을 수 있다.
+# bash 로 실행하면 newline, space 로 구분해 원하는 결과를 얻을 수 있다.
 # [cnt:1] a
 # [cnt:2] b
 # [cnt:3] c
