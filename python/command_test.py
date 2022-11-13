@@ -3,7 +3,6 @@
 # python version : 2.x 3.x
 # desc : 쉘 명령어르 실행하고 결과 받아오기 테스트
 import os
-import subprocess
 
 # 쉘 명령 실행
 print("----- test1 -----")
@@ -32,17 +31,3 @@ lines = os.popen('find . -name "*.py"').readlines()
 print(lines)
 for line in lines:
     print(line + " --> ok2.")
-
-# subprocess.Popen 으로 실행하기
-# 참고로 os.popen 은 python 2.6 부터 deprecated 되었다.
-# https://docs.python.org/2/library/os.html
-print("----- test5 -----")
-args = ["ls", "-1"]
-output = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-stdout, stderr = output.communicate()
-print("[stdout]\n", stdout)
-print("[stderr]\n", stderr)
-# 라인 구분하여 리스트화 시키기
-lines = str(stdout).split("\n")
-for i in lines:
-    print("line=" + i)
