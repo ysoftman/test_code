@@ -1,0 +1,41 @@
+import os
+import subprocess
+
+
+def exec_Command(command):
+    # https://docs.python.org/ko/3/library/subprocess.html#popen-constructor
+    # shell 인자(기본값은 False)는 셸을 실행할 프로그램으로 사용할지를 지정합니다. shell이 True이면, args를 시퀀스가 아닌 문자열로 전달하는 것이 좋습니다.
+    # POSIX에서 shell=True일 때, 셸의 기본값은 /bin/sh입니다. args가 문자열이면, 문자열은 셸을 통해 실행할 명령을 지정합니다. 이것은 문자열이 프롬프트에서 입력할 때와 똑같이 포맷되어야 한다는 것을 의미합니다. 예를 들어, 스페이스가 포함된 파일명을 인용하거나 역 슬래시 이스케이핑 하는 것을 포함합니다. args가 시퀀스이면, 첫 번째 항목이 명령 문자열을 지정하고, 추가 항목은 셸 자체에 대한 추가 인자로 처리됩니다. 즉, Popen은 다음과 동등한 것을 수행합니다:
+    output = subprocess.Popen(
+        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    # stdout, stderr = output.communicate()
+    # print("[stdout]\n", stdout)
+    # print("[stderr]\n", stderr)
+
+
+filename = "zzz aaa's bbb.txt"
+print(f"filename:{filename}")
+escaped_filename = filename.replace("'", "\\'")
+print(f"secaped_filename:{escaped_filename}")
+
+try:
+    os.remove(f"{filename}")
+    os.remove(f"{escaped_filename}")
+except FileNotFoundError as err:
+    # print("err:", err)
+    pass
+
+# shell=True 로 쉘로 실행할때는
+# 이스케이프되면 이스케이프 자체가 문자열로 취급되어
+# zzz aaa\'s bbb.txt 이름으로 생성된다.
+exec_Command(f'touch "{escaped_filename}"')
+
+# 이스케이스 없이 문자열을 그대로 arg 로 전달하면
+# zzz aaa's bbb.txt 이름으로 생성된다.
+exec_Command(f'touch "{filename}"')
+
+
+# 실행 결과 확인
+# python subprocess_shell_option.py && ll zz*
+# rm -f "zzz aaa\'s bbb.txt" && rm -f "zzz aaa's bbb.txt"
