@@ -48,7 +48,7 @@ exec_Command(f'touch "{filename1}"', True)
 # zzz aaa's bbb.txt 이름으로 생성된다.
 exec_Command(f"touch '{filename2}'", True)
 
-# ' " 동시에 있는경우 이스케이스 인자를 '나"로 구분하지 않는다.
+# ' " 동시에 있는경우 이스케이스 \ 자체도 이스케이프 필요
 # bash -c "touch zzz\'s\ \\\"a.txt"
 exec_Command(f"touch zzz\\'s\ \\\"a.txt", True)
 
