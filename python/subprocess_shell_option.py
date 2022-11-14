@@ -10,19 +10,24 @@ def exec_Command(command):
     output = subprocess.Popen(
         command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
-    # stdout, stderr = output.communicate()
-    # print("[stdout]\n", stdout)
-    # print("[stderr]\n", stderr)
+    stdout, stderr = output.communicate()
+    print("[stdout]\n", stdout)
+    print("[stderr]\n", stderr)
 
 
-filename = "zzz aaa's bbb.txt"
-print(f"filename:{filename}")
-escaped_filename = filename.replace("'", "\\'")
-print(f"secaped_filename:{escaped_filename}")
+filename1 = "zzz aaa's bbb.txt"
+filename2 = 'zzz aaa"s bbb.txt'
+escaped_filename1 = filename1.replace("'", "\\'")
+escaped_filename2 = filename2.replace('"', '\\"')
+print(f"filename1:{filename1}")
+print(f"filename2:{filename2}")
+print(f"secaped_filename1:{escaped_filename1}")
+print(f"secaped_filename2:{escaped_filename2}")
 
 try:
-    os.remove(f"{filename}")
-    os.remove(f"{escaped_filename}")
+    os.remove(f"{filename1}")
+    os.remove(f"{filename2}")
+    os.remove(f"{escaped_filename1}")
 except FileNotFoundError as err:
     # print("err:", err)
     pass
@@ -30,13 +35,26 @@ except FileNotFoundError as err:
 # shell=True 로 쉘로 실행할때는
 # 이스케이프되면 이스케이프 자체가 문자열로 취급되어
 # zzz aaa\'s bbb.txt 이름으로 생성된다.
-exec_Command(f'touch "{escaped_filename}"')
+exec_Command(f'touch "{escaped_filename1}"')
+
+# zzz aaa\"s bbb.txt 이름으로 생성된다.
+exec_Command(f"touch '{escaped_filename2}'")
 
 # 이스케이스 없이 문자열을 그대로 arg 로 전달하면
 # zzz aaa's bbb.txt 이름으로 생성된다.
-exec_Command(f'touch "{filename}"')
+exec_Command(f'touch "{filename1}"')
+
+# 이스케이스 없이 문자열을 그대로 arg 로 전달하면
+# zzz aaa's bbb.txt 이름으로 생성된다.
+exec_Command(f"touch '{filename2}'")
 
 
+"""
 # 실행 결과 확인
-# python subprocess_shell_option.py && ll zz*
-# rm -f "zzz aaa\'s bbb.txt" && rm -f "zzz aaa's bbb.txt"
+python subprocess_shell_option.py && ll zz*
+# 결과 파일 삭제
+rm -f "zzz aaa\'s bbb.txt"
+rm -f 'zzz aaa\"s bbb.txt'
+rm -f 'zzz aaa"s bbb.txt'
+rm -f "zzz aaa's bbb.txt"
+"""
