@@ -14,7 +14,7 @@ echo -e $out | sort
 echo '[after sort -r]'
 echo -e $out | sort -r
 
-# key(field) 두번째 필드값으로 정렬
+# -k key(field) 두번째 필드값으로 정렬
 echo '[after sort -k 2]'
 echo -e $out | sort -k 2
 
@@ -30,3 +30,9 @@ apple
 
 lemon
 orange" | sort | uniq
+
+# 파일 크기 정렬
+# sort -h, --human-numeric-sort, --sort=human-numeric
+# sort -r, --reverse Sort in reverse order.
+# du -h “Human-readable” output.  Use unit suffixes: Byte, Kilobyte, Megabyte, Gigabyte, Terabyte and Petabyte based on powers of 1024.
+# du -d1 -h ../ | sort -rh
