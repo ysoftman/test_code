@@ -3,6 +3,7 @@ import subprocess
 
 # subprcoess shell=True 로 명령을 실행할때
 # 경로 인자로 single quote(')등이 있을때 \'와 같이 별도 이스케이프 하지 않아야 한다.
+# 하지만 ' " 동시에 있는경우 이스케이스 \ 자체도 이스케이프 필요
 def exec_Command(command, shellopt):
     # https://docs.python.org/ko/3/library/subprocess.html#popen-constructor
     # shell 인자(기본값은 False)는 셸을 실행할 프로그램으로 사용할지를 지정합니다. shell이 True이면, args를 시퀀스가 아닌 문자열로 전달하는 것이 좋습니다.
