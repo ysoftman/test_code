@@ -40,8 +40,8 @@ func main() {
 	}
 	fmt.Println("MyMapList, before sort by map-value:", mymap)
 
-	// map value 기준으로 정렬
 	// 방법1 - Less, Len, Swap 모두 구현해서 사용
+	// map value 기준으로 정렬
 	myCustomMap := make(MyMapList, len(mymap))
 	cnt := 0
 	for k, v := range mymap {
@@ -59,6 +59,15 @@ func main() {
 	for k := range mymap {
 		keys = append(keys, k)
 	}
+	// key 로, keys 를 정렬한다.
+	sort.Slice(keys, func(a, b int) bool {
+		return keys[a] < keys[b]
+	})
+	fmt.Println("mymap, after sort by map-key")
+	for i := range keys {
+		fmt.Println(keys[i], mymap[keys[i]])
+	}
+
 	// key 에 해당하는 value 로, keys 를 정렬한다.
 	sort.Slice(keys, func(a, b int) bool {
 		return mymap[keys[a]] < mymap[keys[b]]
@@ -67,6 +76,8 @@ func main() {
 	for i := range keys {
 		fmt.Println(keys[i], mymap[keys[i]])
 	}
+
+	// key 에 해당하는 value 로, keys 를 내림차순 정렬한다.
 	sort.Slice(keys, func(a, b int) bool {
 		return mymap[keys[a]] > mymap[keys[b]]
 	})
