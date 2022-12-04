@@ -38,8 +38,10 @@ func main() {
 		"ccc": "apple",
 		"ddd": "banana",
 	}
-	fmt.Println("MyMapList, before sort:", mymap)
-	// mymap 과 같은 key, value 타입의 데이터 구조에 넣는다.
+	fmt.Println("MyMapList, before sort by map-value:", mymap)
+
+	// map value 기준으로 정렬
+	// 방법1 - Less, Len, Swap 모두 구현해서 사용
 	myCustomMap := make(MyMapList, len(mymap))
 	cnt := 0
 	for k, v := range mymap {
@@ -48,7 +50,28 @@ func main() {
 	}
 	// myCustomMap 으로 정렬
 	sort.Sort(myCustomMap)
-	fmt.Println("MyMapList, after sort:", myCustomMap)
+	fmt.Println("MyMapList, after sort by map-value:", myCustomMap)
 	sort.Sort(sort.Reverse(myCustomMap))
-	fmt.Println("MyMapList, after revere sort:", myCustomMap)
+	fmt.Println("MyMapList, after revere sort by map-value:", myCustomMap)
+
+	// 방법2 - 키들을 slice 로 정렬하고 정렬순서대로 map 에서 찾아 결과에 넣기
+	keys := []string{}
+	for k := range mymap {
+		keys = append(keys, k)
+	}
+	// key 에 해당하는 value 로, keys 를 정렬한다.
+	sort.Slice(keys, func(a, b int) bool {
+		return mymap[keys[a]] < mymap[keys[b]]
+	})
+	fmt.Println("mymap, after sort by map-value")
+	for i := range keys {
+		fmt.Println(keys[i], mymap[keys[i]])
+	}
+	sort.Slice(keys, func(a, b int) bool {
+		return mymap[keys[a]] > mymap[keys[b]]
+	})
+	fmt.Println("mymap, after reverse sort by map-value")
+	for i := range keys {
+		fmt.Println(keys[i], mymap[keys[i]])
+	}
 }
