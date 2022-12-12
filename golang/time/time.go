@@ -14,7 +14,7 @@ func main() {
 
 	// 현재 시간
 	fmt.Println("time.Now():", time.Now())
-	// Now() 자체가 로커 타임이라서 굳이 Now().Local() 로 사용할 필요는 없다.
+	// Now() 자체가 로컬 타임이라서 굳이 Now().Local() 로 사용할 필요는 없다.
 	fmt.Println("time.Now().Local():", time.Now().Local())
 	fmt.Println("time.Now().UnixNano() (nanosec):", time.Now().UnixNano())
 	fmt.Println("time.Now().Unix() (sec):", time.Now().Unix())
@@ -31,6 +31,11 @@ func main() {
 	fmt.Println("time.RFC3339:", time.RFC3339)
 	fmt.Println("time.Kitchen:", time.Kitchen)
 	fmt.Println("time.Stamp:", time.Stamp)
+
+	now := time.Now()
+	zoneName, zoneOffset := now.Zone()
+	fmt.Println("zoneName:", zoneName)
+	fmt.Println("zoneOffset:", zoneOffset, zoneOffset/(60*60))
 
 	// Mon Jan 2 15:04:05 -0700 MST 2006 시간으로 포맷팅을 명시해야 한다.
 	fmt.Println(`time.Now().Format("20060102150405"):`, time.Now().Format("20060102150405"))
