@@ -3,7 +3,7 @@
 
 function output {
     clear
-    echo "Width = $(tput cols) Height = $(tput lines)"
+    echo "cols: $(tput cols), lines: $(tput lines)"
 }
 
 # SIGWINCH Window size change
