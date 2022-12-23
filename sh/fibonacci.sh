@@ -1,7 +1,7 @@
 #!/bin/bash
 # ysoftman
 
-function fibonacci() {
+fibonacci() {
     n=$1
     if (( n<=2 )); then 
         echo 1

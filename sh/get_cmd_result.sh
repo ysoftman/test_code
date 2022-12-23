@@ -27,7 +27,7 @@ echo ${var}
 
 
 
-function aa() {
+aa() {
     echo "ysoftman"
 }
 # 함수 호출시에도 사용한다.

@@ -4,7 +4,7 @@
 # 기본은 전역 변수
 global_val="lemon"
 
-function aaa() {
+aaa() {
     # local 을 사용하면 해당 스코프에서만 유효한 지역 변수가 된다.
     local local_val="orange"
     echo ${global_val}
