@@ -12,4 +12,5 @@ func main() {
 	tree_btree()
 	queue_linkedlistqueue()
 	queue_arrayqueue()
+	queue_priorityqueue()
 }
