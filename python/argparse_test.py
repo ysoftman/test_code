@@ -42,9 +42,11 @@ def ArgParse():
 
 if __name__ == "__main__":
     # 빌트인 사용시
+    print("[===generalArgi===]")
     generalArg(123, 456, 123, a=123, b="ysoftman")
 
     # argparse 사용시
+    print("[===ArgParse===]")
     args = ArgParse()
     # 옵션 예시
     # python argparse_test.py -h
