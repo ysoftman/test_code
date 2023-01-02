@@ -55,9 +55,19 @@ if __name__ == "__main__":
     print(now.astimezone().tzinfo)
     print(now.astimezone().utcoffset)
 
+    # utc 시간 포맷
+    utc_now = datetime.datetime.utcnow()
+    print("utc_now:", utc_now)
+    utc_now_str = utc_now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    print("utc_now_str:", utc_now_str)
+    # utc -> local time 으로 변경
+    t = datetime.datetime.strptime(utc_now_str, "%Y-%m-%dT%H:%M:%S%z")
+    print("utc:", t.isoformat())
+    print("local:", t.astimezone())
+
     # 문자->datetime 타입으로 변환
     now = "2020-12-31T15:30:50+09:00"
-    nnow = datetime.datetime.strptime(now, "%Y-%m-%dT%H:%M:%S%z")
+    new_now = datetime.datetime.strptime(now, "%Y-%m-%dT%H:%M:%S%z")
     print(
-        f"now: {type(nnow)}, {nnow}, {nnow.date()}, {nnow.time()}, {nnow.timestamp()}"
+        f"new_now: {type(new_now)}, {new_now}, {new_now.date()}, {new_now.time()}, {new_now.timestamp()}"
     )
