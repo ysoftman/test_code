@@ -51,10 +51,13 @@ if __name__ == "__main__":
     # 특정 포맷으로 출력
     now = datetime.datetime.now()
     print(now.strftime("%H:%M:%S"))
+    print(now.astimezone())
+    print(now.astimezone().tzinfo)
+    print(now.astimezone().utcoffset)
 
     # 문자->datetime 타입으로 변환
     now = "2020-12-31T15:30:50+09:00"
     nnow = datetime.datetime.strptime(now, "%Y-%m-%dT%H:%M:%S%z")
     print(
-        f"nnow: {type(nnow)}, {nnow}, {nnow.date()}, {nnow.time()}, {nnow.timestamp()}"
+        f"now: {type(nnow)}, {nnow}, {nnow.date()}, {nnow.time()}, {nnow.timestamp()}"
     )
