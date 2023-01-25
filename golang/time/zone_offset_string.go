@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func zoneOffsetString() {
+func main() {
 	now := time.Now()
 	zoneName, zoneOffset := now.Zone()
 	fmt.Println("zoneName:", zoneName)

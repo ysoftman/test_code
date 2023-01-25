@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func printDate() {
+func main() {
 	// 날짜 설정
 	fmt.Println("time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local):", time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local))
 	fmt.Println("time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix():", time.Date(1981, 2, 15, 20, 30, 0, 0, time.Local).Unix())

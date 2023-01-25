@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func printNow() {
+func main() {
 	// 현재 시간
 	fmt.Println("time.Now():", time.Now())
 	// Now() 자체가 로컬 타임이라서 굳이 Now().Local() 로 사용할 필요는 없다.

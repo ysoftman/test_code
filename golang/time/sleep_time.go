@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func sleepTime() {
+func main() {
 	// "" 는 UTC "Local" 이면 현재 지역을 리턴한다.
 	loc, _ := time.LoadLocation("Local")
 	// 정해진 레이아웃(1번째 파라미터)으로 날짜(2번째 파라미터)를 time 으로 담을 수 있다.

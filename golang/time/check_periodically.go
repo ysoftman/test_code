@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func checkPeriodically() {
+func main() {
 	fmt.Println("Check Periodically")
 
 	// 0.5초마다 ticker.C(channel) 로 time 값이 배달된다.
