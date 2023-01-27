@@ -3,30 +3,27 @@
 # brace expansion
 
 # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-# aaa 빈값(unset/null) 이면 aaa 자체가 변경되지는 않고, 확장된 bbb 는 디폴트값으로 변경된다.
+# aaa 가 값이 있으면 확장된 bbb 도 aaa 값이 된다.
+# aaa 가 빈값(unset/null) 이면 aaa 자체가 변경되지는 않고, 확장된 bbb 는 디폴트값으로 변경된다.
 aaa=""
 bbb=${aaa:-default_lemon}
 echo 'bbb=${aaa:-default_lemon}'
 echo '$aaa' $aaa
 echo '$bbb' $bbb
 
-# : 를 빼면 aaa 가 unset 되었을때만 디폴트값으로 확장된다.
-# aaa 값이 set 되어 있어 "" 으로 출력
-echo aaa=""
+# aaa 가 값이 있으면 확장된 bbb 도 aaa 값이 된다.
+# aaa 가 null 이면 확장된 bbb 는 디폴트값으로 변경된다.
 aaa=""
 bbb=${aaa-default_lemon}
 echo 'bbb=${aaa-default_lemon}'
 echo '$aaa' $aaa
 echo '$bbb' $bbb
-
-# aaa 값이 unset 되어 있어 디폴트값으로 출력
 unset aaa
 echo "unset aaa"
 bbb=${aaa-default_lemon}
 echo 'bbb=${aaa-default_lemon}'
 echo '$aaa' $aaa
 echo '$bbb' $bbb
-
 
 # aaa 빈값(unset/null) 이면 디폴트 값 사용, aaa 자체도 디폴트값으로 변경되고 확장된 bbb 도 디폴트값으로 변경된다.
 aaa=""
