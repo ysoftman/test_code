@@ -8,30 +8,30 @@
 # 원소 구분은 공백으로 한다.
 arr=(1 23 4 "a")
 # bash 는 0, zsh 는 1이 시작 인덱스다.
-echo ${arr[0]}
-echo ${arr[1]}
-echo ${arr[2]}
-echo ${arr[3]}
-echo ${arr[4]}
+echo '${arr[0]}' ${arr[0]}
+echo '${arr[1]}' ${arr[1]}
+echo '${arr[2]}' ${arr[2]}
+echo '${arr[3]}' ${arr[3]}
+echo '${arr[4]}' ${arr[4]}
 # 모든 원소 값 조회
-echo ${arr[@]}
+echo '${arr[@]}' ${arr[@]}
 # 모든 원소 index 조회
-echo ${!arr[@]}
+echo '${!arr[@]}' ${!arr[@]}
 # 원소 개수
-echo ${#arr[@]}
+echo '${#arr[@]}' ${#arr[@]}
 # 첫번째 원소의 크기
-echo ${#arr[1]}
+echo '${#arr[1]}' ${#arr[1]}
 
 # 원소 값 변경
 arr[2]="ysoftman"
-echo ${arr[@]}
+echo '${arr[@]}' ${arr[@]}
 # 원소 추가
 arr+=("lemon")
 arr+=(777)
-echo ${arr[@]}
+echo '${arr[@]}' ${arr[@]}
 
 # 2번 인덱스부터 시작해서 3개원소 조회
-echo ${arr[@]:2:3}
+echo '${arr[@]:2:3}' ${arr[@]:2:3}
 
 echo "loop array test1"
 for i in ${arr[@]}
