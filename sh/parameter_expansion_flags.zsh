@@ -30,10 +30,10 @@ done
 # d e f
 echo "-----"
 
-# bash 로 실행시 에러 발생
 # 다음과 같이 Parameter Expansion Flags 중 f 를 명시해야 된다.
 # https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion-Flags
 # f : Split the result of the expansion at newlines. This is a shorthand for ‘ps:\n:’.
+# zsh 에선 동작하지만 bash 에서는 에러가 발생한다.
 cnt=0
 for i in ${(f)a}; do
     ((cnt++))
