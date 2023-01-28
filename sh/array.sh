@@ -32,6 +32,8 @@ echo '${arr[@]}' ${arr[@]}
 
 # 2번 인덱스부터 시작해서 3개원소 조회
 echo '${arr[@]:2:3}' ${arr[@]:2:3}
+# 0번 인덱스부터 시작해서 3개원소 조회
+echo '${arr[@]::3}' ${arr[@]::3}
 
 echo "loop array test1"
 for i in ${arr[@]}
