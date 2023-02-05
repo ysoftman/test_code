@@ -13,7 +13,7 @@ do
 done
 
 # 입력 필드 구분자를 뉴라인으로 명시, 기본은 스페이스
-# \n 를 하나의 문자로 취급해야 하기 때문에 $를 붙여 표현
+# \n 를 하나의 문자로 취급해야 하기 때문에 $'\n'로 표현
 IFS=$'\n'
 echo "\${IFS}:" ${IFS} "(newline)"
 for v in `cat variable_ifs.txt`
