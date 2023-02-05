@@ -38,3 +38,10 @@ ls -1 | grep .sh -m 5 -n
 # -c : 찾은 라인 카운트
 # | grep ":0" : 앞서 찾은 파일:카운트 중 :0 인것만 파악
 grep -i -E "easy|medium|hard" *.go -c | grep :0
+
+
+# apple 이전 1줄 결과에 포함
+echo -e 'fruite\nlemon\napple\nbanana' | grep -i "apple" --color=never -B 1
+
+# apple 다음 1줄 결과에 포함
+echo -e 'fruite\nlemon\napple\nbanana' | grep -i "apple" --color=never -A 1
