@@ -1,7 +1,6 @@
 #!/bin/bash
 # ysoftman
-# IFS(Input Field Separators) test
-
+# IFS(Internal Field Separator) test
 set -e
 
 # IFS 기본은 공백
