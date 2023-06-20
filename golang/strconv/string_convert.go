@@ -20,10 +20,12 @@ func main() {
 	fmt.Println("formatInt(num, base5):", strconv.FormatInt(num, 5))
 	fmt.Println("formatInt(num, base2):", strconv.FormatInt(num, 2))
 
-	text := "ysoftman123!@#"
-	fmt.Println("text:", text)
+	// 숫자 -> []byte 로 표현
+	fmt.Println("formatInt(1234567, base2)", []byte(strconv.FormatInt(1234567, 10)))
 
 	// convert string to int and binary
+	text := "ysoftman123!@#"
+	fmt.Println("text:", text)
 	nLen := len(text)
 	for i := 0; i < nLen; i++ {
 		integer := int64(text[i])
