@@ -46,14 +46,18 @@ service cloud.firestore {
 # https://cloud.google.com/storage/docs/gsutil_install#mac
 # gcloud 로 컴포넌트 업데이트
 gcloud components update
+
 # gcloud 인증(브라우저 열리고 로그인)
 gcloud auth login
+
 # gsutil 명령어 참고
 # https://cloud.google.com/storage/docs/gsutil/commands/cp
 # gs(googlestorage) url 파일 보기
 gsutil ls -ahl gs://ysoftman-firebase.appspot.com
+
 # *.jpg 파일 업로드
 gsutil cp -v *.jpg gs://ysoftman-firebase.appspot.com/
+
 # 다운로드 참고
 gsutil cp -v gs://ysoftman-firebase.appspot.com/xelloss.jpg .
 gsutil cp -v gs://ysoftman-firebase.appspot.com/박카스.jpg .
@@ -74,6 +78,9 @@ firebase init
 # firebase 구글 로그인
 # (브라우저가 열리고 firebase 승인하면된다.)
 firebase login
+
+# project list
+firebase projects:list
 
 # 테스트를 위해 로컬에서 서빙
 firebase serve
