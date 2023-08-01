@@ -18,24 +18,27 @@
     <h1>ysoftman - firebase test</h1>
     <a href="restaurant_pangyo.html">restaurant_pangyo.html</a><br>
     <h3>
-        loadImage from firebase storage<br>
+        loaded images from firebase storage<br>
         xelloss.jpg<br>
-        <div id=box1-1></div>
+        <div id=image1></div>
         박카스.jpg<br>
-        <div id=box1-2></div>
+        <div id=image2></div>
+        cold_snow_by_guweiz.jpg<br>
+        <div id=image3></div>
     </h3>
     <h3>
         incTestVisitCnt from firestore<br>VisitCnt
-        <div id=box2></div>
+        <div id=visitcnt></div>
     </h3>
 
     <button type="button" onClick="loginGoogle('google_login_result')" id='google_login_result'>
     </button>
     <script>
-        loadImage("box1-1", "xelloss.jpg");
-        loadImage("box1-2", "박카스.jpg");
+        loadImage("image1", "xelloss.jpg");
+        loadImage("image2", "박카스.jpg");
+        loadImage("image3", "cold_snow_by_guweiz.jpg");
         //setTestDoc("test", "ysoftman");
-        incTestVisitCnt("test", "ysoftman", "likeCnt", "box2");
+        incTestVisitCnt("test", "ysoftman", "likeCnt", "visitcnt");
     </script>
 </body>
 
