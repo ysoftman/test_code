@@ -1,8 +1,10 @@
 // ysoftman
 // firebase api 사용
 // Initialize Firebase
+import {webApiKey} from "./web_api_key.js"
+
 var config = {
-    apiKey: "",
+    apiKey: webApiKey(),
     authDomain: "ysoftman-firebase.firebaseapp.com",
     databaseURL: "https://ysoftman-firebase.firebaseio.com",
     projectId: "ysoftman-firebase",
@@ -26,7 +28,7 @@ var makeLogoutText = function (userName) {
 }
 
 // firestorage 에 저장된 이미지 url 불러오기
-var loadImage = function (htmlId, imageName) {
+export const loadImage = function (htmlId, imageName) {
     //var pathReference = storage.ref('xelloss.jpg');
     var gsReference = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + imageName)
     gsReference.getDownloadURL().then(function (url) {
@@ -52,7 +54,7 @@ var setTestDoc = function (coll, doc) {
 }
 
 // firestore 테스트 방문카운트
-var incTestVisitCnt = function (coll, doc, cntType, htmlId) {
+var visitCnt = function (coll, doc, cntType, htmlId) {
     var docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
@@ -65,7 +67,7 @@ var incTestVisitCnt = function (coll, doc, cntType, htmlId) {
             transaction.update(docRef, {
                 visitCnt: newCnt
             });
-            console.log("incTestVisitCnt", htmlId, `${doc1.data().name} visitCnt: ${newCnt}`)
+            console.log("visitCnt", htmlId, `${doc1.data().name} visitCnt: ${newCnt}`)
             document.getElementById(htmlId).innerHTML = `${newCnt}`;
         });
     }).then(function () {
@@ -356,3 +358,12 @@ var GoogleLoginResult = function () {
         // ...
     });
 }
+
+
+
+//setTestDoc("test", "ysoftman");
+visitCnt("test", "ysoftman", "likeCnt", "visitcnt");
+loadImage("image1", "xelloss.jpg");
+loadImage("image2", "박카스.jpg");
+loadImage("image3", "cold_snow_by_guweiz.jpg");
+
