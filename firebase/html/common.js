@@ -2,7 +2,6 @@
 // firebase api 사용
 // Initialize Firebase
 import {webApiKey} from "./web_api_key.js"
-
 var config = {
     apiKey: webApiKey(),
     authDomain: "ysoftman-firebase.firebaseapp.com",
@@ -19,12 +18,12 @@ var db = firebase.firestore();
 var auth = firebase.auth();
 var doc1_likeCnt = 0;
 var loginBoxID = "google_login_result";
-var loginText = `<button class="btn btn-dark" onClick="loginGoogle()">Google 로그인</button>`;
+var loginText = `<button class="btn btn-dark">Google 로그인</button>`
 var userEmail = "";
 var userToken = "";
 
-var makeLogoutText = function (userName) {
-    return `<button class="btn btn-dark" onClick="logout()">${userName} (로그아웃)</button>`;
+export const makeLogoutText = function (userName) {
+    return `<button class="btn btn-dark">${userName} (로그아웃)</button>`;
 }
 
 // firestorage 에 저장된 이미지 url 불러오기
@@ -42,7 +41,7 @@ export const loadImage = function (htmlId, imageName) {
 
 
 // firestore 테스트 문서 생성
-var setTestDoc = function (coll, doc) {
+export const setTestDoc = function (coll, doc) {
     db.collection(coll).doc(doc).set({
         name: doc,
         visitCnt: 0
@@ -54,7 +53,7 @@ var setTestDoc = function (coll, doc) {
 }
 
 // firestore 테스트 방문카운트
-var visitCnt = function (coll, doc, cntType, htmlId) {
+export const visitCnt = function (coll, doc, cntType, htmlId) {
     var docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
@@ -79,7 +78,7 @@ var visitCnt = function (coll, doc, cntType, htmlId) {
 
 
 // firestore 컬렉션(판교식당) 문서 생성
-var setRestaurantDoc = function (coll, doc) {
+export const setRestaurantDoc = function (coll, doc) {
     db.collection(coll).doc(doc.name).set({
         name: doc.name,
         glyphicons: doc.glyphicons,
@@ -99,7 +98,7 @@ var setRestaurantDoc = function (coll, doc) {
 
 
 // firestore 컬렉션(판교식당) 문서 필드 없데이트
-var updateRestaurantDoc = function (coll, doc) {
+export const updateRestaurantDoc = function (coll, doc) {
     // console.log("userEmail:", userEmail)
     // if (userEmail == "") {
     //     return
@@ -127,15 +126,15 @@ var updateRestaurantDoc = function (coll, doc) {
     });
 }
 
-var onLikeClick = function (doc, htmlId) {
+export const onLikeClick = function (doc, htmlId) {
     incRestaurantCnt(coll, doc, 'likeCnt', htmlId);
 }
 
-var onDisLikeClick = function (doc, htmlId) {
+export const onDisLikeClick = function (doc, htmlId) {
     incRestaurantCnt(coll, doc, 'dislikeCnt', htmlId);
 }
 
-var readRestaurantAll = function (coll) {
+export const readRestaurantAll = function (coll) {
     // collection 전체 문서 가져오기
     // likeCnt 많은 순으로
     db.collection(coll).orderBy("likeCnt", "desc").get().then((querySnapshot) => {
@@ -166,7 +165,7 @@ var readRestaurantAll = function (coll) {
 }
 
 // firestore 컬렉션(판교식당) 문서이름으로 읽기
-var readRestaurantCnt = function (coll, doc, cntType, htmlId) {
+export const readRestaurantCnt = function (coll, doc, cntType, htmlId) {
     // collection->doc1 하나만 가져오기
     // onSnapshot(콜백함수) 로 수신대기하면서 현재 내용(변수등)값들을 스냅샷(문서)으로 저장 한다.
     // 그리고 내용이 변경될때마다 콜백함수(문서가져오기)가 실행되어 스냅샷을 업데이트한다.
@@ -182,7 +181,7 @@ var readRestaurantCnt = function (coll, doc, cntType, htmlId) {
 }
 
 // firestore 컬렉션(판교식당) 해당하는 문서 카운트 증가시키기
-var incRestaurantCnt = function (coll, doc, cntType, htmlId) {
+export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
     console.log("userEmail:", userEmail)
     if (userEmail == "") {
         alert("로그인이 필요합니다.");
@@ -248,6 +247,7 @@ var incRestaurantCnt = function (coll, doc, cntType, htmlId) {
 // 로그인한 사용자에 대한 정보가 필요한 앱 페이지마다 전역 인증 객체에 관찰자를 연결합니다.
 // 사용자의 로그인 상태가 변경될 때마다 이 관찰자가 호출됩니다.
 auth.onAuthStateChanged(function (user) {
+    document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
     if (user) {
         // User is signed in.
         var displayName = user.displayName;
@@ -271,7 +271,7 @@ auth.onAuthStateChanged(function (user) {
 });
 
 // 로그인 유지설정(필요한 경우에만 호출)
-var setAuthPersistence = function () {
+export const setAuthPersistence = function () {
     auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function () {
             // Existing and future Auth states are now persisted in the current
@@ -288,11 +288,11 @@ var setAuthPersistence = function () {
 }
 
 // 로그인 후 토큰가져오기
-var getToken = function () {
+export const getToken = function () {
     auth.currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
         // Send token to your backend via HTTPS
         // ...
-        // console.log("idToken:", idToken)
+        //console.log("idToken:", idToken)
         userToken = idToken
     }).catch(function (error) {
         // Handle error
@@ -300,9 +300,14 @@ var getToken = function () {
 }
 
 // 구글 로그인하기
-var loginGoogle = function () {
-    var provider = new firebase.auth.GoogleAuthProvider();
+export const loginGoogle = function () {
+    //console.log("userToken: ", userToken);
+    if (userToken != "") {
+        logout();
+        return
+    }
 
+    var provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
@@ -331,13 +336,14 @@ var loginGoogle = function () {
 }
 
 // 로그아웃
-var logout = function () {
+export const logout = function () {
     auth.signOut()
     document.getElementById(loginBoxID).innerHTML = loginText
+    document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
 }
 
 // 구글 로그인 이후 결과 정보
-var GoogleLoginResult = function () {
+export const GoogleLoginResult = function () {
     auth.getRedirectResult().then(function (result) {
         if (result.credential) {
             // This gives you a Google Access Token. You can use it to access the Google API.
@@ -359,11 +365,4 @@ var GoogleLoginResult = function () {
     });
 }
 
-
-
-//setTestDoc("test", "ysoftman");
-visitCnt("test", "ysoftman", "likeCnt", "visitcnt");
-loadImage("image1", "xelloss.jpg");
-loadImage("image2", "박카스.jpg");
-loadImage("image3", "cold_snow_by_guweiz.jpg");
 

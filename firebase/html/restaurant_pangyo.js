@@ -1,3 +1,5 @@
+import {readRestaurantAll} from "./common.js"
+
 var restaurantlist = [{
     name: "다연",
     glyphicons: "glyphicons-50-star.png",
