@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="common.css" rel="stylesheet" type="text/css" media="all">
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
@@ -24,18 +26,15 @@
 </head>
 
 <body>
-    <h1>ysoftman - firebase test</h1>
-    <a href="restaurant_pangyo.html">restaurant_pangyo.html</a><br>
-    <h3>
-        <button id='login_google'></button><br>
-        visitCnt from firestore: <span id=visitcnt></span>
-    </h3>
-    <h3>
+    <h1>ysoftman firebase test  <span id='login_google'></span></h1>
+    <h2>
+        <a href="restaurant_pangyo.html">restaurant_pangyo</a><br>
+        visitCnt from firestore: <span id=visitcnt></span><br>
         loaded images from firebase storage<br>
         <div id=image1></div>
         <div id=image2></div>
         <div id=image3></div>
-    </h3>
+    </h2>
 </body>
 
 </html>

@@ -18,12 +18,12 @@ var db = firebase.firestore();
 var auth = firebase.auth();
 var doc1_likeCnt = 0;
 var loginBoxID = "login_google";
-var loginBoxHTML = `<button class="btn btn-dark">Google 로그인</button>`
+var loginBoxHTML = `<button class="btn btn-dark">login Google</button>`
 var userEmail = "";
 var userToken = "";
 
 export const makeLogoutBoxHTML = function (userName) {
-    return `<button class="btn btn-dark">${userName} (로그아웃)</button>`;
+    return `<button class="btn btn-dark">${userName} (logout)</button>`;
 }
 
 // firestorage 에 저장된 이미지 url 불러오기
@@ -303,7 +303,7 @@ export const getToken = function () {
 export const loginGoogle = function () {
     //console.log("userToken: ", userToken);
     if (userToken != "") {
-        logout();
+        logoutGoogle();
         return
     }
 
@@ -336,7 +336,7 @@ export const loginGoogle = function () {
 }
 
 // 로그아웃
-export const logout = function () {
+export const logoutGoogle = function () {
     auth.signOut()
     document.getElementById(loginBoxID).innerHTML = loginBoxHTML
     document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
