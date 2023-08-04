@@ -6,6 +6,16 @@ body {
     padding: 0;
 }
 
+img {
+    /* 부모 폭을 넘지 않도록 한다.
+     * 폭이 큰 이미지가 화면을 넘어가 횡스크롤 되는것 을 막는다. */
+    max-width: 100%;
+    /* 이미지폭을 현재 폭에 맞춘다.
+     * 작은 이미지는 확대되니 사용하지 않음*/
+    /*width: 100%;*/
+    height: auto;
+}
+
 #message {
     background: white;
     max-width: 360px;
