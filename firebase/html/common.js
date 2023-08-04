@@ -19,7 +19,7 @@ var auth = firebase.auth();
 var doc1_likeCnt = 0;
 var loginBoxID = "login_google";
 var loginBoxHTML = `<button class="btn btn-dark">login Google</button>`
-var userEmail = "";
+var userInfo = {};
 var userToken = "";
 
 export const makeLogoutBoxHTML = function (userName) {
@@ -52,9 +52,9 @@ export const setTestDoc = function (coll, doc) {
     });
 }
 
-// firestore 테스트 방문카운트
+// firestore 테스트 방문카운트 및 조회
 export const visitCnt = function (coll, doc, cntType, htmlId) {
-    var docRef = db.collection(coll).doc(doc);
+   var docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
@@ -62,11 +62,14 @@ export const visitCnt = function (coll, doc, cntType, htmlId) {
             if (!doc1.exists) {
                 throw "Document doest not exist!";
             }
-            var newCnt = doc1.data().visitCnt + 1;
-            transaction.update(docRef, {
-                visitCnt: newCnt
-            });
-            console.log("visitCnt", htmlId, `${doc1.data().name} visitCnt: ${newCnt}`)
+            var newCnt = doc1.data().visitCnt;
+            if (checkLogin()) {
+                newCnt += 1
+                transaction.update(docRef, {
+                    visitCnt: newCnt
+                });
+            }
+            //console.log("htmlId:", htmlId, `doc1.data().name: ${doc1.data().name} visitCnt: ${newCnt}`)
             document.getElementById(htmlId).innerHTML = `${newCnt}`;
         });
     }).then(function () {
@@ -99,8 +102,8 @@ export const setRestaurantDoc = function (coll, doc) {
 
 // firestore 컬렉션(판교식당) 문서 필드 없데이트
 export const updateRestaurantDoc = function (coll, doc) {
-    // console.log("userEmail:", userEmail)
-    // if (userEmail == "") {
+    // console.log("user.email:", user.email)
+    // if (user.email == "") {
     //     return
     // }
     var docRef = db.collection(coll).doc(doc.name);
@@ -182,8 +185,8 @@ export const readRestaurantCnt = function (coll, doc, cntType, htmlId) {
 
 // firestore 컬렉션(판교식당) 해당하는 문서 카운트 증가시키기
 export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
-    console.log("userEmail:", userEmail)
-    if (userEmail == "") {
+    console.log("user.email:", user.email)
+    if (user.email == "") {
         alert("로그인이 필요합니다.");
         return
     }
@@ -200,13 +203,13 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
             if (cntType == 'likeCnt') {
                 var lcUsers = doc1.data().likeCntUsers;
                 console.log("lcUsers", lcUsers)
-                var pos = lcUsers.indexOf(userEmail)
+                var pos = lcUsers.indexOf(user.email)
                 // 좋아요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
                     lcUsers.splice(pos, 1);
                 } else {
-                    lcUsers.push(userEmail);
+                    lcUsers.push(user.email);
                 }
                 newCnt = doc1.data().likeCnt + incValue;
                 transaction.update(docRef, {
@@ -218,13 +221,13 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
             } else if (cntType == 'dislikeCnt') {
                 var dlcUsers = doc1.data().dislikeCntUsers;
                 console.log("dlcUsers", dlcUsers)
-                var pos = dlcUsers.indexOf(userEmail)
+                var pos = dlcUsers.indexOf(user.email)
                 // 싫어요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
                     dlcUsers.splice(pos, 1);
                 } else {
-                    dlcUsers.push(userEmail);
+                    dlcUsers.push(user.email);
                 }
                 newCnt = doc1.data().dislikeCnt + incValue;
                 transaction.update(docRef, {
@@ -250,21 +253,20 @@ auth.onAuthStateChanged(function (user) {
     document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
     if (user) {
         // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
+        //user.displayName;
+        //user.email;
+        //user.emailVerified;
+        //user.photoURL;
+        //user.isAnonymous;
+        //user.uid;
+        //user.providerData;
+        userInfo = user;
         // ...
-        userEmail = user.email
         var userName = user.displayName + " " + user.email
         document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName)
     } else {
         // User is signed out.
-        // ...
-        userEmail = ""
+        userInfo = {};
         userToken = ""
         document.getElementById(loginBoxID).innerHTML = loginBoxHTML
     }
@@ -299,20 +301,26 @@ export const getToken = function () {
     });
 }
 
+export const checkLogin = () => {
+    console.log("userInfo: ", userInfo);
+    if (userInfo.email != null && userInfo.email != "") {
+        return true
+    }
+    return false
+}
+
 // 구글 로그인하기
 export const loginGoogle = function () {
-    //console.log("userToken: ", userToken);
-    if (userToken != "") {
-        logoutGoogle();
+    if (checkLogin()) {
+        logoutGoogle()
         return
     }
-
     var provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
+        userToken = result.credential.accessToken;
         // The signed-in user info.
-        var user = result.user;
+        userInfo = result.user;
         // ...
         console.log("loginGoogle result.user:", result.user)
         var userName = result.user.displayName + " " + result.user.email
@@ -347,11 +355,11 @@ export const GoogleLoginResult = function () {
     auth.getRedirectResult().then(function (result) {
         if (result.credential) {
             // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = result.credential.accessToken;
+            userToken = result.credential.accessToken;
             // ...
         }
         // The signed-in user info.
-        var user = result.user;
+        userInfo = result.user;
         console.log("GoogleLoginResult result.user:", result.user)
     }).catch(function (error) {
         // Handle Errors here.
