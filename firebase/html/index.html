@@ -12,6 +12,14 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-storage.js"></script>
     <script src="web_api_key.js" type="module"></script>
     <script src="common.js" type="module"></script>
+    <script type="module">
+        import {visitCnt, loadImage} from "./common.js"
+        //setTestDoc("test", "ysoftman");
+        visitCnt("test", "ysoftman", "likeCnt", "visitcnt");
+        loadImage("image1", "xelloss.jpg");
+        loadImage("image2", "cold_snow_by_guweiz.jpg");
+        loadImage("image3", "박카스.jpg");
+    </script>
     <title>ysoftman-firebase</title>
 </head>
 
@@ -19,26 +27,15 @@
     <h1>ysoftman - firebase test</h1>
     <a href="restaurant_pangyo.html">restaurant_pangyo.html</a><br>
     <h3>
-        <button id='google_login_result'></button>
+        <button id='google_login_result'></button><br>
         visitCnt from firestore: <span id=visitcnt></span>
     </h3>
     <h3>
         loaded images from firebase storage<br>
-        xelloss.jpg<br>
         <div id=image1></div>
-        <br>박카스.jpg<br>
         <div id=image2></div>
-        <br>cold_snow_by_guweiz.jpg<br>
         <div id=image3></div>
     </h3>
-    <script type="module">
-        import {visitCnt, loadImage} from "./common.js"
-        //setTestDoc("test", "ysoftman");
-        visitCnt("test", "ysoftman", "likeCnt", "visitcnt");
-        loadImage("image1", "xelloss.jpg");
-        loadImage("image2", "박카스.jpg");
-        loadImage("image3", "cold_snow_by_guweiz.jpg");
-    </script>
 </body>
 
 </html>
