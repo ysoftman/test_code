@@ -17,12 +17,12 @@ var storage = firebase.storage();
 var db = firebase.firestore();
 var auth = firebase.auth();
 var doc1_likeCnt = 0;
-var loginBoxID = "google_login_result";
-var loginText = `<button class="btn btn-dark">Google 로그인</button>`
+var loginBoxID = "login_google";
+var loginBoxHTML = `<button class="btn btn-dark">Google 로그인</button>`
 var userEmail = "";
 var userToken = "";
 
-export const makeLogoutText = function (userName) {
+export const makeLogoutBoxHTML = function (userName) {
     return `<button class="btn btn-dark">${userName} (로그아웃)</button>`;
 }
 
@@ -260,13 +260,13 @@ auth.onAuthStateChanged(function (user) {
         // ...
         userEmail = user.email
         var userName = user.displayName + " " + user.email
-        document.getElementById(loginBoxID).innerHTML = makeLogoutText(userName)
+        document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName)
     } else {
         // User is signed out.
         // ...
         userEmail = ""
         userToken = ""
-        document.getElementById(loginBoxID).innerHTML = loginText
+        document.getElementById(loginBoxID).innerHTML = loginBoxHTML
     }
 });
 
@@ -316,7 +316,7 @@ export const loginGoogle = function () {
         // ...
         console.log("loginGoogle result.user:", result.user)
         var userName = result.user.displayName + " " + result.user.email
-        document.getElementById(loginBoxID).innerHTML = makeLogoutText(userName)
+        document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName)
         // 사용자 토큰 파악해두기
         getToken()
         //GoogleLoginResult()
@@ -338,7 +338,7 @@ export const loginGoogle = function () {
 // 로그아웃
 export const logout = function () {
     auth.signOut()
-    document.getElementById(loginBoxID).innerHTML = loginText
+    document.getElementById(loginBoxID).innerHTML = loginBoxHTML
     document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
 }
 
