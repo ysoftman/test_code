@@ -24,8 +24,8 @@ service firebase.storage {
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read: if true;
-      allow write: if request.auth.uid != null;
+      // read 를 무조건 허용하면 비용 증가로 이어 질 수 있음
+      allow read, write: if request.auth.uid != null;
     }
   }
 }
