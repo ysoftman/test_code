@@ -4,10 +4,12 @@
 // desc : .smi 파일을 읽어 + - xxx sec 로 자막 노출 시간 수정하는 프로그램
 package main
 
-import "fmt"
-import "os"
-import "strconv"
-import "strings"
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
 func main() {
 	fmt.Println("[Usage] " + os.Args[0] + " +(-) ms file.smi")
@@ -91,11 +93,11 @@ func main() {
 	for len(strContents) > 0 {
 		// 처음부터 <SYNC Start= 까지의 새파일에 기록
 		idx := strings.Index(strContents, sepStart)
-        // 파일 끝까지 다 찾았다면 끝내기
-        if idx < 0 {
-            fpOutput.WriteString(strContents)
-            break
-        }
+		// 파일 끝까지 다 찾았다면 끝내기
+		if idx < 0 {
+			fpOutput.WriteString(strContents)
+			break
+		}
 		strTemp := strContents[:idx+sepStartLen]
 		fpOutput.WriteString(strTemp)
 
