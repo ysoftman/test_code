@@ -18,9 +18,12 @@
         import {visitCnt, loadImage} from "./common.js"
         //setTestDoc("test", "ysoftman");
         visitCnt("test", "ysoftman", "likeCnt", "visitcnt");
-        loadImage("image1", "xelloss.jpg");
-        loadImage("image2", "cold_snow_by_guweiz.jpg");
-        loadImage("image3", "박카스.jpg");
+        let images = [];
+        images.push("박카스.jpg");
+        images.push("xelloss.jpg");
+        images.push("cold_snow_by_guweiz.jpg");
+        images.push("morning_light_by_mizukiaoki.png");
+        loadImage("image", images);
     </script>
     <title>ysoftman-firebase</title>
 </head>
@@ -33,9 +36,7 @@
         <a href="restaurant_pangyo.html">restaurant_pangyo</a><br>
         visitCnt from firestore database: <span id=visitcnt></span><br>
         images from firebase storage<br>
-        <div id=image1></div>
-        <div id=image2></div>
-        <div id=image3></div>
+        <div id=image></div>
     </h2>
 </body>
 

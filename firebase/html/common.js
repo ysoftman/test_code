@@ -27,16 +27,18 @@ export const makeLogoutBoxHTML = function (userName) {
 }
 
 // firestorage 에 저장된 이미지 url 불러오기
-export const loadImage = function (htmlId, imageName) {
+export const loadImage = function (htmlId, images) {
     //var pathReference = storage.ref('xelloss.jpg');
-    var gsReference = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + imageName)
-    gsReference.getDownloadURL().then(function (url) {
-        //console.log('File available at', url);
-        document.getElementById(htmlId).innerHTML = '<img src="' + url + '"></img>';
-    }).catch(function (error) {
-        // Handle any errors
-        console.error('download failed:', error);
-    });
+    for (let img of images) {
+        var gsReference = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + img);
+        gsReference.getDownloadURL().then(function (url) {
+            //console.log('File available at', url);
+            document.getElementById(htmlId).innerHTML += '<img src="' + url + '"></img><br>';
+        }).catch(function (error) {
+            // Handle any errors
+            console.error('download failed:', error);
+        });
+    }
 }
 
 
