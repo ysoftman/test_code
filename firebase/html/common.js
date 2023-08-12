@@ -31,6 +31,7 @@ export const loadImage = function (htmlId, images) {
     //var pathReference = storage.ref('xelloss.jpg');
     for (let img of images) {
         var gsReference = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + img);
+        // getDownloadURL() 은 비동기로 이미지 순서가 보장되지 않는다
         gsReference.getDownloadURL().then(function (url) {
             //console.log('File available at', url);
             document.getElementById(htmlId).innerHTML += '<img src="' + url + '"></img><br>';
