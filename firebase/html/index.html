@@ -15,15 +15,15 @@
     <script src="web_api_key.js" type="module"></script>
     <script src="common.js" type="module"></script>
     <script type="module">
-        import {visitCnt, loadImage} from "./common.js"
+        import {visitCnt, makeSubDiv, loadImage} from "./common.js"
         //setTestDoc("test", "ysoftman");
-        visitCnt("test", "ysoftman", "likeCnt", "visitcnt");
-        let images = [];
-        images.push("박카스.jpg");
-        images.push("xelloss.jpg");
-        images.push("cold_snow_by_guweiz.jpg");
-        images.push("morning_light_by_mizukiaoki.png");
-        loadImage("image", images);
+        visitCnt("test", "ysoftman", "likecnt", "visitcnt")
+        // image div 태그를 구성해 이미지 순서를 보장
+        makeSubDiv("image", 10)
+        loadImage("image1", "박카스.jpg")
+        loadImage("image2", "xelloss.jpg")
+        loadImage("image3", "cold_snow_by_guweiz.jpg")
+        loadImage("image4", "morning_light_by_mizukiaoki.png")
     </script>
     <title>ysoftman-firebase</title>
 </head>
