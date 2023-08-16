@@ -1,8 +1,8 @@
 # blogger 관리
 
-## 테마 파일(.html) 관련
+## 테마 관련
 
-- 테마 파일을 vscode 로 수정 후 적용하기 위해 blogger_theme.html 로 저장함
+- 테마 다운로드/백업 받아 필요시 수정해 적용 
 - 모바일 편의성 관련 오류 수정, 리포팅 : [google search console](https://search.google.com/search-console/?resource_id=sc-domain:yoonbh2714.blogspot.com)
   - 클릭할 수 있는 요소가 서로 너무 가까움
   - 표시 영역이 '기기 폭'으로 설정되어 있지 않음
@@ -18,7 +18,7 @@
   height: auto;
   ```
 
-## 포스트 백업 파일(.xml) 관련
+## 포스트 관련
 
 - 포스팅 중 line-height 스타일 제거
 
