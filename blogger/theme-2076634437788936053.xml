@@ -1046,7 +1046,7 @@ head.appendChild(script);
                           <b:includable id='postQuickEdit' var='post'>
                             <b:if cond='data:post.editUrl'>
                               <span expr:class='&quot;edit-post-text &quot; + data:post.adminClass'>
-                                <a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>편집</a>
+                                <a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>edit</a>
                               </span>
                             </b:if>
                           </b:includable>
