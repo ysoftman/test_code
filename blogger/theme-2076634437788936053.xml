@@ -447,23 +447,6 @@
                                                             <div class='blog-posts hfeed'>
                                                                 <b:include data='top' name='status-message'/>
                                                                 <b:loop values='data:posts' var='post'>
-                                                                    <!-- ysoftman 날짜 표시 부분 제거 -->
-                                                                    <!-- <b:if cond='data:post.isDateStart and not data:post.isFirstPost'>
-                                                                        &lt;/div&gt;&lt;/div&gt;
-                                                                        </b:if>
-                                                                        <b:if cond='data:post.isDateStart'>
-                                                                        &lt;div class=&quot;date-outer&quot;&gt;
-                                                                        </b:if>
-                                                                        <b:if cond='data:post.dateHeader'>
-                                                                        <h2 class='date-header'>
-                                                                        <span>
-                                                                        <data:post.dateHeader/>
-                                                                        </span>
-                                                                        </h2>
-                                                                        </b:if>
-                                                                        <b:if cond='data:post.isDateStart'>
-                                                                        &lt;div class=&quot;date-posts&quot;&gt;
-                                                                    </b:if> -->
                                                                     <div class='post-outer'>
                                                                         <b:include data='post' name='post'/>
                                                                         <b:include cond='data:blog.pageType in {&quot;static_page&quot;,&quot;item&quot;}' data='post' name='comment_picker'/>
@@ -483,9 +466,6 @@
                                                             <b:include name='nextprev'/>
                                                             <!-- feed links -->
                                                             <b:include name='feedLinks'/>
-                                                            <b:if cond='data:top.showPlusOne'>
-                                                                <data:top.googlePlusBootstrap/>
-                                                            </b:if>
                                                         </b:includable>
                                                         <b:includable id='backlinkDeleteIcon' var='backlink'>
                                                             <span expr:class='&quot;item-control &quot; + data:backlink.adminClass'>
@@ -987,16 +967,10 @@
                                                                             <!-- quickedit pencil -->
                                                                             <b:include data='post' name='postQuickEdit'/>
                                                                         </span>
-                                                                        <!-- share buttons -->
-                                                                        <!-- <div class='post-share-buttons goog-inline-block'>
-                                                                            <b:include cond='data:post.sharePostUrl' data='post' name='shareButtons'/>
-                                                                        </div> -->
-
                                                                         <!-- ysoftman post timestamp 표시 -->
                                                                         <span class='post-timestamp'>
                                                                             <data:post.timestamp/>
                                                                         </span>
-
                                                                     </div>
                                                                     <div class='post-footer-line post-footer-line-2'>
                                                                         <span class='post-location'>
