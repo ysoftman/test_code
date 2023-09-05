@@ -12,6 +12,20 @@ tar zxvf caddy_v0.11.5_linux_amd64.tar.gz
 brew install caddy
 ```
 
+- webdav 기능 추가해서 설치(빌드)하는 경우
+
+```bash
+# xcaddy(Custom Caddy Builder) 설치
+go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+
+# caddy 클론
+git clone https://github.com/caddyserver/caddy
+cd caddy
+
+# xcaddy 로 webdav 모듈 추가해서 빌드
+xcaddy build master --with github.com/mholt/caddy-webdav
+```
+
 ## 실행
 
 ```bash

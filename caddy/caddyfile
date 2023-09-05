@@ -1,3 +1,31 @@
+###### webdav #####
+# module...
+{
+    order webdav before file_server
+}
+
+# 호스트별 설정
+localhost {
+    rewrite /dav /dav/
+    webdav /dav/* {
+        root /srv/http/dav/
+        prefix /dav
+    }
+    root * /srv/http
+    file_server
+
+}
+
+webdav.example.com {
+    root * /data/webdav
+    basicauth {
+        user1 hashed-password
+    }
+    webdav
+}
+
+##### browse #####
+
 # port
 :8080
 
@@ -6,3 +34,4 @@ basicauth / ysoftman qwer1234
 
 # browse
 browse /
+
