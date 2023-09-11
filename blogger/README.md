@@ -1,23 +1,5 @@
 # blogger 관리
 
-## 테마 관련
-
-- 테마 다운로드/백업 받아 필요시 수정해 적용 
-- 모바일 편의성 관련 오류 수정, 리포팅 : [google search console](https://search.google.com/search-console/?resource_id=sc-domain:yoonbh2714.blogspot.com)
-  - 클릭할 수 있는 요소가 서로 너무 가까움
-  - 표시 영역이 '기기 폭'으로 설정되어 있지 않음
-  - 콘텐츠 폭이 화면 폭보다 넓음
-  - 텍스트가 너무 작아 읽을 수 없음
-
-- 모바일 블로그 화면에서 포스트에 삽입된 이미지가 포스트 영역을 넘어서 보이는 경우 수정
-
-  ```css
-  /* 포스트 이미지 속성 최대폭 및 그에 따른 높이 비율 자동 설정 */
-  .post-body img
-  max-width: 100%;
-  height: auto;
-  ```
-
 ## 포스트 관련
 
 - 포스팅 중 line-height 스타일 제거
