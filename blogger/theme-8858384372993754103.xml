@@ -372,7 +372,7 @@
       gapi.load(&quot;gapi.iframes:gapi.iframes.style.bubble&quot;, function() {
         if (gapi.iframes &amp;&amp; gapi.iframes.getContext) {
           gapi.iframes.getContext().openChild({
-              url: &#39;https://draft.blogger.com/navbar.g?targetBlogID\x3d2076634437788936053\x26blogName\x3dSentimental+Programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dBLACK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttps://yoonbh2714.blogspot.com/\x26vt\x3d-3517730955118303239&#39;,
+              url: &#39;https://draft.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dBLACK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttps://yoonbh2714.blogspot.com/\x26vt\x3d-7730802393371495710&#39;,
               where: document.getElementById(&quot;navbar-iframe-container&quot;),
               id: &quot;navbar-iframe&quot;
           });
@@ -423,6 +423,7 @@ head.appendChild(script);
                                                       <b:widget-setting name='showDateHeader'>true</b:widget-setting>
                                                       <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
                                                       <b:widget-setting name='showShareButtons'>false</b:widget-setting>
+                                                      <b:widget-setting name='authorLabel'>By</b:widget-setting>
                                                       <b:widget-setting name='showCommentLink'>true</b:widget-setting>
                                                       <b:widget-setting name='style.urlcolor'>#ffffff</b:widget-setting>
                                                       <b:widget-setting name='showAuthor'>false</b:widget-setting>
@@ -436,10 +437,10 @@ head.appendChild(script);
                                                       <b:widget-setting name='showLocation'>false</b:widget-setting>
                                                       <b:widget-setting name='postLabelsLabel'>tag:</b:widget-setting>
                                                       <b:widget-setting name='showTimestamp'>false</b:widget-setting>
-                                                      <b:widget-setting name='postsPerAd'>3</b:widget-setting>
+                                                      <b:widget-setting name='postsPerAd'>1</b:widget-setting>
                                                       <b:widget-setting name='showBacklinks'>false</b:widget-setting>
                                                       <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
-                                                      <b:widget-setting name='showInlineAds'>true</b:widget-setting>
+                                                      <b:widget-setting name='showInlineAds'>false</b:widget-setting>
                                                       <b:widget-setting name='showReactions'>false</b:widget-setting>
                                                     </b:widget-settings>
                                                     <b:includable id='main' var='top'>
