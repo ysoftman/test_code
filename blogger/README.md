@@ -29,6 +29,7 @@ bloggerid=""
 curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${apikey}"
 
 # post title 만 조회
-curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${apikey}" | jq ".items[].title"
+# maxResults=500 (500개까지만 된다)
+curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${apikey}&maxResults=500" | jq ".items[].title"
 ```
 
