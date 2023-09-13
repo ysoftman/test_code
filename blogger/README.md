@@ -31,5 +31,8 @@ curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${ap
 # post title 만 조회
 # maxResults=500 (500개까지만 된다)
 curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${apikey}&maxResults=500" | jq ".items[].title"
+
+# music 태그 포스트들의 title, id 필드만 조회
+curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${apikey}&labels=music&maxResults=500" | jq '.items[] | "\(.title) --> \(.id)"'
 ```
 
