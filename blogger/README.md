@@ -1,6 +1,6 @@
 # blogger 관리
 
-## 포스트 관련
+## 백업된 포스트(.xml) 관련
 
 - blogger post line-height, div, span, style 속성 파악
 
