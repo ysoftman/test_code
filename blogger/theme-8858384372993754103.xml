@@ -429,7 +429,7 @@ head.appendChild(script);
                                                       <b:widget-setting name='showAuthorProfile'>false</b:widget-setting>
                                                       <b:widget-setting name='style.layout'>1x1</b:widget-setting>
                                                       <b:widget-setting name='showLocation'>false</b:widget-setting>
-                                                      <b:widget-setting name='showTimestamp'>false</b:widget-setting>
+                                                      <b:widget-setting name='showTimestamp'>true</b:widget-setting>
                                                       <b:widget-setting name='postsPerAd'>1</b:widget-setting>
                                                       <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
                                                       <b:widget-setting name='showDateHeader'>true</b:widget-setting>
@@ -1007,12 +1007,12 @@ head.appendChild(script);
                                                             </div>
                                                         </b:includable>
                                                     <b:includable id='postQuickEdit' var='post'>
-                                                            <b:if cond='data:post.editUrl'>
-                                                                <span expr:class='&quot;edit-post-text &quot; + data:post.adminClass'>
-                                                                    <a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>edit</a>
-                                                                </span>
-                                                            </b:if>
-                                                        </b:includable>
+                                                        <b:if cond='data:post.editUrl'>
+                                                            <span expr:class='&quot;edit-post-text &quot; + data:post.adminClass'>
+                                                                <a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>edit</a>
+                                                            </span>
+                                                        </b:if>
+                                                    </b:includable>
                                                     <b:includable id='shareButtons' var='post'>
                                                             <b:if cond='data:top.showEmailButton'>
                                                                 <a class='goog-inline-block share-button sb-email' expr:href='data:post.sharePostUrl + &quot;&amp;target=email&quot;' expr:title='data:top.emailThisMsg' target='_blank'>
