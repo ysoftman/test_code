@@ -402,12 +402,14 @@ head.appendChild(script);
     <div class='content'>
         <!-- 배경영역 제거  -->
         <!-- <div class='content-outer'> -->
-            <div class='fauxborder-left content-fauxborder-left'>
-                <div class='fauxborder-right content-fauxborder-right'/>
+            <div>
+            <!--<div class='fauxborder-left content-fauxborder-left'>-->
+            <!--<div class='fauxborder-right content-fauxborder-right'/>-->
                 <div class='content-inner'>
                     <div class='main-outer'>
-                        <div class='fauxborder-left main-fauxborder-left'>
-                            <div class='fauxborder-right main-fauxborder-right'/>
+                        <div>
+                        <!--<div class='fauxborder-left main-fauxborder-left'>-->
+                        <!--<div class='fauxborder-right main-fauxborder-right'/>-->
                             <div class='region-inner main-inner'>
                                 <div class='columns fauxcolumns'>
                                     <!-- corrects IE6 width calculation -->
@@ -1330,8 +1332,8 @@ head.appendChild(script);
                                                                                     </div>
                                                                                 </div>
                                                                             </b:includable>
-                                                  </b:widget>
-                                                </b:section>
+                                                                        </b:widget>
+                                                                    </b:section>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1344,8 +1346,8 @@ head.appendChild(script);
                                         </div>
                                         <footer>
                                             <div class='footer-outer'>
-                                                <div class='fauxborder-left footer-fauxborder-left'>
-                                                    <div class='fauxborder-right footer-fauxborder-right'/>
+                                                <!--<div class='fauxborder-left footer-fauxborder-left'>-->
+                                                <!--<div class='fauxborder-right footer-fauxborder-right'/>-->
                                                     <div class='region-inner footer-inner'>
                                                         <macro:include id='footer-sections' name='sections'>
                                                             <macro:param default='2' name='num' value='1'/>
@@ -1355,7 +1357,7 @@ head.appendChild(script);
                                                         </macro:include>
                                                         <!-- outside of the include in order to lock Attribution widget -->
                                                     </div>
-                                                </div>
+                                                <!--</div>-->
                                             </div>
                                         </footer>
                                         <!-- content -->
@@ -1402,10 +1404,6 @@ head.appendChild(script);
                             </macro:if>
                         </macro:if>
                     </macro:includable>
-
-
-                    
-
                 <b:section-contents id='footer-1'>
   <b:widget id='Label1' locked='false' title='tag' type='Label' version='1'>
     <b:widget-settings>
@@ -1416,41 +1414,41 @@ head.appendChild(script);
       <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
     </b:widget-settings>
     <b:includable id='main'>
-                                <b:if cond='data:title != &quot;&quot;'>
-                                    <h2><data:title/></h2>
-                                </b:if>
-                                <div expr:class='&quot;widget-content &quot; + data:display + &quot;-label-widget-content&quot;'>
-                                    <b:if cond='data:display == &quot;list&quot;'>
-                                        <ul>
-                                            <b:loop values='data:labels' var='label'>
-                                                <li>
-                                                    <b:if cond='data:blog.url == data:label.url'>
-                                                        <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
-                                                        <b:else/>
-                                                        <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
-                                                    </b:if>
-                                                    <b:if cond='data:showFreqNumbers'>
-                                                        <span dir='ltr'>(<data:label.count/>)</span>
-                                                    </b:if>
-                                                </li>
-                                            </b:loop>
-                                        </ul>
-                                        <b:else/>
-                                        <b:loop values='data:labels' var='label'>
-                                            <span expr:class='&quot;label-size label-size-&quot; + data:label.cssSize'>
-                                                <b:if cond='data:blog.url == data:label.url'>
-                                                    <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
-                                                    <b:else/>
-                                                    <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
-                                                </b:if>
-                                                <b:if cond='data:showFreqNumbers'>
-                                                    <span class='label-count' dir='ltr'>(<data:label.count/>)</span>
-                                                </b:if>
-                                            </span>
-                                        </b:loop>
-                                    </b:if>
-                                    <b:include name='quickedit'/>
-                                </div>
-                            </b:includable>
+        <b:if cond='data:title != &quot;&quot;'>
+            <h2><data:title/></h2>
+        </b:if>
+        <div expr:class='&quot;widget-content &quot; + data:display + &quot;-label-widget-content&quot;'>
+            <b:if cond='data:display == &quot;list&quot;'>
+                <ul>
+                    <b:loop values='data:labels' var='label'>
+                        <li>
+                            <b:if cond='data:blog.url == data:label.url'>
+                                <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+                                <b:else/>
+                                <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+                            </b:if>
+                            <b:if cond='data:showFreqNumbers'>
+                                <span dir='ltr'>(<data:label.count/>)</span>
+                            </b:if>
+                        </li>
+                    </b:loop>
+                </ul>
+                <b:else/>
+                <b:loop values='data:labels' var='label'>
+                    <span expr:class='&quot;label-size label-size-&quot; + data:label.cssSize'>
+                        <b:if cond='data:blog.url == data:label.url'>
+                            <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+                            <b:else/>
+                            <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+                        </b:if>
+                        <b:if cond='data:showFreqNumbers'>
+                            <span class='label-count' dir='ltr'>(<data:label.count/>)</span>
+                        </b:if>
+                    </span>
+                </b:loop>
+            </b:if>
+            <b:include name='quickedit'/>
+        </div>
+    </b:includable>
   </b:widget>
 </b:section-contents></html>
