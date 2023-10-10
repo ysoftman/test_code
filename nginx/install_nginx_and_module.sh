@@ -65,4 +65,8 @@ sudo make install
 cd ..
 
 # 설정 변경하면서 테스트할때
-sudo cp -v ./nginx.conf /usr/local/nginx/conf/nginx.conf && sudo /usr/local/nginx/sbin/nginx -s stop; sudo /usr/local/nginx/sbin/nginx && curl -Lv http://localhost:8080/echo
+sudo cp -v ./nginx.conf /usr/local/nginx/conf/nginx.conf
+sudo /usr/local/nginx/sbin/nginx -s stop
+sudo /usr/local/nginx/sbin/nginx
+curl -Lv http://localhost:8080/echo
+
