@@ -114,10 +114,25 @@
             border-top: 0 solid #eeeeee;
             margin: 0px 10px 0px 10px
             }
-
-            .ysoftman-home {
-            padding: 10px 10px 10px 10px;
-            font-size: 120%;
+			.ysoftman-home {
+                padding: 0px 0px 10px 0px;
+			}
+            .ysoftman-home a {
+                font-size: 2em;
+                color: #ffffff;
+                text-shadow: 0 0 5px #0072ff, 0 0 10px #0072ff, 0 0 20px #0072ff, 0 0 30px #0072ff;
+                animation: animate 5s linear infinite;
+            }
+            .ysoftman-home a {
+                animation-delay: 0.1s;
+            }
+            @keyframes animate {
+                from {
+                    filter: hue-rotate(0deg);
+                }
+                to {
+                    filter: hue-rotate(360deg);
+                }
             }
 
 
@@ -372,7 +387,7 @@
       gapi.load(&quot;gapi.iframes:gapi.iframes.style.bubble&quot;, function() {
         if (gapi.iframes &amp;&amp; gapi.iframes.getContext) {
           gapi.iframes.getContext().openChild({
-              url: &#39;https://draft.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dDARK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttps://yoonbh2714.blogspot.com/\x26vt\x3d-7730802393371495710&#39;,
+              url: &#39;https://www.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dDARK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttp://yoonbh2714.blogspot.com/\x26vt\x3d-7453345157052039242&#39;,
               where: document.getElementById(&quot;navbar-iframe-container&quot;),
               id: &quot;navbar-iframe&quot;
           });
