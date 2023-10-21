@@ -7,356 +7,355 @@
       <data:blog.pageTitle/>
     </title>
     <b:skin><![CDATA[
+/* Content
+----------------------------------------------- */
+body, .body-fauxcolumn-outer {
+font: 20px Tahoma, Arial, Helvetica, FreeSans, sans-serif;
+color: rgb(185, 179, 170);
+background: rgb(22, 24, 25) none repeat scroll top left;
+padding: 0 0 0 0;
+}
+html body .region-inner {
+min-width: 0;
+max-width: 100%;
+width: auto;
+}
+a:link {
+text-decoration:none;
+color: #4183C4;
+}
+a:visited {
+text-decoration:none;
+color: #4183C4;
+}
+a:hover {
+text-decoration:none;
+color: #c678dd;
+}
 
-            /* Content
-            ----------------------------------------------- */
-            body, .body-fauxcolumn-outer {
-            font: 20px Tahoma, Arial, Helvetica, FreeSans, sans-serif;
-            color: rgb(185, 179, 170);
-            background: rgb(22, 24, 25) none repeat scroll top left;
-            padding: 0 0 0 0;
-            }
-            html body .region-inner {
-            min-width: 0;
-            max-width: 100%;
-            width: auto;
-            }
-            a:link {
-            text-decoration:none;
-            color: #4183C4;
-            }
-            a:visited {
-            text-decoration:none;
-            color: #4183C4;
-            }
-            a:hover {
-            text-decoration:none;
-            color: #c678dd;
-            }
+/* 블로그 내용 */
+.content-inner {
+padding: 0px 0px 0px 0px;
+background-color: rgb(22, 24, 25);
+}
 
-            /* 블로그 내용 */
-            .content-inner {
-            padding: 0px 0px 0px 0px;
-            background-color: rgb(22, 24, 25);
-            }
+/* Header
+----------------------------------------------- */
+.header-outer {
+background: #4183C4 url(//www.blogblog.com/1kt/simple/gradients_light.png) repeat-x scroll 0 -400px;
+_background-image: none;
+}
+.Header h1 {
+font: 60px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #98c379;
+text-shadow: 1px 2px 3px rgba(0, 0, 0, .2);
+padding: 0px 0px 0px 0px;
+margin: 0px 0px 0px 0px;
+}
+.Header h1 a {
+color: #61AFEF;
+}
+.Header .description {
+font-size: 120%;
+color: #c678dd;
+padding: 0px 0px 0px 0px;
+margin: 0px 0px 0px 0px;
+}
 
-            /* Header
-            ----------------------------------------------- */
-            .header-outer {
-            background: #4183C4 url(//www.blogblog.com/1kt/simple/gradients_light.png) repeat-x scroll 0 -400px;
-            _background-image: none;
-            }
-            .Header h1 {
-            font: 60px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
-            color: #98c379;
-            text-shadow: 1px 2px 3px rgba(0, 0, 0, .2);
-            padding: 0px 0px 0px 0px;
-            margin: 0px 0px 0px 0px;
-            }
-            .Header h1 a {
-            color: #61AFEF;
-            }
-            .Header .description {
-            font-size: 120%;
-            color: #c678dd;
-            padding: 0px 0px 0px 0px;
-            margin: 0px 0px 0px 0px;
-            }
+.header-inner .Header .titlewrapper {
+padding: 0px 0px 0px 10px;
+margin: 0px 0px 0px 0px;
+}
 
-            .header-inner .Header .titlewrapper {
-            padding: 0px 0px 0px 10px;
-            margin: 0px 0px 0px 0px;
-            }
-
-            .header-inner .Header .descriptionwrapper {
-            padding: 0px 0px 0px 10px;
-            margin: 0px 0px 10px 0px;
-            }
-
-
-            /* Tabs
-            ----------------------------------------------- */
-            .tabs-inner .section:first-child {
-            border-top: 0 solid #eeeeee;
-            }
-            .tabs-inner .section:first-child ul {
-            margin-top: -0;
-            border-top: 0 solid #eeeeee;
-            border-left: 0 solid #eeeeee;
-            border-right: 0 solid #eeeeee;
-            }
-            .tabs-inner .widget ul {
-            margin-top: 0;
-            margin-left: -30px;
-            margin-right: -30px;
-            }
-            .tabs-inner .widget li a {
-            display: inline-block;
-            padding: .6em 1em;
-            font: 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
-            color: #fff;
-            border-left: 1px solid #ffffff;
-            border-right: 1px solid #eeeeee;
-            }
-            .tabs-inner .widget li:first-child a {
-            border-left: none;
-            }
-            .tabs-inner .widget li.selected a, .tabs-inner .widget li a:hover {
-            color: #fff;
-            background-color: rgb(22, 24, 25);
-            text-decoration: none;
-            }
-            /* Columns
-            ----------------------------------------------- */
-            /* 메인 아웃터 마진 조정 */
-            .main-outer {
-            border-top: 0 solid #eeeeee;
-            margin: 0px 10px 0px 10px
-            }
-            .ysoftman-home {
-            padding: 0px 0px 10px 0px;
-            }
-            .ysoftman-home a {
-            font-size: 2em;
-            color: #ffffff;
-            text-shadow: 0 0 5px #0072ff, 0 0 10px #0072ff, 0 0 20px #0072ff, 0 0 30px #0072ff;
-            /* animation: animate 5s linear infinite; */
-            }
-            .ysoftman-home a {
-            animation-delay: 0.1s;
-            }
-            @keyframes animate {
-            from {
-            filter: hue-rotate(0deg);
-            }
-            to {
-            filter: hue-rotate(360deg);
-            }
-            }
+.header-inner .Header .descriptionwrapper {
+padding: 0px 0px 0px 10px;
+margin: 0px 0px 10px 0px;
+}
 
 
-            /* Headings
-            ----------------------------------------------- */
-            /* h2 속성 */
-            h2 {
-            margin: 0 0 0 0;
-            font: bold 20px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
-            color: #c678dd;
-            }
-            /* Widgets
-            ----------------------------------------------- */
-            .widget {
-            line-height: 1;
-            }
-            .widget .zippy {
-            color: #61AFEF;
-            text-shadow: 2px 2px 1px rgba(0, 0, 0, .1);
-            }
-            .widget .popular-posts ul {
-            list-style: none;
-            }
-
-            /* Posts
-            ----------------------------------------------- */
-            /* 작성일자 포스트들 외각 */
-            .date-outer {
-            padding: 0px;
-            margin: 0px 0px 0px 0px
-            }
-
-            .date-header span {
-            background-color: transparent;
-            color: #d19a66;
-            padding: inherit;
-            }
-
-            .post-timestamp {
-            background-color: transparent;
-            color: #d19a66;
-            padding: 0px 0px 0px 0px;
-            margin: 0px 0px 0px 0px;
-            }
-
-            /* 메인영역 여백 */
-            .main-inner {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            }
-
-            .main-inner .column-center-inner {
-            padding: 0px 0px 0px 0px;
-            }
-            .main-inner .column-center-inner .section {
-            margin: 0px;
-            }
-
-            h3.post-title, .comments h4 {
-            color: #c678dd;
-            font: bold 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
-            }
-
-            /* 포스트 스타일 */
-            .post-outer {
-            border: 2px solid rgb(123, 114, 101);
-            padding: 10px;
-            margin: 0px 0px 10px 0px;
-            }
-
-            .post-body {
-            font-size: 110%;
-            line-height: 1.4;
-            position: relative;
-            }
-
-            .post-body img, .post-body .tr-caption-container, .Profile img, .Image img,
-            .BlogList .item-thumbnail img {
-            padding: 0 !important;
-            border: none !important;
-            background: none !important;
-            -moz-box-shadow: 0px 0px 0px transparent !important;
-            -webkit-box-shadow: 0px 0px 0px transparent !important;
-            box-shadow: 0px 0px 0px transparent !important;
-            box-shadow: none;
-            border: none;
-            margin: 0 0 0 0;
-            max-width: 100%;
-            height: auto;
-            }
-            .post-body .tr-caption-container {
-            color: rgb(22, 24, 25);
-            }
-            .post-body .tr-caption-container img {
-            padding: 0;
-            background: transparent;
-            border: none;
-            -moz-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
-            -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
-            box-shadow: 0 0 0 rgba(0, 0, 0, .1);
-            }
-            .post-header {
-            margin: 0 0 1.5em;
-            line-height: 1.6;
-            font-size: 125%;
-            }
-            .post-footer {
-            margin: 0px 0px 0;
-            padding: 0px 0px;
-            color: #98c379;
-            background-color: rgb(22, 24, 25);
-            line-height: 1.4;
-            font-size: 125%;
-            }
-            #comments .comment-author {
-            padding-top: 1.5em;
-            border-top: 1px solid #eeeeee;
-            background-position: 0 1.5em;
-            }
-            #comments .comment-author:first-child {
-            padding-top: 0;
-            border-top: none;
-            }
-            .avatar-image-container {
-            margin: .2em 0 0;
-            }
-            #comments .avatar-image-container img {
-            border: 1px solid #eeeeee;
-            }
-
-            /* 편집 버튼내 a 속성 */
-            .edit-post-text a {
-            color: #c678dd;
-            }
-
-            /* Comments
-            ----------------------------------------------- */
-            .comments .comments-content .icon.blog-author {
-            background-repeat: no-repeat;
-            }
-            .comments .comments-content .loadmore a {
-            border-top: 1px solid #999999;
-            border-bottom: 1px solid #999999;
-            }
-            .comments .comment-thread.inline-thread {
-            background-color: rgb(22, 24, 25);
-            }
-            .comments .continue {
-            border-top: 2px solid #999999;
-            }
+/* Tabs
+----------------------------------------------- */
+.tabs-inner .section:first-child {
+border-top: 0 solid #eeeeee;
+}
+.tabs-inner .section:first-child ul {
+margin-top: -0;
+border-top: 0 solid #eeeeee;
+border-left: 0 solid #eeeeee;
+border-right: 0 solid #eeeeee;
+}
+.tabs-inner .widget ul {
+margin-top: 0;
+margin-left: -30px;
+margin-right: -30px;
+}
+.tabs-inner .widget li a {
+display: inline-block;
+padding: .6em 1em;
+font: 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #fff;
+border-left: 1px solid #ffffff;
+border-right: 1px solid #eeeeee;
+}
+.tabs-inner .widget li:first-child a {
+border-left: none;
+}
+.tabs-inner .widget li.selected a, .tabs-inner .widget li a:hover {
+color: #fff;
+background-color: rgb(22, 24, 25);
+text-decoration: none;
+}
+/* Columns
+----------------------------------------------- */
+/* 메인 아웃터 마진 조정 */
+.main-outer {
+border-top: 0 solid #eeeeee;
+margin: 0px 10px 0px 10px
+}
+.ysoftman-home {
+padding: 0px 0px 10px 0px;
+}
+.ysoftman-home a {
+font-size: 2em;
+color: #ffffff;
+text-shadow: 0 0 5px #0072ff, 0 0 10px #0072ff, 0 0 20px #0072ff, 0 0 30px #0072ff;
+/* animation: animate 5s linear infinite; */
+}
+.ysoftman-home a {
+animation-delay: 0.1s;
+}
+@keyframes animate {
+from {
+filter: hue-rotate(0deg);
+}
+to {
+filter: hue-rotate(360deg);
+}
+}
 
 
-            /* Accents
-            ---------------------------------------------- */
-            .section-columns td.columns-cell {
-            border-left: 1px solid #eeeeee;
-            }
-            .blog-pager {
-            background: transparent none no-repeat scroll top center;
-            padding: 0px 10px 0px 10px;
-            font-size: 1.5em;
-            }
-            .blog-pager-home-link {
-            float: none;
-            }
-            .blog-pager-older-link {
-            float: right;
-            }
-            .blog-pager-newer-link {
-            float: left;
-            }
+/* Headings
+----------------------------------------------- */
+/* h2 속성 */
+h2 {
+margin: 0 0 0 0;
+font: bold 20px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #c678dd;
+}
+/* Widgets
+----------------------------------------------- */
+.widget {
+line-height: 1;
+}
+.widget .zippy {
+color: #61AFEF;
+text-shadow: 2px 2px 1px rgba(0, 0, 0, .1);
+}
+.widget .popular-posts ul {
+list-style: none;
+}
 
-            .footer-outer {
-            border-top: 0 dashed #bbbbbb;
-            padding: 20px 0 0 0;
-            }
-            .footer-inner {
-            .padding: 5px
-            }
-            ]]></b:skin>
+/* Posts
+----------------------------------------------- */
+/* 작성일자 포스트들 외각 */
+.date-outer {
+padding: 0px;
+margin: 0px 0px 0px 0px
+}
+
+.date-header span {
+background-color: transparent;
+color: #d19a66;
+padding: inherit;
+}
+
+.post-timestamp {
+background-color: transparent;
+color: #d19a66;
+padding: 0px 0px 0px 0px;
+margin: 0px 0px 0px 0px;
+}
+
+/* 메인영역 여백 */
+.main-inner {
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+.main-inner .column-center-inner {
+padding: 0px 0px 0px 0px;
+}
+.main-inner .column-center-inner .section {
+margin: 0px;
+}
+
+h3.post-title, .comments h4 {
+color: #c678dd;
+font: bold 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+}
+
+/* 포스트 스타일 */
+.post-outer {
+border: 2px solid rgb(123, 114, 101);
+padding: 10px;
+margin: 0px 0px 10px 0px;
+}
+
+.post-body {
+font-size: 110%;
+line-height: 1.4;
+position: relative;
+}
+
+.post-body img, .post-body .tr-caption-container, .Profile img, .Image img,
+.BlogList .item-thumbnail img {
+padding: 0 !important;
+border: none !important;
+background: none !important;
+-moz-box-shadow: 0px 0px 0px transparent !important;
+-webkit-box-shadow: 0px 0px 0px transparent !important;
+box-shadow: 0px 0px 0px transparent !important;
+box-shadow: none;
+border: none;
+margin: 0 0 0 0;
+max-width: 100%;
+height: auto;
+}
+.post-body .tr-caption-container {
+color: rgb(22, 24, 25);
+}
+.post-body .tr-caption-container img {
+padding: 0;
+background: transparent;
+border: none;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
+box-shadow: 0 0 0 rgba(0, 0, 0, .1);
+}
+.post-header {
+margin: 0 0 1.5em;
+line-height: 1.6;
+font-size: 125%;
+}
+.post-footer {
+margin: 0px 0px 0;
+padding: 0px 0px;
+color: #98c379;
+background-color: rgb(22, 24, 25);
+line-height: 1.4;
+font-size: 125%;
+}
+#comments .comment-author {
+padding-top: 1.5em;
+border-top: 1px solid #eeeeee;
+background-position: 0 1.5em;
+}
+#comments .comment-author:first-child {
+padding-top: 0;
+border-top: none;
+}
+.avatar-image-container {
+margin: .2em 0 0;
+}
+#comments .avatar-image-container img {
+border: 1px solid #eeeeee;
+}
+
+/* 편집 버튼내 a 속성 */
+.edit-post-text a {
+color: #c678dd;
+}
+
+/* Comments
+----------------------------------------------- */
+.comments .comments-content .icon.blog-author {
+background-repeat: no-repeat;
+}
+.comments .comments-content .loadmore a {
+border-top: 1px solid #999999;
+border-bottom: 1px solid #999999;
+}
+.comments .comment-thread.inline-thread {
+background-color: rgb(22, 24, 25);
+}
+.comments .continue {
+border-top: 2px solid #999999;
+}
+
+
+/* Accents
+---------------------------------------------- */
+.section-columns td.columns-cell {
+border-left: 1px solid #eeeeee;
+}
+.blog-pager {
+background: transparent none no-repeat scroll top center;
+padding: 0px 10px 0px 10px;
+font-size: 1.5em;
+}
+.blog-pager-home-link {
+float: none;
+}
+.blog-pager-older-link {
+float: right;
+}
+.blog-pager-newer-link {
+float: left;
+}
+
+.footer-outer {
+border-top: 0 dashed #bbbbbb;
+padding: 20px 0 0 0;
+}
+.footer-inner {
+.padding: 5px
+}
+]]></b:skin>
     <b:template-skin><![CDATA[
-                body {
-                min-width: 100%;
-                }
-                .content-outer, .content-fauxcolumn-outer, .region-inner {
-                min-width: 100%;
-                max-width: none;
-                padding: 0 0 0 0;
-                }
-                .main-inner .columns {
-                padding-left: $(main.column.left.width);
-                padding-right: $(main.column.right.width);
-                }
-                .main-inner {
-                left: $(main.column.left.width);
-                right: $(main.column.right.width);
-                /* IE6 does not respect left and right together */
-                _width: expression(this.parentNode.offsetWidth -
-                parseInt("$(main.column.left.width)") -
-                parseInt("$(main.column.right.width)") + 'px');
-                }
-                .main-inner {
-                width: $(main.column.right.width);
-                }
-                .main-inner .column-right-outer {
-                width: $(main.column.right.width);
-                margin-right: -$(main.column.right.width);
-                }
-                #layout {
-                min-width: 0;
-                }
-                #layout .content-outer {
-                min-width: 0;
-                }
-                #layout .region-inner {
-                min-width: 0;
-                width: auto;
-                }
-                body#layout div.add_widget {
-                padding: 8px;
-                }
-                body#layout div.add_widget a {
-                margin-left: 32px;
-                }
-                ]]></b:template-skin>
+body {
+min-width: 100%;
+}
+.content-outer, .content-fauxcolumn-outer, .region-inner {
+min-width: 100%;
+max-width: none;
+padding: 0 0 0 0;
+}
+.main-inner .columns {
+padding-left: $(main.column.left.width);
+padding-right: $(main.column.right.width);
+}
+.main-inner {
+left: $(main.column.left.width);
+right: $(main.column.right.width);
+/* IE6 does not respect left and right together */
+_width: expression(this.parentNode.offsetWidth -
+parseInt("$(main.column.left.width)") -
+parseInt("$(main.column.right.width)") + 'px');
+}
+.main-inner {
+width: $(main.column.right.width);
+}
+.main-inner .column-right-outer {
+width: $(main.column.right.width);
+margin-right: -$(main.column.right.width);
+}
+#layout {
+min-width: 0;
+}
+#layout .content-outer {
+min-width: 0;
+}
+#layout .region-inner {
+min-width: 0;
+width: auto;
+}
+body#layout div.add_widget {
+padding: 8px;
+}
+body#layout div.add_widget a {
+margin-left: 32px;
+}
+]]></b:template-skin>
     <b:if cond="data:skin.vars.body_background.image and data:features.responsiveBackgrounds">
       <b:with value="&quot;body&quot;" var="selector">
         <b:include cond="not data:view.isPreview" data="skin.vars.body_background.image" name="responsiveImageStyle"/>
@@ -368,38 +367,38 @@
     <b:section class="navbar" id="navbar" maxwidgets="1" name="Navbar" showaddelement="no">
       <b:widget id="Navbar1" locked="true" title="Navbar" type="Navbar" version="1">
         <b:includable id="main">&lt;script type="text/javascript"&gt;
-                    function setAttributeOnload(object, attribute, val) {
-                    if(window.addEventListener) {
-                    window.addEventListener('load',
-                    function(){ object[attribute] = val; }, false);
-                    } else {
-                    window.attachEvent('onload', function(){ object[attribute] = val; });
-                    }
-                    }
-                    &lt;/script&gt;
-                    &lt;div id="navbar-iframe-container"&gt;&lt;/div&gt;
-                    &lt;script type="text/javascript" src="https://apis.google.com/js/platform.js"&gt;&lt;/script&gt;
-                    &lt;script type="text/javascript"&gt;
-                    gapi.load("gapi.iframes:gapi.iframes.style.bubble", function() {
-                    if (gapi.iframes &amp;&amp; gapi.iframes.getContext) {
-                    gapi.iframes.getContext().openChild({
-                    url: 'https://www.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dDARK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttp://yoonbh2714.blogspot.com/\x26vt\x3d-7453345157052039242',
-                    where: document.getElementById("navbar-iframe-container"),
-                    id: "navbar-iframe"
-                    });
-                    }
-                    });
-                    &lt;/script&gt;&lt;script type="text/javascript"&gt;
-                    (function() {
-                    var script = document.createElement('script');
-                    script.type = 'text/javascript';
-                    script.src = '//pagead2.googlesyndication.com/pagead/js/google_top_exp.js';
-                    var head = document.getElementsByTagName('head')[0];
-                    if (head) {
-                    head.appendChild(script);
-                    }})();
-                    &lt;/script&gt;
-            </b:includable>
+function setAttributeOnload(object, attribute, val) {
+if(window.addEventListener) {
+window.addEventListener('load',
+function(){ object[attribute] = val; }, false);
+} else {
+window.attachEvent('onload', function(){ object[attribute] = val; });
+}
+}
+&lt;/script&gt;
+&lt;div id="navbar-iframe-container"&gt;&lt;/div&gt;
+&lt;script type="text/javascript" src="https://apis.google.com/js/platform.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+gapi.load("gapi.iframes:gapi.iframes.style.bubble", function() {
+if (gapi.iframes &amp;&amp; gapi.iframes.getContext) {
+gapi.iframes.getContext().openChild({
+url: 'https://www.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dDARK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttp://yoonbh2714.blogspot.com/\x26vt\x3d-7453345157052039242',
+where: document.getElementById("navbar-iframe-container"),
+id: "navbar-iframe"
+});
+}
+});
+&lt;/script&gt;&lt;script type="text/javascript"&gt;
+(function() {
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '//pagead2.googlesyndication.com/pagead/js/google_top_exp.js';
+var head = document.getElementsByTagName('head')[0];
+if (head) {
+head.appendChild(script);
+}})();
+&lt;/script&gt;
+</b:includable>
       </b:widget>
     </b:section>
     <b:if cond="data:blog.pageType == &quot;index&quot;">
@@ -469,9 +468,7 @@
                                     </div>
                                   </b:if>
                                 </b:loop>
-                                <b:if cond="data:numPosts != 0">
-                                                                    &lt;/div&gt;&lt;/div&gt;
-                                                            </b:if>
+                                <b:if cond="data:numPosts != 0"> &lt;/div&gt;&lt;/div&gt; </b:if>
                               </div>
                               <!-- navigation -->
                               <b:include name="nextprev"/>
@@ -495,9 +492,7 @@
                                   <b:loop values="data:post.backlinks" var="backlink">
                                     <div class="collapsed-backlink backlink-control">
                                       <dt class="comment-title">
-                                        <span class="backlink-toggle-zippy">
-                                                                                     
-                                                                            </span>
+                                        <span class="backlink-toggle-zippy"></span>
                                         <a expr:href="data:backlink.url" rel="nofollow">
                                           <data:backlink.title/>
                                         </a>
@@ -532,8 +527,8 @@
                                 <data:post.friendConnectJs/>
                                 <data:post.cmtfpIframe/>
                                 <script type="text/javascript">
-                                                                BLOG_CMT_createIframe('<data:post.appRpcRelayPath/>');
-                                                            </script>
+                                  BLOG_CMT_createIframe('<data:post.appRpcRelayPath/>');
+                                </script>
                               </div>
                             </b:includable>
                             <b:includable id="commentDeleteIcon" var="comment">
@@ -552,10 +547,10 @@
                             <b:includable id="comment_count_picker" var="post">
                               <b:if cond="data:post.commentSource == 1">
                                 <span class="cmt_count_iframe_holder" expr:data-count="data:post.numComments" expr:data-onclick="data:post.addCommentOnclick" expr:data-post-url="data:post.url" expr:data-url="data:post.url.canonical.http">
-                                                            </span>
+                                </span>
                                 <b:else/>
                                 <a class="comment-link" expr:href="data:post.addCommentUrl" expr:onclick="data:post.addCommentOnclick"><data:post.commentLabelFull/> :
-                                                            </a>
+                                </a>
                               </b:if>
                             </b:includable>
                             <b:includable id="comment_picker" var="post">
@@ -575,18 +570,19 @@
                                                                 </h4>
                                   <b:if cond="data:post.commentPagingRequired">
                                     <span class="paging-control-container">
-                                      <b:if cond="data:post.hasOlderLinks"><a expr:class="data:post.oldLinkClass" expr:href="data:post.oldestLinkUrl"><data:post.oldestLinkText/></a>
-                                                                                 
-                                                                            <a expr:class="data:post.oldLinkClass" expr:href="data:post.olderLinkUrl"><data:post.olderLinkText/></a>
-                                                                                 
-                                                                        </b:if>
+                                      <b:if cond="data:post.hasOlderLinks">
+                                        <a expr:class="data:post.oldLinkClass" expr:href="data:post.oldestLinkUrl">
+                                          <data:post.oldestLinkText/>
+                                        </a>
+                                        <a expr:class="data:post.oldLinkClass" expr:href="data:post.olderLinkUrl">
+                                          <data:post.olderLinkText/>
+                                        </a>
+                                      </b:if>
                                       <data:post.commentRangeText/>
                                       <b:if cond="data:post.hasNewerLinks">
-                                                                                 
-                                                                            <a expr:class="data:post.newLinkClass" expr:href="data:post.newerLinkUrl"><data:post.newerLinkText/></a>
-                                                                                 
-                                                                            <a expr:class="data:post.newLinkClass" expr:href="data:post.newestLinkUrl"><data:post.newestLinkText/></a>
-                                                                        </b:if>
+<a expr:class="data:post.newLinkClass" expr:href="data:post.newerLinkUrl"><data:post.newerLinkText/></a>
+<a expr:class="data:post.newLinkClass" expr:href="data:post.newestLinkUrl"><data:post.newestLinkText/></a>
+</b:if>
                                     </span>
                                   </b:if>
                                   <div expr:id="data:widget.instanceId + &quot;_comments-block-wrapper&quot;">
@@ -633,11 +629,10 @@
                                   </div>
                                   <b:if cond="data:post.commentPagingRequired">
                                     <span class="paging-control-container"><a expr:class="data:post.oldLinkClass" expr:href="data:post.oldestLinkUrl"><data:post.oldestLinkText/></a><a expr:class="data:post.oldLinkClass" expr:href="data:post.olderLinkUrl"><data:post.olderLinkText/></a>
-                                                                             
-                                                                        <data:post.commentRangeText/>  
-                                                                        <a expr:class="data:post.newLinkClass" expr:href="data:post.newerLinkUrl"><data:post.newerLinkText/></a>
-                                                                        <a expr:class="data:post.newLinkClass" expr:href="data:post.newestLinkUrl"><data:post.newestLinkText/></a>
-                                                                    </span>
+<data:post.commentRangeText/>  
+<a expr:class="data:post.newLinkClass" expr:href="data:post.newerLinkUrl"><data:post.newerLinkText/></a>
+<a expr:class="data:post.newLinkClass" expr:href="data:post.newestLinkUrl"><data:post.newestLinkText/></a>
+</span>
                                   </b:if>
                                   <p class="comment-footer">
                                     <b:if cond="data:post.embedCommentForm">
@@ -655,8 +650,7 @@
                                 </b:if>
                                 <b:if cond="data:showCmtPopup">
                                   <div id="comment-popup">
-                                    <iframe allowtransparency="true" frameborder="0" id="comment-actions" name="comment-actions" scrolling="no">
-                                                                    </iframe>
+                                    <iframe allowtransparency="true" frameborder="0" id="comment-actions" name="comment-actions" scrolling="no"> </iframe>
                                   </div>
                                 </b:if>
                                 <div id="backlinks-container">
@@ -688,8 +682,8 @@
                                 <data:feedLinksMsg/>
                                 <b:loop values="data:links" var="f">
                                   <a class="feed-link" expr:href="data:f.url" expr:type="data:f.mimeType" target="_blank"><data:f.name/> (
-                                                                    <data:f.feedType/> )
-                                                                </a>
+<data:f.feedType/> )
+</a>
                                 </b:loop>
                               </div>
                             </b:includable>
@@ -1078,224 +1072,223 @@
                             <b:includable id="threaded_comment_js" var="post">
                               <script async="async" expr:src="data:post.commentSrc" type="text/javascript"/>
                               <script type="text/javascript">
-                                                            (function () {
-                                                                var items = <data:post.commentJso/>;
-                                                                    var msgs = <data:post.commentMsgs/>;
-                                                                        var config = <data:post.commentConfig/>;
-                                                                            // <![CDATA[
-                                                                            var cursor = null;
-                                                                            if (items && items.length > 0) {
-                                                                            cursor = parseInt(items[items.length - 1].timestamp) +
-                                                                            1;
-                                                                            }
-                                                                            var bodyFromEntry = function (entry) {
-                                                                            if (entry.gd$extendedProperty) {
-                                                                            for (var k in entry.gd$extendedProperty) {
-                                                                            if (entry.gd$extendedProperty[k].name ==
-                                                                            'blogger.contentRemoved') {
-                                                                            return '<span class="deleted-comment">' +
-                                                                                entry.content.$t +
-                                                                                '</span>';
-                                                                                    }
-                                                                                    }
-                                                                                    }
-                                                                                    return entry.content.$t;
-                                                                                    }
-                                                                                    var parse = function (data) {
-                                                                                    cursor = null;
-                                                                                    var comments = [];
-                                                                                    if (data && data.feed && data.feed.entry) {
-                                                                                    for (var i = 0, entry; entry = data.feed
-                                                                                    .entry[i]; i++) {
-                                                                                    var comment = {};
-                                                                                    // comment ID, parsed out of the original id format
-                                                                                    var id = /blog-(\d+).post-(\d+)/.exec(
-                                                                                    entry.id.$t);
-                                                                                    comment.id = id ? id[2] : null;
-                                                                                    comment.body = bodyFromEntry(entry);
-                                                                                    comment.timestamp = Date.parse(
-                                                                                    entry.published.$t) + '';
-                                                                                    if (entry.author && entry.author.constructor ===
-                                                                                    Array) {
-                                                                                    var auth = entry.author[0];
-                                                                                    if (auth) {
-                                                                                    comment.author = {
-                                                                                    name: (auth.name ?
-                                                                                    auth.name.$t :
-                                                                                    undefined),
-                                                                                    profileUrl: (auth.uri ?
-                                                                                    auth.uri.$t :
-                                                                                    undefined),
-                                                                                    avatarUrl: (auth.gd$image ?
-                                                                                    auth.gd$image
-                                                                                    .src :
-                                                                                    undefined)
-                                                                                    };
-                                                                                    }
-                                                                                    }
-                                                                                    if (entry.link) {
-                                                                                    if (entry.link[2]) {
-                                                                                    comment.link = comment.permalink =
-                                                                                    entry.link[2].href;
-                                                                                    }
-                                                                                    if (entry.link[3]) {
-                                                                                    var pid =
-                                                                                    /.*comments\/default\/(\d+)\?.*/
-                                                                                    .exec(entry.link[3].href);
-                                                                                    if (pid && pid[1]) {
-                                                                                    comment.parentId = pid[
-                                                                                    1];
-                                                                                    }
-                                                                                    }
-                                                                                    }
-                                                                                    comment.deleteclass =
-                                                                                    'item-control blog-admin';
-                                                                                    if (entry.gd$extendedProperty) {
-                                                                                    for (var k in entry.gd$extendedProperty) {
-                                                                                    if (entry.gd$extendedProperty[
-                                                                                    k].name ==
-                                                                                    'blogger.itemClass') {
-                                                                                    comment.deleteclass +=
-                                                                                    ' ' + entry.gd$extendedProperty[
-                                                                                    k].value;
-                                                                                    } else if (entry.gd$extendedProperty[
-                                                                                    k].name ==
-                                                                                    'blogger.displayTime') {
-                                                                                    comment.displayTime =
-                                                                                    entry.gd$extendedProperty[
-                                                                                    k].value;
-                                                                                    }
-                                                                                    }
-                                                                                    }
-                                                                                    comments.push(comment);
-                                                                                    }
-                                                                                    }
-                                                                                    return comments;
-                                                                                    };
-                                                                                    var paginator = function (callback) {
-                                                                                    if (hasMore()) {
-                                                                                    var url = config.feed +
-                                                                                    '?alt=json&v=2&orderby=published&reverse=false&max-results=50';
-                                                                                    if (cursor) {
-                                                                                    url += '&published-min=' + new Date(
-                                                                                    cursor).toISOString();
-                                                                                    }
-                                                                                    window.bloggercomments = function (data) {
-                                                                                    var parsed = parse(data);
-                                                                                    cursor = parsed.length < 50 ?
-                                                                                    null :
-                                                                                    parseInt(parsed[parsed.length -
-                                                                                    1].timestamp) + 1
-                                                                                    callback(parsed);
-                                                                                    window.bloggercomments = null;
-                                                                                    }
-                                                                                    url += '&callback=bloggercomments';
-                                                                                    var script = document.createElement(
-                                                                                    'script');
-                                                                                    script.type = 'text/javascript';
-                                                                                    script.src = url;
-                                                                                    document.getElementsByTagName('head')[0]
-                                                                                    .appendChild(script);
-                                                                                    }
-                                                                                    };
-                                                                                    var hasMore = function () {
-                                                                                    return !!cursor;
-                                                                                    };
-                                                                                    var getMeta = function (key, comment) {
-                                                                                    if ('iswriter' == key) {
-                                                                                    var matches = !!comment.author &&
-                                                                                    comment.author.name == config.authorName &&
-                                                                                    comment.author.profileUrl == config
-                                                                                    .authorUrl;
-                                                                                    return matches ? 'true' : '';
-                                                                                    } else if ('deletelink' == key) {
-                                                                                    return config.baseUri +
-                                                                                    '/delete-comment.g?blogID=' +
-                                                                                    config.blogId + '&postID=' +
-                                                                                    comment.id;
-                                                                                    } else if ('deleteclass' == key) {
-                                                                                    return comment.deleteclass;
-                                                                                    }
-                                                                                    return '';
-                                                                                    };
-                                                                                    var replybox = null;
-                                                                                    var replyUrlParts = null;
-                                                                                    var replyParent = undefined;
-                                                                                    var onReply = function (commentId, domId) {
-                                                                                    if (replybox == null) {
-                                                                                    // lazily cache replybox, and adjust to suit this style:
-                                                                                    replybox = document.getElementById(
-                                                                                    'comment-editor');
-                                                                                    if (replybox != null) {
-                                                                                    replybox.height = '250px';
-                                                                                    replybox.style.display = 'block';
-                                                                                    replyUrlParts = replybox.src.split(
-                                                                                    '#');
-                                                                                    }
-                                                                                    }
-                                                                                    if (replybox && (commentId !== replyParent)) {
-                                                                                    replybox.src = '';
-                                                                                    document.getElementById(domId).insertBefore(
-                                                                                    replybox, null);
-                                                                                    replybox.src = replyUrlParts[0] +
-                                                                                    (commentId ? '&parentID=' +
-                                                                                    commentId : '') +
-                                                                                    '#' + replyUrlParts[1];
-                                                                                    replyParent = commentId;
-                                                                                    }
-                                                                                    };
-                                                                                    var hash = (window.location.hash || '#').substring(
-                                                                                    1);
-                                                                                    var startThread, targetComment;
-                                                                                    if (/^comment-form_/.test(hash)) {
-                                                                                    startThread = hash.substring('comment-form_'.length);
-                                                                                    } else if (/^c[0-9]+$/.test(hash)) {
-                                                                                    targetComment = hash.substring(1);
-                                                                                    }
-                                                                                    // Configure commenting API:
-                                                                                    var configJso = {
-                                                                                    'maxDepth': config.maxThreadDepth
-                                                                                    };
-                                                                                    var provider = {
-                                                                                    'id': config.postId,
-                                                                                    'data': items,
-                                                                                    'loadNext': paginator,
-                                                                                    'hasMore': hasMore,
-                                                                                    'getMeta': getMeta,
-                                                                                    'onReply': onReply,
-                                                                                    'rendered': true,
-                                                                                    'initComment': targetComment,
-                                                                                    'initReplyThread': startThread,
-                                                                                    'config': configJso,
-                                                                                    'messages': msgs
-                                                                                    };
-                                                                                    var render = function () {
-                                                                                    if (window.goog && window.goog.comments) {
-                                                                                    var holder = document.getElementById(
-                                                                                    'comment-holder');
-                                                                                    window.goog.comments.render(holder,
-                                                                                    provider);
-                                                                                    }
-                                                                                    };
-                                                                                    // render now, or queue to render when library loads:
-                                                                                    if (window.goog && window.goog.comments) {
-                                                                                    render();
-                                                                                    } else {
-                                                                                    window.goog = window.goog || {};
-                                                                                    window.goog.comments = window.goog.comments || {};
-                                                                                    window.goog.comments.loadQueue = window.goog.comments
-                                                                                    .loadQueue || [];
-                                                                                    window.goog.comments.loadQueue.push(render);
-                                                                                    }
-                                                                                    })();
-                                                                                    // ]]>
-                                                                            </script>
+(function () {
+    var items = <data:post.commentJso/>;
+        var msgs = <data:post.commentMsgs/>;
+            var config = <data:post.commentConfig/>;
+                // <![CDATA[
+                var cursor = null;
+                if (items && items.length > 0) {
+                cursor = parseInt(items[items.length - 1].timestamp) +
+                1;
+                }
+                var bodyFromEntry = function (entry) {
+                if (entry.gd$extendedProperty) {
+                for (var k in entry.gd$extendedProperty) {
+                if (entry.gd$extendedProperty[k].name ==
+                'blogger.contentRemoved') {
+                return '<span class="deleted-comment">' +
+                    entry.content.$t +
+                    '</span>';
+                        }
+                        }
+                        }
+                        return entry.content.$t;
+                        }
+                        var parse = function (data) {
+                        cursor = null;
+                        var comments = [];
+                        if (data && data.feed && data.feed.entry) {
+                        for (var i = 0, entry; entry = data.feed
+                        .entry[i]; i++) {
+                        var comment = {};
+                        // comment ID, parsed out of the original id format
+                        var id = /blog-(\d+).post-(\d+)/.exec(
+                        entry.id.$t);
+                        comment.id = id ? id[2] : null;
+                        comment.body = bodyFromEntry(entry);
+                        comment.timestamp = Date.parse(
+                        entry.published.$t) + '';
+                        if (entry.author && entry.author.constructor ===
+                        Array) {
+                        var auth = entry.author[0];
+                        if (auth) {
+                        comment.author = {
+                        name: (auth.name ?
+                        auth.name.$t :
+                        undefined),
+                        profileUrl: (auth.uri ?
+                        auth.uri.$t :
+                        undefined),
+                        avatarUrl: (auth.gd$image ?
+                        auth.gd$image
+                        .src :
+                        undefined)
+                        };
+                        }
+                        }
+                        if (entry.link) {
+                        if (entry.link[2]) {
+                        comment.link = comment.permalink =
+                        entry.link[2].href;
+                        }
+                        if (entry.link[3]) {
+                        var pid =
+                        /.*comments\/default\/(\d+)\?.*/
+                        .exec(entry.link[3].href);
+                        if (pid && pid[1]) {
+                        comment.parentId = pid[
+                        1];
+                        }
+                        }
+                        }
+                        comment.deleteclass =
+                        'item-control blog-admin';
+                        if (entry.gd$extendedProperty) {
+                        for (var k in entry.gd$extendedProperty) {
+                        if (entry.gd$extendedProperty[
+                        k].name ==
+                        'blogger.itemClass') {
+                        comment.deleteclass +=
+                        ' ' + entry.gd$extendedProperty[
+                        k].value;
+                        } else if (entry.gd$extendedProperty[
+                        k].name ==
+                        'blogger.displayTime') {
+                        comment.displayTime =
+                        entry.gd$extendedProperty[
+                        k].value;
+                        }
+                        }
+                        }
+                        comments.push(comment);
+                        }
+                        }
+                        return comments;
+                        };
+                        var paginator = function (callback) {
+                        if (hasMore()) {
+                        var url = config.feed +
+                        '?alt=json&v=2&orderby=published&reverse=false&max-results=50';
+                        if (cursor) {
+                        url += '&published-min=' + new Date(
+                        cursor).toISOString();
+                        }
+                        window.bloggercomments = function (data) {
+                        var parsed = parse(data);
+                        cursor = parsed.length < 50 ?
+                        null :
+                        parseInt(parsed[parsed.length -
+                        1].timestamp) + 1
+                        callback(parsed);
+                        window.bloggercomments = null;
+                        }
+                        url += '&callback=bloggercomments';
+                        var script = document.createElement(
+                        'script');
+                        script.type = 'text/javascript';
+                        script.src = url;
+                        document.getElementsByTagName('head')[0]
+                        .appendChild(script);
+                        }
+                        };
+                        var hasMore = function () {
+                        return !!cursor;
+                        };
+                        var getMeta = function (key, comment) {
+                        if ('iswriter' == key) {
+                        var matches = !!comment.author &&
+                        comment.author.name == config.authorName &&
+                        comment.author.profileUrl == config
+                        .authorUrl;
+                        return matches ? 'true' : '';
+                        } else if ('deletelink' == key) {
+                        return config.baseUri +
+                        '/delete-comment.g?blogID=' +
+                        config.blogId + '&postID=' +
+                        comment.id;
+                        } else if ('deleteclass' == key) {
+                        return comment.deleteclass;
+                        }
+                        return '';
+                        };
+                        var replybox = null;
+                        var replyUrlParts = null;
+                        var replyParent = undefined;
+                        var onReply = function (commentId, domId) {
+                        if (replybox == null) {
+                        // lazily cache replybox, and adjust to suit this style:
+                        replybox = document.getElementById(
+                        'comment-editor');
+                        if (replybox != null) {
+                        replybox.height = '250px';
+                        replybox.style.display = 'block';
+                        replyUrlParts = replybox.src.split(
+                        '#');
+                        }
+                        }
+                        if (replybox && (commentId !== replyParent)) {
+                        replybox.src = '';
+                        document.getElementById(domId).insertBefore(
+                        replybox, null);
+                        replybox.src = replyUrlParts[0] +
+                        (commentId ? '&parentID=' +
+                        commentId : '') +
+                        '#' + replyUrlParts[1];
+                        replyParent = commentId;
+                        }
+                        };
+                        var hash = (window.location.hash || '#').substring(
+                        1);
+                        var startThread, targetComment;
+                        if (/^comment-form_/.test(hash)) {
+                        startThread = hash.substring('comment-form_'.length);
+                        } else if (/^c[0-9]+$/.test(hash)) {
+                        targetComment = hash.substring(1);
+                        }
+                        // Configure commenting API:
+                        var configJso = {
+                        'maxDepth': config.maxThreadDepth
+                        };
+                        var provider = {
+                        'id': config.postId,
+                        'data': items,
+                        'loadNext': paginator,
+                        'hasMore': hasMore,
+                        'getMeta': getMeta,
+                        'onReply': onReply,
+                        'rendered': true,
+                        'initComment': targetComment,
+                        'initReplyThread': startThread,
+                        'config': configJso,
+                        'messages': msgs
+                        };
+                        var render = function () {
+                        if (window.goog && window.goog.comments) {
+                        var holder = document.getElementById(
+                        'comment-holder');
+                        window.goog.comments.render(holder,
+                        provider);
+                        }
+                        };
+                        // render now, or queue to render when library loads:
+                        if (window.goog && window.goog.comments) {
+                        render();
+                        } else {
+                        window.goog = window.goog || {};
+                        window.goog.comments = window.goog.comments || {};
+                        window.goog.comments.loadQueue = window.goog.comments
+                        .loadQueue || [];
+                        window.goog.comments.loadQueue.push(render);
+                        }
+                        })();
+                        // ]]>
+</script>
                             </b:includable>
                             <b:includable id="threaded_comments" var="post">
                               <div class="comments" id="comments">
                                 <a name="comments"/>
-                                <h4><data:post.commentLabelFull/> :
-                                                                                </h4>
+                                <h4><data:post.commentLabelFull/> : </h4>
                                 <div class="comments-content">
                                   <b:include cond="data:post.embedCommentForm" data="post" name="threaded_comment_js"/>
                                   <div id="comment-holder">
@@ -1311,8 +1304,7 @@
                                 </p>
                                 <b:if cond="data:showCmtPopup">
                                   <div id="comment-popup">
-                                    <iframe allowtransparency="true" frameborder="0" id="comment-actions" name="comment-actions" scrolling="no">
-                                                                                        </iframe>
+                                    <iframe allowtransparency="true" frameborder="0" id="comment-actions" name="comment-actions" scrolling="no"> </iframe>
                                   </div>
                                 </b:if>
                                 <div id="backlinks-container">
@@ -1348,10 +1340,10 @@
       </div>
     </div>
     <script type="text/javascript">
-                            window.setTimeout(function () {
-                            document.body.className = document.body.className.replace('loading','');
-                            }, 10);
-                        </script>
+window.setTimeout(function () {
+document.body.className = document.body.className.replace('loading','');
+}, 10);
+</script>
   </body>
   <macro:includable id="sections" var="col">
     <macro:if cond="data:col.num == 0">
