@@ -492,7 +492,7 @@ head.appendChild(script);
                                   <b:loop values="data:post.backlinks" var="backlink">
                                     <div class="collapsed-backlink backlink-control">
                                       <dt class="comment-title">
-                                        <span class="backlink-toggle-zippy"></span>
+                                        <span class="backlink-toggle-zippy"/>
                                         <a expr:href="data:backlink.url" rel="nofollow">
                                           <data:backlink.title/>
                                         </a>
@@ -580,9 +580,13 @@ head.appendChild(script);
                                       </b:if>
                                       <data:post.commentRangeText/>
                                       <b:if cond="data:post.hasNewerLinks">
-<a expr:class="data:post.newLinkClass" expr:href="data:post.newerLinkUrl"><data:post.newerLinkText/></a>
-<a expr:class="data:post.newLinkClass" expr:href="data:post.newestLinkUrl"><data:post.newestLinkText/></a>
-</b:if>
+                                        <a expr:class="data:post.newLinkClass" expr:href="data:post.newerLinkUrl">
+                                          <data:post.newerLinkText/>
+                                        </a>
+                                        <a expr:class="data:post.newLinkClass" expr:href="data:post.newestLinkUrl">
+                                          <data:post.newestLinkText/>
+                                        </a>
+                                      </b:if>
                                     </span>
                                   </b:if>
                                   <div expr:id="data:widget.instanceId + &quot;_comments-block-wrapper&quot;">
@@ -628,8 +632,7 @@ head.appendChild(script);
                                     </dl>
                                   </div>
                                   <b:if cond="data:post.commentPagingRequired">
-                                    <span class="paging-control-container"><a expr:class="data:post.oldLinkClass" expr:href="data:post.oldestLinkUrl"><data:post.oldestLinkText/></a><a expr:class="data:post.oldLinkClass" expr:href="data:post.olderLinkUrl"><data:post.olderLinkText/></a>
-<data:post.commentRangeText/>  
+                                    <span class="paging-control-container"><a expr:class="data:post.oldLinkClass" expr:href="data:post.oldestLinkUrl"><data:post.oldestLinkText/></a><a expr:class="data:post.oldLinkClass" expr:href="data:post.olderLinkUrl"><data:post.olderLinkText/></a><data:post.commentRangeText/>  
 <a expr:class="data:post.newLinkClass" expr:href="data:post.newerLinkUrl"><data:post.newerLinkText/></a>
 <a expr:class="data:post.newLinkClass" expr:href="data:post.newestLinkUrl"><data:post.newestLinkText/></a>
 </span>
