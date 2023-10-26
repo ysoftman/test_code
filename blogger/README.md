@@ -10,10 +10,10 @@ xmllint --format blog-10-26-2023.xml > blog.xml
 rg -N '<title type="text">.*</title>' blog.xml
 
 # line-height 적용된 포스트의 타이틀 파악
-rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N "line-heightyle" -B1
+rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N " line-heightyle" -B1
 
 # style 적용된 포스트의 타이틀 파악
-rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N "style=" -B1
+rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N " style=" -B1
 ```
 
 ## blogger api 관련
