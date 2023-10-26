@@ -4,7 +4,7 @@
 
 ```bash
 # xml formatting(newline,indentation)
-xml --format blog-10-26-2023.xml > blog.xml
+xmllint --format blog-10-26-2023.xml > blog.xml
 
 # 포스트 제목 리스트(댓글도 포함되어 있음)
 rg -N '<title type="text">.*</title>' blog.xml
