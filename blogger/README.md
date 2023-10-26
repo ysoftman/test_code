@@ -1,15 +1,19 @@
 # blogger 관리
 
-## 백업된 포스트(.xml) 관련
-
-- blogger post line-height, div, span, style 속성 파악
+## blogger > 설정 >  콘텐츠 백업(.xml)에서 조회
 
 ```bash
-# line-height 적용된 포스트의 타이틀 파악
-sed -e "s/<title type='text'>/\n/g" ./blog-09-11-2023.xml | rg "line-height" | sed -e "s/<\/title>.*//g"
+# xml formatting(newline,indentation)
+xml --format blog-10-26-2023.xml > blog.xml
 
-# style 적용된 포스트의 타일틀 파악
-sed -e "s/<title type='text'>/\n/g" ./blog-09-11-2023.xml | rg "style=" | sed -e "s/<\/title>.*//g"
+# 포스트 제목 리스트(댓글도 포함되어 있음)
+rg -N '<title type="text">.*</title>' blog.xml
+
+# line-height 적용된 포스트의 타이틀 파악
+rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N "line-heightyle" -B1
+
+# style 적용된 포스트의 타이틀 파악
+rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N "style=" -B1
 ```
 
 ## blogger api 관련
