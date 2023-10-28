@@ -8,7 +8,8 @@
     </title>
     <b:skin><![CDATA[
 :root {
-    /* One Half Dark https://raw.githubusercontent.com/joshdick/onedark.vim/main/img/color_reference.pn>
+	/* ysoftman custom vairables */
+    /* One Half Dark https://raw.githubusercontent.com/joshdick/onedark.vim/main/img/color_reference.png */
     --black       : #282c34;
     --white       : #abb2bf;
     --blue        : #61afef;
@@ -50,8 +51,7 @@
 .gray   {color: var(--gray);}
 
 
-/* Content
------------------------------------------------ */
+/* Content ----------------------------------------------- */
 body, .body-fauxcolumn-outer {
     font: 20px Tahoma, Arial, Helvetica, FreeSans, sans-serif;
     color: var(--gray);
@@ -76,14 +76,12 @@ a:hover {
     color: var(--purple);
 }
 
-/* 블로그 내용 */
 .content-inner {
     padding: 0px 0px 0px 0px;
     background-color: var(--black);
 }
 
-/* Header
------------------------------------------------ */
+/* Header ----------------------------------------------- */
 .header-outer {
     background: var(--blue) url(//www.blogblog.com/1kt/simple/gradients_light.png) repeat-x scroll 0 -400px;
     _background-image: none;
@@ -116,8 +114,7 @@ a:hover {
 }
 
 
-/* Tabs
------------------------------------------------ */
+/* Tabs ----------------------------------------------- */
 .tabs-inner .section:first-child {
     border-top: 0 solid #eeeeee;
 }
@@ -148,9 +145,8 @@ a:hover {
     background-color: var(--black);
     text-decoration: none;
 }
-/* Columns
------------------------------------------------ */
-/* 메인 아웃터 마진 조정 */
+
+/* Columns ----------------------------------------------- */
 .main-outer {
     border-top: 0 solid #eeeeee;
     margin: 0px 10px 0px 10px
@@ -160,7 +156,7 @@ a:hover {
 }
 .ysoftman-home a {
     font-size: 2em;
-    color: #ffffff;
+    color: var(--white);
     text-shadow: 0 0 5px #0072ff, 0 0 10px #0072ff, 0 0 20px #0072ff, 0 0 30px #0072ff;
     /* animation: animate 5s linear infinite; */
 }
@@ -176,16 +172,14 @@ a:hover {
     }
 }
 
-/* Headings
------------------------------------------------ */
-/* h2 속성 */
+/* Headings ----------------------------------------------- */
 h2 {
     margin: 0 0 0 0;
     font: bold 20px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
     color: var(--purple);
 }
-/* Widgets
------------------------------------------------ */
+
+/* Widgets ----------------------------------------------- */
 .widget {
     line-height: 1;
 }
@@ -197,9 +191,7 @@ h2 {
     list-style: none;
 }
 
-/* Posts
------------------------------------------------ */
-/* 작성일자 포스트들 외각 */
+/* Posts ----------------------------------------------- */
 .date-outer {
     padding: 0px;
     margin: 0px 0px 0px 0px
@@ -207,18 +199,17 @@ h2 {
 
 .date-header span {
     background-color: transparent;
-    color: #d19a66;
+    color: var(--yellow);
     padding: inherit;
 }
 
 .post-timestamp {
     background-color: transparent;
-    color: #d19a66;
+    color: var(--yellow);
     padding: 0px 0px 0px 0px;
     margin: 0px 0px 0px 0px;
 }
 
-/* 메인영역 여백 */
 .main-inner {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -236,9 +227,9 @@ h3.post-title, .comments h4 {
     font: bold 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
 }
 
-/* 포스트 스타일 */
 .post-outer {
-    border: 2px solid var(--gray);
+    border: 2px solid var(--green);
+	border-radius: 5px;
     padding: 10px;
     margin: 0px 0px 10px 0px;
 }
@@ -287,6 +278,37 @@ h3.post-title, .comments h4 {
     line-height: 1.4;
     font-size: 125%;
 }
+.post-labels a {
+	color: var(--orange);
+}
+.post-labels a:hover {
+	color: var(--purple);
+}
+
+.label-size-1, .label-size-1 a {
+	color: var(--teal);
+}
+.label-size-2, .label-size-2 a {
+	color: var(--cyan);
+}
+.label-size-3, .label-size-3 a {
+	color: var(--yellow);
+}
+.label-size-4, .label-size-4 a {
+	color: var(--orange);
+}
+.label-size-5, .label-size-5 a {
+	color: var(--red);
+}
+.label-size-1 a:hover,
+.label-size-2 a:hover,
+.label-size-3 a:hover,
+.label-size-4 a:hover,
+.label-size-5 a:hover {
+	color: var(--purple);
+}
+
+
 #comments .comment-author {
     padding-top: 1.5em;
     border-top: 1px solid #eeeeee;
@@ -303,13 +325,11 @@ h3.post-title, .comments h4 {
     border: 1px solid #eeeeee;
 }
 
-/* 편집 버튼내 a 속성 */
 .edit-post-text a {
     color: var(--purple);
 }
 
-/* Comments
------------------------------------------------ */
+/* Comments ----------------------------------------------- */
 .comments .comments-content .icon.blog-author {
     background-repeat: no-repeat;
 }
@@ -324,9 +344,16 @@ h3.post-title, .comments h4 {
     border-top: 2px solid #999999;
 }
 
+.comments h4,
+.post-comment-link a {
+	color: var(--cyan)
+}
+.post-comment-link a:hover {
+	color: var(--purple)
+}
 
-/* Accents
----------------------------------------------- */
+
+/* Accents ---------------------------------------------- */
 .section-columns td.columns-cell {
     border-left: 1px solid #eeeeee;
 }
@@ -425,7 +452,7 @@ body#layout div.add_widget a {
       gapi.load(&quot;gapi.iframes:gapi.iframes.style.bubble&quot;, function() {
         if (gapi.iframes &amp;&amp; gapi.iframes.getContext) {
           gapi.iframes.getContext().openChild({
-              url: &#39;https://www.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dDARK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttp://yoonbh2714.blogspot.com/\x26vt\x3d-7453345157052039242&#39;,
+              url: &#39;https://draft.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dDARK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttps://yoonbh2714.blogspot.com/\x26vt\x3d-7730802393371495710&#39;,
               where: document.getElementById(&quot;navbar-iframe-container&quot;),
               id: &quot;navbar-iframe&quot;
           });
