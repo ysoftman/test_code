@@ -517,7 +517,7 @@ head.appendChild(script);
                               <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
                               <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
                               <b:widget-setting name='showLabels'>true</b:widget-setting>
-                              <b:widget-setting name='postLabelsLabel'>tag:</b:widget-setting>
+                              <b:widget-setting name='postLabelsLabel'>tags:</b:widget-setting>
                               <b:widget-setting name='showBacklinks'>false</b:widget-setting>
                               <b:widget-setting name='showInlineAds'>true</b:widget-setting>
                               <b:widget-setting name='showReactions'>false</b:widget-setting>
@@ -619,7 +619,9 @@ head.appendChild(script);
                                 <span class='cmt_count_iframe_holder' expr:data-count='data:post.numComments' expr:data-onclick='data:post.addCommentOnclick' expr:data-post-url='data:post.url' expr:data-url='data:post.url.canonical.http'>
                                 </span>
                                 <b:else/>
-                                <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'><data:post.commentLabelFull/> :
+                                <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
+                                  <!--<data:post.commentLabelFull/> :-->
+                                  comments:
                                 </a>
                               </b:if>
                             </b:includable>
@@ -636,8 +638,8 @@ head.appendChild(script);
                               <div class='comments' id='comments'>
                                 <a name='comments'/>
                                 <b:if cond='data:post.allowComments'>
-                                  <h4><data:post.commentLabelFull/> :
-                                                                </h4>
+                                  <!--<h4><data:post.commentLabelFull/> : </h4>-->
+                                  <h4>comments: </h4>
                                   <b:if cond='data:post.commentPagingRequired'>
                                     <span class='paging-control-container'>
                                       <b:if cond='data:post.hasOlderLinks'>
@@ -838,7 +840,8 @@ head.appendChild(script);
                                 </b:if>
                                 <div class='mobile-link-button' id='blog-pager-home-link'>
                                   <a class='home-link' expr:href='data:blog.homepageUrl'>
-                                    <data:homeMsg/>
+                                    <!--<data:homeMsg/>-->
+                                    Home
                                   </a>
                                 </div>
                                 <div class='mobile-desktop-link'>
@@ -941,21 +944,24 @@ head.appendChild(script);
                                 <b:if cond='data:blog.homepageUrl'>
                                   <span class='blog-pager-home-link'>
                                     <a expr:href='data:blog.homepageUrl'>
-                                      <data:homeMsg/>
+                                      <!--<data:homeMsg/>-->
+                                      Home
                                     </a>
                                   </span>
                                 </b:if>
                                 <b:if cond='data:newerPageUrl'>
                                   <span class='blog-pager-newer-link'>
                                     <a expr:href='data:newerPageUrl'>
-                                      <data:newerPageTitle/>
+                                      <!--<data:newerPageTitle/>-->
+                                      Newer Page
                                     </a>
                                   </span>
                                 </b:if>
                                 <b:if cond='data:olderPageUrl'>
                                   <span class='blog-pager-older-link'>
                                     <a expr:href='data:olderPageUrl'>
-                                      <data:olderPageTitle/>
+                                      <!--<data:olderPageTitle/>-->
+                                      Older Page
                                     </a>
                                   </span>
                                 </b:if>
@@ -1360,7 +1366,8 @@ head.appendChild(script);
                             <b:includable id='threaded_comments' var='post'>
                               <div class='comments' id='comments'>
                                 <a name='comments'/>
-                                <h4><data:post.commentLabelFull/> : </h4>
+                                <!--<h4><data:post.commentLabelFull/> : </h4>-->
+                                <h4>comments: </h4>
                                 <div class='comments-content'>
                                   <b:include cond='data:post.embedCommentForm' data='post' name='threaded_comment_js'/>
                                   <div id='comment-holder'>
@@ -1452,7 +1459,7 @@ window.setTimeout(function () {
   </macro:includable>
 
 <b:section-contents id='footer-1'>
-  <b:widget id='Label1' locked='false' title='tag' type='Label' version='1'>
+  <b:widget id='Label1' locked='false' title='tags' type='Label' version='1'>
     <b:widget-settings>
       <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
       <b:widget-setting name='display'>CLOUD</b:widget-setting>
