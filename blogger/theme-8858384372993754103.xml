@@ -8,7 +8,7 @@
     </title>
     <b:skin><![CDATA[
 :root {
-	/* ysoftman custom vairables */
+    /* ysoftman custom vairables */
     /* One Half Dark https://raw.githubusercontent.com/joshdick/onedark.vim/main/img/color_reference.png */
     --black       : #282c34;
     --white       : #abb2bf;
@@ -156,14 +156,43 @@ a:hover {
 }
 .ysoftman-home a {
     font-size: 2em;
+  font-weight: bold;
     color: var(--white);
-    text-shadow: 0 0 5px #0072ff, 0 0 10px #0072ff, 0 0 20px #0072ff, 0 0 30px #0072ff;
-    /* animation: animate 5s linear infinite; */
+    text-shadow:
+    0 0 10px #0072ff,
+    0 0 20px #0072ff,
+    0 0 40px #0072ff,
+    0 0 80px #0072ff,
+    0 0 100px #0072ff,
+    0 0 140px #0072ff;
+
+  /* animation: animate 10s linear infinite; */
+  animation: flicker 2s infinite alternate;
 }
 .ysoftman-home a {
-    animation-delay: 0.1s;
+    animation-delay: 0.5s;
 }
 @keyframes animate {
+    from {
+        filter: hue-rotate(0deg);
+    }
+    to {
+        filter: hue-rotate(360deg);
+    }
+}
+@keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+  text-shadow:
+    0 0 10px #0072ff,
+    0 0 20px #0072ff,
+    0 0 40px #0072ff,
+    0 0 80px #0072ff,
+    0 0 100px #0072ff,
+    0 0 140px #0072ff;
+  }
+    20%, 24%, 55% {
+      text-shadow: none;
+  }
     from {
         filter: hue-rotate(0deg);
     }
@@ -229,7 +258,7 @@ h3.post-title, .comments h4 {
 
 .post-outer {
     border: 2px solid var(--green);
-	border-radius: 5px;
+    border-radius: 5px;
     padding: 10px;
     margin: 0px 0px 10px 0px;
 }
@@ -279,33 +308,33 @@ h3.post-title, .comments h4 {
     font-size: 125%;
 }
 .post-labels a {
-	color: var(--orange);
+  color: var(--orange);
 }
 .post-labels a:hover {
-	color: var(--purple);
+  color: var(--purple);
 }
 
 .label-size-1, .label-size-1 a {
-	color: var(--teal);
+    color: var(--teal);
 }
 .label-size-2, .label-size-2 a {
-	color: var(--cyan);
+    color: var(--cyan);
 }
 .label-size-3, .label-size-3 a {
-	color: var(--yellow);
+    color: var(--yellow);
 }
 .label-size-4, .label-size-4 a {
-	color: var(--orange);
+    color: var(--orange);
 }
 .label-size-5, .label-size-5 a {
-	color: var(--red);
+    color: var(--red);
 }
 .label-size-1 a:hover,
 .label-size-2 a:hover,
 .label-size-3 a:hover,
 .label-size-4 a:hover,
 .label-size-5 a:hover {
-	color: var(--purple);
+    color: var(--purple);
 }
 
 
@@ -346,10 +375,10 @@ h3.post-title, .comments h4 {
 
 .comments h4,
 .post-comment-link a {
-	color: var(--cyan)
+    color: var(--cyan)
 }
 .post-comment-link a:hover {
-	color: var(--purple)
+    color: var(--purple)
 }
 
 
