@@ -53,7 +53,7 @@
 
 /* Content ----------------------------------------------- */
 body, .body-fauxcolumn-outer {
-    font: 20px Tahoma, Arial, Helvetica, FreeSans, sans-serif;
+    font: 1.2em Tahoma, Arial, Helvetica, FreeSans, sans-serif;
     color: var(--gray);
     background: var(--black) none repeat scroll top left;
     padding: 0 0 0 0;
@@ -87,7 +87,7 @@ a:hover {
     _background-image: none;
 }
 .Header h1 {
-    font: 2.5em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+    font: 2.5em;
     color: var(--green);
     text-shadow: 1px 2px 3px rgba(0, 0, 0, .2);
     padding: 0px 0px 0px 0px;
@@ -132,7 +132,7 @@ a:hover {
 .tabs-inner .widget li a {
     display: inline-block;
     padding: .6em 1em;
-    font: 1.5em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+    font: 1.5em;
     color: #fff;
     border-left: 1px solid #ffffff;
     border-right: 1px solid #eeeeee;
@@ -204,7 +204,7 @@ a:hover {
 /* Headings ----------------------------------------------- */
 h2 {
     margin: 0 0 0 0;
-    font: bold 1.7em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+    font: bold 1.7em;
     color: var(--purple);
 }
 
@@ -251,12 +251,16 @@ h2 {
     margin: 0px;
 }
 
-h3.post-title, .comments h4 {
+h3.post-title {
     color: var(--purple);
-    font: bold 1.5em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+}
+
+.edit-post-text a {
+    color: var(--purple);
 }
 
 .post-outer {
+    font: 1.2em;
     border: 2px solid var(--green);
     border-radius: 5px;
     padding: 10px;
@@ -308,6 +312,7 @@ h3.post-title, .comments h4 {
     font-size: 125%;
 }
 .post-labels a {
+  font-weight: bold;
   color: var(--orange);
 }
 .post-labels a:hover {
@@ -337,9 +342,12 @@ h3.post-title, .comments h4 {
     color: var(--purple);
 }
 
-
+/* Comments ----------------------------------------------- */
+#comments {
+    font-size: 130%;
+}
 #comments .comment-author {
-    padding-top: 1.5em;
+    font: 1.5em;
     border-top: 1px solid #eeeeee;
     background-position: 0 1.5em;
 }
@@ -353,12 +361,6 @@ h3.post-title, .comments h4 {
 #comments .avatar-image-container img {
     border: 1px solid #eeeeee;
 }
-
-.edit-post-text a {
-    color: var(--purple);
-}
-
-/* Comments ----------------------------------------------- */
 .comments .comments-content .icon.blog-author {
     background-repeat: no-repeat;
 }
@@ -372,10 +374,9 @@ h3.post-title, .comments h4 {
 .comments .continue {
     border-top: 2px solid #999999;
 }
-
 .comments h4,
 .post-comment-link a {
-    color: var(--cyan)
+    color: var(--cyan);
 }
 .post-comment-link a:hover {
     color: var(--purple)
@@ -650,7 +651,7 @@ head.appendChild(script);
                                 <b:else/>
                                 <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
                                   <!--<data:post.commentLabelFull/> :-->
-                                  comments:
+                                  comments: <data:post.numComments/>
                                 </a>
                               </b:if>
                             </b:includable>
