@@ -384,12 +384,11 @@ h3.post-title {
 
 
 /* Accents ---------------------------------------------- */
-#blog-pager {
-    margin: 0 0 0 0;
-}
+#blog-pager,
 .blog-pager {
+    margin: 0 0 0 0;
     padding: 0px 10px 0px 10px;
-    font-size: 2em;
+    font-size: xxx-large;
 }
 .blog-pager-home-link {
     float: none;
