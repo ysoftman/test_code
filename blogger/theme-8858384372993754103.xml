@@ -734,7 +734,8 @@ head.appendChild(script);
                                 </div>
                               </div>
                             </b:includable>
-                            <b:includable id='feedLinks'> <!-- 참고로 b:includable 로 시작하는 라인을 주석처리하고 blogger 테마편집창에서 저장하면 주석이 해제된다.-->
+                            <b:includable id='feedLinks'>
+                              <!-- 참고로 b:includable 라인을 주석처리하고 blogger 테마편집창에서 저장하면 주석이 해제된다. 그리고 b:includeable 라인 위 주석은 저장시 삭제된다. -->
                               <!--피드링크 주석 처리-->
 <!--                              <b:if cond='data:blog.pageType != &quot;item&quot;'>-->
 <!--                                [> Blog feed links <]-->
@@ -782,6 +783,7 @@ head.appendChild(script);
                               </b:if>
                             </b:includable>
                             <b:includable id='mobile-index-post' var='post'>
+                              <!-- mobile 관련코드를 삭제해도 저장하면 자동 생성된다. 이러면 indentation 다시해줘야 하기때문에 삭제하지 않는다. -->
                               <div class='mobile-date-outer date-outer'>
                                 <b:if cond='data:post.dateHeader'>
                                   <div class='date-header'>
