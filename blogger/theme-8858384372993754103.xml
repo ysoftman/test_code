@@ -358,7 +358,6 @@ h3.post-title, .comments h4 {
     border-left: 1px solid #eeeeee;
 }
 .blog-pager {
-    background: transparent none no-repeat scroll top center;
     padding: 0px 10px 0px 10px;
     font-size: 1.5em;
 }
@@ -735,33 +734,42 @@ head.appendChild(script);
                                 </div>
                               </div>
                             </b:includable>
-                            <b:includable id='feedLinks'>
-                              <b:if cond='data:blog.pageType != &quot;item&quot;'>
-                                <!-- Blog feed links -->
-                                <b:if cond='data:feedLinks'>
-                                  <div class='blog-feeds'>
-                                    <b:include data='feedLinks' name='feedLinksBody'/>
-                                  </div>
-                                </b:if>
-                                <b:else/>
-                                <!--Post feed links -->
-                                <div class='post-feeds'>
-                                  <b:loop values='data:posts' var='post'>
-                                    <b:include cond='data:post.allowComments and data:post.feedLinks' data='post.feedLinks' name='feedLinksBody'/>
-                                  </b:loop>
-                                </div>
-                              </b:if>
+                            <b:includable id='feedLinks'> <!-- 참고로 b:includable 로 시작하는 라인을 주석처리하고 blogger 테마편집창에서 저장하면 주석이 해제된다.-->
+                              <!--피드링크 주석 처리-->
+<!--                              <b:if cond='data:blog.pageType != &quot;item&quot;'>-->
+<!--                                [> Blog feed links <]-->
+<!--                                <b:if cond='data:feedLinks'>-->
+<!--                                  <div class='blog-feeds'>-->
+<!--                                    <b:include data='feedLinks' name='feedLinksBody'/>-->
+<!--                                  </div>-->
+<!--                                </b:if>-->
+<!--                                <b:else/>-->
+<!--                                [>Post feed links <]-->
+<!--                                <div class='post-feeds'>-->
+<!--                                  <b:loop values='data:posts' var='post'>-->
+<!--                                    <b:include cond='data:post.allowComments and data:post.feedLinks' data='post.feedLinks' name='feedLinksBody'/>-->
+<!--                                  </b:loop>-->
+<!--                                </div>-->
+<!--                              </b:if>-->
+<!--                            </b:includable>-->
+<!--                            <b:includable id='feedLinksBody' var='links'>-->
+<!--                              <div class='feed-links'>-->
+<!--                                <data:feedLinksMsg/>-->
+<!--                                <b:loop values='data:links' var='f'>-->
+<!--                                  <a class='feed-link' expr:href='data:f.url' expr:type='data:f.mimeType' target='_blank'><data:f.name/> (-->
+<!--<data:f.feedType/> )-->
+<!--</a>-->
+<!--                                </b:loop>-->
+<!--                              </div>-->
                             </b:includable>
                             <b:includable id='feedLinksBody' var='links'>
-                              <div class='feed-links'>
-                                <data:feedLinksMsg/>
-                                <b:loop values='data:links' var='f'>
-                                  <a class='feed-link' expr:href='data:f.url' expr:type='data:f.mimeType' target='_blank'><data:f.name/> (
-<data:f.feedType/> )
-</a>
-                                </b:loop>
-                              </div>
-                            </b:includable>
+  <div class='feed-links'>
+  <data:feedLinksMsg/>
+  <b:loop values='data:links' var='f'>
+     <a class='feed-link' expr:href='data:f.url' expr:type='data:f.mimeType' target='_blank'><data:f.name/> (<data:f.feedType/>)</a>
+  </b:loop>
+  </div>
+</b:includable>
                             <b:includable id='iframe_comments' var='post'>
                               <b:if cond='data:post.allowIframeComments'>
                                 <script expr:src='data:post.iframeCommentSrc' type='text/javascript'/>
@@ -1144,8 +1152,8 @@ head.appendChild(script);
                                 <data:post.friendConnectJs/>
                                 <data:post.cmtfpIframe/>
                                 <script type='text/javascript'>
-                                                                BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
-                                                            </script>
+                                  BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+                                </script>
                               </div>
                             </b:includable>
                             <b:includable id='threaded_comment_js' var='post'>
