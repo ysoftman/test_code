@@ -87,7 +87,7 @@ a:hover {
     _background-image: none;
 }
 .Header h1 {
-    font: 60px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+    font: 2.5em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
     color: var(--green);
     text-shadow: 1px 2px 3px rgba(0, 0, 0, .2);
     padding: 0px 0px 0px 0px;
@@ -132,7 +132,7 @@ a:hover {
 .tabs-inner .widget li a {
     display: inline-block;
     padding: .6em 1em;
-    font: 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+    font: 1.5em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
     color: #fff;
     border-left: 1px solid #ffffff;
     border-right: 1px solid #eeeeee;
@@ -156,18 +156,18 @@ a:hover {
 }
 .ysoftman-home a {
     font-size: 2em;
-  font-weight: bold;
+    font-weight: bold;
     color: var(--white);
     text-shadow:
-    0 0 10px #0072ff,
-    0 0 20px #0072ff,
-    0 0 40px #0072ff,
-    0 0 80px #0072ff,
-    0 0 100px #0072ff,
-    0 0 140px #0072ff;
+        0 0 10px #0072ff,
+        0 0 20px #0072ff,
+        0 0 40px #0072ff,
+        0 0 80px #0072ff,
+        0 0 100px #0072ff,
+        0 0 140px #0072ff;
 
-  /* animation: animate 10s linear infinite; */
-  animation: flicker 2s infinite alternate;
+    /* animation: animate 10s linear infinite; */
+    animation: flicker 5s infinite alternate;
 }
 .ysoftman-home a {
     animation-delay: 0.5s;
@@ -182,17 +182,17 @@ a:hover {
 }
 @keyframes flicker {
     0%, 18%, 22%, 25%, 53%, 57%, 100% {
-  text-shadow:
-    0 0 10px #0072ff,
-    0 0 20px #0072ff,
-    0 0 40px #0072ff,
-    0 0 80px #0072ff,
-    0 0 100px #0072ff,
-    0 0 140px #0072ff;
-  }
+    text-shadow:
+        0 0 10px #0072ff,
+        0 0 20px #0072ff,
+        0 0 40px #0072ff,
+        0 0 80px #0072ff,
+        0 0 100px #0072ff,
+        0 0 140px #0072ff;
+    }
     20%, 24%, 55% {
       text-shadow: none;
-  }
+    }
     from {
         filter: hue-rotate(0deg);
     }
@@ -204,7 +204,7 @@ a:hover {
 /* Headings ----------------------------------------------- */
 h2 {
     margin: 0 0 0 0;
-    font: bold 20px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+    font: bold 1.7em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
     color: var(--purple);
 }
 
@@ -253,7 +253,7 @@ h2 {
 
 h3.post-title, .comments h4 {
     color: var(--purple);
-    font: bold 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+    font: bold 1.5em Arial, Tahoma, Helvetica, FreeSans, sans-serif;
 }
 
 .post-outer {
@@ -383,15 +383,16 @@ h3.post-title, .comments h4 {
 
 
 /* Accents ---------------------------------------------- */
-.section-columns td.columns-cell {
-    border-left: 1px solid #eeeeee;
+#blog-pager {
+    margin: 0 0 0 0;
 }
 .blog-pager {
     padding: 0px 10px 0px 10px;
-    font-size: 1.5em;
+    font-size: 2em;
 }
 .blog-pager-home-link {
     float: none;
+    position: absolute;
 }
 .blog-pager-older-link {
     float: right;
@@ -869,23 +870,28 @@ head.appendChild(script);
                               <div class='blog-pager' id='blog-pager'>
                                 <b:if cond='data:newerPageUrl'>
                                   <div class='mobile-link-button' id='blog-pager-newer-link'>
-                                    <a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-newer-link&quot;' expr:title='data:newerPageTitle'>&amp;lsaquo;</a>
+                                    <a class='blog-pager-newer-link' expr:href='data:newerPageUrl'>
+                                      <data:newerPageTitle/>
+                                    </a>
                                   </div>
                                 </b:if>
                                 <b:if cond='data:olderPageUrl'>
                                   <div class='mobile-link-button' id='blog-pager-older-link'>
-                                    <a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-older-link&quot;' expr:title='data:olderPageTitle'>&amp;rsaquo;</a>
+                                    <a class='blog-pager-older-link' expr:href='data:olderPageUrl'>
+                                      <data:olderPageTitle/>
+                                    </a>
                                   </div>
                                 </b:if>
                                 <div class='mobile-link-button' id='blog-pager-home-link'>
-                                  <a class='home-link' expr:href='data:blog.homepageUrl'>
+                                  <a class='blog-pager-home-link' expr:href='data:blog.homepageUrl'>
                                     <!--<data:homeMsg/>-->
                                     Home
                                   </a>
                                 </div>
                                 <div class='mobile-desktop-link'>
-                                  <a class='home-link' expr:href='data:desktopLinkUrl'>
-                                    <data:desktopLinkMsg/>
+                                  <a class='blog-pager-home-link' expr:href='data:desktopLinkUrl'>
+                                    <!--<data:desktopLinkMsg/> -->
+                                    Desktop
                                   </a>
                                 </div>
                               </div>
@@ -1076,7 +1082,6 @@ head.appendChild(script);
                                       <!-- quickedit pencil -->
                                       <b:include data='post' name='postQuickEdit'/>
                                     </span>
-                                    <!-- ysoftman post timestamp 표시 -->
                                     <span class='post-timestamp'>
                                       <data:post.timestamp/>
                                     </span>
