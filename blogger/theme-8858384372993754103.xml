@@ -210,7 +210,9 @@ h2 {
 
 /* Widgets ----------------------------------------------- */
 .widget {
-    line-height: 1;
+      line-height: 1;
+      padding: 0;
+      margin: 0;
 }
 .widget .zippy {
     color: #61AFEF;
@@ -260,7 +262,7 @@ h3.post-title {
 }
 
 .post-outer {
-    font: 1.2em;
+    font-size: 1em;
     border: 2px solid var(--green);
     border-radius: 5px;
     padding: 10px;
@@ -386,7 +388,7 @@ h3.post-title {
 #blog-pager,
 .blog-pager {
     margin: 0 0 0 0;
-    padding: 0px 10px 0px 10px;
+    padding: 0;
     font-size: xxx-large;
 }
 .blog-pager-home-link {
@@ -402,47 +404,33 @@ h3.post-title {
 
 .footer-outer {
     border-top: 0 dashed #bbbbbb;
-    padding: 20px 0 0 0;
+    padding: 0;
 }
 .ysoftman-footer-inner {
-    padding: 5px;
+    padding: 0px;
+}
+#footer-1 {
+    margin-top: 2em;
 }
 
 /* searchbox ----------------- */
-table.ysoftman-search-box {
+from.ysoftman-search-box {
     font-size: 1em;
     border-style: none;
     border-width: 0;
     border-spacing: 0 0;
-    width: 100%;
-    margin-bottom: 10px;
 }
+
 input.ysoftman-input {
     font-size: 1em;
-    border: solid var(--yellow);
+    border: 2px solid var(--yellow);
     border-radius: 5px;
     outline: none;
     padding: 5px;
     margin: 0px;
-    width: 98%;
+    width: 300px;
     background: var(--black1);
     color: var(--yellow);
-}
-input.ysoftman-search-button {
-    font-size: 1.5em;
-    font-weight: bold;
-    width: 100%;
-    padding: 0px;
-    margin-left: 2px;
-    border: none;
-    border-radius: 5px;
-    background: var(--teal);
-    color: var(--white);
-}
-input.ysoftman-search-button:hover {
-    background-color: #2ee59d;
-    box-shadow: 0px 0px 50px #2ee59d;
-    color: #fff;
 }
 
 ]]></b:skin>
@@ -474,31 +462,25 @@ input.ysoftman-search-button:hover {
                   <!-- corrects IE6 width calculation -->
                   <div class='columns-inner'>
                     <div class='column-center-outer'>
-                      <div align='center' class='ysoftman-home'>
-                        <a href='/'>Sentimental Programmer</a>
-                      </div>
 
-                      <div class='widget-content'>
-                        <div expr:id='data:widget.instanceId + &quot;_form&quot;'>
-                          <form class='ysoftman-search-box' expr:action='data:blog.searchUrl'>
-                            <b:attr cond='not data:view.isPreview' name='target' value='_top'/>
-                            <table cellpadding='0' cellspacing='0' class='ysoftman-search-box'>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <input autocomplete='off' class='ysoftman-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' size='100' title='search' type='text'/>
-                                  </td>
-                                  <td>
-                                    <input class='ysoftman-search-button' title='search' type='submit' value='SEARCH'/>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </form>
-                        </div>
-                      </div>
+                      <table style="width: 100%;">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div align='left' class='ysoftman-home'>
+                                <a href='/'>Sentimental Programmer</a>
+                              </div>
+                            </td>
+                            <td>
+                              <form align='right' class='ysoftman-search-box' expr:action='data:blog.searchUrl'>
+                                <input autocomplete='off' class='ysoftman-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' size='100' title='search' type='text' placeholder='search'/>
+                              </form>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
 
-                      <div class='column-center-inner'>
+                    <div class='column-center-inner'>
                         <b:section class='main' id='main' name='Main' showaddelement='no'>
                           <b:widget id='Blog1' locked='true' title='블로그 게시물' type='Blog' version='1'>
                             <b:widget-settings>
@@ -743,32 +725,7 @@ input.ysoftman-search-button:hover {
                             </b:includable>
                             <b:includable id='feedLinks'>
                               <!-- 참고로 b:includable 라인을 주석처리하고 blogger 테마편집창에서 저장하면 주석이 해제된다. 그리고 b:includeable 라인 위 주석은 저장시 삭제된다. -->
-                              <!--피드링크 주석 처리-->
-<!--                              <b:if cond='data:blog.pageType != &quot;item&quot;'>-->
-<!--                                [> Blog feed links <]-->
-<!--                                <b:if cond='data:feedLinks'>-->
-<!--                                  <div class='blog-feeds'>-->
-<!--                                    <b:include data='feedLinks' name='feedLinksBody'/>-->
-<!--                                  </div>-->
-<!--                                </b:if>-->
-<!--                                <b:else/>-->
-<!--                                [>Post feed links <]-->
-<!--                                <div class='post-feeds'>-->
-<!--                                  <b:loop values='data:posts' var='post'>-->
-<!--                                    <b:include cond='data:post.allowComments and data:post.feedLinks' data='post.feedLinks' name='feedLinksBody'/>-->
-<!--                                  </b:loop>-->
-<!--                                </div>-->
-<!--                              </b:if>-->
-<!--                            </b:includable>-->
-<!--                            <b:includable id='feedLinksBody' var='links'>-->
-<!--                              <div class='feed-links'>-->
-<!--                                <data:feedLinksMsg/>-->
-<!--                                <b:loop values='data:links' var='f'>-->
-<!--                                  <a class='feed-link' expr:href='data:f.url' expr:type='data:f.mimeType' target='_blank'><data:f.name/> (-->
-<!--<data:f.feedType/> )-->
-<!--</a>-->
-<!--                                </b:loop>-->
-<!--                              </div>-->
+                              <!-- 관련코드를 삭제해도 저장하면 자동 생성된다. 이러면 indentation 다시해줘야 하기때문에 삭제하지 않는다. -->
                             </b:includable>
                             <b:includable id='feedLinksBody' var='links'>
   <div class='feed-links'>
