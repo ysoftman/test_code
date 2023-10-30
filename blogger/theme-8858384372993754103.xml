@@ -463,43 +463,7 @@ body#layout div.add_widget a {
     <b:include data='blog' name='google-analytics'/>
   </head>
   <body expr:class='&quot;loading&quot;'>
-    <b:section class='navbar' id='navbar' maxwidgets='1' name='Navbar' showaddelement='no'>
-      <b:widget id='Navbar1' locked='true' title='Navbar' type='Navbar' version='1'>
-        <b:includable id='main'>&lt;script type=&quot;text/javascript&quot;&gt;
-    function setAttributeOnload(object, attribute, val) {
-      if(window.addEventListener) {
-        window.addEventListener(&#39;load&#39;,
-          function(){ object[attribute] = val; }, false);
-      } else {
-        window.attachEvent(&#39;onload&#39;, function(){ object[attribute] = val; });
-      }
-    }
-  &lt;/script&gt;
-&lt;div id=&quot;navbar-iframe-container&quot;&gt;&lt;/div&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://apis.google.com/js/platform.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-      gapi.load(&quot;gapi.iframes:gapi.iframes.style.bubble&quot;, function() {
-        if (gapi.iframes &amp;&amp; gapi.iframes.getContext) {
-          gapi.iframes.getContext().openChild({
-              url: &#39;https://draft.blogger.com/navbar.g?targetBlogID\x3d8858384372993754103\x26blogName\x3dsentimental+programmer\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dDARK\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://yoonbh2714.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttps://yoonbh2714.blogspot.com/\x26vt\x3d-7730802393371495710&#39;,
-              where: document.getElementById(&quot;navbar-iframe-container&quot;),
-              id: &quot;navbar-iframe&quot;
-          });
-        }
-      });
-    &lt;/script&gt;&lt;script type=&quot;text/javascript&quot;&gt;
-(function() {
-var script = document.createElement(&#39;script&#39;);
-script.type = &#39;text/javascript&#39;;
-script.src = &#39;//pagead2.googlesyndication.com/pagead/js/google_top_exp.js&#39;;
-var head = document.getElementsByTagName(&#39;head&#39;)[0];
-if (head) {
-head.appendChild(script);
-}})();
-&lt;/script&gt;
-</b:includable>
-      </b:widget>
-    </b:section>
+
     <b:if cond='data:blog.pageType == &quot;index&quot;'>
       <div itemscope='itemscope' itemtype='https://schema.org/Blog' style='display: none;'>
         <meta expr:content='data:blog.title' itemprop='name'/>
@@ -521,6 +485,27 @@ head.appendChild(script);
                       <div align='center' class='ysoftman-home'>
                         <a href='/'>Sentimental Programmer</a>
                       </div>
+
+                      <div class='widget-content'>
+                        <div expr:id='data:widget.instanceId + &quot;_form&quot;'>
+                          <form class='gsc-search-box' expr:action='data:blog.searchUrl'>
+                            <b:attr cond='not data:view.isPreview' name='target' value='_top'/>
+                            <table cellpadding='0' cellspacing='0' class='gsc-search-box'>
+                              <tbody>
+                                <tr>
+                                  <td class='gsc-input'>
+                                    <input autocomplete='off' class='gsc-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' size='100' title='search' type='text'/>
+                                  </td>
+                                  <td class='gsc-search-button'>
+                                    <input class='gsc-search-button' title='search' type='submit' value='search'/>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </form>
+                        </div>
+                      </div>
+
                       <div class='column-center-inner'>
                         <b:section class='main' id='main' name='Main' showaddelement='no'>
                           <b:widget id='Blog1' locked='true' title='블로그 게시물' type='Blog' version='1'>
