@@ -382,7 +382,6 @@ h3.post-title {
     color: var(--purple)
 }
 
-
 /* Accents ---------------------------------------------- */
 #blog-pager,
 .blog-pager {
@@ -408,53 +407,45 @@ h3.post-title {
 .footer-inner {
     .padding: 5px
 }
-]]></b:skin>
-    <b:template-skin><![CDATA[
-body {
-    min-width: 100%;
+
+/* searchbox ----------------- */
+table.ysoftman-search-box {
+    font-size: 1em;
+    border-style: none;
+    border-width: 0;
+    border-spacing: 0 0;
+    width: 100%;
+    margin-bottom: 10px;
 }
-.content-outer, .content-fauxcolumn-outer, .region-inner {
-    min-width: 100%;
-    max-width: none;
-    padding: 0 0 0 0;
+input.ysoftman-input {
+    font-size: 1em;
+    border: solid var(--yellow);
+    border-radius: 5px;
+    outline: none;
+    padding: 5px;
+    margin: 0px;
+    width: 98%;
+    background: var(--black1);
+    color: var(--yellow);
 }
-.main-inner .columns {
-    padding-left: $(main.column.left.width);
-    padding-right: $(main.column.right.width);
+input.ysoftman-search-button {
+    font-size: 1.5em;
+    font-weight: bold;
+    width: 100%;
+    padding: 0px;
+    margin-left: 2px;
+    border: none;
+    border-radius: 5px;
+    background: var(--teal);
+    color: var(--white);
 }
-.main-inner {
-    left: $(main.column.left.width);
-    right: $(main.column.right.width);
-    /* IE6 does not respect left and right together */
-    _width: expression(this.parentNode.offsetWidth -
-    parseInt("$(main.column.left.width)") -
-    parseInt("$(main.column.right.width)") + 'px');
-}
-.main-inner {
-    width: $(main.column.right.width);
-}
-.main-inner .column-right-outer {
-    width: $(main.column.right.width);
-    margin-right: -$(main.column.right.width);
-}
-#layout {
-    min-width: 0;
-}
-#layout .content-outer {
-    min-width: 0;
-}
-#layout .region-inner {
-    min-width: 0;
-    width: auto;
-}
-body#layout div.add_widget {
-    padding: 8px;
-}
-body#layout div.add_widget a {
-    margin-left: 32px;
+input.ysoftman-search-button:hover {
+    background-color: #2ee59d;
+    box-shadow: 0px 0px 50px #2ee59d;
+    color: #fff;
 }
 
-]]></b:template-skin>
+]]></b:skin>
     <b:if cond='data:skin.vars.body_background.image and data:features.responsiveBackgrounds'>
       <b:with value='&quot;body&quot;' var='selector'>
         <b:include cond='not data:view.isPreview' data='skin.vars.body_background.image' name='responsiveImageStyle'/>
@@ -472,6 +463,7 @@ body#layout div.add_widget a {
         </b:if>
       </div>
     </b:if>
+
     <div class='content'>
       <div>
         <div class='content-inner'>
@@ -488,16 +480,16 @@ body#layout div.add_widget a {
 
                       <div class='widget-content'>
                         <div expr:id='data:widget.instanceId + &quot;_form&quot;'>
-                          <form class='gsc-search-box' expr:action='data:blog.searchUrl'>
+                          <form class='ysoftman-search-box' expr:action='data:blog.searchUrl'>
                             <b:attr cond='not data:view.isPreview' name='target' value='_top'/>
-                            <table cellpadding='0' cellspacing='0' class='gsc-search-box'>
+                            <table cellpadding='0' cellspacing='0' class='ysoftman-search-box'>
                               <tbody>
                                 <tr>
-                                  <td class='gsc-input'>
-                                    <input autocomplete='off' class='gsc-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' size='100' title='search' type='text'/>
+                                  <td>
+                                    <input autocomplete='off' class='ysoftman-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' size='100' title='search' type='text'/>
                                   </td>
-                                  <td class='gsc-search-button'>
-                                    <input class='gsc-search-button' title='search' type='submit' value='search'/>
+                                  <td>
+                                    <input class='ysoftman-search-button' title='search' type='submit' value='SEARCH'/>
                                   </td>
                                 </tr>
                               </tbody>
