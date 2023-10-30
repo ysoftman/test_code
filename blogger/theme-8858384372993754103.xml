@@ -1397,10 +1397,10 @@ input.ysoftman-input {
       </div>
     </div>
     <script type='text/javascript'>
-window.setTimeout(function () {
-    document.body.className = document.body.className.replace(&#39;loading&#39;,&#39;&#39;);
-}, 10);
-</script>
+      window.setTimeout(function () {
+      document.body.className = document.body.className.replace(&#39;loading&#39;,&#39;&#39;);
+      }, 10);
+    </script>
   </body>
   <macro:includable id='sections' var='col'>
     <macro:if cond='data:col.num == 0'>
@@ -1436,16 +1436,16 @@ window.setTimeout(function () {
     </macro:if>
   </macro:includable>
 
-<b:section-contents id='footer-1'>
-  <b:widget id='Label1' locked='false' title='tags' type='Label' version='1'>
-    <b:widget-settings>
-      <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
-      <b:widget-setting name='display'>CLOUD</b:widget-setting>
-      <b:widget-setting name='selectedLabelsList'/>
-      <b:widget-setting name='showType'>ALL</b:widget-setting>
-      <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
-    </b:widget-settings>
-    <b:includable id='main'>
+  <b:section-contents id='footer-1'>
+    <b:widget id='Label1' locked='false' title='tags' type='Label' version='1'>
+      <b:widget-settings>
+        <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+        <b:widget-setting name='display'>CLOUD</b:widget-setting>
+        <b:widget-setting name='selectedLabelsList'/>
+        <b:widget-setting name='showType'>ALL</b:widget-setting>
+        <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+      </b:widget-settings>
+      <b:includable id='main'>
         <b:if cond='data:title != &quot;&quot;'>
           <h2>
             <data:title/>
@@ -1492,5 +1492,5 @@ window.setTimeout(function () {
           <b:include name='quickedit'/>
         </div>
       </b:includable>
-  </b:widget>
+    </b:widget>
 </b:section-contents></html>
