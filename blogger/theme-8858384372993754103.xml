@@ -405,7 +405,7 @@ h3.post-title {
     padding: 20px 0 0 0;
 }
 .ysoftman-footer-inner {
-    .padding: 5px
+    padding: 5px;
 }
 
 /* searchbox ----------------- */
