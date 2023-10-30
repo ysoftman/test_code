@@ -404,7 +404,7 @@ h3.post-title {
     border-top: 0 dashed #bbbbbb;
     padding: 20px 0 0 0;
 }
-.footer-inner {
+.ysoftman-footer-inner {
     .padding: 5px
 }
 
@@ -1426,7 +1426,7 @@ input.ysoftman-search-button:hover {
           </div>
           <footer>
             <div class='footer-outer'>
-              <div class='region-inner footer-inner'>
+              <div class='region-inner ysoftman-footer-inner'>
                 <macro:include id='footer-sections' name='sections'>
                   <macro:param default='2' name='num' value='1'/>
                   <macro:param default='footer' name='idPrefix'/>
