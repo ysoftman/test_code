@@ -387,13 +387,12 @@ h3.post-title {
 /* Accents ---------------------------------------------- */
 #blog-pager,
 .blog-pager {
-    margin: 0 0 0 0;
+    margin: 0;
     padding: 0;
     font-size: xxx-large;
 }
 .blog-pager-home-link {
     float: none;
-    position: absolute;
 }
 .blog-pager-older-link {
     float: right;
@@ -805,26 +804,24 @@ input.ysoftman-input {
                                 <b:if cond='data:newerPageUrl'>
                                   <div class='mobile-link-button' id='blog-pager-newer-link'>
                                     <a class='blog-pager-newer-link' expr:href='data:newerPageUrl'>
-                                      <data:newerPageTitle/>
+                                      newerPage
                                     </a>
                                   </div>
                                 </b:if>
                                 <b:if cond='data:olderPageUrl'>
                                   <div class='mobile-link-button' id='blog-pager-older-link'>
                                     <a class='blog-pager-older-link' expr:href='data:olderPageUrl'>
-                                      <data:olderPageTitle/>
+                                      olderPage
                                     </a>
                                   </div>
                                 </b:if>
                                 <div class='mobile-link-button' id='blog-pager-home-link'>
                                   <a class='blog-pager-home-link' expr:href='data:blog.homepageUrl'>
-                                    <!--<data:homeMsg/>-->
                                     Home
                                   </a>
                                 </div>
                                 <div class='mobile-desktop-link'>
                                   <a class='blog-pager-home-link' expr:href='data:desktopLinkUrl'>
-                                    <!--<data:desktopLinkMsg/> -->
                                     Desktop
                                   </a>
                                 </div>
@@ -920,29 +917,26 @@ input.ysoftman-input {
                             </b:includable>
                             <b:includable id='nextprev'>
                               <div class='blog-pager' id='blog-pager'>
-                                <b:if cond='data:blog.homepageUrl'>
-                                  <span class='blog-pager-home-link'>
-                                    <a expr:href='data:blog.homepageUrl'>
-                                      <!--<data:homeMsg/>-->
-                                      Home
-                                    </a>
-                                  </span>
-                                </b:if>
                                 <b:if cond='data:newerPageUrl'>
-                                  <span class='blog-pager-newer-link'>
+                                  <div class='blog-pager-newer-link'>
                                     <a expr:href='data:newerPageUrl'>
-                                      <!--<data:newerPageTitle/>-->
-                                      Newer Page
+                                      NewerPage
                                     </a>
-                                  </span>
+                                  </div>
                                 </b:if>
                                 <b:if cond='data:olderPageUrl'>
-                                  <span class='blog-pager-older-link'>
+                                  <div class='blog-pager-older-link'>
                                     <a expr:href='data:olderPageUrl'>
-                                      <!--<data:olderPageTitle/>-->
-                                      Older Page
+                                      OlderPage
                                     </a>
-                                  </span>
+                                  </div>
+                                </b:if>
+                                <b:if cond='data:blog.homepageUrl'>
+                                  <div class='blog-pager-home-link'>
+                                    <a expr:href='data:blog.homepageUrl'>
+                                      Home
+                                    </a>
+                                  </div>
                                 </b:if>
                               </div>
                             </b:includable>
