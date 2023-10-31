@@ -813,7 +813,7 @@ input.ysoftman-input {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style="color: var(--gray1);">
+                                    <div style='color: var(--gray1);'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -834,7 +834,7 @@ input.ysoftman-input {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style="color: var(--gray1);">
+                                    <div style='color: var(--gray1);'>
                                       OlderPage
                                     </div>
                                   </b:if>
@@ -937,7 +937,7 @@ input.ysoftman-input {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style="color: var(--gray1);">
+                                    <div style='color: var(--gray1);'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -953,7 +953,7 @@ input.ysoftman-input {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style="color: var(--gray1);">
+                                    <div style='color: var(--gray1);'>
                                       OlderPage
                                     </div>
                                   </b:if>
