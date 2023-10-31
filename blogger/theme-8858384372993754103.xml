@@ -391,15 +391,20 @@ h3.post-title {
     margin: 0;
     padding: 0;
     font-size: xxx-large;
-}
-.blog-pager-home-link {
-    float: none;
-}
-.blog-pager-older-link {
-    float: right;
+    display: flex;
+    flow-row: row warp:
 }
 .blog-pager-newer-link {
-    float: left;
+    width: 33.3%;
+    text-align: left;
+}
+.blog-pager-home-link {
+    width: 33.3%;
+    text-align: center;
+}
+.blog-pager-older-link {
+    width: 33.3%;
+    text-align: right;
 }
 
 .footer-outer {
@@ -813,6 +818,16 @@ input.ysoftman-input {
                                     </div>
                                   </b:if>
                                 </div>
+                                <div class='mobile-link-button' id='blog-pager-home-link'>
+                                  <a class='blog-pager-home-link' expr:href='data:blog.homepageUrl'>
+                                    Home
+                                  </a>
+                                </div>
+                                <div class='mobile-desktop-link'>
+                                  <a class='blog-pager-home-link' expr:href='data:desktopLinkUrl'>
+                                    Desktop
+                                  </a>
+                                </div>
                                 <div class='mobile-link-button' id='blog-pager-older-link'>
                                   <b:if cond='data:olderPageUrl'>
                                     <a class='blog-pager-older-link' expr:href='data:olderPageUrl'>
@@ -823,16 +838,6 @@ input.ysoftman-input {
                                       OlderPage
                                     </div>
                                   </b:if>
-                                </div>
-                                <div class='mobile-link-button' id='blog-pager-home-link'>
-                                  <a class='blog-pager-home-link' expr:href='data:blog.homepageUrl'>
-                                    Home
-                                  </a>
-                                </div>
-                                <div class='mobile-desktop-link'>
-                                  <a class='blog-pager-home-link' expr:href='data:desktopLinkUrl'>
-                                    Desktop
-                                  </a>
                                 </div>
                               </div>
                               <div class='clear'/>
@@ -937,6 +942,11 @@ input.ysoftman-input {
                                     </div>
                                   </b:if>
                                 </div>
+                                <div class='blog-pager-home-link'>
+                                  <a expr:href='data:blog.homepageUrl'>
+                                    Home
+                                  </a>
+                                </div>
                                 <div class='blog-pager-older-link'>
                                   <b:if cond='data:olderPageUrl'>
                                     <a expr:href='data:olderPageUrl'>
@@ -947,11 +957,6 @@ input.ysoftman-input {
                                       OlderPage
                                     </div>
                                   </b:if>
-                                </div>
-                                <div class='blog-pager-home-link'>
-                                  <a expr:href='data:blog.homepageUrl'>
-                                    Home
-                                  </a>
                                 </div>
                               </div>
                             </b:includable>
