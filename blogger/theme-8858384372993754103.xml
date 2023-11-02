@@ -167,33 +167,12 @@ a:hover {
         0 0 100px #0072ff,
         0 0 140px #0072ff;
 
-    /* animation: animate 10s linear infinite; */
-    animation: flicker 5s infinite alternate;
+    animation: animate 10s linear infinite;
 }
 .ysoftman-home a {
-    animation-delay: 0.5s;
+    animation-delay: 0.1s;
 }
 @keyframes animate {
-    from {
-        filter: hue-rotate(0deg);
-    }
-    to {
-        filter: hue-rotate(360deg);
-    }
-}
-@keyframes flicker {
-    0%, 18%, 22%, 25%, 53%, 57%, 100% {
-    text-shadow:
-        0 0 10px #0072ff,
-        0 0 20px #0072ff,
-        0 0 40px #0072ff,
-        0 0 80px #0072ff,
-        0 0 100px #0072ff,
-        0 0 140px #0072ff;
-    }
-    20%, 24%, 55% {
-      text-shadow: none;
-    }
     from {
         filter: hue-rotate(0deg);
     }
