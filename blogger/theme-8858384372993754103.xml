@@ -517,13 +517,7 @@ input.ysoftman-input {
                               <!-- feed links -->
                               <b:include name='feedLinks'/>
                             </b:includable>
-                            <b:includable id='backlinkDeleteIcon' var='backlink'>
-                              <span expr:class='&quot;item-control &quot; + data:backlink.adminClass'>
-                                <a expr:href='data:backlink.deleteUrl' expr:title='data:top.deleteBacklinkMsg'>
-                                  <img src='https://resources.blogblog.com/img/icon_delete13.gif'/>
-                                </a>
-                              </span>
-                            </b:includable>
+                            <b:includable id='backlinkDeleteIcon' var='backlink'/>
                             <b:includable id='backlinks' var='post'>
                               <a name='links'/>
                               <h4>
@@ -989,24 +983,7 @@ input.ysoftman-input {
                                     <span class='post-comment-link'>
                                       <b:include cond='data:blog.pageType not in {&quot;item&quot;,&quot;static_page&quot;} and data:post.allowComments' data='post' name='comment_count_picker'/>
                                     </span>
-                                    <!-- backlinks -->
-                                    <span class='post-backlinks post-comment-link'>
-                                      <b:if cond='data:blog.pageType not in {&quot;item&quot;,&quot;static_page&quot;} and data:post.showBacklinks'>
-                                        <a class='comment-link' expr:href='data:post.url + &quot;#links&quot;'>
-                                          <data:top.backlinkLabel/>
-                                        </a>
-                                      </b:if>
-                                    </span>
                                     <span class='post-icons'>
-                                      <!-- email post links -->
-                                      <b:if cond='data:post.emailPostUrl'>
-                                        <span class='item-action'>
-                                          <a expr:href='data:post.emailPostUrl' expr:title='data:top.emailPostMsg'>
-                                            <img alt='' class='icon-action' src='https://resources.blogblog.com/img/icon18_email.gif' style='height:1em;'/>
-                                          </a>
-                                        </span>
-                                      </b:if>
-                                      <!-- quickedit pencil -->
                                       <b:include data='post' name='postQuickEdit'/>
                                     </span>
                                     <span class='post-timestamp'>
@@ -1023,30 +1000,15 @@ input.ysoftman-input {
                                       </b:if>
                                     </span>
                                   </div>
-                                  <b:if cond='data:post.authorAboutMe'>
-                                    <div class='author-profile' itemprop='author' itemscope='itemscope' itemtype='https://schema.org/Person'>
-                                      <b:if cond='data:post.authorPhoto.url'>
-                                        <img expr:src='data:post.authorPhoto.url' itemprop='image' width='50px'/>
-                                      </b:if>
-                                      <div>
-                                        <a class='g-profile' expr:href='data:post.authorProfileUrl' itemprop='url' rel='author' title='author profile'>
-                                          <span itemprop='name'>
-                                            <data:post.author/>
-                                          </span>
-                                        </a>
-                                      </div>
-                                      <span itemprop='description'>
-                                        <data:post.authorAboutMe/>
-                                      </span>
-                                    </div>
-                                  </b:if>
                                 </div>
                               </div>
                             </b:includable>
                             <b:includable id='postQuickEdit' var='post'>
                               <b:if cond='data:post.editUrl'>
-                                <span expr:class='&quot;edit-post-text &quot; + data:post.adminClass'>
-                                  <a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>edit</a>
+                                <span expr:class='&quot;item-control &quot; + data:post.adminClass'>
+                                  <a class='edit-post-text' expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>
+                                    edit
+                                  </a>
                                 </span>
                               </b:if>
                             </b:includable>
@@ -1129,8 +1091,7 @@ input.ysoftman-input {
     var cursor = null;
     // <![CDATA[
     if (items && items.length > 0) {
-        cursor = parseInt(items[items.length - 1].timestamp) +
-            1;
+        cursor = parseInt(items[items.length - 1].timestamp) + 1;
     }
     var bodyFromEntry = function (entry) {
         if (entry.gd$extendedProperty) {
