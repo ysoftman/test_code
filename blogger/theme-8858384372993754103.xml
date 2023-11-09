@@ -560,7 +560,20 @@ input.ysoftman-input {
                             <b:includable id='comment-form' var='post'>
                               <div class='comment-form'>
                                 <a name='comment-form'/>
-                                <data:post.friendConnectJs/>
+                                <b:if cond='data:mobile'>
+                                  <h4 id='comment-post-message'>
+                                    <a expr:id='data:widget.instanceId + &quot;_comment-editor-toggle-link&quot;' href='javascript:void(0)'><data:postCommentMsg/></a></h4>
+                                  <p><data:blogCommentMessage/></p>
+                                  <data:blogTeamBlogMessage/>
+                                  <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+                                  <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' style='display: none' width='100%'/>
+                                  <b:else/>
+                                  <h4 id='comment-post-message'><data:postCommentMsg/></h4>
+                                  <p><data:blogCommentMessage/></p>
+                                  <data:blogTeamBlogMessage/>
+                                  <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+                                  <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+                                </b:if>
                                 <data:post.cmtfpIframe/>
                                 <script type='text/javascript'>
                                   BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
@@ -586,7 +599,7 @@ input.ysoftman-input {
                                 </span>
                                 <b:else/>
                                 <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
-                                  <!--<data:post.commentLabelFull/> :-->
+                                  <!-- <data:post.commentLabelFull/>: -->
                                   comments: <data:post.numComments/>
                                 </a>
                               </b:if>
@@ -627,6 +640,7 @@ input.ysoftman-input {
                                       </b:if>
                                     </span>
                                   </b:if>
+
                                   <div expr:id='data:widget.instanceId + &quot;_comments-block-wrapper&quot;'>
                                     <dl expr:class='data:post.avatarIndentClass' id='comments-block'>
                                       <b:loop values='data:post.comments' var='comment'>
@@ -669,25 +683,42 @@ input.ysoftman-input {
                                       </b:loop>
                                     </dl>
                                   </div>
-                                  <b:if cond='data:post.commentPagingRequired'>
-                                    <span class='paging-control-container'><a expr:class='data:post.oldLinkClass' expr:href='data:post.oldestLinkUrl'><data:post.oldestLinkText/></a><a expr:class='data:post.oldLinkClass' expr:href='data:post.olderLinkUrl'><data:post.olderLinkText/></a><data:post.commentRangeText/> &#160;
-                                    <a expr:class='data:post.newLinkClass' expr:href='data:post.newerLinkUrl'><data:post.newerLinkText/></a>
-                                    <a expr:class='data:post.newLinkClass' expr:href='data:post.newestLinkUrl'><data:post.newestLinkText/></a>
+
+
+                                <b:if cond='data:post.commentPagingRequired'>
+                                  <span class='paging-control-container'>
+                                    <a expr:class='data:post.oldLinkClass' expr:href='data:post.oldestLinkUrl'>
+                                      <data:post.oldestLinkText/>
+                                    </a>
+                                    <a expr:class='data:post.oldLinkClass' expr:href='data:post.olderLinkUrl'>
+                                      <data:post.olderLinkText/>
+                                    </a>
+                                      &#160;
+                                    <data:post.commentRangeText/>
+                                      &#160;
+                                    <a expr:class='data:post.newLinkClass' expr:href='data:post.newerLinkUrl'>
+                                      <data:post.newerLinkText/>
+                                    </a>
+                                    <a expr:class='data:post.newLinkClass' expr:href='data:post.newestLinkUrl'>
+                                      <data:post.newestLinkText/>
+                                    </a>
                                   </span>
                                 </b:if>
-                                  <p class='comment-footer'>
-                                    <b:if cond='data:post.embedCommentForm'>
-                                      <b:if cond='data:post.allowNewComments'>
-                                        <b:include data='post' name='comment-form'/>
-                                        <b:else/>
-                                        <data:post.noNewCommentsText/>
-                                      </b:if>
-                                      <b:elseif cond='data:post.allowComments'/>
-                                      <a expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
-                                        <data:postCommentMsg/>
-                                      </a>
+
+                                <p class='comment-footer'>
+                                  <b:if cond='data:post.embedCommentForm'>
+                                    <b:if cond='data:post.allowNewComments'>
+                                      <b:include data='post' name='comment-form'/>
+                                    <b:else/>
+                                      <data:post.noNewCommentsText/>
                                     </b:if>
-                                  </p>
+                                  <b:elseif cond='data:post.allowComments'/>
+                                    <a expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
+                                      <data:postCommentMsg/>
+                                    </a>
+                                  </b:if>
+                                </p>
+
                                 </b:if>
                                 <b:if cond='data:showCmtPopup'>
                                   <div id='comment-popup'>
@@ -696,7 +727,6 @@ input.ysoftman-input {
                                 </b:if>
                                 <div id='backlinks-container'>
                                   <div expr:id='data:widget.instanceId + &quot;_backlinks-container&quot;'>
-                                    <b:include cond='data:post.showBacklinks' data='post' name='backlinks'/>
                                   </div>
                                 </div>
                               </div>
@@ -1074,7 +1104,17 @@ input.ysoftman-input {
                             <b:includable id='threaded-comment-form' var='post'>
                               <div class='comment-form'>
                                 <a name='comment-form'/>
-                                <data:post.friendConnectJs/>
+                                <b:if cond='data:mobile'>
+                                  <p><data:blogCommentMessage/></p>
+                                  <data:blogTeamBlogMessage/>
+                                  <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+                                  <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' style='display: none' width='100%'/>
+                                <b:else/>
+                                  <p><data:blogCommentMessage/></p>
+                                  <data:blogTeamBlogMessage/>
+                                  <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+                                  <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+                                </b:if>
                                 <data:post.cmtfpIframe/>
                                 <script type='text/javascript'>
                                   BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
@@ -1264,32 +1304,67 @@ input.ysoftman-input {
                                     <data:post.commentHtml/>
                                   </div>
                                 </div>
+
                                 <p class='comment-footer'>
                                   <b:if cond='data:post.allowNewComments'>
                                     <b:include data='post' name='threaded-comment-form'/>
-                                    <b:else/>
+                                  <b:else/>
                                     <data:post.noNewCommentsText/>
                                   </b:if>
                                 </p>
+
                                 <b:if cond='data:showCmtPopup'>
                                   <div id='comment-popup'>
                                     <iframe allowtransparency='true' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'> </iframe>
                                   </div>
                                 </b:if>
+
                                 <div id='backlinks-container'>
                                   <div expr:id='data:widget.instanceId + &quot;_backlinks-container&quot;'>
                                     <b:include cond='data:post.showBacklinks' data='post' name='backlinks'/>
                                   </div>
                                 </div>
+
                               </div>
                             </b:includable>
                           </b:widget>
                         </b:section>
                       </div>
                     </div>
+
+                    <div class='column-left-outer'>
+                      <div class='column-left-inner'>
+                        <aside>
+                          <macro:include id='main-column-left-sections' name='sections'>
+                            <macro:param default='0' name='num' value='0'/>
+                            <macro:param default='sidebar-left' name='idPrefix'/>
+                            <macro:param default='sidebar' name='class'/>
+                            <macro:param default='true' name='includeBottom'/>
+                          </macro:include>
+                        </aside>
+                      </div>
+                    </div>
+
+                    <div class='column-right-outer'>
+                      <div class='column-right-inner'>
+                        <aside>
+                          <macro:include id='main-column-right-sections' name='sections'>
+                            <macro:param default='2' name='num' value='0'/>
+                            <macro:param default='sidebar-right' name='idPrefix'/>
+                            <macro:param default='sidebar' name='class'/>
+                            <macro:param default='true' name='includeBottom'/>
+                          </macro:include>
+                        </aside>
+                      </div>
+                    </div>
+
+
                   </div>
+
                   <div style='clear: both'/>
                 </div>
+
+
               </div>
             </div>
           </div>
