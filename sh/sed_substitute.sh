@@ -3,11 +3,16 @@
 
 # @뒤로 삭제
 # Substitute 형식 : s/regular expression/replacement/flag
-out=`(echo "ysoftman @open (12345)" | sed "s/@.*$//")`
-echo "$out"___result
+# delimiter 는 # , 공백도 사용할 수 있다. 상황에 맞게 backslash 없이 사용할때 유용
+echo "ysoftman @open (12345) /abc/def/ggg" | sed "s/\/abc\/def\/ggg/zzzzz/"
+echo "ysoftman @open (12345) /abc/def/ggg" | sed "s#/abc/def/ggg#zzzzz#"
+echo "ysoftman @open (12345) /abc/def/ggg" | sed "s,/abc/def/ggg,zzzzz,"
+echo "ysoftman @open (12345) /abc/def/ggg" | sed "s /abc/def/ggg zzzzz "
+echo "ysoftman @open (12345) /abc/def/ggg" | sed "s/@.*$//"
+
 # 공백@ 뒤로 삭제
-out=`(echo "ysoftman @open (12345)" | sed "s/ @.*$//")`
-echo "$out"___result
+echo "ysoftman @open (12345)" | sed "s/ @.*$//"
+
 # 컬문자의 경우
 reset_color='\033[0m'
 green='\033[0;32m'
