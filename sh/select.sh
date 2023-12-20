@@ -30,5 +30,5 @@ select choice in "${list[@]}"; do
     esac
 done
 
-# 번홉 입력 없이 대기 없이 사용시
+# 번호 입력 없이 대기 없이 사용시
 # echo '1' | bash ./select_test.sh
