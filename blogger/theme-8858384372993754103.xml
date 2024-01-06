@@ -166,11 +166,11 @@ a:hover {
         0 0 80px #0072ff,
         0 0 100px #0072ff,
         0 0 140px #0072ff;
-
-    animation: animate 10s linear infinite;
-}
-.ysoftman-home a {
-    animation-delay: 0.1s;
+      /*
+      animation-delay: 0.1s;
+      animation: animate 10s linear infinite;
+      */
+    filter: hue-rotate(0deg);
 }
 @keyframes animate {
     from {
