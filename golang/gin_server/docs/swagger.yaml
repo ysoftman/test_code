@@ -1,0 +1,19 @@
+info:
+  contact: {}
+paths:
+  /version:
+    get:
+      consumes:
+      - application/json
+      description: get server version
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: server version
+      tags:
+      - v1
+swagger: "2.0"
