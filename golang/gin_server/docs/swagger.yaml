@@ -1,6 +1,44 @@
+definitions:
+  main.Data1:
+    properties:
+      data1:
+        type: string
+      data2:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
+  /data1:
+    post:
+      consumes:
+      - application/json
+      description: post data test
+      parameters:
+      - description: requested data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/main.Data1'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: StatusBadRequest
+          schema:
+            type: string
+        "500":
+          description: StatusInternalServerError
+          schema:
+            type: string
+      summary: post data
+      tags:
+      - v1
   /version:
     get:
       consumes:
@@ -11,6 +49,14 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            type: string
+        "400":
+          description: StatusBadRequest
+          schema:
+            type: string
+        "500":
+          description: StatusInternalServerError
           schema:
             type: string
       summary: server version
