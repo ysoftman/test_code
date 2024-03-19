@@ -20,6 +20,12 @@ describe mytest.test_info; select * from mytest.test_info;
 go build && ./sql_db
 ```
 
+## test
+
+```bash
+go test ./... -v
+```
+
 ## 참고
 
 - <https://golang.org/pkg/database/sql/>
