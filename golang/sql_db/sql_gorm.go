@@ -50,11 +50,25 @@ func DoGorm() {
 	// db.LogMode(true)
 
 	// gorm 으로 mysql 접속
-	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{NamingStrategy: schema.NamingStrategy{SingularTable: true},
-		Logger: logger.Default.LogMode(logger.Info)})
+	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true, // User -> users 로 복수형 테이블 이름 방지
+		},
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
+	sdb, _ := db.DB()
+
+	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+	sdb.SetMaxIdleConns(10)
+
+	// SetMaxOpenConns sets the maximum number of open connections to the database.
+	sdb.SetMaxOpenConns(100)
+
+	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+	sdb.SetConnMaxLifetime(time.Hour)
 
 	// 테이블 내용 전체 삭제
 	db.Exec("DELETE FROM test_info")
