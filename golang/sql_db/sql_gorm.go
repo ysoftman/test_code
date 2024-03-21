@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
@@ -27,7 +28,10 @@ type TestInfo struct {
 	LastDate  time.Time
 }
 
-func DoGorm() {
+func OpenSqlite() gorm.Dialector {
+	return sqlite.Open("sqlite.db")
+}
+func OpenMysql() gorm.Dialector {
 	// sql 접속 정보 설정
 	hostIP := "127.0.0.1"
 	hostPort := 3306
@@ -48,9 +52,13 @@ func DoGorm() {
 	// db.SingularTable(true)
 	// 수행한 쿼리 stdout 출력
 	// db.LogMode(true)
+	return mysql.Open(DSN)
+}
 
-	// gorm 으로 mysql 접속
-	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{
+func DoGorm() {
+	//targetDB := OpenSqlite()
+	targetDB := OpenMysql()
+	db, err := gorm.Open(targetDB, &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // User -> users 로 복수형 테이블 이름 방지
 		},

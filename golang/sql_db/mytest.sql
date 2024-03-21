@@ -1,4 +1,4 @@
-drop DATABASE `mytest`;
+drop DATABASE if exists `mytest`;
 CREATE DATABASE `mytest` /*!40100 DEFAULT CHARACTER SET utf8 */;
 use mytest;
 CREATE TABLE `test_info` (
