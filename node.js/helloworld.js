@@ -5,5 +5,6 @@
 let util = require("util")
 
 // util.puts is deprecated.
-util.puts("hello world")
+// https://nodejs.org/docs/latest-v11.x/api/util.html#util_util_puts_strings
+//util.puts("hello world")
 console.log("hello world")
