@@ -15,6 +15,7 @@
 *.tmp
 *.tmp.*
 *.wasm
+node_modules/
 tags
 cpp/*.txt
 golang/*/*.txt
