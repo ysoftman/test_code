@@ -3,9 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="common.css" rel="stylesheet" type="text/css" media="all">
+    <!-- example: https://nostalgic-css.github.io/NES.css/#installation -->
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+    <!-- dot font 사용 -->
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <style>
+      html, body, pre, code, kbd, samp {
+          font-family: "Press Start 2P";
+          font-size: 14px;
+      }
+    </style>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
@@ -15,30 +23,44 @@
     <script src="web_api_key.js" type="module"></script>
     <script src="common.js" type="module"></script>
     <script type="module">
-        import {visitCnt, makeSubDiv, loadImage} from "./common.js"
+        import {visitCnt, loadImages} from "./common.js"
         //setTestDoc("test", "ysoftman");
         visitCnt("test", "ysoftman", "likecnt", "visitcnt")
+        const imgNames = []
+        imgNames.push("박카스.jpg")
+        imgNames.push("xelloss.jpg")
+        imgNames.push("cold_snow_by_guweiz.jpg")
+        imgNames.push("morning_light_by_mizukiaoki.png")
         // image div 태그를 구성해 이미지 순서를 보장
-        makeSubDiv("image", 10)
-        loadImage("image1", "박카스.jpg")
-        loadImage("image2", "xelloss.jpg")
-        loadImage("image3", "cold_snow_by_guweiz.jpg")
-        loadImage("image4", "morning_light_by_mizukiaoki.png")
+        loadImages("images", imgNames)
     </script>
     <title>ysoftman-firebase</title>
 </head>
 
 <body>
-    <h1>ysoftman firebase test
-        <div id='login_google'></div>
-    </h1>
     <h2>
-        <a href="restaurant_pangyo.html">restaurant_pangyo</a><br>
-        visitCnt from firestore database: <span id=visitcnt></span><br>
-        images from firebase storage<br>
-        <div id=image></div>
+        <div class="main">
+        <a href="https://github.com/ysoftman/test_code/tree/master/firebase" target="_blank" class="github-link">
+            <p class="nes-balloon from-right">
+                <span class="nes-text is-primary">ysoftman firebase test</span><br>
+                <span class="nes-text is-success">this page uses NES.CSS<br>and Press_Start_2P font</span>
+            </p>
+            <i class="nes-octocat animate"></i>
+        </a></div>
     </h2>
-</body>
+    <h1 class="nes-text yellow">
+        <button class="nes-btn is-primary" id="login_google">login google</button>
+        <a href="restaurant_pangyo.html" target="_blank">
+            <button type="button" class="nes-btn is-primary"><b>restaurant_pangyo</b></button></a><br><br>
+        <div class="lists">
+          <ul class="nes-list is-disc">
+            <li>visitCnt from firestore database: <span id=visitcnt></span></li>
+            <li>images from firebase storage</li>
+          </ul>
+        </div>
+
+        <div id=images></div>
+    </h1>
 
 </html>
 

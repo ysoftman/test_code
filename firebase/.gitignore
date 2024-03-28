@@ -1,4 +1,6 @@
 html/web_api_key.js
+*.swp
+*.swo
 
 # Logs
 logs

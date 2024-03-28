@@ -16,6 +16,29 @@ img {
     height: auto;
 }
 
+.nes-octocat {
+    align-self: flex-end;
+    position: relative;
+    display: inline-block;
+    width: 84px;
+    height: 0px !important;
+}
+
+.github-link {
+    position: fixed;
+    top: 350px;
+    right: 10px;
+    z-index: 999;
+    height: 105px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.item > * {
+    margin-bottom: 1.5rem !important;
+}
+
 #message {
     background: white;
     max-width: 360px;

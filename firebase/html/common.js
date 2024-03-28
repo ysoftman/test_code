@@ -2,7 +2,7 @@
 // firebase api 사용
 // Initialize Firebase
 import {webApiKey} from "./web_api_key.js"
-var config = {
+let config = {
     apiKey: webApiKey(),
     authDomain: "ysoftman-firebase.firebaseapp.com",
     databaseURL: "https://ysoftman-firebase.firebaseio.com",
@@ -13,39 +13,37 @@ var config = {
 firebase.initializeApp(config);
 
 // Create a reference with an initial file path and name
-var storage = firebase.storage();
-var db = firebase.firestore();
-var auth = firebase.auth();
-var doc1_likeCnt = 0;
-var loginBoxID = "login_google";
-var loginBoxHTML = `<button class="btn btn-dark">login Google</button>`
-var userInfo = {};
-var userToken = "";
+let storage = firebase.storage();
+let db = firebase.firestore();
+let auth = firebase.auth();
+let doc1_likeCnt = 0;
+let loginBoxID = "login_google";
+let userInfo = {};
+let userToken = "";
 
 export const makeLogoutBoxHTML = function (userName) {
-    return `<button class="btn btn-dark">${userName} (logout)</button>`;
+    return `${userName} (logout)`;
 }
 
-export const makeSubDiv = function(id, cnt) {
-    for (let i=1;i<=cnt;i++) {
-        document.getElementById(id).innerHTML += `<div id=`+id+i+`></div>`
+export const loadImages = async function(htmlId, imageNames) {
+    let images =`<div class="item">`
+    //forEach 안에서 await 를 사용할 수 없다.
+    //imageNames.forEach(function (name) {})
+    for (const name of imageNames) {
+        images += `<div class="nes-container with-title"><p class="title">`+name+`</p><img src=`+ await imageURL(name)+`></img></div>`
     }
+    images += `</div>`
+    document.getElementById(htmlId).innerHTML = images
 }
 
 // firestorage 에 저장된 이미지 url 불러오기
-export const loadImage = function (htmlId, image) {
-    //var pathReference = storage.ref('xelloss.jpg');
-    var gsReference = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + image);
-    // getDownloadURL() 은 비동기로 이미지 순서가 보장되지 않는다
-    gsReference.getDownloadURL().then(function (url) {
-        //console.log('File available at', url);
-        document.getElementById(htmlId).innerHTML = '<img src="' + url + '"></img>';
-    }).catch(function (error) {
-        // Handle any errors
-        console.error('download failed:', error);
-    });
+export const imageURL = async function (image) {
+    //let pathReference = storage.ref('xelloss.jpg');
+    let storageRef = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + image);
+    // getDownloadURL() 은 비동기라 await 로 순서를 보장한다
+    const url = await storageRef.getDownloadURL();
+    return url
 }
-
 
 // firestore 테스트 문서 생성
 export const setTestDoc = function (coll, doc) {
@@ -61,7 +59,7 @@ export const setTestDoc = function (coll, doc) {
 
 // firestore 테스트 방문카운트 및 조회
 export const visitCnt = function (coll, doc, cntType, htmlId) {
-   var docRef = db.collection(coll).doc(doc);
+   let docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
@@ -69,7 +67,7 @@ export const visitCnt = function (coll, doc, cntType, htmlId) {
             if (!doc1.exists) {
                 throw "Document doest not exist!";
             }
-            var newCnt = doc1.data().visitCnt;
+            let newCnt = doc1.data().visitCnt;
             if (checkLogin()) {
                 newCnt += 1
                 transaction.update(docRef, {
@@ -113,7 +111,7 @@ export const updateRestaurantDoc = function (coll, doc) {
     // if (user.email == "") {
     //     return
     // }
-    var docRef = db.collection(coll).doc(doc.name);
+    let docRef = db.collection(coll).doc(doc.name);
     db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
         return transaction.get(docRef).then(function (doc1) {
@@ -148,7 +146,7 @@ export const readRestaurantAll = function (coll) {
     // collection 전체 문서 가져오기
     // likeCnt 많은 순으로
     db.collection(coll).orderBy("likeCnt", "desc").get().then((querySnapshot) => {
-        var html = `<div class="card-columns">`;
+        let html = `<div class="card-columns">`;
         querySnapshot.forEach((doc) => {
             html += `
 <div class="card">
@@ -197,7 +195,7 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
         alert("로그인이 필요합니다.");
         return
     }
-    var docRef = db.collection(coll).doc(doc);
+    let docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
@@ -205,12 +203,12 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
             if (!doc1.exists) {
                 throw "Document doest not exist!";
             }
-            var newCnt = 0
-            var incValue = 1;
+            let newCnt = 0
+            let incValue = 1;
             if (cntType == 'likeCnt') {
-                var lcUsers = doc1.data().likeCntUsers;
+                let lcUsers = doc1.data().likeCntUsers;
                 console.log("lcUsers", lcUsers)
-                var pos = lcUsers.indexOf(user.email)
+                let pos = lcUsers.indexOf(user.email)
                 // 좋아요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
@@ -226,9 +224,9 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
                 console.log("incRestaurantCnt", htmlId, `${doc1.data().name} likeCnt: ${newCnt}`)
                 document.getElementById(htmlId).innerHTML = `좋아요 ${newCnt}`;
             } else if (cntType == 'dislikeCnt') {
-                var dlcUsers = doc1.data().dislikeCntUsers;
+                let dlcUsers = doc1.data().dislikeCntUsers;
                 console.log("dlcUsers", dlcUsers)
-                var pos = dlcUsers.indexOf(user.email)
+                let pos = dlcUsers.indexOf(user.email)
                 // 싫어요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
@@ -269,13 +267,12 @@ auth.onAuthStateChanged(function (user) {
         //user.providerData;
         userInfo = user;
         // ...
-        var userName = user.displayName + " " + user.email
+        let userName = user.displayName + " " + user.email
         document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName)
     } else {
         // User is signed out.
         userInfo = {};
         userToken = ""
-        document.getElementById(loginBoxID).innerHTML = loginBoxHTML
     }
 });
 
@@ -291,8 +288,8 @@ export const setAuthPersistence = function () {
             return auth.signInWithEmailAndPassword(email, password);
         }).catch(function (error) {
             // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
+            let errorCode = error.code;
+            let errorMessage = error.message;
         });
 }
 
@@ -322,7 +319,7 @@ export const loginGoogle = function () {
         logoutGoogle()
         return
     }
-    var provider = new firebase.auth.GoogleAuthProvider();
+    let provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         userToken = result.credential.accessToken;
@@ -330,19 +327,19 @@ export const loginGoogle = function () {
         userInfo = result.user;
         // ...
         console.log("loginGoogle result.user:", result.user)
-        var userName = result.user.displayName + " " + result.user.email
+        let userName = result.user.displayName + " " + result.user.email
         document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName)
         // 사용자 토큰 파악해두기
         getToken()
         //GoogleLoginResult()
     }).catch(function (error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        let errorCode = error.code;
+        let errorMessage = error.message;
         // The email of the user's account used.
-        var email = error.email;
+        let email = error.email;
         // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
+        let credential = error.credential;
         alert("errCode:" + error.code +
             "\nerrMessage:" + error.message +
             "\nerrMail:" + error.mail)
@@ -353,7 +350,6 @@ export const loginGoogle = function () {
 // 로그아웃
 export const logoutGoogle = function () {
     auth.signOut()
-    document.getElementById(loginBoxID).innerHTML = loginBoxHTML
     document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
 }
 
@@ -370,12 +366,12 @@ export const GoogleLoginResult = function () {
         console.log("GoogleLoginResult result.user:", result.user)
     }).catch(function (error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        let errorCode = error.code;
+        let errorMessage = error.message;
         // The email of the user's account used.
-        var email = error.email;
+        let email = error.email;
         // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
+        let credential = error.credential;
         // ...
     });
 }

@@ -1,6 +1,6 @@
 import {readRestaurantAll} from "./common.js"
 
-var restaurantlist = [{
+let restaurantlist = [{
     name: "다연",
     glyphicons: "glyphicons-50-star.png",
     location: "분당구 삼평동 681 H스퀘어 N동 1층",
@@ -783,7 +783,7 @@ var restaurantlist = [{
 }
 ];
 
-var coll = "restaurant";
+let coll = "restaurant";
 window.onload = function () {
     readRestaurantAll(coll);
     restaurantlist.forEach((r) => {

@@ -68,8 +68,10 @@ gsutil cp -v gs://ysoftman-firebase.appspot.com/박카스.jpg .
 ## firebase 프로젝트 배포
 
 ```bash
-# firebase-tools 설치
+# firebase-tools 설치(bun 설치가 빠르다)
 npm install -g firebase-tools
+# or
+bun add -g firebase-tool
 
 # 프로젝트 초기화(프로젝스 환경구성을 위해 최초 한번만)
 firebase init
