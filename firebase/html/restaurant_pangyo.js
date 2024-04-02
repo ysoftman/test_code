@@ -789,7 +789,8 @@ window.onload = function () {
     restaurantlist.forEach((r) => {
         // 리셋(식당 정보 추가)이 필요할때
         // setRestaurantDoc(coll, r)
-        // 좋아요, 싫어요 외 기본 정보들 업데이트가 필요할때, 식당 추가할때
+
+        // 좋아요, 싫어요 는 유지하고 기본 정보들 업데이트가 필요할때, 식당 추가할때
         // updateRestaurantDoc(coll, r)
     });
 }
