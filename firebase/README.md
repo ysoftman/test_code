@@ -35,10 +35,10 @@ service cloud.firestore {
 필드: name , 유형: string, 값: ysoftman
 필드: visitCnt , 유형: number, 값: 0
 
-컬렉션: restaurant 문서 "강남 교자" 만 추가
+컬렉션: restaurant 문서 추가 및 업데이트
 1. setRestaurantDoc() 주석 해제 후 firebase deploy
 2. https://ysoftman-firebase.firebaseapp.com/restaurant_pangyo.html 접속
-3. 강제 refresh(ctrl+shift+r)
+3. 구글 로그인 후 강제 refresh(ctrl+shift+r)
 4. 식당리스트가 firestore 에 자동 추가되어 보인다.
 
 # firebase storage 업로드

@@ -21,7 +21,7 @@ let loginBoxID = "login_google";
 let loginAnonymousBoxID = "login_anonymous";
 let userInfo = {};
 let userToken = "";
-
+const coll = "restaurant"
 export const makeLogoutBoxHTML = function (userName) {
     if (userName.length == 0) {
         return `Anonymous (logout)`
@@ -88,48 +88,35 @@ export const visitCnt = function (coll, doc, cntType, htmlId) {
     });
 }
 
-
-// firestore 컬렉션(판교식당) 문서 생성
+// firestore 컬렉션(판교식당) 문서있으면 업데이트 없으면 생성
 export const setRestaurantDoc = function (coll, doc) {
-    db.collection(coll).doc(doc.name).set({
-        name: doc.name,
-        glyphicons: doc.glyphicons,
-        location: doc.location,
-        menu: doc.menu,
-        detailInfo: doc.detailInfo,
-        likeCntUsers: doc.likeCntUsers,
-        dislikeCntUsers: doc.dislikeCntUsers,
-        likeCnt: doc.likeCnt,
-        dislikeCnt: doc.dislikeCnt
-    }).then(function () {
-        console.log("Document written!");
-    }).catch(function (error) {
-        console.error("Error adding document: ", error);
-    });
-}
-
-
-// firestore 컬렉션(판교식당) 문서 필드 없데이트
-export const updateRestaurantDoc = function (coll, doc) {
-    // console.log("user.email:", user.email)
-    // if (user.email == "") {
-    //     return
-    // }
     let docRef = db.collection(coll).doc(doc.name);
     db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
         return transaction.get(docRef).then(function (doc1) {
-            if (!doc1.exists) {
-                throw "Document doest not exist!";
+            if (doc1.exists) {
+                transaction.update(docRef, {
+                    name: doc.name,
+                    glyphicons: doc.glyphicons,
+                    location: doc.location,
+                    menu: doc.menu,
+                    detailInfo: doc.detailInfo
+                });
+                console.log("update RestaurantDoc", doc)
+                return
             }
-            transaction.update(docRef, {
+            transaction.set(docRef, {
                 name: doc.name,
                 glyphicons: doc.glyphicons,
                 location: doc.location,
                 menu: doc.menu,
-                detailInfo: doc.detailInfo
+                detailInfo: doc.detailInfo,
+                likeCntUsers: doc.likeCntUsers,
+                dislikeCntUsers: doc.dislikeCntUsers,
+                likeCnt: doc.likeCnt,
+                dislikeCnt: doc.dislikeCnt
             });
-            console.log("updateRestaurantDoc", doc)
+            console.log("set RestaurantDoc", doc)
         });
     }).then(function () {
         console.log("Transaction successfully committed!");
@@ -150,8 +137,10 @@ export const readRestaurantAll = function (coll) {
     // collection 전체 문서 가져오기
     // likeCnt 많은 순으로
     db.collection(coll).orderBy("likeCnt", "desc").get().then((querySnapshot) => {
+        let docNames = [];
         let html = `<div class="card-columns">`;
         querySnapshot.forEach((doc) => {
+            docNames.push(`${doc.data().name}`);
             html += `
 <div class="card">
     <div class="card-body">
@@ -164,15 +153,22 @@ export const readRestaurantAll = function (coll) {
     </div>
     <p class="text-center">
         <a href="${doc.data().detailInfo}" target="_blank" class="btn btn-primary">상세정보</a>
-        <button type="button" onClick="onLikeClick('${doc.data().name}', '${doc.data().name}_좋아요')" class="btn btn-success"><div id='${doc.data().name}_좋아요'>좋아요 ${doc.data().likeCnt}</div></button>
-        <button type="button" onClick="onDisLikeClick('${doc.data().name}', '${doc.data().name}_싫어요')" class="btn btn-danger"><div id='${doc.data().name}_싫어요'>싫어요 ${doc.data().dislikeCnt}</div></button>
+        <button type="button" id='${doc.data().name}_like' class="btn btn-success"><div id='${doc.data().name}_좋아요'>좋아요 ${doc.data().likeCnt}</div></button>
+        <button type="button" id='${doc.data().name}_dislike' class="btn btn-danger"><div id='${doc.data().name}_싫어요'>싫어요 ${doc.data().dislikeCnt}</div></button>
     </p>
 </div>
 `
         });
         html += `</div>`
         document.getElementById('html_out').innerHTML = html;
-        // console.log(html);
+        for (const name of docNames) {
+            //console.log("name:", name)
+            //<button onClick="onLikeClick"  으로 하면 onLikeClick 함수를 찾지 못하는 에러가 발생한다.
+            //따라서 다음과 같이 이벤트 리스터를 추가한다.
+            document.getElementById(name+"_like").addEventListener("click", ()=>{onLikeClick(name, name+"_좋아요")});
+            document.getElementById(name+"_dislike").addEventListener("click",()=>{onDisLikeClick(name, name+"_싫어요")});
+        }
+         //console.log(html);
     });
 }
 
@@ -194,8 +190,8 @@ export const readRestaurantCnt = function (coll, doc, cntType, htmlId) {
 
 // firestore 컬렉션(판교식당) 해당하는 문서 카운트 증가시키기
 export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
-    console.log("user.email:", user.email)
-    if (user.email == "") {
+    console.log("userInfo.email:", userInfo.email, "doc:", doc)
+    if (userInfo.email == null || userInfo.email == "") {
         alert("로그인이 필요합니다.");
         return
     }
@@ -212,13 +208,13 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
             if (cntType == 'likeCnt') {
                 let lcUsers = doc1.data().likeCntUsers;
                 console.log("lcUsers", lcUsers)
-                let pos = lcUsers.indexOf(user.email)
+                let pos = lcUsers.indexOf(userInfo.email)
                 // 좋아요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
                     lcUsers.splice(pos, 1);
                 } else {
-                    lcUsers.push(user.email);
+                    lcUsers.push(userInfo.email);
                 }
                 newCnt = doc1.data().likeCnt + incValue;
                 transaction.update(docRef, {
@@ -230,13 +226,13 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
             } else if (cntType == 'dislikeCnt') {
                 let dlcUsers = doc1.data().dislikeCntUsers;
                 console.log("dlcUsers", dlcUsers)
-                let pos = dlcUsers.indexOf(user.email)
+                let pos = dlcUsers.indexOf(userInfo.email)
                 // 싫어요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
                     dlcUsers.splice(pos, 1);
                 } else {
-                    dlcUsers.push(user.email);
+                    dlcUsers.push(userInfo.email);
                 }
                 newCnt = doc1.data().dislikeCnt + incValue;
                 transaction.update(docRef, {

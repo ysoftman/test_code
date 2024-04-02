@@ -1,4 +1,4 @@
-import {readRestaurantAll} from "./common.js"
+import {setRestaurantDoc,readRestaurantAll,onLikeClick,onDisLikeClick} from "./common.js"
 
 let restaurantlist = [{
     name: "다연",
@@ -783,14 +783,11 @@ let restaurantlist = [{
 }
 ];
 
-let coll = "restaurant";
+const coll = "restaurant";
 window.onload = function () {
     readRestaurantAll(coll);
     restaurantlist.forEach((r) => {
-        // 리셋(식당 정보 추가)이 필요할때
-        // setRestaurantDoc(coll, r)
-
-        // 좋아요, 싫어요 는 유지하고 기본 정보들 업데이트가 필요할때, 식당 추가할때
-        // updateRestaurantDoc(coll, r)
+        // firestore 컬렉션(판교식당) 문서있으면 업데이트 없으면 생성
+        //setRestaurantDoc(coll, r)
     });
 }
