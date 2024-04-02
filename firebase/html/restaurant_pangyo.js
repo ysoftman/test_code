@@ -15,6 +15,104 @@ let restaurantlist = [{
     detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
 },
 {
+    name: "신승반점 현대백화점판교점",
+    glyphicons: "glyphicons-13-heart.png",
+    location: "경기 성남시 분당구 백현동 541 지하1층",
+    menu: "유니짜장,짬뽕,탕수육",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "이터스 현대백화점판교점",
+    glyphicons: "glyphicons-13-heart.png",
+    location: "경기 성남시 분당구 백현동 541 지하1층",
+    menu: "칠리치킨타코,치킨퀘사디아",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "춘천명물닭갈비",
+    glyphicons: "glyphicons-13-heart.png",
+    location: "경기 성남시 분당구 운중동 933-1 1층",
+    menu: "닭갈비",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "우테이블",
+    glyphicons: "glyphicons-13-heart.png",
+    location: "경기 성남시 분당구 동판교로177번길 25 아브뉴프랑 1층 우테이블",
+    menu: "소고기구이",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "Bientoi(비앙또아)",
+    glyphicons: "glyphicons-13-heart.png",
+    location: "경기 성남시 분당구 동판교로177번길 25 판교아브뉴프랑 1층 127호",
+    menu: "오일파스타,오일샌드위치,스튜,브런치",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "붓처스컷",
+    glyphicons: "glyphicons-50-star.png",
+    location: "경기 성남시 분당구 삼평동 740 2층",
+    menu: "스테이크,아메리칸브런치",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "코이라멘",
+    glyphicons: "glyphicons-50-star.png",
+    location: "경기 성남시 분당구 삼평동 679 삼환하이펙스 B동 지하층 B113호",
+    menu: "라멘,치킨가라아게,차슈덮밥",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "본설렁탕",
+    glyphicons: "glyphicons-50-star.png",
+    location: "경기 성남시 분당구 판교역로 231 H스퀘어 S동 1층 131호",
+    menu: "홍설면,홍설렁탕,백설면,백설렁탕",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "담솥",
+    glyphicons: "glyphicons-50-star.png",
+    location: "경기 성남시 분당구 동판교로177번길 25 1층 103호",
+    menu: "가지솥밥",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "일면식",
+    glyphicons: "glyphicons-50-star.png",
+    location: "경기 성남시 분당구 동판교로177번길 25 판교호반써밋플레이스 2층 221호",
+    menu: "칼국수,오징어덮밥,낚지볶음",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "빕스",
+    glyphicons: "glyphicons-50-star.png",
+    location: "경기 성남시 분당구 삼평동 740 아브뉴프랑 2층",
+    menu: "패밀리레스토랑",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "양육점",
+    glyphicons: "glyphicons-50-star.png",
+    location: "백현동 534 판교테크원타워 2층 양육점 판교점",
+    menu: "북해도식 양갈비 화로구이",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "매일식당",
+    glyphicons: "glyphicons-13-heart.png",
+    location: "경기 성남시 분당구 판교역로192번길 14-2 골드타워 1층",
+    menu: "수제돈까스",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
+    name: "인디테이블",
+    glyphicons: "glyphicons-50-star.png",
+    location: "경기 성남시 분당구 동판교로177번길 25 판교아브뉴프랑 1층 109호",
+    menu: "치킨,커리",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
     name: "만복 국수",
     glyphicons: "glyphicons-13-heart.png",
     location: "분당구 삼평동 681번지 H스퀘어 N동 108호",
