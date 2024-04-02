@@ -100,7 +100,7 @@ export const setRestaurantDoc = function (coll, doc) {
                     glyphicons: doc.glyphicons,
                     location: doc.location,
                     menu: doc.menu,
-                    detailInfo: doc.detailInfo
+                    detailInfo: "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&q=판교+"+doc.name
                 });
                 console.log("update RestaurantDoc", doc)
                 return
@@ -110,7 +110,7 @@ export const setRestaurantDoc = function (coll, doc) {
                 glyphicons: doc.glyphicons,
                 location: doc.location,
                 menu: doc.menu,
-                detailInfo: doc.detailInfo,
+                detailInfo: "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&q=판교+"+doc.name,
                 likeCntUsers: doc.likeCntUsers,
                 dislikeCntUsers: doc.dislikeCntUsers,
                 likeCnt: doc.likeCnt,
@@ -168,7 +168,8 @@ export const readRestaurantAll = function (coll) {
             document.getElementById(name+"_like").addEventListener("click", ()=>{onLikeClick(name, name+"_좋아요")});
             document.getElementById(name+"_dislike").addEventListener("click",()=>{onDisLikeClick(name, name+"_싫어요")});
         }
-         //console.log(html);
+        document.getElementById("restaurant_cnt").innerHTML = " ("+docNames.length+"개)";
+        //console.log(html);
     });
 }
 

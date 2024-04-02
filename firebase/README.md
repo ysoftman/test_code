@@ -36,8 +36,8 @@ service cloud.firestore {
 필드: visitCnt , 유형: number, 값: 0
 
 컬렉션: restaurant 문서 추가 및 업데이트
-1. setRestaurantDoc() 주석 해제 후 firebase deploy
-2. https://ysoftman-firebase.firebaseapp.com/restaurant_pangyo.html 접속
+1. setRestaurantDoc() 주석 해제 후 로컬에 띄워
+2. localhost:5002/restaurant_pangyo.html 접속
 3. 구글 로그인 후 강제 refresh(ctrl+shift+r)
 4. 식당리스트가 firestore 에 자동 추가되어 보인다.
 
