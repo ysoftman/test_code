@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"gin_server/docs"
 	"io"
+	"log"
 	"net/http"
 	"time"
 
@@ -75,19 +76,68 @@ func PostData(c *gin.Context) {
 func main() {
 	fmt.Println("gin server... ")
 	//gin.SetMode(gin.ReleaseMode)
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
+	//gin.DisableConsoleColor()
+
+	// json log format
+	var jsonLogFormatter = func(param gin.LogFormatterParams) string {
+		if param.Latency > time.Minute {
+			param.Latency = param.Latency.Truncate(time.Second)
+		}
+		p := struct {
+			//Request   *http.Request
+			TimeStamp time.Time
+			// StatusCode is HTTP response code.
+			StatusCode int
+			// Latency is how much time the server cost to process a certain request.
+			Latency time.Duration
+			// ClientIP equals Context's ClientIP method.
+			ClientIP string
+			// Method is the HTTP method given to the request.
+			Method string
+			// Path is a path the client requests.
+			Path string
+			// ErrorMessage is set if error has occurred in processing the request.
+			ErrorMessage string
+			// isTerm shows whether gin's output descriptor refers to a terminal.
+			isTerm bool
+			// BodySize is the size of the Response Body
+			BodySize int
+			// Keys are the keys set on the request's context.
+			Keys map[string]any
+		}{
+			TimeStamp:    param.TimeStamp,
+			StatusCode:   param.StatusCode,
+			Latency:      param.Latency,
+			ClientIP:     param.ClientIP,
+			Method:       param.Method,
+			Path:         param.Path,
+			ErrorMessage: param.ErrorMessage,
+			Keys:         param.Keys,
+		}
+		param.Request = nil
+		out, err := json.Marshal(p)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return string(out) + "\n"
+	}
+	// default 로 생성하면 기본 로그 포맷터가 추가된 상태이다.
+	//router := gin.Default()
+	router := gin.New()
+	router.Use(gin.LoggerWithFormatter(jsonLogFormatter))
+	router.Use(gin.Recovery())
+	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
 	docs.SwaggerInfo.BasePath = "/api/v1"
-	v1 := r.Group("/api/v1")
+	v1 := router.Group("/api/v1")
 	{
 		v1.GET("/version", GetServerVersion)
 		v1.POST("/data1", PostData)
 	}
 	// swag init to generate/update ./docs
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.Run()
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	router.Run()
 }
