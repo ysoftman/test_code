@@ -1,6 +1,9 @@
 package main
 
 import (
+	"io"
+	"os"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -31,6 +34,17 @@ func main() {
 	if log.Debug().Enabled() {
 		log.Debug().Str("name", "lemon").Msg("test~~")
 	}
+
+	isJson := false
+	var writer io.Writer
+	if isJson {
+		writer = os.Stdout
+	} else {
+		writer = zerolog.ConsoleWriter{Out: os.Stdout}
+	}
+	// Output duplicates the global logger and sets w as its output.
+	logger2 := log.Output(writer)
+	logger2.Info().Msg("logger2 -> consoleWriter")
 
 	// Create a child logger for concurrency safety
 	logger := log.Logger.With().Logger()
