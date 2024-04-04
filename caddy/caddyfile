@@ -25,17 +25,13 @@
 	log {
 		output stdout
 	}
-
-
 	handle_path /port/* {
 		reverse_proxy localhost:8077
 	}
 	handle_path /file/* {
+		rewrite * /
 		reverse_proxy localhost:8078
 	}
-
-	#rewrite /index {http.vars.root}
-	#reverse_proxy localhost:8079
 	handle_path /index {
 		reverse_proxy localhost:8079
 	}
