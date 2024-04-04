@@ -17,7 +17,7 @@ import (
 //go:embed files/file1.txt
 var file1 string
 
-// files/file3.zzz embed 돼지 않는다.
+// files/file3.zzz embed 되지 않는다.
 //
 //go:embed files/*.txt
 var files embed.FS
