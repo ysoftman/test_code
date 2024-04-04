@@ -1,0 +1,12 @@
+Name="github_webhook_action"
+
+[server]
+Port=80
+
+[action.api]
+Mothod="post"
+Auth=""
+URL="https://httpbin.org/post"
+RequestBody="""
+{}
+"""
