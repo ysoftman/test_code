@@ -101,7 +101,7 @@ func githubPullRequestReviewEvent(event *github.PullRequestReviewEvent) {
 	sendMessage(msg)
 }
 func githubPullRequestReviewCommentEvent(event *github.PullRequestReviewCommentEvent) {
-	msg := fmt.Sprintf("[%v] sender:%v review:%v link:%v",
+	msg := fmt.Sprintf("[%v] sender:%v comment:%v link:%v",
 		event.GetAction(),
 		event.Sender.GetName(),
 		event.Comment.String(),
