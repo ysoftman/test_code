@@ -1,3 +1,3 @@
-module tags_test
+module tags_build
 
 go 1.22.1
