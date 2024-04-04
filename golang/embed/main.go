@@ -27,6 +27,8 @@ func main() {
 	fmt.Println("file1:", file1)
 	portStr := "8080"
 	mux := http.NewServeMux()
+	//mux.Handle("/", http.FileServer(http.Dir(".")))
+	// embed 된 files/*.txt 만 있는것으로 된다.
 	mux.Handle("/", http.FileServer(http.FS(files)))
 	fmt.Printf("running server(:%v) for embed test...", portStr)
 	err := http.ListenAndServe(":"+portStr, mux)
