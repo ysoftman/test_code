@@ -46,7 +46,7 @@ caddy file-server --listen :8080 --browse --root . --debug
 ## 빌드 및 플러그인 개발
 
 - 참고
-  - <https://github.com/mholt/caddy/wiki/Extening-Caddy>
+  - <https://github.com/caddyserver/caddy>
   - <https://www.calhoun.io/building-caddy-server-from-source>
 
 - 빌드
