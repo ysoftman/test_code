@@ -1,37 +1,43 @@
-###### webdav #####
-# module...
-{
-    order webdav before file_server
+# caddy configuration
+# https://caddyserver.com/docs/caddyfile/directives
+#
+:8077 {
+	respond "test port..."
 }
 
-# 호스트별 설정
-localhost {
-    rewrite /dav /dav/
-    webdav /dav/* {
-        root /srv/http/dav/
-        prefix /dav
-    }
-    root * /srv/http
-    file_server
-
+:8078 {
+	# 해시값은 매번 달라진다
+	# caddy hash-password -p qwer1234
+	basicauth {
+		ysoftman $2a$14$Hw1nzMMDTzGUVmBngdzTwuYt4VOO/3YTOXeYg6s6LckjNbDW7OihS
+	}
+	file_server browse
 }
 
-webdav.example.com {
-    root * /data/webdav
-    basicauth {
-        user1 hashed-password
-    }
-    webdav
+:8079 {
+	# sets the root path of the site, {http.vars.root} 값을 설정한다.
+	root * /Users/ysoftman/workspace/test_code/caddy/static
+	# file server 로 서빙해야 static(html)이 보인다.
+	file_server
 }
 
-##### browse #####
+:8080 {
+	log {
+		output stdout
+	}
 
-# port
-:8080
 
-# auth
-basicauth / ysoftman qwer1234
+	handle_path /port/* {
+		reverse_proxy localhost:8077
+	}
+	handle_path /file/* {
+		reverse_proxy localhost:8078
+	}
 
-# browse
-browse /
+	#rewrite /index {http.vars.root}
+	#reverse_proxy localhost:8079
+	handle_path /index {
+		reverse_proxy localhost:8079
+	}
+}
 

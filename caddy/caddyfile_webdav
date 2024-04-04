@@ -1,0 +1,27 @@
+###### webdav #####
+# module...
+{
+		order webdav before file_server
+}
+
+# 호스트별 설정
+localhost:8080 {
+		rewrite /dav /dav/
+		webdav /dav/* {
+				root /srv/http/dav/
+				prefix /dav
+		}
+		root * /srv/http
+		file_server
+
+}
+
+webdav.example.com:80 {
+		root * /data/webdav
+		#해시값은 매번 달라진다
+		#caddy hash-password -p qwer1234
+		basicauth {
+				ysoftman $2a$14$Hw1nzMMDTzGUVmBngdzTwuYt4VOO/3YTOXeYg6s6LckjNbDW7OihS
+		}
+		webdav
+}

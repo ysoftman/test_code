@@ -12,8 +12,12 @@ tar zxvf caddy_v0.11.5_linux_amd64.tar.gz
 brew install caddy
 ```
 
-- webdav 기능 추가해서 설치(빌드)하는 경우
+- webdav 기능 추가(add-package 사용)
+```
+caddy add-package github.com/mholt/caddy-webdav
+```
 
+- webdav 기능 추가(참고로 빌드하는 경우)
 ```bash
 # xcaddy(Custom Caddy Builder) 설치
 go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
@@ -29,13 +33,20 @@ xcaddy build master --with github.com/mholt/caddy-webdav
 ## 실행
 
 ```bash
-caddy -conf ./caddyfile
+# caddyfile formatting
+caddy fmt --overwrite
+
+# caddyfil 읽어 들일때
+caddy run start --config caddyfile --adapter caddyfile
+
+# file server
+caddy file-server --listen :8080 --browse --root . --debug
 ```
 
 ## 빌드 및 플러그인 개발
 
 - 참고
-  - <https://github.com/mholt/caddy/wiki/Extending-Caddy>
+  - <https://github.com/mholt/caddy/wiki/Extening-Caddy>
   - <https://www.calhoun.io/building-caddy-server-from-source>
 
 - 빌드
@@ -81,5 +92,5 @@ ysoftmandirective hello_Caddy
 ' | tee $GOPATH/src/github.com/mholt/caddy/caddy/caddyfile
 
 # 실행
-$GOPATH/src/github.com/mholt/caddy/caddy/caddy -conf $GOPATH/src/github.com/mholt/caddy/caddy/caddyfile
+$GOPATH/src/github.com/mholt/caddy/caddy/caddy -config $GOPATH/src/github.com/mholt/caddy/caddy/caddyfile
 ```
