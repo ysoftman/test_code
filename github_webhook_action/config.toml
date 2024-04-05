@@ -2,8 +2,11 @@ Name="github_webhook_action"
 
 [server]
 Port=80
+LogLevel="info"
+LogIsJsonFormat=false
 
 [action.api]
+Enable=false
 Mothod="post"
 Auth=""
 URL="https://httpbin.org/post"

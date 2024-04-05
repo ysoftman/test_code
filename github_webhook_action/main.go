@@ -1,23 +1,33 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"io"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/BurntSushi/toml"
 	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 	"github.com/google/go-github/github"
+	"github.com/rs/zerolog"
+	"google.golang.org/appengine"
+	appenginelog "google.golang.org/appengine/v2/log"
 )
 
 type configTOML struct {
 	Name   string `toml:"Name"`
 	Server struct {
-		Port int `toml:"Port"`
+		Port            int    `toml:"Port"`
+		LogLevel        string `toml:"LogLevel"`
+		LogIsJsonFormat bool   `toml:"LogIsJsonFormat"`
 	} `toml:"server"`
 	Action struct {
 		API struct {
+			Enable      bool   `toml:"Enable"`
 			URL         string `toml:"URL"`
 			Auth        string `toml:"Auth"`
 			Mothod      string `toml:"Mothod"`
@@ -27,41 +37,91 @@ type configTOML struct {
 }
 
 var conf configTOML
+var logger zerolog.Logger
 
+func CreateLogger(logLevelString string, isJson bool) {
+	logLevel, _ := zerolog.ParseLevel(logLevelString)
+	var writer io.Writer
+	if isJson {
+		writer = os.Stdout
+	} else {
+		writer = zerolog.ConsoleWriter{Out: os.Stdout}
+	}
+	logger = zerolog.New(writer).With().Timestamp().Logger().Level(logLevel)
+}
 func main() {
-	fmt.Println("github_webhook_action")
+	serverType := flag.String("servertype", "gae", "noraml|gae(google app engin)")
+	flag.Parse()
+	log.Println("servertype :", *serverType)
 	toml.DecodeFile("config.toml", &conf)
-	r := gin.New()
-	router(r)
-	r.Run(fmt.Sprintf(":%v", conf.Server.Port))
+	CreateLogger(conf.Server.LogLevel, conf.Server.LogIsJsonFormat)
+	logger.Info().Msg("github_webhook_action")
+	if *serverType == "normal" {
+		// 일반 서버 환경으로 운영시
+		r := gin.New()
+		router(r)
+		r.Run(fmt.Sprintf(":%v", conf.Server.Port))
+	} else if *serverType == "gae" {
+		// GAE(google app engine) 환경으로 운영시
+		http.HandleFunc("/", handlerIndex)
+		http.HandleFunc("/v1/version", handlerVersion)
+		http.HandleFunc("/v1/webhook", handlerWebhook)
+		appengine.Main()
+	}
+}
+
+func handlerIndex(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+	appenginelog.Infof(ctx, "/ 요청 처리")
+	out := `
+# github webhook action
+github webhook 을 받아 필요한 액션을 테스트하는 하는 서버입니다.
+`
+	fmt.Fprintln(w, out)
+}
+func handlerVersion(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+	appenginelog.Infof(ctx, "/version 요청 처리")
+	fmt.Fprintln(w, buildtime)
+}
+
+func handlerWebhook(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+	appenginelog.Infof(ctx, "/webhook 요청 처리")
+	githubWebhook(r)
 }
 
 func router(ge *gin.Engine) {
 	v1 := ge.Group("/v1")
 	{
-		v1.GET("/version", version)
-		v1.POST("/webhook", githubWebhook)
+		v1.GET("/version", ginHandlerVersion)
+		v1.POST("/webhook", ginHandlerGithubWebhook)
 	}
 }
 
 var buildtime string
 
-func version(gc *gin.Context) {
+func ginHandlerVersion(gc *gin.Context) {
+	logger.Info().Str("handler", "ginHandlerVersion").Msg("requst")
 	gc.JSON(http.StatusOK, buildtime)
 }
+func ginHandlerGithubWebhook(gc *gin.Context) {
+	logger.Info().Str("handler", "ginHandlerGithubWebhook").Msg("requst")
+	githubWebhook(gc.Request)
+}
 
-func githubWebhook(gc *gin.Context) {
+func githubWebhook(req *http.Request) {
 	secretKey := []byte{}
-	payload, err1 := github.ValidatePayload(gc.Request, secretKey)
+	payload, err1 := github.ValidatePayload(req, secretKey)
 	if err1 != nil {
 		return
 	}
-	event, err2 := github.ParseWebHook(github.WebHookType(gc.Request), payload)
+	event, err2 := github.ParseWebHook(github.WebHookType(req), payload)
 	if err2 != nil {
 		return
 	}
-	webhookType := github.WebHookType(gc.Request)
-	fmt.Println("github WebHookType:", webhookType)
+	webhookType := github.WebHookType(req)
+	logger.Info().Msgf("github WebHookType:%v", webhookType)
 	switch event := event.(type) {
 	case *github.CommitCommentEvent:
 		githubCommitCommentEvent(event)
@@ -72,10 +132,9 @@ func githubWebhook(gc *gin.Context) {
 	case *github.PullRequestReviewCommentEvent:
 		githubPullRequestReviewCommentEvent(event)
 	default:
-		fmt.Println("github WebHookType:", webhookType)
+		logger.Info().Msgf("github WebHookType:%v", webhookType)
 	}
 }
-
 func githubCommitCommentEvent(event *github.CommitCommentEvent) {
 	msg := fmt.Sprintf("[%v] sender:%v comment:%v link:%v",
 		event.GetAction(),
@@ -109,11 +168,17 @@ func githubPullRequestReviewCommentEvent(event *github.PullRequestReviewCommentE
 	sendMessage(msg)
 }
 func sendMessage(msg string) {
+	if !conf.Action.API.Enable {
+		logger.Info().Msgf("msg:%v", msg)
+		return
+	}
 	client := resty.New()
 	reqBody := struct {
-		Field1 string
+		Field1  string
+		Message string
 	}{
 		"aaa",
+		"msg",
 	}
 	req := client.R().SetHeader("Accept", "application/json").SetQueryParams(map[string]string{
 		"param1": "apple",
@@ -127,7 +192,7 @@ func sendMessage(msg string) {
 		resp, err = req.Get(conf.Action.API.URL)
 	}
 	if err != nil {
-		fmt.Println(err.Error())
+		logger.Info().Msg(err.Error())
 	}
-	fmt.Println("resp:", resp)
+	logger.Info().Msgf("resp:%v", resp)
 }
