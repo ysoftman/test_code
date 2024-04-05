@@ -59,7 +59,11 @@ func main() {
 	if *serverType == "normal" {
 		// 일반 서버 환경으로 운영시
 		r := gin.New()
-		router(r)
+		v1 := r.Group("/v1")
+		{
+			v1.GET("/version", ginHandlerVersion)
+			v1.POST("/webhook", ginHandlerGithubWebhook)
+		}
 		r.Run(fmt.Sprintf(":%v", conf.Server.Port))
 	} else if *serverType == "gae" {
 		// GAE(google app engine) 환경으로 운영시
@@ -89,14 +93,6 @@ func handlerWebhook(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	appenginelog.Infof(ctx, "/webhook 요청 처리")
 	githubWebhook(r)
-}
-
-func router(ge *gin.Engine) {
-	v1 := ge.Group("/v1")
-	{
-		v1.GET("/version", ginHandlerVersion)
-		v1.POST("/webhook", ginHandlerGithubWebhook)
-	}
 }
 
 var buildtime string
