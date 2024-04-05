@@ -21,9 +21,10 @@ import (
 type configTOML struct {
 	Name   string `toml:"Name"`
 	Server struct {
-		Port            int    `toml:"Port"`
-		LogLevel        string `toml:"LogLevel"`
-		LogIsJsonFormat bool   `toml:"LogIsJsonFormat"`
+		Port             int    `toml:"Port"`
+		LogLevel         string `toml:"LogLevel"`
+		LogIsJsonFormat  bool   `toml:"LogIsJsonFormat"`
+		WebhookSecretKey string `toml:"WebhookSecretKey"`
 	} `toml:"server"`
 	Action struct {
 		API struct {
@@ -105,13 +106,14 @@ func ginHandlerGithubWebhook(gc *gin.Context) {
 }
 
 func githubWebhook(req *http.Request) {
-	secretKey := []byte{}
-	payload, err1 := github.ValidatePayload(req, secretKey)
+	payload, err1 := github.ValidatePayload(req, []byte(conf.Server.WebhookSecretKey))
 	if err1 != nil {
+		logger.Error().Err(err1).Msg("failed ValidatePayload")
 		return
 	}
 	event, err2 := github.ParseWebHook(github.WebHookType(req), payload)
 	if err2 != nil {
+		logger.Error().Err(err2).Msg("failed ParseWebHook")
 		return
 	}
 	webhookType := github.WebHookType(req)
@@ -119,6 +121,8 @@ func githubWebhook(req *http.Request) {
 	switch event := event.(type) {
 	case *github.CommitCommentEvent:
 		githubCommitCommentEvent(event)
+	case *github.PushEvent:
+		githubPushEvent(event)
 	case *github.PullRequestEvent:
 		githubPullRequestEvent(event)
 	case *github.PullRequestReviewEvent:
@@ -130,23 +134,31 @@ func githubWebhook(req *http.Request) {
 	}
 }
 func githubCommitCommentEvent(event *github.CommitCommentEvent) {
-	msg := fmt.Sprintf("[%v] sender:%v comment:%v link:%v",
+	msg := fmt.Sprintf("[CommitComment-%v] sender:%v comment:%v link:%v",
 		event.GetAction(),
 		event.Sender.GetName(),
 		event.GetComment(),
 		event.Comment.HTMLURL)
 	sendMessage(msg)
 }
+func githubPushEvent(event *github.PushEvent) {
+	msg := fmt.Sprintf("[Push-%v] sender:%v pusher:%v link:%v",
+		*event.HeadCommit.Message,
+		event.Sender.GetName(),
+		event.Pusher.GetName(),
+		event.Repo.GetHTMLURL())
+	sendMessage(msg)
+}
 func githubPullRequestEvent(event *github.PullRequestEvent) {
-	msg := fmt.Sprintf("[%v] sender:%v number:%v link:%v",
+	msg := fmt.Sprintf("[PullRequest-%v] sender:%v number:%v link:%v",
 		event.GetAction(),
 		event.Sender.GetName(),
 		event.GetNumber(),
-		event.PullRequest.URL)
+		*event.PullRequest.HTMLURL)
 	sendMessage(msg)
 }
 func githubPullRequestReviewEvent(event *github.PullRequestReviewEvent) {
-	msg := fmt.Sprintf("[%v] sender:%v review:%v link:%v",
+	msg := fmt.Sprintf("[PullRequestReview-%v] sender:%v review:%v link:%v",
 		event.GetAction(),
 		event.Sender.GetName(),
 		event.GetReview().String(),
@@ -154,7 +166,7 @@ func githubPullRequestReviewEvent(event *github.PullRequestReviewEvent) {
 	sendMessage(msg)
 }
 func githubPullRequestReviewCommentEvent(event *github.PullRequestReviewCommentEvent) {
-	msg := fmt.Sprintf("[%v] sender:%v comment:%v link:%v",
+	msg := fmt.Sprintf("[PullRequestReviewComment-%v] sender:%v comment:%v link:%v",
 		event.GetAction(),
 		event.Sender.GetName(),
 		event.Comment.String(),
@@ -172,7 +184,7 @@ func sendMessage(msg string) {
 		Message string
 	}{
 		"aaa",
-		"msg",
+		msg,
 	}
 	req := client.R().SetHeader("Accept", "application/json").SetQueryParams(map[string]string{
 		"param1": "apple",
