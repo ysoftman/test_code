@@ -187,13 +187,17 @@ func sendMessage(msg string) {
 	}
 	client := resty.New()
 	reqBody := struct {
-		Field1  string
-		Message string
+		Field1  string `json:"field1"`
+		Message string `json:"msg"`
 	}{
 		"aaa",
 		msg,
 	}
-	req := client.R().SetHeader("Accept", "application/json").SetBody(&reqBody).SetAuthToken(conf.Action.API.Auth)
+	req := client.R().SetHeader("Accept", "application/json").SetBody(&reqBody)
+	if len(conf.Action.API.Auth) > 0 {
+		req = req.SetAuthToken(conf.Action.API.Auth)
+	}
+
 	var resp *resty.Response
 	var err error
 	if strings.ToLower(conf.Action.API.Mothod) == "post" {
