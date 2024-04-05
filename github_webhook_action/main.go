@@ -82,6 +82,12 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 	out := `
 # github webhook action
 github webhook 을 받아 필요한 액션을 테스트하는 하는 서버입니다.
+
+# app engine 으로 운영
+https://github-webhook-action.appspot.com/v1/webhook/
+
+# github
+https://github.com/ysoftman/test_code/tree/master/github_webhook_action
 `
 	fmt.Fprintln(w, out)
 }
