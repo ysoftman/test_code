@@ -121,6 +121,8 @@ func githubWebhook(req *http.Request) {
 	switch event := event.(type) {
 	case *github.CommitCommentEvent:
 		githubCommitCommentEvent(event)
+	case *github.PushEvent:
+		githubPushEvent(event)
 	case *github.PullRequestEvent:
 		githubPullRequestEvent(event)
 	case *github.PullRequestReviewEvent:
@@ -132,11 +134,19 @@ func githubWebhook(req *http.Request) {
 	}
 }
 func githubCommitCommentEvent(event *github.CommitCommentEvent) {
-	msg := fmt.Sprintf("[%v] sender:%v comment:%v link:%v",
+	msg := fmt.Sprintf("[CommitComment-%v] sender:%v comment:%v link:%v",
 		event.GetAction(),
 		event.Sender.GetName(),
 		event.GetComment(),
 		event.Comment.HTMLURL)
+	sendMessage(msg)
+}
+func githubPushEvent(event *github.PushEvent) {
+	msg := fmt.Sprintf("[Push-%v] sender:%v pusher:%v link:%v",
+		*event.Head,
+		event.Sender.GetName(),
+		event.Pusher.GetName(),
+		event.Repo.GetHTMLURL())
 	sendMessage(msg)
 }
 func githubPullRequestEvent(event *github.PullRequestEvent) {
