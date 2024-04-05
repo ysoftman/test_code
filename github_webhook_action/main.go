@@ -172,7 +172,7 @@ func sendMessage(msg string) {
 		Message string
 	}{
 		"aaa",
-		"msg",
+		msg,
 	}
 	req := client.R().SetHeader("Accept", "application/json").SetQueryParams(map[string]string{
 		"param1": "apple",
