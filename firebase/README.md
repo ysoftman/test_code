@@ -73,7 +73,7 @@ npm install -g firebase-tools
 # or
 bun add -g firebase-tool
 
-# 프로젝트 초기화(프로젝스 환경구성을 위해 최초 한번만)
+# 프로젝트 초기화(프로젝트 환경구성을 위해 최초 한번만)
 firebase init
 - hosting 선택(스페이스바) 후 엔터
 - 프로젝트 선택 후 엔터
