@@ -14,7 +14,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/google/go-github/github"
 	"github.com/rs/zerolog"
-	"google.golang.org/appengine"
+	"google.golang.org/appengine/v2"
 	appenginelog "google.golang.org/appengine/v2/log"
 )
 
@@ -36,6 +36,7 @@ type configTOML struct {
 	} `toml:"action"`
 }
 
+var buildtime string
 var conf configTOML
 var logger zerolog.Logger
 
@@ -88,14 +89,11 @@ func handlerVersion(w http.ResponseWriter, r *http.Request) {
 	appenginelog.Infof(ctx, "/version 요청 처리")
 	fmt.Fprintln(w, buildtime)
 }
-
 func handlerWebhook(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	appenginelog.Infof(ctx, "/webhook 요청 처리")
 	githubWebhook(r)
 }
-
-var buildtime string
 
 func ginHandlerVersion(gc *gin.Context) {
 	logger.Info().Str("handler", "ginHandlerVersion").Msg("requst")

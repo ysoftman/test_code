@@ -73,6 +73,9 @@ gcloud init
 # --stop-previous-version 새버전이 올라가면 기존 버전은 stop 하도록 한다.
 # gcloud app deploy ./app.yaml --version 20240405 --promote --stop-previous-version
 
+# 빌드 로그
+https://console.cloud.google.com/cloud-build
+
 # 배포가 완료되면 확인
 https://github-webhook-action.appspot.com
 
