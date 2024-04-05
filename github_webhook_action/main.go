@@ -143,7 +143,7 @@ func githubCommitCommentEvent(event *github.CommitCommentEvent) {
 }
 func githubPushEvent(event *github.PushEvent) {
 	msg := fmt.Sprintf("[Push-%v] sender:%v pusher:%v link:%v",
-		*event.Head,
+		event.String(),
 		event.Sender.GetName(),
 		event.Pusher.GetName(),
 		event.Repo.GetHTMLURL())
