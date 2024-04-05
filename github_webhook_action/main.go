@@ -204,7 +204,7 @@ func sendMessage(msg string) {
 			"param2": "lemon"}).Get(conf.Action.API.URL)
 	}
 	if err != nil {
-		logger.Info().Msg(err.Error())
+		logger.Error().Err(err).Msg("failed to sendMessage")
 	}
 	logger.Info().Msgf("resp:%v", resp)
 }
