@@ -180,8 +180,9 @@ func githubPullRequestReviewCommentEvent(event *github.PullRequestReviewCommentE
 	sendMessage(msg)
 }
 func sendMessage(msg string) {
+	logger.Info().Msgf("msg:%v", msg)
 	if !conf.Action.API.Enable {
-		logger.Info().Msgf("msg:%v", msg)
+		logger.Info().Msg("action api disabled")
 		return
 	}
 	client := resty.New()
@@ -192,16 +193,15 @@ func sendMessage(msg string) {
 		"aaa",
 		msg,
 	}
-	req := client.R().SetHeader("Accept", "application/json").SetQueryParams(map[string]string{
-		"param1": "apple",
-		"param2": "lemon",
-	}).SetBody(&reqBody).SetAuthToken(conf.Action.API.Auth)
+	req := client.R().SetHeader("Accept", "application/json").SetBody(&reqBody).SetAuthToken(conf.Action.API.Auth)
 	var resp *resty.Response
 	var err error
 	if strings.ToLower(conf.Action.API.Mothod) == "post" {
 		resp, err = req.Post(conf.Action.API.URL)
 	} else if strings.ToLower(conf.Action.API.Mothod) == "get" {
-		resp, err = req.Get(conf.Action.API.URL)
+		resp, err = req.SetQueryParams(map[string]string{
+			"param1": "apple",
+			"param2": "lemon"}).Get(conf.Action.API.URL)
 	}
 	if err != nil {
 		logger.Info().Msg(err.Error())
