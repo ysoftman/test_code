@@ -71,9 +71,7 @@ gcloud init
 # --verion 버전 명시
 # --promote 현재 배포한 버전이 모든 트랙픽(100%)을 받도록 한다. 기존 버전의 인스턴스는 트랙픽 0% 이 된다.
 # --stop-previous-version 새버전이 올라가면 기존 버전은 stop 하도록 한다.
-# gcloud app deploy ./app.yaml --version 20211119-1 --promote --stop-previous-version
-# appengine/v2 (runtime: go116) 을 배포하기 위해선 현재 beta 를 사용해야 한다.
-gcloud beta app deploy ./app.yaml --version 20211122-1 --promote --stop-previous-version
+# gcloud app deploy ./app.yaml --version 20240405 --promote --stop-previous-version
 
 # 배포가 완료되면 확인
 https://github-webhook-action.appspot.com
