@@ -156,8 +156,9 @@ func githubPushEvent(event *github.PushEvent) {
 	sendMessage(msg)
 }
 func githubPullRequestEvent(event *github.PullRequestEvent) {
-	msg := fmt.Sprintf("[PullRequest-%v] sender:%v number:%v link:%v",
+	msg := fmt.Sprintf("[PullRequest-%v] sender:%v(%v) number:%v link:%v",
 		event.GetAction(),
+		event.Sender.GetID(),
 		event.Sender.GetName(),
 		event.GetNumber(),
 		*event.PullRequest.HTMLURL)
