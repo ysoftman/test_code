@@ -140,16 +140,18 @@ func githubWebhook(req *http.Request) {
 	}
 }
 func githubCommitCommentEvent(event *github.CommitCommentEvent) {
-	msg := fmt.Sprintf("[CommitComment-%v] sender:%v comment:%v link:%v",
+	msg := fmt.Sprintf("[CommitComment-%v] sender:%v(%v) comment:%v link:%v",
 		event.GetAction(),
+		event.Sender.GetLogin(),
 		event.Sender.GetName(),
 		event.GetComment(),
 		event.Comment.HTMLURL)
 	sendMessage(msg)
 }
 func githubPushEvent(event *github.PushEvent) {
-	msg := fmt.Sprintf("[Push-%v] sender:%v pusher:%v link:%v",
+	msg := fmt.Sprintf("[Push-%v] sender:%v(%v) pusher:%v link:%v",
 		*event.HeadCommit.Message,
+		event.Sender.GetLogin(),
 		event.Sender.GetName(),
 		event.Pusher.GetName(),
 		event.Repo.GetHTMLURL())
@@ -158,23 +160,25 @@ func githubPushEvent(event *github.PushEvent) {
 func githubPullRequestEvent(event *github.PullRequestEvent) {
 	msg := fmt.Sprintf("[PullRequest-%v] sender:%v(%v) number:%v link:%v",
 		event.GetAction(),
-		event.Sender.GetID(),
+		event.Sender.GetLogin(),
 		event.Sender.GetName(),
 		event.GetNumber(),
 		*event.PullRequest.HTMLURL)
 	sendMessage(msg)
 }
 func githubPullRequestReviewEvent(event *github.PullRequestReviewEvent) {
-	msg := fmt.Sprintf("[PullRequestReview-%v] sender:%v review:%v link:%v",
+	msg := fmt.Sprintf("[PullRequestReview-%v] sender:%v(%v) review:%v link:%v",
 		event.GetAction(),
+		event.Sender.GetLogin(),
 		event.Sender.GetName(),
 		event.GetReview().String(),
 		event.GetReview().GetHTMLURL())
 	sendMessage(msg)
 }
 func githubPullRequestReviewCommentEvent(event *github.PullRequestReviewCommentEvent) {
-	msg := fmt.Sprintf("[PullRequestReviewComment-%v] sender:%v comment:%v link:%v",
+	msg := fmt.Sprintf("[PullRequestReviewComment-%v] sender:%v(%v) comment:%v link:%v",
 		event.GetAction(),
+		event.Sender.GetLogin(),
 		event.Sender.GetName(),
 		event.Comment.String(),
 		event.GetComment().GetURL())
@@ -183,7 +187,7 @@ func githubPullRequestReviewCommentEvent(event *github.PullRequestReviewCommentE
 func sendMessage(msg string) {
 	logger.Info().Msgf("msg:%v", msg)
 	if !conf.Action.API.Enable {
-		logger.Info().Msg("action api disabled")
+		logger.Info().Msg("action api is disabled")
 		return
 	}
 	client := resty.New()
