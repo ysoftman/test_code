@@ -1,6 +1,0 @@
-runtime: go122
-app_engine_apis: true
-handlers:
-  - url: /.*
-    script: auto
-
