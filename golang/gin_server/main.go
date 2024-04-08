@@ -121,7 +121,7 @@ func main() {
 		}
 		return string(out) + "\n"
 	}
-	// default 로 생성하면 기본 로그 포맷터가 추가된 상태이다.
+	// default(기본 미들웨어가 포함되어 있음) 로 생성하면 기본 로그 포맷터가 추가된 상태이다.
 	//router := gin.Default()
 	router := gin.New()
 	router.Use(gin.LoggerWithFormatter(jsonLogFormatter))
