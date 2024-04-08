@@ -36,6 +36,13 @@ let restaurantlist = [{
     detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
 },
 {
+    name: "숙성도",
+    glyphicons: "glyphicons-13-heart.png",
+    location: "경기 성남시 분당구 판교역로 136 힐스테이트판교역 1층 1042호",
+    menu: "숙동 돼지고기구, 동치미국수,  된장장술밥",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
     name: "우테이블",
     glyphicons: "glyphicons-13-heart.png",
     location: "경기 성남시 분당구 동판교로177번길 25 아브뉴프랑 1층 우테이블",
