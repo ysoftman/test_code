@@ -39,7 +39,7 @@ let restaurantlist = [{
     name: "숙성도",
     glyphicons: "glyphicons-13-heart.png",
     location: "경기 성남시 분당구 판교역로 136 힐스테이트판교역 1층 1042호",
-    menu: "숙동 돼지고기구, 동치미국수,  된장장술밥",
+    menu: "숙성 돼지고기구, 동치미국수,  된장술밥",
     detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
 },
 {
