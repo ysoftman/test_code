@@ -1,6 +1,5 @@
 package main
 
-// swagg init && go run .
 import (
 	"encoding/json"
 	"fmt"
