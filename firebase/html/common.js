@@ -34,10 +34,22 @@ export const loadImages = async function(htmlId, imageNames) {
     //forEach 안에서 await 를 사용할 수 없다.
     //imageNames.forEach(function (name) {})
     for (const name of imageNames) {
-        images += `<div class="nes-container with-title"><p class="title">`+name+`</p><img src=`+ await imageURL(name)+`></img></div>`
+        let [imgURL, imgWidth, imgHeight] = await imageURL(name)
+        //console.log(">>>>>>>>>>", imgURL, imgWidth, imgHeight)
+        images += `<div class="nes-container with-title"><p class="title">`+name+` (`+imgWidth+`x`+imgHeight+`)</p><img src=`+imgURL+`></img></div>`
     }
     images += `</div>`
     document.getElementById(htmlId).innerHTML = images
+}
+
+// get image width height
+export const getImgMeta = (url) => {
+    return new Promise((resolver, reject) => {
+        const img = new Image();
+        img.onload = () => resolver(img);
+        img.onerror = (err) => reject(err);
+        img.src = url;
+    })
 }
 
 // firestorage 에 저장된 이미지 url 불러오기
@@ -46,7 +58,13 @@ export const imageURL = async function (image) {
     let storageRef = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + image);
     // getDownloadURL() 은 비동기라 await 로 순서를 보장한다
     const url = await storageRef.getDownloadURL();
-    return url
+    let width=0
+    let height=0
+    await getImgMeta(url).then(img => {
+        width=img.naturalWidth
+        height=img.naturalHeight
+    })
+    return [url, width, height]
 }
 
 // firestore 테스트 문서 생성
