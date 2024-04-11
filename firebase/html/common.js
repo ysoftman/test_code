@@ -16,7 +16,6 @@ firebase.initializeApp(config);
 let storage = firebase.storage();
 let db = firebase.firestore();
 let auth = firebase.auth();
-let doc1_likeCnt = 0;
 let loginBoxID = "login_google";
 let loginAnonymousBoxID = "login_anonymous";
 let userInfo = {};
@@ -33,17 +32,30 @@ export const loadImages = async function(htmlId, imageNames) {
     let images =`<div class="item">`
     //forEach 안에서 await 를 사용할 수 없다.
     //imageNames.forEach(function (name) {})
+    const imgURLs = []
     for (const name of imageNames) {
-        let [imgURL, imgWidth, imgHeight] = await imageURL(name)
-        //console.log(">>>>>>>>>>", imgURL, imgWidth, imgHeight)
-        images += `<div class="nes-container with-title"><p class="title">`+name+` (`+imgWidth+`x`+imgHeight+`)</p><img src=`+imgURL+`></img></div>`
+        let imgURL = await imageURL(name)
+        images += `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+imgURL+`_size></span>)</p><img src=`+imgURL+`></img></div>`
+        imgURLs.push(imgURL)
     }
     images += `</div>`
     document.getElementById(htmlId).innerHTML = images
+
+    for (const url of imgURLs) {
+        // 동기식으로 이미지 크기를 순서대로 파악할 경우
+        //await getImgMeta(url).then(img => {
+        //    let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
+        //    document.getElementById(url+"_size").innerHTML = imgSize
+        //})
+        getMeta(url, (err, img) => {
+            let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
+            document.getElementById(url+"_size").innerHTML = imgSize
+        });
+    }
 }
 
 // get image width height
-export const getImgMeta = (url) => {
+export const getImgMetaSync = (url) => {
     return new Promise((resolver, reject) => {
         const img = new Image();
         img.onload = () => resolver(img);
@@ -51,20 +63,20 @@ export const getImgMeta = (url) => {
         img.src = url;
     })
 }
+export const getMeta = (url, cb) => {
+  const img = new Image();
+  img.onload = () => cb(null, img);
+  img.onerror = (err) => cb(err);
+  img.src = url;
+};
 
 // firestorage 에 저장된 이미지 url 불러오기
-export const imageURL = async function (image) {
+export const imageURL = async function (imageName) {
     //let pathReference = storage.ref('xelloss.jpg');
-    let storageRef = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + image);
+    let storageRef = storage.refFromURL('gs://ysoftman-firebase.appspot.com/' + imageName);
     // getDownloadURL() 은 비동기라 await 로 순서를 보장한다
     const url = await storageRef.getDownloadURL();
-    let width=0
-    let height=0
-    await getImgMeta(url).then(img => {
-        width=img.naturalWidth
-        height=img.naturalHeight
-    })
-    return [url, width, height]
+    return url
 }
 
 // firestore 테스트 문서 생성
@@ -196,7 +208,7 @@ export const readRestaurantCnt = function (coll, doc, cntType, htmlId) {
     // collection->doc1 하나만 가져오기
     // onSnapshot(콜백함수) 로 수신대기하면서 현재 내용(변수등)값들을 스냅샷(문서)으로 저장 한다.
     // 그리고 내용이 변경될때마다 콜백함수(문서가져오기)가 실행되어 스냅샷을 업데이트한다.
-    // (주의) doc1_likeCnt++ 등변수값을 변경하게 되면 매번 내용이 변경되서 문서가져오기가 무한으로 수행돼 과금될 수 있다.
+    // (주의) likeCnt++ 등변수값을 변경하게 되면 매번 내용이 변경되서 문서가져오기가 무한으로 수행돼 과금될 수 있다.
     db.collection(coll).doc(doc).onSnapshot(function (doc1) {
         console.log("Current data: ", doc1.data(), "->", htmlId);
         if (cntType == 'likeCnt') {
