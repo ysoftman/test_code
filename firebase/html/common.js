@@ -79,8 +79,8 @@ export const imageURL = async function (imageName) {
     return url
 }
 
-// firestore 테스트 문서 생성
-export const setTestDoc = function (coll, doc) {
+// firestore 문서 생성
+export const setFirestoreDoc = function (coll, doc) {
     db.collection(coll).doc(doc).set({
         name: doc,
         visitCnt: 0
@@ -92,7 +92,7 @@ export const setTestDoc = function (coll, doc) {
 }
 
 // firestore 테스트 방문카운트 및 조회
-export const visitCnt = function (coll, doc, cntType, htmlId) {
+export const getFirestoreVisitCnt = function (coll, doc, htmlId) {
    let docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
@@ -108,7 +108,6 @@ export const visitCnt = function (coll, doc, cntType, htmlId) {
                     visitCnt: newCnt
                 });
             }
-            //console.log("htmlId:", htmlId, `doc1.data().name: ${doc1.data().name} visitCnt: ${newCnt}`)
             document.getElementById(htmlId).innerHTML = `${newCnt}`;
         });
     }).then(function () {

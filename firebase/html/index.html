@@ -23,9 +23,9 @@
     <script src="web_api_key.js" type="module"></script>
     <script src="common.js" type="module"></script>
     <script type="module">
-        import {visitCnt, loadImages} from "./common.js"
-        //setTestDoc("test", "ysoftman");
-        visitCnt("test", "ysoftman", "likecnt", "visitcnt")
+        import {setFirestoreDoc, getFirestoreVisitCnt, loadImages} from "./common.js"
+        //setFirestoreDoc("index", "ysoftman");
+        getFirestoreVisitCnt("index", "ysoftman", "visitcnt")
         const imgNames = []
         imgNames.push("박카스.jpg")
         imgNames.push("xelloss.jpg")
