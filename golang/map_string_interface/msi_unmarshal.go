@@ -52,7 +52,7 @@ func unmarshal() {
 		Name string
 		Age  int
 		List []string
-		zzz  string // info 에는 없는 필드로 값이 채워지 않음
+		Zzz  string // info 에는 없는 필드로 값이 채워지 않음
 	}{}
 	mapstructure.Decode(myinfo, &myinfo2)
 	fmt.Println("myinfo2:", myinfo2)
