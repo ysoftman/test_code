@@ -9,7 +9,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
+	"github.com/mitchellh/mapstructure"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -72,18 +74,32 @@ func PostData(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-type Data struct {
+type MyData struct {
 	key1 int
 	key2 string
 }
 
 func CheckReq() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("mydata", Data{111, "ysoftman"})
 		c.Set("key1", "lemon")
+		c.Set("mydata", MyData{111, "ysoftman"})
 		fmt.Println("check Request")
 	}
 }
+
+func testResponse(c *gin.Context) {
+	c.String(http.StatusRequestTimeout, "timeout")
+}
+func timeoutMiddleware() gin.HandlerFunc {
+	return timeout.New(
+		timeout.WithTimeout(500*time.Millisecond),
+		timeout.WithHandler(func(c *gin.Context) {
+			c.Next()
+		}),
+		timeout.WithResponse(testResponse),
+	)
+}
+
 func main() {
 	fmt.Println("gin server... ")
 	//gin.SetMode(gin.ReleaseMode)
@@ -138,10 +154,25 @@ func main() {
 	router.Use(gin.LoggerWithFormatter(jsonLogFormatter))
 	router.Use(gin.Recovery())
 	router.Use(CheckReq())
+	router.Use(timeoutMiddleware())
 	router.GET("/ping", func(c *gin.Context) {
 		if v, ok := c.Get("key1"); ok {
 			fmt.Println(v)
 		}
+		if v, ok := c.Get("mydata"); ok {
+			// mydata 원래 strcutre 를 모른다고 가정하고 비슷한 struct 로 담아보자.
+			mydata2 := struct {
+				key1 int
+				key2 string
+				key3 string
+			}{}
+			if err := mapstructure.Decode(v, &mydata2); err == nil {
+				fmt.Println(v)
+			}
+		}
+		// timeout 발생해보자.
+		//time.Sleep(900 * time.Millisecond)
+
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
