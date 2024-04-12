@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/mitchellh/mapstructure"
+	"gopkg.in/square/go-jose.v2/json"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -28,7 +30,9 @@ type TestInfo struct {
 	Age      int
 	Name     string
 	LastDate time.Time
-	InnerData
+	// embed struct 이름 없이 바로 필드로 사용하려면 squash 태그를 명시해야 한다.
+	// https://pkg.go.dev/github.com/mitchellh/mapstructure#hdr-Embedded_Structs_and_Squashing
+	InnerData `mapstructure:",squash"`
 }
 
 func OpenSqlite() gorm.Dialector {
@@ -56,6 +60,20 @@ func OpenMysql() gorm.Dialector {
 	// 수행한 쿼리 stdout 출력
 	// db.LogMode(true)
 	return mysql.Open(DSN)
+}
+
+func printTestInfo(info TestInfo) {
+	fmt.Printf("info:%#v\n", info)
+	fmt.Println("Id:", info.ID)
+	fmt.Println("Age:", info.Age)
+	fmt.Println("Name:", info.Name)
+	fmt.Println("CreatedAt:", info.CreatedAt)
+	fmt.Println("UpdatedAt:", info.UpdatedAt)
+	fmt.Println("DeletedAt:", info.DeletedAt)
+	fmt.Println("Lastdate:", info.LastDate)
+	// embed struct 를 명시하거나 명시하지 않아도 액세스 가능
+	fmt.Println("Enable:", info.Enable)
+	fmt.Println("InnerDataen.Enable:", info.InnerData.Enable)
 }
 
 func DoGorm() {
@@ -94,24 +112,48 @@ func DoGorm() {
 	// user 는 TestInfo struct 으로 test_info 테이블을 사용한다.
 	db.Create(&user)
 
+	////////// embed struct 이름 없이 바로 필드 사용 테스트 /////////
+	printTestInfo(user)
+	testdata := struct {
+		Age    int
+		Name   string
+		Enable bool
+	}{}
+	// 방법1
+	if err := mapstructure.Decode(user, &testdata); err == nil {
+		fmt.Printf("[mapstructure] %+v\n", testdata)
+		//{Age:21 Name:bill Enable:false} //  InnerData  인경우 embed sturct 로 같이 맞춰야 한다.
+		//{Age:21 Name:bill Enable:true} // InnerData `mapstructure:",squash"`
+	}
+	// 방법2
+	// json string 으로 만든 후 unmarshal 로 struct 에 담기
+	if outJson, err := json.Marshal(user); err == nil {
+		fmt.Println("[outJson] ", string(outJson))
+		//{"ID":78,"CreatedAt":"2024-04-12T16:19:47.775332+09:00","UpdatedAt":"2024-04-12T16:19:47.775332+09:00","DeletedAt":null,"Age":21,"Name":"bill","LastDate":"2024-04-12T16:19:47.775055+09:00","Enable":true}
+		testdata2 := struct {
+			Age    int
+			Name   string
+			Enable bool
+		}{}
+		if err := json.Unmarshal(outJson, &testdata2); err == nil {
+			fmt.Printf("[UnMarshal] %+v\n", testdata2)
+			// {Age:21 Name:bill Enable:true}
+		}
+	}
+	////////////////////
+
 	// 레코드 수정
 	user.Age = 22
 	user.Enable = true
 	user.CreatedAt = time.Now()
 	db.Save(&user)
+
 	// 레코드 조회
-	user = TestInfo{}
+	//user = TestInfo{}
 	// db.Table("test_info").Where("name = ?", "bill").First(&user2)
 	// db.Where("name = ?", "bill").First(&user2)
 	db.Find(&user, "name = ?", "bill")
-	fmt.Println("id:", user.ID)
-	fmt.Println("age:", user.Age)
-	fmt.Println("name:", user.Name)
-	fmt.Println("created_at:", user.CreatedAt)
-	fmt.Println("updated_at:", user.UpdatedAt)
-	fmt.Println("deleted_at:", user.DeletedAt)
-	fmt.Println("lastdate:", user.LastDate)
-	fmt.Println("enable:", user.Enable)
+	printTestInfo(user)
 
 	db.Delete(TestInfo{}, "id = ?", user.ID)
 
