@@ -7,6 +7,8 @@ CREATE TABLE `test_info` (
 `name` varchar(45) DEFAULT NULL,
 `enable` tinyint(1) DEFAULT 1,
 `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+`updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
+`deleted_at` datetime DEFAULT CURRENT_TIMESTAMP,
 `last_date` datetime DEFAULT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

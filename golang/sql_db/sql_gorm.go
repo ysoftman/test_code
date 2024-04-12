@@ -13,19 +13,22 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+type InnerData struct {
+	Enable bool `gorm:"not null"`
+}
+
 // TestInfo => test_info
 // gorm 은 PascalCase 인 struct와 필드 이름을 snake_case 로 변경해 테이블/컬럼명으로 사용한다.
 type TestInfo struct {
-	ID int64
+	gorm.Model
+	//ID uint64
 	// Age      int    `gorm:"default:99"`
 	// Name     string `gorm:"default:lemon"`
 	// Enable   bool   `gorm:"not null;default:1"`
-	Age    int
-	Name   string
-	Enable bool `gorm:"not null"`
-	// CreatedAt string
-	CreatedAt time.Time
-	LastDate  time.Time
+	Age      int
+	Name     string
+	LastDate time.Time
+	InnerData
 }
 
 func OpenSqlite() gorm.Dialector {
@@ -82,12 +85,10 @@ func DoGorm() {
 	db.Exec("DELETE FROM test_info")
 
 	user := TestInfo{
-		Age:  21,
-		Name: "bill",
-		// CreatedAt: time.Now().Format("2006-01-02 15:04:05"),
-		// CreatedAt: time.Now().Format("2006-01-02 15:04:05"),
-		LastDate: time.Now(),
-		Enable:   true,
+		Age:       21,
+		Name:      "bill",
+		LastDate:  time.Now(),
+		InnerData: InnerData{Enable: true},
 	}
 	// 레코드 추가
 	// user 는 TestInfo struct 으로 test_info 테이블을 사용한다.
@@ -96,17 +97,21 @@ func DoGorm() {
 	// 레코드 수정
 	user.Age = 22
 	user.Enable = true
+	user.CreatedAt = time.Now()
 	db.Save(&user)
 	// 레코드 조회
 	user = TestInfo{}
 	// db.Table("test_info").Where("name = ?", "bill").First(&user2)
 	// db.Where("name = ?", "bill").First(&user2)
 	db.Find(&user, "name = ?", "bill")
-	fmt.Println(user.ID)
-	fmt.Println(user.Age)
-	fmt.Println(user.Name)
-	fmt.Println(user.LastDate)
-	fmt.Println(user.Enable)
+	fmt.Println("id:", user.ID)
+	fmt.Println("age:", user.Age)
+	fmt.Println("name:", user.Name)
+	fmt.Println("created_at:", user.CreatedAt)
+	fmt.Println("updated_at:", user.UpdatedAt)
+	fmt.Println("deleted_at:", user.DeletedAt)
+	fmt.Println("lastdate:", user.LastDate)
+	fmt.Println("enable:", user.Enable)
 
 	db.Delete(TestInfo{}, "id = ?", user.ID)
 
