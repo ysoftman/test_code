@@ -340,7 +340,7 @@ export const getToken = function () {
 }
 
 export const checkLogin = () => {
-    console.log("userInfo: ", userInfo);
+    //console.log("userInfo: ", userInfo);
     if (userInfo.email != null && userInfo.email != "") {
         return true
     }
