@@ -72,6 +72,18 @@ func PostData(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+type Data struct {
+	key1 int
+	key2 string
+}
+
+func CheckReq() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("mydata", Data{111, "ysoftman"})
+		c.Set("key1", "lemon")
+		fmt.Println("check Request")
+	}
+}
 func main() {
 	fmt.Println("gin server... ")
 	//gin.SetMode(gin.ReleaseMode)
@@ -125,7 +137,11 @@ func main() {
 	router := gin.New()
 	router.Use(gin.LoggerWithFormatter(jsonLogFormatter))
 	router.Use(gin.Recovery())
+	router.Use(CheckReq())
 	router.GET("/ping", func(c *gin.Context) {
+		if v, ok := c.Get("key1"); ok {
+			fmt.Println(v)
+		}
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
