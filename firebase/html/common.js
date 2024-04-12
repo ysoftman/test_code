@@ -1,8 +1,7 @@
 // ysoftman
-// firebase api 사용
-// Initialize Firebase
+
 import {webApiKey} from "./web_api_key.js"
-let config = {
+const config = {
     apiKey: webApiKey(),
     authDomain: "ysoftman-firebase.firebaseapp.com",
     databaseURL: "https://ysoftman-firebase.firebaseio.com",
@@ -10,15 +9,15 @@ let config = {
     storageBucket: "ysoftman-firebase.appspot.com",
     messagingSenderId: ""
 };
+// firebase api 사용
 firebase.initializeApp(config);
 
 // Create a reference with an initial file path and name
-let storage = firebase.storage();
-let db = firebase.firestore();
-let auth = firebase.auth();
-let loginBoxID = "login_google";
-let loginAnonymousBoxID = "login_anonymous";
-let userInfo = {};
+const storage = firebase.storage();
+const db = firebase.firestore();
+const auth = firebase.auth();
+const loginBoxID = "login_google";
+const loginAnonymousBoxID = "login_anonymous";
 let userToken = "";
 const coll = "restaurant"
 export const makeLogoutBoxHTML = function (userName) {
@@ -93,7 +92,11 @@ export const setFirestoreDoc = function (coll, doc) {
 
 // firestore 테스트 방문카운트 및 조회
 export const getFirestoreVisitCnt = function (coll, doc, htmlId) {
-   let docRef = db.collection(coll).doc(doc);
+    if (!checkLogin()) {
+        console.log("login please")
+        return
+    }
+    let docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
@@ -102,12 +105,10 @@ export const getFirestoreVisitCnt = function (coll, doc, htmlId) {
                 throw "Document doest not exist!";
             }
             let newCnt = doc1.data().visitCnt;
-            if (checkLogin()) {
-                newCnt += 1
-                transaction.update(docRef, {
-                    visitCnt: newCnt
-                });
-            }
+            newCnt += 1
+            transaction.update(docRef, {
+                visitCnt: newCnt
+            });
             document.getElementById(htmlId).innerHTML = `${newCnt}`;
         });
     }).then(function () {
@@ -220,8 +221,7 @@ export const readRestaurantCnt = function (coll, doc, cntType, htmlId) {
 
 // firestore 컬렉션(판교식당) 해당하는 문서 카운트 증가시키기
 export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
-    console.log("userInfo.email:", userInfo.email, "doc:", doc)
-    if (userInfo.email == null || userInfo.email == "") {
+    if (!checkLogin()) {
         alert("로그인이 필요합니다.");
         return
     }
@@ -238,13 +238,13 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
             if (cntType == 'likeCnt') {
                 let lcUsers = doc1.data().likeCntUsers;
                 console.log("lcUsers", lcUsers)
-                let pos = lcUsers.indexOf(userInfo.email)
+                let pos = lcUsers.indexOf(auth.currentUser.email)
                 // 좋아요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
                     lcUsers.splice(pos, 1);
                 } else {
-                    lcUsers.push(userInfo.email);
+                    lcUsers.push(auth.currentUser.email);
                 }
                 newCnt = doc1.data().likeCnt + incValue;
                 transaction.update(docRef, {
@@ -256,13 +256,13 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
             } else if (cntType == 'dislikeCnt') {
                 let dlcUsers = doc1.data().dislikeCntUsers;
                 console.log("dlcUsers", dlcUsers)
-                let pos = dlcUsers.indexOf(userInfo.email)
+                let pos = dlcUsers.indexOf(auth.currentUser.email)
                 // 싫어요를 이미 클릭한 사용자라면 카운트 취소하기
                 if (pos >= 0) {
                     incValue = -1;
                     dlcUsers.splice(pos, 1);
                 } else {
-                    dlcUsers.push(userInfo.email);
+                    dlcUsers.push(auth.currentUser.email);
                 }
                 newCnt = doc1.data().dislikeCnt + incValue;
                 transaction.update(docRef, {
@@ -282,19 +282,11 @@ export const incRestaurantCnt = function (coll, doc, cntType, htmlId) {
 
 // 로그인한 사용자에 대한 정보가 필요한 앱 페이지마다 전역 인증 객체에 관찰자를 연결합니다.
 // 사용자의 로그인 상태가 변경될 때마다 이 관찰자가 호출됩니다.
-auth.onAuthStateChanged(function (user) {
+auth.onAuthStateChanged((user) => {
     document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
     document.getElementById(loginAnonymousBoxID).addEventListener("click", loginAnonymous);
     if (user) {
-        // User is signed in.
-        //user.displayName;
-        //user.email;
-        //user.emailVerified;
-        //user.photoURL;
-        //user.isAnonymous;
-        //user.uid;
-        //user.providerData;
-        userInfo = user;
+        console.log("user:", user)
         if (user.isAnonymous) {
             document.getElementById(loginAnonymousBoxID).innerHTML = makeLogoutBoxHTML("")
             return
@@ -304,7 +296,6 @@ auth.onAuthStateChanged(function (user) {
         document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous"
     } else {
         // User is signed out.
-        userInfo = {};
         userToken = ""
     }
 });
@@ -330,7 +321,6 @@ export const setAuthPersistence = function () {
 export const getToken = function () {
     auth.currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
         // Send token to your backend via HTTPS
-        // ...
         //console.log("idToken:", idToken)
         userToken = idToken
     }).catch(function (error) {
@@ -338,17 +328,20 @@ export const getToken = function () {
     });
 }
 
-export const checkLogin = () => {
-    //console.log("userInfo: ", userInfo);
-    if (userInfo.email != null && userInfo.email != "") {
-        return true
+export const checkLogin = async () => {
+    console.log("auth.currentUser: ", auth.currentUser);
+    if (auth.currentUser == null) {
+        return false
     }
-    return false
+    if (auth.currentUser.email == "") {
+        return false
+    }
+    return true
 }
 
 // firebase > authentication > 익명 로그인 활성화했음
 export const loginAnonymous = function () {
-    if (userInfo.isAnonymous) {
+    if (auth.currentUser.isAnonymous) {
         logout()
         document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous"
         return
@@ -375,9 +368,6 @@ export const loginGoogle = function () {
     auth.signInWithPopup(provider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         userToken = result.credential.accessToken;
-        // The signed-in user info.
-        userInfo = result.user;
-        // ...
         console.log("loginGoogle result.user:", result.user)
         let userName = result.user.displayName + " " + result.user.email
         document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous"
@@ -417,8 +407,6 @@ export const GoogleLoginResult = function () {
             userToken = result.credential.accessToken;
             // ...
         }
-        // The signed-in user info.
-        userInfo = result.user;
         console.log("GoogleLoginResult result.user:", result.user)
     }).catch(function (error) {
         // Handle Errors here.
