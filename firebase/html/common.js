@@ -92,10 +92,6 @@ export const setFirestoreDoc = function (coll, doc) {
 
 // firestore 테스트 방문카운트 및 조회
 export const getFirestoreVisitCnt = function (coll, doc, htmlId) {
-    if (!checkLogin()) {
-        console.log("login please")
-        return
-    }
     let docRef = db.collection(coll).doc(doc);
     // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
     db.runTransaction(function (transaction) {
@@ -300,6 +296,7 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
+
 // 로그인 유지설정(필요한 경우에만 호출)
 export const setAuthPersistence = function () {
     auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -328,7 +325,7 @@ export const getToken = function () {
     });
 }
 
-export const checkLogin = async () => {
+export const checkLogin = () => {
     console.log("auth.currentUser: ", auth.currentUser);
     if (auth.currentUser == null) {
         return false
@@ -341,7 +338,7 @@ export const checkLogin = async () => {
 
 // firebase > authentication > 익명 로그인 활성화했음
 export const loginAnonymous = function () {
-    if (auth.currentUser.isAnonymous) {
+    if (auth.currentUser != null && auth.currentUser.isAnonymous) {
         logout()
         document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous"
         return
