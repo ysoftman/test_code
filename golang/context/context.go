@@ -6,6 +6,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
 	"time"
 )
 
@@ -71,10 +74,8 @@ func main() {
 		dealine, _ := ctx.Deadline()
 		fmt.Println("deadline", dealine)
 
-		// context 타임아웃전에 일을 마치는 경우
-		time.Sleep(300 * time.Millisecond)
-		// context 타임아웃되는 경우
-		// time.Sleep(700 * time.Millisecond)
+		// context 타임아웃되는 경우, 더이상 진행되지 않고 ctx.Done 이 된다.
+		//time.Sleep(700 * time.Millisecond)
 
 		fmt.Println("----- go routine end")
 		// 작업 완료
@@ -98,5 +99,27 @@ func main() {
 		fmt.Println("ctx.Done(), ctx.Err():", ctx.Err())
 	}
 
-	fmt.Println("cancel()....")
+	request_timeout_test()
+}
+
+func request_timeout_test() {
+	//ctx, cancel := context.WithTimeout(context.Background(), 2000*time.Millisecond)
+	// 응답이 100ms 없으면  timeout(context deadline exceeded)
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://httpbin.org/get", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	cli := http.Client{}
+	res, err := cli.Do(req)
+	if err != nil {
+		log.Fatal("client do error...", err)
+	}
+	defer res.Body.Close()
+	out, err := io.ReadAll(res.Body)
+	if err != nil {
+		log.Fatal("client do error...", err)
+	}
+	fmt.Println("[out]", string(out))
 }
