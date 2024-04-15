@@ -109,8 +109,14 @@ func timeoutMiddleware2() gin.HandlerFunc {
 		defer cancel()
 		c.Request = c.Request.WithContext(ctx)
 		finish := make(chan struct{}, 1)
+		panicChan := make(chan interface{}, 1)
 		go func() {
 			func(c *gin.Context) {
+				defer func() {
+					if p := recover(); p != nil {
+						panicChan <- p
+					}
+				}()
 				c.Next()
 			}(c)
 			finish <- struct{}{}
@@ -119,6 +125,8 @@ func timeoutMiddleware2() gin.HandlerFunc {
 		select {
 		//case <-time.After(timeout):
 		//    fmt.Println("timeout")
+		case p := <-panicChan:
+			panic(p)
 		case <-finish:
 			fmt.Println("finish")
 		case <-c.Request.Context().Done():
