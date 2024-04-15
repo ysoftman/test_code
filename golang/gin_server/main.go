@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"gin_server/docs"
@@ -87,17 +88,51 @@ func CheckReq() gin.HandlerFunc {
 	}
 }
 
-func testResponse(c *gin.Context) {
-	c.String(http.StatusRequestTimeout, "timeout")
-}
-func timeoutMiddleware() gin.HandlerFunc {
+func timeoutMiddleware1() gin.HandlerFunc {
+	tm := 500 * time.Millisecond
 	return timeout.New(
-		timeout.WithTimeout(500*time.Millisecond),
+		timeout.WithTimeout(tm),
 		timeout.WithHandler(func(c *gin.Context) {
 			c.Next()
 		}),
-		timeout.WithResponse(testResponse),
+		timeout.WithResponse(func(c *gin.Context) {
+			c.JSON(http.StatusRequestTimeout, gin.H{
+				"message": "timeout",
+			})
+		}),
 	)
+}
+func timeoutMiddleware2() gin.HandlerFunc {
+	timeout := 500 * time.Millisecond
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(c.Request.Context(), timeout)
+		defer cancel()
+		c.Request = c.Request.WithContext(ctx)
+		finish := make(chan struct{}, 1)
+		go func() {
+			func(c *gin.Context) {
+				c.Next()
+			}(c)
+			finish <- struct{}{}
+		}()
+
+		select {
+		//case <-time.After(timeout):
+		//    fmt.Println("timeout")
+		case <-finish:
+			fmt.Println("finish")
+		case <-c.Request.Context().Done():
+			err := c.Request.Context().Err()
+			if err == nil || err.Error() == "" {
+				return
+			}
+			//context.DeadlineExceeded
+			//context.Canceled
+			c.JSON(http.StatusRequestTimeout, gin.H{
+				"message": err.Error(),
+			})
+		}
+	}
 }
 
 func main() {
@@ -154,10 +189,11 @@ func main() {
 	router.Use(gin.LoggerWithFormatter(jsonLogFormatter))
 	router.Use(gin.Recovery())
 	router.Use(CheckReq())
-	router.Use(timeoutMiddleware())
+	//router.Use(timeoutMiddleware1())
+	router.Use(timeoutMiddleware2())
 	router.GET("/ping", func(c *gin.Context) {
 		if v, ok := c.Get("key1"); ok {
-			fmt.Println(v)
+			fmt.Println("key1:", v)
 		}
 		if v, ok := c.Get("mydata"); ok {
 			// mydata 원래 strcutre 를 모른다고 가정하고 비슷한 struct 로 담아보자.
@@ -167,7 +203,7 @@ func main() {
 				key3 string
 			}{}
 			if err := mapstructure.Decode(v, &mydata2); err == nil {
-				fmt.Println(v)
+				fmt.Println("decoded:", v)
 			}
 		}
 		// timeout 발생해보자.
