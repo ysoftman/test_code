@@ -31,7 +31,7 @@
     --teal: #20c997;
     --cyan: #0dcaf0;
     --gray: #adb5bd;
-    --black: #000;
+    --black: #1a1a1a;
     --white: #fff;
 
     /* custom color */
