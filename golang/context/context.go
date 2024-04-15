@@ -17,6 +17,8 @@ type mydata struct {
 	Number int
 }
 
+var timeout = 500 * time.Millisecond
+
 func main() {
 	// https://blog.golang.org/context
 	// 같은 성격의 또는 이어지는 작업들이 맥락(context)을 통해 값을 전달하거나, 작업을 종료하는증의 작업을 할 수 있다.
@@ -28,7 +30,7 @@ func main() {
 	// context.Background() 는 빈값으로 최상위 context 로 main(), init() 에서 컨텍스를 만들때 사용된다.
 	// 생성된 context 를 취소(리소스 해제)할 수 있는 cancel 함수를 리턴한다.
 	// context 는 여러개의 고루틴에서 동시에 안전하게 사용할 수 있다.
-	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	// context 리소스 해제
 	// 모든 파생된 자식 context 들도 해제된다.
 	defer cancel()
@@ -74,7 +76,8 @@ func main() {
 		dealine, _ := ctx.Deadline()
 		fmt.Println("deadline", dealine)
 
-		// context 타임아웃되는 경우, 더이상 진행되지 않고 ctx.Done 이 된다.
+		// context 타임아웃되는 경우 더이상 진행되지 않는다.(cancel)
+		// <-time.After(timeout) 없으면 <-ctx.Done 이 된다.
 		//time.Sleep(700 * time.Millisecond)
 
 		fmt.Println("----- go routine end")
@@ -85,10 +88,9 @@ func main() {
 	// 가장 먼저 도착하는 채널 파악
 	select {
 	// context 타임아웃 이후라 발생할 수 없음
-	case time := <-time.After(2000 * time.Millisecond):
-		fmt.Println("overslept!!!", time)
-		// nil
-		fmt.Println(ctx.Err())
+	//case time := <-time.After(2000 * time.Millisecond):
+	case time := <-time.After(timeout):
+		fmt.Println("timeout!!!", time)
 	// 채널로부터 작업완료 통보가 된 경우
 	case a := <-ch:
 		fmt.Println("go routine end, <-ch:", a)
