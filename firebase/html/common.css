@@ -19,9 +19,7 @@ img {
 .nes-octocat {
     align-self: flex-end;
     position: absolute;
-    top: 50;
     display: inline-block;
-    /*height: 0px !important;*/
 }
 
 .github-link {
