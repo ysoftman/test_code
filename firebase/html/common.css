@@ -39,6 +39,23 @@ img {
     margin-bottom: 1.5rem !important;
 }
 
+.index-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+    border-bottom: 4px solid #aaaaaa;
+    background-color: white;
+}
+.index-navbar > .container {
+    display: flex;
+    margin: 10;
+}
+.index-body {
+    margin-top: 80;
+}
+
 #message {
     background: white;
     max-width: 360px;

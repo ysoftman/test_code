@@ -38,30 +38,42 @@
 </head>
 
 <body>
-    <h2>
-        <div class="main">
-        <a href="https://github.com/ysoftman/test_code/tree/master/firebase" target="_blank" class="github-link">
-            <p class="nes-balloon from-right">
-                <span class="nes-text is-primary">ysoftman firebase test</span><br>
-                <span class="nes-text is-success">this page uses NES.CSS<br>and Press_Start_2P font</span>
-            </p>
-            <i class="nes-octocat animate"></i>
-        </a></div>
-    </h2>
-    <h1 class="nes-text yellow">
-        <button class="nes-btn is-primary" id='login_anonymous'>login anonymous</button>
-        <button class="nes-btn is-primary" id="login_google">login google</button>
-        <a href="restaurant_pangyo.html" target="_blank">
-            <button type="button" class="nes-btn is-primary"><b>restaurant_pangyo</b></button></a><br><br>
+    <div class="main">
+    <a href="https://github.com/ysoftman/test_code/tree/master/firebase" target="_blank" class="github-link">
+        <p class="nes-balloon from-right">
+            <span class="nes-text is-primary">ysoftman firebase test</span><br>
+            <span class="nes-text is-error">this page uses NES.CSS<br>and Press_Start_2P font</span>
+        </p>
+        <i class="nes-octocat animate"></i>
+    </a></div>
+    <div class="index-navbar">
+        <div class="container">
+            <h2>
+                <a href="index.html">
+                    <button type="button" class="nes-btn is-success"><b>index</b></button>
+                </a>
+                <a href="restaurant_pangyo.html">
+                    <button type="button" class="nes-btn is-success"><b>판교식당</b></button>
+                </a>
+                <span>
+                    <button class="nes-btn is-primary" id='login_anonymous'>login anonymous</button>
+                    <button class="nes-btn is-primary" id="login_google">login google</button>
+                </span>
+            </h2>
+        </div>
+    </div>
+    <div class="index-body">
+        <h3 class="nes-text">
+        <br>
         <div class="lists">
             <ul class="nes-list is-disc">
                 <li>visitCnt from firestore database: <span id=visitcnt></span></li>
             <li>images from firebase storage</li>
           </ul>
         </div>
-
         <div id=images></div>
-    </h1>
+        </h3>
+    </div>
 
 </html>
 
