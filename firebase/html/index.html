@@ -38,14 +38,6 @@
 </head>
 
 <body>
-    <div class="main">
-    <a href="https://github.com/ysoftman/test_code/tree/master/firebase" target="_blank" class="github-link">
-        <p class="nes-balloon from-right">
-            <span class="nes-text is-primary">ysoftman firebase test</span><br>
-            <span class="nes-text is-error">this page uses NES.CSS<br>and Press_Start_2P font</span>
-        </p>
-        <i class="nes-octocat animate"></i>
-    </a></div>
     <div class="index-navbar">
         <div class="container">
             <h2>
@@ -62,17 +54,23 @@
             </h2>
         </div>
     </div>
-    <div class="index-body">
-        <h3 class="nes-text">
-        <br>
+    <div class="index-body nes-text">
+        <div class="main">
+            <a href="https://github.com/ysoftman/test_code/tree/master/firebase" target="_blank" class="github-link">
+                <p class="nes-balloon from-right">
+                    <span class="nes-text is-primary">ysoftman firebase test</span><br>
+                    <span class="nes-text is-error">this page uses NES.CSS<br>and Press_Start_2P font</span>
+                </p>
+                <i class="nes-octocat animate"></i>
+            </a>
+        </div>
         <div class="lists">
             <ul class="nes-list is-disc">
-                <li>visitCnt from firestore database: <span id=visitcnt></span></li>
-            <li>images from firebase storage</li>
-          </ul>
+                <h1><li>visitCnt from firestore database: <span id=visitcnt></span></li></h1>
+            </ul>
+            <p>load images from firebase storage</p>
         </div>
         <div id=images></div>
-        </h3>
     </div>
 
 </html>

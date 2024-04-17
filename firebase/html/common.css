@@ -18,21 +18,21 @@ img {
 
 .nes-octocat {
     align-self: flex-end;
-    position: relative;
+    position: absolute;
+    top: 50;
     display: inline-block;
-    width: 84px;
-    height: 0px !important;
+    /*height: 0px !important;*/
 }
 
 .github-link {
-    position: fixed;
+    /*position: fixed;*/
+    /*z-index: 999;*/
     top: 350px;
     right: 10px;
-    z-index: 999;
-    height: 105px;
+    height: 100px;
     color: #333;
     text-decoration: none;
-    transition: all 0.3s ease;
+    /*transition: all 0.3s ease;*/
 }
 
 .item > * {
