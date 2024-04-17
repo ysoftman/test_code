@@ -40,20 +40,7 @@ img {
 }
 
 .index-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9;
     border-bottom: 4px solid #aaaaaa;
-    background-color: white;
-}
-.index-navbar > .container {
-    display: flex;
-    margin: 10;
-}
-.index-body {
-    margin-top: 80;
 }
 
 #message {
@@ -101,7 +88,7 @@ img {
     font-size: 13px;
 }
 
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
     body,
     #message {
         margin-top: 0;
