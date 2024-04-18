@@ -81,26 +81,20 @@ export const imageURL = async function (imageName) {
 }
 
 // firestorage 에 저장된 이미지 list
-//export const getImageList = function (path) {
-//    let listRef = ref(storage, 'gs://ysoftman-firebase.appspot.com/' + path);
-//    const imgList = []
-//    // Find all the prefixes and items.
-//    listAll(listRef)
-//      .then((res) => {
-//        res.prefixes.forEach((folderRef) => {
-//            // All the prefixes under listRef.
-//            // You may call listAll() recursively on them.
-//            console.error("aaaaaaaaaaaa", folderRef);
-//        });
-//        res.items.forEach((itemRef) => {
-//            imgList.push(itemRef)
-//            // All the items under listRef.
-//            console.error("-----", itemRef);
-//        });
-//      }).catch((error) => {
-//        console.error("Error getting image list: ", error);
-//      });
-//}
+export const getImageList = async function (path) {
+    let listRef = ref(storage, path);
+    const imgList = []
+    // Find all the prefixes and items.
+    const res = await listAll(listRef)
+    res.prefixes.forEach((folderRef) => {
+        console.log("directory:", folderRef);
+    });
+    res.items.forEach((itemRef) => {
+        imgList.push(itemRef.fullPath);
+        console.log("file:", itemRef.fullPath);
+    });
+    return imgList
+}
 
 // firestore 문서 생성
 export const setFirestoreDoc = async function (coll, docName) {
@@ -188,10 +182,10 @@ export const readRestaurantAll = async function (coll) {
     // likeCnt 많은 순으로
     const q = query(collection(db, coll), orderBy("likeCnt", "desc"))
     const querySnapshot = await getDocs(q)
-    
+
     let docNames = [];
     let html = `<div class="card-columns">`;
-   
+
     querySnapshot.forEach((doc) => {
         docNames.push(`${doc.data().name}`);
         html += `
@@ -315,7 +309,7 @@ export const setAuthPersistence = function () {
             return auth.signInWithEmailAndPassword(email, password);
         }).catch(function (error) {
             alert("errCode:" + error.code +
-                "\nerrMessage:" + error.message)        
+                "\nerrMessage:" + error.message)
         });
 }
 

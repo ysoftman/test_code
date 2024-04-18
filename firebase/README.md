@@ -11,6 +11,7 @@ export const webApiKey = () => {
 
 # firebase -> storage -> rules
 # 읽기 허용으로 설정
+rules_version = "2";
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
