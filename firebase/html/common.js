@@ -22,7 +22,6 @@ const db = getFirestore();
 const auth = getAuth();
 const loginBoxID = "login_google";
 const loginAnonymousBoxID = "login_anonymous";
-let userToken = "";
 const coll = "restaurant"
 export const makeLogoutBoxHTML = function (userName) {
     if (userName.length == 0) {
@@ -302,7 +301,6 @@ auth.onAuthStateChanged((user) => {
         document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous"
     } else {
         // User is signed out.
-        userToken = ""
     }
 });
 
@@ -322,17 +320,6 @@ export const setAuthPersistence = function () {
             let errorCode = error.code;
             let errorMessage = error.message;
         });
-}
-
-// 로그인 후 토큰가져오기
-export const getToken = function () {
-    auth.currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
-        // Send token to your backend via HTTPS
-        //console.log("idToken:", idToken)
-        userToken = idToken
-    }).catch(function (error) {
-        // Handle error
-    });
 }
 
 export const checkLogin = () => {
@@ -374,13 +361,10 @@ export const loginGoogle = function () {
     let provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        userToken = result.credential.accessToken;
         console.log("loginGoogle result.user:", result.user)
         let userName = result.user.displayName + " " + result.user.email
         document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous"
         document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName)
-        // 사용자 토큰 파악해두기
-        getToken()
         //GoogleLoginResult()
     }).catch(function (error) {
         // Handle Errors here.
@@ -411,8 +395,6 @@ export const GoogleLoginResult = function () {
     auth.getRedirectResult().then(function (result) {
         if (result.credential) {
             // This gives you a Google Access Token. You can use it to access the Google API.
-            userToken = result.credential.accessToken;
-            // ...
         }
         console.log("GoogleLoginResult result.user:", result.user)
     }).catch(function (error) {
