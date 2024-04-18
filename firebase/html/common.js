@@ -101,13 +101,13 @@ export const imageURL = async function (imageName) {
 //        console.error("Error getting image list: ", error);
 //      });
 //}
-//
+
 // firestore 문서 생성
-export const setFirestoreDoc = async function (coll, doc) {
-    const newdocRef = doc(collection(db, coll));
+export const setFirestoreDoc = async function (coll, docName) {
+    const newdocRef = doc(collection(db, coll), docName);
     await setDoc(newdocRef, {
-        name: doc,
-        visitCnt: 0
+        name: docName,
+        visitCnt: 1
     })
 }
 
@@ -118,8 +118,11 @@ export const getFirestoreVisitCnt = function (coll, docName, htmlId) {
     runTransaction(db, function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
         return transaction.get(docRef).then(function (doc1) {
-            if (!doc1.exists()) {
-                throw "Document doest not exist!";
+            if (!doc1.exists() || doc1.data().visitCnt == undefined) {
+                //throw "Document doest not exist!";
+                setFirestoreDoc(coll, docName)
+                document.getElementById(htmlId).innerHTML = `1`;
+                return
             }
             let newCnt = doc1.data().visitCnt;
             newCnt += 1
@@ -309,16 +312,10 @@ auth.onAuthStateChanged((user) => {
 export const setAuthPersistence = function () {
     auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function () {
-            // Existing and future Auth states are now persisted in the current
-            // session only. Closing the window would clear any existing state even
-            // if a user forgets to sign out.
-            // ...
-            // New sign-in will be persisted with session persistence.
             return auth.signInWithEmailAndPassword(email, password);
         }).catch(function (error) {
-            // Handle Errors here.
-            let errorCode = error.code;
-            let errorMessage = error.message;
+            alert("errCode:" + error.code +
+                "\nerrMessage:" + error.message)        
         });
 }
 
@@ -367,13 +364,6 @@ export const loginGoogle = function () {
         document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName)
         //GoogleLoginResult()
     }).catch(function (error) {
-        // Handle Errors here.
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        // The email of the user's account used.
-        let email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        let credential = error.credential;
         alert("errCode:" + error.code +
             "\nerrMessage:" + error.message +
             "\nerrMail:" + error.mail)
@@ -398,14 +388,9 @@ export const GoogleLoginResult = function () {
         }
         console.log("GoogleLoginResult result.user:", result.user)
     }).catch(function (error) {
-        // Handle Errors here.
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        // The email of the user's account used.
-        let email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        let credential = error.credential;
-        // ...
+        alert("errCode:" + error.code +
+            "\nerrMessage:" + error.message +
+            "\nerrMail:" + error.mail)
     });
 }
 

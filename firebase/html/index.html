@@ -16,15 +16,7 @@ html, body, pre, code, kbd, samp {
     </style>
     <script type="module">
         import {setFirestoreDoc, getFirestoreVisitCnt, loadImages} from "./common.js"
-        //setFirestoreDoc("index", "ysoftman");
         getFirestoreVisitCnt("index", "ysoftman", "visitcnt")
-        const imgNames = []
-        imgNames.push("박카스.jpg")
-        imgNames.push("xelloss.jpg")
-        imgNames.push("cold_snow_by_guweiz.jpg")
-        imgNames.push("morning_light_by_mizukiaoki.png")
-        // image div 태그를 구성해 이미지 순서를 보장
-        loadImages("images", imgNames)
     </script>
     <title>ysoftman-firebase</title>
 </head>
