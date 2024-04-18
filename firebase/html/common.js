@@ -31,17 +31,21 @@ export const makeLogoutBoxHTML = function (userName) {
 }
 
 export const loadImages = async function(htmlId, imageNames) {
-    let images =`<div class="item">`
+    let items =`<div class="item">`
     //forEach 안에서 await 를 사용할 수 없다.
     //imageNames.forEach(function (name) {})
     const imgURLs = []
     for (const name of imageNames) {
         let imgURL = await imageURL(name)
-        images += `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+imgURL+`_size></span>)</p><img loading="lazy" src=`+imgURL+`></img></div>`
-        imgURLs.push(imgURL)
+        if (name.endsWith("mp4")) {
+            items += `<div class="nes-container with-title"><p class="title">`+name+`</p><video controls autoplay muted><source src=`+imgURL+`type="video/mp4"></video></div>`
+        } else {
+            imgURLs.push(imgURL)
+            items += `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+imgURL+`_size></span>)</p><img loading="lazy" src=`+imgURL+`></img></div>`
+        }
     }
-    images += `</div>`
-    document.getElementById(htmlId).innerHTML = images
+    items += `</div>`
+    document.getElementById(htmlId).innerHTML = items
 
     for (const url of imgURLs) {
         // 동기식으로 이미지 크기를 순서대로 파악할 경우
