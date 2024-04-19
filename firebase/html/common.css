@@ -33,7 +33,7 @@ img {
     /*transition: all 0.3s ease;*/
 }
 
-.item > * {
+.items > * {
     margin-bottom: 1.5rem !important;
 }
 

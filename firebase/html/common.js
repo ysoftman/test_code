@@ -31,32 +31,30 @@ export const makeLogoutBoxHTML = function (userName) {
 }
 
 export const loadImages = async function(htmlId, imageNames) {
-    let items =`<div class="item">`
     //forEach 안에서 await 를 사용할 수 없다.
     //imageNames.forEach(function (name) {})
-    const imgURLs = []
     for (const name of imageNames) {
-        let imgURL = await imageURL(name)
-        if (name.endsWith("mp4")) {
-            items += `<div class="nes-container with-title"><p class="title">`+name+`</p><video controls autoplay muted><source src=`+imgURL+`type="video/mp4"></video></div>`
-        } else {
-            imgURLs.push(imgURL)
-            items += `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+imgURL+`_size></span>)</p><img loading="lazy" src=`+imgURL+`></img></div>`
-        }
-    }
-    items += `</div>`
-    document.getElementById(htmlId).innerHTML = items
-
-    for (const url of imgURLs) {
-        // 동기식으로 이미지 크기를 순서대로 파악할 경우
-        //await getImgMeta(url).then(img => {
-        //    let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
-        //    document.getElementById(url+"_size").innerHTML = imgSize
-        //})
-        getMeta(url, (err, img) => {
-            let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
-            document.getElementById(url+"_size").innerHTML = imgSize
-        });
+        // firestorage 에 저장된 이미지 url 불러오기
+        let storageRef = ref(storage, name);
+        getDownloadURL(storageRef)
+            .then((url) => {
+                let item = ""
+                if (name.endsWith("mp4")) {
+                    item = `<div class="nes-container with-title"><p class="title">`+name+`</p><video controls autoplay muted><source src=`+url+`type="video/mp4"></video></div>`
+                } else {
+                    item = `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+url+`_size></span>)</p><img loading="lazy" src=`+url+`></img></div>`
+                    // 동기식으로 이미지 크기를 순서대로 파악할 경우
+                    //await getImgMeta(url).then(img => {
+                    //    let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
+                    //    document.getElementById(url+"_size").innerHTML = imgSize
+                    //})
+                    getMeta(url, (err, img) => {
+                        let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
+                        document.getElementById(url+"_size").innerHTML = imgSize
+                    });
+                }
+                document.getElementById(htmlId).insertAdjacentHTML("beforeend", item)
+            })
     }
 }
 
@@ -75,14 +73,6 @@ export const getMeta = (url, cb) => {
   img.onerror = (err) => cb(err);
   img.src = url;
 };
-
-// firestorage 에 저장된 이미지 url 불러오기
-export const imageURL = async function (imageName) {
-    let storageRef = ref(storage, 'gs://ysoftman-firebase.appspot.com/' + imageName);
-    // getDownloadURL() 은 비동기라 await 로 순서를 보장한다
-    const url = await getDownloadURL(storageRef);
-    return url
-}
 
 // firestorage 에 저장된 이미지 list
 export const getImageList = async function (path) {
