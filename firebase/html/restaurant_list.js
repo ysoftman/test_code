@@ -1,6 +1,4 @@
-import {setRestaurantDoc,readRestaurantAll,onLikeClick,onDisLikeClick} from "./common.js"
-
-let restaurantlist = [{
+export let restaurantlist = [{
     name: "다연",
     glyphicons: "glyphicons-50-star.png",
     location: "분당구 삼평동 681 H스퀘어 N동 1층",
@@ -615,11 +613,3 @@ let restaurantlist = [{
 }
 ];
 
-const coll = "restaurant";
-window.onload = function () {
-    readRestaurantAll(coll);
-    // firestore 컬렉션(판교식당) 문서있으면 업데이트 없으면 생성
-    //restaurantlist.forEach((doc) => {
-    //    setRestaurantDoc(coll, doc)
-    //});
-}

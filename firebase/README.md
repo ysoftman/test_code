@@ -32,15 +32,7 @@ service cloud.firestore {
 }
 
 # firebase -> 데이터 -> 컬렉션시작
-컬렉션: test 문서 ysoftman
-필드: name , 유형: string, 값: ysoftman
-필드: visitCnt , 유형: number, 값: 0
-
-컬렉션: restaurant 문서 추가 및 업데이트
-1. setRestaurantDoc() 주석 해제 후 로컬에 띄워
-2. localhost:5002/restaurant_pangyo.html 접속
-3. 구글 로그인 후 강제 refresh(ctrl+shift+r)
-4. 식당리스트가 firestore 에 자동 추가되어 보인다.
+index, restaurant 컬렉션 생성
 
 # firebase storage 업로드
 # gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.

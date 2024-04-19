@@ -1,5 +1,6 @@
 // ysoftman
 import {webApiKey} from "./web_api_key.js"
+import {restaurantlist} from "./restaurant_list.js"
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"
 import {getAuth} from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"
 import {getDatabase} from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"
@@ -170,7 +171,12 @@ export const onLikeClick = function (docName, htmlId) {
 export const onDisLikeClick = function (docName, htmlId) {
     incRestaurantCnt(coll, docName, 'dislikeCnt', htmlId);
 }
-
+export const updateRestaurantAll = function() {
+    // firestore 컬렉션(판교식당) 문서있으면 업데이트 없으면 생성
+    restaurantlist.forEach((doc) => {
+        setRestaurantDoc(coll, doc)
+    });
+}
 export const readRestaurantAll = async function (coll) {
     // collection 전체 문서 가져오기
     // likeCnt 많은 순으로
