@@ -5,6 +5,8 @@
 ```bash
 # 프로젝트 정보 참고해 html/web_api_key.js(.gitignore 로 추가했음) 생성
 # https://console.firebase.google.com/u/0/project/ysoftman-firebase/settings/general/
+# 키노출시(깃헙에 푸시된  경우) 아래 링크에서 재생성하자
+# https://console.cloud.google.com/apis/credentials?project=ysoftman-firebase
 export const webApiKey = () => {
     return "여기에 api키 설정";
 }
