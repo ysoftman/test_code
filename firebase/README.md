@@ -58,6 +58,10 @@ gsutil cp -v *.jpg gs://ysoftman-firebase.appspot.com/
 # 다운로드 참고
 gsutil cp -v gs://ysoftman-firebase.appspot.com/xelloss.jpg .
 gsutil cp -v gs://ysoftman-firebase.appspot.com/박카스.jpg .
+
+# 파일 위치 이동
+gsutil mv -pv "gs://ysoftman-firebase.appspot.com/*.mp4" "gs://ysoftman-firebase.appspot.com/funny/"
+gsutil mv -pv "gs://ysoftman-firebase.appspot.com/*.jpg" "gs://ysoftman-firebase.appspot.com/funny/"
 ```
 
 ## firebase 프로젝트 배포

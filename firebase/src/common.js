@@ -87,7 +87,7 @@ export const getImageList = async function (path) {
     });
     res.items.forEach((itemRef) => {
         imgList.push(itemRef.fullPath);
-        console.log("file:", itemRef.fullPath);
+        //console.log("file:", itemRef.fullPath);
     });
     return imgList
 }
