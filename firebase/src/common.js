@@ -200,16 +200,17 @@ export const readRestaurantAll = async function (coll) {
     const querySnapshot = await getDocs(q)
 
     let docNames = [];
-    let html = `<div class="card-columns">`;
+    let html = `<div class="row row-cols-1 row-cols-md-3 g-4">`;
 
     querySnapshot.forEach((doc) => {
         docNames.push(`${doc.data().name}`);
         html += `
-<div class="card">
+<div class="col">
+<div class="card h-100">
 <div class="card-body">
     <h4 class="card-title">
         ${doc.data().name}
-        <i class=${doc.data().glyphicons}"/>
+        <i class="bi ${doc.data().glyphicons}"></i>
     </h4>
     <p class="card-text">${doc.data().location}</p>
     <p class="card-text">${doc.data().menu}</p>
@@ -219,6 +220,7 @@ export const readRestaurantAll = async function (coll) {
     <button type="button" id='${doc.data().name}_like' class="btn btn-success"><div id='${doc.data().name}_좋아요'>좋아요 ${doc.data().likeCnt}</div></button>
     <button type="button" id='${doc.data().name}_dislike' class="btn btn-danger"><div id='${doc.data().name}_싫어요'>싫어요 ${doc.data().dislikeCnt}</div></button>
 </p>
+</div>
 </div>
 `
     });

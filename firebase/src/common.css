@@ -6,6 +6,18 @@ body {
     padding: 5px;
 }
 
+a:link {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
+a:active {
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+}
 img {
     /* 부모 폭을 넘지 않도록 한다.
      * 폭이 큰 이미지가 화면을 넘어가 횡스크롤 되는것 을 막는다. */
@@ -16,6 +28,14 @@ img {
     height: auto;
 }
 
+.card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
+}
 .nes-octocat {
     align-self: flex-end;
     position: absolute;
