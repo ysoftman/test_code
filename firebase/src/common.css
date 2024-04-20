@@ -1,0 +1,97 @@
+body {
+    background: #ECEFF1;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 5px;
+}
+
+img {
+    /* 부모 폭을 넘지 않도록 한다.
+     * 폭이 큰 이미지가 화면을 넘어가 횡스크롤 되는것 을 막는다. */
+    max-width: 100%;
+    /* 이미지폭을 현재 폭에 맞춘다.
+     * 작은 이미지는 확대되니 사용하지 않음*/
+    /*width: 100%;*/
+    height: auto;
+}
+
+.nes-octocat {
+    align-self: flex-end;
+    position: absolute;
+    display: inline-block;
+}
+
+.github-link {
+    /*position: fixed;*/
+    /*z-index: 999;*/
+    top: 350px;
+    right: 10px;
+    height: 100px;
+    color: #333;
+    text-decoration: none;
+    /*transition: all 0.3s ease;*/
+}
+
+.items > * {
+    margin-bottom: 1.5rem !important;
+}
+
+.index-navbar {
+    border-bottom: 4px solid #aaaaaa;
+}
+
+#message {
+    background: white;
+    max-width: 360px;
+    margin: 100px auto 16px;
+    padding: 32px 24px;
+    border-radius: 3px;
+}
+
+#message h2 {
+    color: #ffa100;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 0 8px;
+}
+
+#message h1 {
+    font-size: 22px;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0 0 16px;
+}
+
+#message p {
+    line-height: 140%;
+    margin: 16px 0 24px;
+    font-size: 14px;
+}
+
+#message a {
+    display: block;
+    text-align: center;
+    background: #039be5;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+}
+
+#load {
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-size: 13px;
+}
+
+@media screen and (max-width: 600px) {
+    body,
+    #message {
+        margin-top: 0;
+        background: white;
+        box-shadow: none;
+    }
+}
+
