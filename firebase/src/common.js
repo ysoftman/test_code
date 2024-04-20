@@ -76,17 +76,24 @@ export const getMeta = (url, cb) => {
   img.src = url;
 };
 
+export const getImageDirs = async function (path) {
+    let listRef = ref(storage, path);
+    const pathList = []
+    const res = await listAll(listRef)
+    res.prefixes.forEach((folderRef) => {
+        pathList.push(folderRef.fullPath)
+        //console.log("directory:", folderRef.fullPath);
+    });
+    return pathList
+}
 // firestorage 에 저장된 이미지 list
 export const getImageList = async function (path) {
     let listRef = ref(storage, path);
     const imgList = []
     // Find all the prefixes and items.
     const res = await listAll(listRef)
-    res.prefixes.forEach((folderRef) => {
-        console.log("directory:", folderRef);
-    });
     res.items.forEach((itemRef) => {
-        imgList.push(itemRef.fullPath);
+        imgList.push(itemRef.fullPath)
         //console.log("file:", itemRef.fullPath);
     });
     return imgList

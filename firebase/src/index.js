@@ -1,5 +1,15 @@
-import {getFirestoreVisitCnt, getImageList, loadImages} from "./common.js"
+import {getFirestoreVisitCnt, getImageDirs, getImageList, loadImages} from "./common.js"
 getFirestoreVisitCnt("index", "ysoftman", "visitcnt")
+
+const imgDirs = await getImageDirs("/")
+for (const dir of imgDirs) {
+    const item=`<button class="nes-btn is-primary" id='load_`+dir+`'>`+dir+`</button>`
+    document.getElementById("load_img_buttons").insertAdjacentHTML("beforeend", item)
+    document.getElementById("load_"+dir).addEventListener("click", ()=>{
+        document.getElementById("images").innerHTML=""
+        loadImg(dir)
+    });
+}
 
 async function loadImg(path) {
     const imgNames = await getImageList(path)
@@ -7,13 +17,4 @@ async function loadImg(path) {
     loadImages("images", imgNames)
 }
 loadImg("/funny")
-
-document.getElementById("load_funny").addEventListener("click", ()=>{
-    document.getElementById("images").innerHTML=""
-    loadImg("/funny")
-});
-document.getElementById("load_wallpaper").addEventListener("click",()=>{
-    document.getElementById("images").innerHTML=""
-    loadImg("/wallpaper")
-});
 
