@@ -38,7 +38,6 @@ img {
 }
 .nes-octocat {
     align-self: flex-end;
-    position: absolute;
     display: inline-block;
 }
 
