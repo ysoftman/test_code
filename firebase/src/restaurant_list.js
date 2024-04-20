@@ -7,6 +7,13 @@ export let restaurantlist = [
     detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
 },
 {
+    name: "라디오베이",
+    glyphicons: "bi-star",
+    location: "경기 성남시 분당구 삼평동 664 미래에셋센터 2층",
+    menu: "파스타,피자,콥샐러드",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
     name: "감성타코",
     glyphicons: "bi-heart",
     location: "경기 성남시 분당구 삼평동 740 판교호반써밋플레이스 2층 231,232호",
