@@ -16,5 +16,7 @@ async function loadImg(path) {
     // image div 태그를 구성해 이미지 순서를 보장
     loadImages("images", imgNames)
 }
-loadImg("/funny")
+if (imgDirs.length > 0) {
+    loadImg(imgDirs[0])
+}
 
