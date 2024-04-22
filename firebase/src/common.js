@@ -64,7 +64,7 @@ export const loadImages = async function(htmlId, imageNames) {
                     item = `<img loading="lazy" src=`+url+`></img>`
                     id += "_img"
                 } else {
-                    item = `<video controls autoplay muted><source type="video/mp4" src=`+url+`></video>`
+                    item = `<video width="640" controls autoplay muted><source type="video/mp4" src=`+url+`></video>`
                     id += "_video"
                 }
                 if (document.getElementById(id) == null) {
