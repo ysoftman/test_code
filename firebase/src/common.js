@@ -42,9 +42,9 @@ export const loadImages = async function(htmlId, imageNames) {
             isImage = false
         }
         if (isImage) {
-            item = `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+name+`_size></span>)</p><div id=`+name+`></div></div>`
+            item = `<div class="nes-container with-title"><p class="title">`+name+` (<span id="`+name+`_img_size"></span>)</p><div id="`+name+`_img"></div></div>`
         } else {
-            item = `<div class="nes-container with-title"><p class="title">`+name+`</p><div id=`+name+`></div></div>`
+            item = `<div class="nes-container with-title"><p class="title">`+name+`</p><div id="`+name+`_video"></div></div>`
         }
         document.getElementById(htmlId).insertAdjacentHTML("beforeend", item)
     }
@@ -59,15 +59,18 @@ export const loadImages = async function(htmlId, imageNames) {
                 if (name.endsWith("mp4")) {
                     isImage = false
                 }
+                let id = name
                 if (isImage){
                     item = `<img loading="lazy" src=`+url+`></img>`
+                    id += "_img"
                 } else {
-                    item = `<video controls autoplay muted><source src=`+url+`type="video/mp4"></video>`
+                    item = `<video controls autoplay muted><source type="video/mp4" src=`+url+`></video>`
+                    id += "_video"
                 }
-                if (document.getElementById(name) == null) {
+                if (document.getElementById(id) == null) {
                     return
                 }
-                document.getElementById(name).innerHTML = item
+                document.getElementById(id).innerHTML = item
                 if (isImage) {
                     // 동기식으로 이미지 크기를 순서대로 파악할 경우
                     //await getImgMetaSync(url).then(img => {
@@ -76,10 +79,10 @@ export const loadImages = async function(htmlId, imageNames) {
                     //})
                     getMeta(url, (err, img) => {
                         let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
-                        if (document.getElementById(name+"_size") == null) {
+                        if (document.getElementById(name+"_img_size") == null) {
                             return
                         }
-                        document.getElementById(name+"_size").innerHTML = imgSize
+                        document.getElementById(name+"_img_size").innerHTML = imgSize
                     });
                 }
             })
