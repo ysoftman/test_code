@@ -33,29 +33,55 @@ export const makeLogoutBoxHTML = function (userName) {
 }
 
 export const loadImages = async function(htmlId, imageNames) {
+    document.getElementById(htmlId).innerHTML = ""
+    let isImage = true
+    let item = ""
+    for (const name of imageNames) {
+        isImage = true
+        if (name.endsWith("mp4")) {
+            isImage = false
+        }
+        if (isImage) {
+            item = `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+name+`_size></span>)</p><div id=`+name+`></div></div>`
+        } else {
+            item = `<div class="nes-container with-title"><p class="title">`+name+`</p><div id=`+name+`></div></div>`
+        }
+        document.getElementById(htmlId).insertAdjacentHTML("beforeend", item)
+    }
     //forEach 안에서 await 를 사용할 수 없다.
-    //imageNames.forEach(function (name) {})
+    //imageNames.forEaCh(function (name) {})
     for (const name of imageNames) {
         // firestorage 에 저장된 이미지 url 불러오기
         let storageRef = ref(storage, name);
         getDownloadURL(storageRef)
             .then((url) => {
-                let item = ""
+                isImage = true
                 if (name.endsWith("mp4")) {
-                    item = `<div class="nes-container with-title"><p class="title">`+name+`</p><video controls autoplay muted><source src=`+url+`type="video/mp4"></video></div>`
+                    isImage = false
+                }
+                if (isImage){
+                    item = `<img loading="lazy" src=`+url+`></img>`
                 } else {
-                    item = `<div class="nes-container with-title"><p class="title">`+name+` (<span id=`+url+`_size></span>)</p><img loading="lazy" src=`+url+`></img></div>`
+                    item = `<video controls autoplay muted><source src=`+url+`type="video/mp4"></video>`
+                }
+                if (document.getElementById(name) == null) {
+                    return
+                }
+                document.getElementById(name).innerHTML = item
+                if (isImage) {
                     // 동기식으로 이미지 크기를 순서대로 파악할 경우
-                    //await getImgMeta(url).then(img => {
+                    //await getImgMetaSync(url).then(img => {
                     //    let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
                     //    document.getElementById(url+"_size").innerHTML = imgSize
                     //})
                     getMeta(url, (err, img) => {
                         let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
-                        document.getElementById(url+"_size").innerHTML = imgSize
+                        if (document.getElementById(name+"_size") == null) {
+                            return
+                        }
+                        document.getElementById(name+"_size").innerHTML = imgSize
                     });
                 }
-                document.getElementById(htmlId).insertAdjacentHTML("beforeend", item)
             })
     }
 }
