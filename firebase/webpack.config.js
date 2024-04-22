@@ -58,6 +58,9 @@ const config = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+    watchOptions: {
+        poll: 1000,
+    },
 };
 
 module.exports = () => {

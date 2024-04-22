@@ -88,19 +88,25 @@ firebase login --reauth
 # project list
 firebase projects:list
 
-# 최초한번만 패키지 설치
+# 최초 한번만 패키지 설치
 npm install
 
-# dist 로 빌드(번들링)
-yarn build
-
-# 테스트를 위해 로컬(dist) 서빙
+# 로컬 테스트를 위해 로컬(dist) 서빙
 firebase serve
+
+# 로컬 변경 사항 저장시 마다 빌드(dist 파일 업데이트)
+yarn watch
+
+# 로컬 확인
+http://localhost:5002/
+
+# 배포를 위해 dist 로 빌드(번들링)
+yarn build
 
 # 배포
 firebase deploy
 
-# 확인
+# 배포 확인
 https://ysoftman-firebase.firebaseapp.com/
 ```
 
