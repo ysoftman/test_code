@@ -3,7 +3,7 @@ import "./common.css"
 import {webApiKey} from "./web_api_key.js"
 import {restaurantlist} from "./restaurant_list.js"
 import {initializeApp} from "firebase/app"
-import {getAuth} from "firebase/auth"
+import {getAuth,signInAnonymously,onAuthStateChanged,GoogleAuthProvider,signInWithPopup,signOut,getRedirectResult,setPersistence,signInWithEmailAndPassword} from "firebase/auth"
 import {getDatabase} from "firebase/database"
 import {getFirestore, collection, doc, getDocs, setDoc, query, orderBy, runTransaction} from "firebase/firestore"
 import {getMessaging} from "firebase/messaging"
@@ -335,7 +335,7 @@ export const incRestaurantCnt = function (coll, docName, cntType, htmlId) {
 
 // 로그인한 사용자에 대한 정보가 필요한 앱 페이지마다 전역 인증 객체에 관찰자를 연결합니다.
 // 사용자의 로그인 상태가 변경될 때마다 이 관찰자가 호출됩니다.
-auth.onAuthStateChanged((user) => {
+onAuthStateChanged(auth, (user) => {
     document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
     document.getElementById(loginAnonymousBoxID).addEventListener("click", loginAnonymous);
     if (user) {
@@ -355,9 +355,9 @@ auth.onAuthStateChanged((user) => {
 
 // 로그인 유지설정(필요한 경우에만 호출)
 export const setAuthPersistence = function () {
-    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    setPersistence(auth, firebase.auth.Auth.Persistence.SESSION)
         .then(function () {
-            return auth.signInWithEmailAndPassword(email, password);
+            return signInWithEmailAndPassword(auth, email, password);
         }).catch(function (error) {
             alert("errCode:" + error.code +
                 "\nerrMessage:" + error.message)
@@ -382,7 +382,7 @@ export const loginAnonymous = function () {
         document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous"
         return
     }
-    auth.signInAnonymously()
+    signInAnonymously(auth)
         .then(() => {
             // Signed in..
             document.getElementById(loginAnonymousBoxID).innerHTML = makeLogoutBoxHTML("")
@@ -400,8 +400,8 @@ export const loginGoogle = function () {
         logout()
         return
     }
-    let provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).then(function (result) {
+    let provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         console.log("loginGoogle result.user:", result.user)
         let userName = result.user.displayName + " " + result.user.email
@@ -418,7 +418,7 @@ export const loginGoogle = function () {
 
 // 로그아웃
 export const logout= function () {
-    auth.signOut()
+    signOut(auth)
     console.log("logout...")
     document.getElementById(loginAnonymousBoxID).addEventListener("click", loginAnonymous);
     document.getElementById(loginBoxID).addEventListener("click", loginGoogle);
@@ -427,7 +427,7 @@ export const logout= function () {
 
 // 구글 로그인 이후 결과 정보
 export const GoogleLoginResult = function () {
-    auth.getRedirectResult().then(function (result) {
+    getRedirectResult(auth).then(function (result) {
         if (result.credential) {
             // This gives you a Google Access Token. You can use it to access the Google API.
         }
