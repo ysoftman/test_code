@@ -1,5 +1,12 @@
 export let restaurantlist = [
 {
+    name: "칠리셔스",
+    glyphicons: "bi-star",
+    location: "경기도 성남시 분당구 판교로227번길 6 (삼평동, 브릿지타워) 1층 108호",
+    menu: "칠리도그,칠리라이스,맥엔치즈프라이",
+    detailInfo:"", likeCntUsers: [], dislikeCntUsers: [], likeCnt: 0, dislikeCnt: 0
+},
+{
     name: "다연",
     glyphicons: "bi-star",
     location: "분당구 삼평동 681 H스퀘어 N동 1층",

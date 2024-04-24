@@ -170,7 +170,7 @@ export const setRestaurantDoc = function (coll, docData) {
     runTransaction(db, function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
         return transaction.get(docRef).then(function (doc1) {
-            if (doc1.exists) {
+            if (doc1.exists()) {
                 transaction.update(docRef, {
                     name: docData.name,
                     glyphicons: docData.glyphicons,
@@ -178,7 +178,7 @@ export const setRestaurantDoc = function (coll, docData) {
                     menu: docData.menu,
                     detailInfo: "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&q=판교+"+docData.name
                 });
-                console.log("update RestaurantDoc", doc)
+                console.log("update RestaurantDoc", docData)
                 return
             }
             transaction.set(docRef, {
@@ -190,14 +190,14 @@ export const setRestaurantDoc = function (coll, docData) {
                 likeCntUsers: docData.likeCntUsers,
                 dislikeCntUsers: docData.dislikeCntUsers,
                 likeCnt: docData.likeCnt,
-                dislikeCnt: doc.dislikeCnt
+                dislikeCnt: docData.dislikeCnt
             });
             console.log("set RestaurantDoc", doc)
         });
     }).then(function () {
         console.log("Transaction successfully committed!");
     }).catch(function (error) {
-        console.log("Transaction failed: ", error);
+        console.log("Transaction failed: ", docData.name, error);
     });
 }
 
@@ -286,7 +286,7 @@ export const incRestaurantCnt = function (coll, docName, cntType, htmlId) {
     runTransaction(db, function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
         return transaction.get(docRef).then(function (doc1) {
-            if (!doc1.exists) {
+            if (!doc1.exists()) {
                 throw "Document doest not exist!";
             }
             let newCnt = 0
