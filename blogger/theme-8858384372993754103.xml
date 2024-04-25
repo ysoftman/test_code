@@ -171,6 +171,21 @@ a:hover {
       animation: animate 10s linear infinite;
       */
 }
+.ysoftman-github-io {
+    padding: 0px 0px 0px 0px;
+}
+.ysoftman-github-io a {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--white);
+    text-shadow:
+        0 0 10px #ff72ff,
+        0 0 20px #ff72ff,
+        0 0 40px #ff72ff,
+        0 0 80px #ff72ff,
+        0 0 100px #ff72ff,
+        0 0 140px #ff72ff;
+}
 @keyframes animate {
     from {
         filter: hue-rotate(0deg);
@@ -450,8 +465,9 @@ input.ysoftman-input {
                         <tbody>
                           <tr>
                             <td>
-                              <div align='left' class='ysoftman-home'>
-                                <a href='/'>Sentimental Programmer</a>
+                              <div align='left'>
+                                <span class='ysoftman-home'><a href='/'>Sentimental Programmer</a></span>
+                                <span class='ysoftman-github-io'><a href='http://ysoftman.github.io' target='_blink'>| ysoftman.github.io</a></span>
                               </div>
                             </td>
                             <td>
