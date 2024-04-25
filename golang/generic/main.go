@@ -13,13 +13,12 @@ type Number interface {
 }
 
 func add[T Number](a, b T) T {
-	var result T
-	result = a + b
-	return result
+	return a + b
 }
 func add2[T int | int32 | int64](a, b T) T {
 	var result T
 	result = a + b
+	result += 10_000
 	return result
 }
 
