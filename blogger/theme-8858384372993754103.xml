@@ -54,7 +54,7 @@
 
 /* Content ----------------------------------------------- */
 body, .body-fauxcolumn-outer {
-    font: 1.2em Tahoma, Arial, Helvetica, FreeSans, sans-serif;
+    font: 1.2em Arial, Verdana, Helvetica;
     color: var(--gray);
     background: var(--black) none repeat scroll top left;
     padding: 0 0 0 0;
@@ -467,7 +467,7 @@ input.ysoftman-input {
                             <td>
                               <div align='left'>
                                 <span class='ysoftman-home'><a href='/'>Sentimental Programmer</a></span>
-                                <span class='ysoftman-github-io'><a href='http://ysoftman.github.io' target='_blink'>| ysoftman.github.io</a></span>
+                                <span class='ysoftman-github-io'><a href='http://ysoftman.github.io' target='_blink'>| ysoftman</a></span>
                               </div>
                             </td>
                             <td>
