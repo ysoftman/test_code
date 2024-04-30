@@ -36,6 +36,12 @@ func main() {
 	checkK8SName("999abc")
 	checkK8SName("1")
 	checkK8SName("a-b-c-d-1-2-3-4-5")
+
+	checkName1("123a-b-c-c-d")
+	checkName1("Aa-b-c-c-d")
+	checkName1("a-b-c-c-dddddddddd")
+	checkName1("-b-c-c-d")
+	checkName1("a-b-c-c-d")
 }
 
 func checkK8SName(name string) bool {
@@ -47,4 +53,11 @@ func checkK8SName(name string) bool {
 	}
 	fmt.Println("matched:", matched, "name:", name)
 	return matched
+}
+
+// 소문자 시작,  이후 소문자,  숫자,  - 허용, 최대 30글자까지
+var nameRule1 = regexp.MustCompile(`^[a-z]([a-z0-9-]{1,10})$`)
+
+func checkName1(name string) {
+	fmt.Println(name, nameRule1.MatchString(name))
 }
