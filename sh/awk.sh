@@ -18,6 +18,9 @@ echo -e $msg | awk '{print $1" "$2" "$3}'
 # , 를 주면 공백으로 출력되고 이후에 필드 구분처리(OFS)도 된다.
 echo -e $msg | awk '{print $1,$2,$3}'
 
+# 결과의 모든 첫 열에 라인 길이 추가해서 출력(문자열 길이로 sort 할때 사용하기 좋음)
+echo -e $msg | awk '{print length,$0}'
+
 # 결과의 모든 열 출력후 ysoftman 추가
 echo -e $msg | awk '{print $0,"ysoftman"}'
 
