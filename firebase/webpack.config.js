@@ -29,9 +29,6 @@ const config = {
             template: './src/restaurant_pangyo.html',
             chunks: ["page2"]
         }),
-
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -54,8 +51,6 @@ const config = {
                 use: ["style-loader", "css-loader"],
                 exclude: /node_modules/,
             },
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
     watchOptions: {
