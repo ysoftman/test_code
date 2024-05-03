@@ -4,7 +4,10 @@
 // desc : go interface test
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 // struct 는 데이터 필드들의 집합
 // interface 는 구현해야 하는 메소드들의 집합
@@ -79,5 +82,10 @@ func interfaceParameter(x ...interface{}) {
 
 	for _, v := range x {
 		fmt.Println(v)
+		r := reflect.ValueOf(v)
+		if r.Kind() == reflect.Ptr {
+			fmt.Println("-r.CanAddr():", r.CanAddr())
+			fmt.Println("-value that the interface v contains:", r.Elem())
+		}
 	}
 }
