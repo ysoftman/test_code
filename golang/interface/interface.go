@@ -63,8 +63,11 @@ func main() {
 	// foo3 는 calute() int 를 구현하고 있지 않아 doCal 을 사용할 수 없다.
 	// fmt.Println("foo2 calculate result:", doCal(f3))
 
+	f4 := &f3
+	fmt.Printf("f4: %p %v %v %v %v %v\n", f4, f4, *f4, &f4, *(&f4), *(*(&f4)))
+
 	// interface{} 파라미터는 어떤 타입의 값이던 전달 할 수 있다.
-	interfaceParameter(1, 'a', "abc", f1, f2, f3)
+	interfaceParameter(1, 'a', "abc", f1, f2, f3, f4, &f4)
 }
 
 // 빈인터페이스는 0개의 메소드 구현이 필요한것으로 볼 수 있다.
