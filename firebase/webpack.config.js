@@ -11,7 +11,8 @@ const config = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: "[name].js"
+        filename: "[name].js",
+        clean: true
     },
     devServer: {
         open: true,
@@ -44,13 +45,22 @@ const config = {
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                // webpack5 부터 asset/resource 타입이면 file-loader 없이 자동 번들된다.
+                type: 'asset/resource',
+                generator: {
+                    filename: '[name][ext]'
+                }
             },
             {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"],
                 exclude: /node_modules/,
             },
+            {
+                test: /\.s[ac]ss$/,
+                use: ["style-loader", "css-loader", "sass-loader"],
+                exclude: /node_modules/,
+            }
         ],
     },
     watchOptions: {

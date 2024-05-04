@@ -1,5 +1,5 @@
 // ysoftman
-import "./common.css"
+import "./common.css"  // css, scss 중 마지막에 import 해야 올바르게 적용된다.
 import {webApiKey} from "./web_api_key.js"
 import {restaurantlist} from "./restaurant_list.js"
 import {initializeApp} from "firebase/app"
