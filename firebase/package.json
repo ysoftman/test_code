@@ -4,6 +4,7 @@
   "author": "ysoftman",
   "license": "MIT",
   "dependencies": {
+    "@fontsource/press-start-2p": "^5.0.20",
     "bootstrap": "^5.3.3",
     "clean-webpack-plugin": "^4.0.0",
     "firebase": "^10.11.0",

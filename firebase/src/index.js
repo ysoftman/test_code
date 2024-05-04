@@ -1,3 +1,4 @@
+import "@fontsource/press-start-2p"; // Defaults to weight 400
 import {getFirestoreVisitCnt, getImageDirs, getImageList, loadImages} from "./common.js"
 getFirestoreVisitCnt("index", "ysoftman", "visitcnt")
 
