@@ -8,6 +8,7 @@
     "bootstrap": "^5.3.3",
     "clean-webpack-plugin": "^4.0.0",
     "eslit": "^6.0.0",
+    "nes.css": "^2.3.0",
     "prettier": "^3.2.5",
     "sass": "^1.76.0",
     "sass-loader": "^14.2.1",

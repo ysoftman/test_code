@@ -1,4 +1,6 @@
-import "@fontsource/press-start-2p"; // Defaults to weight 400
+import "@fontsource/press-start-2p";
+// yarn add nes.css --ignore-engines
+import "nes.css/css/nes.min.css";
 import {
   getFirestoreVisitCnt,
   getImageDirs,

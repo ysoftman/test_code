@@ -2,14 +2,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1" />
-    <!--<link href="common.css" rel="stylesheet" type="text/css" media="all">-->
-    <!-- example: https://nostalgic-css.github.io/NES.css/#installation -->
-    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
-    <!--스크립트 태그 안에서 번들 함수를 호출하면 문제가 생긴다.-->
-    <!--번들된 index.js 는 import ... from .로 할 수 없다.-->
     <title>ysoftman-firebase</title>
   </head>
-
   <body>
     <style>
       html,
@@ -68,7 +62,8 @@
         <ul class="nes-list is-disc">
           <h1>
             <li>
-              visitCnt from firestore database: <span id="visitcnt"></span>
+              visitCnt from firestore database:
+              <span class="nes-text is-success" id="visitcnt"></span>
             </li>
           </h1>
         </ul>
