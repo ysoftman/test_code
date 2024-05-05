@@ -94,10 +94,10 @@ firebase projects:list
 yarn
 
 # 로컬 테스트를 위해 로컬(dist) 서빙
-yarn build && irebase serve
+yarn build && yarn serve
 
 # 로컬 확인
-http://localhost:5002/
+http://localhost:8080/
 
 # 배포
 yarn build && firebase deploy
