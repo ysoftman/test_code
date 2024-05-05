@@ -70,7 +70,9 @@ gsutil mv -pv "gs://ysoftman-firebase.appspot.com/*.jpg" "gs://ysoftman-firebase
 # firebase-tools 설치(bun 설치가 빠르다)
 npm install -g firebase-tools
 # or
-bun add -g firebase-tool
+yarn global add firebase-tools
+# or
+bun add -g firebase-tools
 
 # 프로젝트 초기화(프로젝트 환경구성을 위해 최초 한번만)
 firebase init
@@ -89,7 +91,7 @@ firebase login --reauth
 firebase projects:list
 
 # 최초 한번만 패키지 설치
-npm install
+yarn
 
 # 로컬 테스트를 위해 로컬(dist) 서빙
 yarn build && irebase serve

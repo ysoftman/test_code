@@ -1,6 +1,7 @@
 import "./bootstrap.scss";
 import { readRestaurantAll, updateRestaurantAll } from "./common.js";
 const coll = "restaurant";
+
 window.onload = function () {
   readRestaurantAll(coll);
 
