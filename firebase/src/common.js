@@ -200,7 +200,7 @@ export const getFirestoreVisitCnt = function (coll, docName, htmlId) {
     });
 };
 
-// firestore 컬렉션(판교식당) 문서있으면 업데이트 없으면 생성
+// firestore 컬렉션 문서있으면 업데이트 없으면 생성
 export const setRestaurantDoc = function (coll, docData) {
   let docRef = doc(db, coll, docData.name);
   runTransaction(db, function (transaction) {
@@ -266,7 +266,7 @@ export const backupRestaurantDB = async function (coll) {
   return data;
 };
 export const updateRestaurantAll = function () {
-  // firestore 컬렉션(판교식당) 문서있으면 업데이트 없으면 생성
+  // firestore 컬렉션 문서있으면 업데이트 없으면 생성
   restaurantlist.forEach((doc) => {
     setRestaurantDoc(coll, doc);
   });
@@ -322,7 +322,7 @@ export const readRestaurantAll = async function (coll) {
   //console.log(html);
 };
 
-// firestore 컬렉션(판교식당) 해당하는 문서 카운트 증가시키기
+// firestore 컬렉션 해당하는 문서 카운트 증가시키기
 export const incRestaurantCnt = function (coll, docName, cntType, htmlId) {
   if (!checkLogin()) {
     alert("로그인이 필요합니다.");
