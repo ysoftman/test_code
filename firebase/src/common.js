@@ -22,8 +22,11 @@ import {
   getDocs,
   setDoc,
   query,
+  where,
   orderBy,
   runTransaction,
+  updateDoc,
+  deleteField,
 } from "firebase/firestore";
 import { getMessaging } from "firebase/messaging";
 import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
@@ -207,14 +210,13 @@ export const setRestaurantDoc = function (coll, docData) {
     // This code may get re-run multiple times if there are conflicts.
     return transaction.get(docRef).then(function (doc1) {
       if (doc1.exists()) {
+        // 필드 삭제시
+        //updateDoc(docRef, { menu: deleteField(), detailInfo: deleteField() });
         transaction.update(docRef, {
           name: docData.name,
           glyphicons: docData.glyphicons,
           location: docData.location,
-          menu: docData.menu,
-          detailInfo:
-            "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&q=판교+" +
-            docData.name,
+          tags: docData.tags,
         });
         console.log("update RestaurantDoc", docData);
         return;
@@ -223,10 +225,7 @@ export const setRestaurantDoc = function (coll, docData) {
         name: docData.name,
         glyphicons: docData.glyphicons,
         location: docData.location,
-        menu: docData.menu,
-        detailInfo:
-          "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&q=판교+" +
-          docData.name,
+        tags: docData.tags,
         likeCntUsers: docData.likeCntUsers,
         dislikeCntUsers: docData.dislikeCntUsers,
         likeCnt: docData.likeCnt,
@@ -271,7 +270,18 @@ export const updateRestaurantAll = function () {
     setRestaurantDoc(coll, doc);
   });
 };
-export const readRestaurantAll = async function (coll) {
+
+export const makeDetailInfo = function (name) {
+  return (
+    "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&q=" + name
+  );
+};
+
+export const readRestaurantAll = async function (coll, tag) {
+  if (tag == undefined) {
+    console.log("undefined tag");
+    tag = "";
+  }
   // collection 전체 문서 가져오기
   // likeCnt 많은 순으로
   const q = query(collection(db, coll), orderBy("likeCnt", "desc"));
@@ -281,7 +291,15 @@ export const readRestaurantAll = async function (coll) {
   let html = `<div class="row row-cols-1 row-cols-md-3 g-4">`;
 
   querySnapshot.forEach((doc) => {
-    docNames.push(`${doc.data().name}`);
+    if (
+      !doc.data().name.includes(tag) &&
+      !doc.data().location.includes(tag) &&
+      !doc.data().tags.includes(tag)
+    ) {
+      return;
+    }
+    docNames.push(doc.data().name);
+    let detailInfo = makeDetailInfo(doc.data().name);
     html += `
 <div class="col">
 <div class="card h-100">
@@ -291,10 +309,10 @@ export const readRestaurantAll = async function (coll) {
         <i class="bi ${doc.data().glyphicons}"></i>
     </h4>
     <p class="card-text">${doc.data().location}</p>
-    <p class="card-text">${doc.data().menu}</p>
+    <p class="card-text">${doc.data().tags}</p>
 </div>
 <p class="text-center">
-    <a href="${doc.data().detailInfo}" target="_blank" class="btn btn-primary">상세정보</a>
+    <a href="${detailInfo}" target="_blank" class="btn btn-primary">상세정보</a>
     <button type="button" id='${doc.data().name}_like' class="btn btn-success"><div id='${doc.data().name}_좋아요'>좋아요 ${doc.data().likeCnt}</div></button>
     <button type="button" id='${doc.data().name}_dislike' class="btn btn-danger"><div id='${doc.data().name}_싫어요'>싫어요 ${doc.data().dislikeCnt}</div></button>
 </p>
@@ -318,7 +336,25 @@ export const readRestaurantAll = async function (coll) {
     });
   }
   document.getElementById("restaurant_cnt").innerHTML =
-    " (" + docNames.length + "개)";
+    " (결과: " + docNames.length + "개)";
+
+  document
+    .getElementById("search_restaurant_input")
+    .addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("search_restaurant_button").click();
+      }
+    });
+  document
+    .getElementById("search_restaurant_button")
+    .addEventListener("click", () => {
+      readRestaurantAll(
+        coll,
+        document.getElementById("search_restaurant_input").value,
+      );
+    });
+
   //console.log(html);
 };
 
