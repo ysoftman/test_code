@@ -153,23 +153,6 @@ export const readRestaurantAll = async function (coll, tag) {
   document.getElementById("restaurant_cnt").innerHTML =
     " (결과: " + docNames.length + "개)";
 
-  document
-    .getElementById("search_restaurant_input")
-    .addEventListener("keypress", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        document.getElementById("search_restaurant_button").click();
-      }
-    });
-  document
-    .getElementById("search_restaurant_button")
-    .addEventListener("click", () => {
-      readRestaurantAll(
-        coll,
-        document.getElementById("search_restaurant_input").value,
-      );
-    });
-
   //console.log(html);
 };
 
@@ -245,7 +228,22 @@ export const incRestaurantCnt = function (coll, docName, cntType, htmlId) {
 };
 
 window.onload = function () {
-  readRestaurantAll(coll);
+  document
+    .getElementById("search_restaurant_input")
+    .addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("search_restaurant_button").click();
+      }
+    });
+  document
+    .getElementById("search_restaurant_button")
+    .addEventListener("click", () => {
+      readRestaurantAll(
+        coll,
+        document.getElementById("search_restaurant_input").value,
+      );
+    });
 
   //컬렉션: restaurant 문서 추가 및 업데이트(db export 기능이 있지만 결재가 필요함)
   //local restaurant.html 접속
