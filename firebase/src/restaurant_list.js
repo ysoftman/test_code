@@ -1,5 +1,25 @@
 export let restaurantlist = [
   {
+    name: "서울감자탕 정자점",
+    glyphicons: "bi-star",
+    location: "경기 성남시 분당구 내정로31번길 7-13",
+    tags: "감자탕",
+    likeCntUsers: [],
+    dislikeCntUsers: [],
+    likeCnt: 0,
+    dislikeCnt: 0,
+  },
+  {
+    name: "최가돈까스",
+    glyphicons: "bi-star",
+    location: "경기도 성남시 분당구 정자동 14-3 동양파라곤 1단지상가 지하104호",
+    tags: "돈까스",
+    likeCntUsers: [],
+    dislikeCntUsers: [],
+    likeCnt: 0,
+    dislikeCnt: 0,
+  },
+  {
     name: "화수목 샤브샤브",
     glyphicons: "bi-star",
     location: "경기 성남시 분당구 황새울로 315 대현빌딩 1층",

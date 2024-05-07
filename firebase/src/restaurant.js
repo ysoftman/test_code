@@ -214,7 +214,7 @@ export const readRestaurantAll = async function (tag) {
     tag = "";
   }
 
-  //firebase-store 요청이 너무 많아 사용하지 않기로 함
+  //firestore 요청이 너무 많아 사용하지 않기로 함
   //let tempDocs = await readRestaurantAllFromFirebase(tag);
   let tempDocs = await readRestaurantAllFromJSFile(tag);
 
