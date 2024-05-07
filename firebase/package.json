@@ -6,6 +6,7 @@
   "dependencies": {
     "@fontsource/press-start-2p": "^5.0.20",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "clean-webpack-plugin": "^4.0.0",
     "eslit": "^6.0.0",
     "nes.css": "^2.3.0",

@@ -1,5 +1,25 @@
 export let restaurantlist = [
   {
+    name: "화수목 샤브샤브",
+    glyphicons: "bi-star",
+    location: "경기 성남시 분당구 황새울로 315 대현빌딩 1층",
+    tags: "샤브샤브",
+    likeCntUsers: [],
+    dislikeCntUsers: [],
+    likeCnt: 0,
+    dislikeCnt: 0,
+  },
+  {
+    name: "야마다야",
+    glyphicons: "bi-star",
+    location: "경기 성남시 분당구 구미로 124 굿모닝프라자",
+    tags: "수타 우동,튀김",
+    likeCntUsers: [],
+    dislikeCntUsers: [],
+    likeCnt: 0,
+    dislikeCnt: 0,
+  },
+  {
     name: "칠리셔스",
     glyphicons: "bi-star",
     location:
