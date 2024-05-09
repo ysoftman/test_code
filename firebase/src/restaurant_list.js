@@ -1,5 +1,16 @@
 export let restaurantlist = [
   {
+    name: "덕후선생 판교아비뉴프랑",
+    glyphicons: "bi-star",
+    location:
+      "경기 성남시 분당구 동판교로177번길 25 판교호밋써밋플레이스 2층 233-2,234,235호",
+    tags: "북경오리,베이징덕",
+    likeCntUsers: [],
+    dislikeCntUsers: [],
+    likeCnt: 0,
+    dislikeCnt: 0,
+  },
+  {
     name: "서울감자탕 정자점",
     glyphicons: "bi-star",
     location: "경기 성남시 분당구 내정로31번길 7-13",
