@@ -1,13 +1,5 @@
 // ysoftman
 // beep 패키지 테스트
-// go module 패키지 관리자를 사용하지 않고 패키지 설치 및 빌드
-/*
-GO111MODULE=off go get -u github.com/faiface/beep
-GO111MODULE=off go get -u github.com/hajimehoshi/go-mp3
-GO111MODULE=off go get -u github.com/DATA-DOG/go-sqlmock
-GO111MODULE=off go get -u github.com/hajimehoshi/oto
-GO111MODULE=off go run beep.go
-*/
 package main
 
 import (
