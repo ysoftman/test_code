@@ -7,7 +7,6 @@ const isProduction = process.env.NODE_ENV == "production";
 const config = {
   entry: {
     index: "./src/index.js",
-    restaurant: "./src/restaurant.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -24,11 +23,6 @@ const config = {
       filename: "index.html",
       template: "./src/index.html",
       chunks: ["page1"],
-    }),
-    new HtmlWebpackPlugin({
-      filename: "restaurant.html",
-      template: "./src/restaurant.html",
-      chunks: ["page2"],
     }),
   ],
   module: {

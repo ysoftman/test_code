@@ -34,7 +34,7 @@ service cloud.firestore {
 }
 
 # firebase -> 데이터 -> 컬렉션시작
-index, restaurant 컬렉션 생성
+index 컬렉션 생성
 
 # firebase storage 업로드
 # gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
@@ -112,4 +112,3 @@ https://ysoftman-firebase.firebaseapp.com/
 - <https://firebase.google.com/docs/firestore/quickstart>
 - <https://github.com/firebase/quickstart-js/blob/master/storage/index.html>
 - <https://nostalgic-css.github.io/NES.css/#installation>
-
