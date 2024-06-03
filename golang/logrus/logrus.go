@@ -61,7 +61,7 @@ func main() {
 	// 디버그 레벨 이상의 로그는 출력 하도록 설정
 	log.SetLevel(log.DebugLevel)
 
-	fmt.Printf("luberjack rotate options\n%#v\n", lj)
+	fmt.Printf("lumberjack rotate options\n%#v\n", lj)
 	fmt.Println("Press Ctrl + c to stop to rotate log...")
 	// json 형식으로 로그 출력
 	log.SetFormatter(&log.JSONFormatter{PrettyPrint: true})
