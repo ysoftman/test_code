@@ -31,7 +31,7 @@ fi
 echo "\$shell_name:" $shell_name
 
 if [[ $shell_name == "zsh" ]]; then
-    # zsh 에서는 sh_word_split 활성화야 공백,엔터로 구분할 수 있다.
+    # zsh 에서는 sh_word_split 활성화해야 공백,엔터로 구분할 수 있다.
     setopt sh_word_split
 fi
 

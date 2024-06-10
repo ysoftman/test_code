@@ -7,6 +7,7 @@
 
 # 원소 구분은 공백으로 한다.
 arr=(1 23 4 "a")
+echo '${arr}' ${arr}  # arr 로 접근하면 첫번째 원소값만 보인다.
 # bash 는 0, zsh 는 1이 시작 인덱스다.
 echo '${arr[0]}' ${arr[0]}
 echo '${arr[1]}' ${arr[1]}
@@ -48,3 +49,13 @@ for ((i=0;i<${#arr[@]};i++))
 do
     echo "[${i}] ${arr[$i]}";
 done
+
+set -x
+echo "-----"
+a="lemon apple a 123"
+arr=($a)
+echo ${arr[0]}
+echo ${arr[1]}
+echo ${arr[2]}
+echo ${arr[3]}
+echo ${arr[4]}
