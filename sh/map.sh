@@ -1,7 +1,7 @@
 #/bin/bash
 # map 만들기
-#
-# associatgive array variable 로 선언해야 한다.
+
+# associative array variable 로 선언해야 한다.
 declare -A map
 map["key1"]="lemon"
 map["key2"]="apple"
