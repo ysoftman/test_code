@@ -4,10 +4,15 @@ set -x
 
 # bash 에서는 -E 가 디폴트
 # zsh 에셔는 -e 가 디폴트
-echo "\"apple\nlemon\""
+echo "\"apple\n   lemon\""
+
+# bash 에서는 declare -x z="\"apple\\n   lemon\""
+# zsh 에서는 z='"apple\n   lemon"'
+# bash 에서 연속적인 공백문자를 출력하려면 변수를 "" 로 감싸야 한다
+export z="\"apple\n   lemon\"";  export | grep z=; echo -e "$z"
 
 # disable interpretation escape
-echo -E "\"apple\nlemon\""
+echo -E "\"apple\n   lemon\""
 
 # interpretation escape
 # https://www.gnu.org/software/coreutils/manual/html_node/echo-invocation.html
@@ -21,8 +26,8 @@ echo -E "\"apple\nlemon\""
 # \t horizontal tab
 # \v vertical tab
 # \\ backslash
-echo -e "\"apple\nlemon\""
+echo -e "\"apple\n   lemon\""
 
 # without trailing newline
-echo -n "\"apple\nlemon\""
+echo -n "\"apple\n   lemon\""
 
