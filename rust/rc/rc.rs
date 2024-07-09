@@ -1,5 +1,5 @@
 // ysoftman
-// referenc counting(rc) test
+// reference counting(rc) test
 
 enum List {
     Node(i32, Box<List>),

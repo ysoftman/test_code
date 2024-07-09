@@ -15,7 +15,7 @@ fn main() {
     println!("s2: {}, len: {} capacity: {}", s2, s2.len(), s2.capacity());
     println!("s3: {}, len: {} capacity: {}", s3, s3.len(), s3.capacity());
     println!("s4: {}, len: {} capacity: {}", s4, s4.len(), s4.capacity());
-    println!("s1 is emtpy(): {}", s1.is_empty());
+    println!("s1 is empty(): {}", s1.is_empty());
 
     // string -> str 로 참조
     // as_str() 사용
