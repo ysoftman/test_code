@@ -114,7 +114,7 @@ fn main() {
     println!("content:{}", post.content());
 
     // 게시 상태로 변경
-    // 포스트를 승인하면 publised 상태가 되고 publilshed 상태에서는 content() 로 포스트 내용을 볼 수 있다.
+    // 포스트를 승인하면 published 상태가 되고 publilshed 상태에서는 content() 로 포스트 내용을 볼 수 있다.
     post.approve();
     assert_eq!("포스트 내용", post.content());
     println!("content:{}", post.content());

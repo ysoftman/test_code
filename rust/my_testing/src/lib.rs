@@ -28,7 +28,7 @@ mod tests {
     // ignore 하면 'ignored'로 표시되고 실제 수행되지는 않는다.
     #[test]
     #[ignore]
-    fn igore_test() {
+    fn ignore_test() {
         assert_eq!(1 + 1, 2);
     }
     #[test]

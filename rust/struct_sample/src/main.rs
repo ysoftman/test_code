@@ -23,7 +23,7 @@ struct Area {
 }
 // struct 내에서 선언되고 사용되는 함수(메소스) 구현
 impl Area {
-    // 메소드는 항상 첫번째 파라미터로 self(sturct instance)를 사용해야 한다.
+    // 메소드는 항상 첫번째 파라미터로 self(struct instance)를 사용해야 한다.
     // 메소드 호출시 self 를 명시하지는 않는다.
     // 메소드가 인스턴스의 대한 소유권을 가져 가지 않도록 참조(&)를 사용했다.
     // 메소스내에서 변경이 필요하면 $mut self 를 사용한다.
@@ -129,10 +129,10 @@ fn make_user(name: &String, cnt: u64) -> User {
 
 // 사각형 넓이 구하는 함수에서 width, height 두개의 파라미터를 각각 명시하는 대시
 // () 튜플 파라미터로 전달
-fn calc_area1(dimentions: (u32, u32)) -> u32 {
-    dimentions.0 * dimentions.1
+fn calc_area1(dimensions: (u32, u32)) -> u32 {
+    dimension.0 * dimensions.1
 }
 
-fn calc_area2(dimentions: &Area) -> u32 {
-    dimentions.width * dimentions.height
+fn calc_area2(dimensions: &Area) -> u32 {
+    dimensions.width * dimensions.height
 }

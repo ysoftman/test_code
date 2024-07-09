@@ -1,5 +1,5 @@
 // ysoftman
-// oop(opbject oriented programming) test
+// oop(object oriented programming) test
 // 객체지향은 데이터와 데이터를 활용하는 프로시져(메소드)의 묶음이다.
 // rust 는 struct, enum 으로 데이터를 의미할 수 있고,
 // impl 블럭으로 struct, enum 에 대한 메소드를 제공한다.

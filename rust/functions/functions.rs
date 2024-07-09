@@ -19,7 +19,7 @@ fn main() {
 }
 
 fn ret_n_values((a, b): (i32, i32)) -> (u32, String, f32) {
-    println!("tuple paramter({}, {})", a, b);
+    println!("tuple parameter({}, {})", a, b);
     // 여러개 값 리턴
     (123, "ysoftman".to_string(), 1.12)
 }

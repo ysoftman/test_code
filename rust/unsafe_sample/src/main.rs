@@ -31,7 +31,7 @@ unsafe fn dangerous() {
 // extern "C" 로 실제 존재하는 C 표준 라이브러이의 abs()함수를 사용할 수 있다.
 // unsafe{} 에서만 호출 할 수 있다.
 extern "C" {
-    fn abs(intput: i32) -> i32;
+    fn abs(input: i32) -> i32;
 }
 
 // unsafe trait 도 만들 수 있다.

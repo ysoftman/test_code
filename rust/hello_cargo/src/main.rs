@@ -8,7 +8,7 @@ fn main() {
     let mut bbb = "bbbb";
     // aaa 값을 변경할 수 없다.
     // aaa = "bbb";
-    // {} 변경자(placholder)로 변수별 출력 위치 지정
+    // {} 변경자(placeholder)로 변수별 출력 위치 지정
     println!("{} {}", aaa, bbb);
 
     // 가변 변수라 값을 바꿀 수 있다.

@@ -23,7 +23,7 @@ use lemon::apple::orange::juice;
 mod banana;
 
 fn main() {
-    // my_mod unsed function 경고를 없애기 위해 사용
+    // my_mod unused function 경고를 없애기 위해 사용
     my_mod::fruit::list();
     my_mod::friend::list();
 

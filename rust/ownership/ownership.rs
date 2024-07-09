@@ -1,5 +1,5 @@
 // ysoftman
-// owernship(소유권)
+// ownership(소유권)
 // - 모든 값들은 owner(오너) 라는 변수를 가지고 있다.
 // - 한번에 하나의 오너만 존재한다.
 // - scope 를 벗어나면 값은 drop(메모리 해제)된다.
