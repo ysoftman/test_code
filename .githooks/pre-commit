@@ -76,5 +76,15 @@ if [[ ok == false ]]; then
     exit 1
 fi
 
+# typos 로 오타 체크
+type typos
+if [[ $? == 0 ]]; then
+    typos
+    if [[ $? != 0 ]]; then
+        $ECHO "[.githooks/pre-commit] ${red}failed to check typos, please check errors/warnings above${reset_color}"
+        exit 2
+    fi
+fi
+
 $ECHO "[.githooks/pre-commit] ${green}succeeded~${reset_color}"
 exit 0
