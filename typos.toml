@@ -1,0 +1,38 @@
+[default]
+extend-ignore-identifiers-re = [
+    # *sigh* this just isn't worth the cost of fixing
+    "AttributeID.*Supress.*",
+]
+
+[default.extend-identifiers]
+# *sigh* this just isn't worth the cost of fixing
+AttributeIDSupressMenu = "AttributeIDSupressMenu"
+
+[default.extend-words]
+# Don't correct the surname "Teh"
+teh = "teh"
+
+# 지원되는 타입 확인
+#typos --type-list
+
+#*.lock, go.sum, package-lock.json, pnpm-lock.yaml, requirements.txt
+[type.lock]
+check-file = false
+[type.xml]
+check-file = false
+[type.jupyter]
+check-file = false
+[type.csv]
+check-file = false
+
+# 커스텀 파일 타입
+[type.raw]
+extend-glob=["*.raw"]
+check-file = false
+[type.ysoftman]
+extend-glob=["*.ysoftman"]
+check-file = false
+
+
+# 설치 및 실행
+#brew install typos-cli
