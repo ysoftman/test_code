@@ -1,5 +1,5 @@
 // ysoftman
-// split stirng test
+// split string test
 
 #include <iostream>
 #include <string>

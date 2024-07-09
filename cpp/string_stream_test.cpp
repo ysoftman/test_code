@@ -62,7 +62,7 @@ int main()
 {
 	tokenize_using_istringstream();
 
-	cout << "[\\t \\n \\r stirng stream operator >> omit first byte]" << endl;
+	cout << "[\\t \\n \\r string stream operator >> omit first byte]" << endl;
 	int llMsgID = 231520362;
 	string strIn;
 	string strOut;
@@ -89,7 +89,7 @@ int main()
 	cout << endl;
 	cout << endl;
 
-	// \t \n \r 등으로 시작되는 경우 stirng 스트림의 >> 사용시 첫번째 바이트가 빠지는 문제 발생
+	// \t \n \r 등으로 시작되는 경우 string 스트림의 >> 사용시 첫번째 바이트가 빠지는 문제 발생
 	char szBuffer2[5];
 	memset(szBuffer2, 0, sizeof(szBuffer2));
 	//szBuffer2[0] = '\t';

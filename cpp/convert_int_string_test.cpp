@@ -61,7 +61,7 @@ long string2number(string str)
 
 int main()
 {
-	cout << "input nubmer(to convert to string) : ";
+	cout << "input number(to convert to string) : ";
 	long num;
 	cin >> num;
 	cout << "number:" << num << endl;

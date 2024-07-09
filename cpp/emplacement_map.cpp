@@ -43,7 +43,7 @@ int main()
     // 참고로 map insert,emplace 는 key 가 존재하지 않을때만 추가된다.
     // m.insert(std::pair<int, ITEM>(123, ITEM("apple", 222)));
     // m.insert(std::make_pair(123, ITEM("orange", 333)));
-    // [] = 로 overwirte 할 수 있다.
+    // [] = 로 overwrite 할 수 있다.
     // [] = 는 빈객체 생성(때문에 파라메터 없는 기본 ITEM() 생성자가 필요)하고 banana 아이템객체를 복사한다.
     m[123] = ITEM("banana", 555);
     printItemMap(m);

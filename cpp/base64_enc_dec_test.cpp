@@ -211,7 +211,7 @@ int main()
 	char teststring[100] = "윤병훈 yoon byoung hoon 1234 !@#$";
 	char *pInput = teststring;
 
-	fprintf(stdout, "[intput text] = %s\n", pInput);
+	fprintf(stdout, "[input text] = %s\n", pInput);
 
 	char *Base64EncodeResult = Base64Encoding(pInput, strlen(pInput));
 	fprintf(stdout, "[Base64 Encoding] = %s\n", Base64EncodeResult);

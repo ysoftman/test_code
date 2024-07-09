@@ -37,7 +37,7 @@ void PrimeNumber(int num)
 			if (i % j == 0)
 			{
 				isPrime = 0;
-				printf("%3d is not PrimeNumber(devide by %d ...etc)\n", i, j);
+				printf("%3d is not PrimeNumber(divide by %d ...etc)\n", i, j);
 				break;
 			}
 		}

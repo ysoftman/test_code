@@ -17,7 +17,7 @@ int main()
     // 다음과 같은 방식으로 overflow 를 방지한다.
     // left 기준으로 right - left 차이의 중간 값을 더하면 데이터 범위내에서 계산된다.
     printf("left + ((right - left) / 2)  : %d\n", left + ((right - left) / 2));
-    // unsinged 로 큰 범위에서 계산해도 된다.
+    // unsigned 로 큰 범위에서 계산해도 된다.
     printf("((unsigned int)left + (unsigned int)right) >> 1;  : %d\n", ((unsigned int)left + (unsigned int)right) >> 1);
     return 0;
 }

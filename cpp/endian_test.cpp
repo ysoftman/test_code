@@ -1,6 +1,6 @@
 // ysoftman
 // Big Endian(UNIX with RISC(Motoloa 6800, MIPS, SPARC, etc...))
-// Little Endian(Windows with Intel x86, DEC Alpah, etc...)
+// Little Endian(Windows with Intel x86, DEC Alpha, etc...)
 // 두 방식 간의 데이러를 메모리상에 Mapping 방식이 틀려서 byte swapping이 필요
 #include <stdio.h>
 #include <string.h>
@@ -13,7 +13,7 @@
 struct STUDENT
 {
 	char name[5];
-	long Name[4]; // for Number Expression of Charater Name
+	long Name[4]; // for Number Expression of Character Name
 	int age;
 };
 

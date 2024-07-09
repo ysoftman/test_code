@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	FILE *fpInput = NULL;
 	if ((fpInput = fopen(argv[1], "rb")) == NULL)
 	{
-		fprintf(stderr, "Faile to open text-file.\n");
+		fprintf(stderr, "Failed to open text-file.\n");
 		exit(-1);
 	}
 

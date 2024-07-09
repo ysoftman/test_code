@@ -31,16 +31,16 @@ void setRootDummy()
 	printf("%s\n", __FUNCTION__);
 
 	// Dummy 인스턴스를 스택공간에 생성
-	Dummy dum;
-	dum.a = ++g_Cnt;
-	dum.b = dum.a + 1;
-	printf("dum(0x%p) a(%d) b(%d)\n", &dum, dum.a, dum.b);
+	Dummy dummy;
+	dummy.a = ++g_Cnt;
+	dummy.b = dummy.a + 1;
+	printf("dummy(0x%p) a(%d) b(%d)\n", &dummy, dummy.a, dummy.b);
 
 	// 값 복사
-	g_RootDummy = dum;
+	g_RootDummy = dummy;
 	printf("g_RootDummy(0x%p) a(%d) b(%d)\n", &g_RootDummy, g_RootDummy.a, g_RootDummy.b);
 
-	// dum은 스택 메모리로 함수 끝나면 소멸자 호출
+	// dummy은 스택 메모리로 함수 끝나면 소멸자 호출
 }
 
 int main()

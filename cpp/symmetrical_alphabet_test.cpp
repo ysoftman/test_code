@@ -31,7 +31,7 @@ int main()
 
 	// 입력한 개수 만큼 대칭 모양 만들기
 	int n;
-	printf("Input Numbe(<=26) : ");
+	printf("Input Number(<=26) : ");
 	scanf("%d", &n);
 	for (i = 1; i <= n * 2; i++)
 	{

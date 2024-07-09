@@ -31,12 +31,12 @@ public:
 	int nVal;
 	std::string strVal;
 };
-void func1(std::vector<Dummy *> vecDum)
+void func1(std::vector<Dummy *> vecDummy)
 {
 	std::vector<Dummy *>::iterator iter;
 	int idx = 0;
 	std::string str = "";
-	for (iter = vecDum.begin(); iter != vecDum.end(); ++iter)
+	for (iter = vecDummy.begin(); iter != vecDummy.end(); ++iter)
 	{
 		(*iter)->nVal = ++idx;
 		str += "a";
@@ -58,31 +58,31 @@ int main()
 	reference(pnum);
 	printf("Call by Reference : %d\n", num);
 
-	std::vector<Dummy *> vecDum;
+	std::vector<Dummy *> vecDummy;
 	for (int i = 0; i < 3; i++)
 	{
-		Dummy *dum = new Dummy();
-		vecDum.push_back(dum);
+		Dummy *dummy = new Dummy();
+		vecDummy.push_back(dummy);
 	}
 	std::vector<Dummy *>::iterator iter;
-	for (iter = vecDum.begin(); iter != vecDum.end(); ++iter)
+	for (iter = vecDummy.begin(); iter != vecDummy.end(); ++iter)
 	{
 		printf("(*iter)->nVal = %d, (*iter)->strVal = %s\n", (*iter)->nVal, (*iter)->strVal.c_str());
 	}
 
 	printf("------------------------------\n");
-	func1(vecDum);
+	func1(vecDummy);
 	printf("------------------------------\n");
 
-	for (iter = vecDum.begin(); iter != vecDum.end(); ++iter)
+	for (iter = vecDummy.begin(); iter != vecDummy.end(); ++iter)
 	{
 		printf("(*iter)->nVal = %d, (*iter)->strVal = %s\n", (*iter)->nVal, (*iter)->strVal.c_str());
 	}
 
-	while (!vecDum.empty())
+	while (!vecDummy.empty())
 	{
-		delete vecDum.back();
-		vecDum.pop_back();
+		delete vecDummy.back();
+		vecDummy.pop_back();
 	}
 
 	return 0;

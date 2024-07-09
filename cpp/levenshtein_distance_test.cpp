@@ -26,7 +26,7 @@ int LevenshteinDistance(char *pInStr, char *pDicStr)
 	int i = 0, j = 0;
 	int cost = 0, distance = 0;
 
-	// distace 를 기록할 m x n matrix
+	// distance 를 기록할 m x n matrix
 	int d[MAX_STR_LEN][MAX_STR_LEN];
 	memset(d, 0, sizeof(char) * MAX_STR_LEN * MAX_STR_LEN);
 

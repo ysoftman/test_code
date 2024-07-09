@@ -10,7 +10,7 @@ struct my_struct
     const char *cstr;
 };
 
-void print_my_sturct(my_struct st)
+void print_my_struct(my_struct st)
 {
     cout << "-----" << endl;
     cout << "st.num:" << st.num << endl;
@@ -27,7 +27,7 @@ int main()
     my1.str = "ysoftman1";
     my1.cstr = "ysoftman2";
     my1.num = 100;
-    print_my_sturct(my1);
+    print_my_struct(my1);
 
     // initialize struct - case2
     my_struct my2 = {
@@ -35,7 +35,7 @@ int main()
         "lemon",
         99.99,
         "apple"};
-    print_my_sturct(my2);
+    print_my_struct(my2);
 
     // initialize struct - case3
     my_struct my3 = {
@@ -43,7 +43,7 @@ int main()
         .str = "juice1",
         .cstr = "juice2",
         .num = 55};
-    print_my_sturct(my3);
+    print_my_struct(my3);
 
     return 0;
 }
