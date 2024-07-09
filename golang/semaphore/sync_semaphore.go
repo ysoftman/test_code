@@ -25,7 +25,7 @@ func main() {
 	maxThreads := runtime.GOMAXPROCS(0)
 	numJobs := 20
 	wg.Add(numJobs)
-	fmt.Println("maxThreds:", maxThreads)
+	fmt.Println("maxThreads:", maxThreads)
 
 	//maxThreads 개수(weight) 만큼 lock 을 가질 수 있다.
 	sem := semaphore.NewWeighted(int64(maxThreads))

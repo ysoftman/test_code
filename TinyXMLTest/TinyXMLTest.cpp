@@ -65,7 +65,7 @@ namespace TINYXML
 		if (m_doc.Error())
 		{
 			fprintf(stderr, "Error: %s\n", m_doc.ErrorDesc());
-			fprintf(stderr, "This stirng is Text\n");
+			fprintf(stderr, "This string is Text\n");
 			return 0;
 		}
 		fprintf(stderr, "This string is XML\n");

@@ -1,5 +1,5 @@
 #!/bin/bash
-# delcare(typeset 이름으로도 사용), 변수 타입(특성) 지정
+# declare(typeset 이름으로도 사용), 변수 타입(특성) 지정
 
 function aaa {
     echo "aaa"

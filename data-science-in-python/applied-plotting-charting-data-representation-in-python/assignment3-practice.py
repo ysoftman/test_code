@@ -49,10 +49,10 @@ plt.hist(x3, density=True, bins=20, alpha=0.5, color=colors[2])
 plt.hist(x4, density=True, bins=20, alpha=0.5, color=colors[3])
 plt.axis([-7, 21, 0, 0.6])
 
-plt.text(x1.mean()-1.5, 0.5, 'x1\nNormal')
-plt.text(x2.mean()-1.5, 0.5, 'x2\nGamma')
-plt.text(x3.mean()-1.5, 0.5, 'x3\nExponential')
-plt.text(x4.mean()-1.5, 0.5, 'x4\nUniform')
+plt.text(x1.mean() - 1.5, 0.5, "x1\nNormal")
+plt.text(x2.mean() - 1.5, 0.5, "x2\nGamma")
+plt.text(x3.mean() - 1.5, 0.5, "x3\nExponential")
+plt.text(x4.mean() - 1.5, 0.5, "x4\nUniform")
 
 
 #####
@@ -66,14 +66,14 @@ xdata = [x1, x2, x3, x4]
 
 colors = ["red", "green", "blue", "cyan"]
 # 2x2 subplot 으로 표현
-fig, ([ax1, ax2], [ax3,  ax4]) = plt.subplots(2, 2)
+fig, ([ax1, ax2], [ax3, ax4]) = plt.subplots(2, 2)
 ax1.hist(x1, density=True, bins=20, alpha=0.5, color=colors[0])
 ax2.hist(x2, density=True, bins=20, alpha=0.5, color=colors[1])
 ax3.hist(x3, density=True, bins=20, alpha=0.5, color=colors[2])
 ax4.hist(x4, density=True, bins=210, alpha=0.5, color=colors[3])
-axises = [ax1, ax2, ax3, ax4]
+axes = [ax1, ax2, ax3, ax4]
 
-titles = ['x1\nNormal', 'x2\nGamma', 'x3\nExponential', 'x4\nUniform']
+titles = ["x1\nNormal", "x2\nGamma", "x3\nExponential", "x4\nUniform"]
 ax2.set_title(titles[0])
 ax2.set_title(titles[1])
 ax3.set_title(titles[2])
@@ -89,13 +89,12 @@ def update(curr):
     if curr == 10:
         a.event_source.stop()
     # 4개의 subplot 에 대해서
-    for i in range(len(axises)):
+    for i in range(len(axes)):
         # subplot 지우기
-        axises[i].cla()
+        axes[i].cla()
         # xdata[i]의 1000개씩 10번그려진다. => 10000, 막대그래프 개수 100개
-        axises[i].hist(xdata[i][:1000*curr], bins=100,
-                       alpha=0.5, color=colors[i])
-        axises[i].set_title(titles[i])
+        axes[i].hist(xdata[i][: 1000 * curr], bins=100, alpha=0.5, color=colors[i])
+        axes[i].set_title(titles[i])
     plt.tight_layout()
 
 

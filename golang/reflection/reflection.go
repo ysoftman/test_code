@@ -19,7 +19,7 @@ type TheBox struct {
 }
 
 func main() {
-	fmt.Println("Relfection test...")
+	fmt.Println("Reflection test...")
 	getFieldInfo()
 	makeStruct()
 
@@ -49,9 +49,9 @@ func makeStruct() {
 			Type:      reflect.TypeOf(int(0)),
 			Tag:       `json:"cnt"`,
 			Anonymous: false,
-			// embeded  field
+			// embedded  field
 			// struct in struct 이 필드 이름을지정하지 않고 struct 명만 명시하는것
-			// AAA 를 embeded field 로 사용한 예시
+			// AAA 를 embedded field 로 사용한 예시
 			// type AAA struct {
 			// 	a int
 			// }

@@ -22,7 +22,7 @@ func add2[T int | int32 | int64](a, b T) T {
 	return result
 }
 
-// any 는 모든 타입을 의미 하지만 모든 타입이 + oprator 가 있는것은 아니니 + 를 사용할순 없다
+// any 는 모든 타입을 의미 하지만 모든 타입이 + operator 가 있는것은 아니니 + 를 사용할순 없다
 func add3[T any](a, b T) (T, T) {
 	fmt.Println("operator + not defined on a (variable of type T constrained by any)")
 	return a, b

@@ -1,13 +1,15 @@
 // author : ysoftman
 // encoding : utf-8
 // title : html template 사용 테스트
-// html 영역에 값 전달시 template.HMTL
+// html 영역에 값 전달시 template.HTML
 // script 영역에 값 전달시 template.JS 데이터 타입을 사용하자
 package main
 
-import "fmt"
-import "os"
-import "html/template"
+import (
+	"fmt"
+	"html/template"
+	"os"
+)
 
 const htmlString = `
 <html>

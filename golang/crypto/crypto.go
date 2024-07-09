@@ -81,7 +81,7 @@ func encryptAESCBC(key, plain string) string {
 	return string(ciphertext)
 }
 
-// CBC : block chainning mode, cipher block size 와 iv 길이는 같아야 하고 encrpyt 시에 사용한 iv 데이터가 있어야 한다.
+// CBC : block chainning mode, cipher block size 와 iv 길이는 같아야 하고 encrypt 시에 사용한 iv 데이터가 있어야 한다.
 func decryptAESCBC(key, cipherhex string) string {
 	// ciphertext, _ := hex.DecodeString(cipherhex)
 	ciphertext := (cipherhex)

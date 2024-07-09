@@ -25,8 +25,14 @@ db_charset = "utf8"
 
 def db_test():
     # db 연결
-    conn = pymysql.connect(host=db_host, port=db_port, user=db_user,
-                           passwd=db_passwd, database=db_dbname, charset=db_charset)
+    conn = pymysql.connect(
+        host=db_host,
+        port=db_port,
+        user=db_user,
+        passwd=db_passwd,
+        database=db_dbname,
+        charset=db_charset,
+    )
 
     # 커서 준비
     cursor = conn.cursor()
@@ -51,11 +57,14 @@ def db_test():
     cursor.execute(query)
     print("query = %s" % query)
     for out in cursor:
-        print("name = %s , engine = %s , version = %s , row_foramt = %s , rows = %s " % (
-            out[0], out[1], out[2], out[3], out[4]))
+        print(
+            "name = %s , engine = %s , version = %s , row_format = %s , rows = %s "
+            % (out[0], out[1], out[2], out[3], out[4])
+        )
 
     # 연결 종료
     conn.close()
+
 
 # mysql db test
 db_test()

@@ -67,7 +67,7 @@ func post() {
 	}
 	req, err := http.NewRequest(http.MethodPost, "http://httpbin.org/post", requestbody)
 	if err != nil {
-		log.Fatal("can't create NewRequeset()")
+		log.Fatal("can't create NewRequest()")
 	}
 	// Content-Type 에 json 을 명시하지 않으면 서버에서 data 값을 사용하지 못할 수 있다.
 	req.Header.Set("Content-Type", "application/json")

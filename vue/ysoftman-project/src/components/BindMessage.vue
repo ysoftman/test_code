@@ -7,7 +7,7 @@
   </v-container>
 </template>
 
-<!--scrit file-->
+<!--script file-->
 <script>
 /* eslint-disable */
 export default {

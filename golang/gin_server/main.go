@@ -204,7 +204,7 @@ func main() {
 			fmt.Println("key1:", v)
 		}
 		if v, ok := c.Get("mydata"); ok {
-			// mydata 원래 strcutre 를 모른다고 가정하고 비슷한 struct 로 담아보자.
+			// mydata 원래 structure 를 모른다고 가정하고 비슷한 struct 로 담아보자.
 			mydata2 := struct {
 				key1 int
 				key2 string

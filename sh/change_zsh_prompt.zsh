@@ -22,6 +22,6 @@ done
 if (( $choice > ${#prompt_list} )); then
     choice=1
 fi
-peek_random_promt=${prompt_list[$choice]}
-echo $choice $peek_random_promt
-prompt $peek_random_promt
+peek_random_prompt=${prompt_list[$choice]}
+echo $choice $peek_random_prompt
+prompt $peek_random_prompt

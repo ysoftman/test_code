@@ -16,7 +16,7 @@ func main() {
 	// 프로그램에서 동시에 사용할 수 있는 cpu 개수 설정
 	cur_setting_num := 2
 	previous_setting_num := runtime.GOMAXPROCS(cur_setting_num)
-	fmt.Println("set num of go cpus =", cur_setting_num, " preivous_setting_num =", previous_setting_num)
+	fmt.Println("set num of go cpus =", cur_setting_num, " previous_setting_num =", previous_setting_num)
 	sum1(1, 2)
 
 	// cgo 개수

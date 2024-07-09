@@ -12,7 +12,7 @@ done
 
 echo ""
 # 인자들 모두를 하나의 스트링 인자로 표현
-echo 'args as single sring'
+echo 'args as single string'
 # "" 로 감싸지 않으면 $@ 처럼 리스트가 된다.
 # for i in $*
 for i in "$*"

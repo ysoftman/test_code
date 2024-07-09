@@ -103,9 +103,9 @@ func marshalJSON() {
 }
 
 func unmarshalJSON() {
-	fmt.Println("\nstrJSON", strJSON)
+	fmt.Println("\nstrJSON")
 
-	// HTMLEscape (json 데이터를 HTML <scritp>내에서 사용할때 사용)
+	// HTMLEscape (json 데이터를 HTML <script>내에서 사용할때 사용)
 	dst := new(bytes.Buffer)
 	json.HTMLEscape(dst, []byte(strJSON))
 	fmt.Println(`json.HTMLEscape(dst, []byte(strJSON)) = `, dst.String())
@@ -120,7 +120,7 @@ func unmarshalJSON() {
 	fmt.Println("json.Unmarshal jd.History.Date = ", jd.History.Date)
 	fmt.Println("json.Unmarshal jd.History.Action = ", jd.History.Action)
 
-	// Array2 가 없어 빈값을 표현할때 기본 "arrary2" : null 로 된다.
+	// Array2 가 없어 빈값을 표현할때 기본 "array2" : null 로 된다.
 	// "array2" : [] 와 같이 빈 array 를 표현하려면 다음과 같이 설정한다.
 	jd.Array2 = make([]int, 0)
 	// struct 를 "array3" : [] 로 표현하려면 다음과 같이 설정한다.

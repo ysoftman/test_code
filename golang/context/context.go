@@ -73,8 +73,8 @@ func main() {
 		}
 
 		// context 데드라인 시간 파악
-		dealine, _ := ctx.Deadline()
-		fmt.Println("deadline", dealine)
+		deadline, _ := ctx.Deadline()
+		fmt.Println("deadline", deadline)
 
 		// context 타임아웃되는 경우 더이상 진행되지 않는다.(cancel)
 		// <-time.After(timeout) 없으면 <-ctx.Done 이 된다.

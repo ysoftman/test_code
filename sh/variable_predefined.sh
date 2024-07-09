@@ -24,7 +24,7 @@ echo "\${PS2}:" ${PS2}
 echo "\${PS3}:" ${PS3}
 # 이전 디랙토리 전체 경로 출력
 echo "\${OLDPWD}:" ${OLDPWD}
-# 현재 디랙토리 전체 경로 출력(Print Working Directoy)
+# 현재 디랙토리 전체 경로 출력(Print Working Directory)
 echo "\${PWD}:" ${PWD}
 # ${var#Pattern} 변수 앞에서부터 패턴과 매치되는 가장 짧은 부분 제거
 # ${var##Pattern} 변수 앞에서부터 패턴과 매치되는 가장 긴 부분 제거

@@ -91,7 +91,7 @@ func notfound(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(notFoundMsg)
 	w.WriteHeader(http.StatusNotFound)
 
-	// WriteHeader 를 여러번 쓰면 불필요한(superflous) 구문이라고 다음과 에러가 나고 수행되지 않는다.
+	// WriteHeader 를 여러번 쓰면 불필요한(superfluous) 구문이라고 다음과 에러가 나고 수행되지 않는다.
 	// http: superfluous response.WriteHeader call from main.notfound
 	// w.WriteHeader(http.StatusBadRequest)
 

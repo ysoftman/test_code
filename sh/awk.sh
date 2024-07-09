@@ -91,5 +91,5 @@ cc=$(echo "$msg" | tr '\n' ' ' | awk '{print $3}')
 cat << EOF | xargs echo $*
 first:${aa}
 second:${bb}
-thrid:${cc}
+third:${cc}
 EOF

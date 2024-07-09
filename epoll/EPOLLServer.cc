@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 			// 듣기 상태의 서버 소켓에서 이벤트가 발생하면
 			if (pEvents[i].data.fd == sockServer)
 			{
-				// accpet 하고 클라이언트와 연결 소켓을 만든다.
+				// accept 하고 클라이언트와 연결 소켓을 만든다.
 				int sockClient = 0;
 				struct sockaddr_in sockClientAddr;
 				unsigned int szClient = sizeof(sockClientAddr);

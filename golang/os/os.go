@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	runExternalComamnd()
+	runExternalCommand()
 
 	// 현재 워킹 디렉토리
 	cur_dir, _ := os.Getwd()
@@ -38,8 +38,8 @@ func main() {
 	os.Exit(0)
 }
 
-func runExternalComamnd() {
-	fmt.Println("runExternalComamnd - start")
+func runExternalCommand() {
+	fmt.Println("runExternalCommand - start")
 	cmd := exec.Command("sleep", "2")
 	fmt.Printf("cmd: %v\n", cmd)
 	// 명령이 끝날때까지 기다린다.
@@ -82,5 +82,5 @@ func runExternalComamnd() {
 	// 명령이 끝날때 까지 기다린다.
 	cmd.Wait()
 	fmt.Println(string(stdbytes))
-	fmt.Println("runExternalComamnd - end")
+	fmt.Println("runExternalCommand - end")
 }

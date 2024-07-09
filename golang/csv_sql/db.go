@@ -68,7 +68,7 @@ func (db *SQLDataBase) SelectData(query string) (map[int]interface{}, error) {
 	return out, nil
 }
 
-func (db *SQLDataBase) InsertData(prepareStmt string, datas [][]string) error {
+func (db *SQLDataBase) InsertData(prepareStmt string, data [][]string) error {
 	// log.Printf("stmt => %q\n", prepareStmt)
 	tx, err := db.sqlDB.Begin()
 	if err != nil {
@@ -81,7 +81,7 @@ func (db *SQLDataBase) InsertData(prepareStmt string, datas [][]string) error {
 		return err
 	}
 	defer stmt.Close()
-	for _, d := range datas {
+	for _, d := range data {
 		// log.Println("==>", d)
 		temp := make([]interface{}, len(d))
 		for i, j := range d {

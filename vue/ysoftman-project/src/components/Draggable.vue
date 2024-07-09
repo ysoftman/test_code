@@ -83,7 +83,7 @@ export default {
 
       isDragging: false,
       delayedDragging: false,
-      forEvnetDebugging: "디버깅을 위한 메시지"
+      forEventDebugging: "디버깅을 위한 메시지"
     };
   },
   methods: {
@@ -129,7 +129,7 @@ export default {
           lgjsonresult[i].style.background = "white";
         }
       }
-      console.log("forEvnetDebugging:", this.forEvnetDebugging);
+      console.log("forEventDebugging:", this.forEventDebugging);
     }
   },
   computed: {
@@ -163,11 +163,11 @@ export default {
     // on( event, callback )
     eventBus.$on("changeDraggableColor", function(param) {
       console.log(
-        "[event on changeDraggableColor] forEvnetDebugging:",
-        self.forEvnetDebugging
+        "[event on changeDraggableColor] forEventDebugging:",
+        self.forEventDebugging
       );
       console.log("[event on changeDraggableColor] param:", param);
-      self.forEvnetDebugging = param;
+      self.forEventDebugging = param;
       // this.changeDraggableColor();
       self.changeDraggableColor();
     });

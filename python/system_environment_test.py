@@ -5,4 +5,4 @@
 
 import system_environment
 
-system_environment.enviroment()
+system_environment.environment()

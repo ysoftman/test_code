@@ -64,7 +64,7 @@ const config = {
 }
 module.exports = config" >! webpack.config.js
 
-# pakcage.json scripts 에 다음 추가
+# package.json scripts 에 다음 추가
   "start": "webpack --watch",
   "build": "webpack -p"
 

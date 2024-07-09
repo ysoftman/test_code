@@ -84,22 +84,22 @@ func recvValue(ch1, ch2 chan int, wg *sync.WaitGroup) {
 		// value1 := <-ch1:
 		// value2 := <-ch2:
 		// select 을 사용하면 대기하고 있다가 먼저 발생하는 채널을 처리하고 끝낸다.
-		curch := 0
-		curval := 0
+		curCh := 0
+		curVal := 0
 		addpadding := ""
 		select {
 		case value1 := <-ch1:
-			curch = 1
-			curval = value1
+			curCh = 1
+			curVal = value1
 			addpadding = ""
 			cnt1++
 		case value2 := <-ch2:
-			curch = 2
-			curval = value2
+			curCh = 2
+			curVal = value2
 			addpadding = "\t"
 			cnt2++
 		}
-		fmt.Printf("[%s] recv%d	  %s[%d]\n", time.Now().Format("2006-01-02 15:04:05"), curch, addpadding, curval)
+		fmt.Printf("[%s] recv%d	  %s[%d]\n", time.Now().Format("2006-01-02 15:04:05"), curCh, addpadding, curVal)
 		if cnt1 >= Maxcnt && cnt2 >= Maxcnt {
 			break
 		}

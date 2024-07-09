@@ -52,7 +52,7 @@ export default {
     };
   },
   methods: {
-    craeteItems() {
+    createItems() {
       // 아이템 리스트 추가
       this.desserts.push({ id: "3", name: "ysoftman", fruit: "orange" });
       this.desserts.push({ id: "4", name: "aaa", fruit: "banana" });
@@ -73,7 +73,7 @@ export default {
   beforeMounted() {},
   // component 가 마운트 완료되면 수행
   mounted() {
-    this.craeteItems();
+    this.createItems();
   }
 };
 </script>

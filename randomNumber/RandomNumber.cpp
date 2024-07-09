@@ -126,7 +126,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,	//Handle Of Window
 
 		GetClientRect(hWnd, &rect);
 
-		SetTextAlign(hdc,TA_CENTER);	//Aling Center...
+		SetTextAlign(hdc,TA_CENTER);	//Aline Center...
 		SetBkMode(hdc, TRANSPARENT);	//Background Color Mode -> Transparent
 		hFont_temp = (HFONT)SelectObject(hdc,hFont);
 
@@ -152,7 +152,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,	//Handle Of Window
 		return 0;
 		
 	case WM_LBUTTONUP: 
-		ReleaseCapture();	// ReleaseCaputre
+		ReleaseCapture();	// ReleaseCapture
 		hTimer=(HANDLE)SetTimer(hWnd,	//Handle Of Window
 			1,	//Timer Number
 			50,	//Time -> 1/1000 second

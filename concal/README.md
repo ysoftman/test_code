@@ -52,7 +52,7 @@ flutter build apk
 
 # ios build
 open ios/Runner.xcworkspace
-# Project navigator -> Runner -> signing & capabilites -> team -> add accont 또는 development 계정
+# Project navigator -> Runner -> signing & capabilities -> team -> add account 또는 development 계정
 flutter build ios
 ```
 

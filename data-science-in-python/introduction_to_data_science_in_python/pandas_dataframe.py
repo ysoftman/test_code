@@ -17,35 +17,33 @@ s2 = pd.Series(dic2)
 s3 = pd.Series(dic3)
 s4 = pd.Series(dic4)
 # df1 = pd.DataFrame([dic1, dic2, dic3, dic4],  index=['user1', 'user2', 'user3', 'user4'])
-df1 = pd.DataFrame([s1, s2, s3, s4], index=[
-                   'user1', 'user2', 'user3', 'user4'])
+df1 = pd.DataFrame([s1, s2, s3, s4], index=["user1", "user2", "user3", "user4"])
 print("df1=\n", df1, sep="")
-print("df1['name'] =\n", df1['name'], sep="")
+print("df1['name'] =\n", df1["name"], sep="")
 print()
 
-# row (lable) 인덱싱 방법1
-print("df1['user2'] =\n", df1.loc['user2'], sep="")
-# row (lable) 인덱싱 방법2, loc 를 사용하길 권고한다.
-print("df1.loc['user2'] =\n", df1.loc['user2'], sep="")
-print("df1.loc['user2']['price'] = ", df1.loc['user2']['price'])
+# row (label) 인덱싱 방법1
+print("df1['user2'] =\n", df1.loc["user2"], sep="")
+# row (label) 인덱싱 방법2, loc 를 사용하길 권고한다.
+print("df1.loc['user2'] =\n", df1.loc["user2"], sep="")
+print("df1.loc['user2']['price'] = ", df1.loc["user2"]["price"])
 print()
 
 print("type(df1) = ", type(df1))
-print("type(df1.loc['user2']) = ", type(df1.loc['user2']))
+print("type(df1.loc['user2']) = ", type(df1.loc["user2"]))
 print()
 
 # transpose 해서 row col 위치를 바꾼다.
 print("df1.T=\n", df1.T, sep="")
-print("df1.T.loc['fruit']['user1'] =\n", df1.T.loc['fruit']['user1'], sep="")
+print("df1.T.loc['fruit']['user1'] =\n", df1.T.loc["fruit"]["user1"], sep="")
 print()
 
 # 차원별 슬라이싱
-print("df1.loc[:, ['fruit', 'price']] =\n",
-      df1.loc[:, ['fruit', 'price']], sep="")
+print("df1.loc[:, ['fruit', 'price']] =\n", df1.loc[:, ["fruit", "price"]], sep="")
 print()
 
 # 값 업데이트
-df1['price'] *= 0.8
+df1["price"] *= 0.8
 print("df1=\n", df1, sep="")
 print()
 
@@ -55,12 +53,13 @@ print("df1=\n", df1, sep="")
 print()
 
 # 다중 컬럼만 조회
-print("df1[['name','price']]=\n", df1[['name', 'price']], sep="")
-print("type(df1[['name','price']])=\n", type(df1[['name', 'price']]), sep="")
+print("df1[['name','price']]=\n", df1[["name", "price"]], sep="")
+print("type(df1[['name','price']])=\n", type(df1[["name", "price"]]), sep="")
 # 인덱스 제외하고 출력
-print("df1[['name','price']].values=\n", df1[['name', 'price']].values, sep="")
-print("type(df1[['name','price']].values)=\n",
-      type(df1[['name', 'price']].values), sep="")
+print("df1[['name','price']].values=\n", df1[["name", "price"]].values, sep="")
+print(
+    "type(df1[['name','price']].values)=\n", type(df1[["name", "price"]].values), sep=""
+)
 print()
 
 # 복사하기
@@ -69,12 +68,12 @@ print("df2=\n", df2, sep="")
 # 레이블로 관련 데이터 삭제
 # axis = 0 이면 row, 1이면 col 기준의 label
 # inplace = True 현재 df 를 drop 내용을 반영한다.(df2 = df2.drop('user3') 와 같다.)
-df2.drop('user3', axis=0, inplace=True)
+df2.drop("user3", axis=0, inplace=True)
 print("df2 =\n", df2, sep="")
 print()
 
 # 컬럼 이름 fruit -> my-favorite-fruits 바꾸기
-df2.rename(columns={'fruit': 'my-favorite-fruits'}, inplace=True)
+df2.rename(columns={"fruit": "my-favorite-fruits"}, inplace=True)
 print("df2 =\n", df2, sep="")
 print()
 

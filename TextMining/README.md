@@ -33,13 +33,13 @@ java -classpath lib\*;. edu.yonsei.lexical_analysis.SimpleTokenizer
 
 - 어휘(lexical) 표현
   - 문자, 단어, 구, 품사 로 표현
-- 구분(syntatic) 표현
+- 구분(syntactic) 표현
   - 벡터-공간모델(vector-space model) : 비정형텍스트 -> 벡터 공간모델(검색, 추천등에 사용)
   - 언어 모델(language models) : 통계적인 기법으로 분포 파악
   - 전체 구문 분석(full-parsing) : 트리구조로 나누고 각각의 관계를 분석
 - 의미론적(semantic) 표현 : 템플릿이나 온톨로지는 주제전문가의 수작업(의견)이 필요하다.
   - collaborative tagging / web2.0 : 일반 대중들의 집합적인 지능에 의미르 부여
-  - templates /frames  : 어떤 동사어 어떤 단어와 같이 올 수 있는지 틀을 정해 놓는다.
+  - templates /frames : 어떤 동사어 어떤 단어와 같이 올 수 있는지 틀을 정해 놓는다.
   - ontologies /first order theories : 단어의 상위,하위, 반대의 개념등을 온톨로지로 구축
 
 ### 문자 단위 분석

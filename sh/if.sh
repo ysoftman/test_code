@@ -40,7 +40,7 @@ elif [[ $var == 'a' ]] || [[ $var2 == 'lemon1' ]]; then
     echo 'second'
 # elif 를 써야 한다. else if 는 syntax error: unexpected end of file
 elif [[ $var == 'b' ]]; then
-    echo 'thrid'
+    echo 'third'
 else
     echo 'last'
 fi

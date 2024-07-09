@@ -41,11 +41,11 @@ func drawChart(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fo, err := os.Create("output.png")
+	f, err := os.Create("output.png")
 	if err != nil {
 		panic(err)
 	}
-	if _, err := fo.Write(buffer.Bytes()); err != nil {
+	if _, err := f.Write(buffer.Bytes()); err != nil {
 		panic(err)
 	}
 }

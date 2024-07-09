@@ -180,7 +180,7 @@ function App() {
               setMode("update");
             }}
           >
-            upate
+            update
           </a>
         </li>
         <li>

@@ -1,5 +1,5 @@
 #!/bin/bash
-# 터미널 창 크기 변경에 따른 colums, lines 크기 파악하기
+# 터미널 창 크기 변경에 따른 columns, lines 크기 파악하기
 
 function output {
     clear

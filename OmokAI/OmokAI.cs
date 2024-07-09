@@ -379,7 +379,7 @@ namespace OmokAI
 
 			Console.CursorTop = 1;
 			Console.CursorLeft = 0;
-			Console.WriteLine("total evaluted nodes = {0,7}", m_EvalNodeCnt);
+			Console.WriteLine("total evaluated nodes = {0,7}", m_EvalNodeCnt);
 			Console.CursorTop = 2;
 			Console.CursorLeft = 0;
 			Console.WriteLine("AI computation time = {0,0}", sw.Elapsed.ToString());
@@ -469,7 +469,7 @@ namespace OmokAI
 							Console.CursorTop = 0;
 							Console.BackgroundColor = ConsoleColor.Magenta;
 							Console.ForegroundColor = ConsoleColor.Blue;
-							Console.WriteLine("minmax tree depth = {0,2}  alpha = {1,4} beta = {2,4}  evaluted nodes = {3,7}", depth, alpha, beta, m_EvalNodeCnt);
+							Console.WriteLine("minmax tree depth = {0,2}  alpha = {1,4} beta = {2,4}  evaluated nodes = {3,7}", depth, alpha, beta, m_EvalNodeCnt);
 							Console.ResetColor();
 						}
 

@@ -20,15 +20,15 @@ print(mpl.get_backend())
 normal_sample = np.random.normal(loc=0.0, scale=1.0, size=10000)
 random_sample = np.random.random(size=10000)
 gamma_sample = np.random.gamma(2, size=10000)
-df = pd.DataFrame({'normal': normal_sample,
-                   'random': random_sample,
-                   'gamma': gamma_sample})
+df = pd.DataFrame(
+    {"normal": normal_sample, "random": random_sample, "gamma": gamma_sample}
+)
 df.describe()
 
 
 # plt.figure()
 # df normal 데이터를 박스플롯으로 그리기
-# create a boxplot of the normal data, assign the output to a variable to supress output
+# create a boxplot of the normal data, assign the output to a variable to suppress output
 # _ = plt.boxplot(df['normal'], whis='range')
 # clear the current figure
 # plt.clf()
@@ -50,11 +50,11 @@ plt.figure()
 # plt.figure()
 # _ = plt.boxplot([ df['normal'], df['random'], df['gamma'] ] )
 # df 3가지 데이터들 박스 플롯으로 그리고
-plt.boxplot([df['normal'], df['random'], df['gamma']], whis='range')
+plt.boxplot([df["normal"], df["random"], df["gamma"]], whis="range")
 # loc=2(왼쪽 상단) 위치에 부모(박스플롯)의 60%x40% 크기로 gamma 히스토그램 추가(overlay) ---> ax2로 그래프 컨트롤
 # overlay axis on top of another
-ax2 = mpl_il.inset_axes(plt.gca(), width='60%', height='40%', loc=2)
-ax2.hist(df['gamma'], bins=100)
+ax2 = mpl_il.inset_axes(plt.gca(), width="60%", height="40%", loc=2)
+ax2.hist(df["gamma"], bins=100)
 ax2.margins(x=0.5)
 # y축 왼쪽 부분의 ticks(눈금표시)를 y축 오른쪽 부분으로 옮긴다.
 # switch the y axis ticks for ax2 to the right side

@@ -119,7 +119,7 @@ struct TiXmlCursor
 	All flavors of Visit methods have a default implementation that returns 'true' (continue 
 	visiting). You need to only override methods that are interesting to you.
 
-	Generally Accept() is called on the TiXmlDocument, although all nodes suppert Visiting.
+	Generally Accept() is called on the TiXmlDocument, although all nodes support Visiting.
 
 	You should never change the document from a callback.
 

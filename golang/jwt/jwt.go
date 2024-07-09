@@ -44,7 +44,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	// jwt 토큰 구조
-	// 헤더.payload(calim,내용).서명
+	// 헤더.payload(claim,내용).서명
 	// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieXNvZnRtYW4iLCJhZ2UiOjMwfQ.DNIcy27sbrpiAwEiw6MoILzkdFNr9MQsZJoS5_Q5mUs
 	fmt.Println("create tokenstring test: ", tokenstring)
 

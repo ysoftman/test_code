@@ -35,7 +35,7 @@ func main() {
 	// 값 복사
 	// 엄밀히 말하면 bytes.Buffer []buf 는 슬라이스라서 copy 를 쓰지 않으면 복사되지 않고 참조된다.
 	// 하지만 Buffer.buf 를 직접 인덱싱할수 없어 bb1 을 조작하더라도 bb1 의 offset 이 변경되는것이지
-	// 실제 데이터값 바뀌는것이 아니기 때문에 bb2, bb2 각각의 슬라이스 stuct offset 은 유지되어 영향을 받지 않는다.
+	// 실제 데이터값 바뀌는것이 아니기 때문에 bb2, bb2 각각의 슬라이스 struct offset 은 유지되어 영향을 받지 않는다.
 	bb2 := bytes.NewBuffer(bb1.Bytes())
 	bb3 := bb1.Bytes()
 

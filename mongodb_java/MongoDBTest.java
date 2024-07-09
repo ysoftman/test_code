@@ -151,7 +151,7 @@ use testdb
 # 현재 사용중인 DB 확인
 db.getName()
 
-# 현재 Databse 컬렉션 보기
+# 현재 Database 컬렉션 보기
 show collections
  
 # 크기 제한 설정하여 컬레션 생성 size: 크기, max: 최대 개수

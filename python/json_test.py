@@ -74,7 +74,7 @@ def parse_json():
     # python 2.x
     # 참고 https://docs.python.org/2/library/json.html
     # fp = open(outfile, mode='wb')
-    # json 파일에 한글 \uXXX 로 escape 되어 기록되면 ensure_ascii=Flase로 설정
+    # json 파일에 한글 \uXXX 로 escape 되어 기록되면 ensure_ascii=False로 설정
     fp = open(outfile, mode="w")
     jsonDumps = json.dumps(jsonData, indent=2, ensure_ascii=False)
     print("jsonDumps--->", jsonDumps)

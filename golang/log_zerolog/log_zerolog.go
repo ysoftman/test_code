@@ -55,5 +55,5 @@ func main() {
 		return c.Str("fruit", "lemon")
 	})
 	//위에서 context 에 추가한 값이 같이 출력된다
-	logger.Debug().Str("name", "childlog").Msg("context fileds has added")
+	logger.Debug().Str("name", "childlog").Msg("context fields have added")
 }

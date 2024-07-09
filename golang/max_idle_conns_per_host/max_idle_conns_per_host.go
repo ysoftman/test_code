@@ -45,7 +45,7 @@ func main() {
 	// 웹서버에 부하를 줘서 time_wait(서버의 접속 끊김 ack를 기다리는 상태) 를 만든다.
 	// Linux 환경에서 모니터링
 	// watch -n 1 'netstat -nato | grep -i time_wait'
-	// 윈도우 WSL(Windows Susbsystem for Linux) 환경에서 모니터링
+	// 윈도우 WSL(Windows Subsystem for Linux) 환경에서 모니터링
 	// watch -n 1 '/mnt/c/Windows/System32/NETSTAT.EXE -nato | grep -i time_wait'
 	for i := 0; i < 10; i++ {
 		// 기본 Client 사용시 time_wait 상태가 줄어들지 않고 새로 생성되는 것을 알 수 있다.

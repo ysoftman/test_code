@@ -20,7 +20,7 @@ Crypto::~Crypto()
 {
 	// 현재 쓰레드의 Error Queue 삭제
 	ERR_remove_state(0);
-	// Errot String 해제
+	// Error String 해제
 	ERR_free_strings();
 	// ENGIN 삭제
 	ENGINE_cleanup();

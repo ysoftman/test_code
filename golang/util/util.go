@@ -123,7 +123,7 @@ func main() {
 
 	// swap
 	a, b := 2, 30
-	fmt.Println("befre swap a:", a, "b:", b)
+	fmt.Println("before swap a:", a, "b:", b)
 	a, b = Swap(a, b)
 	fmt.Println("after swap a:", a, "b:", b)
 

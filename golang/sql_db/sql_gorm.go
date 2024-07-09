@@ -122,7 +122,7 @@ func DoGorm() {
 	// 방법1
 	if err := mapstructure.Decode(user, &testdata); err == nil {
 		fmt.Printf("[mapstructure] %+v\n", testdata)
-		//{Age:21 Name:bill Enable:false} //  InnerData  인경우 embed sturct 로 같이 맞춰야 한다.
+		//{Age:21 Name:bill Enable:false} //  InnerData  인경우 embed struct 로 같이 맞춰야 한다.
 		//{Age:21 Name:bill Enable:true} // InnerData `mapstructure:",squash"`
 	}
 	// 방법2

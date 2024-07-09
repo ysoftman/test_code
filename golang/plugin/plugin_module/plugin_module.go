@@ -8,7 +8,7 @@ import "fmt"
 
 var Var1 string
 
-func PringHello() {
+func PrintHello() {
 	fmt.Println("hello plugin Var1=", Var1)
 }
 

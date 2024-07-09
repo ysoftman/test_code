@@ -23,7 +23,7 @@ func main() {
 	*v.(*string) = "aaa"
 
 	// 함수 찾아 설정
-	printhelloFunc, err := p.Lookup("PringHello")
+	printhelloFunc, err := p.Lookup("PrintHello")
 	if err != nil {
 		panic(err)
 	}

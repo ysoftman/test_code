@@ -50,9 +50,9 @@ char *modify_string(char *str)
 }
 */
 import "C"
-import "unsafe"
 import (
 	"fmt"
+	"unsafe"
 )
 
 func main() {
@@ -69,7 +69,7 @@ func main() {
 	C.print_int(cint)
 
 	text := "this is test string"
-	// Go stirng -> C String (*C.char 으로 malloc 으로 heap 에 할당된다.)
+	// Go string -> C String (*C.char 으로 malloc 으로 heap 에 할당된다.)
 	cstr := C.CString(text)
 	// CString 은 malloc 으로 사용하기 때문에 호출한쪽에서 free 해야 한다.
 	defer C.free(unsafe.Pointer(cstr))
