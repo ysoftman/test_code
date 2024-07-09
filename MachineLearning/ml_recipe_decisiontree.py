@@ -13,6 +13,7 @@ def toFruiteName(n):
         return "error"
     return fruites[n]
 
+
 # data
 # [weight(g), texture(bumpy=0, smooth=1)
 features = [
@@ -34,4 +35,4 @@ clf = clf.fit(features, labels)
 # 151g, smooth(1), 175g smooth(1) 인 경우는 사과일수도 오렌지 일수도 있어 결과가 매번 다를 수 있다.
 result = clf.predict([[180, 0], [123, 1], [151, 1], [175, 1]])
 for i in result:
-    print toFruiteName(i)
+    print(toFruiteName(i))
