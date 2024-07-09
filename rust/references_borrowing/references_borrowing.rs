@@ -31,8 +31,8 @@ fn main() {
     println!("s5:{}", s5);
 
     // let d = dangling();
-    let nd = no_dangling();
-    println!("nd:{}", nd);
+    let nod = no_dangling();
+    println!("nod:{}", nod);
 }
 
 // calc_length 에서는 s 를 borrowing(빌린다. 소유권은 없다.)
