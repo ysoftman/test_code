@@ -77,6 +77,6 @@ func traverseI(interf interface{}) {
 		fmt.Println(temp.d.innera)
 		fmt.Println(temp.d.innerb)
 	default:
-		fmt.Println("unkown type:", v)
+		fmt.Println("unknown type:", v)
 	}
 }

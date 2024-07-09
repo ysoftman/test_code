@@ -41,7 +41,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,	//Window Program Instance Handle
 
 	// Create Window
 	hWnd=CreateWindow(lpszClass,	//Windows Class Name
-		"Contorl Window v1.0 by ysoftman",	//Window Title Bar Name
+		"Control Window v1.0 by ysoftman",	//Window Title Bar Name
 		WS_VISIBLE | WS_SYSMENU | WS_MINIMIZEBOX,	//(WS_OVERLAPPEDWINDOW -> Basic Style)
 		CW_USEDEFAULT,	//X Vertex(Location)
 		CW_USEDEFAULT,	//Y Vertex(Location)
@@ -69,7 +69,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,	//Window Program Instance Handle
 		TranslateMessage(&Message);	//WM_KEYDOWN Message Occur, Make WM_CHAR
 		DispatchMessage(&Message);	//Message Transfer To WndPro(Window Procedure)
 	}
-	return Message.wParam;	//Return Message's Addtional Information(exit(0) In DOS)
+	return Message.wParam;	//Return Message's Additional Information(exit(0) In DOS)
 	
 }
 

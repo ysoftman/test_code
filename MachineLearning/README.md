@@ -39,7 +39,7 @@ jupyter notebook
 
 - ~~tensorflow r1.0 정식 릴리즈 이후 버전과 이전은 몇몇 api 들이 인자들의 개수나 순서가 다르다. 인터넷의 많은 자료가 아직 1.0 정식 릴리즈전의 tensorflow 버전으로 설명하고 있다.~~
 - [tensorflow v1.13.1](https://github.com/tensorflow/tensorflow/releases/tag/v1.13.1) 부터 python 3.7 을 지원한다.
-- ipython(jupyter) notebok(.ipynb) -> python(.py) 변환
+- ipython(jupyter) notebook(.ipynb) -> python(.py) 변환
 
   ```bash
   bash convert_ipynb_to_py.sh
@@ -48,5 +48,5 @@ jupyter notebook
 ## 책,강의 내용 정리
 
 - [book - deeplearning from scratch 정리](deeplearning_from_scratch.md)
-- [kmooc - kmooc_2018_인공지능_및_기계학습](kmooc_2018_인공지능_및_기계학습.md)
-- [kmooc - kmooc_2019_인공지능의_기초](kmooc_2019_인공지능의_기초.md)
+- [kmooc - kmooc*2018*인공지능*및*기계학습](kmooc_2018_인공지능_및_기계학습.md)
+- [kmooc - kmooc*2019*인공지능의\_기초](kmooc_2019_인공지능의_기초.md)

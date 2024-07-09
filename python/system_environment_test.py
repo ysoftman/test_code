@@ -3,6 +3,6 @@
 # python version : 2.x 3.x
 # desc : 시스템 환경 파악 테스트
 
-import system_enviroment
+import system_environment
 
-system_enviroment.enviroment()
+system_environment.enviroment()

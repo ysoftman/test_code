@@ -50,7 +50,7 @@ extern "C" __declspec(dllexport) BOOL UninstallHook();
 // Global Variables:
 HINSTANCE hInst;
 LPSTR lpszClass = "BILL's Hook Program";
-// Foward declarations of functions included in this code module:
+// Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -238,7 +238,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
    return 0;
 }
 
-// Mesage handler for about box.
+// Message handler for about box.
 LRESULT CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)

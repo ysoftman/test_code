@@ -2,11 +2,11 @@
 # author: ysoftman
 # python version : 3.x
 # desc : neural nets 로 mnist(엠니스트, 숫자 데이터) 인식하기
-'''
+"""
 mnist 데이터 다운로드민 넘파이 배열러 리턴하는 소스를 사용
 https://github.com/WegraLee/deep-learning-from-scratch/tree/master/ch03/sample_weight.pkl 가중치 값 저장
 https://github.com/WegraLee/deep-learning-from-scratch/blob/master/dataset/mnist.py 내용을 mnist.py 로 저장
-'''
+"""
 # pip3 install numpy matplotlib image
 import numpy as np
 import pickle
@@ -19,7 +19,8 @@ from activation_function import sigmoid, softmax
 def get_mnist_data():
     # load_mnnist 를 한번 해두면 mnist.pkl 파일로 덤프해두어 이후 로딩시 빠르게 로딩된다.
     (train_img, train_label), (test_img, test_label) = load_mnist(
-        flatten=True, normalize=False)
+        flatten=True, normalize=False
+    )
     return train_img, train_label, test_img, test_label
 
 
@@ -29,29 +30,29 @@ def show_mnist_one():
 
     img = test_img[0]
     label = test_label[0]
-    print (label)
+    print(label)
     # 784 길이의 1차원 배열로 로딩되었다.
-    print (img.shape)
+    print(img.shape)
     # 784 = 28*28 2차원 배열로 변경
     img = img.reshape(28, 28)
-    print (img.shape)
+    print(img.shape)
 
-    # PythonImageLibray 를 이용하이 이미지 보기
+    # PythonImageLibrary 를 이용하이 이미지 보기
     pil_img = Image.fromarray(np.uint8(img))
     pil_img.show()
 
 
 #
 def init_network():
-    with open("sample_weight.pkl", 'rb') as f:
+    with open("sample_weight.pkl", "rb") as f:
         network = pickle.load(f)
     return network
 
 
 # nn 구성하여 예측하기
 def predict(network, x):
-    W1, W2, W3 = network['W1'], network['W2'], network['W3']
-    b1, b2, b3 = network['b1'], network['b2'], network['b3']
+    W1, W2, W3 = network["W1"], network["W2"], network["W3"]
+    b1, b2, b3 = network["b1"], network["b2"], network["b3"]
 
     # 2 층 레이어 구성
     # 각 레이어 에서는 행렬(데이터를 2차원 배열로 취급)의 내적곱 계산

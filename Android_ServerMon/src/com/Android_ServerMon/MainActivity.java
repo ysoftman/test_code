@@ -236,11 +236,11 @@ public class MainActivity extends Activity {
 				JNIManager jni = new JNIManager();
 				jni.Print();
 				int c = jni.Add(1, 2);
-				Log.d("ysoftman", "jni.Add(1,2) retun " + c);
-				tv.append("jni.Add(1,2) retun " + c + "\n");
+				Log.d("ysoftman", "jni.Add(1,2) return " + c);
+				tv.append("jni.Add(1,2) return " + c + "\n");
 				String msg = jni.PrintString("YoonByoungHoon");
-				Log.d("ysoftman", "jni.PrintString(\"YoonByoungHoon\") retun " + msg + "\n");
-				tv.append("jni.PrintString(\"YoonByoungHoon\") retun " + msg + "\n");
+				Log.d("ysoftman", "jni.PrintString(\"YoonByoungHoon\") return " + msg + "\n");
+				tv.append("jni.PrintString(\"YoonByoungHoon\") return " + msg + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

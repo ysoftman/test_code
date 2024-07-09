@@ -13,8 +13,8 @@ def toFruiteName(n):
         return "error"
     return fruites[n]
 
-# datas
-# [weigth(g), texture(bumpy=0, smooth=1)
+# data
+# [weight(g), texture(bumpy=0, smooth=1)
 features = [
     [140, 1],
     [130, 1],

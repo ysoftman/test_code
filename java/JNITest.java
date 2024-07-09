@@ -33,8 +33,8 @@ public class JNITest {
 		JNIManager jni = new JNIManager();
 		jni.Print();
 		int c = jni.Add(1, 2);
-		System.out.println("jni.Add(1, 2) retun " + c);
+		System.out.println("jni.Add(1, 2) return " + c);
 		String msg = jni.PrintString("YoonByoungHoon");
-		System.out.println("jni.PrintString(\"YoonByoungHoon\") retun " + msg);
+		System.out.println("jni.PrintString(\"YoonByoungHoon\") return " + msg);
 	}
 }

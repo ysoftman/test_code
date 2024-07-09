@@ -66,12 +66,12 @@ Pr(Y=Yes|X=Positive)
 ### 나이브 베이즈(Naive Bayes) classifier
 
 - Query Y --> Observation X : query(알려고 하는것) Y 는 observation(관찰) X 에 확률적으로 영향을 준다.
-- 숫자 인식에서 각각의 8*8 특징들로 표현되는 픽셀마다 0 ~ 9(클래스) 에서의 사전확률(prior probability) 확률과 likelihood(우도)를 알고 있을때 모든(0 ~ 9) 클래스의 사후확률(posterior probability, Class Probability 라도 함)를 구할 수 있고 이중 가장 높은 값을 선택하여 클래스를 인식/분류(classification)한다.
+- 숫자 인식에서 각각의 8\*8 특징들로 표현되는 픽셀마다 0 ~ 9(클래스) 에서의 사전확률(prior probability) 확률과 likelihood(우도)를 알고 있을때 모든(0 ~ 9) 클래스의 사후확률(posterior probability, Class Probability 라도 함)를 구할 수 있고 이중 가장 높은 값을 선택하여 클래스를 인식/분류(classification)한다.
   - likelihood(우도) : 각각의 class 가 주어졌을때 feature 값들이 나올 확률 값
     - 숫자 3의 경우 (0,0,1,1,1,0,0,0... )로 feature 가 있는데
     - 3에서 나올 확률을 높다 -> likelihood 가 높다.
     - 2에서 나올 확률은 낮다 -> likelihood 가 낮다
-  - 64(8*8)개 -> 조건부 확률 테이블 CBT(Conditional Probability Table) -> likelihood
+  - 64(8\*8)개 -> 조건부 확률 테이블 CBT(Conditional Probability Table) -> likelihood
   - 맨처음에 사전확률은 모든(0~9) 클래스가 동등하게 0.1로 확률로 설정
 
 ```text
@@ -80,7 +80,8 @@ Pr(Y=Yes|X=Positive)
 P(Y|F ... Fn,n) = P(Y)ㅠP(Fi,j|Y)
 ```
 
-- overfitting : trainning data 에 너무 fitting 되어 실제 데이터에서는 인식이 잘 안되는 것
+- overfitting : training data 에 너무 fitting 되어 실제 데이터에서는 인식이 잘 안되는 것
+
   - likelihood 가 확률적으로 (극단적인경우)0 나오면 안되기 때문에 lapalce smoothing 기법(실제 관찰값보다 +1)으로 해결
   - P라플라스(x) = c(x) + 1 / sum(x) { c(x) + 1} = c(x) + 1 / N + |X|
 
@@ -125,7 +126,7 @@ hyperplane 정의를 이용하면 w1*(x1=1) + w2*(x2=2) + b = 0
 w1 = 1, w2 = -1, b = 1
 w1 = 2, w2 = -2, b = 2 ... 등이 될 수 있다.
 
-다음 제약조건(contraint)를 이용해 최적화 문제를 편하게 풀 수 있다.(마진 구할때 분자로 사용하게됨)
+다음 제약조건(constraint)를 이용해 최적화 문제를 편하게 풀 수 있다.(마진 구할때 분자로 사용하게됨)
 | w(transpose) * Xn + b | = 1
 ```
 
@@ -170,7 +171,7 @@ math.fabs((1*3)+(-2*1)+(3*2)+(-1*4) + 2) / math.sqrt((1**2)+((-2)**2)+(3**2)+((-
 - 차원을 너무 높이면 컴퓨팅 코스트가 너무 많이 들어 불가능할 수 있다.
 - 아주 큰 차원이라고 할지라도 실제 support vector 의 개수는 차원에 비해 훨씬 적을 수 있다.
 - kernel trick : original low dimension space 에서 어렵지 않게 구할 수 있다. 실제 높은 차원에서 컴퓨팅을 해야한다고 하지만 실제 그렇게 높지 않는 차원에서 컴퓨팅하면 된다.
-- low dimension 에서 linear 하게 seperation 되지 않았는데, 차원이 infinite 까지 갈 수 있는 kernel trick 을 써서 nonlinearyity 를 얻을 수 있다.
+- low dimension 에서 linear 하게 separation 되지 않았는데, 차원이 infinite 까지 갈 수 있는 kernel trick 을 써서 nonlinearyity 를 얻을 수 있다.
 - 커널 종류 : Gaussian Kernel, RBF(Radial Basis Function) Kernel, Polynomial Kernel 등
 
 ## 3주차 - 결정 트리(Decision Trees)
@@ -196,7 +197,7 @@ math.fabs((1*3)+(-2*1)+(3*2)+(-1*4) + 2) / math.sqrt((1**2)+((-2)**2)+(3**2)+((-
   - 현 노드에 들어 있는 training example 들을 A 값에 따라 child node 에 넣는다.
   - 모든 child node 에 대해, 그 노드가 "pure" 하면 멈추고, 그렇지 않으면 그 child node 에 대해 처음부터 다시 반복한다.
 - entropy(복잡도) : 좋은 attribute 를 정하기 위해 계산
-  - H(S) = -(P1 Log2 P1) * -(P2 Log2 P2) , P1 or P2 : 전체 S 개중 class A or B 의 확률, An / S or Bn / S
+  - H(S) = -(P1 Log2 P1) \* -(P2 Log2 P2) , P1 or P2 : 전체 S 개중 class A or B 의 확률, An / S or Bn / S
     ```text
     # 노드에 대한 entropy 구하는 예시
     전체 데이터 (9, 5) - class a 에 속하는 경우 9개, class b 에 속하는 겨웅 5개, 전체 15개
@@ -233,12 +234,14 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - 결정트리의 가장 큰 단점 중 하나는 overfitting 이다.
 - 실제 데이터를 ID3 로 pure 노드까지 가게할 경우 node 개수가 많아 지면서 overfitting 이 발생할 수 있다.
 - overfitting 을 막는 방법
+
   - 통계적으로 무의미한 노드들은 나누지(split) 않는다. ex) 1000 데이터 대해서 95 : 5 정도로 나누는 경우
   - 결정트리가 만들어진 상태에서 Validation Data 의 정확도(accuracy) 를 기준으로 sub-tree 를 제거(prune)한다. prune 의미는 child-node 는 제거하고 parent node 는 pure 하지 않더라도 그대로 놔둔다.
 
 - random forest
+
   - 결정트리 하나만 쓰면 prediction accuracy 가 좋기지 않기 때문에, bagging 과 attribute 둘다 random 하게 두는 random forest 방법을 사용한다.
-  - bagging(bootstrap aggregating) tree : trainning data 에서 랜덤하게 k개를 랜덤하게 고른다. -> subset (training) data 로 ID3 등의 알고리즘으로 결정트리를 생성한다. 이과정을 B번 반복하여 B 개의 결정트리르 만든다. classification 시 B 개의 트리들 사용해서 majority vote(다수의 트리가 선택한쪽, 다수결)
+  - bagging(bootstrap aggregating) tree : training data 에서 랜덤하게 k개를 랜덤하게 고른다. -> subset (training) data 로 ID3 등의 알고리즘으로 결정트리를 생성한다. 이과정을 B번 반복하여 B 개의 결정트리르 만든다. classification 시 B 개의 트리들 사용해서 majority vote(다수의 트리가 선택한쪽, 다수결)
     - decreases variance while bias stays same : overfitting(bias 의미) 이 늘어나지 않으면서 variance 를 줄이는 것
   - attribute 무작위 선택 : bagging 과정의 subset data 에 대해 모든 attriibute 를 사용해서 tree 를 만들경우, 특정 attribute 가 압도적으로 많이 나와(항상 결정트리에 포함되) 모든 결정트리에 영향을 주는 것을 막기위해 랜덤하게 하게 attribute 를 선택한다.
 
@@ -256,11 +259,11 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - 안공 신경망에서 하나의 작은 단위가 인공뉴런이다.(인간 뇌의 뉴런을 모델로 한것)
 - 인공 뉴런은 x(x1..n 벡터, input)을 입력과 b(bias) 를 입력으로 받아 g(activation function)를 거쳐 활성화 여부를 출력한다.
   - inptut activation 또는 pre-activation : input x와 b를 합하였을때까지의 상태로 activation function 계산하기전을 말한다.
-  - activation function :  output 출력에 사용
+  - activation function : output 출력에 사용
   - h(x) = g(a(x)) = g(b + sum(i) WiXi)
 - 활성화 함수(activation function)
   - linear : g(a) = a 로 입력에 따라 출력이 결정되는 형태로 거의 사용되지 않는다.
-  - sigmoid(사전적의미:S자형의) : g(a) = sigm(a) = 1 / (1+exp(-a)) 로  0~1사의 값이 출력으로 가지면(항상 양수), S 자 모양의 그래프
+  - sigmoid(사전적의미:S자형의) : g(a) = sigm(a) = 1 / (1+exp(-a)) 로 0~1사의 값이 출력으로 가지면(항상 양수), S 자 모양의 그래프
   - tanh(hyperbolic tangent) : g(a) = tanh(a) = (exp(2a)-1 / exp(2a)+1) sigmoid 와 비슷하지만 -1~1 시아로 음수값도 가진다.
   - reclin(rectified(사전적의미:수정된,정류된) linear) : g(a) = recline(a) = max(0,a) 0보작 작을때 무조건 0, 0보다 크면 a 가 출력된다. sparse(뉴런 하나의 output 값이 0이 아닌 경우가 많이 생겨 부족하다. 부족하다는것은 뉴런 네트워크 전체를 계산하는데 훨씬 쉽고 간단해진다.)하여 가장 많이 쓰인다.
 - sigmoid 활성화 함수를 통해 0~1사의 값을 주게 된다고 했을대, 이 값을 확률로 볼 수 x가 주었을때 y가 될 확률로 볼수 있고, 이것은 logistic regression(로지시틱 회귀: 사건의 발생 가능성을 예측하는 통계기법) classifier 랑 똑같이 되는것이다. binary classifier 로 활용된다.
@@ -272,11 +275,11 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - output layer activation function 으로는 hidden layer activation function 과는 다른 softmax 등을 사용한다.
 - hidden layer activation function h(x) = g(a(x)) 에서 activation function g(-) 은 sigmoid, tanh, recline 등이 될 수있다.
 - single neuron 으로 표현이 힘든 xor(x1,x2) 를 표현할 수 있다.
-- a(x) = b(1) + W(1)x  : W 는 여러기의 뉴런들을 matrix 로 표현
+- a(x) = b(1) + W(1)x : W 는 여러기의 뉴런들을 matrix 로 표현
 - softmax 는 output layer activation function 으로 사용한다. 확률값으로 모든 출력 노트의 출력값이 1로 했을때의 각 노의 확률값을 표현
   - softmax(a) = [ { exp(a1) / sum(c)exp(ac) } ... { exp(ac) / sum(c)exp(ac) }]
 - 각 hidden layer 는 single layer neural network 처럼 pre-activation 과 activation function 이 있다.
-- trainning data {(xi,yi)} 로 부터 neural network 의 weight matrix W 들을 학습해야 한다.
+- training data {(xi,yi)} 로 부터 neural network 의 weight matrix W 들을 학습해야 한다.
 - 학습된 neural network 에서 test data x 를 input layer 에 넣고 output layer 의 값을 계산함으로써 y(hat) 을 추정할 수 있다.
 
 ### 경험적 위험 최소화(Empirical Risk Minimization)
@@ -284,7 +287,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - training data 를 가장 잘 설명할 수 있는 가장 적합한 parameter 를 찾는게 인공신경망 training 이고 이를 해결하기 위한 대표적인 방법으로 risk minimization을 사용한다.
 - empirical risk minimization 알고리즘(수식)은
   - 수식에서 1번 부분(l 부분) : loss function
-    - l(loss function)은 f(모든 nerual network 의 모든 계산을 거처 나온 최종 ouput)과 정답과의 차이 구하는 함수
+    - l(loss function)은 f(모든 nerual network 의 모든 계산을 거처 나온 최종 output)과 정답과의 차이 구하는 함수
     - 주어진 training data 에서 정답을 가장 잘 맞출 수 있는 parameter 를 구하는것
     - 학습데이터와 다른 그 차이에 대한 패널티을 주는 부분
     - 우리가 최적화(optimization) 하고자 하는 실제 목적(objective)을 나타내는 부분이다.
@@ -320,10 +323,10 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 ### 딥 러닝 소개(Introduction to Deep Learnging)
 
 - 딥러닝의 역사
-  - NN 의 20년간 암흑기가 있었는데, 캐나다 토론토 대학의 Geoff Hinton 교수가 2006년 reducing the dimensionality of data with nerual networks 라는 논문을 사인언스에 내게 된다. restricted boltzmann machiness (RBM) 을 이용해 학습한다. 현재는 RBM 보다 좋은 알고리즘들을 사용한다.
+  - NN 의 20년간 암흑기가 있었는데, 캐나다 토론토 대학의 Geoff Hinton 교수가 2006년 reducing the dimensionality of data with nerual networks 라는 논문을 사인언스에 내게 된다. restricted boltzmann machines (RBM) 을 이용해 학습한다. 현재는 RBM 보다 좋은 알고리즘들을 사용한다.
   - 2009년 훨씬 큰 데이터와, 현실적인 데이터를 가지고 convolutional rbm 을 만들어서 한번더 관심을 받게 된다.
   - 2012년 ICML(머신러닝에서 가장 큰 학회) 에서 Google 과 스탠포드 Andrew Ng 가 논문을 발표하게 된다. 천만개의 이미지와 16천개의 코어와 3일동안 트레이닝을 하는등 엄청 큰 스케일의 데이터와 하드웨어로 사용하였다. 딥러닝의 잠재력은 높다.
-- 여러개의 Levels of Abstraction 을 가진다. (Ex. Pixel - 직선 - 눈코입 - 얼굴 (in Face Recongition Example))
+- 여러개의 Levels of Abstraction 을 가진다. (Ex. Pixel - 직선 - 눈코입 - 얼굴 (in Face Recognition Example))
 - 딥러닝은 feature extraction 하지 않고 딥 뉴럴 네트워크로 여러 레벨의 abstraction 을 뽑아주는게 가장 큰 힘이라고 할 수 있다.
   - Feature Extraction 에 대한 사전지식 없이, Deep Neural Network 이 자동으로 Levels of Abstraction 을 찾아주는 Representation Learning 이 가능하다.
 - 딥러닝은 supervised learning, unsupervised learning 둘 다 할 수 있다.
@@ -348,13 +351,13 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - inference : 확률값을 높이는 파라미터를 알아보는것
 - 2006년 hinton 교수의 논문 에 소갠된 Contrastive Divergence(CD) (대조 분기?)는
   - RBM 을 하나의 유닛을 가지고 있는 딥러닝응 쉽게 할 수 있는 알고리즘이다.
-  - RBM 에서 Stocastic Gradient Descent 알고리즘 대신 사용
+  - RBM 에서 Stochastic Gradient Descent 알고리즘 대신 사용
   - CD 로 굉장히 쉽고 빠르게 inference 할 수 있다.
 - Contrastive Divergence(CD) 의 아이디어
-  - 하나의 포인트 X estimate 를 expecation 으로 보자.
+  - 하나의 포인트 X estimate 를 expectation 으로 보자.
   - gibbs sample (chain 으로 볼수 있다.) 을 k 개의 적은 숫자로 iteration 한다.
     - gibbs sample: 두개 이상의 확률 변수의 결합 확률 분포로부터 일련의 표본을 생성하는 확률적 알고리즘으로, 결합 확률 분포나 그에 관련된 확률 계산을 근사하기 위해 사용
-    - gibbs sample 을 쓴다는 것은 sample iteration 하나를 거칠때 마다 parameter 를 업데이틑 해준다는것, parameter 는 conneciton weight W, Bias Vectors bj,ck 들을 업데이트 해간다.
+    - gibbs sample 을 쓴다는 것은 sample iteration 하나를 거칠때 마다 parameter 를 업데이틑 해준다는것, parameter 는 connection weight W, Bias Vectors bj,ck 들을 업데이트 해간다.
   - chain 시작시 랜덤하지 하지 않고 input data 에서 그냥 하나를 뽑아 시작한다.
   - k=1 일때어 어느정도 좋은 결과를 보인다.
 - RBM 예시
@@ -363,9 +366,9 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 ### 오토인코더(Autoencoder)
 
 - 오토인코더는 RBM 과 같은 unsupervised learning 모델이고, pretraing 을 하는 단계에서 많이 쓰임
-- input layer -> hidden layer -> output layer(input layer 의 노드 개수와 같다.) 형태로 input 값을 ouput 에서 reconstrunction 하는 것이 목적이다.
+- input layer -> hidden layer -> output layer(input layer 의 노드 개수와 같다.) 형태로 input 값을 output 에서 reconstrunction 하는 것이 목적이다.
   - input -> hidden layer : encoder 라 부르고 sigmoid 를 사용
-  - hidden layer -> output layer : decocder 라 부르고 sigmoid 를 사용
+  - hidden layer -> output layer : decoder 라 부르고 sigmoid 를 사용
   - under complete representation(compression) : hidden layer node(dimension) 개수가 input node(dimension) 보다 작은 경우
     - dimension reducntion 목적으로도 쓰임 PCA(Principle Component Analysis) 에 대응
     - training data 와 많이 다른 데이터가 들어왔을경우 compression 이 전혀 역할을 하지 않는 제한이 있다.
@@ -378,7 +381,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - 딥러닝 = representation learning = distributed(첫번재 hidden layer 픽셀 특징, 두번재 hidden layer 눈,코입....특징, 등 layer 를 쌓아 올려) representation
 - multi layer feed forward nerual net 이 표현할 수 있는 function 은 complexity 가 높은 function 이다.
 - 2가지 문제점
-  - underfitting : parameter optimization 잘 못한다. 최적화 의미는 backpropagation 에서 layer 마다 gradient 를 구하고 그 뒤로 가는것, stochastic gradidnet descent 를 통한 최적화. hyperbolic tangent, sigmoid 등에서 0에 가까울때는 slope(경사, gradient)가 있지만 0에서 멀어질수록 slope 가 거의 0에 가까워진다. gradient이 거의 0이 되면 다음 iteration 에서 paramter update 할때 잘 되지 않는다. iteration 마다 처음 시작했던 weight 보다 좋은쪽으로 움직여야 하는데 움직이지 못한다는것으로 이를 vanishing gradient problem 이라고 한다.
+  - underfitting : parameter optimization 잘 못한다. 최적화 의미는 backpropagation 에서 layer 마다 gradient 를 구하고 그 뒤로 가는것, stochastic gradidnet descent 를 통한 최적화. hyperbolic tangent, sigmoid 등에서 0에 가까울때는 slope(경사, gradient)가 있지만 0에서 멀어질수록 slope 가 거의 0에 가까워진다. gradient이 거의 0이 되면 다음 iteration 에서 parameter update 할때 잘 되지 않는다. iteration 마다 처음 시작했던 weight 보다 좋은쪽으로 움직여야 하는데 움직이지 못한다는것으로 이를 vanishing gradient problem 이라고 한다.
   - overfitting : training data 에 너무 fitting 되서 실제 데이터에 prediction 할수있는 generalization power 가 떨어진다. 학습할 수 있는 함수의 범위가 매우 크기 때문에 overfitting 이 잘 일어난다.
 - overfitting 방지를 위해서 parameter 들의 값에 패너티를 주면서 에방하는 regularization 을 사용한다.
 - 정규화(regularization, 딥넷의 overfitting 을 줄이기 위한것) 2 가지 방법
@@ -397,13 +400,13 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 ### 콘볼루션 신경망(Convolutional Neural Network)
 
 - 컴퓨터비전 분야에서 딥러닝을 사용하는데
-  - obeject regcogintion(사물인식)에 많이 사용한다. caltech 101 dataset(101개의 사물 분류) 데이터를 많이 사용한다.
+  - object regcogintion(사물인식)에 많이 사용한다. caltech 101 dataset(101개의 사물 분류) 데이터를 많이 사용한다.
   - 이미지의 경우 dimension(MxN 픽셀, 픽셀당 RGB 컬러 정보)이 크다.
   - 이미지의 경우 togoploy(위상, 지형) 패턴을 가지고 있다. 예를 들어 edge 등의 특성, 꽃의 경우 비슷한 색깔이 많이 분포된다.
   - rotation, illumination, scaling 등의 invariance(불변) 를 지켜줘야 한다.
   - 이런 문제 특성을 해결하기 위해 CNN(Convolutional Neural Network) 방법을 인식하며, 다음 3가지 아이디어에서 내포되어 있다.
-    - local connectivity : fully connected hidden layer 는 관리되지 않는 너무 많은 파라미터를 가지고 있고 복잡하기 때문에 local connected hidden layer 를 보도록 한다. paramter 의 수를 줄여준다.
-      - feature-map 이 가지고 있는 필터 효과를 이용해 이미지에 대해서 계산하여 어떤 패턴을 찾아 내는 방법을 convoluvtion 이라고 하는데, discrete(분리된) convolution (사실singal processing 에서 하나의 input singal 있을때 패턴을 감지하기 위해 사용)는 이미지 데이터에서 kernel(이미지 필터 값은 녀석)이 가지고 있는 패턴을 input data 에서 찾아보기 위해 input 의 필터크리만큰 shift 하면서 곱해주는 것을 말한다. 이미지의 크기가 5x5이고 커널의 크기가 3x3이라면 콘볼루션 결과는 3x3 행렬이 된다.
+    - local connectivity : fully connected hidden layer 는 관리되지 않는 너무 많은 파라미터를 가지고 있고 복잡하기 때문에 local connected hidden layer 를 보도록 한다. parameter 의 수를 줄여준다.
+      - feature-map 이 가지고 있는 필터 효과를 이용해 이미지에 대해서 계산하여 어떤 패턴을 찾아 내는 방법을 convoluvtion 이라고 하는데, discrete(분리된) convolution (사실signal processing 에서 하나의 input signal 있을때 패턴을 감지하기 위해 사용)는 이미지 데이터에서 kernel(이미지 필터 값은 녀석)이 가지고 있는 패턴을 input data 에서 찾아보기 위해 input 의 필터크리만큰 shift 하면서 곱해주는 것을 말한다. 이미지의 크기가 5x5이고 커널의 크기가 3x3이라면 콘볼루션 결과는 3x3 행렬이 된다.
       - convolution 후에 non-linear 한 sigmoid function, hyperbolic tangent 등을 계산하여 찾고자 하는 패턴와의 차이을 수치상을 확인할 수 있다. convolution 결과값이 크다는 것은, 입력 이미지의 해당 위치가 커널과 비슷한 패턴을 가지고 있음을 뜻한다.
       - 이미지의 바깥쪽에 있는 곳을 0으로 채워주는 zero padding 을 통해 바깥쪽의 패턴도 잡을 수 있도록 한다.
     - parameter sharing : N 개의 feaature-map 이 있고 feature-Map(w1, w2,,,. wn)일때, 각 feature-map 의 w1 은 이미지의 한 부분에 특징 값을 가진다. local connectivity 로 파라미터를 줄여줬지만 parameter sharing 을 통해 feature-map 의 숫자만큼 parameter 수를 줄여준다. 그리고 receptive-filed(수용영역, 외부자극이 있을때 전체에 영향을 주는것이 아니라 특정영역에만 영향은 준다는 의미로 이미지에서 특정 필셀은 인접한 일부 픽셀들하고만 밀접하게 연과되어 있고 거리가 멀수록 영향은 감소된다) 이미지의 모든 position 에 대해서 똑같은 feature 들을 extraction 하고 있다.
@@ -411,9 +414,9 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
       - input data 이미지가 클때, hidden layer 가 클때 pooling 을 통해 이미지 사이즈를 줄이거나 hidden unit 개수를 줄이다.
       - local translation : max-pooling 을 통해 특정부분(local)값이 다른쪽을 이동(번역translation)되는 현상, Pooling을 통해 Local translation에 대한 Invariance를 가질 수 있다.
   - CNN 흐름 : input -> layer1 (convolution) -> max-pooling -> layer2(convolution) -> max-pooling .... -> max-pooling -> output
-  - max-pooling gradient : 0  except for delta xij+p`,k+q` l = delta yijk l
-  - average-pooling gradient : { umsample(delta y l) } / m*m
-  - jarret 2009년 논문에 rectification(개정, 수정) 를 사용 : 모든 layer 에 대해서 값이 다 나오는데 그값에 대해서 absoulte value 를 쓰운다. convolution의 특징은 잡는단 것은 결국 edge 를 찾는것으로 흰색에서 검은색으로, 검은색에서 흰색으로 변하는 구간인데, rectification 을 적용하여 흰색->검은색으로 가던 검은색->흰색으로 가던 구분없이 모두 edge 로 하겠다는 의미다.
+  - max-pooling gradient : 0 except for delta xij+p`,k+q` l = delta yijk l
+  - average-pooling gradient : { umsample(delta y l) } / m\*m
+  - jarret 2009년 논문에 rectification(개정, 수정) 를 사용 : 모든 layer 에 대해서 값이 다 나오는데 그값에 대해서 absolute value 를 쓰운다. convolution의 특징은 잡는단 것은 결국 edge 를 찾는것으로 흰색에서 검은색으로, 검은색에서 흰색으로 변하는 구간인데, rectification 을 적용하여 흰색->검은색으로 가던 검은색->흰색으로 가던 구분없이 모두 edge 로 하겠다는 의미다.
     - contrast nomalization : 비슷한 neighbor local한 부분에 대해서 contrast 에 대한 평균값을 빼고 standard deviation 으로 나눈다. 모든 layer 에서 contrast-normalization 을 하여 비슷한 부분은 무시되고 정말 다른 부분만 잡아내겠다는 의미
     - input image -> convolution -> rectification -> contrast normalization -> pooling/subsample ...
     - rectification, contrast normalization 등을 적용하니 인식률이 좋아지고, 2번 적용하니 더 좋아지더라.
@@ -427,17 +430,17 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - lemmatization(혹은 normalization) : 대문자를 소문자로 만드다던지, 7 같은 숫자 자체는 number 로 고친다던지등의 표준형태로 만드는 과정
 - corpus(문서의집합)에서 단어들을 모두 추출할 수 있고 이것을 vocabulary 만든다고 한다. vocabulary 를 만들때 크게 의미 없는 단어(예를 들어 the) 너무 많이 나오는 단어(예를 들어 the)는 빼는 등의 작업을 하고 각각에 단어에 unique 한 id를 부여한다. oov(out of vocabulary) vocabbulary 에 없는 경우도 구분
   - one-hot encoding : vocabulary dimension 크기의 벡터를 만들고 모두 0 으로 하고 vocabulary 의 특정 단어가가 가진 위치(position)에 대해서만 1로 한다. 많이 쓰이지만 dimension 의 크기가 너무 커진다는 단점이 있다.
-  - continuous word representation : one-hot encoding 이 단점을 보완하기 위해 나온 방법, 모든 dimension 에대해서 0 아닌 value 를 가질 수 있도록 한다. vecotr(dimension) 값들이 서로 비슷한 단어들은 서로 비슷하다고 할 수 있도록 하는것이 continuous word representation가 추구하는 목표이다.
-- Language Model : 문서에서 단어들 (Sequence of Words)이 나타날 분포에 대한 확률적 모델이다. 영어, 한국어등 하나의 언어에 쓰이는 단어들의 distrubution 을 표현한것으로 많은 텍스트가 주어졌을때 텍스트에서 단어들이 어떤 순서로 나오는지를 보고 모델링하면 영어에서는 어떤 단어들이 어떤 단어들 다음에 나온다는것을 확률적으로 표현 할 수 있다.
+  - continuous word representation : one-hot encoding 이 단점을 보완하기 위해 나온 방법, 모든 dimension 에대해서 0 아닌 value 를 가질 수 있도록 한다. vector(dimension) 값들이 서로 비슷한 단어들은 서로 비슷하다고 할 수 있도록 하는것이 continuous word representation가 추구하는 목표이다.
+- Language Model : 문서에서 단어들 (Sequence of Words)이 나타날 분포에 대한 확률적 모델이다. 영어, 한국어등 하나의 언어에 쓰이는 단어들의 distribution 을 표현한것으로 많은 텍스트가 주어졌을때 텍스트에서 단어들이 어떤 순서로 나오는지를 보고 모델링하면 영어에서는 어떤 단어들이 어떤 단어들 다음에 나온다는것을 확률적으로 표현 할 수 있다.
   - n-gram model : 지금까지 가장 많이 쓰이는 language model. n-gram 모델에서는 (n-1) 개의 순차적인 단어들 후에 나올 n 번째 단어에 대한 확률을 나타내는 모델이다. n=1 이면 unigram, n=2 이면 bigram, n=3 이면 trigram(음성인식, 자동기계번역에서 많이 쓰임)
     - 학습 과정에서 한 번도 보지 못했던 n-gram 은 확률 모델이 잘 설명할 수 없기 때문에 Data Sparsity(희박함) 문제가 있다. trigram 에 없는 모델은 bigram 과 unigram 을 조합해서 Data Sparsity 문제를 부분적으로 해결할 수 있지만 근본적으로 해결할 수 없어 Nerual Network 를 활용하기 시작했다.
-  - Neural Network Language Model : Continuous Word Representation 을 input 으로 하고 output 은 전체 문장의 확률 혹은 전체문장에 context 가 주어졌을때 그 단어 하나가 나올 조거부확률(conditional probability)이 된다.
-    - Continuous Word Representation 을 Input 으로 하고, 각각의 단어가 나올 확률을 Output 으로 하는 Neural Network 구조로 표현할 수 있다.
-    - "cat" 과 "dog" 라는 단어를 Continuous Word Representation 으로 표현했을 때, 비슷한 Vector 값을 가지도록 Neural Network 를 학습함으로서 Data Sparsity 문제를 다룰 수 있다.
+  - Neural Network Language Model : continuous Word Representation 을 input 으로 하고 output 은 전체 문장의 확률 혹은 전체문장에 context 가 주어졌을때 그 단어 하나가 나올 조거부확률(conditional probability)이 된다.
+    - continuous Word Representation 을 Input 으로 하고, 각각의 단어가 나올 확률을 Output 으로 하는 Neural Network 구조로 표현할 수 있다.
+    - "cat" 과 "dog" 라는 단어를 continuous Word Representation 으로 표현했을 때, 비슷한 Vector 값을 가지도록 Neural Network 를 학습함으로서 Data Sparsity 문제를 다룰 수 있다.
     - 학습된 Language Model 로부터 학습되지 않은 새로운 문장에 대한 확률 값을 기준으로 Language Model 의 성능을 측정할 수 있다. (ex. Perplexity(곤혹,혼론,당혹) : 학습한 language 모델에서 확률듈을 계산했을때 새로운 문장에 대해서 얼마나 높게 주는가는 확률이고 이 확율을 반대 개념을 Perplexity 라고 하고 perplexity 는 낮을 수록 좋다.)
 
 ### 강좌 종합 정리(Course Summary)
 
 - 딥러닝 도입 사례
   - netflix 개인별 추천에 머신러닝을 도입하고 있다. personalized rating prediction(내가 좋아하는 영화 별주기) -> personalized ranking(영화들 랭킹) -> personalized page generation(나에 맞는 첫화면 생성)
-  - ibm watson service 로 health care 분야에 활용하고 있다. 환자의 피부 사진을 보고 skin cancer(피부암)인지를 dectection 을 이미지 딥러닝을 활용한다.
+  - ibm watson service 로 health care 분야에 활용하고 있다. 환자의 피부 사진을 보고 skin cancer(피부암)인지를 detection 을 이미지 딥러닝을 활용한다.

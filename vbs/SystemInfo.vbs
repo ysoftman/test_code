@@ -74,7 +74,7 @@ Do
 		" [System] " & _
 		" Process Count: " & objSystem.Processes & _
 		", Thread Count: " & objSystem.Threads & _
-		", Conext Switch: " & objSystem.ContextSwitchesPerSec & _
+		", Context Switch: " & objSystem.ContextSwitchesPerSec & _
 		", System Call: " & objSystem.SystemCallsPerSec & _
 		", SystemUpTime: " & objSystem.SystemUpTime
 		If IsNull(objSystem.SystemUpTime) = False Then
@@ -157,8 +157,8 @@ Do
 	WScript.Sleep 1000	' 1√ 
 
 	cnt = cnt + 1
-	resultfile.WriteLIne ""
-	resultfile.WriteLIne ""
+	resultfile.WriteLine ""
+	resultfile.WriteLine ""
 Loop While cnt < 2
 
 resultfile.close

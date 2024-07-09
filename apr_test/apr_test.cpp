@@ -197,7 +197,7 @@ int main(int argc, char **argv)
          << sendlen << endl;
 
     apr_size_t max_buffer_size = 1024 * 1024 * 1024;
-    // can't create over 1MB local(stack) memeory
+    // can't create over 1MB local(stack) memory
     // char recvbuff[max_buffer_size];
     char *recvbuff = (char *)malloc(max_buffer_size);
     memset(recvbuff, 0, sizeof(max_buffer_size));

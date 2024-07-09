@@ -64,7 +64,7 @@ def url_post_request(url):
 
 def url_parse_param(url):
     # params = parse.urlsplit(url)  # python3
-    # url을 sheme(http,https), netloc(www.google.com), path(/search),
+    # url을 scheme(http,https), netloc(www.google.com), path(/search),
     # query(a=1&b=aaa) 로 분리
     result = urlparse(url)
     print(result)

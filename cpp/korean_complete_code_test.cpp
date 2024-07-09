@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 		memset(target, 0, sizeof(char) * MAX_LEN);
 		memset(targettype, 0, sizeof(char) * MAX_LEN);
 	}
-	fprintf(fpOut, "unkowncnt : %d\n", unkonwcnt);
+	fprintf(fpOut, "unknowncnt : %d\n", unknowncnt);
 	fclose(fpIn);
 	fclose(fpOut);
 

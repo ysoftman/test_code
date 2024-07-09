@@ -142,7 +142,7 @@ with tf.Session() as sess:
 # 노드는 const, variable 로 값을 직점 명시하는 대신 placehold 로 표할 수 있다.(feed 메커니즘)
 var1 = tf.placeholder(tf.float32)
 var2 = tf.placeholder(tf.float32)
-# var3 = tf.multipy(var1, var2)
+# var3 = tf.multiply(var1, var2)
 # 사칙연산은 다음과 사용할 수 도 있다.
 var3 = var1 * var2
 # var3 = var1 / var2
@@ -153,4 +153,4 @@ initglobalvariable = tf.global_variables_initializer()
 with tf.Session() as sess:
     sess.run(initglobalvariable)
     # 그래프 실행시 위 placeholder 에 들어갈 값을 명시한다.
-    print(sess.run([var3], feed_dict={var1: [7.], var2: [2.]}))
+    print(sess.run([var3], feed_dict={var1: [7.0], var2: [2.0]}))

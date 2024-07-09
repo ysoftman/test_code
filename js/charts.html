@@ -1,120 +1,129 @@
 <html>
-
-<body>
+  <body>
     <style>
-        /* 2 column layout */
-        .column {
-            float: left;
-            /* 컨테이너내에서 element 위치 : left*/
-            width: 50%;
-            /* 컬럼은 브라우저 폭의 반을 차지*/
-        }
+      /* 2 column layout */
+      .column {
+        float: left;
+        /* 컨테이너내에서 element 위치 : left*/
+        width: 50%;
+        /* 컬럼은 브라우저 폭의 반을 차지*/
+      }
 
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
     </style>
     <div class="row">
-        <div class="column"><canvas id="chart_line"></canvas></div>
-        <div class="column"><canvas id="chart_bar"></canvas></div>
+      <div class="column"><canvas id="chart_line"></canvas></div>
+      <div class="column"><canvas id="chart_bar"></canvas></div>
     </div>
     <div class="row">
-        <div class="column"><canvas id="chart_radar"></canvas></div>
-        <div class="column"><canvas id="chart_pie"></canvas></div>
+      <div class="column"><canvas id="chart_radar"></canvas></div>
+      <div class="column"><canvas id="chart_pie"></canvas></div>
     </div>
     <div class="row">
-        <div class="column"><canvas id="chart_polarArea"></canvas></div>
-        <div class="column"><canvas id="chart_bubble"></canvas></div>
+      <div class="column"><canvas id="chart_polarArea"></canvas></div>
+      <div class="column"><canvas id="chart_bubble"></canvas></div>
     </div>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js'>
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
     <script>
-        var red = 'rgba(255, 99, 132, 0.2)'
-        var blue = 'rgba(54, 162, 235, 0.2)'
-        var yellow = 'rgba(255, 206, 86, 0.2)'
-        var green = 'rgba(75, 192, 192, 0.2)'
-        var purple = 'rgba(153, 102, 255, 0.2)'
-        var orange = 'rgba(255, 159, 64, 0.2)'
-        var colors = [red, blue, yellow, green, purple, orange]
-        var names = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']
+      var red = "rgba(255, 99, 132, 0.2)";
+      var blue = "rgba(54, 162, 235, 0.2)";
+      var yellow = "rgba(255, 206, 86, 0.2)";
+      var green = "rgba(75, 192, 192, 0.2)";
+      var purple = "rgba(153, 102, 255, 0.2)";
+      var orange = "rgba(255, 159, 64, 0.2)";
+      var colors = [red, blue, yellow, green, purple, orange];
+      var names = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
 
-        function drawChart(ctx, type_name, label_name, datas) {
-            new Chart(ctx, {
-                type: type_name,
-                data: {
-                    labels: names,
-                    showline: true,
-                    datasets: [{
-                        label: label_name,
-                        data: datas,
-                        backgroundColor: colors,
-                        borderColor: colors,
-                        borderWidth: 1
-                    }]
+      function drawChart(ctx, type_name, label_name, data) {
+        new Chart(ctx, {
+          type: type_name,
+          data: {
+            labels: names,
+            showline: true,
+            datasets: [
+              {
+                label: label_name,
+                data: data,
+                backgroundColor: colors,
+                borderColor: colors,
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              yAxes: [
+                {
+                  stacked: true,
                 },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            stacked: true
-                        }]
-                    }
-                }
-            })
-        }
+              ],
+            },
+          },
+        });
+      }
 
-        var chartNames = ['line', 'bar', 'radar', 'pie', 'polarArea', 'bubble']
+      var chartNames = ["line", "bar", "radar", "pie", "polarArea", "bubble"];
 
-        for (cn = 0; cn < chartNames.length; cn++) {
-            var idName = 'chart_' + chartNames[cn];
-            console.log("idName:", idName)
-            var ctx = document.getElementById(idName);
-            var datas = [Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100)
-            ]
-            if (chartNames[cn] == 'bubble') {
-                datas = [{
-                    x: Math.floor(Math.random() * 100),
-                    y: Math.floor(Math.random() * 100),
-                    // 반지릅 최대 크기 50로 제한
-                    r: Math.floor(Math.random() * 50),
-                }, {
-                    x: Math.floor(Math.random() * 100),
-                    y: Math.floor(Math.random() * 100),
-                    // 반지릅 최대 크기 50로 제한
-                    r: Math.floor(Math.random() * 50),
-                }, {
-                    x: Math.floor(Math.random() * 100),
-                    y: Math.floor(Math.random() * 100),
-                    // 반지릅 최대 크기 50로 제한
-                    r: Math.floor(Math.random() * 50),
-                }, {
-                    x: Math.floor(Math.random() * 100),
-                    y: Math.floor(Math.random() * 100),
-                    // 반지릅 최대 크기 50로 제한
-                    r: Math.floor(Math.random() * 50),
-                }, {
-                    x: Math.floor(Math.random() * 100),
-                    y: Math.floor(Math.random() * 100),
-                    // 반지릅 최대 크기 50로 제한
-                    r: Math.floor(Math.random() * 50),
-                }, {
-                    x: Math.floor(Math.random() * 100),
-                    y: Math.floor(Math.random() * 100),
-                    // 반지릅 최대 크기 50로 제한
-                    r: Math.floor(Math.random() * 50),
-                }]
-                //console.log("idName:", idName, " -> change datas , r:", Math.floor(Math.random() * 50))
-            }
-            drawChart(ctx, chartNames[cn], idName, datas);
+      for (cn = 0; cn < chartNames.length; cn++) {
+        var idName = "chart_" + chartNames[cn];
+        console.log("idName:", idName);
+        var ctx = document.getElementById(idName);
+        var data = [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+        ];
+        if (chartNames[cn] == "bubble") {
+          data = [
+            {
+              x: Math.floor(Math.random() * 100),
+              y: Math.floor(Math.random() * 100),
+              // 반지릅 최대 크기 50로 제한
+              r: Math.floor(Math.random() * 50),
+            },
+            {
+              x: Math.floor(Math.random() * 100),
+              y: Math.floor(Math.random() * 100),
+              // 반지릅 최대 크기 50로 제한
+              r: Math.floor(Math.random() * 50),
+            },
+            {
+              x: Math.floor(Math.random() * 100),
+              y: Math.floor(Math.random() * 100),
+              // 반지릅 최대 크기 50로 제한
+              r: Math.floor(Math.random() * 50),
+            },
+            {
+              x: Math.floor(Math.random() * 100),
+              y: Math.floor(Math.random() * 100),
+              // 반지릅 최대 크기 50로 제한
+              r: Math.floor(Math.random() * 50),
+            },
+            {
+              x: Math.floor(Math.random() * 100),
+              y: Math.floor(Math.random() * 100),
+              // 반지릅 최대 크기 50로 제한
+              r: Math.floor(Math.random() * 50),
+            },
+            {
+              x: Math.floor(Math.random() * 100),
+              y: Math.floor(Math.random() * 100),
+              // 반지릅 최대 크기 50로 제한
+              r: Math.floor(Math.random() * 50),
+            },
+          ];
+          //console.log("idName:", idName, " -> change datas , r:", Math.floor(Math.random() * 50))
         }
+        drawChart(ctx, chartNames[cn], idName, data);
+      }
     </script>
-</body>
-
+  </body>
 </html>

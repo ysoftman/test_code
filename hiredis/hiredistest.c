@@ -13,7 +13,7 @@
 // 빌드시 makefile 에 -lhiredis 옵션 추가
 
 
-//hiredis 를 이용한 redis 테스트(hiredis exmaple 소스 발췌)
+//hiredis 를 이용한 redis 테스트(hiredis example 소스 발췌)
 int test_hiredis()
 {
     unsigned int j;

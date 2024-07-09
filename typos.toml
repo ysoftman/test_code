@@ -1,3 +1,4 @@
+# https://github.com/crate-ci/typos/blob/master/docs/reference.md
 [default]
 extend-ignore-identifiers-re = [
     # *sigh* this just isn't worth the cost of fixing
@@ -12,15 +13,17 @@ AttributeIDSupressMenu = "AttributeIDSupressMenu"
 # Don't correct the surname "Teh"
 teh = "teh"
 
+# typos 검사 제외 파일타입
 # 지원되는 타입 확인
 #typos --type-list
-
 #*.lock, go.sum, package-lock.json, pnpm-lock.yaml, requirements.txt
 [type.lock]
 check-file = false
 [type.xml]
 check-file = false
 [type.jupyter]
+check-file = false
+[type.asm]
 check-file = false
 [type.csv]
 check-file = false
@@ -33,6 +36,10 @@ check-file = false
 extend-glob=["*.ysoftman"]
 check-file = false
 
+# typos 검사 제외파일
+[files]
+extend-exclude=["word2vec.py"]
 
 # 설치 및 실행
 #brew install typos-cli
+#typos

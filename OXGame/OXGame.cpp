@@ -93,7 +93,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,	//Window Program Instance Handle
 		TranslateMessage(&Message);	//WM_KEYDOWN Message Occur, Make WM_CHAR
 		DispatchMessage(&Message);	//Message Transfer To WndPro(Window Procedure)
 	}
-	return Message.wParam;	//Return Message's Addtional Information(exit(0) In DOS)
+	return Message.wParam;	//Return Message's Additional Information(exit(0) In DOS)
 	
 }
 
@@ -171,7 +171,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,	//Handle Of Window
 			//SelectObject(hdc,hFont);
 			hFont_temp = (HFONT)SelectObject(hdc, hFont);
 
-			SetTextAlign(hdc, TA_CENTER);	//Aling Center...
+			SetTextAlign(hdc, TA_CENTER);	//Aline Center...
 			SetBkMode(hdc, TRANSPARENT);	//Background Color Mode -> Transparent
 			SetTextColor(hdc,RGB(180,180,180));
 			
@@ -325,7 +325,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,	//Handle Of Window
 		hFont_temp = (HFONT)SelectObject(hdc, hFont);
 
 		SetBkMode(hdc, TRANSPARENT);	//Background Color Mode -> Transparent		
-		SetTextAlign(hdc,TA_CENTER);	//Aling Center...			
+		SetTextAlign(hdc,TA_CENTER);	//Aline Center...			
 		
 		//Update Turn
 		if (turn == OOO)
@@ -1153,7 +1153,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,	//Handle Of Window
 		//Send WM_QUIT To GetMessage Function
 		//GetMessage Return FALSE And Exit While-Loop. Therefore Quit Window Program
 		PostQuitMessage(0);	
-		return 0;	//Always Retrun 0, After Message Process
+		return 0;	//Always Return 0, After Message Process
 	}
 	return (DefWindowProc(hWnd,iMessage,wParam,lParam));	//Default Message Process
 }

@@ -107,7 +107,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,	//Window Program Instance Handle
 	ReleaseDX3D();
 
 
-	return Message.wParam;	//Return Message's Addtional Information(exit(0) In DOS)
+	return Message.wParam;	//Return Message's Additional Information(exit(0) In DOS)
 	
 }
 
@@ -164,7 +164,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,	//Handle Of Window
 		//Send WM_QUIT To GetMessage Function
 		//GetMessage Return FALSE And Exit While-Loop. Therefore Quit Window Program
 		PostQuitMessage(0);	
-		return 0;	//Always Retrun 0, After Message Process
+		return 0;	//Always Return 0, After Message Process
 	}
 	return (DefWindowProc(hWnd,iMessage,wParam,lParam));	//Default Message Process
 }

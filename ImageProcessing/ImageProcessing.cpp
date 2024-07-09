@@ -20,7 +20,7 @@
 #define PI		3.141592653589793238462643383279
 #define COEFF	0.707106781186547524400844362105	// 1 / ROOT2(1.4142135623730950488016887242097...)
 
-//Image Arrary
+//Image Array
 #define M 256
 #define N 256
 
@@ -180,7 +180,7 @@ HINSTANCE g_hInst;
 HWND hMainWnd;	//Main Window
 
 HWND hc1;	//Open Image Window
-HWND hc2;	//Output Image Widnow
+HWND hc2;	//Output Image Window
 HWND hcf1;	//Open Frame1 Image Window
 HWND hcf2;	//Open Frame2 Image Window
 
@@ -210,7 +210,7 @@ HWND hc24;	//IQuantization(For JPEG) Window
 HWND hc25;	//IDCT(For JPEG) Window
 
 
-HWND hc26;	//f1' whith Motion Vection(MV) Window
+HWND hc26;	//f1' with Motion Vection(MV) Window
 HWND hc27;	//f2 - f1' Frame
 HWND hc28;	//Result Frame
 
@@ -428,7 +428,7 @@ void DrawImage2(HDC hdc, int width, int height, unsigned char (*pImage)[FCOL])
 //TCHAR szWindowClass[MAX_LOADSTRING];	// The title bar text
 
 
-// Foward declarations of functions included in this code module:
+// Forward declarations of functions included in this code module:
 
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
@@ -1281,7 +1281,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 
-// Mesage handler for about box.
+// Message handler for about box.
 LRESULT CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -1338,7 +1338,7 @@ LRESULT CALLBACK ImageInputProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		{
 			for(col = 0; col < COL; col++)
 			{
-				//For InputImage Ouput
+				//For InputImage Output
 				InputImage[row][col] = buf[row][col];
 			}
 		}
@@ -1370,7 +1370,7 @@ LRESULT CALLBACK ImageInputProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		{
 			for (col = 0; col < COL; col++)
 			{
-				//Using TImage For Image Porcessing
+				//Using TImage For Image Processing
 				TImage[row][col] = InputImage[row][col];
 				//SetPixel(hdc,col,row,(unsigned long)RGB(rgbtemp,rgbtemp,rgbtemp));
 			}
@@ -1454,7 +1454,7 @@ void CreateImageOutputWindow(HWND hParent,int x,int y,int width,int height)
 }
 
 
-//Output Image Porcessing
+//Output Image Processing
 LRESULT CALLBACK ImageOutputProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
@@ -1550,7 +1550,7 @@ LRESULT CALLBACK ImageFrame1InputProc(HWND hWnd, UINT message, WPARAM wParam, LP
 		{
 			for(fcol = 0; fcol < FCOL; fcol++)
 			{
-				//For Input Frame1 Image Ouput
+				//For Input Frame1 Image Output
 				InputFrame1Image[frow][fcol] = f1_buf[frow][fcol];
 			}
 		}
@@ -1580,7 +1580,7 @@ LRESULT CALLBACK ImageFrame1InputProc(HWND hWnd, UINT message, WPARAM wParam, LP
 		{
 			for (fcol = 0; fcol < fcol; fcol++)
 			{
-				//Using TImage For Image Porcessing
+				//Using TImage For Image Processing
 				TImage[frow][fcol] = InputFrame1Image[frow][fcol];
 				//SetPixel(hdc,col,row,(unsigned long)RGB(rgbtemp,rgbtemp,rgbtemp));
 			}
@@ -1664,7 +1664,7 @@ LRESULT CALLBACK ImageFrame2InputProc(HWND hWnd, UINT message, WPARAM wParam, LP
 		{
 			for(fcol = 0; fcol < FCOL; fcol++)
 			{
-				//For Input Frame2 Image Ouput
+				//For Input Frame2 Image Output
 				InputFrame2Image[frow][fcol] = f2_buf[frow][fcol];
 			}
 		}
@@ -1694,7 +1694,7 @@ LRESULT CALLBACK ImageFrame2InputProc(HWND hWnd, UINT message, WPARAM wParam, LP
 		{
 			for (fcol = 0; fcol < FCOL; fcol++)
 			{
-				//Using TImage For Image Porcessing
+				//Using TImage For Image Processing
 				TImage[frow][fcol] = InputFrame2Image[frow][fcol];
 				//SetPixel(hdc,fcol,frow,(unsigned long)RGB(rgbtemp,rgbtemp,rgbtemp));
 			}
@@ -2580,7 +2580,7 @@ LRESULT CALLBACK ImageBWNProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 	switch(message)
 	{
 	case WM_CREATE:
-		//Copy Orginal Image To Temp Image
+		//Copy Original Image To Temp Image
 		for (row = 0; row < ROW; row++)
 		{
 			for (col = 0; col < COL; col++)
@@ -2722,7 +2722,7 @@ LRESULT CALLBACK ImageErosionProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 	{
 	case WM_CREATE:
 
-		//Copy Orginal Image To Temp Image
+		//Copy Original Image To Temp Image
 		//for (row = 0; row < ROW; row++)
 		//{
 		//	for (col = 0; col < COL; col++)
@@ -2821,7 +2821,7 @@ LRESULT CALLBACK ImageDilationProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 	switch(message)
 	{
 	case WM_CREATE:
-		//Copy Orginal Image To Temp Image
+		//Copy Original Image To Temp Image
 		//for (row = 0; row < ROW; row++)
 		//{
 		//	for (col = 0; col < COL; col++)
@@ -3145,7 +3145,7 @@ LRESULT CALLBACK ImageBinaryProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	HDC hdc;
 	int row, col;
 
-	//Dicision(Black or White)
+	//Decision(Black or White)
 	unsigned int threshold=0;
 
 	unsigned int image_size = ROW * COL;
@@ -3168,7 +3168,7 @@ LRESULT CALLBACK ImageBinaryProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		threshold = sum / image_size;	
 
 		//Make Binary Image
-		//Boundary Decision (0 or 255)
+		//Boundary decision (0 or 255)
 		for (row = 0; row < ROW; row++)
 		{
 			for (col = 0; col < COL; col++)
@@ -3522,7 +3522,7 @@ LRESULT CALLBACK ImageThinningProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 	HDC hdc;
 	int row, col;
 
-	//Dicision(Black or White)
+	//Decision(Black or White)
 	unsigned int threshold=0;
 
 	unsigned int image_size = ROW * COL;
@@ -3623,7 +3623,7 @@ LRESULT CALLBACK ImageThinningProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 		threshold = sum / image_size;
 
 		//Make Binary Image
-		//Boundary Decision (0 or 255)
+		//Boundary decision (0 or 255)
 		for (row = 0; row < ROW; row++)
 		{
 			for (col = 0; col < COL; col++)
@@ -3688,7 +3688,7 @@ LRESULT CALLBACK ImageThinningProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 			HitAndMiss(ThinningImage, SE8f, SE8b);
 		}
 
-		//Change Binrary Image Temp Value 0 -> 0,   1 -> 255
+		//Change Binary Image Temp Value 0 -> 0,   1 -> 255
 		//for (row = 0; row < ROW; row++)
 		//{
 		//	for (col = 0; col < COL; col++)
@@ -3700,7 +3700,7 @@ LRESULT CALLBACK ImageThinningProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 		//	}
 		//}
 
-		//Change Binrary Image Value 0 -> 0,   1 -> 255
+		//Change Binary Image Value 0 -> 0,   1 -> 255
 		for (row = 0; row < ROW; row++)
 		{
 			for (col = 0; col < COL; col++)
@@ -3724,7 +3724,7 @@ LRESULT CALLBACK ImageThinningProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 			}
 		}
 
-		//Change Thinning Binrary Image Value 0 -> 0,   1 -> 255
+		//Change Thinning Binary Image Value 0 -> 0,   1 -> 255
 		for (row = 0; row < ROW; row++)
 		{
 			for (col = 0; col < COL; col++)
@@ -3806,7 +3806,7 @@ void DCT(unsigned char forward[M][N])
 
 
 	////////////////////////////////////////////
-	//	M -> 256  , N -> 256 , But Devide To 8	
+	//	M -> 256  , N -> 256 , But divide To 8	
 	////////////////////////////////////////////
 	twoM = 2.0 * 8;	//2 * M array
 	twoN = 2.0 * 8;	//2 * N array
@@ -4027,7 +4027,7 @@ void IDCT(double dct[M][N])
 
 
 	////////////////////////////////////////////
-	//	M -> 256  , N -> 256 , But Devide To 8	
+	//	M -> 256  , N -> 256 , But divide To 8	
 	////////////////////////////////////////////
 	twoM = 2.0 * 8;	//2 * M array
 	twoN = 2.0 * 8;	//2 * N array
@@ -4390,7 +4390,7 @@ LRESULT CALLBACK ImageHARDAMARDProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 	{
 	case WM_CREATE:
 
-		//Hardamard Transfrom
+		//Hardamard Transform
 		HARDAMARD(TImage);
 
 		break;
@@ -4552,7 +4552,7 @@ LRESULT CALLBACK ImageIHARDAMARDProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 	{
 	case WM_CREATE:
 		
-		//Inverse Hardamard Transfrom
+		//Inverse Hardamard Transform
 		IHARDAMARD(HARDAMARDImage);		
 
 		break;
@@ -5086,7 +5086,7 @@ LRESULT CALLBACK ImageDCT_JPEGProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 
 
 
-//Quantization Processsing
+//Quantization Processing
 void Quantization_JPEG(double DCTedImage[ROW][COL])
 {
 
@@ -5234,7 +5234,7 @@ LRESULT CALLBACK ImageQuantization_JPEGProc(HWND hWnd, UINT message, WPARAM wPar
 }
 
 
-//Quantization Processsing
+//Quantization Processing
 void IQuantization_JPEG(double QuantizationedImage[ROW][COL])
 {
 
@@ -5500,7 +5500,7 @@ void MakeF1_(unsigned char CF[FROW][FCOL], unsigned char RF[FROW][FCOL])
 
 	int i, j;
 
-	int mvi, mvj;	//Decision move vector i, j
+	int mvi, mvj;	//decision move vector i, j
 
 	double sum_temp, sum;
 	//double MAD;
@@ -5517,7 +5517,7 @@ void MakeF1_(unsigned char CF[FROW][FCOL], unsigned char RF[FROW][FCOL])
 	//}
 
 
-	//Block Mathing...
+	//Block Matching...
 	//352x240 Image...
 	for (frow = 0; frow < FROW; frow += 16)
 	{

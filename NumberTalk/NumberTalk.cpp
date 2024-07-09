@@ -65,7 +65,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPreInstance, LPSTR lpszCmdP
 		TranslateMessage(&Message);	//WM_KEYDOWN Message Occur, Make WM_CHAR
 		DispatchMessage(&Message);	//Message Transfer To WndPro(Window Procedure)
 	}
-	return Message.wParam;	//Return Message's Addtional Information(exit(0) In DOS)
+	return Message.wParam;	//Return Message's Additional Information(exit(0) In DOS)
 }
 #define ID_RADIO1 100
 #define ID_RADIO2 101
