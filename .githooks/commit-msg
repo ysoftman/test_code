@@ -17,6 +17,13 @@ lightpurple='\033[1;35m'
 lightcyan='\033[1;36m'
 lightwhite='\033[1;37m'
 
+ECHO="echo"
+# "bash"
+current_shell=$(ps -p $$ | awk 'NR==2')
+if [[ $current_shell == *"bash"* ]]; then
+    ECHO="echo -e"
+fi
+
 COMMIT_MSG_FILE=$1
 echo "COMMIT_MSG_FILE=$COMMIT_MSG_FILE"
 # commit message 체크
@@ -28,4 +35,5 @@ if [[ $ret != 0 ]]; then
     exit 3
 fi
 
+$ECHO "${green}[.githooks/commit-msg] succeeded~${reset_color}"
 

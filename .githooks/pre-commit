@@ -86,5 +86,5 @@ if [[ $? == 0 ]]; then
     fi
 fi
 
-$ECHO "[.githooks/pre-commit] ${green}succeeded~${reset_color}"
+$ECHO "${green}[.githooks/pre-commit] succeeded~${reset_color}"
 exit 0
