@@ -1,4 +1,29 @@
 #!/bin/sh
+reset_color='\033[0m'
+black='\033[0;30m'
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+blue='\033[0;34m'
+purple='\033[0;35m'
+cyan='\033[0;36m'
+white='\033[0;37m'
+darkgray='\033[1;30m'
+lightred='\033[1;31m'
+lightgreen='\033[1;32m'
+lightyellow='\033[1;33m'
+lightblue='\033[1;34m'
+lightpurple='\033[1;35m'
+lightcyan='\033[1;36m'
+lightwhite='\033[1;37m'
+
+ECHO="echo"
+# "bash"
+current_shell=$(ps -p $$ | awk 'NR==2')
+if [[ $current_shell == *"bash"* ]]; then
+    ECHO="echo -e"
+fi
+
 COMMIT_MSG_FILE=$1
 cat >> $COMMIT_MSG_FILE << zzz
 
@@ -6,4 +31,5 @@ cat >> $COMMIT_MSG_FILE << zzz
 # COMMIT_MSG_FILE: $COMMIT_MSG_FILE"
 # DATE: $(date '+%Y-%m-%d %H:%M:%S')"
 zzz
+$ECHO "${green}[.githooks/commit-msg] succeeded~${reset_color}"
 
