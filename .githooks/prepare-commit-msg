@@ -31,5 +31,5 @@ cat >> $COMMIT_MSG_FILE << zzz
 # COMMIT_MSG_FILE: $COMMIT_MSG_FILE"
 # DATE: $(date '+%Y-%m-%d %H:%M:%S')"
 zzz
-$ECHO "${green}[.githooks/commit-msg] succeeded~${reset_color}"
+$ECHO "${green}[.githooks/prepare-commit-msg] succeeded~${reset_color}"
 
