@@ -6,3 +6,5 @@ SHA1=$3
 echo "COMMIT_MSG_FILE: $COMMIT_MSG_FILE"
 echo "COMMIT_SOURCE  : $COMMIT_SOURCE"
 
+msg=$(cat $COMMIT_SOURCE} | grep -v "^#")
+echo $msg
