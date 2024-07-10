@@ -1,10 +1,9 @@
 #!/bin/sh
 COMMIT_MSG_FILE=$1
-COMMIT_SOURCE=$2
-SHA1=$3
+cat >> $COMMIT_MSG_FILE << zzz
 
-echo "COMMIT_MSG_FILE: $COMMIT_MSG_FILE"
-echo "COMMIT_SOURCE  : $COMMIT_SOURCE"
+########## added by prepare-commit-msg ##########
+# COMMIT_MSG_FILE: $COMMIT_MSG_FILE"
+# DATE: $(date '+%Y-%m-%d %H:%M:%S')"
+zzz
 
-msg=$(cat $COMMIT_SOURCE} | grep -v "^#")
-echo $msg

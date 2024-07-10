@@ -86,5 +86,14 @@ if [[ $? == 0 ]]; then
     fi
 fi
 
+# commit message 체크
+regex="update|modify|fix|test|feature|add"
+echo $msg | rg -i $regex > /dev/null
+ret=$?
+if [[ $ret != 0 ]]; then
+    printf "${red}check message rule(%s)...\nerror(return:%d)${reset_color}\n" "$regex" "$ret"
+    exit 3
+fi
+
 $ECHO "[.githooks/pre-commit] ${green}succeeded~${reset_color}"
 exit 0
