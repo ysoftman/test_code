@@ -1,0 +1,8 @@
+#!/bin/sh
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+
+echo $COMMIT_MSG_FILE
+echo $COMMIT_SOURCE
+
