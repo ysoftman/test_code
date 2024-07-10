@@ -1,0 +1,4 @@
+# this is commit message template
+# author: ysoftman
+
+
