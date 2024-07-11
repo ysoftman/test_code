@@ -16,6 +16,26 @@ const htmlString = `
 <body>
 html template 테스트입니다.
 
+{{- /*
+이건 주석~
+이런 template 부분들이 기본적으로 하나의 공백라인으로 렌더링 된다.
+{{-공백 은 이전까지 공백(탭,뉴라인) trim
+공백-}}  은 이후의 공백(탭,뉴라인) trim
+*/ -}}
+
+{{if .HasApple}}
+	apple
+{{end}}
+
+{{ if not .HasApple }}
+	(tab)banana
+    (space*4)banana
+{{ end }}
+{{- if not .HasApple -}}
+	(tab)banana
+    (space*4)banana
+{{- end }}
+
 <script>
 var val1 = {{.Value1}}
 var val2 = {{.Value2}}
@@ -38,9 +58,10 @@ type UserInfo struct {
 	// html 영역에서 html 태그가 제대로 표시 되지 않는다.
 	//	value2 string
 	//	value3 string
-
 	Value2 template.JS
 	Value3 template.HTML
+
+	HasApple bool
 }
 
 var userInfo UserInfo
@@ -62,6 +83,8 @@ func main() {
 	have a nice day3<br>
 	have a nice day4<br>
 	`
+	userInfo.HasApple = false
+
 	//html 문서 처리
 	err = tpl.Execute(os.Stdout, userInfo)
 	if err != nil {
