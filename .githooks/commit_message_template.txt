@@ -1,7 +1,15 @@
 
 
+# 입력이 편하도록 위쪽에 공백라인을 뒀습니다.
+#
 # this is commit message template
 # author: ysoftman
+#
 # 커밋 메시지는 다음 단어로 시작해 주세요.
-# fix, update, modify, add, test
-# 입력이 편하도록 위쪽에 공백라인을 뒀습니다.
+# update|modify|fix|test|feature|add
+#
+# 참고로 gitmoji 툴로 커밋을 작성하면 편합니다.
+# 설치
+# brew install gimoji
+# 커밋할때
+# gitmoji -c

@@ -1,4 +1,9 @@
 #!/bin/sh
+# https://github.com/koalaman/shellcheck/wiki/directive#supported-directives
+# https://www.shellcheck.net/wiki/
+# shellcheck disable=SC2034
+# shellcheck disable=SC2039
+# shellcheck disable=SC3001-SC3035
 reset_color='\033[0m'
 black='\033[0;30m'
 red='\033[0;31m'
@@ -36,4 +41,3 @@ if [[ $ret != 0 ]]; then
 fi
 
 $ECHO "${green}[.githooks/commit-msg] succeeded~${reset_color}"
-
