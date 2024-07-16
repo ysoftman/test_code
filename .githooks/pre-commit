@@ -30,7 +30,7 @@ fi
 
 install_python_pkg() {
     # echo ${@}
-    for i in $@; do
+    for i in "$@"; do
         ${1} --version 2>&1 /dev/null
         if [[ $? != 0 ]]; then
             set -e
