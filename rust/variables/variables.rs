@@ -1,6 +1,11 @@
 // static 으로 global 변수
 static GLOBAL_STRING: &str = "ysoftman";
+
+//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+#[allow(dead_code)]
 static GLOBAL_INT: i32 = 123123;
+
+// static 은 const 와 다르게
 // static mutable 로 사용할수 있지만 unsafe 영역내에서만 사용 할 수 있다.
 static mut GLOBAL_AAA: i32 = 123123;
 
@@ -54,10 +59,15 @@ fn main() {
     // () 로 묶어 하나의 placeholder 에 출력
     println!("aaa,bbb = {:?}", (aaa, bbb));
 
-    // 상수 선언, 대문자여야 한다.(소문자면 빌드 에러 발생)
+    // 상수 선언, 대문자여야 한다.(소문자면 빌드 warning 발생)
+    // #[allow(non_upper_case_globals)] attribute 를 사용하면 warning 을 발생하지 않는다.
     // 상수 자체가 불변성이라 mut 을 쓰지 않고
     // 상수의 유형을 명시해야 한다.
     // 가독성을 위해 _ 로 시각적으로 자릿수를 구분을 위해 사용할 수 있다.
+    #[allow(non_upper_case_globals)]
+    const abc: i32 = 123;
+    println!("abc:{}", abc);
+
     const MAX_PORINTS: u32 = 100_000;
     println!("MAX_PORINTS : {}", MAX_PORINTS);
     // string 타입은 참조자로 명시
