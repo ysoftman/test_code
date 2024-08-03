@@ -7,9 +7,13 @@ static mut GLOBAL_AAA: i32 = 123123;
 // 불변 변수를 통해 쉽게 안정성과 동시성을 취할 수 있다.
 fn main() {
     println!("GLOBAL_STRING : {}", GLOBAL_STRING);
+
+    println!("GLOBAL_INT : {}", GLOBAL_INT); // 컴파일시 아래에 GLOBAL_INT 로 고정되어 9999 이 출력된다
+
     // 같은 이름의 변수라면 global 보다 local 이 우선한다.
     static GLOBAL_INT: i32 = 9999;
     println!("GLOBAL_INT : {}", GLOBAL_INT);
+
     // static 가변은 쓸 수 없다.
     static GLOBAL_INT2: i32 = 7777;
     unsafe {
@@ -59,9 +63,14 @@ fn main() {
     // string 타입은 참조자로 명시
     const MY_NAME: &str = "ysoftman";
     println!("MY_NAME : {}", MY_NAME);
-    // shadowing : 같은 변수의 이름을 사용하는 경우
+
+    // shadowing : 같은 변수의 이름을 사용하는 경우, 원래의 변수는잠깐 사라지고 나중에 필요할대
+    // 나타난다
     let y = 1;
-    let y = y + 1;
+    {
+        let y = y + 1;
+        println!("y:{}", y);
+    }
     println!("y:{}", y);
 
     // 문자형식의 불변 변수
