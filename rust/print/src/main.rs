@@ -30,6 +30,11 @@ fn main() {
         b, b, b, b, b, b, b, b
     );
 
+    let title = "lemon apple";
+    println!("{:-^20}", title); // ----lemon apple----
+    let bar = "|";
+    println!("{:_<10}{: >10}", bar, bar); // |_________         |
+
     let user = User {
         name: String::from("ysoftman"),
         age: 10,
