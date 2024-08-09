@@ -25,3 +25,8 @@ git push
 ```bash
 bash ./restore_grafana_dashboard.sh
 ```
+
+# 참고
+
+- https://grafana.com/docs/grafana/latest/developers/http_api/dashboard/
+- https://grafana.com/docs/grafana/latest/developers/http_api/folder_dashboard_search/
