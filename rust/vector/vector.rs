@@ -1,14 +1,31 @@
 // ysoftman
 // vector test
 
-#[derive(Debug)]
+#[derive(Debug)] // to use {:?}
+#[allow(dead_code)]
+#[repr(u8)]
 enum VecData {
-    Value1(i32),
-    Value2(f32),
-    Value3(String),
+    Value1(i32, i32), // enum tuple()
+    Value2 = 254,
+    Value3,
 }
 
 use VecData::*;
+
+fn vec_data() {
+    println!("-----");
+    // enum 으로 다른 데이터 타입을 갖는 벡터를 생성할 수도 있다.
+    let v1 = VecData::Value1(1i32, 2i32);
+    println!("{:?}", v1);
+    let v2 = VecData::Value2;
+    println!("{:?}", v2);
+    let v3 = vec![Value1(111, 222), Value2, Value3];
+    println!("{:?}", v3[0]);
+    println!("{:?}", v3[1]);
+    println!("{:?}", v3[2]);
+    //println!("{:?}", v3[3]); // index out of bound panic 발생
+    println!("{:?}", v3);
+}
 
 // vector, string, hash map 등은 표준 라이브러리에 포함된 컬렉션이고 가변적인 데이터를 힙에 저장한다.
 fn main() {
@@ -16,16 +33,28 @@ fn main() {
     // let mut v: Vec<i32> = Vec::new();
     // mutable 이면 push 되는 값으로 타입추론이 가능해 타입을 명시하지 않아도 된다.
     let mut v = Vec::new();
+    // capacity 는 0,4,8씩 늘어난다.
+    println!("capacity:{}", v.capacity());
     v.push(-3);
+    println!("capacity:{}", v.capacity());
     v.push(-2);
+    println!("capacity:{}", v.capacity());
     v.push(-1);
+    println!("capacity:{}", v.capacity());
     v.push(0);
+    println!("capacity:{}", v.capacity());
     v.push(1);
+    println!("capacity:{}", v.capacity());
     v.push(2);
+    println!("capacity:{}", v.capacity());
     v.push(3);
+    println!("capacity:{}", v.capacity());
     v.pop();
+    println!("capacity:{}", v.capacity());
     v.pop();
+    println!("capacity:{}", v.capacity());
     v.pop();
+    println!("capacity:{}", v.capacity());
     println!("v {:?}", v);
     // 또는 벡터 매크로를 사용할 수도 있다.
     let v2 = vec![-3, -2, -1, 0, 1, 2, 3];
@@ -82,8 +111,5 @@ fn main() {
         println!("iter_mut {}", i);
     }
 
-    println!("-----");
-    // enum 으로 다른 데이터 타입을 갖는 벡터를 생성할 수도 있다.
-    let v3 = vec![Value1(123), Value2(1.23), Value3(String::from("ysoftman"))];
-    println!("{:?}", v3);
+    vec_data();
 }
