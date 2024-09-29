@@ -45,7 +45,7 @@ fn main() {
     println!("min i64:{}", std::i64::MIN);
     println!("max i64:{}", std::i64::MAX);
 
-    // _로시작하는 변수는 unused 해도 워닝이 발생하지 않는다.
+    // _(underscore,underbar)로시작하는 변수는 unused 해도 워닝이 발생하지 않는다.
     let _asdf = 123;
     // 가변 변수
     let mut x = 5;
