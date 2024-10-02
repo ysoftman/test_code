@@ -174,6 +174,6 @@ fn at_binding_match() {
             id: id_variable @ 3..=7,
         } => println!("3~7 {}", id_variable),
         Message::Hello { id: 8..=10 } => println!("8~10"),
-        Message::Hello { id } => println!("other"),
+        _ => println!("other"),
     }
 }
