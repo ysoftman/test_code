@@ -10,7 +10,8 @@ extend-ignore-re = [
     "cf-ray.*ICN",
     "CBCEncrypter",
     "iterm2",
-    ".mak"
+    ".mak",
+    ".*(?i)ysoftman.*",  # ignorecase https://docs.rs/regex/latest/regex/index.html#grouping-and-flags
 ]
 # valid identifiers(snake_case,CamelCase등으로 구분)
 # typos --identifiers
