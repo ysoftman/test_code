@@ -15,6 +15,9 @@ func main() {
 	//zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	log.Print("hello world")
 
+	// 종료
+	//log.Fatal().Msg("fatal")
+
 	log.Debug().
 		Str("Scale", "833 cents").
 		Float64("Interval", 833.09).
