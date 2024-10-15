@@ -19,6 +19,16 @@ func (me *MyError) Error() string {
 	return "error:" + me.E
 }
 
+func findMyError(err error) (*MyError, bool) {
+	for err != nil {
+		if e, ok := err.(*MyError); ok {
+			return e, true
+		}
+		err = errors.Unwrap(err)
+	}
+	return nil, false
+}
+
 func getFuncInfo() string {
 	pc, file, line, ok := runtime.Caller(1)
 	if !ok {
@@ -82,6 +92,13 @@ func main() {
 	}
 	err := fmt.Errorf("%w", &me)
 	err = fmt.Errorf("apple\n%w", err)
+
+	// wrapping error 에서 MyError 찾기
+	if e, ok := findMyError(err); ok {
+		fmt.Println("found MyError", e)
+	}
+
+	// unwrapping error
 	for err != nil {
 		checkError(err)
 		// %w 로 wrapping 된 에러를 unwarp
