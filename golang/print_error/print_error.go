@@ -11,12 +11,13 @@ var errB = errors.New("error-b")
 var errC = errors.New("error-c")
 
 type MyError struct {
-	E string
+	Err  error
+	Mesg string
 }
 
 // errors.As 의 target 인자으로 사용하기 위해서는 error interface 를 구현해야 한다
 func (me *MyError) Error() string {
-	return "error:" + me.E
+	return "error:" + me.Mesg
 }
 
 func findMyError(err error) (*MyError, bool) {
@@ -87,14 +88,14 @@ func main() {
 	checkError(a())
 	fmt.Println("----------")
 
-	me := MyError{
-		E: "lemon",
-	}
-	err := fmt.Errorf("%w", &me)
+	err := fmt.Errorf("first error")
 	err = fmt.Errorf("apple\n%w", err)
-
+	me := &MyError{
+		Err:  err,
+		Mesg: "lemon",
+	}
 	// wrapping error 에서 MyError 찾기
-	if e, ok := findMyError(err); ok {
+	if e, ok := findMyError(me); ok {
 		fmt.Println("found MyError", e)
 	}
 
