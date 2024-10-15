@@ -20,6 +20,15 @@ func (me *MyError) Error() string {
 	return "error:" + me.Mesg
 }
 
+var errLemon = &MyError{
+	Err:  nil,
+	Mesg: "lemon",
+}
+var errApple = &MyError{
+	Err:  nil,
+	Mesg: "apple",
+}
+
 func findMyError(err error) (*MyError, bool) {
 	for err != nil {
 		if e, ok := err.(*MyError); ok {
@@ -66,43 +75,48 @@ func c() error {
 
 func checkError(err error) {
 	fmt.Printf("[err stack]\n%+v\n", err)
-	if errors.Is(err, errC) {
-		fmt.Println("--> Is errC")
+	// Is As 는 err 를 unwrap 하면서 비교한다.
+	if errors.Is(err, errA) {
+		fmt.Println("--> Is errA")
 	}
 	if errors.Is(err, errB) {
 		fmt.Println("--> Is errB")
 	}
-	if errors.Is(err, errA) {
-		fmt.Println("--> Is errA")
+	if errors.Is(err, errC) {
+		fmt.Println("--> Is errC")
 	}
-	// MyError 타입의 에러를 errors.As 로 검출하기
-	var me *MyError
-	if errors.As(err, &me) {
-		fmt.Println("--> As MyError")
+	if errors.Is(err, errLemon) {
+		fmt.Println("--> Is errLemon")
+	}
+	// errApple, errLemon 모드 같은 타입으로 아래 2개 As 에서 true 가 된다
+	if errors.As(err, &errApple) {
+		fmt.Println("--> As errApple")
+	}
+	if errors.As(err, &errLemon) {
+		fmt.Println("--> As errLemon")
 	}
 }
 
 func main() {
 	fmt.Println(getFuncInfo())
-	// error 가 wrapping 되어 errC, errB, errA 를 포함하고 있다.
-	checkError(a())
+	me := &MyError{
+		Err:  a(),
+		Mesg: "apple",
+	}
+	checkError(me)
 	fmt.Println("----------")
 
-	err := fmt.Errorf("first error")
-	err = fmt.Errorf("apple\n%w", err)
-	me := &MyError{
-		Err:  err,
-		Mesg: "lemon",
-	}
-	// wrapping error 에서 MyError 찾기
+	// wrap error 에서 MyError 찾기
 	if e, ok := findMyError(me); ok {
 		fmt.Println("found MyError", e)
 	}
+	fmt.Println("----------")
 
-	// unwrapping error
+	// unwrap error
+	err := me.Err
 	for err != nil {
 		checkError(err)
-		// %w 로 wrapping 된 에러를 unwarp
+		// %w 로 wrapping 된 에러를 unwrap
 		err = errors.Unwrap(err)
 	}
 }
