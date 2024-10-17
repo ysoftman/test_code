@@ -1,6 +1,5 @@
 #!/bin/bash
-host=http://localhost:80
-token=aaabbbccc
+source ./auth.sh
 
 # 백업된 alert  folderUID 생성
 folders="sample-folder sample-worker-folder"

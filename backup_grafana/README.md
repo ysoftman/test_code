@@ -5,7 +5,7 @@ grafana dashbard 를 백업합니다.
 ## prerequsites
 
 - api 사용을 위해 서비스 계정 생성 및 토큰 생성
-- grafana > administration > service accounts > add service account, add service account token (no expiration) > 토큰 복사해두기
+- grafana > administration > service accounts > add service account, add service account token (no expiration) > 토큰 복사해서 auth.sh 설정
 
 ## usage
 

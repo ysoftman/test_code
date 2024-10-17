@@ -1,6 +1,5 @@
 #!/bin/bash
-host=http://localhost:80
-token=aaabbbccc
+source ./auth.sh
 
 uids=$(curl -s -X GET $host/api/v1/provisioning/alert-rules \
  -H "Content-Type: application/json" \

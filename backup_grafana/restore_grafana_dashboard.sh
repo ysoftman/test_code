@@ -1,6 +1,5 @@
 #!/bin/bash
-host=http://localhost:80
-token=aaabbbccc
+source ./auth.sh
 
 backIFS=$IFS
 IFS=$'\n'

@@ -1,6 +1,5 @@
 #!/bin/bash
-host=http://localhost:80
-token=aaabbbccc
+source ./auth.sh
 tag=ysoftman
 
 uids=$(curl -s -X GET $host/api/search\?tag=$tag \
