@@ -1,18 +1,23 @@
 #!/bin/bash
 source ./auth.sh
 
+folderUIDs=()
+for fname in ./alerts/*; do
+    folderUID=$(jq -r '.folderUID' $fname)
+    folderUIDs+=("$folderUID")
+done
+
 # 백업된 alert  folderUID 생성
-folders="sample-folder sample-worker-folder"
-for folder_name in $folders; do
-    echo "creating folder $folder_name"
+for fuid in "${folderUIDs[@]}"; do
+    echo "creating folder(uid) $fuid"
     curl -s -X POST $host/api/folders \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $token" \
      -d "{
-         \"uid\": \"${folder_name}-uid\",
-         \"title\": \"${folder_name}\"
+         \"uid\": \"${fuid}\",
+         \"title\": \"${fuid}\"
      }"
-     echo ""
+    echo ""
 done
 
 backIFS=$IFS

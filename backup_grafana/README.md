@@ -43,7 +43,6 @@ git push
 # 필요시 folder 새로 생성이 필요한 경우
 bash ./delete_grafana_alert.sh.sh
 
-# 필요시 folder 새로 새성이 필요한 경우 스크립트내 folder 이름 변경 필요
 bash ./restore_grafana_alert.sh
 ```
 
