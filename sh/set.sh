@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 # ysoftman
 
 # 참고 https://linuxcommand.org/lc3_man_pages/seth.html
