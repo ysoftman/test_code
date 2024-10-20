@@ -18,3 +18,10 @@ if [ -n "${var1}" ]; then
 else
     echo "var1 is empty"
 fi
+
+# variable set 여부 확인, $없이 변수 이름만  사용
+if [ ! -v var2 ]; then
+    echo $var2 is not set
+else
+    printf "$var2 is (%s)", $var2
+fi
