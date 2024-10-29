@@ -8,8 +8,10 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
@@ -105,6 +107,10 @@ func timeoutMiddleware1() gin.HandlerFunc {
 func timeoutMiddleware2() gin.HandlerFunc {
 	timeout := 500 * time.Millisecond
 	return func(c *gin.Context) {
+		if strings.HasPrefix(c.Request.URL.Path, "/debug/pprof") {
+			return
+		}
+
 		ctx, cancel := context.WithTimeout(c.Request.Context(), timeout)
 		defer cancel()
 		c.Request = c.Request.WithContext(ctx)
@@ -194,6 +200,7 @@ func main() {
 	// default(기본 미들웨어가 포함되어 있음) 로 생성하면 기본 로그 포맷터가 추가된 상태이다.
 	//router := gin.Default()
 	router := gin.New()
+	pprof.Register(router, "/debug/pprof")
 	router.Use(gin.LoggerWithFormatter(jsonLogFormatter))
 	router.Use(gin.Recovery())
 	router.Use(CheckReq())
