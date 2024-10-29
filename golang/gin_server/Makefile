@@ -34,5 +34,4 @@ build: clean swagger
 
 .PHONY: test
 test: clean swagger
-	go test ./... -v
-
+	go test ./... -v -p 4 -coverprofile cover.out
