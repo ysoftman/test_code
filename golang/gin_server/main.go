@@ -117,6 +117,15 @@ func timeoutMiddleware2() gin.HandlerFunc {
 		finish := make(chan struct{}, 1)
 		panicChan := make(chan interface{}, 1)
 		go func() {
+			// 채널 보내기 후 닫을 수 있도록 보장
+			// 부모에서 close 채널하지 않는 이유는
+			// 타임아웃 발생으로 부모가 더 빨리 종료되는 경우
+			// 채널이 닫힌 상태에서 채널로 보내기가 시도될 수 있기 때문.
+			// 참고로 채널이 닫힌 후에도 receive 는 가능.
+			defer func() {
+				close(panicChan)
+				close(finish)
+			}()
 			func(c *gin.Context) {
 				defer func() {
 					if p := recover(); p != nil {
