@@ -7,6 +7,7 @@ import (
 )
 
 var errA = errors.New("error-a")
+var errCopyA = errors.New("error-a")
 var errB = errors.New("error-b")
 var errC = errors.New("error-c")
 
@@ -75,7 +76,8 @@ func c() error {
 
 func checkError(err error) {
 	fmt.Printf("[err stack]\n%+v\n", err)
-	// Is As 는 err 를 unwrap 하면서 비교한다.
+	// Is(),  As() 는 err 를 재귀적으로 unwrap 해 비교한다.
+	// Is() 같은(데이터주소가 같음) 에러인지 체크
 	if errors.Is(err, errA) {
 		fmt.Println("--> Is errA")
 	}
@@ -88,7 +90,8 @@ func checkError(err error) {
 	if errors.Is(err, errLemon) {
 		fmt.Println("--> Is errLemon")
 	}
-	// errApple, errLemon 모드 같은 타입으로 아래 2개 As 에서 true 가 된다
+	// As() 같은 타입의 에러인지 체크
+	// errApple, errLemon 모두 같은 타입으로 아래 2개 As 에서 true 가 된다
 	if errors.As(err, &errApple) {
 		fmt.Println("--> As errApple")
 	}
@@ -99,6 +102,25 @@ func checkError(err error) {
 
 func main() {
 	fmt.Println(getFuncInfo())
+
+	if errA == errCopyA {
+		fmt.Println("errA == errCopyA")
+	} else {
+		fmt.Println("errA != errCopyA")
+	}
+
+	errAA := errA
+	if errA == errAA {
+		fmt.Println("errA == errAA")
+	} else {
+		fmt.Println("errA != errAA")
+	}
+
+	checkError(errCopyA)
+	fmt.Println("----------")
+	checkError(errAA)
+	fmt.Println("----------")
+
 	me := &MyError{
 		Err:  a(),
 		Mesg: "apple",
