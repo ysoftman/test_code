@@ -1,123 +1,123 @@
 /*
 # ysoftman
-# MongoDB ¾Ë¾ÆµÎ±â
+# MongoDB ì•Œì•„ë‘ê¸°
 
-# Âü°í ÀÚ·á
+# ì°¸ê³  ìë£Œ
 # http://www.mongodb.org/display/DOCS/Replication
 # http://en.wikipedia.org/wiki/MongoDB
 # http://docs.mongodb.org/manual/faq/developers/#when-does-mongodb-write-updates-to-disk
 
-# Memory Mapped File ÀÌ¶õ
-# °¡»ó¸Ş¸ğ¸®ÀÇ ÇÑºÎºĞÀ¸·Î ÆÄÀÏÀ» ¸Ş¸ğ¸®¿¡ ¸ÅÇÎÇÏ¿© »ç¿ëÇÔ
-# µû¶ó¼­ ¸Ş¸ğ¸®¿¡ ¸ÊÇÎµÈ ÆÄÀÏÀº ¸Ş¸ğ¸®Ã³·³ ´Ù·é´Ù.
-# MongoDB ¿¡¼­´Â °¡»ó¸Ş¸ğ¸® °ü¸®¸¦ ÀüÀûÀ¸·Î OS ¿¡ ÀÇÁ¸
+# Memory Mapped File ì´ë€
+# ê°€ìƒë©”ëª¨ë¦¬ì˜ í•œë¶€ë¶„ìœ¼ë¡œ íŒŒì¼ì„ ë©”ëª¨ë¦¬ì— ë§¤í•‘í•˜ì—¬ ì‚¬ìš©í•¨
+# ë”°ë¼ì„œ ë©”ëª¨ë¦¬ì— ë§µí•‘ëœ íŒŒì¼ì€ ë©”ëª¨ë¦¬ì²˜ëŸ¼ ë‹¤ë£¬ë‹¤.
+# MongoDB ì—ì„œëŠ” ê°€ìƒë©”ëª¨ë¦¬ ê´€ë¦¬ë¥¼ ì „ì ìœ¼ë¡œ OS ì— ì˜ì¡´
 
-# Write ¹ß»ı½Ã
-# ¸Ş¸ğ¸®¿¡ ¸ÕÀú write ÈÄ ¹é±×¶ó¿îµå ¾²·¹µå·Î 1ºĞ ÁÖ±â·Î Disk ±â·Ï(write back)
-# disk ±â·Ï ½ÇÆĞ ¹ß»ı½Ã µ¥ÀÌÅÍ À¯½Ç·Î ÀÎÇØ ÀÏ°ü¼ºÀÌ ±úÁú ¼ö ÀÖÀ½
+# Write ë°œìƒì‹œ
+# ë©”ëª¨ë¦¬ì— ë¨¼ì € write í›„ ë°±ê·¸ë¼ìš´ë“œ ì“°ë ˆë“œë¡œ 1ë¶„ ì£¼ê¸°ë¡œ Disk ê¸°ë¡(write back)
+# disk ê¸°ë¡ ì‹¤íŒ¨ ë°œìƒì‹œ ë°ì´í„° ìœ ì‹¤ë¡œ ì¸í•´ ì¼ê´€ì„±ì´ ê¹¨ì§ˆ ìˆ˜ ìˆìŒ
 
-# Read ¹ß»ı½Ã
-# ¸Ş¸ğ¸®¿¡ ·ÎµùÇØ ³õÀº »óÅÂ¿¡¼­ read ¼öÇà
+# Read ë°œìƒì‹œ
+# ë©”ëª¨ë¦¬ì— ë¡œë”©í•´ ë†“ì€ ìƒíƒœì—ì„œ read ìˆ˜í–‰
 
-# Mongodb ¼Óµµ´Â ÀÎµ¦½º »çÀÌÁî¿Í ¸Ş¸ğ¸®¿¡ ÁÂ¿ì
-# ¸Ş¸ğ¸®°¡ °¡µæÂ÷¼­ °¡»ó¸Ş¸ğ¸®¸®¸¦ »ç¿ëÇÒ °æ¿ì, µ¥ÀÌÅÍ Ã³¸®¼Óµµ ±Ş°¨
+# Mongodb ì†ë„ëŠ” ì¸ë±ìŠ¤ ì‚¬ì´ì¦ˆì™€ ë©”ëª¨ë¦¬ì— ì¢Œìš°
+# ë©”ëª¨ë¦¬ê°€ ê°€ë“ì°¨ì„œ ê°€ìƒë©”ëª¨ë¦¬ë¦¬ë¥¼ ì‚¬ìš©í•  ê²½ìš°, ë°ì´í„° ì²˜ë¦¬ì†ë„ ê¸‰ê°
 
-# ¼­¹ö ¿ªÇÒ
-# master server : ÀĞ±â, ¾²±â·Î »ç¿ë
-# slave server : ÀĞ±â·Î¸¸ »ç¿ë, master º¹Á¦(¹é¾÷)ÇÏ°í ÀÖÀ½
-# arbiter server : master, slave Ã¼Å©ÇÏ°í, Àå¾Ö ¹ß»ı½Ã slave ÇÏ³ª¸¦ master ·Î ¼±Á¤
+# ì„œë²„ ì—­í• 
+# master server : ì½ê¸°, ì“°ê¸°ë¡œ ì‚¬ìš©
+# slave server : ì½ê¸°ë¡œë§Œ ì‚¬ìš©, master ë³µì œ(ë°±ì—…)í•˜ê³  ìˆìŒ
+# arbiter server : master, slave ì²´í¬í•˜ê³ , ì¥ì•  ë°œìƒì‹œ slave í•˜ë‚˜ë¥¼ master ë¡œ ì„ ì •
 
-# ±âº»ÀûÀ¸·Î master ¸¸ write ¸¦ ¼öÇàÇÏ±â ¶§¹®¿¡ master ¿¡ write ºÎÇÏ°¡ »ı±è
-# ÀÌ¸¦ ÇØ°áÇÏ±â À§ÇØ¼­ µ¥ÀÌÅÍ¸¦ ºĞ»êÀúÀåÇÏ´Â auto-sharding À» ÀÌ¿ë
+# ê¸°ë³¸ì ìœ¼ë¡œ master ë§Œ write ë¥¼ ìˆ˜í–‰í•˜ê¸° ë•Œë¬¸ì— master ì— write ë¶€í•˜ê°€ ìƒê¹€
+# ì´ë¥¼ í•´ê²°í•˜ê¸° ìœ„í•´ì„œ ë°ì´í„°ë¥¼ ë¶„ì‚°ì €ì¥í•˜ëŠ” auto-sharding ì„ ì´ìš©
 
-# 2°¡Áö Replication ¹æ¹ı Á¦°ø
+# 2ê°€ì§€ Replication ë°©ë²• ì œê³µ
 # master-slave
-# master 1´ë¿¡ n´ëÀÇ slave °¡ ºÙ¾î¼­ º¹Á¦ÇÑ´Ù.
-# slave ´Â master ÀÇ µ¥ÀÌÅÍ¸¦ Ä«ÇÇÇÏ°í ÀĞ±âÀü¿ëÀÌ³ª ¹é¾÷¿ëµµ·Î¸¸ »ç¿ëÇÑ´Ù.(not writes)
+# master 1ëŒ€ì— nëŒ€ì˜ slave ê°€ ë¶™ì–´ì„œ ë³µì œí•œë‹¤.
+# slave ëŠ” master ì˜ ë°ì´í„°ë¥¼ ì¹´í”¼í•˜ê³  ì½ê¸°ì „ìš©ì´ë‚˜ ë°±ì—…ìš©ë„ë¡œë§Œ ì‚¬ìš©í•œë‹¤.(not writes)
 
 # replica-set
-# mongodb 1.6 ÀÌÈÄºÎÅÍ Áö¿øµÇ±â ½ÃÀÛÇß´Ù.
-# master-slave ±¸Á¶¿¡ arbiter(master, slave ÀÇ heartbeat ¸¦ Ã¼Å©ÇÏ¿© master Àå¾Ö ¹ß»ı½Ã ÀÚÃ¼ÀûÀ¸·Î slave Áß ÇÏ³ª¸¦ master ¸¦ ¼±Á¤) ³ëµå¸¦ Ãß°¡ÇÏ¿© fail-over Áö¿ø
+# mongodb 1.6 ì´í›„ë¶€í„° ì§€ì›ë˜ê¸° ì‹œì‘í–ˆë‹¤.
+# master-slave êµ¬ì¡°ì— arbiter(master, slave ì˜ heartbeat ë¥¼ ì²´í¬í•˜ì—¬ master ì¥ì•  ë°œìƒì‹œ ìì²´ì ìœ¼ë¡œ slave ì¤‘ í•˜ë‚˜ë¥¼ master ë¥¼ ì„ ì •) ë…¸ë“œë¥¼ ì¶”ê°€í•˜ì—¬ fail-over ì§€ì›
 */
 
 /*
 # ysoftman
-# MongoDB ±¸¼º ÇÏ±â
-# ±¸¼ºµµ http://www.mongodb.org/display/DOCSKR/Introduction
-# client(application) Àº router Server ¿¡ Á¢¼ÓÇØ¼­ Äõ¸®¸¦ ¿äÃ»ÇÏ¸é µÈ´Ù.
-# client °¡ write ¿äÃ»À» Çß´Ù¸é router ´Â master mongodb ·Î, read Çß´Ù¸é slave mongodb ·Î ¾È³»ÇÑ´Ù.
-# mongodb ¼­¹ö¿¡ 1000À» ´õÇÑ Æ÷Æ®·Î Á¢¼ÓÇÏ¸é MongoDB ¸ğ´ÏÅÍ¸µ À¥À» º¼ ¼ö ÀÖ´Ù.(http://127.0.0.1:56555)
+# MongoDB êµ¬ì„± í•˜ê¸°
+# êµ¬ì„±ë„ http://www.mongodb.org/display/DOCSKR/Introduction
+# client(application) ì€ router Server ì— ì ‘ì†í•´ì„œ ì¿¼ë¦¬ë¥¼ ìš”ì²­í•˜ë©´ ëœë‹¤.
+# client ê°€ write ìš”ì²­ì„ í–ˆë‹¤ë©´ router ëŠ” master mongodb ë¡œ, read í–ˆë‹¤ë©´ slave mongodb ë¡œ ì•ˆë‚´í•œë‹¤.
+# mongodb ì„œë²„ì— 1000ì„ ë”í•œ í¬íŠ¸ë¡œ ì ‘ì†í•˜ë©´ MongoDB ëª¨ë‹ˆí„°ë§ ì›¹ì„ ë³¼ ìˆ˜ ìˆë‹¤.(http://127.0.0.1:56555)
 
 # mkdir ysoftman_db_master
 # mkdir ysoftman_db_slave
 # mkdir ysoftman_db_config
 
-# .lock ÆÄÀÏ »èÁ¦
+# .lock íŒŒì¼ ì‚­ì œ
 rm -rfv ./ysoftman_db_master/*.lock
 rm -rfv ./ysoftman_db_slave/*.lock
 rm -rfv ./ysoftman_db_config/*.lock
 
-# master mongoDB Server ½ÃÀÛÇÏ±â
+# master mongoDB Server ì‹œì‘í•˜ê¸°
 bin/mongod --master --dbpath ./ysoftman_db_master --port 10010 > /dev/null &
 
-# slave mongoDB Server ½ÃÀÛÇÏ±â(master ¿Í ´Ù¸¥ Àåºñ¿¡¼­)
+# slave mongoDB Server ì‹œì‘í•˜ê¸°(master ì™€ ë‹¤ë¥¸ ì¥ë¹„ì—ì„œ)
 #bin/mongod --slave --dbpath ./ysoftman_db_slave --port 10020 --source 10.10.10.100:10010 --autoresync > /dev/null &
 
-# config mongoDB Server ½ÃÀÛÇÏ±â
+# config mongoDB Server ì‹œì‘í•˜ê¸°
 bin/mongod --dbpath ./ysoftman_db_config --port 10001 > /dev/null &
 
-# router Server ½ÃÀÛÇÏ±â
+# router Server ì‹œì‘í•˜ê¸°
 bin/mongos --port 10000 --configdb 10.10.10.100:10001 > /dev/null &
 
-# router Server Á¢¼ÓÇØ¼­ Sharding ÇÏ±â
+# router Server ì ‘ì†í•´ì„œ Sharding í•˜ê¸°
 bin/mongo 10.10.10.100:10000
 
 
-# admin db ¸¦ »ç¿ëÇØ¼­ ¼³Á¤ÇØ¾ß ÇÑ´Ù.
+# admin db ë¥¼ ì‚¬ìš©í•´ì„œ ì„¤ì •í•´ì•¼ í•œë‹¤.
 use admin;
 
-# shard Ãß°¡ÇÏ±â, router ¶û °°Àº ¸Ó½ÅÀÇ shard ¸¦ »ç¿ëÇÒ ¼ö ÀÖµµ·Ï ¿É¼Ç ¸í½Ã
-# ½ÇÁ¦ »ç¿ë½Ã¿¡´Â router ¶û ´Ù¸¥ ¸Ó½ÅÀÇ shard ¸¦ »ç¿ëÇØ¾ß ÇÑ´Ù.
+# shard ì¶”ê°€í•˜ê¸°, router ë‘ ê°™ì€ ë¨¸ì‹ ì˜ shard ë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆë„ë¡ ì˜µì…˜ ëª…ì‹œ
+# ì‹¤ì œ ì‚¬ìš©ì‹œì—ëŠ” router ë‘ ë‹¤ë¥¸ ë¨¸ì‹ ì˜ shard ë¥¼ ì‚¬ìš©í•´ì•¼ í•œë‹¤.
 db.runCommand({addshard:"10.10.10.100:10010", allowLocal:true});
 
-# database ´ÜÀ§¿¡¼­ sharding enable ÇÏ±â
+# database ë‹¨ìœ„ì—ì„œ sharding enable í•˜ê¸°
 db.runCommand({enablesharding:"testdb"});
 
-# col1 collection ÀÇ _id º°·Î ÀÚµ¿ ºĞ»êµÇ¾î ÀúÀåÇÏµµ·Ï ÇÏ±â
+# col1 collection ì˜ _id ë³„ë¡œ ìë™ ë¶„ì‚°ë˜ì–´ ì €ì¥í•˜ë„ë¡ í•˜ê¸°
 db.runCommand({shardcollection:"testdb.col1", key:{"_id":1}});
 
-# sharding »óÅÂÈ®ÀÎ
+# sharding ìƒíƒœí™•ì¸
 db.printShardingStatus();
 
-# shard »èÁ¦ÇÏ±â
+# shard ì‚­ì œí•˜ê¸°
 db.runCommand({removeshard:"10.10.10.100:10010"});
 
-# testdb »ç¿ëÇÏ±â(DB ¸¦ ¹Ì¸® »ı¼ºÇÏÁö ¾Ê´Â´Ù.)
+# testdb ì‚¬ìš©í•˜ê¸°(DB ë¥¼ ë¯¸ë¦¬ ìƒì„±í•˜ì§€ ì•ŠëŠ”ë‹¤.)
 use testdb
 
-# routerinfo Äİ·º¼Ç »ı¼º
+# routerinfo ì½œë ‰ì…˜ ìƒì„±
 db.createCollection("routerinfo");
 
-# ¿¹) JSON Çü½ÄÀ¸·Î Á¤º¸ Ãß°¡
+# ì˜ˆ) JSON í˜•ì‹ìœ¼ë¡œ ì •ë³´ ì¶”ê°€
 db.routerinfo.save(
 {"id": "1234",
 "name": "ysoftman",
 "timestamp": 12345,
 "userkey": "UserNo",
 "metainfo": {"list":[
-					{"name":"UserNo", "desc":"»ç¿ëÀÚ", "type":"int"},
-					{"name":"Item", "desc":"¾ÆÀÌÅÛ", "list":[
-														{"name":"a", "desc":"¾ÆÀÌÅÛ1"},
-														{"name":"b", "desc":"¾ÆÀÌÅÛ2"}
+					{"name":"UserNo", "desc":"ì‚¬ìš©ì", "type":"int"},
+					{"name":"Item", "desc":"ì•„ì´í…œ", "list":[
+														{"name":"a", "desc":"ì•„ì´í…œ1"},
+														{"name":"b", "desc":"ì•„ì´í…œ2"}
 														]
 					},
-					{"name":"phone", "desc":"ÀüÈ­¹øÈ£", "type":"int"},
-					{"name":"name", "desc":"ÀÌ¸§"},
-					{"name":"trash", "desc":"¾²·¹±â"},
-					{"name":"Map", "desc":"¸Ê", "pk":"MapID", "array":[
-																	{"name":"MapID", "desc":"¸Ê¹øÈ£", "type":"int"},
-																	{"name":"MinScore", "desc":"ÃÖ¼ÒÁ¡¼ö", "type":"int"},
-																	{"name":"MaxScore", "desc":"ÃÖ´ëÁ¡¼ö", "type":"int"}
+					{"name":"phone", "desc":"ì „í™”ë²ˆí˜¸", "type":"int"},
+					{"name":"name", "desc":"ì´ë¦„"},
+					{"name":"trash", "desc":"ì“°ë ˆê¸°"},
+					{"name":"Map", "desc":"ë§µ", "pk":"MapID", "array":[
+																	{"name":"MapID", "desc":"ë§µë²ˆí˜¸", "type":"int"},
+																	{"name":"MinScore", "desc":"ìµœì†Œì ìˆ˜", "type":"int"},
+																	{"name":"MaxScore", "desc":"ìµœëŒ€ì ìˆ˜", "type":"int"}
 																]
 					}
 					]
@@ -125,7 +125,7 @@ db.routerinfo.save(
 }
 );
 
-# Mongodb Äõ¸® ¿¹
+# Mongodb ì¿¼ë¦¬ ì˜ˆ
 # SQL to mongdo mapping chart http://www.mongodb.org/display/DOCS/SQL+to+Mongo+Mapping+Chart
 # SQL to Shell to C++ http://www.mongodb.org/pages/viewpage.action?pageId=21270051
 # Manual http://www.mongodb.org/display/DOCS/Manual
@@ -134,122 +134,122 @@ db.routerinfo.save(
 # table		collection
 # index		index
 # row		BSON document
-# ÇÏ³ªÀÇ document ÃÖ´ë Å©±â 16MB
+# í•˜ë‚˜ì˜ document ìµœëŒ€ í¬ê¸° 16MB
 
-# Å¬¶óÀÌ¾ğÆ® Á¢¼ÓÇÏ±â
+# í´ë¼ì´ì–¸íŠ¸ ì ‘ì†í•˜ê¸°
 bin\mongo 10.10.10.100:10000
 
-# µµ¿ò¸»
+# ë„ì›€ë§
 help()
 
-# Database ¸ñ·Ïº¸±â
+# Database ëª©ë¡ë³´ê¸°
 show dbs
 
-# testdb »ç¿ëÇÏ±â(DB ¸¦ ¹Ì¸® »ı¼ºÇÏÁö ¾Ê´Â´Ù.)
+# testdb ì‚¬ìš©í•˜ê¸°(DB ë¥¼ ë¯¸ë¦¬ ìƒì„±í•˜ì§€ ì•ŠëŠ”ë‹¤.)
 use testdb
 
-# ÇöÀç »ç¿ëÁßÀÎ DB È®ÀÎ
+# í˜„ì¬ ì‚¬ìš©ì¤‘ì¸ DB í™•ì¸
 db.getName()
 
-# ÇöÀç Database ÄÃ·º¼Ç º¸±â
+# í˜„ì¬ Database ì»¬ë ‰ì…˜ ë³´ê¸°
 show collections
 
-# Å©±â Á¦ÇÑ ¼³Á¤ÇÏ¿© ÄÃ·¹¼Ç »ı¼º size: Å©±â, max: ÃÖ´ë °³¼ö
+# í¬ê¸° ì œí•œ ì„¤ì •í•˜ì—¬ ì»¬ë ˆì…˜ ìƒì„± size: í¬ê¸°, max: ìµœëŒ€ ê°œìˆ˜
 #db.createCollection("col1", {capped:true, size:100000, max: 1000});
 db.createCollection("col1");
 
-# ÄÃ·º¼Ç ÀÌ¸§ÀÌ ¼ıÀÚ·Î ½ÃÀÛÇÏ¸é
+# ì»¬ë ‰ì…˜ ì´ë¦„ì´ ìˆ«ìë¡œ ì‹œì‘í•˜ë©´
 db["1234"]
-# ÄÃ·º¼Ç ÀÌ¸§ÀÌ ¹®ÀÚ·Î ½ÃÀÛÇÏ¸é
-db["col1"] ¶Ç´Â db.col1
+# ì»¬ë ‰ì…˜ ì´ë¦„ì´ ë¬¸ìë¡œ ì‹œì‘í•˜ë©´
+db["col1"] ë˜ëŠ” db.col1
 
-# ÄÃ·º¼Ç »óÅÂ º¸±â
+# ì»¬ë ‰ì…˜ ìƒíƒœ ë³´ê¸°
 db.col1.validate()
 
-# ÄÌ·º¼Ç »èÁ¦ÇÏ±â
+# ì¼ˆë ‰ì…˜ ì‚­ì œí•˜ê¸°
 db.col1.drop()
 
-# col1 ¶ó´Â ÄÃ·º¼Ç¿¡ Name, URL, LastUpdate µîÀÇ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏ±â(insert() or save())
+# col1 ë¼ëŠ” ì»¬ë ‰ì…˜ì— Name, URL, LastUpdate ë“±ì˜ ë°ì´í„°ë¥¼ ì €ì¥í•˜ê¸°(insert() or save())
 db.col1.save({UserNo:0, Map:[{MapID:1, Score:100}, {MapID:2, Score:200}]});
 
-# col1 ÀÇ ´ÙÅ¥¸ÕÆ® °³¼ö ÆÄ¾ÇÇÏ±â
+# col1 ì˜ ë‹¤íë¨¼íŠ¸ ê°œìˆ˜ íŒŒì•…í•˜ê¸°
 db.col1.count()
 
-# col1 ÀÇ ¸ğµç ´ÙÅ¥¸ÕÆ® °Ë»öÇÏ±â
+# col1 ì˜ ëª¨ë“  ë‹¤íë¨¼íŠ¸ ê²€ìƒ‰í•˜ê¸°
 db.col1.find()
 
-# col1 ÀÇ ¸ğµç ´ÙÅ¥¸ÕÆ® °Ë»öÇÏ±â(µé¿©¾²±âÇÏ¿© Ãâ·Â)
+# col1 ì˜ ëª¨ë“  ë‹¤íë¨¼íŠ¸ ê²€ìƒ‰í•˜ê¸°(ë“¤ì—¬ì“°ê¸°í•˜ì—¬ ì¶œë ¥)
 db.col1.find().pretty()
 
-# UserNo °¡ 555 ÀÎ ´ÙÅ¥¸ÕÆ® Ã£±â
+# UserNo ê°€ 555 ì¸ ë‹¤íë¨¼íŠ¸ ì°¾ê¸°
 db.col1.find({UserNo:555})
 
-# UserNo °¡ 555 ÀÎ ´ÙÅ¥¸ÕÆ®¸¦ Ã£¾Æ¼­ Map.MapID ÇÊµå¸¸ º¸¿©ÁÖ±â
+# UserNo ê°€ 555 ì¸ ë‹¤íë¨¼íŠ¸ë¥¼ ì°¾ì•„ì„œ Map.MapID í•„ë“œë§Œ ë³´ì—¬ì£¼ê¸°
 db.col1.find({"UserNo":555}, {"Map.MapID":1});
 
-# UserNo °¡ 555 ÀÎ ´ÙÅ¥¸ÕÆ®¸¦ Ã£¾Æ¼­ _id ´Â Á¦¿ÜÇÏ°í Map.MapID ÇÊµå¸¸ º¸¿©ÁÖ±â
+# UserNo ê°€ 555 ì¸ ë‹¤íë¨¼íŠ¸ë¥¼ ì°¾ì•„ì„œ _id ëŠ” ì œì™¸í•˜ê³  Map.MapID í•„ë“œë§Œ ë³´ì—¬ì£¼ê¸°
 db.col1.find({"UserNo":555}, {_id:0, "Map.MapID":1});
 
-# col1 ÀÇ ¸ğµç ´ÙÅ¥¸ÕÆ® °Ë»öÇÏ±â(_id ·Î ¿À¸§Â÷¼ø Á¤·Ä·Î º¸¿©ÁÖ±â -1ÀÌ¸é ³»¸²Â÷¼ø)
+# col1 ì˜ ëª¨ë“  ë‹¤íë¨¼íŠ¸ ê²€ìƒ‰í•˜ê¸°(_id ë¡œ ì˜¤ë¦„ì°¨ìˆœ ì •ë ¬ë¡œ ë³´ì—¬ì£¼ê¸° -1ì´ë©´ ë‚´ë¦¼ì°¨ìˆœ)
 db.col1.find().sort({_id:1})
 
-# Map.MapID ÀÇ °ªÀÌ 10 ÀÎ ´ÙÅ¥¸ÕÆ® °³¼ö
+# Map.MapID ì˜ ê°’ì´ 10 ì¸ ë‹¤íë¨¼íŠ¸ ê°œìˆ˜
 db.col1.find({"Map.MapID":10}).count()
 
-# Map.MapID ÀÇ °ªÀÌ 100 º¸´Ù Å«°Å³ª °°Àº ´ÙÅ¥¸ÕÆ® °³¼ö
+# Map.MapID ì˜ ê°’ì´ 100 ë³´ë‹¤ í°ê±°ë‚˜ ê°™ì€ ë‹¤íë¨¼íŠ¸ ê°œìˆ˜
 db.col1.find({"Map.MapID":{$gte:100}}).count()
 
-# UserNo °¡ 555 ÀÌ°í Map ¹è¿­ÀÇ Ã¹¹øÂ° MapID °ªÀ» 1234 ·Î º¯°æÇÏ±â(Á¶°Ç¿¡ ÇØ´çÇÏ´Â ³»¿ëÀÌ ¾øÀ¸¸é ´ÙÅ¥¸ÕÆ® ÇÏ³ª°¡ Ãß°¡µÈ´Ù)
+# UserNo ê°€ 555 ì´ê³  Map ë°°ì—´ì˜ ì²«ë²ˆì§¸ MapID ê°’ì„ 1234 ë¡œ ë³€ê²½í•˜ê¸°(ì¡°ê±´ì— í•´ë‹¹í•˜ëŠ” ë‚´ìš©ì´ ì—†ìœ¼ë©´ ë‹¤íë¨¼íŠ¸ í•˜ë‚˜ê°€ ì¶”ê°€ëœë‹¤)
 db.col1.update({"UserNo":555}, {$set:{"Map.0.MapID":1234}}, true);
 
-# UserNo °¡ 555 ÀÌ°í Map ¹è¿­ÀÇ 100¹øÂ° MapID °ªÀ» »èÁ¦ÇÏ±â
+# UserNo ê°€ 555 ì´ê³  Map ë°°ì—´ì˜ 100ë²ˆì§¸ MapID ê°’ì„ ì‚­ì œí•˜ê¸°
 db.col1.update({"UserNo":555}, {$unset:{"Map.100.MapID":1}});
 
-# UserNo °¡ 555 ÀÌ°í Map ¹è¿­Áß MapID °¡ 2ÀÎ °÷À» Ã£¾Æ³»¾î 123 °ªÀ¸·Î ¼³Á¤ÇÑ´Ù.
+# UserNo ê°€ 555 ì´ê³  Map ë°°ì—´ì¤‘ MapID ê°€ 2ì¸ ê³³ì„ ì°¾ì•„ë‚´ì–´ 123 ê°’ìœ¼ë¡œ ì„¤ì •í•œë‹¤.
 db.col1.update({UserNo:555, "Map.MapID":2}, {$set:{"Map.$.MapID":123}})
 
-# UserNo °¡ 555 ÀÌ°í Map ¹è¿­¿¡ object Ãß°¡(array ÇÊµå¿¡ ´ëÇØ¼­¸¸ »ç¿ëÇÒ ¼ö ÀÖ´Ù)
+# UserNo ê°€ 555 ì´ê³  Map ë°°ì—´ì— object ì¶”ê°€(array í•„ë“œì— ëŒ€í•´ì„œë§Œ ì‚¬ìš©í•  ìˆ˜ ìˆë‹¤)
 db.col1.update({UserNo:555}, {$push:{Map:{"MapID":333, "MinScore":300, "MaxScore":500}}})
 
-# ÇöÀç ÄÃ·º¼ÇÀÇ µ¥ÀÌÅÍ ÇÏ³ª »èÁ¦ÇÏ±â(°Ë»ö °á°ú id·Î Áö¿î´Ù)
+# í˜„ì¬ ì»¬ë ‰ì…˜ì˜ ë°ì´í„° í•˜ë‚˜ ì‚­ì œí•˜ê¸°(ê²€ìƒ‰ ê²°ê³¼ idë¡œ ì§€ìš´ë‹¤)
 db.col1.remove({_id:ObjectId("4d5a1ad2e812000000000515")})
 
-# ÇöÀç ÄÃ·º¼ÇÀÇ ¸ğµç document »èÁ¦
+# í˜„ì¬ ì»¬ë ‰ì…˜ì˜ ëª¨ë“  document ì‚­ì œ
 db.col1.remove()
 
-# ÀÎµ¦½º »ı¼º(1:ascending, -1:descending)
+# ì¸ë±ìŠ¤ ìƒì„±(1:ascending, -1:descending)
 db.col1.ensureIndex({"UserNo":1});
 
-# ÇöÀç ÀÎµ¦½º È®ÀÎ(db.system.indexes.find() ÀüÃ¼ ÀÎµ¦½º È®ÀÎ)
+# í˜„ì¬ ì¸ë±ìŠ¤ í™•ì¸(db.system.indexes.find() ì „ì²´ ì¸ë±ìŠ¤ í™•ì¸)
 db.col1.getIndexes()
 
-# ÀÎµ¦½º »èÁ¦
+# ì¸ë±ìŠ¤ ì‚­ì œ
 db.col1.dropIndexes()
 
-# db »óÅÂ È®ÀÎ(data, index »çÀÌÁî µî...)
+# db ìƒíƒœ í™•ì¸(data, index ì‚¬ì´ì¦ˆ ë“±...)
 db.stats();
 
-# ¼­¹ö »óÅÂ È®ÀÎ
+# ì„œë²„ ìƒíƒœ í™•ì¸
 db.serverStatus()
 db.serverStatus().mem
 db.serverStatus().extra_info
 
-# Å¬¶óÀÌ¾ğÆ® Á¾·á
+# í´ë¼ì´ì–¸íŠ¸ ì¢…ë£Œ
 exit
 */
 
 /*
 ////////////////////////////////////////////////////////////////////////////////
 // ysoftman
-// MongoDB Test - Stored JavaScript »ç¿ë
+// MongoDB Test - Stored JavaScript ì‚¬ìš©
 ////////////////////////////////////////////////////////////////////////////////
-# Å¬¶óÀÌ¾ğÆ® Á¢¼ÓÇÏ±â
+# í´ë¼ì´ì–¸íŠ¸ ì ‘ì†í•˜ê¸°
 bin\mongo 10.10.10.100:10000
 
-# testdb »ç¿ëÇÏ±â(DB ¸¦ ¹Ì¸® »ı¼ºÇÏÁö ¾Ê´Â´Ù.)
+# testdb ì‚¬ìš©í•˜ê¸°(DB ë¥¼ ë¯¸ë¦¬ ìƒì„±í•˜ì§€ ì•ŠëŠ”ë‹¤.)
 use testdb
 
-# collection ÀÇ document ÀüÃ¼ »èÁ¦
+# collection ì˜ document ì „ì²´ ì‚­ì œ
 function test1 () {
 	db.col1.drop();
 	return true;
@@ -257,9 +257,9 @@ function test1 () {
 db.eval(test1);
 
 
-// insert ÇÏ±â µ¥ÀÌÅÍ Å©±â°¡ 4GB ¸¦ ³Ñ¾î°¡¼­ 64bit mongodb »ç¿ë
-// 100¸¸°³(mongovue)			°æ°ú½Ã°£: 2ºĞ 35ÃÊ	DBÅ©±â: 0.5GB
-// 1000¸¸°³(mongovue)			°æ°ú½Ã°£: 47ºĞ15ÃÊ	DBÅ©±â: 5.95GB	(ÀÎµ¦½º ¸Ş¸ğ¸®¿¡ ÀúÀåµÇ¾î »ç¿ë)
+// insert í•˜ê¸° ë°ì´í„° í¬ê¸°ê°€ 4GB ë¥¼ ë„˜ì–´ê°€ì„œ 64bit mongodb ì‚¬ìš©
+// 100ë§Œê°œ(mongovue)			ê²½ê³¼ì‹œê°„: 2ë¶„ 35ì´ˆ	DBí¬ê¸°: 0.5GB
+// 1000ë§Œê°œ(mongovue)			ê²½ê³¼ì‹œê°„: 47ë¶„15ì´ˆ	DBí¬ê¸°: 5.95GB	(ì¸ë±ìŠ¤ ë©”ëª¨ë¦¬ì— ì €ì¥ë˜ì–´ ì‚¬ìš©)
 function test2() {
 	for (var i=1; i<=1000000; i++)
 	{
@@ -293,33 +293,33 @@ function test2() {
 }
 db.eval(test2);
 
-# memory dependent ÇÏ±â ¶§¹®¿¡ page fault °¡ ¹ß»ıÇÏÁö ¾ÊÀ» Á¤µµÀÇ ¸Ş¸ğ¸®°¡ ÀÖÀ» °æ¿ì¸¦ °¡Á¤
-# 100¸¸°³½Ã index »ç¿ë ¾øÀÌ 1ÃÊ³» °Ë»ö ¿Ï·á
-# 1000¸¸°³½Ã index »ç¿ë ¾øÀÌ ¾à 2ºĞ ¼Ò¿ä, index »ç¿ë½Ã 1ÃÊ³»
-# Status.HP °¡ 123 ÀÎ°Í
+# memory dependent í•˜ê¸° ë•Œë¬¸ì— page fault ê°€ ë°œìƒí•˜ì§€ ì•Šì„ ì •ë„ì˜ ë©”ëª¨ë¦¬ê°€ ìˆì„ ê²½ìš°ë¥¼ ê°€ì •
+# 100ë§Œê°œì‹œ index ì‚¬ìš© ì—†ì´ 1ì´ˆë‚´ ê²€ìƒ‰ ì™„ë£Œ
+# 1000ë§Œê°œì‹œ index ì‚¬ìš© ì—†ì´ ì•½ 2ë¶„ ì†Œìš”, index ì‚¬ìš©ì‹œ 1ì´ˆë‚´
+# Status.HP ê°€ 123 ì¸ê²ƒ
 db.col1.find({"Status.HP":123}).count()
 
-# Status.HP °¡ 1 º¸´Ù Å«°Í
-# 100¸¸°³½Ã index »ç¿ë ¾øÀÌ 1ÃÊ³» °Ë»ö ¿Ï·á
-# 1000¸¸°³½Ã index »ç¿ë ¾øÀÌ ¾à 2ºĞ ¼Ò¿ä, index »ç¿ë½Ã 1ÃÊ³»
+# Status.HP ê°€ 1 ë³´ë‹¤ í°ê²ƒ
+# 100ë§Œê°œì‹œ index ì‚¬ìš© ì—†ì´ 1ì´ˆë‚´ ê²€ìƒ‰ ì™„ë£Œ
+# 1000ë§Œê°œì‹œ index ì‚¬ìš© ì—†ì´ ì•½ 2ë¶„ ì†Œìš”, index ì‚¬ìš©ì‹œ 1ì´ˆë‚´
 db.col1.find({"Status.HP":{$gt:1}}).count()
 
-# Status.HP °¡ 1 º¸´Ù ÀÛÀº°Í
-# 100¸¸°³½Ã index »ç¿ë ¾øÀÌ 1ÃÊ³» °Ë»ö ¿Ï·á
-# 1000¸¸°³½Ã index »ç¿ë ¾øÀÌ ¾à 2ºĞ ¼Ò¿ä, index »ç¿ë½Ã 1ÃÊ³»
+# Status.HP ê°€ 1 ë³´ë‹¤ ì‘ì€ê²ƒ
+# 100ë§Œê°œì‹œ index ì‚¬ìš© ì—†ì´ 1ì´ˆë‚´ ê²€ìƒ‰ ì™„ë£Œ
+# 1000ë§Œê°œì‹œ index ì‚¬ìš© ì—†ì´ ì•½ 2ë¶„ ì†Œìš”, index ì‚¬ìš©ì‹œ 1ì´ˆë‚´
 db.col1.find({"Status.HP":{$lt:1000000}}).count()
 
-# Status.HP °¡ 1 º¸´Ù Å«°Å³ª °°Àº°Í
+# Status.HP ê°€ 1 ë³´ë‹¤ í°ê±°ë‚˜ ê°™ì€ê²ƒ
 db.col1.find({"Status.HP":{$gte:1}}).count()
 
-# Status.HP °¡ 1 º¸´Ù ÀÛ°Å³ª °°Àº°Í
+# Status.HP ê°€ 1 ë³´ë‹¤ ì‘ê±°ë‚˜ ê°™ì€ê²ƒ
 db.col1.find({"Status.HP":{$gte:1}}).count()
 */
 
 //////////////////////////////////////////////////////////////////////////////////
 // ysoftman
 // Mongo Client Test (Java)
-// mongo-java-driver-2.9.3.jar »ç¿ë
+// mongo-java-driver-2.9.3.jar ì‚¬ìš©
 //////////////////////////////////////////////////////////////////////////////////
 import java.util.ArrayList;
 import java.net.UnknownHostException;
@@ -350,24 +350,24 @@ public class MongoDBTest
 		timebefore = System.currentTimeMillis();
 		try
 		{
-			// mongodb ¿¬°á
+			// mongodb ì—°ê²°
 			Mongo con = new Mongo(ip, port);
 
-			// db »ç¿ëÇÏ±â
+			// db ì‚¬ìš©í•˜ê¸°
 			DB db = con.getDB(dbname);
 
-			// collection »ç¿ëÇÏ±â
+			// collection ì‚¬ìš©í•˜ê¸°
 			DBCollection collection = db.getCollection(colname);
 
 
-			// »ç¿ëÀÚµé¿¡ ´ëÇØ¼­
+			// ì‚¬ìš©ìë“¤ì— ëŒ€í•´ì„œ
 			for (int i=1; i<=1000000; i++)
 			{
-				// document ·Î ÀúÀåÇÒ µ¥ÀÌÅÍ »ı¼º
+				// document ë¡œ ì €ì¥í•  ë°ì´í„° ìƒì„±
 				BasicDBObject doc = new BasicDBObject();
-				// key, value Çü½Ä µ¥ÀÌÅÍ Ãß°¡
+				// key, value í˜•ì‹ ë°ì´í„° ì¶”ê°€
 				doc.put("UserNo", i);
-				// 100 °³ÀÇ ¸Ê,½ºÄÚ¾î Á¤º¸
+				// 100 ê°œì˜ ë§µ,ìŠ¤ì½”ì–´ ì •ë³´
 				ArrayList<BasicDBObject> arraydata = new ArrayList<BasicDBObject>();
 				for (int j=1; j<=100; j++)
 				{
@@ -377,10 +377,10 @@ public class MongoDBTest
 				}
 				doc.append("Map", arraydata);
 
-				// ½ÇÁ¦ µ¥ÀÌÅÍ ÀúÀå
+				// ì‹¤ì œ ë°ì´í„° ì €ì¥
 				collection.save(doc);
 
-				// ÁøÇà»óÈ² ÆÄ¾ÇÀ» À§ÇØ
+				// ì§„í–‰ìƒí™© íŒŒì•…ì„ ìœ„í•´
 				if (i%1000 == 0)
 				{
 					System.out.println("Data Count:"+i);
@@ -411,17 +411,17 @@ public class MongoDBTest
 		timebefore = System.currentTimeMillis();
 		try
 		{
-			// mongodb ¿¬°á
+			// mongodb ì—°ê²°
 			Mongo con = new Mongo(ip, port);
 
-			// db »ç¿ëÇÏ±â
+			// db ì‚¬ìš©í•˜ê¸°
 			DB db = con.getDB(dbname);
 
-			// collection »ç¿ëÇÏ±â
+			// collection ì‚¬ìš©í•˜ê¸°
 			DBCollection collection = db.getCollection(colname);
 
 
-			// »ç¿ëÀÚµé¿¡ ´ëÇØ¼­
+			// ì‚¬ìš©ìë“¤ì— ëŒ€í•´ì„œ
 			for (int i=1; i<=100000; i++)
 			{
 				BasicDBObject doc = new BasicDBObject();
@@ -430,12 +430,12 @@ public class MongoDBTest
 				BasicDBObject doc2 = new BasicDBObject();
 				doc2.append("$set", new BasicDBObject().append("Map.0.Score", 1234));
 
-				// UserNo °¡ 555 ÀÎ »ç¿ëÀÚÀÇ Map ¹è¿­ÀÇ Ã¹¹øÂ° MapID °ªÀ» 1234 ·Î º¯°æÇÏ±â(Á¶°Ç¿¡ ÇØ´çÇÏ´Â ³»¿ëÀÌ ¾øÀ¸¸é ´ÙÅ¥¸ÕÆ® ÇÏ³ª°¡ Ãß°¡µÈ´Ù)
+				// UserNo ê°€ 555 ì¸ ì‚¬ìš©ìì˜ Map ë°°ì—´ì˜ ì²«ë²ˆì§¸ MapID ê°’ì„ 1234 ë¡œ ë³€ê²½í•˜ê¸°(ì¡°ê±´ì— í•´ë‹¹í•˜ëŠ” ë‚´ìš©ì´ ì—†ìœ¼ë©´ ë‹¤íë¨¼íŠ¸ í•˜ë‚˜ê°€ ì¶”ê°€ëœë‹¤)
 				// db.col1.update({"UserNo":555}, {$set:{"Map.0.MapID":1234}}, true);
-				// ½ÇÁ¦ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+				// ì‹¤ì œ ë°ì´í„° ì—…ë°ì´íŠ¸
 				collection.update(doc, doc2, false, true);
 
-				// ÁøÇà»óÈ² ÆÄ¾ÇÀ» À§ÇØ
+				// ì§„í–‰ìƒí™© íŒŒì•…ì„ ìœ„í•´
 				if (i%1000 == 0)
 				{
 					System.out.println("Data Count:"+i);
@@ -466,33 +466,33 @@ public class MongoDBTest
 		timebefore = System.currentTimeMillis();
 		try
 		{
-			// mongodb ¿¬°á
+			// mongodb ì—°ê²°
 			Mongo con = new Mongo(ip, port);
 
-			// db »ç¿ëÇÏ±â
+			// db ì‚¬ìš©í•˜ê¸°
 			DB db = con.getDB(dbname);
 
-			// collection »ç¿ëÇÏ±â
+			// collection ì‚¬ìš©í•˜ê¸°
 			DBCollection collection = db.getCollection(colname);
 
 
-			// »ç¿ëÀÚµé¿¡ ´ëÇØ¼­
+			// ì‚¬ìš©ìë“¤ì— ëŒ€í•´ì„œ
 			for (int i=1; i<=10000; i++)
 			{
 				BasicDBObject doc = new BasicDBObject();
-				// »ç¿ëÀÚ ÇÑ¸íÀÇ ÀüÃ¼ µ¥ÀÌÅÍ °Ë»ö
+				// ì‚¬ìš©ì í•œëª…ì˜ ì „ì²´ ë°ì´í„° ê²€ìƒ‰
 				doc.put("UserNo", i);
-				// »ç¿ëÀÚ ÇÑ¸íÀÇ Map.MaID == 10 °Í °Ë»ö
+				// ì‚¬ìš©ì í•œëª…ì˜ Map.MaID == 10 ê²ƒ ê²€ìƒ‰
 				//doc.put("Map.MapID", 55);
 				DBCursor cursor = collection.find(doc);
-				// Äõ¸® °á°ú ¿¬¼ÓÇØ¼­ ³ªÅ¸³»±â
+				// ì¿¼ë¦¬ ê²°ê³¼ ì—°ì†í•´ì„œ ë‚˜íƒ€ë‚´ê¸°
 				while (cursor.hasNext())
 				{
-					// ¼Óµµ ÃøÁ¤À» À§ÇØ ÄÜ¼Ö·Î Ãâ·ÂÇÏÁö ¾Ê´Â´Ù.
+					// ì†ë„ ì¸¡ì •ì„ ìœ„í•´ ì½˜ì†”ë¡œ ì¶œë ¥í•˜ì§€ ì•ŠëŠ”ë‹¤.
 					//System.out.println(cursor.next());
 					cursor.next();
 				}
-				// ÁøÇà»óÈ² ÆÄ¾ÇÀ» À§ÇØ
+				// ì§„í–‰ìƒí™© íŒŒì•…ì„ ìœ„í•´
 				if (i%1000 == 0)
 				{
 					System.out.println("Data Count:"+i);
