@@ -6,7 +6,7 @@
 # http://www.mongodb.org/display/DOCS/Replication
 # http://en.wikipedia.org/wiki/MongoDB
 # http://docs.mongodb.org/manual/faq/developers/#when-does-mongodb-write-updates-to-disk
- 
+
 # Memory Mapped File 이란
 # 가상메모리의 한부분으로 파일을 메모리에 매핑하여 사용함
 # 따라서 메모리에 맵핑된 파일은 메모리처럼 다룬다.
@@ -16,14 +16,14 @@
 # 메모리에 먼저 write 후 백그라운드 쓰레드로 1분 주기로 Disk 기록(write back)
 # disk 기록 실패 발생시 데이터 유실로 인해 일관성이 깨질 수 있음
 
-# Read 발생시 
+# Read 발생시
 # 메모리에 로딩해 놓은 상태에서 read 수행
 
 # Mongodb 속도는 인덱스 사이즈와 메모리에 좌우
 # 메모리가 가득차서 가상메모리리를 사용할 경우, 데이터 처리속도 급감
 
 # 서버 역할
-# master server : 읽기, 쓰기로 사용 
+# master server : 읽기, 쓰기로 사용
 # slave server : 읽기로만 사용, master 복제(백업)하고 있음
 # arbiter server : master, slave 체크하고, 장애 발생시 slave 하나를 master 로 선정
 
@@ -34,7 +34,7 @@
 # master-slave
 # master 1대에 n대의 slave 가 붙어서 복제한다.
 # slave 는 master 의 데이터를 카피하고 읽기전용이나 백업용도로만 사용한다.(not writes)
-                 
+
 # replica-set
 # mongodb 1.6 이후부터 지원되기 시작했다.
 # master-slave 구조에 arbiter(master, slave 의 heartbeat 를 체크하여 master 장애 발생시 자체적으로 slave 중 하나를 master 를 선정) 노드를 추가하여 fail-over 지원
@@ -101,10 +101,10 @@ db.createCollection("routerinfo");
 # 예) JSON 형식으로 정보 추가
 db.routerinfo.save(
 {"id": "1234",
-"name": "ysoftman", 
+"name": "ysoftman",
 "timestamp": 12345,
 "userkey": "UserNo",
-"metainfo": {"list":[ 
+"metainfo": {"list":[
 					{"name":"UserNo", "desc":"사용자", "type":"int"},
 					{"name":"Item", "desc":"아이템", "list":[
 														{"name":"a", "desc":"아이템1"},
@@ -135,34 +135,34 @@ db.routerinfo.save(
 # index		index
 # row		BSON document
 # 하나의 document 최대 크기 16MB
- 
+
 # 클라이언트 접속하기
 bin\mongo 10.10.10.100:10000
- 
+
 # 도움말
 help()
- 
+
 # Database 목록보기
 show dbs
 
 # testdb 사용하기(DB 를 미리 생성하지 않는다.)
 use testdb
- 
+
 # 현재 사용중인 DB 확인
 db.getName()
 
 # 현재 Database 컬렉션 보기
 show collections
- 
+
 # 크기 제한 설정하여 컬레션 생성 size: 크기, max: 최대 개수
 #db.createCollection("col1", {capped:true, size:100000, max: 1000});
 db.createCollection("col1");
- 
-# 컬렉션 이름이 숫자로 시작하면 
+
+# 컬렉션 이름이 숫자로 시작하면
 db["1234"]
 # 컬렉션 이름이 문자로 시작하면
 db["col1"] 또는 db.col1
- 
+
 # 컬렉션 상태 보기
 db.col1.validate()
 
@@ -248,7 +248,7 @@ bin\mongo 10.10.10.100:10000
 
 # testdb 사용하기(DB 를 미리 생성하지 않는다.)
 use testdb
- 
+
 # collection 의 document 전체 삭제
 function test1 () {
 	db.col1.drop();
@@ -286,7 +286,7 @@ function test2() {
 			Blizzard:"2"
 			}
 		}
-		
+
 		db.col1.save(str);
 	}
 	return 1;
@@ -296,7 +296,7 @@ db.eval(test2);
 # memory dependent 하기 때문에 page fault 가 발생하지 않을 정도의 메모리가 있을 경우를 가정
 # 100만개시 index 사용 없이 1초내 검색 완료
 # 1000만개시 index 사용 없이 약 2분 소요, index 사용시 1초내
-# Status.HP 가 123 인것 
+# Status.HP 가 123 인것
 db.col1.find({"Status.HP":123}).count()
 
 # Status.HP 가 1 보다 큰것
@@ -333,20 +333,20 @@ import com.mongodb.MongoException;
 
 
 public class MongoDBTest
-{	
+{
 	public static void main(String[] args )
 	{
 		InsertData("10.10.10.100", 10000, "testdb", "col1");
 		//UpdateData("10.10.10.100", 10000, "testdb", "col1");
 		//SearchData("10.10.10.100", 10000, "testdb", "col1");
 	}
-	
+
 	public static void InsertData(String ip, int port, String dbname, String colname)
 	{
 		long timebefore = 0;
 		long timeafter = 0;
 		long timeresult = 0;
-		
+
 		timebefore = System.currentTimeMillis();
 		try
 		{
@@ -386,28 +386,28 @@ public class MongoDBTest
 					System.out.println("Data Count:"+i);
 				}
 			}
-		} 
+		}
 		catch (UnknownHostException e)
 		{
-			e.printStackTrace();	
+			e.printStackTrace();
 		}
 		catch (MongoException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		timeafter = System.currentTimeMillis();
 		timeresult = (timeafter-timebefore)/1000;
 		System.out.println("insert time: "+timeresult+"sec");
-		
+
 	}
-	
+
 	public static void UpdateData(String ip, int port, String dbname, String colname)
 	{
 		long timebefore = 0;
 		long timeafter = 0;
 		long timeresult = 0;
-		
+
 		timebefore = System.currentTimeMillis();
 		try
 		{
@@ -426,10 +426,10 @@ public class MongoDBTest
 			{
 				BasicDBObject doc = new BasicDBObject();
 				doc.put("UserNo", i);
-				
+
 				BasicDBObject doc2 = new BasicDBObject();
 				doc2.append("$set", new BasicDBObject().append("Map.0.Score", 1234));
-				
+
 				// UserNo 가 555 인 사용자의 Map 배열의 첫번째 MapID 값을 1234 로 변경하기(조건에 해당하는 내용이 없으면 다큐먼트 하나가 추가된다)
 				// db.col1.update({"UserNo":555}, {$set:{"Map.0.MapID":1234}}, true);
 				// 실제 데이터 업데이트
@@ -441,29 +441,29 @@ public class MongoDBTest
 					System.out.println("Data Count:"+i);
 				}
 			}
-		} 
+		}
 		catch (UnknownHostException e)
 		{
-			e.printStackTrace();	
+			e.printStackTrace();
 		}
 		catch (MongoException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		timeafter = System.currentTimeMillis();
 		timeresult = (timeafter-timebefore)/1000;
 		System.out.println("update time: "+timeresult+"sec");
-		
+
 	}
-	
+
 	public static void SearchData(String ip, int port, String dbname, String colname)
 	{
 		long timebefore = 0;
 		long timeafter = 0;
 		long timeresult = 0;
-		
-		timebefore = System.currentTimeMillis();		
+
+		timebefore = System.currentTimeMillis();
 		try
 		{
 			// mongodb 연결
@@ -499,10 +499,10 @@ public class MongoDBTest
 				}
 			}
 
-		} 
+		}
 		catch (UnknownHostException e)
 		{
-			e.printStackTrace();	
+			e.printStackTrace();
 		}
 		catch (MongoException e)
 		{
@@ -510,8 +510,6 @@ public class MongoDBTest
 		}
 		timeafter = System.currentTimeMillis();
 		timeresult = (timeafter-timebefore)/1000;
-		System.out.println("search time: "+timeresult+"sec");		
-	}	
+		System.out.println("search time: "+timeresult+"sec");
+	}
 }
-
-
