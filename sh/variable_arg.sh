@@ -1,7 +1,7 @@
 #!/bin/bash
 # ysoftman
-# 인자(매개변수) 변수
-
+# argument(인자) 변수
+# https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Special-Parameters
 # clear(이전 명령) 실행 후 리턴 값
 echo '$?:'$?
 
@@ -14,12 +14,19 @@ echo '$$:'$$
 # 마지막 백그라운드 프로세스 ID
 echo '$!:'$!
 
-# 매개변수 개수
+# args 개수
 echo '$#:'$#
-# 매개변수 모두
+
+# args 모두, "$*" 로 사용하면 args 모두를 합쳐서 하나로 문자(word)로 취급
+# "arg1 arg2" arg3 처럼 "" 로 된 arg 를 하나의 arg 구분하지 못한다.
 echo '$*:'$*
-# 매개변수 모두(문자로 취급)
+for a in $*; do echo "-$a"; done;
+for a in "$*"; do echo "double-quotes-$a"; done;
+
+# args 모두(n 개의 argument 가 유지되고, 각 argument는 문자로 취급)
 echo '$@:'$@
+for a in $@; do echo "-$a"; done;
+for a in "$@"; do echo "double-quotes-$a"; done;
 
 
 # 0번째 인자
