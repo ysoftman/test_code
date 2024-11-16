@@ -7,7 +7,7 @@ import tensorflow as tf
 
 # tensorflow 는 graph 를 구성하고 이를 실행(session)하는 구조다.
 # graph 의 node 는 tensor(다차원 배열)을 가지고 연산(operation)을 하는 곳이다.
-# tensorflow : tenosr 들이 정의된 노드들로 구성된 그래프에서 흘러간다는 의미
+# tensorflow : tensor 들이 정의된 노드들로 구성된 그래프에서 흘러간다는 의미
 
 # 1. graph 구성
 # 별도의 graph 를 생성하지 않는다면 기본적으로 default graph 를 이용하게 된다.

@@ -11,6 +11,7 @@ extend-ignore-re = [
     "CBCEncrypter",
     "iterm2",
     ".mak",
+    ".*styl*",
     ".*(?i)ysoftman.*",  # ignorecase https://docs.rs/regex/latest/regex/index.html#grouping-and-flags
 ]
 # valid identifiers(snake_case,CamelCase등으로 구분)
