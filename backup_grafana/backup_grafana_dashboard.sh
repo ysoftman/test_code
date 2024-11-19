@@ -14,6 +14,6 @@ for uid in $uids; do
     echo "backup $uid"
     curl -s -X GET $host/api/dashboards/uid/$uid \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer $token" > ./dashboards/$uid.json
+     -H "Authorization: Bearer $token" | jq > ./dashboards/$uid.json
 done
 IFS=$backIFS

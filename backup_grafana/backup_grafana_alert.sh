@@ -13,6 +13,6 @@ for uid in $uids; do
     echo "backup $uid"
     curl -s -X GET $host/api/v1/provisioning/alert-rules/$uid \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer $token" > ./alerts/$uid.json
+     -H "Authorization: Bearer $token" | jq > ./alerts/$uid.json
 done
 IFS=$backIFS
