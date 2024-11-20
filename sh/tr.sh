@@ -9,8 +9,24 @@ set -x
 # 소문자를 대문자로 변경
 echo "ysoftman" | tr '[a-z]' '[A-Z]'
 # 또는
+#[:class:]  Represents all characters belonging to the defined character class.  Class names are:
+#alnum        <alphanumeric characters>
+#alpha        <alphabetic characters>
+#blank        <whitespace characters>
+#cntrl        <control characters>
+#digit        <numeric characters>
+#graph        <graphic characters>
+#ideogram     <ideographic characters>
+#lower        <lower-case alphabetic characters>
+#phonogram    <phonographic characters>
+#print        <printable characters>
+#punct        <punctuation characters>
+#rune         <valid characters>
+#space        <space characters>
+#special      <special characters>
+#upper        <upper-case characters>
+#xdigit       <hexadecimal characters>
 echo "ysoftman" | tr '[:lower:]' '[:upper:]'
-
 
 # 개행을 공백으로 변경
 cal | tr "\n" " "
@@ -23,6 +39,9 @@ cal | tr -d "[0-9]"
 # m -> x, a -> y, n -> z 문자로 변경
 echo "ysoftman123" | tr "man" "xyz"
 
-
-# tr -s (Squeeze)옵션으로 중복 문자를 하나로 줄인다.
+# -s (Squeeze)옵션으로 중복 문자를 하나로 줄인다.
 echo "ysoftmannnnnnn" | tr -s 'n'
+
+# -c(complement)
+# -d(delete)
+echo "v1.2.3-rc" | tr -cd '[:digit:].'
