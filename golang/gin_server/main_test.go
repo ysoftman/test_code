@@ -26,3 +26,97 @@ func TestGINResponse(t *testing.T) {
 	assert.Equal(t, http.StatusNotFound, w.Code)
 	assert.Equal(t, "{\"error_code\":0,\"error_message\":\"\"}", w.Body.String())
 }
+
+func Test_makeServerVersion(t *testing.T) {
+	tests := []struct {
+		name string
+		want ServerVersion
+	}{
+		{
+			name: "makeServerVersion",
+			want: ServerVersion{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, makeServerVersion())
+		})
+	}
+}
+
+func TestGetServerVersion(t *testing.T) {
+	type args struct {
+		c *gin.Context
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			GetServerVersion(tt.args.c)
+		})
+	}
+}
+
+func TestPostData(t *testing.T) {
+	type args struct {
+		c *gin.Context
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			PostData(tt.args.c)
+		})
+	}
+}
+
+func TestCheckReq(t *testing.T) {
+	tests := []struct {
+		name string
+		want gin.HandlerFunc
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, CheckReq())
+		})
+	}
+}
+
+func Test_timeoutMiddleware2(t *testing.T) {
+	tests := []struct {
+		name string
+		want gin.HandlerFunc
+	}{
+		{
+			name: "timeoutMiddleware2",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, timeoutMiddleware2())
+		})
+	}
+}
+
+func Test_main(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{name: "main"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			main()
+		})
+	}
+}
