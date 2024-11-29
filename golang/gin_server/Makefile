@@ -34,8 +34,12 @@ swagger:
 tidy:
 	go mod tidy
 
+.PHONY: lint
+lint:
+	golangci-lint run
+
 .PHONY: build
-build: clean tidy swagger
+build: clean swagger
 	@echo "BUILD_TIME:${BUILD_TIME}"
 	@echo "BUILD_UNIX_TIME:${BUILD_UNIX_TIME}"
 	@echo "GITHASH:${GITHASH}"
@@ -43,6 +47,7 @@ build: clean tidy swagger
 	@echo "ARCH:${ARCH}"
 	@# -ldflags : golinker 인자 전달
 	GOOS=${OS} GOARCH=${ARCH} go build -o ${SERVER_NAME} -ldflags '${LDFLAGS}'
+
 .PHONY: test
 test: clean swagger
 	go test ./... -v -p 4 -coverprofile cover.out

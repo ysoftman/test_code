@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/gin-contrib/pprof"
-	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
 	swaggerfiles "github.com/swaggo/files"
@@ -112,20 +111,20 @@ func CheckReq() gin.HandlerFunc {
 	}
 }
 
-func timeoutMiddleware1() gin.HandlerFunc {
-	tm := 500 * time.Millisecond
-	return timeout.New(
-		timeout.WithTimeout(tm),
-		timeout.WithHandler(func(c *gin.Context) {
-			c.Next()
-		}),
-		timeout.WithResponse(func(c *gin.Context) {
-			c.JSON(http.StatusRequestTimeout, gin.H{
-				"message": "timeout",
-			})
-		}),
-	)
-}
+//	func timeoutMiddleware1() gin.HandlerFunc {
+//	   tm := 500 * time.Millisecond
+//	   return timeout.New(
+//	       timeout.WithTimeout(tm),
+//	       timeout.WithHandler(func(c *gin.Context) {
+//	           c.Next()
+//	       }),
+//	       timeout.WithResponse(func(c *gin.Context) {
+//	           c.JSON(http.StatusRequestTimeout, gin.H{
+//	               "message": "timeout",
+//	           })
+//	       }),
+//	   )
+//	}
 func timeoutMiddleware2() gin.HandlerFunc {
 	timeout := 500 * time.Millisecond
 	return func(c *gin.Context) {
