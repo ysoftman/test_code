@@ -19,15 +19,43 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+var (
+	// 빌드시 다음과 같이 설정한다.(Makefile 참고)
+	// go build -ldflags '-X "main.name=gin_server" -X "main.version=0.0.1"'
+	name            string
+	version         string
+	build_time      string
+	build_unix_time string
+	git_hash        string
+	os              string
+	arch            string
+)
+
 type ServerVersion struct {
-	Name      string `json:"Name"`
-	Version   string `json:"Version"`
-	BuildTime string `json:"BuildTime"`
+	Name          string `json:"name"`
+	Version       string `json:"version"`
+	BuildTime     string `json:"build_time"`
+	BuildUnixTime string `json:"build_unix_time"`
+	GitHash       string `json:"git_hash"`
+	OS            string `json:"os"`
+	Arch          string `json:"arch"`
 }
 
 type Data1 struct {
 	Data1 string `json:"data1"`
 	Data2 uint   `json:"data2"`
+}
+
+func makeServerVersion() ServerVersion {
+	return ServerVersion{
+		Name:          name,
+		Version:       version,
+		BuildTime:     build_time,
+		BuildUnixTime: build_unix_time,
+		GitHash:       git_hash,
+		OS:            os,
+		Arch:          arch,
+	}
 }
 
 // @Summary server version
@@ -41,13 +69,7 @@ type Data1 struct {
 // @Failure 500 {string} string "StatusInternalServerError"
 // @Router /version [get]
 func GetServerVersion(c *gin.Context) {
-	ver := ServerVersion{
-		Name:    "gin_server",
-		Version: "0.0.1",
-		//BuildTime: time.Now().Format("20060202150405"),
-		BuildTime: time.Now().String(),
-	}
-	c.JSON(http.StatusOK, ver)
+	c.JSON(http.StatusOK, makeServerVersion())
 }
 
 // @Summary post data
@@ -160,6 +182,7 @@ func timeoutMiddleware2() gin.HandlerFunc {
 
 func main() {
 	fmt.Println("gin server... ")
+	fmt.Println(makeServerVersion())
 	//gin.SetMode(gin.ReleaseMode)
 	//gin.DisableConsoleColor()
 
@@ -199,7 +222,7 @@ func main() {
 			ErrorMessage: param.ErrorMessage,
 			Keys:         param.Keys,
 		}
-		param.Request = nil
+		//param.Request = nil
 		out, err := json.Marshal(p)
 		if err != nil {
 			log.Fatal(err)
@@ -245,5 +268,5 @@ func main() {
 	}
 	// swag init to generate/update ./docs
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	router.Run()
+	_ = router.Run()
 }
