@@ -42,6 +42,12 @@ install_python_pkg() {
 
 install_python_pkg "pylint black"
 
+failed_and_exit() {
+    local check_name=${1}
+    $ECHO "[.githooks/pre-commit] ${red}failed to check $check_name, please check errors/warnings above${reset_color}"
+    exit 1
+}
+
 # --cached(--staged) : 스테이징된것만
 # select only Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), Unmerged (U), Unknown (X)
 # 소문자인로 사용시 exclude
@@ -56,33 +62,29 @@ if [[ ${staging_files} == "" ]]; then
     exit 0
 fi
 
-ok=false
+# pylint 체크
 for file in $staging_files; do
     pylint --disable="all" --enable="W0611" $file
     if [[ $? != 0 ]]; then
-        PASS=false
+        failed_and_exit "pylint"
     fi
 done
+
+# black 포맷팅
 for file in $staging_files; do
     black $file
     if [[ $? != 0 ]]; then
-        PASS=false
+        failed_and_exit "black"
     fi
     git add $file
 done
-
-if [[ ok == false ]]; then
-    $ECHO "[.githooks/pre-commit] ${red}failed to check..., please check errors/warnings above${reset_color}"
-    exit 1
-fi
 
 # typos 로 오타 체크
 type typos
 if [[ $? == 0 ]]; then
     typos
     if [[ $? != 0 ]]; then
-        $ECHO "[.githooks/pre-commit] ${red}failed to check typos, please check errors/warnings above${reset_color}"
-        exit 2
+        failed_and_exit "typos"
     fi
 fi
 
