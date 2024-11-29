@@ -34,7 +34,6 @@ teh = "teh"
 # typos 검사 제외 파일타입
 # 지원되는 타입 확인
 #typos --type-list
-#*.lock, go.sum, package-lock.json, pnpm-lock.yaml, requirements.txt
 [type.lock]
 check-file = false
 [type.xml]
@@ -69,6 +68,7 @@ extend-exclude=[
 "ZlibTest/*",
 "data-science-in-python/*",
 "Android_ServerMon/*",
+"go.sum",
 ]
 
 
