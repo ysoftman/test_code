@@ -39,12 +39,11 @@ rm -f ${TEMP_FILE1} ${TEMP_FILE2}
 
 # find test 3
 # 현재로 부터 1일 전(24~48) 수정된 파일만 찾기
-find . -name *.txt -mtime 1
+find . -name "*.txt" -mtime 1
 # 현재로 부터 수정된지 1일 이상(24~) 파일만 찾기
-find . -name *.txt -mtime +1
+find . -name "*.txt" -mtime +1
 
 
 # find test 4
 # gopath, chroumium 가 들어간 경로는 제외하고 .git  이 있는 디렉토리 찾기
-find ~/workspace -name .git -not -path *gopath* -not -path *chromium*
-
+find ~/workspace -name .git -not -path "*gopath*" -not -path "*chromium*"

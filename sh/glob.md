@@ -8,8 +8,8 @@ ls -ahl *.sh
 shopt -s extglob
 
 # extended glob 활성화(zsh)
-# setopt extendedglob 
-setopt extended_glob 
+# setopt extendedglob
+setopt extended_glob
 setopt EXTENDEDGLOB
 
 
@@ -19,6 +19,6 @@ setopt EXTENDEDGLOB
 # @(패턴) : 1번
 # !(패턴) : 패턴외
 
-# sed 또는 test 가 포함된 파일
-ls -l *(sed|test)*
+# sed 또는 aaa 가 포함된 파일
+ls -l *(sed|aaa)*
 ```
