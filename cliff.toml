@@ -5,6 +5,12 @@
 # Configuration options are organized into tables and keys.
 # See documentation for more information on available options.
 
+# v1.0.1 태그 이후 변경 사항 취합
+# git cliff v1.0.1..
+
+# 특정 해시  이후 변경 사항 취합
+# git cliff d0a9fa994005fa8dad68182721708ed03a05e6b5..
+
 [changelog]
 # changelog header
 header = """
@@ -41,6 +47,7 @@ postprocessors = [
 
 [git]
 # parse the commits based on https://www.conventionalcommits.org
+# 커스텀 커밋을 사용하는 경우 false 로 해야 커밋 메시지를 취합할 수 있다.
 conventional_commits = false
 # filter out the commits that are not conventional
 filter_unconventional = false
