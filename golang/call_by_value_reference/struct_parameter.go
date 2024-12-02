@@ -7,6 +7,7 @@ type myData struct {
 	valstr string
 }
 
+// struct : (default) call by value
 // call by value : struct 복사
 // caller 쪽에 변경된 값이 반영되지 않는다.
 func funcCallByValue(data myData) {

@@ -14,6 +14,7 @@ func main() {
 	fmt.Printf("hashmap(%p) : %v\n", &hashmap, hashmap)
 }
 
+// map : (default) call by reference
 func modifyMapValue(hm map[int]int) {
 	hm[0] = 0
 }

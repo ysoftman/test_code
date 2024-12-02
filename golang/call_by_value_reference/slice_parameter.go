@@ -31,6 +31,7 @@ func funcCallByValue4(slice []int) {
 	fmt.Printf("funcCallByValue4, %p slice: %#v\n", &slice, slice)
 }
 
+// slice : (default) call by reference
 // slice 파라메터는 구조체(포인터,len,cap)값을 받는다.
 func modifySliceVale(s []int) {
 	if len(s) >= 1 {

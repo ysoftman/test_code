@@ -18,6 +18,7 @@ func main() {
 	fmt.Printf("main, %p a: %#v\n", &a, a)
 }
 
+// primitive types : (default) call by value
 func intCallByValue(a int) {
 	a = 123
 	fmt.Printf("intCallByValue, %p a: %#v\n", &a, a)
