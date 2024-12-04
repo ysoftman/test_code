@@ -16,7 +16,7 @@ function testfunc0 {
     echo "testfunc0()...$1 $2"
 }
 
-# 사용자 함수 파마리터도 $# $1 $2 .. 으로 받는다.
+# 사용자 함수 파라메터도 $# $1 $2 .. 으로 받는다.
 # function 을 명시하지 않으면 () 를 명시해야 한다.
 testfunc1() {
     if [ $# != 2 ]; then
