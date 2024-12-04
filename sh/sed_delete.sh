@@ -8,9 +8,9 @@ ddd line4
 line 5 ysoftman
 eee line6
 fff line7ggg line8
-hhh line9
-iii line10
-jjj line11
+     hhh line9
+     iii line10
+     jjj line11
 line 12 ysoftman
 "
 
@@ -32,3 +32,6 @@ echo -e "$temp" | sed "/ysoftman/d"
 
 echo 'delete after line word'
 echo -e "$temp" | sed "s/line.*//"
+
+echo 'trim prefix spaces'
+echo -e "$temp" | sed "s/^[[:space:]]*//"
