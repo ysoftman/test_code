@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/mitchellh/mapstructure"
 )
@@ -41,7 +42,9 @@ func unmarshal() {
 
 	// map string interface 를 사용하면 스키마를 몰라도 unmarshal 할 수 있다.
 	myinfo := make(map[string]interface{})
-	json.Unmarshal([]byte(jsonstr), &myinfo)
+	if err := json.Unmarshal([]byte(jsonstr), &myinfo); err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println("myinfo:", myinfo)
 
 	// msi -> struct 로 변환하기
@@ -54,7 +57,9 @@ func unmarshal() {
 		List []string
 		Zzz  string // info 에는 없는 필드로 값이 채워지 않음
 	}{}
-	mapstructure.Decode(myinfo, &myinfo2)
+	if err := mapstructure.Decode(myinfo, &myinfo2); err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println("myinfo2:", myinfo2)
 
 }
