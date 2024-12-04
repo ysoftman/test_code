@@ -29,3 +29,6 @@ echo -e "$temp" | sed "s/ysoftman//g"
 
 echo 'find ysoftman and delete line'
 echo -e "$temp" | sed "/ysoftman/d"
+
+echo 'delete after line word'
+echo -e "$temp" | sed "s/line.*//"
