@@ -15,7 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
 	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	gin_swagger "github.com/swaggo/gin-swagger"
 )
 
 var (
@@ -266,6 +266,6 @@ func main() {
 		v1.POST("/data1", PostData)
 	}
 	// swag init to generate/update ./docs
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	router.GET("/swagger/*any", gin_swagger.WrapHandler(swaggerfiles.Handler))
 	_ = router.Run()
 }
