@@ -17,3 +17,7 @@ touch exist_file
 rm -fv exist_file > /dev/null 2>&1
 # rm -f 옵션을 사용하면 없는 파일도 에러메시지 없이 동작해서 뺏음
 rm -v not_exist_file > /dev/null 2>&1
+
+echo "aaa"
+# bbb (stdout)  를 stderr 로 출력한다.
+echo "bbb" >&2 not_exist_command
