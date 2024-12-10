@@ -19,5 +19,8 @@ rm -fv exist_file > /dev/null 2>&1
 rm -v not_exist_file > /dev/null 2>&1
 
 echo "aaa"
-# bbb (stdout)  를 stderr 로 출력한다.
+# bbb (stdout) 를 stderr 로 출력한다.
 echo "bbb" >&2 not_exist_command
+# ok (stdout) 을 stderr 로 출력
+echo "ok1" >&2
+>&2 echo "ok2"
