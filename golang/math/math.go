@@ -18,4 +18,9 @@ func main() {
 	fmt.Println("math.Floor(10.5)=", math.Floor(10.5))
 	fmt.Println("15/10=", 15/10)
 	fmt.Println("float32(15)/float32(10)=", float32(15)/float32(10))
+
+	a := 1.567
+	fmt.Println("---------", math.Round(a))
+	fmt.Println("---------", math.Round(a*10))
+	fmt.Println("---------", math.Round(a*10)/10)
 }
