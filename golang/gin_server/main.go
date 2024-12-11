@@ -8,6 +8,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -26,7 +28,7 @@ var (
 	build_time      string
 	build_unix_time string
 	git_hash        string
-	os              string
+	server_os       string // os 로 하면 os 패키지 import 할때 겹친다.
 	arch            string
 )
 
@@ -52,7 +54,7 @@ func makeServerVersion() ServerVersion {
 		BuildTime:     build_time,
 		BuildUnixTime: build_unix_time,
 		GitHash:       git_hash,
-		OS:            os,
+		OS:            server_os,
 		Arch:          arch,
 	}
 }
@@ -149,8 +151,20 @@ func timeoutMiddleware2() gin.HandlerFunc {
 			}()
 			func(c *gin.Context) {
 				defer func() {
-					if p := recover(); p != nil {
-						panicChan <- p
+					if r := recover(); r != nil {
+						// plain text 로 출력시
+						debug.PrintStack()
+						// json 으로 출력시
+						panicLog := make(map[string]string)
+						panicLog["error"] = fmt.Sprintf("%v", r)
+						panicLog["stack"] = fmt.Sprintf("[debug.Stack] begin\n%s\n[debug.Stack] end\n", string(debug.Stack()))
+						panicJson, err := json.Marshal(panicLog)
+						if err != nil {
+							fmt.Fprintln(os.Stderr, "marshaling panic log failed:", err)
+						} else {
+							fmt.Fprintln(os.Stderr, string(panicJson))
+						}
+						panicChan <- r
 					}
 				}()
 				c.Next()
