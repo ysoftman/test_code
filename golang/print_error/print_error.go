@@ -23,6 +23,10 @@ func (me *MyError) Error() string {
 	return "error:" + me.Mesg
 }
 
+func (me *MyError) CustomErrMessage() string {
+	return "[custom-err-message] " + me.Mesg
+}
+
 var errLemon = &MyError{
 	Err:  nil,
 	Mesg: "lemon",
@@ -93,13 +97,13 @@ func checkError(err error) {
 	if errors.Is(err, errLemon) {
 		fmt.Println("--> Is errLemon")
 	}
-	// As() 같은 타입의 에러인지 체크
+	// errApple 포인터에 err데 할당에 성공(true)하면 errApple 로 사용할 수 있다.
 	// errApple, errLemon 모두 같은 타입으로 아래 2개 As 에서 true 가 된다
 	if errors.As(err, &errApple) {
-		fmt.Println("--> As errApple")
+		fmt.Println("--> As errApple", errApple.CustomErrMessage())
 	}
 	if errors.As(err, &errLemon) {
-		fmt.Println("--> As errLemon")
+		fmt.Println("--> As errLemon", errLemon.CustomErrMessage())
 	}
 }
 
