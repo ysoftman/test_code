@@ -46,5 +46,4 @@ func getNextColorString(i int, str string) string {
 		white := color.New(color.FgWhite).SprintFunc()
 		return white(str)
 	}
-
 }

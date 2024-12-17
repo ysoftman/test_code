@@ -51,7 +51,6 @@ func cutRuneByMaxByte(maxbytes int) {
 	var byteBuf bytes.Buffer
 	preindex := 0
 	for index, runeValue := range str {
-
 		if index < maxbytes {
 			preindex = index
 
@@ -67,5 +66,4 @@ func cutRuneByMaxByte(maxbytes int) {
 
 	cutStr = str[:preindex]
 	fmt.Printf("preindex(%d) cutstr: %v\n", preindex, cutStr)
-
 }

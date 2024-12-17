@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	func() {
 		str1 := "ysoftman"
 		fmt.Println("str1:", len(str1))

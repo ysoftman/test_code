@@ -21,7 +21,6 @@ func main() {
 	fmt.Println("array2 before  =", array2)
 	quickSort2(array2, 0, len(array2)-1)
 	fmt.Println("array2 after  =", array2)
-
 }
 
 func quickSort(arr []int, left int, right int, depth int) {
@@ -82,7 +81,6 @@ func quickSort(arr []int, left int, right int, depth int) {
 	quickSort(arr, left, j-1, depth+1)
 	// 오른쪽부분 퀵정렬 수행
 	quickSort(arr, j+1, right, depth+1)
-
 }
 
 func quickSort2(arr []int, left, right int) {

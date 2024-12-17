@@ -16,7 +16,6 @@ import (
 )
 
 func TestPrint1(t *testing.T) {
-
 	actual1 := 300
 	actual2 := 300
 	expected := 500

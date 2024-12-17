@@ -3,9 +3,11 @@
 // title : 파일 삭제(rm)
 package main
 
-import "log"
-import "os"
-import "fmt"
+import (
+	"log"
+	"os"
+	"fmt"
+)
 
 func main() {
 	nArgs := len(os.Args)

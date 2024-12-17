@@ -15,7 +15,6 @@ import (
 )
 
 func main() {
-
 	// 로그 출력 대상 선택
 	// log.SetOutput(os.Stderr)
 
@@ -69,7 +68,6 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-
 		// 강제로 로그 로테이션
 		// for i := 0; i < 10; i++ {
 		// 	// 로그 파일 로테이션
@@ -86,10 +84,8 @@ func main() {
 			time.Sleep(10 * time.Microsecond)
 		}
 		defer wg.Done()
-
 	}()
 	wg.Wait()
-
 }
 
 func printlog() {

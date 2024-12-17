@@ -15,7 +15,7 @@ const Maxcnt = 10
 func main() {
 	// go routine 간의 통신 및 동기화를 위한 channel(고루틴간의 데이터 공유를 위한 통로) 생성
 	// 버퍼 명시를 안하면(unbuffered channel) 상대가 준비될때까지 블록되어 lock 없이 동기화 가능
-	//channel1 := make(chan int)
+	// channel1 := make(chan int)
 	// 버퍼를 명시하면(buffered channel) 비동기로 블록되지 않고 바로 수행된다.
 	channel1 := make(chan int, 10)
 	channel2 := make(chan int, 10)
@@ -44,8 +44,8 @@ func sendValue1(ch chan int, wg *sync.WaitGroup) int {
 
 		// 채널 송신측에서는 채널을 close 할 수 있다.
 		if value >= Maxcnt {
-			//fmt.Printf("[%s] sendValue1 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
-			//close(ch)
+			// fmt.Printf("[%s] sendValue1 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
+			// close(ch)
 			break
 		}
 		value++
@@ -66,8 +66,8 @@ func sendValue2(ch chan int, wg *sync.WaitGroup) int {
 
 		// 채널 송신측에서는 채널을 close 할 수 있다.
 		if value >= Maxcnt {
-			//fmt.Printf("[%s] sendValue2 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
-			//close(ch)
+			// fmt.Printf("[%s] sendValue2 채널닫음\n", time.Now().Format("2006-01-02 15:04:05"))
+			// close(ch)
 			break
 		}
 		value++

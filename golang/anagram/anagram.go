@@ -10,7 +10,6 @@ import (
 )
 
 func anagram(prefix string, remain string, result *[]string) int {
-
 	strslice := []byte(remain)
 	// for debug
 	//	fmt.Println("prefix :", prefix, "remain :", remain, "len(strslice) :", len(strslice))
@@ -37,7 +36,6 @@ func anagram(prefix string, remain string, result *[]string) int {
 }
 
 func main() {
-
 	result := []string{}
 
 	anagram("", "biro", &result)
@@ -47,5 +45,4 @@ func main() {
 	}
 
 	fmt.Println("total cnt =", len(result))
-
 }

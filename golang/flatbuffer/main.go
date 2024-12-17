@@ -21,8 +21,9 @@ package main
 import (
 	sample "MyGame/Sample"
 	"fmt"
-	flatbuffers "github.com/google/flatbuffers/go"
 	"strconv"
+
+	flatbuffers "github.com/google/flatbuffers/go"
 )
 
 // Example how to use Flatbuffers to create and read binary buffers.

@@ -153,5 +153,4 @@ func getFieldInfo() {
 	fmt.Println("myBoxFieldByName.Name:", myBoxFieldByName.Name)
 	fmt.Println("myBoxFieldByName.Type:", myBoxFieldByName.Type)
 	fmt.Println("myBoxFieldByName.Tag:", myBoxFieldByName.Tag)
-
 }

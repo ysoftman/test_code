@@ -6,7 +6,6 @@ package main
 import "fmt"
 
 func main() {
-
 	// 일반적인 피보나치 계산
 	result := 0
 	temp1 := 1

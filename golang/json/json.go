@@ -35,8 +35,7 @@ type ExtraStruct struct {
 
 // JSONData 데이터 타입
 type JSONData struct {
-
-	//Name	string	// json 키값과 같은 이름의 변수를 선언하던가
+	// Name	string	// json 키값과 같은 이름의 변수를 선언하던가
 	UserName   string `json:"name"` // json key tag 를 명시하던가, marshal시 name 으로 필드명 사용
 	Age        int
 	History    JSONDataInner

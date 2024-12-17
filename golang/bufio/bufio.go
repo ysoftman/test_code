@@ -3,9 +3,11 @@
 // title : bufio 패키지 테스트
 package main
 
-import "fmt"
-import "bufio"
-import "os"
+import (
+	"fmt"
+	"bufio"
+	"os"
+)
 
 func main() {
 	// stdin 버퍼를 사용하는 스캐너 생성

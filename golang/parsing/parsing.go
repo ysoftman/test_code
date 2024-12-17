@@ -22,7 +22,6 @@ type InfoData *struct {
 var defibinfo map[int](InfoData)
 
 func main() {
-
 	defibinfo = make(map[int]InfoData)
 
 	// input example
@@ -64,8 +63,4 @@ func main() {
 
 	// fmt.Fprintln(os.Stderr, "Debug messages...")
 	// fmt.Println("answer") // Write answer to stdout
-
-
-
 }
-

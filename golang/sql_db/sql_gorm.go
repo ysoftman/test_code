@@ -23,7 +23,7 @@ type InnerData struct {
 // gorm 은 PascalCase 인 struct와 필드 이름을 snake_case 로 변경해 테이블/컬럼명으로 사용한다.
 type TestInfo struct {
 	gorm.Model
-	//ID uint64
+	// ID uint64
 	// Age      int    `gorm:"default:99"`
 	// Name     string `gorm:"default:lemon"`
 	// Enable   bool   `gorm:"not null;default:1"`
@@ -38,6 +38,7 @@ type TestInfo struct {
 func OpenSqlite() gorm.Dialector {
 	return sqlite.Open("sqlite.db")
 }
+
 func OpenMysql() gorm.Dialector {
 	// sql 접속 정보 설정
 	hostIP := "127.0.0.1"
@@ -77,7 +78,7 @@ func printTestInfo(info TestInfo) {
 }
 
 func DoGorm() {
-	//targetDB := OpenSqlite()
+	// targetDB := OpenSqlite()
 	targetDB := OpenMysql()
 	db, err := gorm.Open(targetDB, &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
@@ -149,7 +150,7 @@ func DoGorm() {
 	db.Save(&user)
 
 	// 레코드 조회
-	//user = TestInfo{}
+	// user = TestInfo{}
 	// db.Table("test_info").Where("name = ?", "bill").First(&user2)
 	// db.Where("name = ?", "bill").First(&user2)
 	db.Find(&user, "name = ?", "bill")
@@ -189,5 +190,4 @@ func DoGorm() {
 	// 	}
 	// 	return nil
 	// })
-
 }

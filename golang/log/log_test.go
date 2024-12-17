@@ -9,7 +9,6 @@ import (
 // go test -v ./log_test.go
 
 func TestAAA(t *testing.T) {
-
 	actual := "lemon"
 	expected := "lemon"
 	assert.Equal(t, expected, actual)

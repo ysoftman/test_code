@@ -105,14 +105,14 @@ func main() {
 	userInfo.HasApple = false
 	userInfo.Message = "     ysoftman"
 
-	//html 문서 처리
+	// html 문서 처리
 	err = tpl.Execute(os.Stdout, userInfo)
 	if err != nil {
 		fmt.Println("execute template error ... " + err.Error())
 		return
 	}
 
-	//sprig template
+	// sprig template
 	sprigTpl, err := template.New("sprig_test_template").Funcs(sprig.FuncMap()).Parse(sprigTemplate)
 	if err != nil {
 		fmt.Println("parse sprig template error ... " + err.Error())

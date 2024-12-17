@@ -50,6 +50,7 @@ char *modify_string(char *str)
 }
 */
 import "C"
+
 import (
 	"fmt"
 	"unsafe"
@@ -80,5 +81,4 @@ func main() {
 	// // C string -> Go string
 	gostr := C.GoString(cstr2)
 	fmt.Println(gostr)
-
 }

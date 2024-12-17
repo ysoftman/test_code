@@ -52,6 +52,7 @@ func printday(d week) {
 func printfruit(f fruit) {
 	fmt.Println(f)
 }
+
 func main() {
 	fmt.Println("[week]")
 	printday(Sunday)

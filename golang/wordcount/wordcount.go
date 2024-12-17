@@ -10,7 +10,7 @@ import (
 )
 
 func WordCount(s string) map[string]int {
-	//strings.Count(s, "s")
+	// strings.Count(s, "s")
 
 	mapData := make(map[string]int)
 	str := strings.Split(s, " ")
@@ -28,5 +28,4 @@ func main() {
 	for key, value := range mapData {
 		fmt.Println("mapData[", key, "] = ", value)
 	}
-
 }

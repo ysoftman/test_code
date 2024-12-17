@@ -31,7 +31,6 @@ func main() {
 }
 
 func makePanicAndRecover(a int, b int) {
-
 	// 패닉이 발생하면 모든 defer 를 실행한다.
 	// defer 로 처리되는 함수에 recover 를 사용해서 패닉 메시지를 출력하고 프로그램을 계속 실행할 수 있다.
 	// recover() defer 내에서 처리되이어야 한다.

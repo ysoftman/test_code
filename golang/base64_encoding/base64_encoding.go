@@ -3,9 +3,11 @@
 // title : base64 인코딩 테스트
 package main
 
-import "fmt"
-import "os"
-import "encoding/base64"
+import (
+	"fmt"
+	"os"
+	"encoding/base64"
+)
 
 const strURL string = "http://www.google.com"
 
@@ -29,5 +31,4 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Fprintf(os.Stdout, "%s\n", output2)
-
 }

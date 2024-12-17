@@ -80,5 +80,4 @@ func main() {
 	for key, value := range mapData4 {
 		fmt.Println("mapData4[", key, "] = ", value)
 	}
-
 }

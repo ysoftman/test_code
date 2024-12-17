@@ -18,6 +18,7 @@ func main() {
 func modifyMapValue(hm map[int]int) {
 	hm[0] = 0
 }
+
 func addMapKeyValue(hm map[int]int) {
 	hm[1] = 10
 	for i := 0; i < 100; i++ {

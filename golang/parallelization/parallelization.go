@@ -11,8 +11,10 @@
 // 현재 머신의 cpu 개수로 설정되어 있다.
 package main
 
-import "runtime"
-import "fmt"
+import (
+	"runtime"
+	"fmt"
+)
 
 func main() {
 	nCpu := runtime.NumCPU()

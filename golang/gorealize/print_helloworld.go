@@ -2,8 +2,10 @@
 // realize 에서 사용할 테스트 파일
 package main
 
-import "fmt"
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
 	if len(os.Args) < 2 {

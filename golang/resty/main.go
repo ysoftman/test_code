@@ -44,11 +44,9 @@ func main() {
 			Param1 string `json:"param1"`
 			Param2 string `json:"param2"`
 		} `json:"args"`
-		Data  string `json:"data"`
-		Files struct {
-		} `json:"files"`
-		Form struct {
-		} `json:"form"`
+		Data    string   `json:"data"`
+		Files   struct{} `json:"files"`
+		Form    struct{} `json:"form"`
 		Headers struct {
 			Accept         string `json:"Accept"`
 			AcceptEncoding string `json:"Accept-Encoding"`

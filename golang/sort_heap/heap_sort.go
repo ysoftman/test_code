@@ -76,8 +76,8 @@ func pop(nums *[]int) int {
 	}
 	// fmt.Println(*nums)
 	return r
-
 }
+
 func heapSort(nums []int) []int {
 	heap := []int{}
 	// 값을 추가하면 min-heap 을 유지하고 root 에는 가장 작은값이 위치

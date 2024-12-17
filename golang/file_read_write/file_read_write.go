@@ -3,9 +3,11 @@
 // title : file read write 테스트
 package main
 
-import "fmt"
-import "os"
-import "io/ioutil"
+import (
+	"fmt"
+	"os"
+	"io/ioutil"
+)
 
 func main() {
 	fmt.Println("파일 읽기 쓰기 테스트")
@@ -79,5 +81,4 @@ func main() {
 	defer fp3.Close()
 	buffer3 := []byte("os.OpenFile 로 열기, 없으면 생성된 파일")
 	fp3.Write(buffer3)
-
 }

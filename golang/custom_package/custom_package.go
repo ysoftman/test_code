@@ -14,7 +14,7 @@ func main() {
 
 	// 다른 패키지의 소문자로 시작하는 함수 호출 불가능
 	// 컴파일 에러발생 --> cannot refer to unexported name my_math.add
-	//result := my_math.add(1,2)
+	// result := my_math.add(1,2)
 
 	// 다른 패키지의 대문자로 시작하는 함수 호출 가능
 	fmt.Println("call my_math.Add(1,2)")

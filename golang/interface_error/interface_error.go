@@ -40,11 +40,13 @@ type Adder interface {
 	add(x, y int) int
 }
 
-type myType1 int
-type myType2 struct {
-	x int
-	y int
-}
+type (
+	myType1 int
+	myType2 struct {
+		x int
+		y int
+	}
+)
 
 // myType1 형 add() 함수
 // 메소드 리시버 (a myType1) 명시

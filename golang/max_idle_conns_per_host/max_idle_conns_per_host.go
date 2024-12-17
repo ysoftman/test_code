@@ -12,8 +12,10 @@ import (
 	"time"
 )
 
-var targetServer = "http://localhost:55555"
-var myClient *http.Client
+var (
+	targetServer = "http://localhost:55555"
+	myClient     *http.Client
+)
 
 func init() {
 	// http transport.go 에서는
@@ -57,7 +59,6 @@ func main() {
 	}
 
 	time.Sleep(10 * time.Second)
-
 }
 
 var receiveCnt int

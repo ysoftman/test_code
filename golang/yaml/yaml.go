@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	yamlData := struct {
 		AA string `yaml:"aa"`
 		BB []int  `yaml:"bb"`
@@ -38,5 +37,4 @@ aa:
 	if err := yaml.Unmarshal([]byte(yamlStr), &data); err != nil {
 		log.Fatal("err => ", err)
 	}
-
 }

@@ -12,6 +12,7 @@ func count() func() int {
 		return cnt
 	}
 }
+
 func main() {
 	fmt.Println("Closure test")
 

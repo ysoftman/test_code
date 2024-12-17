@@ -13,7 +13,7 @@ import (
 	"strconv"
 )
 
-//import "os"
+// import "os"
 
 // net/http 패키지의 ServeHTTP 인터페이스
 //type Handler interface {
@@ -75,11 +75,8 @@ func (web myHTTP) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("RequestURI : ", r.RequestURI)
 
 	if r.RequestURI == "/" {
-
 	} else if r.RequestURI == "/test" {
-
 	} else {
-
 	}
 	requestCnt++
 	fmt.Println("request cnt = ", requestCnt)
@@ -144,7 +141,7 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("ysoftman2", url.QueryEscape("메인페이지 입니다."))
 
 	// 템플릿 실행(html 응답)
-	//templateMain.Execute(os.Stdout, nil)
+	// templateMain.Execute(os.Stdout, nil)
 	templateMain.Execute(w, responseData)
 
 	requestCnt++
@@ -164,16 +161,16 @@ func testPage(w http.ResponseWriter, r *http.Request) {
 
 	// 클라가 보낸 값 파악
 	data := userData{}
-	//data.userno, _ = strconv.Atoi(r.FormValue("user_no")) // 32bit int 인 경우
+	// data.userno, _ = strconv.Atoi(r.FormValue("user_no")) // 32bit int 인 경우
 	data.UserNo, _ = strconv.ParseInt(r.FormValue("user_no"), 0, 64) // 64bit int 인 경우
 	data.StrName = r.FormValue("user_name")
 
 	fmt.Println("data:", data)
 
 	// 템플릿 실행(html 응답)
-	//templateMain.Execute(os.Stdout, nil)
+	// templateMain.Execute(os.Stdout, nil)
 	// data 를 템플릿으로 넘겨 동적 html 을 생성할 수 있도록 한다.
-	//err = templateMain.Execute(w, data)
+	// err = templateMain.Execute(w, data)
 
 	// 전역 변수에 저장하여 보여주기, 응답 주기
 	mapUserData[data.UserNo] = data

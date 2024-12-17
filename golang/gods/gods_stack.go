@@ -23,6 +23,7 @@ func stack_linkedliststack() {
 	stack.Empty()       // true
 	stack.Size()        // 0
 }
+
 func stack_arraystack() {
 	stack := arraystack.New() // empty
 	stack.Push(1)             // 1

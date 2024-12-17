@@ -3,10 +3,12 @@
 // title : 파일 리스트(ls)
 package main
 
-//import "log"
-import "os"
-import "fmt"
-import "io/ioutil"
+// import "log"
+import (
+	"os"
+	"fmt"
+	"io/ioutil"
+)
 
 func main() {
 	nArgs := len(os.Args)
@@ -24,7 +26,6 @@ func main() {
 	// 대상 경로의 디렉토리 및 파일 리스트 파악
 	fileinfo, _ := ioutil.ReadDir(targetpath)
 	for _, value := range fileinfo {
-
 		fmt.Printf("Name(%v), Size(%v), IsDir(%v), Mode(%v), ModTime(%v)\n", value.Name(), value.Size(), value.IsDir(), value.Mode(), value.ModTime())
 	}
 }

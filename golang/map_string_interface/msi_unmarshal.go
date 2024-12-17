@@ -61,5 +61,4 @@ func unmarshal() {
 		log.Fatal(err)
 	}
 	fmt.Println("myinfo2:", myinfo2)
-
 }

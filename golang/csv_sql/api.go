@@ -220,7 +220,7 @@ func makeSQLInsert(tbName string, colNames []string) string {
 }
 
 func evictCache(tbName string) {
-	for tableName, _ := range cache.cacheKeys {
+	for tableName := range cache.cacheKeys {
 		if strings.Contains(tableName, tbName) {
 			log.Println("[evictCache] contains:", tableName)
 			if cache.cacheKeys[tableName] != nil {

@@ -78,7 +78,7 @@ func main() {
 
 		// context 타임아웃되는 경우 더이상 진행되지 않는다.(cancel)
 		// <-time.After(timeout) 없으면 <-ctx.Done 이 된다.
-		//time.Sleep(700 * time.Millisecond)
+		// time.Sleep(700 * time.Millisecond)
 
 		fmt.Println("----- go routine end")
 		// 작업 완료
@@ -88,7 +88,7 @@ func main() {
 	// 가장 먼저 도착하는 채널 파악
 	select {
 	// context 타임아웃 이후라 발생할 수 없음
-	//case time := <-time.After(2000 * time.Millisecond):
+	// case time := <-time.After(2000 * time.Millisecond):
 	case time := <-time.After(timeout):
 		fmt.Println("timeout!!!", time)
 	// 채널로부터 작업완료 통보가 된 경우
@@ -105,7 +105,7 @@ func main() {
 }
 
 func request_timeout_test() {
-	//ctx, cancel := context.WithTimeout(context.Background(), 2000*time.Millisecond)
+	// ctx, cancel := context.WithTimeout(context.Background(), 2000*time.Millisecond)
 	// 응답이 100ms 없으면  timeout(context deadline exceeded)
 	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 	defer cancel()

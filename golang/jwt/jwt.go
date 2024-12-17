@@ -31,7 +31,6 @@ type userInfo struct {
 }
 
 func main() {
-
 	fmt.Println("start server...")
 
 	// 토큰 생성해보기

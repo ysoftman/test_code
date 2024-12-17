@@ -46,7 +46,7 @@ func main() {
 
 	// 파일에 로그 출력하기
 	// 대상 파일 열기, 없으면 생성
-	f, err := os.OpenFile("test.log", os.O_CREATE, 0666)
+	f, err := os.OpenFile("test.log", os.O_CREATE, 0o666)
 	if err != nil {
 		log.Println(err.Error())
 	}

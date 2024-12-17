@@ -21,5 +21,4 @@ func strlen(str string) int {
 	}
 
 	return cnt
-
 }

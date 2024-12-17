@@ -34,7 +34,6 @@ func prime_number_by_eratosthenes(num int, prime_number *[]int) {
 			*prime_number = append(*prime_number, i)
 		}
 	}
-
 }
 
 func main() {

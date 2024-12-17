@@ -117,6 +117,7 @@ func UploadFile(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, &res)
 }
+
 func main() {
 	e := echo.New()
 

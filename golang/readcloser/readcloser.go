@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	//////////////////////////
 	// 일반 슬라이스에서 할당은 참조고 copy 를 해야지만 복사가 된다.
 	// https://blog.golang.org/go-slices-usage-and-internals

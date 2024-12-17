@@ -5,8 +5,10 @@
 
 package main
 
-import "fmt"
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func main() {
 	fmt.Println("Check Queen Path")

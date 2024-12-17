@@ -19,5 +19,4 @@ func main() {
 		str = string(strslice)
 		fmt.Printf("str: string(strslice), str: %s\n", str)
 	}()
-
 }

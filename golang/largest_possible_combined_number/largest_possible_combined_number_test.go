@@ -22,5 +22,4 @@ func Test_largest_possible_combined_number(t *testing.T) {
 	} else {
 		t.Error("unexpected.")
 	}
-
 }

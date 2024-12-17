@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gin_server/docs"
 	"io"
 	"log"
 	"net/http"
@@ -12,6 +11,8 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
+
+	"gin_server/docs"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
@@ -173,7 +174,7 @@ func timeoutMiddleware2() gin.HandlerFunc {
 		}()
 
 		select {
-		//case <-time.After(timeout):
+		// case <-time.After(timeout):
 		//    fmt.Println("timeout")
 		case p := <-panicChan:
 			panic(p)
@@ -184,8 +185,8 @@ func timeoutMiddleware2() gin.HandlerFunc {
 			if err == nil || err.Error() == "" {
 				return
 			}
-			//context.DeadlineExceeded
-			//context.Canceled
+			// context.DeadlineExceeded
+			// context.Canceled
 			c.JSON(http.StatusRequestTimeout, gin.H{
 				"message": err.Error(),
 			})
@@ -196,16 +197,16 @@ func timeoutMiddleware2() gin.HandlerFunc {
 func main() {
 	fmt.Println("gin server... ")
 	fmt.Println(makeServerVersion())
-	//gin.SetMode(gin.ReleaseMode)
-	//gin.DisableConsoleColor()
+	// gin.SetMode(gin.ReleaseMode)
+	// gin.DisableConsoleColor()
 
 	// json log format
-	var jsonLogFormatter = func(param gin.LogFormatterParams) string {
+	jsonLogFormatter := func(param gin.LogFormatterParams) string {
 		if param.Latency > time.Minute {
 			param.Latency = param.Latency.Truncate(time.Second)
 		}
 		p := struct {
-			//Request   *http.Request
+			// Request   *http.Request
 			TimeStamp time.Time
 			// StatusCode is HTTP response code.
 			StatusCode int
@@ -235,7 +236,7 @@ func main() {
 			ErrorMessage: param.ErrorMessage,
 			Keys:         param.Keys,
 		}
-		//param.Request = nil
+		// param.Request = nil
 		out, err := json.Marshal(p)
 		if err != nil {
 			log.Fatal(err)
@@ -243,13 +244,13 @@ func main() {
 		return string(out) + "\n"
 	}
 	// default(기본 미들웨어가 포함되어 있음) 로 생성하면 기본 로그 포맷터가 추가된 상태이다.
-	//router := gin.Default()
+	// router := gin.Default()
 	router := gin.New()
 	pprof.Register(router, "/debug/pprof")
 	router.Use(gin.LoggerWithFormatter(jsonLogFormatter))
 	router.Use(gin.Recovery())
 	router.Use(CheckReq())
-	//router.Use(timeoutMiddleware1())
+	// router.Use(timeoutMiddleware1())
 	router.Use(timeoutMiddleware2())
 	router.GET("/ping", func(c *gin.Context) {
 		if v, ok := c.Get("key1"); ok {
@@ -267,7 +268,7 @@ func main() {
 			}
 		}
 		// timeout 발생해보자.
-		//time.Sleep(900 * time.Millisecond)
+		// time.Sleep(900 * time.Millisecond)
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",

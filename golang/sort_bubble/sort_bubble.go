@@ -14,7 +14,6 @@ func main() {
 }
 
 func bubble_sort(input *[]int) {
-
 	arr := *input
 
 	for i := 0; i < len(arr); i++ {

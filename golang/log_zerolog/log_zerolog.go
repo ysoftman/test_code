@@ -12,11 +12,11 @@ func main() {
 	// UNIX Time is faster and smaller than most timestamps
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	//zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	// zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	log.Print("hello world")
 
 	// 종료
-	//log.Fatal().Msg("fatal")
+	// log.Fatal().Msg("fatal")
 
 	log.Debug().
 		Str("Scale", "833 cents").
@@ -32,7 +32,7 @@ func main() {
 
 	log.Info().Msg("This message appears when log level set to Debug or Info")
 
-	//info level 이라면 debug 로그 출력 안된다
+	// info level 이라면 debug 로그 출력 안된다
 	log.Debug().Msg("This message appears only when log level set to Debug")
 	if log.Debug().Enabled() {
 		log.Debug().Str("name", "lemon").Msg("test~~")
@@ -57,6 +57,6 @@ func main() {
 	logger.UpdateContext(func(c zerolog.Context) zerolog.Context {
 		return c.Str("fruit", "lemon")
 	})
-	//위에서 context 에 추가한 값이 같이 출력된다
+	// 위에서 context 에 추가한 값이 같이 출력된다
 	logger.Debug().Str("name", "childlog").Msg("context fields have added")
 }

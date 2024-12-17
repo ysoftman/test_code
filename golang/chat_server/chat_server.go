@@ -4,12 +4,16 @@
 
 package main
 
-import "fmt"
-import "os"
-import "net"
+import (
+	"fmt"
+	"os"
+	"net"
+)
 
-const default_ip string = "127.0.0.1"
-const default_port string = "33333"
+const (
+	default_ip   string = "127.0.0.1"
+	default_port string = "33333"
+)
 
 func main() {
 	fmt.Println("Chat Server...")
@@ -45,7 +49,6 @@ func main() {
 	// 리스닝...
 	for {
 		con, err := listener.Accept()
-
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error "+err.Error())
 			continue
@@ -59,12 +62,10 @@ func main() {
 	listener.Close()
 
 	fmt.Println("Chat Server Listener Closed...")
-
 }
 
 // 클라이언트 패킷 디스패처
 func dispatcher_client_request(con net.Conn) {
-
 	fmt.Println("dispatcher_client_request")
 
 	// 함수 리턴될때 close 될 수 있도록 defer 사용

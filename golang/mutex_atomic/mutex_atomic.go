@@ -10,9 +10,11 @@ import (
 	"time"
 )
 
-var g_value int = 0
-var g_atomic_value int32 = 0
-var g_mutex = &sync.Mutex{}
+var (
+	g_value        int   = 0
+	g_atomic_value int32 = 0
+	g_mutex              = &sync.Mutex{}
+)
 
 func thread(wg *sync.WaitGroup, id int, enableMutex bool) {
 	defer wg.Done()

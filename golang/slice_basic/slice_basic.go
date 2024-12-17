@@ -3,7 +3,6 @@ package main
 import "fmt"
 
 func main() {
-
 	// create array
 	arrayStr := [3]string{"2", "3"}
 	// array(배열)은 길이가 고정되어 추가 삭제를 할 수 없다.

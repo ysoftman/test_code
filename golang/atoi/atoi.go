@@ -5,7 +5,6 @@ package main
 import "fmt"
 
 func main() {
-
 	str := "1234567"
 	n := atoi(str)
 	fmt.Printf("str=%s, n:=%d", str, n)

@@ -24,15 +24,19 @@ func NewFruit(name string) *Fruit {
 		Name: name,
 	}
 }
+
 func (f *Fruit) GetName() string {
 	return f.Name
 }
+
 func (f *Fruit) ForApple() string {
 	return "red"
 }
+
 func (f *Fruit) ForLemon() string {
 	return "yellow"
 }
+
 func (f *Fruit) SomethingForFruit() string {
 	return "something for fruit"
 }
@@ -43,12 +47,12 @@ func main() {
 	var apple Apple = NewFruit("apple")
 	fmt.Println(apple.GetName())
 	fmt.Println(apple.ForApple())
-	//fmt.Println(apple.ForLemon())  // lemon interface 또는 fruit struct 만 가능
+	// fmt.Println(apple.ForLemon())  // lemon interface 또는 fruit struct 만 가능
 
 	fmt.Println("-----")
 	var lemon Lemon = NewFruit("lemon")
 	fmt.Println(lemon.GetName())
-	//fmt.Println(lemon.ForApple()) // apple interface 또는 fruit struct 만 가능
+	// fmt.Println(lemon.ForApple()) // apple interface 또는 fruit struct 만 가능
 	fmt.Println(lemon.ForLemon())
 
 	fmt.Println("-----")

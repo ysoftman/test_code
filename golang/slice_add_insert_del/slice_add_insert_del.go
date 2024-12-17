@@ -3,7 +3,6 @@ package main
 import "fmt"
 
 func main() {
-
 	func() {
 		sliceTest := []int{1, 2, 3, 4, 5}
 		fmt.Println("sliceTest:", sliceTest)
@@ -67,7 +66,6 @@ func main() {
 			sliceTest = deleteSlice(0, sliceTest)
 		}
 		fmt.Println("")
-
 	}()
 }
 

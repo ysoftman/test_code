@@ -3,7 +3,6 @@ package main
 import "fmt"
 
 func main() {
-
 	sliceTest1 := []int{10, 20, 30}
 	fmt.Println("sliceTest1 len:", len(sliceTest1), "sliceTest1 cap:", cap(sliceTest1), "sliceTest1:", sliceTest1)
 	// for 로 해보기

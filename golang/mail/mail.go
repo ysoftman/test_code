@@ -4,11 +4,13 @@
 // mail 패키지는 메일 보내는 기능은 없고, 파싱 기능만 있다.
 package main
 
-import "fmt"
-import "net/mail"
-import "strings"
-import "log"
-import "io/ioutil"
+import (
+	"fmt"
+	"net/mail"
+	"strings"
+	"log"
+	"io/ioutil"
+)
 
 func main() {
 	fmt.Println("parse mail...")

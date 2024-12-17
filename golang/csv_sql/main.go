@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-
 	sqldb = NewDB()
 	defer sqldb.sqlDB.Close()
 	log.Println("connected db")

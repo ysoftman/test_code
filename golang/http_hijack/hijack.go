@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	// curl -v http://localhost:8080/test
 	// 일반적인 http 응답
 	http.HandleFunc("/normal", func(w http.ResponseWriter, r *http.Request) {

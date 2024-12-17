@@ -20,7 +20,6 @@ import "testing"
 import . "github.com/smartystreets/goconvey/convey"
 
 func TestMYTest1(t *testing.T) {
-
 	Convey("x=1", t, func() {
 		x := 1
 		Convey("x증가", func() {
@@ -40,5 +39,4 @@ func TestMYTest1(t *testing.T) {
 			So(x, ShouldNotEqual, 101)
 		})
 	})
-
 }

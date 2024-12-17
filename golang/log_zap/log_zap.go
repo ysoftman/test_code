@@ -9,7 +9,7 @@ import (
 
 func main() {
 	logConfig := zap.Config{
-		//An AtomicLevel is an atomically changeable, dynamic logging level. It lets you safely change the log level of a tree of loggers (the root logger and any children created by adding context) at runtime.
+		// An AtomicLevel is an atomically changeable, dynamic logging level. It lets you safely change the log level of a tree of loggers (the root logger and any children created by adding context) at runtime.
 		Level:            zap.NewAtomicLevelAt(zap.DebugLevel),
 		EncoderConfig:    zap.NewProductionEncoderConfig(),
 		Encoding:         "json",

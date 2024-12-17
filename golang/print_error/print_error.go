@@ -6,10 +6,12 @@ import (
 	"runtime"
 )
 
-var errA = errors.New("error-a")
-var errCopyA = errors.New("error-a")
-var errB = errors.New("error-b")
-var errC = errors.New("error-c")
+var (
+	errA     = errors.New("error-a")
+	errCopyA = errors.New("error-a")
+	errB     = errors.New("error-b")
+	errC     = errors.New("error-c")
+)
 
 type MyError struct {
 	Err  error
@@ -25,6 +27,7 @@ var errLemon = &MyError{
 	Err:  nil,
 	Mesg: "lemon",
 }
+
 var errApple = &MyError{
 	Err:  nil,
 	Mesg: "apple",

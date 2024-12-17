@@ -17,7 +17,6 @@ func sum(nums ...int) int {
 }
 
 func main() {
-
 	sum(1)
 	sum(1, 2)
 	sum(1, 2, 3)

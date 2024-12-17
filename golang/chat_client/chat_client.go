@@ -3,12 +3,13 @@
 // title : chat client
 package main
 
-import "fmt"
-import "os"
-import "net"
+import (
+	"fmt"
+	"os"
+	"net"
+)
 
 func main() {
-
 	serveraddr := ""
 	if len(os.Args) == 2 {
 		serveraddr = os.Args[2]
@@ -30,7 +31,7 @@ func main() {
 	// 함수 리턴될때 close 될 수 있도록 defer 사용
 	defer con.Close()
 
-	//buffer := []byte("")
+	// buffer := []byte("")
 	buffer := make([]byte, 1024)
 	for {
 		go Receive(con)
@@ -50,7 +51,6 @@ func main() {
 			break
 		}
 	}
-
 }
 
 // 메시지 받기
@@ -60,5 +60,4 @@ func Receive(con net.Conn) {
 	if cnt > 0 {
 		fmt.Println("[Receive] " + string(buffer[:cnt]))
 	}
-
 }

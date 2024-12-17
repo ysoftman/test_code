@@ -3,9 +3,11 @@
 // go get -u "github.com/patrickmn/go-cache"
 package main
 
-import "time"
-import cache "github.com/patrickmn/go-cache"
-import "fmt"
+import (
+	"time"
+	cache "github.com/patrickmn/go-cache"
+	"fmt"
+)
 
 var gocache *cache.Cache
 
@@ -26,7 +28,6 @@ func main() {
 	time.Sleep(defaultExpiration)
 	// 3 초후면 캐시 데이터 만료
 	getCache(key)
-
 }
 
 func setCache(key, value string, expiration time.Duration) {

@@ -26,7 +26,6 @@ func main() {
 }
 
 func funcCallByValue4(slice []int) {
-
 	slice = append(slice, 99)
 	fmt.Printf("funcCallByValue4, %p slice: %#v\n", &slice, slice)
 }

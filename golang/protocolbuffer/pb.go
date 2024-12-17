@@ -37,10 +37,12 @@ go build
 // pb.go - go 로 테스트
 package main
 
-import "fmt"
-import "log"
-import "pb_test" // protocol buffer 로 생성된 pb_test.pb.go 의 패키지
-import "github.com/golang/protobuf/proto"
+import (
+	"fmt"
+	"log"
+	"pb_test" // protocol buffer 로 생성된 pb_test.pb.go 의 패키지
+	"github.com/golang/protobuf/proto"
+)
 
 func main() {
 	fmt.Println("golang protocol buffer test")

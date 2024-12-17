@@ -37,5 +37,4 @@ func main() {
 	fmt.Printf("%s\n", data)
 	sha1.Write(data)
 	fmt.Printf("sha1 sum = %x\n", sha1.Sum(nil))
-
 }

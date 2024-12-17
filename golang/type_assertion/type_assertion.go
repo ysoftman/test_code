@@ -12,7 +12,6 @@ type mytype struct {
 }
 
 func main() {
-
 	// x 는 int 형인 동적타입으로 선언되었고 99 값을 가지고 있다.
 	var x interface{} = 99
 

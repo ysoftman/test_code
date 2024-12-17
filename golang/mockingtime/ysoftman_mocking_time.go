@@ -50,5 +50,4 @@ func main() {
 	// 5시간 더하기
 	mockingtime2.Add(5 * time.Hour)
 	fmt.Println("mockingtime2.Now()", mockingtime2.Now())
-
 }

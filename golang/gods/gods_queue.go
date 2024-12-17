@@ -54,6 +54,7 @@ func byPriority(a, b interface{}) int {
 	// - : descending order
 	return -utils.IntComparator(priorityA, priorityB)
 }
+
 func queue_priorityqueue() {
 	a := Element{name: "a", priority: 1}
 	b := Element{name: "b", priority: 2}

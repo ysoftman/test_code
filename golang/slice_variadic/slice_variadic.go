@@ -15,5 +15,4 @@ func main() {
 		// 배열은 추가할 수 없다.
 		// arrayTest = append(arrayTest, 9)
 	}()
-
 }

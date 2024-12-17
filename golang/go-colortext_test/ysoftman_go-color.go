@@ -14,8 +14,10 @@ go get github.com/daviddengcn/go-colortext
 // title : go-colortext 테스트
 package main
 
-import "fmt"
-import ct "github.com/daviddengcn/go-colortext"
+import (
+	"fmt"
+	ct "github.com/daviddengcn/go-colortext"
+)
 
 func main() {
 	fmt.Println("go-colortext test")

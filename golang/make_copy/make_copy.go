@@ -14,7 +14,6 @@ type myData struct {
 }
 
 func main() {
-
 	val1 := []string{"lemon", "apple", "orange"}
 	val2 := []string{}
 	fmt.Println("val1:", val1)
@@ -48,5 +47,4 @@ func main() {
 	copy(mydata2, mydata1)
 	fmt.Printf("mydata1: %+v\n", mydata1)
 	fmt.Printf("mydata2: %+v\n", mydata2)
-
 }

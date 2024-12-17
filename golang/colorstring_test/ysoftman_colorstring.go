@@ -14,8 +14,10 @@ go get github.com/mitchellh/colorstring
 // title : colorstring 테스트
 package main
 
-import "fmt"
-import "github.com/mitchellh/colorstring"
+import (
+	"fmt"
+	"github.com/mitchellh/colorstring"
+)
 
 func main() {
 	fmt.Println("colorstring test")

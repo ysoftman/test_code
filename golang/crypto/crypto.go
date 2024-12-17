@@ -115,7 +115,6 @@ func decryptAESCBC(key, cipherhex string) string {
 }
 
 func main() {
-
 	// key 의 길이에 따라 16bytes(AES-128), 24bytes(AES-192), 32bytes(AES-256) 로 구분된다.
 	key := "ysoftmanAesKey12ysoftmanAesKey12"
 	// iv 는 16bytes 여야 한다.

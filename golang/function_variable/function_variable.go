@@ -11,12 +11,12 @@ import (
 
 // 함수 밖에서는 := 를 사용할 수 없다.
 // non-declaration statement outside function body
-//gVal1 := 1
+// gVal1 := 1
 var gVal1 int = 10
 
 // 함수 밖에서는 선어 후에 = 를 사용할 수 없다.
 // non-declaration statement outside function body
-//gVal1 = 0
+// gVal1 = 0
 
 // func main must have no arguments and no return values
 func main() {
@@ -48,7 +48,6 @@ func main() {
 		return x + y
 	}
 	fmt.Println("anonymous_function2() = ", anonymous_function2(1, 4))
-
 }
 
 // 사용자 함수를 main() 이전에 선언할 필요가 없다.

@@ -27,7 +27,7 @@ func main() {
 	wg.Add(numJobs)
 	fmt.Println("maxThreads:", maxThreads)
 
-	//maxThreads 개수(weight) 만큼 lock 을 가질 수 있다.
+	// maxThreads 개수(weight) 만큼 lock 을 가질 수 있다.
 	sem := semaphore.NewWeighted(int64(maxThreads))
 	for i := 0; i < numJobs; i++ {
 		fmt.Println("job=", i)
