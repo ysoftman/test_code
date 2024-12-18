@@ -51,3 +51,12 @@ build: clean swagger
 .PHONY: test
 test: clean swagger
 	go test ./... -v -p 4 -coverprofile cover.out
+
+.PHONY: diagnostic
+diagnostic:
+	@gopls check $(shell find . -name "*.go")
+
+.PHONY: fmt
+fmt:
+	@gofumpt -w -l $(shell find . -name "*.go")
+
