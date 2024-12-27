@@ -32,7 +32,11 @@ echo "----- add element to array"
 arr+=("lemon and apple")
 arr+=(777)
 echo "${arr[@]}"
-
+echo "----- remove last element in array"
+unset "arr[${#arr[@]}-1]"
+# or
+unset "arr[-1]"
+echo "${arr[@]}"
 echo "----- 2번 인덱스부터 시작해서 3개원소 조회"
 echo "${arr[@]:2:3}"
 echo "----- 0번 인덱스부터 시작해서 3개원소 조회"
