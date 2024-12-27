@@ -1,5 +1,9 @@
 #!/bin/bash
-
+printf "%s\n" "~~ysoftman~~"
+# -문자 로 시작시 -옵션일 수 있어 -- 로 옵션이 끝났을을 설정해야 한다
+# -% invalid option
+#printf "-%s\n" "~~ysoftman~~"
+printf -- "-%s\n" "~~ysoftman~~"
 function aaa() {
     # "$*" 로 ""로 감싸면 arguments 모두를 문자(word) 하나로 취급해 출력시 차이가 없다.
     echo "$*"
