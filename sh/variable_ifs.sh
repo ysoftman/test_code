@@ -3,17 +3,28 @@
 # IFS(Internal Field Separator) test
 set -e
 
-# IFS 기본은 공백
+# IFS 기본 IFS=$' \t\n'
 echo "\${IFS}:" ${IFS} "(space)"
+# 20: space
+# 09: tab
+# 0a: newlin
+echo -n "$IFS" | xxd
+if [[ "$IFS" == $' \t\n' ]]; then
+    echo ok
+else
+    echo no
+fi
+
 for v in `cat variable_ifs.txt`
 do
     # 요소를 공백으로 구분해서 출력
     echo ${v}
 done
 
-# 입력 필드 구분자를 뉴라인으로 명시, 기본은 스페이스
+# 입력 필드 구분자를 뉴라인 하나으로 명시
 # \n 를 하나의 문자로 취급해야 하기 때문에 $'\n'로 표현
 IFS=$'\n'
+echo -n "$IFS" | xxd
 echo "\${IFS}:" ${IFS} "(newline)"
 for v in `cat variable_ifs.txt`
 do
@@ -36,6 +47,7 @@ if [[ $shell_name == "zsh" ]]; then
 fi
 
 IFS=' '
+echo -n "$IFS" | xxd
 list="lemon apple banana"
 echo $list
 echo "****"
