@@ -47,8 +47,6 @@ echo 'bbb=${aaa:+default_banana}'
 echo '$aaa' $aaa
 echo '$bbb' $bbb
 
-
-
 aaa="01234567890abcdefg"
 # 0번째 부터 3개
 echo '${aaa:0:3}' ${aaa:0:3}
@@ -65,9 +63,11 @@ echo '${aaa: -3}' ${aaa: -3}
 # 끝에 -3 위치 부터 2개
 echo '${aaa: -3:2}' ${aaa: -3:2}
 
+aaa="lemon_apple_banana"
+# _ 를 - 로 replace
+echo '${aaa//_/-/}' ${aaa//_/-}
 
 #####
-
 
 # {} 내에 , 로 구분하면 구분된 개수 만큰 확장(치환)된다.
 # mkdir {a,b}zzz ==> azzz 와 bzzz 생성 으로 많이 사용한다.
@@ -80,7 +80,6 @@ echo LEMON_{aaa, bbb, ccc}_ORANGE
 echo LEMON_{aaa,"b b b",ccc}_ORANGE
 echo LEMON_{aaa,'b b b',ccc}_ORANGE
 
-
 # 2개의 내용{} 조합 3x3=9 가지 생성: ab1z ab2z ab3z ac1z ac2z ac3z ad1z ad2z ad3z
 echo a{b,c,d}{1,2,3}z
 # 배열로 담기
@@ -88,7 +87,7 @@ arr=(a{b,c,d}{1,2,3}z)
 echo ${arr[0]}
 echo ${arr[1]}
 # all element
-echo ${arr[@]}
+echo "${arr[@]}"
 
 # 0~10 까지 : 0 1 2 3 4 5 6 7 8 9 10
 echo {0..10}
