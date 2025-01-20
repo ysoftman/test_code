@@ -1,6 +1,7 @@
 #!/bin/bash
 # ysoftman
 # brace expansion
+is_zsh() { [ -n "$ZSH_VERSION" ]; }
 
 # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
 # aaa 가 값이 있으면 확장된 bbb 도 aaa 값이 된다.
@@ -67,17 +68,27 @@ aaa="lemon_apple_banana"
 # _ 를 - 로 replace
 echo '${aaa//_/-/}' ${aaa//_/-}
 
-aaa="cherry"
-# 첫문자 대문자로(zsh 에선 안됨)
-echo '${aaa^}' ${aaa^}
-# 모두 대문자로(zsh 에선 안됨)
-echo '${aaa^^}' ${aaa^^}
-
-aaa="ORANGE"
-# 첫문자 소문자로(zsh 에선 안됨)
-echo '${aaa,}' ${aaa,}
-# 모두 소문자로(zsh 에선 안됨)
-echo '${aaa,,}' ${aaa,,}
+aaa="cherry_ORANGE"
+# 첫문자 대문자로
+if is_zsh; then
+    echo "[zsh]"
+    # 첫문자 대문자로
+    echo '${(C)aaa}' ${(C)aaa}
+    # 모두 대문자로
+    echo '${(U)aaa}' ${(U)aaa}
+    # 모두 소문자로
+    echo '${(L)aaa}' ${(L)aaa}
+else
+    echo "[bash]"
+    # 첫문자 대문자로
+    echo '${aaa^}' ${aaa^}
+    # 모두 대문자로
+    echo '${aaa^^}' ${aaa^^}
+    # 첫문자 소문자로
+    echo '${aaa,}' ${aaa,}
+    # 모두 소문자로
+    echo '${aaa,,}' ${aaa,,}
+fi
 
 # {} 내에 , 로 구분하면 구분된 개수 만큰 확장(치환)된다.
 # mkdir {a,b}zzz ==> azzz 와 bzzz 생성 으로 많이 사용한다.
