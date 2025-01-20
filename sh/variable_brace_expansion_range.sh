@@ -67,7 +67,17 @@ aaa="lemon_apple_banana"
 # _ 를 - 로 replace
 echo '${aaa//_/-/}' ${aaa//_/-}
 
-#####
+aaa="cherry"
+# 첫문자 대문자로(zsh 에선 안됨)
+echo '${aaa^}' ${aaa^}
+# 모두 대문자로(zsh 에선 안됨)
+echo '${aaa^^}' ${aaa^^}
+
+aaa="ORANGE"
+# 첫문자 소문자로(zsh 에선 안됨)
+echo '${aaa,}' ${aaa,}
+# 모두 소문자로(zsh 에선 안됨)
+echo '${aaa,,}' ${aaa,,}
 
 # {} 내에 , 로 구분하면 구분된 개수 만큰 확장(치환)된다.
 # mkdir {a,b}zzz ==> azzz 와 bzzz 생성 으로 많이 사용한다.
