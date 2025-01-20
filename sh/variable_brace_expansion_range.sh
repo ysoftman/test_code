@@ -1,6 +1,7 @@
 #!/bin/bash
 # ysoftman
 # brace expansion
+# ./variable_brace_expansion_range.sh 로 실행했을때 zsh 인데 bash 로 판단되는 문제가 있다.
 is_zsh() { [ -n "$ZSH_VERSION" ]; }
 
 # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
