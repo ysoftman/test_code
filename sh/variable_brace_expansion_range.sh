@@ -1,8 +1,19 @@
-#!/bin/bash
+#!/opt/homebrew/bin/bash
+#/bin/bash -> GNU bash, version 3.2.57(1) 오랜된 버전이라 ${var^} 등의 expansion 이 동작하지 않는다.
+
 # ysoftman
-# brace expansion
-# ./variable_brace_expansion_range.sh 로 실행했을때 zsh 인데 bash 로 판단되는 문제가 있다.
-is_zsh() { [ -n "$ZSH_VERSION" ]; }
+# brace expansiot
+
+is_zsh() {
+    shell_name=$(ps -o command -p "$$")
+    echo $shell_name
+    if [[ $shell_name =~ .*bash.* ]]; then
+        echo "bash"
+        return 1
+    fi
+    echo "zsh"
+    return 0
+}
 
 # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
 # aaa 가 값이 있으면 확장된 bbb 도 aaa 값이 된다.
@@ -72,7 +83,6 @@ echo '${aaa//_/-/}' ${aaa//_/-}
 aaa="cherry_ORANGE"
 # 첫문자 대문자로
 if is_zsh; then
-    echo "[zsh]"
     # 첫문자 대문자로
     echo '${(C)aaa}' ${(C)aaa}
     # 모두 대문자로
@@ -80,7 +90,6 @@ if is_zsh; then
     # 모두 소문자로
     echo '${(L)aaa}' ${(L)aaa}
 else
-    echo "[bash]"
     # 첫문자 대문자로
     echo '${aaa^}' ${aaa^}
     # 모두 대문자로
