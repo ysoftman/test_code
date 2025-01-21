@@ -31,10 +31,17 @@ echo "\${PWD}:" ${PWD}
 # ${var%Pattern} 변수 뒤에서부터 패턴과 매치되는 가장 짧은 부분 제거
 # ${var%%Pattern} 변수 뒤에서부터 패턴과 매치되는 가장 긴 부분 제거
 echo "\${PWD#*/}" ${PWD#*/}
-echo "\${PWD##*/}:" ${PWD##*/}  # 현재 디렉토리만 출력
-echo "\${PWD%/*}" ${PWD%/*} # 현재 디렉토리 상위 디렉토리까지의 full path
+echo "\${PWD##*/}:" ${PWD##*/} # 현재 디렉토리만 출력
+echo "\${PWD%/*}" ${PWD%/*}    # 현재 디렉토리 상위 디렉토리까지의 full path
 echo "\${PWD%%/*}" ${PWD%%/*}
 # bash 버전
 echo "\${BASH_VERSION}:" ${BASH_VERSION}
 # 하드웨어 타입
 echo "\${HOSTTYPE}:" ${HOSTTYPE}
+
+# 실행중인 스크립트 파일 위치를 나타내는 환경변수
+echo "\${BASH_SOURCE[@]}:" "${BASH_SOURCE[@]}"
+current_file_path=$(readlink -f "${BASH_SOURCE[0]}")
+echo "current_file_path:" $current_file_path
+current_dir_path=${current_file_path%/*}
+echo "current_dir_path:" $current_dir_path
