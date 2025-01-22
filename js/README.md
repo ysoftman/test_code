@@ -24,4 +24,3 @@ curl -fsSL https://bun.sh/install | bash
 bun hello_world.js
 bun run hello_world.js
 ```
-

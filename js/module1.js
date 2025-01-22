@@ -2,5 +2,5 @@
 export let fruits = ["lemon", "apple"];
 export let myname = "ysoftman";
 export let myfunc = () => {
-    console.log("this is myfunc");
-}
+  console.log("this is myfunc");
+};

@@ -1,6 +1,5 @@
 <html>
-
-<head>
+  <head>
     <!-- js 다운로드 받을때까지 블럭 -->
     <!-- <script src="script_async_defer_a.js"></script>
     <script src="script_async_defer_b.js"></script> -->
@@ -12,21 +11,18 @@
     <!-- js 다운로드 병령로 처리하고  a -> b 순서로 실행되되도록 보장 -->
     <script defer src="script_async_defer_a.js"></script>
     <script defer src="script_async_defer_b.js"></script>
-</head>
+  </head>
 
-<!-- async , defer 로 다운로드 중이라면 아직 실행 못함 -->
+  <!-- async , defer 로 다운로드 중이라면 아직 실행 못함 -->
 
+  <body onload="b()"></body>
 
-<body onload="b()">
-</body>
-
-<!-- 참고: vscode live server 로 결과 확인시 <body> 태그 기준으로 inject 하는데,
+  <!-- 참고: vscode live server 로 결과 확인시 <body> 태그 기준으로 inject 하는데,
     body 가 먼저 잇다면 --\> 가 표시되는 문제가 있다. -->
 
-<!-- <body>
+  <!-- <body>
     <script>
         b();
     </script>
 </body> -->
-
 </html>

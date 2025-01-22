@@ -1,46 +1,43 @@
 <html>
-
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
-<script>
-    let debug = ""
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+  <script>
+    let debug = "";
 
     function sum(a, b, c) {
-        return a + b + c
+      return a + b + c;
     }
 
     // currying 은 멀티 아규먼트 함수를 연속된 싱글 아규먼트 함수로 나누어 처리하는 것을 말한다.
     // func(a,b,c) -> func(a), func(b), func(c)
     function curry(func) {
-        return function (a) {
-            return function (b) {
-                return function (c) {
-                    return func(a, b, c)
-                }
-            }
-        }
+      return function (a) {
+        return function (b) {
+          return function (c) {
+            return func(a, b, c);
+          };
+        };
+      };
     }
-    let curried_sum = curry(sum)
-    debug += "curried_sum(1)(2)(3)=" + curried_sum(1)(2)(3) + "\n\n\n"
-
+    let curried_sum = curry(sum);
+    debug += "curried_sum(1)(2)(3)=" + curried_sum(1)(2)(3) + "\n\n\n";
 
     // lodash library 에 curry 함수로 currying 할 수 있다.
-    sum = _.curry(sum)
+    sum = _.curry(sum);
     // currying 하면 다음과 같은 중복되는 인자를 반복하지 않아되 된다.
-    let curried_sum_a = sum(1)
-    debug += "let curried_sum_a = sum(1)\n"
+    let curried_sum_a = sum(1);
+    debug += "let curried_sum_a = sum(1)\n";
     // 1번째 인자는 이미 설정되어 있어, 2, 3번째 인자만 사용하면 된다.
-    debug += "curried_sum_a(2,3)=" + curried_sum_a(2)(3) + "\n"
-    debug += "curried_sum_a(4,5)=" + curried_sum_a(4)(5) + "\n"
-    debug += "\n"
+    debug += "curried_sum_a(2,3)=" + curried_sum_a(2)(3) + "\n";
+    debug += "curried_sum_a(4,5)=" + curried_sum_a(4)(5) + "\n";
+    debug += "\n";
 
-    let curried_sum_a_b = curried_sum_a(2)
-    debug += "let curried_sum_a_b = curried_sum_a(2)\n"
+    let curried_sum_a_b = curried_sum_a(2);
+    debug += "let curried_sum_a_b = curried_sum_a(2)\n";
     // 1,2번째 인자는 설정되어 있어, 3번째 인자만 사용하면 된다.
-    debug += "curried_sum_a_b(3)=" + curried_sum_a_b(3) + "\n"
-    debug += "curried_sum_a_b(7)=" + curried_sum_a_b(7) + "\n"
-    debug += "\n"
+    debug += "curried_sum_a_b(3)=" + curried_sum_a_b(3) + "\n";
+    debug += "curried_sum_a_b(7)=" + curried_sum_a_b(7) + "\n";
+    debug += "\n";
 
-    alert(debug)
-</script>
-
+    alert(debug);
+  </script>
 </html>

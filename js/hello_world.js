@@ -1,4 +1,2 @@
-console.log("hello world!")
-console.log("ysoftman")
-
-
+console.log("hello world!");
+console.log("ysoftman");

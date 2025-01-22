@@ -1,15 +1,17 @@
 <html>
-<script src="http://underscorejs.org/underscore-min.js"></script>
-<script>
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+  <script>
     // underscore, lodash 자바스크립트 라이브러리로 유용한 유틸성 함수를 내포하고 있다.
     // 둘다 비슷한 함수를 가지고 있다.
     // 각 숫자마다 alert 띄우기
     _.each([1, 2, 3], alert);
-    _.each({
+    _.each(
+      {
         one: 1,
         two: 2,
-        three: 3
-    }, alert);
-</script>
-
+        three: 3,
+      },
+      alert,
+    );
+  </script>
 </html>

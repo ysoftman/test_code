@@ -1,52 +1,60 @@
 <html>
-<table width="900" border="1" id="mytable">
+  <table width="900" border="1" id="mytable">
     <tr class="title-line">
-        <td align=center>과일</td>
-        <td align=center>가격</td>
-        <td align=center>맛</td>
+      <td align="center">과일</td>
+      <td align="center">가격</td>
+      <td align="center">맛</td>
     </tr>
 
     <tr>
-        <td align=center id="first_col">lemon</td>
-        <td align=center id="second_col">150</td>
-        <td align=center id="third_col">시다.</td>
+      <td align="center" id="first_col">lemon</td>
+      <td align="center" id="second_col">150</td>
+      <td align="center" id="third_col">시다.</td>
     </tr>
     <tr>
-        <td align=center id="first_col">orange</td>
-        <td align=center id="second_col">200</td>
-        <td align=center id="third_col">달다.</td>
+      <td align="center" id="first_col">orange</td>
+      <td align="center" id="second_col">200</td>
+      <td align="center" id="third_col">달다.</td>
     </tr>
     <tr>
-        <td align=center id="first_col">apple</td>
-        <td align=center id="second_col">170</td>
-        <td align=center id="third_col"><span style="font-size:22px">새콤하다.</span></td>
+      <td align="center" id="first_col">apple</td>
+      <td align="center" id="second_col">170</td>
+      <td align="center" id="third_col">
+        <span style="font-size: 22px">새콤하다.</span>
+      </td>
     </tr>
-</table>
+  </table>
 
-<style type="text/css">
+  <style type="text/css">
     .title-line {
-        background-color: greenyellow;
+      background-color: greenyellow;
     }
-</style>
-<script>
-    let font_size = 1
-    let changed = 0
+  </style>
+  <script>
+    let font_size = 1;
+    let changed = 0;
     let colors = ["blue", "green", "red"];
     // 테이블 순회하면서 값 수정
     let table = document.getElementById("mytable");
-    for (let i = 0, row; row = table.rows[i]; i++) {
-        for (let j = 0, col; col = row.cells[j]; j++) {
-            if (col.id == "second_col") {
-                font_size += 10
-                let val = col.innerText
-                col.innerHTML = `<span style="font-size:` + font_size + `px;color:` + colors[(changed % 3)] +
-                    `">` + val + `원 (font-size:` +
-                    font_size + `)</span>`
-                console.log(col.innerHTML)
-                changed++
-            }
+    for (let i = 0, row; (row = table.rows[i]); i++) {
+      for (let j = 0, col; (col = row.cells[j]); j++) {
+        if (col.id == "second_col") {
+          font_size += 10;
+          let val = col.innerText;
+          col.innerHTML =
+            `<span style="font-size:` +
+            font_size +
+            `px;color:` +
+            colors[changed % 3] +
+            `">` +
+            val +
+            `원 (font-size:` +
+            font_size +
+            `)</span>`;
+          console.log(col.innerHTML);
+          changed++;
         }
+      }
     }
-</script>
-
+  </script>
 </html>

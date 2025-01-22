@@ -1,242 +1,304 @@
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<!--
+  <!--
 <?php
 phpinfo();
 ?> 
 -->
 
-<?php
-if ($_SERVER["HTTP_X_FORWARDED_FOR"]) {
-    if ($_SERVER["HTTP_CLIENT_IP"]) {
-     $proxy = $_SERVER["HTTP_CLIENT_IP"];
-   } else {
-     $proxy = $_SERVER["REMOTE_ADDR"];
-   }
-   $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
- } else {
-   if ($_SERVER["HTTP_CLIENT_IP"]) {
-     $ip = $_SERVER["HTTP_CLIENT_IP"];
-   } else {
-     $ip = $_SERVER["REMOTE_ADDR"];
-   }
- }
+  <?php if ($_SERVER["HTTP_X_FORWARDED_FOR"]) { if ($_SERVER["HTTP_CLIENT_IP"])
+  { $proxy = $_SERVER["HTTP_CLIENT_IP"]; } else { $proxy =
+  $_SERVER["REMOTE_ADDR"]; } $ip = $_SERVER["HTTP_X_FORWARDED_FOR"]; } else { if
+  ($_SERVER["HTTP_CLIENT_IP"]) { $ip = $_SERVER["HTTP_CLIENT_IP"]; } else { $ip
+  = $_SERVER["REMOTE_ADDR"]; } } echo "Your IP $ip<br />\n"; ?>
 
-echo "Your IP $ip<BR>\n";
+  <!-- 20110527 by ysoftman -->
 
-?>
+  <script language="javascript">
+    // 웹서버에서 응답이 도착하면 수행될 콜백함수
+    function callbackfunc() {
+      // 0 : uninitialized
+      // 1 : loading
+      // 2 : load
+      // 3 : interactive
+      // 4 : complete
+      // 웹서버로 부터 응답이 완료 되었을때
+      if (xmlhttp.readyState == 4) {
+        // 200 : OK
+        // 404 : 페이지 찾을 수 없음
+        if (xmlhttp.status == 200) {
+          // 서버(php로 처리된 결과를 아파치 웹서버를 통해서)로부터 결과 받기
+          var data = xmlhttp.responseText;
+          //alert(data);
+          // id가 view1 인곳에 결과 출력하기
+          //document.getElementById("view1").value = data;
+          document.getElementById("view1").innerHTML = data;
+          alert("completed.");
+        }
+      } else {
+        //alert("not completed.");
+      }
+    }
 
-<!-- 20110527 by ysoftman -->
+    // 버튼 클릭시 호출
+    function button_action(value) {
+      //alert(value);
+      xmlhttp = new window.XMLHttpRequest();
+      if (value != "") {
+        // 웹서버 요청 후 콜백함수 지정
+        xmlhttp.onreadystatechange = callbackfunc;
+        // 클라이언트 ip 파악
+        var ip = '<?php echo "$ip" ?>';
+        // 웹서버 요청 GET 으로 만들기
+        if (value == "select_all" || value == "reset_all") {
+          xmlhttp.open("get", "./pollaction.php?command=" + value, true);
+        } else {
+          xmlhttp.open(
+            "get",
+            "./pollaction.php?command=poll&&name=" + value + "&&ip=" + ip,
+            true,
+          );
+        }
+        // 웹서버 요청 전송
+        xmlhttp.send(null);
+      } else {
+        alert("error");
+      }
+      return;
+    }
+  </script>
 
-<script language="javascript">
+  <h1>
+    투표해주세요.<br />
+    <table width="900" border="1">
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item1 선택"
+              onclick="button_action('item1')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 닛시<br />
+          메뉴 : 퓨전 한정식<br />
+          가격 : 13,000원 ~ 19,000원<br />
+          위치 : 정자동 미켈란 쉐르빌 2층 213호<br />
+          전화 : 031-782-0711<br />
+          참고 :
+          <a target="_blank" href="http://dorosarang.blog.me/30070086799"
+            >http://dorosarang.blog.me/30070086799</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item2 선택"
+              onclick="button_action('item2')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 토다이<br />
+          메뉴 : SeaFood 뷔페<br />
+          가격 : (월~금) lunch(23,000원) , Dinner(30,000원)<br />
+          위치 : 정자동 더샾스타파크 지하 1층<br />
+          전화 : 031-712-7888<br />
+          참고 :
+          <a target="_blank" href="http://yeonjin621.blog.me/60128344743"
+            >http://yeonjin621.blog.me/60128344743</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item3 선택"
+              onclick="button_action('item3')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 장어만<br />
+          메뉴 : 구운 장어, 양념장어<br />
+          가격 : 양념구이 1KG 40,000원<br />
+          위치 : 경기도 성남시 분당구 금곡동 56-3<br />
+          전화 : 031-717-4292<br />
+          참고 :
+          <a target="_blank" href="http://locallkw.blog.me/10096886810"
+            >http://locallkw.blog.me/10096886810</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item4 선택"
+              onclick="button_action('item4')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 강호동678<br />
+          메뉴 : 생오겹살,갈매기살,가브리살등..<br />
+          가격 : 1인분 11,000원 ~ 15,000원<br />
+          위치 : 정자동 아데나루체<br />
+          전화 : 031-718-1678<br />
+          참고 :
+          <a
+            target="_blank"
+            href="http://blog.naver.com/leecan66?Redirect=Log&logNo=90044226625"
+            >http://blog.naver.com/leecan66?Redirect=Log&logNo=90044226625</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="itme5 선택"
+              onclick="button_action('item5')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 허벌고깃집<br />
+          메뉴 : 삽겹살,오겹살<br />
+          가격 : 허벌돼지세트(삼겹+오겹+알목살+가브리+갈매기+항정) 1Kg
+          29,000원<br />
+          위치 : 정자동 더샵스타파크 E-15<br />
+          전화 : 0505-929-9200<br />
+          참고 :
+          <a
+            target="_blank"
+            href="http://blog.naver.com/vinine?Redirect=Log&logNo=124723195"
+            >http://blog.naver.com/vinine?Redirect=Log&logNo=124723195</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item6 선택"
+              onclick="button_action('item6')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 바다궁전<br />
+          메뉴 : 광어회, 우럭회, 등..<br />
+          가격 : 한상차림 메뉴에 따라 45,000원 ~ 150,000원<br />
+          위치 : 정자동 157-7번지 1층<br />
+          전화 : 031-717-5792<br />
+          참고 :
+          <a
+            target="_blank"
+            href="http://blog.naver.com/pleasure1001?Redirect=Log&logNo=140068107180"
+            >http://blog.naver.com/pleasure1001?Redirect=Log&logNo=140068107180</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item7 선택"
+              onclick="button_action('item7')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 와우<br />
+          메뉴 : 한우 안심추리, 차돌박이, 꽃등심 등.<br />
+          가격 : 안심추리 22,000원, 차돌박이 19,000원, 꽃등심 25,000원<br />
+          주소 : 경기도 성남시 분당구 정자동 134-5 1층<br />
+          전화 : 031-715-7622<br />
+          참고 :
+          <a
+            target="_blank"
+            href="http://blog.naver.com/seon3412?Redirect=Log&logNo=110101781227"
+            >http://blog.naver.com/seon3412?Redirect=Log&logNo=110101781227</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item8 선택"
+              onclick="button_action('item8')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 깐부치킨<br />
+          메뉴 : 치킨, 골뱅이<br />
+          가격 : 크리스피 치킨 16,000원, 깐부골뱅이 17,000원<br />
+          주소 : 경기 성남시 분당구 정자1동 170-1<br />
+          전화 : 031-718-8855<br />
+          참고 :
+          <a target="_blank" href="http://vivid_bb.blog.me/113191370"
+            >http://vivid_bb.blog.me/113191370</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item9 선택"
+              onclick="button_action('item9')"
+          /></font>
+        </td>
+        <td align="left">
+          상호 : 핫썬치킨<br />
+          메뉴 : 구운 치킨<br />
+          가격 : 치킨 15,000~17,000원<br />
+          전화 : 031-782-0592<br />
+          주소 : 미켈란쉐르빌 1층<br />
+          참고 :
+          <a target="_blank" href="http://apercent.egloos.com/10642444"
+            >http://apercent.egloos.com/10642444</a
+          ><br />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <font size="5"
+            ><input
+              type="submit"
+              value="item10 기타 선택"
+              onclick="button_action('item10')"
+          /></font>
+        </td>
+        <td align="left">기타 음식점 선택</td>
+      </tr>
+    </table>
 
-// 웹서버에서 응답이 도착하면 수행될 콜백함수
-function callbackfunc()
-{
-	// 0 : uninitialized
-	// 1 : loading
-	// 2 : load
-	// 3 : interactive
-	// 4 : complete
-	// 웹서버로 부터 응답이 완료 되었을때
-	if (xmlhttp.readyState == 4)
-	{
-		// 200 : OK
-		// 404 : 페이지 찾을 수 없음
-		if (xmlhttp.status == 200)
-		{
-			// 서버(php로 처리된 결과를 아파치 웹서버를 통해서)로부터 결과 받기
-			var data = xmlhttp.responseText;
-			//alert(data);
-			// id가 view1 인곳에 결과 출력하기
-			//document.getElementById("view1").value = data;
-			document.getElementById("view1").innerHTML = data;
-			alert("completed.");
-		}
-	}
-	else
-	{
-		//alert("not completed.");
-	}
-}
-
-// 버튼 클릭시 호출
-function button_action(value)
-{
-	//alert(value);
-	xmlhttp = new window.XMLHttpRequest();
-	if (value != "")
-	{
-		// 웹서버 요청 후 콜백함수 지정
-		xmlhttp.onreadystatechange = callbackfunc;
-		// 클라이언트 ip 파악
-		var ip= '<?php echo "$ip" ?>';
-		// 웹서버 요청 GET 으로 만들기
-		if (value == "select_all" || value == "reset_all")
-		{
-			xmlhttp.open('get', "./pollaction.php?command="+value, true);
-		}
-		else
-		{
-			xmlhttp.open('get', "./pollaction.php?command=poll&&name="+value+"&&ip="+ip, true);
-
-		}
-		// 웹서버 요청 전송
-		xmlhttp.send(null);
-	}
-	else
-	{
-		alert("error");
-	}
-	return;
-}
-</script>
-
-<h1>
-투표해주세요.<br>
-<table width="900" border="1">
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item1 선택" onclick="button_action('item1')"></font>
-	</td>
-	<td align = left>
-	상호 : 닛시<br>
-	메뉴 : 퓨전 한정식<br>
-	가격 : 13,000원 ~ 19,000원<br>
-	위치 : 정자동 미켈란 쉐르빌 2층 213호<br>
-	전화 : 031-782-0711<br>
-	참고 : <a target="_blank" href="http://dorosarang.blog.me/30070086799">http://dorosarang.blog.me/30070086799</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item2 선택" onclick="button_action('item2')"></font>
-	</td>
-	<td align = left>
-	상호 : 토다이<br>
-	메뉴 : SeaFood 뷔페<br>
-	가격 : (월~금) lunch(23,000원) , Dinner(30,000원)<br>
-	위치 : 정자동 더샾스타파크 지하 1층<br>
-	전화 : 031-712-7888<br>
-	참고 : <a target="_blank" href="http://yeonjin621.blog.me/60128344743">http://yeonjin621.blog.me/60128344743</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item3 선택" onclick="button_action('item3')"></font>
-	</td>
-	<td align = left>
-	상호 : 장어만<br>
-	메뉴 : 구운 장어, 양념장어<br>
-	가격 : 양념구이 1KG 40,000원<br>
-	위치 : 경기도 성남시 분당구 금곡동 56-3<br>
-	전화 : 031-717-4292<br>
-	참고 : <a target="_blank" href="http://locallkw.blog.me/10096886810">http://locallkw.blog.me/10096886810</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item4 선택" onclick="button_action('item4')"></font>
-	</td>
-	<td align = left>
-	상호 : 강호동678<br>
-	메뉴 : 생오겹살,갈매기살,가브리살등..<br>
-	가격 : 1인분 11,000원 ~ 15,000원<br>
-	위치 : 정자동 아데나루체<br>
-	전화 : 031-718-1678<br>
-	참고 : <a target="_blank" href="http://blog.naver.com/leecan66?Redirect=Log&logNo=90044226625">http://blog.naver.com/leecan66?Redirect=Log&logNo=90044226625</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="itme5 선택" onclick="button_action('item5')"></font>
-	</td>
-	<td align = left>
-	상호 : 허벌고깃집<br>
-	메뉴 : 삽겹살,오겹살<br>
-	가격 : 허벌돼지세트(삼겹+오겹+알목살+가브리+갈매기+항정) 1Kg 29,000원<br>
-	위치 : 정자동 더샵스타파크 E-15<br>
-	전화 : 0505-929-9200<br>
-	참고 : <a target="_blank" href="http://blog.naver.com/vinine?Redirect=Log&logNo=124723195">http://blog.naver.com/vinine?Redirect=Log&logNo=124723195</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item6 선택" onclick="button_action('item6')"></font>
-	</td>
-	<td align = left>
-	상호 : 바다궁전<br>
-	메뉴 : 광어회, 우럭회, 등..<br>
-	가격 : 한상차림 메뉴에 따라 45,000원 ~ 150,000원<br>
-	위치 : 정자동 157-7번지 1층<br>
-	전화 : 031-717-5792<br>
-	참고 : <a target="_blank" href="http://blog.naver.com/pleasure1001?Redirect=Log&logNo=140068107180">http://blog.naver.com/pleasure1001?Redirect=Log&logNo=140068107180</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item7 선택" onclick="button_action('item7')"></font>
-	</td>
-	<td align = left>
-	상호 : 와우<br>
-	메뉴 : 한우 안심추리, 차돌박이, 꽃등심 등.<br>
-	가격 : 안심추리 22,000원, 차돌박이 19,000원, 꽃등심 25,000원<br>
-	주소 : 경기도 성남시 분당구 정자동 134-5 1층<br>
-	전화 : 031-715-7622<br>
-	참고 : <a target="_blank" href="http://blog.naver.com/seon3412?Redirect=Log&logNo=110101781227">http://blog.naver.com/seon3412?Redirect=Log&logNo=110101781227</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item8 선택" onclick="button_action('item8')"></font>
-	</td>
-	<td align = left>
-	상호 : 깐부치킨<br>
-	메뉴 : 치킨, 골뱅이<br>
-	가격 : 크리스피 치킨 16,000원, 깐부골뱅이 17,000원<br>
-	주소 : 경기 성남시 분당구 정자1동 170-1<br>
-	전화 : 031-718-8855<br>
-	참고 : <a target="_blank" href="http://vivid_bb.blog.me/113191370">http://vivid_bb.blog.me/113191370</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item9 선택" onclick="button_action('item9')"></font>
-	</td>
-	<td align = left>
-	상호 : 핫썬치킨<br>
-	메뉴 : 구운 치킨<br>
-	가격 : 치킨 15,000~17,000원<br>
-	전화 : 031-782-0592<br>
-	주소 : 미켈란쉐르빌 1층<br>
-	참고 : <a target="_blank" href="http://apercent.egloos.com/10642444">http://apercent.egloos.com/10642444</a><br>
-	</td>
-</tr>
-<tr>
-	<td align = center>
-	<font size=5><input type="submit" value="item10 기타 선택" onclick="button_action('item10')"></font>
-	</td>
-	<td align = left>
-	기타 음식점 선택
-	</td>
-</tr>
-
-</table>
-
-
-<font size=5><input type="submit" value="전체 결과 보기" onclick="button_action('select_all')"></font>
-<!--
+    <font size="5"
+      ><input
+        type="submit"
+        value="전체 결과 보기"
+        onclick="button_action('select_all')"
+    /></font>
+    <!--
 <font size=2><input type="submit" value="리셋 하기" disabled onclick="button_action('reset_all')"></font>
 -->
-<font size=5><input type="submit" value="리셋 하기" onclick="button_action('reset_all')"></font>
+    <font size="5"
+      ><input
+        type="submit"
+        value="리셋 하기"
+        onclick="button_action('reset_all')"
+    /></font>
 
-
-
-<div id=view1>
-</div>
-
-
-</h1>
+    <div id="view1"></div>
+  </h1>
 </html>
-
