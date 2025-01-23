@@ -16,7 +16,7 @@ func ToKST(dateStr string) time.Time {
 }
 
 func main() {
-	// 한국 지역 시간으로 표시기 기간에 따라 KST(Korea Standard Time), JST(Japan Standard Time)와 LMT(Local Mean Time) 표기된다
+	// 한국 지역 시간으로 기간에 따라 KST(Korea Standard Time), JST(Japan Standard Time)와 LMT(Local Mean Time) 로 표기된다
 	// LMT 사용 기간 : 1908-03-31 이전
 	fmt.Println("->", ToKST("0001-01-01T01:01:00+09:00"))
 	fmt.Println("->", ToKST("0100-12-31T01:01:00Z"))
