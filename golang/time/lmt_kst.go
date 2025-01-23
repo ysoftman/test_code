@@ -62,7 +62,7 @@ func main() {
 	// +1000 KDT
 	fmt.Println("->", ToKST("1987-05-10T00:00:00Z"))
 	fmt.Println("->", ToKST("1988-10-08T00:00:00Z"))
-	//
+
 	// KST 사용 기간: 1988-10-09 ~ 현재
 	fmt.Println("->", ToKST("1988-10-09T00:00:00Z"))
 }
