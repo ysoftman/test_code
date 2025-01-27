@@ -11,6 +11,8 @@ func ToKST(dateStr string) time.Time {
 	if err != nil {
 		log.Fatal("err:", err)
 	}
+	// timezone 파일을 참고하게 되는데
+	// zdump -v /usr/share/zoneinfo/Asia/Seoul 로 실제 타임존내용에 시간대별로 구분이 된다.
 	loc, _ := time.LoadLocation("Asia/Seoul")
 	return t.In(loc)
 }
