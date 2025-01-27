@@ -15,8 +15,9 @@ int main() {
     cout << "a:" << a << endl;
     cout << "b:" << b << endl;
 
-    // 람다함수명 = [캡쳐할변수](함수파라미터)->함수리턴타입{함수내용}(외부에서
-    // 받을 인자) [a, b] 현재(main) 스코프 내의 a, b 변수 캡쳐 a, b를 수정할 수 없다
+    // 람다함수명 =
+    // [캡쳐할변수](함수파라미터)->함수리턴타입{함수내용}(외부에서 받을
+    // 인자) [a, b] 현재(main) 스코프 내의 a, b 변수 캡쳐 a, b를 수정할 수 없다
     int my_lambda_func1 = [a, b]() -> int {
         // error: cannot assign to a variable captured by copy in a non-mutable lambda
         // a = 10;
