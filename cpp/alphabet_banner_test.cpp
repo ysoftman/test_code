@@ -2,7 +2,6 @@
 // 대문자 알파벳 하나가 입력 되었을 때 문자를 배열하여
 // 입력된 문자를 그래픽으로 표현하는 출력을 생성 => BANNER
 #include <stdio.h>
-#include <string.h>
 
 // 코드에 맞게 출력하기
 void Draw(char *code) {

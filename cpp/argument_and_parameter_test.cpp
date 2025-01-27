@@ -5,7 +5,6 @@
 // 반면 호출받는 곳, 값을 받는 곳으로 parameter 라는 말을 사용한다.
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 // a 는 parameter
 void func(int a) { printf("%d\n", a); }
