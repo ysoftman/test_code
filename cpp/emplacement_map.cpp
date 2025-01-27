@@ -6,36 +6,25 @@ using std::cout;
 using std::endl;
 using std::string;
 
-class ITEM
-{
-public:
-    ITEM()
-    {
-        cout << "ITEM() default constructor" << endl;
-    }
-    ITEM(string n, int v)
-    {
+class ITEM {
+   public:
+    ITEM() { cout << "ITEM() default constructor" << endl; }
+    ITEM(string n, int v) {
         cout << "ITEM(string n, int v) copy constructor" << endl;
         name = n;
         val = v;
     }
-    ~ITEM()
-    {
-        cout << "~ITEM() destructor" << endl;
-    }
+    ~ITEM() { cout << "~ITEM() destructor" << endl; }
     string name;
     int val;
 };
 
-void printItemMap(std::map<int, ITEM> itemMap)
-{
-    for (auto v : itemMap)
-    {
+void printItemMap(std::map<int, ITEM> itemMap) {
+    for (auto v : itemMap) {
         cout << v.first << ", " << v.second.name << endl;
     }
 }
-int main()
-{
+int main() {
     cout << "----- using map emplace_back() -----" << endl;
     std::map<int, ITEM> m;
     m.emplace(123, ITEM("lemon", 111));
@@ -44,7 +33,8 @@ int main()
     // m.insert(std::pair<int, ITEM>(123, ITEM("apple", 222)));
     // m.insert(std::make_pair(123, ITEM("orange", 333)));
     // [] = 로 overwrite 할 수 있다.
-    // [] = 는 빈객체 생성(때문에 파라메터 없는 기본 ITEM() 생성자가 필요)하고 banana 아이템객체를 복사한다.
+    // [] = 는 빈객체 생성(때문에 파라메터 없는 기본 ITEM() 생성자가 필요)하고 banana 아이템객체를
+    // 복사한다.
     m[123] = ITEM("banana", 555);
     printItemMap(m);
     return 0;

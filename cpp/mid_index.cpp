@@ -3,8 +3,7 @@
 // https://ai.googleblog.com/2006/06/extra-extra-read-all-about-it-nearly.html
 #include <stdio.h>
 
-int main()
-{
+int main() {
     // 4byte int 범위 -2,147,483,648 to 2,147,483,647
     int left = 2000000000;
     int right = 2000000010;
@@ -18,6 +17,7 @@ int main()
     // left 기준으로 right - left 차이의 중간 값을 더하면 데이터 범위내에서 계산된다.
     printf("left + ((right - left) / 2)  : %d\n", left + ((right - left) / 2));
     // unsigned 로 큰 범위에서 계산해도 된다.
-    printf("((unsigned int)left + (unsigned int)right) >> 1;  : %d\n", ((unsigned int)left + (unsigned int)right) >> 1);
+    printf("((unsigned int)left + (unsigned int)right) >> 1;  : %d\n",
+           ((unsigned int)left + (unsigned int)right) >> 1);
     return 0;
 }

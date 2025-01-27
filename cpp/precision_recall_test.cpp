@@ -14,37 +14,32 @@
 #include <stdio.h>
 #include <string.h>
 
-int main()
-{
-	int nA = 0;
-	int nR = 0;
-	int nC = 0;
-	float fPrecision = 0.0f;
-	float fRecall = 0.0f;
+int main() {
+    int nA = 0;
+    int nR = 0;
+    int nC = 0;
+    float fPrecision = 0.0f;
+    float fRecall = 0.0f;
 
-	char szAnswer[] = "가나다라마바사아자차";
-	char szResult[] = "갸나다라마뱌";
-	printf("szAnswer = %s\n", szAnswer);
-	printf("szResult = %s\n", szResult);
+    char szAnswer[] = "가나다라마바사아자차";
+    char szResult[] = "갸나다라마뱌";
+    printf("szAnswer = %s\n", szAnswer);
+    printf("szResult = %s\n", szResult);
 
-	nA = strlen(szAnswer);
-	nR = strlen(szResult);
-	for (int i = 0; i < nR; i += 2)
-	{
-		if (i < nA)
-		{
-			if (szResult[i] == szAnswer[i] &&
-				szResult[i + 1] == szAnswer[i + 1])
-			{
-				++nC;
-			}
-		}
-	}
-	nA /= 2;
-	nR /= 2;
-	fPrecision = (float)nC / (float)nR;
-	fRecall = (float)nC / (float)nA;
-	printf("fPrecision = %d / %d = %.2f\n", nC, nR, fPrecision);
-	printf("fRecall = %d / %d = %.2f\n", nC, nA, fRecall);
-	return 0;
+    nA = strlen(szAnswer);
+    nR = strlen(szResult);
+    for (int i = 0; i < nR; i += 2) {
+        if (i < nA) {
+            if (szResult[i] == szAnswer[i] && szResult[i + 1] == szAnswer[i + 1]) {
+                ++nC;
+            }
+        }
+    }
+    nA /= 2;
+    nR /= 2;
+    fPrecision = (float)nC / (float)nR;
+    fRecall = (float)nC / (float)nA;
+    printf("fPrecision = %d / %d = %.2f\n", nC, nR, fPrecision);
+    printf("fRecall = %d / %d = %.2f\n", nC, nA, fRecall);
+    return 0;
 }

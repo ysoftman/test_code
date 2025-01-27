@@ -5,8 +5,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     std::hash<string> hfn;
     cout << "hash function " << hfn("ysoftman") << endl;
 

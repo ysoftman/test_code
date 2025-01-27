@@ -10,13 +10,9 @@ using namespace std;
 // 방법1
 // string getstring()
 // 방법2
-const char *getstring()
-{
-    return "aaa";
-}
+const char *getstring() { return "aaa"; }
 
-int main()
-{
+int main() {
     // conversion from string literal to 'char *' is deprecated.
     // char *str = "ysoftman";
     // 방법1

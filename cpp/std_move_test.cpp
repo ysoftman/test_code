@@ -4,8 +4,7 @@
 #include <vector>
 using namespace std;
 
-int main()
-{
+int main() {
     int num1 = 123;
     // object 가 아니면 move 를 사용해도 복사된다.
     int num2 = std::move(num1);
@@ -36,8 +35,7 @@ int main()
     // apple 값이 plates 벡터로 이동(메모리 소유권 이전)되는 효과가 있다.
     // 복사보다는 빠르지만 이동후 apple 변수는 빈값이 된다.
     plates.push_back(std::move(apple));
-    for (string &str : plates)
-    {
+    for (string &str : plates) {
         cout << "plates => " << str << endl;
     }
     cout << "lemon: " << lemon << endl;

@@ -1,14 +1,13 @@
 // ysoftman
 // istreambuf_iterator 파일내용 스트링으로 담기
 
+#include <fstream>  // ifstream, istreambuf_iterator
 #include <iostream>
 #include <string>
-#include <fstream> // ifstream, istreambuf_iterator
 
 using namespace std;
 
-int main()
-{
+int main() {
     cout << "load file (" << __FILE__ << ") into string" << endl;
 
     // 현재 파일을 스트림으로 연다

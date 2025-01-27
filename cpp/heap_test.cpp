@@ -9,8 +9,7 @@
 // g++ -std=c++11 heap_test.cpp && ./a.out
 using namespace std;
 
-int main()
-{
+int main() {
     // priority_queue 로 힙을 구성한다.
     // max-heap
     priority_queue<int, vector<int>, less<int>> pq_max;
@@ -22,8 +21,7 @@ int main()
     pq_max.push(4);
     pq_max.push(5);
     // 삭제할때도 자신의 자식들과 비교해 자리를 찾아 빠르다. O(logN)
-    while (not pq_max.empty())
-    {
+    while (not pq_max.empty()) {
         cout << pq_max.top() << endl;
         pq_max.pop();
     }
@@ -37,8 +35,7 @@ int main()
     pq_min.push(2);
     pq_min.push(4);
     pq_min.push(5);
-    while (not pq_min.empty())
-    {
+    while (not pq_min.empty()) {
         cout << pq_min.top() << endl;
         pq_min.pop();
     }

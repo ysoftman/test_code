@@ -1,20 +1,19 @@
 // ysoftman
 // const 테스트
 #include <stdio.h>
+
 #include <iostream>
 #include <string>
 #include <vector>
 
 using namespace std;
 
-class myclass
-{
-  public:
+class myclass {
+   public:
     int nNum;
     char szString[3];
     vector<string> vecString;
-    myclass()
-    {
+    myclass() {
         nNum = 0;
         szString[0] = '\0';
         szString[1] = '\0';
@@ -25,35 +24,26 @@ class myclass
     }
     ~myclass() {}
 
-    void func1()
-    {
+    void func1() {
         nNum = 10;
         szString[0] = 'a';
         szString[1] = 'b';
         szString[2] = '\0';
     }
     // 함수뒤에 const 를 선언하면 멤버 변수를 변경할 수 없다.(컴파일시 에러 발생)
-    void func2() const
-    {
+    void func2() const {
         // nNum = 10;
         // szString[0] = 'a';
         // szString[1] = 'b';
         // szString[2] = NULL;
     }
 
-    vector<string> &func3()
-    {
-        return vecString;
-    }
+    vector<string> &func3() { return vecString; }
     // 함수 뒤에 const 로 선언된 경우 reference 로 리턴하려면 const 로 리턴해야 된다.
-    const vector<string> &func4() const
-    {
-        return vecString;
-    }
+    const vector<string> &func4() const { return vecString; }
 };
 
-int main()
-{
+int main() {
     printf("[const variable test]\n");
     const int ConstNum = 1;
     // const 형 변수에 새로운 값을 할달 할 수 없다.
@@ -77,7 +67,7 @@ int main()
     *pNormal = 20;
     printf("*pNormal:%d\n", *pNormal);
 
-    const int *pConst = NULL; // pConst 가 가리키는 주소(변수)의 값을 변경하지 못함
+    const int *pConst = NULL;  // pConst 가 가리키는 주소(변수)의 값을 변경하지 못함
     // pConst 가 가리키는 주소(변수)의 값은 변경할 수 없다.
     // *pConst = 999;
     printf("pConst:%p\n", pConst);
@@ -86,7 +76,8 @@ int main()
     printf("pConst:%p\n", pConst);
     printf("*pConst:%d\n", *pConst);
 
-    int *const pConst2 = &num; // pConst2 주소를 변경하지 못함, 선언시 NULL 이 아닌값으로 초기화되어야 한다.
+    int *const pConst2 =
+        &num;  // pConst2 주소를 변경하지 못함, 선언시 NULL 이 아닌값으로 초기화되어야 한다.
     // pConst2 가 가리키는 주소를 변경할 수 없다.
     // pConst2 = &num;
     // pConst2 가 num 변수의 값을 변경하였다.
@@ -104,15 +95,13 @@ int main()
     printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
     vector<string> &myStringVec = mc.func3();
     vector<string>::iterator iter;
-    for (iter = myStringVec.begin(); iter != myStringVec.end(); ++iter)
-    {
+    for (iter = myStringVec.begin(); iter != myStringVec.end(); ++iter) {
         cout << *iter << endl;
     }
     // const reference 는 const 변수로 받아야 한다.
     const vector<string> &myStringVec2 = mc.func4();
     vector<string>::const_iterator iter2;
-    for (iter2 = myStringVec2.begin(); iter2 != myStringVec2.end(); ++iter2)
-    {
+    for (iter2 = myStringVec2.begin(); iter2 != myStringVec2.end(); ++iter2) {
         cout << *iter2 << endl;
     }
 

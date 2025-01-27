@@ -13,36 +13,33 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main()
-{
-	FILE *fp = NULL;
-	int num_of_bytes = 0;
-	char c = NULL;
+int main() {
+    FILE *fp = NULL;
+    int num_of_bytes = 0;
+    char c = NULL;
 
-	// 파일 쓰기
-	fp = fopen("CRLF.txt", "w");
-	fprintf(fp, "YOON BYOUNG HOON\n윤병훈\n尹秉勳\n");
-	fclose(fp);
+    // 파일 쓰기
+    fp = fopen("CRLF.txt", "w");
+    fprintf(fp, "YOON BYOUNG HOON\n윤병훈\n尹秉勳\n");
+    fclose(fp);
 
-	// text 모드로 읽기
-	fp = fopen("CRLF.txt", "rt");
-	num_of_bytes = 0;
-	while ((c = fgetc(fp)) != EOF)
-	{
-		num_of_bytes++;
-	}
-	fprintf(stdout, "[Text mode open] 파일크기(바이트개수):%d\n", num_of_bytes);
-	fclose(fp);
+    // text 모드로 읽기
+    fp = fopen("CRLF.txt", "rt");
+    num_of_bytes = 0;
+    while ((c = fgetc(fp)) != EOF) {
+        num_of_bytes++;
+    }
+    fprintf(stdout, "[Text mode open] 파일크기(바이트개수):%d\n", num_of_bytes);
+    fclose(fp);
 
-	// binary 모드로 읽기
-	fp = fopen("CRLF.txt", "rb");
-	num_of_bytes = 0;
-	while ((c = fgetc(fp)) != EOF)
-	{
-		num_of_bytes++;
-	}
-	fprintf(stdout, "[Binary mode open] 파일크기(바이트개수):%d\n", num_of_bytes);
-	fclose(fp);
+    // binary 모드로 읽기
+    fp = fopen("CRLF.txt", "rb");
+    num_of_bytes = 0;
+    while ((c = fgetc(fp)) != EOF) {
+        num_of_bytes++;
+    }
+    fprintf(stdout, "[Binary mode open] 파일크기(바이트개수):%d\n", num_of_bytes);
+    fclose(fp);
 
-	return 0;
+    return 0;
 }

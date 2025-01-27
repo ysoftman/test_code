@@ -14,36 +14,34 @@
 // set을 사용하기 전에 std 네임스페이스 사용, std에는 cout, cin, endl.. 등이 있다.
 using namespace std;
 
-int main()
-{
-	// set은 저장되는 항목들을 내부적으로 정렬해준다.
-	//내림차순
-	set<int, less<int>> s;
-	set<int, less<int>>::iterator i;
+int main() {
+    // set은 저장되는 항목들을 내부적으로 정렬해준다.
+    // 내림차순
+    set<int, less<int>> s;
+    set<int, less<int>>::iterator i;
 
-	std::pair<std::set<int>::iterator, bool> ret;
-	// insert 결과로 pair<iterator, bool> 로
-	// first: 값의 iterator, second
-	// second: 값이 추가되면 true, 이미 값이 있었으면 false
-	ret = s.insert(4);
-	cout << *ret.first << endl;			// 4
-	cout << ret.second << endl;			// 처음 추가된거라 true(1)
-	cout << s.insert(4).second << endl; // 이미 존재하는 값이라 false(0)
-	s.insert(0);
-	s.insert(-9);
-	s.insert(7);
-	s.insert(-2);
-	s.insert(4); // 중복된 값은 하나로 취급
-	s.insert(2);
+    std::pair<std::set<int>::iterator, bool> ret;
+    // insert 결과로 pair<iterator, bool> 로
+    // first: 값의 iterator, second
+    // second: 값이 추가되면 true, 이미 값이 있었으면 false
+    ret = s.insert(4);
+    cout << *ret.first << endl;          // 4
+    cout << ret.second << endl;          // 처음 추가된거라 true(1)
+    cout << s.insert(4).second << endl;  // 이미 존재하는 값이라 false(0)
+    s.insert(0);
+    s.insert(-9);
+    s.insert(7);
+    s.insert(-2);
+    s.insert(4);  // 중복된 값은 하나로 취급
+    s.insert(2);
 
-	cout << "The set contains the elements: ";
+    cout << "The set contains the elements: ";
 
-	for (i = s.begin(); i != s.end(); i++)
-	{
-		cout << *i << ' ';
-	}
+    for (i = s.begin(); i != s.end(); i++) {
+        cout << *i << ' ';
+    }
 
-	cout << endl;
+    cout << endl;
 
-	return 0;
+    return 0;
 }

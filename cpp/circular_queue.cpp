@@ -6,34 +6,28 @@
 // 원형큐는 rear -> front 로 이어 큐공간을 재사용할 수 있다.
 #include <stdio.h>
 
-struct cir_queue
-{
+struct cir_queue {
     int front;
     int rear;
     int size;
     int *arr;
-    cir_queue()
-    {
-        front = -1; // -1 는 데이터가 값이 없음을 의미
+    cir_queue() {
+        front = -1;  // -1 는 데이터가 값이 없음을 의미
         rear = -1;
         size = 0;
         arr = NULL;
     }
 };
 
-void printQueue(cir_queue *q, const char *msg, int val)
-{
+void printQueue(cir_queue *q, const char *msg, int val) {
     printf("(size:%d front:%d, rear:%d) %s %d -> ", q->size, q->front, q->rear, msg, val);
-    if (q->front < 0 || q->rear < 0)
-    {
+    if (q->front < 0 || q->rear < 0) {
         printf("\n");
         return;
     }
     int i = q->front;
-    while (i != q->rear)
-    {
-        if (i < 0 || i == q->size)
-        {
+    while (i != q->rear) {
+        if (i < 0 || i == q->size) {
             i = 0;
             printf("%d ", q->arr[i]);
             continue;
@@ -41,68 +35,53 @@ void printQueue(cir_queue *q, const char *msg, int val)
         printf("%d ", q->arr[i]);
         ++i;
     }
-    if (q->front <= q->rear)
-    {
+    if (q->front <= q->rear) {
         printf("%d ", q->arr[i]);
     }
 
     printf("\n");
 }
 
-void enqueue(cir_queue *q, int val)
-{
+void enqueue(cir_queue *q, int val) {
     // 최초 값을 넣는 경우
-    if (q->front == -1)
-    {
+    if (q->front == -1) {
         q->front = q->rear = 0;
         q->arr[q->front] = val;
     }
     // 꽉찬 경우1
-    else if (q->front == 0 && q->rear == q->size - 1)
-    {
+    else if (q->front == 0 && q->rear == q->size - 1) {
         printf("full!\n");
         return;
     }
     // 꽉찬 경우2
-    else if (q->rear == q->front - 1)
-    {
+    else if (q->rear == q->front - 1) {
         printf("full!\n");
         return;
     }
     // 배열의 마지막인 경우 다시 0번째 부터
-    else if (q->rear == q->size - 1)
-    {
+    else if (q->rear == q->size - 1) {
         q->rear = 0;
         q->arr[q->rear] = val;
-    }
-    else
-    {
+    } else {
         ++q->rear;
         q->arr[q->rear] = val;
     }
     printQueue(q, "enqueue", val);
 }
 
-int dequeue(cir_queue *q)
-{
+int dequeue(cir_queue *q) {
     int val = 0;
-    if (q->front == q->rear)
-    {
-        if (q->front == -1)
-        {
+    if (q->front == q->rear) {
+        if (q->front == -1) {
             printf("empty!\n");
             return 0;
         }
         val = q->arr[q->front];
         q->front = q->rear = -1;
-    }
-    else if (q->front == q->size - 1)
-    {
+    } else if (q->front == q->size - 1) {
         val = q->arr[q->front];
         q->front = 0;
-    }
-    else
-    {
+    } else {
         val = q->arr[q->front];
         ++q->front;
     }
@@ -110,8 +89,7 @@ int dequeue(cir_queue *q)
     return val;
 }
 
-int main()
-{
+int main() {
     int arr[3] = {
         0,
     };

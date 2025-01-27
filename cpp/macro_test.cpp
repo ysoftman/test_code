@@ -15,14 +15,13 @@ const int a = 456;
 // 토큰 2개를 붙인다.(concatenate)
 #define concat(x, y) (x##y)
 
-int main()
-{
-	printf("%d\n", A);
-	printf("%d\n", a);
-	printf("%d\n", max(9, 5));
-	// "" 가 없어 에러
-	// printf("%s\n", ysoftman);
-	printf("%s\n", makestr(make string.));
-	// print + f 를 만들어 사용
-	concat(print, f)("zzz\n");
+int main() {
+    printf("%d\n", A);
+    printf("%d\n", a);
+    printf("%d\n", max(9, 5));
+    // "" 가 없어 에러
+    // printf("%s\n", ysoftman);
+    printf("%s\n", makestr(make string.));
+    // print + f 를 만들어 사용
+    concat(print, f)("zzz\n");
 }

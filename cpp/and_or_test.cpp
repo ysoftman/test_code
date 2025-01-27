@@ -25,26 +25,25 @@ vi /Library/Developer/CommandLineTools/usr/include/c++/v1/ciso646
 
 #include <stdio.h>
 
-int main()
-{
-	int a = 7;
-	printf("a > 5 && a < 20 is %d\n", a > 5 and a < 20);
-	a = 10;
-	printf("a == 10 || a == 20 is %d\n", a == 10 or a == 20);
-	printf("!(a == 10) is %d\n", not(a == 10));
-	printf("1 != 2 is %d\n", 1 not_eq 2);
-	// formatting 하면 compl1 로 붙어버린다.
-	// printf("~1  = %d\n", compl 1);
-	printf("1 & 2 = %d\n", 1 bitand 2);
-	printf("1 | 2 = %d\n", 1 bitor 2);
-	printf("1 ^ 2 = %d\n", 1 xor 2);
-	a = 1;
-	a and_eq 2;
-	printf("a(1) &= 2, a = %d\n", a);
-	a = 1;
-	a or_eq 2;
-	printf("a(1) |= 2, a = %d\n", a);
-	a = 1;
-	a xor_eq 2;
-	printf("a(1) ^= 2, a = %d\n", a);
+int main() {
+    int a = 7;
+    printf("a > 5 && a < 20 is %d\n", a > 5 and a < 20);
+    a = 10;
+    printf("a == 10 || a == 20 is %d\n", a == 10 or a == 20);
+    printf("!(a == 10) is %d\n", not(a == 10));
+    printf("1 != 2 is %d\n", 1 not_eq 2);
+    // formatting 하면 compl1 로 붙어버린다.
+    // printf("~1  = %d\n", compl 1);
+    printf("1 & 2 = %d\n", 1 bitand 2);
+    printf("1 | 2 = %d\n", 1 bitor 2);
+    printf("1 ^ 2 = %d\n", 1 xor 2);
+    a = 1;
+    a and_eq 2;
+    printf("a(1) &= 2, a = %d\n", a);
+    a = 1;
+    a or_eq 2;
+    printf("a(1) |= 2, a = %d\n", a);
+    a = 1;
+    a xor_eq 2;
+    printf("a(1) ^= 2, a = %d\n", a);
 }

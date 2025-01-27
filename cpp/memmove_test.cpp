@@ -5,8 +5,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     cout << "memmove() test" << endl;
     char str1[] = "abcdefg";
     cout << "str1 = " << str1 << "  length " << sizeof(str1) << endl;

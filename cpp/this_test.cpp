@@ -6,12 +6,10 @@
 
 using namespace std;
 
-class foobar
-{
-public:
+class foobar {
+   public:
     int num;
-    foobar &set_num(int num)
-    {
+    foobar &set_num(int num) {
         // this 사용이유 1
         // 파리미터와 클래스 멤버변수가 이름이 같을때 구분하기 위해
         this->num = num;
@@ -21,8 +19,7 @@ public:
         // 클래스 인스턴스 자체를 리턴하기 위해
         return *this;
     }
-    foobar *set_num2(int num)
-    {
+    foobar *set_num2(int num) {
         // this 사용이유 1
         // 파리미터와 클래스 멤버변수가 이름이 같을때 구분하기 위해
         this->num = num;
@@ -35,23 +32,13 @@ public:
 
     int cnt;
     // this 포인터를 리턴
-    foobar *this_pointer()
-    {
-        return this;
-    }
+    foobar *this_pointer() { return this; }
     // this 역참조에 대한 주소값을 리턴
-    foobar &this_reference()
-    {
-        return *this;
-    }
-    foobar this_dereference()
-    {
-        return *this;
-    }
+    foobar &this_reference() { return *this; }
+    foobar this_dereference() { return *this; }
 };
 
-int main()
-{
+int main() {
     foobar fb;
     fb.set_num(1).set_num(2).set_num(3);
     cout << "fb.num: " << fb.num << endl;

@@ -7,8 +7,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     cout << "auto test" << endl;
     // c++ 11 이전까진 auto 는 지역변수 유효기간을 나타내느 automatic duration 의미였지만
     // c++ 11 이후부터는 타입 추론(type inference) 용도로 사용된다.
@@ -26,14 +25,12 @@ int main()
     char alphabet[26];
     char a = 'a';
     // 일반 배열에서는 값을 액세스할 수 있다.
-    for (auto i : alphabet)
-    {
+    for (auto i : alphabet) {
         i = a++;
         cout << i << "  ";
     }
     cout << endl;
-    for (int i = 0; i < 26; i++)
-    {
+    for (int i = 0; i < 26; i++) {
         cout << alphabet[i] << " ";
     }
     cout << endl;
@@ -42,14 +39,12 @@ int main()
     int *pArr[26];
     // point 배열에서는 i 가 pi(pointer) 타입으로
     // 포인터 변수 자체 주소를 참조해서 값을 변경해야 한다.
-    for (auto &i : pArr)
-    {
+    for (auto &i : pArr) {
         printf("type: %s  address: %p\n", typeid(i).name(), i);
         i = NULL;
     }
     cout << endl;
-    for (int i = 0; i < 26; i++)
-    {
+    for (int i = 0; i < 26; i++) {
         cout << pArr[i] << " ";
     }
     cout << endl;
@@ -63,27 +58,23 @@ int main()
     // 컨테이너 타입 맞는 iterator 를 사용하는 일반적인 방법
     cout << "using   std::vector<int>::iterator" << endl;
     std::vector<int>::iterator iter;
-    for (iter = vecNum.begin(); iter != vecNum.end(); ++iter)
-    {
+    for (iter = vecNum.begin(); iter != vecNum.end(); ++iter) {
         cout << *iter << endl;
     }
 
     // auto 를 사용하면 데이터에 맞게 자동으로 iterate 할 수 있다.
     cout << "using   auto v = vecNum.begin(); v != vecNum.end(); ++v" << endl;
-    for (auto v = vecNum.begin(); v != vecNum.end(); ++v)
-    {
+    for (auto v = vecNum.begin(); v != vecNum.end(); ++v) {
         cout << *v << endl;
     }
 
     // auto 를 다음과 같이 더 간단하게 사용할 수 있다.
     cout << "using   auto const v : vecNum" << endl;
     // auto 선언시 레퍼런스를 사용하면 레퍼린스로 vector 값을 변경할 수 있다.
-    for (auto &v : vecNum)
-    {
+    for (auto &v : vecNum) {
         v += 10;
     }
-    for (auto v : vecNum)
-    {
+    for (auto v : vecNum) {
         cout << v << endl;
     }
 

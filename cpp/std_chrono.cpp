@@ -1,19 +1,17 @@
 // ysoftman
 // std thread test
 // g++ -std=c++11 std_chrono.cpp && ./a.out
-#include <iostream>
 #include <chrono>
+#include <iostream>
 #include <thread>
 
 using std::cout;
 using std::endl;
 
-void elapsed_test()
-{
+void elapsed_test() {
     // steady_clock: monotonic clock that will never be adjusted
     auto begin = std::chrono::steady_clock::now();
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     auto end = std::chrono::steady_clock::now();
@@ -22,8 +20,7 @@ void elapsed_test()
     cout << "elapsed: " << elapsed_seconds.count() << "s" << endl;
 }
 
-int main()
-{
+int main() {
     auto minutes = std::chrono::minutes(1);
     // count(): returns the count of ticks
     cout << std::chrono::nanoseconds(minutes).count() << endl;

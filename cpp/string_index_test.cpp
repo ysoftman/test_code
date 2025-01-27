@@ -3,14 +3,11 @@
 #include <iostream>
 using namespace std;
 
-int main()
-{
+int main() {
     string str = "ysoftman";
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         // string::operator[] 는 index 범위를 넘어선 경우 null character(\0) 취급
-        if (str[i] == '\0')
-        {
+        if (str[i] == '\0') {
             cout << i << " "
                  << "empty" << endl;
             continue;

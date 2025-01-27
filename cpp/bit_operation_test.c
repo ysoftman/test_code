@@ -1,29 +1,25 @@
 #include <stdio.h>
 #include <string.h>
 
-void print_binary_digit(int num)
-{
+void print_binary_digit(int num) {
     const int max_length = 10;
     int temp = num;
     int d[max_length], idx = 0;
     memset(d, 0, sizeof(int) * max_length);
 
-    while (temp > 0)
-    {
+    while (temp > 0) {
         d[idx++] = temp % 2;
         temp /= 2;
     }
     d[idx++] = temp;
 
-    for (int i = (max_length - 1); i >= 0; i--)
-    {
+    for (int i = (max_length - 1); i >= 0; i--) {
         printf("%d", d[i]);
     }
     printf("\n");
 }
 
-int main()
-{
+int main() {
     int a = 2;
     printf("a: %d\n", a);
     printf("not operator ~a: %d\n", ~a);

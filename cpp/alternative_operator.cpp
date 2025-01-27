@@ -12,11 +12,10 @@ int main() {
     cout << compl a << endl;
     cout << not a << endl;
     cout << (a xor b) << endl;
-    cout << (a and b)<< endl;
+    cout << (a and b) << endl;
     cout << (a or b) << endl;
     cout << (a bitand b) << endl;
     cout << (a bitor b) << endl;
     cout << (a not_eq b) << endl;
     return 0;
 }
-

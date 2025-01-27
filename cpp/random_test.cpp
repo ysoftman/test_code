@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 #include <iostream>
 #include <random>
 using std::cout;
@@ -38,46 +39,41 @@ rand() 로 나올 수 있는 값은 0 ~ RAND_MAX
 주의 사항 3
 랜덤 값이 균등하게 분포하지 않는다.
 */
-void randomCStyle()
-{
-	int num = 0;
-	int seed = (unsigned int)time(NULL);
-	srand(seed);
-	for (int i = 0; i < 10; i++)
-	{
-		num = rand();
-		// printf("random number is %d\n", num);
-		num = (num % 100) + 1;
-		printf("C-style random number: %d\n", num);
-	}
+void randomCStyle() {
+    int num = 0;
+    int seed = (unsigned int)time(NULL);
+    srand(seed);
+    for (int i = 0; i < 10; i++) {
+        num = rand();
+        // printf("random number is %d\n", num);
+        num = (num % 100) + 1;
+        printf("C-style random number: %d\n", num);
+    }
 }
 
 /*
 CPP Style 랜덤 생성
 랜덤 값이 균등하게 분포한다.
 */
-void randomCppStyle()
-{
-	// 랜던 디바이스(/dev/random, /dev/urandom, /dev/arandom OS 의 랜덤 파일등을 이용)
-	// https://en.cppreference.com/w/cpp/numeric/random/random_device
-	std::random_device rd;
-	// 랜덤 디바이스를 씨드로 mt19937 랜덤 엔진 사용
-	// https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine
-	std::mt19937 gen(rd());
+void randomCppStyle() {
+    // 랜던 디바이스(/dev/random, /dev/urandom, /dev/arandom OS 의 랜덤 파일등을 이용)
+    // https://en.cppreference.com/w/cpp/numeric/random/random_device
+    std::random_device rd;
+    // 랜덤 디바이스를 씨드로 mt19937 랜덤 엔진 사용
+    // https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine
+    std::mt19937 gen(rd());
 
-	// 1~100 균등 분포하도록
-	// https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution
-	std::uniform_int_distribution<int> distrib(1, 100);
+    // 1~100 균등 분포하도록
+    // https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution
+    std::uniform_int_distribution<int> distrib(1, 100);
 
-	for (int i = 0; i < 10; i++)
-	{
-		cout << "CPP-style random number:" << distrib(gen) << endl;
-	}
+    for (int i = 0; i < 10; i++) {
+        cout << "CPP-style random number:" << distrib(gen) << endl;
+    }
 }
 
-int main()
-{
-	randomCStyle();
-	randomCppStyle();
-	return 0;
+int main() {
+    randomCStyle();
+    randomCppStyle();
+    return 0;
 }

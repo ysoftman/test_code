@@ -2,16 +2,14 @@
 
 using namespace std;
 
-char *func1(char *str)
-{
+char *func1(char *str) {
     str[0] = 'a';
     str[1] = 'b';
     str[2] = 'c';
     return str;
 }
 
-string func2()
-{
+string func2() {
     string str = "abc";
     return str;
 }
@@ -31,8 +29,7 @@ string func2()
 // objdump -dS return_local_variable.o
 // mac 에서는
 // objdump -disassemble -source return_local_variable.o
-char *func3()
-{
+char *func3() {
     // static 으로 선언하면 되긴 하지만 비추
     char str[4] = {
         0,
@@ -43,8 +40,7 @@ char *func3()
     return str;
 }
 
-int main()
-{
+int main() {
     char str[4] = {
         0,
     };

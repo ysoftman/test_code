@@ -4,45 +4,40 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main()
-{
-	char c = NULL;
-	int i = 0;
-	int length = 0;
+int main() {
+    char c = NULL;
+    int i = 0;
+    int length = 0;
 
-	FILE *fp = NULL;
+    FILE *fp = NULL;
 
-	fp = fopen("text.txt", "wb");
-	fprintf(fp, "YoonByoungHoon\n");
-	fclose(fp);
+    fp = fopen("text.txt", "wb");
+    fprintf(fp, "YoonByoungHoon\n");
+    fclose(fp);
 
-	if ((fp = fopen("text-reverse.txt", "rb")) == NULL)
-	{
-		printf("Can't open text-reverse.txt\n");
-		exit(1);
-	}
+    if ((fp = fopen("text-reverse.txt", "rb")) == NULL) {
+        printf("Can't open text-reverse.txt\n");
+        exit(1);
+    }
 
-	fseek(fp, 0, SEEK_END);
-	length = ftell(fp);
-	printf("File Size : %d Bytes\n", length);
+    fseek(fp, 0, SEEK_END);
+    length = ftell(fp);
+    printf("File Size : %d Bytes\n", length);
 
-	while (1)
-	{
-		c = fgetc(fp);
-		fseek(fp, --i, SEEK_END);
+    while (1) {
+        c = fgetc(fp);
+        fseek(fp, --i, SEEK_END);
 
-		if (c == EOF)
-		{
-			continue;
-		}
-		printf("%c", c);
-		if ((length - abs(i)) < 0)
-		{
-			break;
-		}
-	}
-	printf("\n");
-	fclose(fp);
+        if (c == EOF) {
+            continue;
+        }
+        printf("%c", c);
+        if ((length - abs(i)) < 0) {
+            break;
+        }
+    }
+    printf("\n");
+    fclose(fp);
 
-	return 0;
+    return 0;
 }

@@ -1,18 +1,17 @@
-#include <iostream>
-#include <algorithm> // lower_bound, upper_bound
-#include <vector>
 #include <stdio.h>
+
+#include <algorithm>  // lower_bound, upper_bound
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int main()
-{
+int main() {
     int target = 3;
     // vector<int> v(3);
     // v = {1,2,3};
     vector<int> v{8, 2, 5, 6, 3, 4, 1, 0, 4, 1, 10};
     sort(v.begin(), v.end());
-    for (auto i : v)
-    {
+    for (auto i : v) {
         printf("%d  ", i);
     }
     printf("\ntarget --> %d\n", target);

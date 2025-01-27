@@ -1,27 +1,19 @@
 // ysoftman
 // boost bind() 기능이 -> c++11 bind() 로 포함되었다.
 // g++ -std=c++11 bind_test.cpp
-#include <iostream>
 #include <functional>
+#include <iostream>
 
 using namespace std;
 
-struct Fruit
-{
+struct Fruit {
     int cost;
     string name;
-    void printColor(string color)
-    {
-        cout << color << endl;
-    }
+    void printColor(string color) { cout << color << endl; }
 };
 
-int add(int a, int b)
-{
-    return a + b;
-}
-int main()
-{
+int add(int a, int b) { return a + b; }
+int main() {
     cout << "add(1,2) = " << add(1, 2) << endl;
 
     // bind 로 함수 wrapping

@@ -10,20 +10,18 @@ extern int nVar4;
 
 int nVar1 = 0;
 
-void func1()
-{
-	static int nVar2 = 0;
-	printf("nVar2 = %d\n", ++nVar2);
+void func1() {
+    static int nVar2 = 0;
+    printf("nVar2 = %d\n", ++nVar2);
 }
 
-int main()
-{
-	for (int i = 0; i < 5; ++i)
-	{
-		printf("nVar1 = %d\n", ++nVar1);
-		func1();
-	}
-	printf("extern int nVar3 = %d\n", nVar3);
-	//printf("extern int nVar4 = %d\n", nVar4);	// 런타임 에러 - 외부의 static 은 접근할 수 없다.
-	return 0;
+int main() {
+    for (int i = 0; i < 5; ++i) {
+        printf("nVar1 = %d\n", ++nVar1);
+        func1();
+    }
+    printf("extern int nVar3 = %d\n", nVar3);
+    // printf("extern int nVar4 = %d\n", nVar4);	// 런타임 에러 - 외부의 static 은 접근할 수
+    // 없다.
+    return 0;
 }

@@ -8,14 +8,14 @@
 
 #include <stdio.h>
 
-int main()
-{
+int main() {
     // char *str = "ysoftman";
     // c++ 로 빌드시 스트링 리터럴을 시 char* 타입으로 선언하면 다음과 같은 경고가 발생한다.
-    // warning: conversion from string literal to 'char *' is deprecated [-Wc++11-compat-deprecated-writable-strings]
-    // c 에서는 문자열(string literal)은 char* 타입이지만
-    // c++  에서는 const char* 타입이다. https://en.cppreference.com/w/cpp/language/string_literal
-    // 그래서 const char* 타입을 사용해야한다.
+    // warning: conversion from string literal to 'char *' is deprecated
+    // [-Wc++11-compat-deprecated-writable-strings] c 에서는 문자열(string literal)은 char*
+    // 타입이지만 c++  에서는 const char* 타입이다.
+    // https://en.cppreference.com/w/cpp/language/string_literal 그래서 const char* 타입을
+    // 사용해야한다.
     const char *str = "ysoftman";
     printf("%s\n", str);
     return 0;

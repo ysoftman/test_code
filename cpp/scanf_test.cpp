@@ -3,16 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
-{
-	char *a;
+int main() {
+    char *a;
 
-	// Visual C++ 6 에서는 메모리를 할당해야 함
-	a = (char *)malloc(1);
+    // Visual C++ 6 에서는 메모리를 할당해야 함
+    a = (char *)malloc(1);
 
-	scanf("%s", a);
-	printf("%s", a);
+    scanf("%s", a);
+    printf("%s", a);
 
-	free(a);
-	return 0;
+    free(a);
+    return 0;
 }

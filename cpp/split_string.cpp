@@ -2,23 +2,20 @@
 // split string test
 
 #include <iostream>
+#include <sstream>  // istringstream
 #include <string>
 #include <vector>
-#include <sstream> // istringstream
 
 using namespace std;
 
-void printVecStr(vector<string> &vs)
-{
+void printVecStr(vector<string> &vs) {
     vector<string>::iterator iter;
-    for (iter = vs.begin(); iter != vs.end(); ++iter)
-    {
+    for (iter = vs.begin(); iter != vs.end(); ++iter) {
         cout << iter->c_str() << endl;
     }
 }
 
-int main()
-{
+int main() {
     string str = "lemon apple orange";
 
     // 방법1
@@ -34,8 +31,7 @@ int main()
     cout << "[method2]" << endl;
     istringstream iss2(str);
     string out;
-    while (getline(iss2, out, ' '))
-    {
+    while (getline(iss2, out, ' ')) {
         cout << out << endl;
     }
 
@@ -44,8 +40,7 @@ int main()
     cout << "[method3]" << endl;
     string sep = " ";
     size_t pos = 0;
-    while ((pos = str.find(sep)) != string::npos)
-    {
+    while ((pos = str.find(sep)) != string::npos) {
         out = str.substr(0, pos);
         cout << out << endl;
         str.erase(0, pos + sep.length());

@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-int main()
-{
+int main() {
     printf("timeval structure test\n");
     timeval tv;
     // get current time to tv

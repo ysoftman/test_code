@@ -4,8 +4,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     cout << "typeid() test" << endl;
 
     string str = "ysoftman";

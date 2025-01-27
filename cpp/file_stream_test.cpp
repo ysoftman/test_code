@@ -1,13 +1,12 @@
 // ysoftman
 // ifstrea(파일 입력), ofstraem (파일 출력) 테스트
 // http://www.cplusplus.com/reference/fstream/ofstream/open/
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
-int main()
-{
+int main() {
     char filename[100] = "file_stream_test.txt";
 
     cout << "filename: " << filename << endl;
@@ -20,8 +19,7 @@ int main()
 
     // 파일 읽기
     ifstream inFile(filename);
-    while (not inFile.eof())
-    {
+    while (not inFile.eof()) {
         char szBuffer[27] = {
             0,
         };

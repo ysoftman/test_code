@@ -6,39 +6,30 @@
 
 using namespace std;
 
-struct Node
-{
+struct Node {
     string data;
 };
 
-void print_linked_list(list<Node> *node)
-{
-    for (auto i : *node)
-    {
+void print_linked_list(list<Node> *node) {
+    for (auto i : *node) {
         cout << i.data << endl;
     }
 
     cout << "-----" << endl;
 }
-void remove_duplicated_node(list<Node> *node)
-{
+void remove_duplicated_node(list<Node> *node) {
     // 방법1 - 현재 노드 값을 기준으로 뒤의 모든 노드에 중복 노드 파악
     list<Node>::iterator iter;
-    for (iter = node->begin(); iter != node->end(); iter++)
-    {
+    for (iter = node->begin(); iter != node->end(); iter++) {
         cout << "node(data: " << iter->data << ")";
         list<Node>::iterator iter2 = iter;
         iter2++;
-        while (iter2 != node->end())
-        {
-            if (iter->data == iter2->data)
-            {
+        while (iter2 != node->end()) {
+            if (iter->data == iter2->data) {
                 cout << "--> erase...";
                 // 삭제된 원소의 다음 원소를 리턴받는다.
                 iter2 = node->erase(iter2);
-            }
-            else
-            {
+            } else {
                 iter2++;
             }
         }
@@ -47,22 +38,17 @@ void remove_duplicated_node(list<Node> *node)
     cout << "-----" << endl;
 }
 
-void remove_duplicated_node2(list<Node> *node)
-{
+void remove_duplicated_node2(list<Node> *node) {
     // 방법2 - hashset 에 값을 저장해두고 중복 여부 파악
     unordered_set<string> hashset;
     list<Node>::iterator iter = node->begin();
-    while (iter != node->end())
-    {
+    while (iter != node->end()) {
         cout << "node(data: " << iter->data << ")";
-        if (hashset.find(iter->data) != hashset.end())
-        {
+        if (hashset.find(iter->data) != hashset.end()) {
             cout << "--> erase...";
             hashset.insert(iter->data);
             iter = node->erase(iter);
-        }
-        else
-        {
+        } else {
             hashset.insert(iter->data);
             iter++;
         }
@@ -71,8 +57,7 @@ void remove_duplicated_node2(list<Node> *node)
     cout << "-----" << endl;
 }
 
-list<Node> create_linked_list()
-{
+list<Node> create_linked_list() {
     list<Node> node;
     Node n1{.data = "lemon"};
     node.push_back(n1);
@@ -85,19 +70,18 @@ list<Node> create_linked_list()
     Node n5{.data = "banana"};
     node.push_back(n5);
     Node n6{.data = "banana"};
-    node.insert(node.begin(), n6); // 맨처음 노드로 추가
+    node.insert(node.begin(), n6);  // 맨처음 노드로 추가
     Node n7{.data = "apple"};
     list<Node>::iterator iter = node.begin();
     iter++;
-    node.insert(iter, 5, n7); // 2번째 노르로 연속해서 5개의 노드 추가
+    node.insert(iter, 5, n7);  // 2번째 노르로 연속해서 5개의 노드 추가
     iter = node.begin();
     iter++;
-    iter = node.erase(iter); // 2번째 노드 삭제
+    iter = node.erase(iter);  // 2번째 노드 삭제
 
     return node;
 }
-int main()
-{
+int main() {
     list<Node> node = create_linked_list();
     print_linked_list(&node);
 

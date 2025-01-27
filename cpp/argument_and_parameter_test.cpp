@@ -8,14 +8,10 @@
 #include <string.h>
 
 // a 는 parameter
-void func(int a)
-{
-	printf("%d\n", a);
-}
+void func(int a) { printf("%d\n", a); }
 
-int main()
-{
-	// 10 은 argument
-	func(10);
-	return 0;
+int main() {
+    // 10 은 argument
+    func(10);
+    return 0;
 }

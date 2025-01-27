@@ -5,45 +5,38 @@
 
 void PrimeNumber(int);
 
-int main()
-{
-	int num = 0;
+int main() {
+    int num = 0;
 
-	printf("Input Number : ");
-	scanf("%d", &num);
+    printf("Input Number : ");
+    scanf("%d", &num);
 
-	PrimeNumber(num);
+    PrimeNumber(num);
 
-	return 0;
+    return 0;
 }
 
 // 소수 구하는 함수
-void PrimeNumber(int num)
-{
-	int i, j;
-	int isPrime;
+void PrimeNumber(int num) {
+    int i, j;
+    int isPrime;
 
-	if (num < 2)
-	{
-		printf("Wrong Number...\n");
-		exit(1);
-	}
+    if (num < 2) {
+        printf("Wrong Number...\n");
+        exit(1);
+    }
 
-	for (i = 2; i <= num; i++)
-	{
-		isPrime = 1;
-		for (j = 2; j <= i - 1; j++)
-		{
-			if (i % j == 0)
-			{
-				isPrime = 0;
-				printf("%3d is not PrimeNumber(divide by %d ...etc)\n", i, j);
-				break;
-			}
-		}
-		if (isPrime == 1)
-		{
-			printf("%3d is PrimeNumber\n", i);
-		}
-	}
+    for (i = 2; i <= num; i++) {
+        isPrime = 1;
+        for (j = 2; j <= i - 1; j++) {
+            if (i % j == 0) {
+                isPrime = 0;
+                printf("%3d is not PrimeNumber(divide by %d ...etc)\n", i, j);
+                break;
+            }
+        }
+        if (isPrime == 1) {
+            printf("%3d is PrimeNumber\n", i);
+        }
+    }
 }

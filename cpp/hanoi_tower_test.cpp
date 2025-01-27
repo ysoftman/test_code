@@ -4,26 +4,23 @@
 // 단, 한번에 한개의 원반을 옮길수 있고, 항상 큰 원반위에 작은 원반이 와야한다.
 #include <stdio.h>
 
-void MoveTower(char a, char b, char c, int n)
-{
-	if (n == 1)
-		printf("\nMove %c To %c", a, c);
-	else
-	{
-		MoveTower(a, c, b, n - 1);
-		printf("\nMove %c To %c", a, c);
-		MoveTower(b, a, c, n - 1);
-	}
+void MoveTower(char a, char b, char c, int n) {
+    if (n == 1)
+        printf("\nMove %c To %c", a, c);
+    else {
+        MoveTower(a, c, b, n - 1);
+        printf("\nMove %c To %c", a, c);
+        MoveTower(b, a, c, n - 1);
+    }
 }
 
-int main()
-{
-	int number; // 원판의 개수
-	printf("Input Number To Move :  ");
-	scanf("%d", &number);
+int main() {
+    int number;  // 원판의 개수
+    printf("Input Number To Move :  ");
+    scanf("%d", &number);
 
-	//MoveTower1('A', 'B', 'C', number);
-	MoveTower('A', 'B', 'C', number);
+    // MoveTower1('A', 'B', 'C', number);
+    MoveTower('A', 'B', 'C', number);
 
-	return 0;
+    return 0;
 }

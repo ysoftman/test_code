@@ -5,8 +5,7 @@
 #include <vector>
 using namespace std;
 
-int main()
-{
+int main() {
     vector<string> vec = {"lemon", "apple", "orange"};
     vector<string> add_fruits = {"mango", "banana"};
 
@@ -15,8 +14,7 @@ int main()
     // 또는
     std::copy(add_fruits.begin(), add_fruits.end(), std::back_inserter(vec));
 
-    for (auto i : vec)
-    {
+    for (auto i : vec) {
         cout << i << endl;
     }
     return 0;
