@@ -14,10 +14,13 @@ git br
 참고로 git branch 가 git br 로 alias 로 설정되더라고, 현재 위치에선 git-br 이 실행된다.
 """
 
-import requests
 import json
-import sys
 import subprocess
+
+import requests
+
+# import sys
+
 
 # python2 인 경우
 # utf8 인코딩을 기본으로 하지 않으면

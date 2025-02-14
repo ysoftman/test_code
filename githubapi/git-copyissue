@@ -8,10 +8,12 @@ chmod +x git-copyissue
 git copyissue
 """
 
-import requests
 import json
-import sys
-import subprocess
+
+import requests
+
+# import subprocess
+# import sys
 
 
 # 참고 github api
@@ -236,6 +238,6 @@ if __name__ == "__main__":
 
     for inum in inputFromIssueNumbers:
         issue = get_an_issue(fromRepo, inum)
-        if issue == None:
+        if issue is None:
             continue
         create_issue(toRepo, issue)
