@@ -42,7 +42,28 @@ func NewGithub(owner, token, repository, baseBranch string) *Github {
 	}
 }
 
-func (gh *Github) CheckBranchOrCreate(ctx context.Context, branchName string) error {
+func (gh *Github) DeleteBranch(branchName string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	// check if branch exists
+	_, _, err := gh.Client.Repositories.GetBranch(ctx, gh.Owner, gh.Repository, branchName, 1)
+	if err != nil {
+		fmt.Printf("%s branch does not exists.\n", branchName)
+		return nil
+	}
+	_, err = gh.Client.Git.DeleteRef(ctx, gh.Owner, gh.Repository, "refs/heads/"+branchName)
+	if err != nil {
+		return fmt.Errorf("failed to create readme file: %v", err)
+	}
+	fmt.Printf("%s branch is deleted.\n", branchName)
+
+	return nil
+}
+
+func (gh *Github) CheckBranchOrCreate(branchName string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	_, _, err := gh.Client.Repositories.GetBranch(ctx, gh.Owner, gh.Repository, branchName, 1)
 	if err == nil {
 		return nil
@@ -68,7 +89,10 @@ func (gh *Github) CheckBranchOrCreate(ctx context.Context, branchName string) er
 	return nil
 }
 
-func (gh *Github) CheckFirstCommitOrCreate(ctx context.Context) error {
+func (gh *Github) CheckFirstCommitOrCreate() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	// "409 Git Repository is empty."
 	// This error is common when working with newly created repositories that have not been initialized with any commits
 	// check if commit exists
@@ -122,6 +146,7 @@ func (gh *Github) Commit(branchName string, commitMessage string, fileContents, 
 	}
 	// No changes detected. Skipping commit.
 	if *newTree.SHA == *latestCommit.Commit.Tree.SHA {
+		fmt.Printf("[branch:%s, commit_message:%s] No changes detected. Skipping commit.\n", branchName, commitMessage)
 		return nil
 	}
 
@@ -140,6 +165,7 @@ func (gh *Github) Commit(branchName string, commitMessage string, fileContents, 
 	if err != nil {
 		return fmt.Errorf("failed to update ref: %v", err)
 	}
+	fmt.Printf("[branch:%s, commit_message:%s] committed.\n", branchName, commitMessage)
 
 	return nil
 }
@@ -152,21 +178,22 @@ func main() {
 	// fmt.Printf("%+v\n", ghConfig)
 
 	gh := NewGithub(ghConfig.Owner, ghConfig.Token, ghConfig.Repository, ghConfig.BaseBranch)
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	if err := gh.CheckFirstCommitOrCreate(ctx); err != nil {
+	if err := gh.CheckFirstCommitOrCreate(); err != nil {
 		log.Fatalln(err)
 	}
-	if err := gh.CheckBranchOrCreate(ctx, "test1"); err != nil {
+	if err := gh.CheckBranchOrCreate("test1"); err != nil {
 		log.Fatalln(err)
 	}
 	if err := gh.Commit("test1", "this is test", []string{"apple", "banana"}, []string{"apple.txt", "banana.txt"}); err != nil {
 		log.Fatalln(err)
 	}
-	if err := gh.CheckBranchOrCreate(ctx, "test2"); err != nil {
+	if err := gh.CheckBranchOrCreate("test2"); err != nil {
 		log.Fatalln(err)
 	}
 	if err := gh.Commit("test2", "this is test", []string{"cherry1", "lemon1"}, []string{"cherry.txt", "lemon.txt"}); err != nil {
 		log.Fatalln(err)
 	}
+	// if err := gh.DeleteBranch("test2"); err != nil {
+	// 	log.Fatalln(err)
+	// }
 }
