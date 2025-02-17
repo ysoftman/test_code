@@ -42,24 +42,6 @@ func NewGithub(owner, token, repository, baseBranch string) *Github {
 	}
 }
 
-func (gh *Github) DeleteBranch(branchName string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	// check if branch exists
-	_, _, err := gh.Client.Repositories.GetBranch(ctx, gh.Owner, gh.Repository, branchName, 1)
-	if err != nil {
-		fmt.Printf("%s branch does not exists.\n", branchName)
-		return nil
-	}
-	_, err = gh.Client.Git.DeleteRef(ctx, gh.Owner, gh.Repository, "refs/heads/"+branchName)
-	if err != nil {
-		return fmt.Errorf("failed to create readme file: %v", err)
-	}
-	fmt.Printf("%s branch is deleted.\n", branchName)
-
-	return nil
-}
-
 func (gh *Github) CheckBranchOrCreate(branchName string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -166,6 +148,24 @@ func (gh *Github) Commit(branchName string, commitMessage string, fileContents, 
 		return fmt.Errorf("failed to update ref: %v", err)
 	}
 	fmt.Printf("[branch:%s, commit_message:%s] committed.\n", branchName, commitMessage)
+
+	return nil
+}
+
+func (gh *Github) DeleteBranch(branchName string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	// check if branch exists
+	_, _, err := gh.Client.Repositories.GetBranch(ctx, gh.Owner, gh.Repository, branchName, 1)
+	if err != nil {
+		fmt.Printf("%s branch does not exists.\n", branchName)
+		return nil
+	}
+	_, err = gh.Client.Git.DeleteRef(ctx, gh.Owner, gh.Repository, "refs/heads/"+branchName)
+	if err != nil {
+		return fmt.Errorf("failed to delete %s branch: %v", branchName, err)
+	}
+	fmt.Printf("%s branch is deleted.\n", branchName)
 
 	return nil
 }
