@@ -60,3 +60,36 @@ diagnostic:
 fmt:
 	@gofumpt -w -l $(shell find . -name "*.go")
 
+.PHONY: staticcheck
+staticcheck:
+	@staticcheck -checks inherit,-ST1005 ./...
+
+.PHONY: doc
+doc:
+	# http://localhost:6060
+	godoc -http=:6060
+
+.PHONY: coverage
+coverage:
+	go test -coverprofile cover.out ./...
+	go tool cover -html cover.out -o cover.html
+	open cover.html
+	# 또는 function 별로 coverage 확인
+	# go tool cover -func=cover.out
+
+.PHONY: run
+run:
+	go run ./...
+
+.PHONY: profile
+profile:
+	# make run 으로 별도 프로세스로 서버 실행 후
+	curl 'http://localhost:8080/debug/pprof/profile?seconds=10' -o profile.out
+	go tool pprof -http=:9090 profile.out
+
+.PHONY: profile_heap
+profile_heap:
+	# make run 으로 별도 프로세스로 서버 실행 후
+	curl 'http://localhost:8080/debug/pprof/heap?seconds=10' -o heap.out
+	go tool pprof -http=:9090 heap.out
+
