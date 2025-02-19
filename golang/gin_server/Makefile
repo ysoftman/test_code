@@ -6,6 +6,15 @@ GITHASH=$(shell git rev-parse HEAD)
 OS=$(shell go env GOOS)
 ARCH=$(shell go env GOARCH)
 
+GOTEST:=$(shell command -v gotest 2> /dev/null)
+ifneq ($(GOTEST),)
+$(info $(GOTEST) command found in PATH)
+	GOTEST:=gotest
+else
+$(info gotest command not found in PATH)
+	GOTEST:=go test
+endif
+
 #https://pkg.go.dev/cmd/link
 #-X importpath.name=value
 #    Set the value of the string variable in importpath named name to value.
@@ -25,10 +34,11 @@ clean:
 	rm -rf ${SERVER_NAME} ./docs ./tmp
 	go clean -testcache
 
-.PHONY: swagger
-swagger:
+.PHONY: swag
+swag:
 	@#generate swag doc
-	swag init
+	swag fmt
+	swag init --parseDependency --parseInternal > /dev/null
 
 .PHONY: tidy
 tidy:
@@ -39,7 +49,7 @@ lint:
 	golangci-lint run
 
 .PHONY: build
-build: clean swagger
+build: clean swag
 	@echo "BUILD_TIME:${BUILD_TIME}"
 	@echo "BUILD_UNIX_TIME:${BUILD_UNIX_TIME}"
 	@echo "GITHASH:${GITHASH}"
@@ -49,8 +59,8 @@ build: clean swagger
 	GOOS=${OS} GOARCH=${ARCH} go build -o ${SERVER_NAME} -ldflags '${LDFLAGS}'
 
 .PHONY: test
-test: clean swagger
-	go test ./... -v -p 4 -coverprofile cover.out
+test: clean swag
+	${GOTEST} ./... -v
 
 .PHONY: diagnostic
 diagnostic:
@@ -62,6 +72,7 @@ fmt:
 
 .PHONY: staticcheck
 staticcheck:
+	@#QF(QuickFix) 항목들은 IDE(vscode,nvim) 환경에서 gopls 로 staticcheck 를 사용할때만 가능
 	@staticcheck -checks inherit,-ST1005 ./...
 
 .PHONY: doc
@@ -71,7 +82,7 @@ doc:
 
 .PHONY: coverage
 coverage:
-	go test -coverprofile cover.out ./...
+	${GOTEST} -coverprofile cover.out ./...
 	go tool cover -html cover.out -o cover.html
 	open cover.html
 	# 또는 function 별로 coverage 확인
