@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"gin_server/docs"
 	"io"
 	"log"
 	"net/http"
@@ -11,8 +12,6 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
-
-	"gin_server/docs"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
@@ -60,6 +59,8 @@ func makeServerVersion() ServerVersion {
 	}
 }
 
+// GetServerVersion
+//
 //	@Summary	server version
 //	@Schemes
 //	@Description	get server version
@@ -74,6 +75,8 @@ func GetServerVersion(c *gin.Context) {
 	c.JSON(http.StatusOK, makeServerVersion())
 }
 
+// PostData
+//
 //	@Summary	post data
 //	@Schemes
 //	@Description	post data test
