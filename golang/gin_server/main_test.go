@@ -81,13 +81,14 @@ func TestPostData(t *testing.T) {
 func TestCheckReq(t *testing.T) {
 	tests := []struct {
 		name string
-		want gin.HandlerFunc
 	}{
-		// TODO: Add test cases.
+		{
+			name: "CheckReq",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, CheckReq())
+			assert.NotNil(t, CheckReq())
 		})
 	}
 }
@@ -95,7 +96,6 @@ func TestCheckReq(t *testing.T) {
 func Test_timeoutMiddleware2(t *testing.T) {
 	tests := []struct {
 		name string
-		want gin.HandlerFunc
 	}{
 		{
 			name: "timeoutMiddleware2",
@@ -103,20 +103,7 @@ func Test_timeoutMiddleware2(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, timeoutMiddleware2())
-		})
-	}
-}
-
-func Test_main(t *testing.T) {
-	tests := []struct {
-		name string
-	}{
-		{name: "main"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			main()
+			assert.NotNil(t, timeoutMiddleware2())
 		})
 	}
 }

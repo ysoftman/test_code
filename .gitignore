@@ -15,6 +15,7 @@
 *.tmp
 *.tmp.*
 *.wasm
+cover.html
 node_modules/
 tags
 cpp/*.txt

@@ -60,31 +60,31 @@ func makeServerVersion() ServerVersion {
 	}
 }
 
-// @Summary server version
-// @Schemes
-// @Description get server version
-// @Tags v1
-// @Accept json
-// @Produce json
-// @Success 200 {string} server_version
-// @Failure 400 {string} string "StatusBadRequest"
-// @Failure 500 {string} string "StatusInternalServerError"
-// @Router /version [get]
+//	@Summary	server version
+//	@Schemes
+//	@Description	get server version
+//	@Tags			v1
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{string}	server_version
+//	@Failure		400	{string}	string	"StatusBadRequest"
+//	@Failure		500	{string}	string	"StatusInternalServerError"
+//	@Router			/version [get]
 func GetServerVersion(c *gin.Context) {
 	c.JSON(http.StatusOK, makeServerVersion())
 }
 
-// @Summary post data
-// @Schemes
-// @Description post data test
-// @Tags v1
-// @Accept json
-// @Produce json
-// @Param data body Data1 true "requested data"
-// @Success 200 {string} string "OK"
-// @Failure 400 {string} string "StatusBadRequest"
-// @Failure 500 {string} string "StatusInternalServerError"
-// @Router /data1 [post]
+//	@Summary	post data
+//	@Schemes
+//	@Description	post data test
+//	@Tags			v1
+//	@Accept			json
+//	@Produce		json
+//	@Param			data	body		Data1	true	"requested data"
+//	@Success		200		{string}	string	"OK"
+//	@Failure		400		{string}	string	"StatusBadRequest"
+//	@Failure		500		{string}	string	"StatusInternalServerError"
+//	@Router			/data1 [post]
 func PostData(c *gin.Context) {
 	data, err := io.ReadAll(c.Request.Body)
 	if err != nil {
