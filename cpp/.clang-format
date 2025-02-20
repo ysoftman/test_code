@@ -6,5 +6,5 @@ ColumnLimit: 100
 BreakBeforeBraces: Attach # Always attach braces to surrounding context.
 # 파일 전체 포맷팅
 # brew install clang-format
-# --style=file 로 지정하면 .clanf-format 파일을 참고한다.
+# --style=file 로 지정하면 .clang-format 파일을 참고한다.
 # fd ".c$|.cpp$" --exec clang-format --style=file -i
