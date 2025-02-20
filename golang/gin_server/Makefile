@@ -6,6 +6,7 @@ GITHASH=$(shell git rev-parse HEAD)
 OS=$(shell go env GOOS)
 ARCH=$(shell go env GOARCH)
 
+# go install github.com/rakyll/gotest@latest
 GOTEST:=$(shell command -v gotest 2> /dev/null)
 ifneq ($(GOTEST),)
 $(info $(GOTEST) command found in PATH)
