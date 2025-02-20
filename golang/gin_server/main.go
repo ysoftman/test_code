@@ -95,7 +95,7 @@ func PostData(c *gin.Context) {
 		return
 	}
 	result := Data1{}
-	if err := json.Unmarshal([]byte(data), &result); err != nil {
+	if err := json.Unmarshal(data, &result); err != nil {
 		c.JSON(http.StatusBadRequest, nil)
 		return
 	}
@@ -142,7 +142,7 @@ func timeoutMiddleware2() gin.HandlerFunc {
 		defer cancel()
 		c.Request = c.Request.WithContext(ctx)
 		finish := make(chan struct{}, 1)
-		panicChan := make(chan interface{}, 1)
+		panicChan := make(chan any, 1)
 		go func() {
 			// 채널 보내기 후 닫을 수 있도록 보장
 			// 부모에서 close 채널하지 않는 이유는
