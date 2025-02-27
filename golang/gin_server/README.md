@@ -3,6 +3,11 @@
 - build and test
 
 ```bash
+# install cli tools
+go install github.com/rakyll/gotest@latest
+go install golang.org/x/tools/gopls@latest
+go install honnef.co/go/tools/cmd/staticcheck@latest
+
 # clean
 make clean
 
