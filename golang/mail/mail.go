@@ -6,10 +6,10 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"net/mail"
 	"strings"
-	"log"
-	"io/ioutil"
 )
 
 func main() {
@@ -44,7 +44,7 @@ Subject: 테스트 메일
 
 	// 메일 내용
 	body := msg.Body
-	contents, err := ioutil.ReadAll(body)
+	contents, err := io.ReadAll(body)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -5,7 +5,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 )
@@ -57,7 +57,7 @@ func runExternalCommand() {
 	if err := cmd.Start(); err != nil {
 		fmt.Println("[error run echo]", err)
 	}
-	stdbytes, err := ioutil.ReadAll(stdout)
+	stdbytes, err := io.ReadAll(stdout)
 	if err != nil {
 		fmt.Println("[error echo readall stdout]", err)
 	}
@@ -75,7 +75,7 @@ func runExternalCommand() {
 	if err := cmd.Start(); err != nil {
 		fmt.Println("[error start bash]", err)
 	}
-	stdbytes, err = ioutil.ReadAll(stdout)
+	stdbytes, err = io.ReadAll(stdout)
 	if err != nil {
 		fmt.Println("[error bash readall stdout]", err)
 	}

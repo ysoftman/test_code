@@ -61,7 +61,7 @@ build: clean swag
 
 .PHONY: test
 test: clean swag
-	${GOTEST} $(go list ./... | grep -i -v "/mocks") -v
+	${GOTEST} $(go list ./... | grep -i -v "mocks") -v
 
 .PHONY: diagnostic
 diagnostic:

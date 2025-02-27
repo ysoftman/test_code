@@ -6,7 +6,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 )
@@ -71,6 +71,6 @@ func main() {
 	log.Println("bbb")
 
 	// 로그 출력 않하기
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(io.Discard)
 	log.Println("xxx")
 }

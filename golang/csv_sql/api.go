@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -112,8 +112,8 @@ func uploadData(w http.ResponseWriter, r *http.Request) error {
 	tbName = "ds_" + strings.ReplaceAll(tbName, ".", "_")
 	log.Println("tbName:", tbName)
 
-	// buf, _ := ioutil.ReadAll(file)
-	// backup := ioutil.NopCloser(bytes.NewBuffer(buf))
+	// buf, _ := io.ReadAll(file)
+	// backup := io.NopCloser(bytes.NewBuffer(buf))
 	// log.Println("-----", string(buf))
 	rows, _ := csv.NewReader(file).ReadAll()
 	// log.Println("-----", rows)
@@ -140,7 +140,7 @@ func uploadData(w http.ResponseWriter, r *http.Request) error {
 }
 
 func queryData(w http.ResponseWriter, r *http.Request) error {
-	buf, _ := ioutil.ReadAll(r.Body)
+	buf, _ := io.ReadAll(r.Body)
 	query := string(buf)
 	log.Println(query)
 

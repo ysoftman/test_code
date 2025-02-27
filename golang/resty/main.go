@@ -94,6 +94,6 @@ func printResponse(resp resty.Response) {
 	// }
 	// fmt.Println("resp.RawBody():", string(buffer))
 
-	// buffer2, _ := ioutil.ReadAll(resp.RawBody())
+	// buffer2, _ := io.ReadAll(resp.RawBody())
 	// fmt.Println("resp.RawBody():", buffer2)
 }

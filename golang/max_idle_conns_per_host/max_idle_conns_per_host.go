@@ -5,7 +5,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -86,12 +85,12 @@ func startClientReq(jobNum int) {
 		}
 		reqCnt++
 		var bodybtyes []byte
-		bodybtyes, err = ioutil.ReadAll(resp.Body)
+		bodybtyes, err = io.ReadAll(resp.Body)
 		if err == nil {
 			fmt.Println("Client (", jobNum, "-", reqCnt, ")", string(bodybtyes))
 		}
 		// resp.Body 는 다음 http 연결(소켓)에 재사용되기 때문에 devNull 로 만들어야 한다.
-		io.Copy(ioutil.Discard, resp.Body)
+		io.Copy(io.Discard, resp.Body)
 		resp.Body.Close()
 	}
 }
@@ -107,12 +106,12 @@ func startCustomClientReq(jobNum int) {
 		}
 		reqCnt++
 		var bodybtyes []byte
-		bodybtyes, err = ioutil.ReadAll(resp.Body)
+		bodybtyes, err = io.ReadAll(resp.Body)
 		if err == nil {
 			fmt.Println("Client (", jobNum, "-", reqCnt, ")", string(bodybtyes))
 		}
 		// resp.Body 는 다음 http 연결(소켓)에 재사용되기 때문에 devNull 로 만들어야 한다.
-		io.Copy(ioutil.Discard, resp.Body)
+		io.Copy(io.Discard, resp.Body)
 		resp.Body.Close()
 	}
 }

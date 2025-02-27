@@ -5,7 +5,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 )
@@ -50,21 +50,21 @@ func main() {
 	defer ht.Close()
 	// 테스트 http 서버에 get 요청
 	resp, _ := http.Get(ht.URL)
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, _ := io.ReadAll(resp.Body)
 	fmt.Println("[client]", string(body))
 
 	ht2 := makeMockup2()
 	defer ht2.Close()
 	resp2, _ := http.Get(ht2.URL)
-	body2, _ := ioutil.ReadAll(resp2.Body)
+	body2, _ := io.ReadAll(resp2.Body)
 	fmt.Println("[client]", string(body2))
 
 	htmux := makeMockupMux()
 	defer htmux.Close()
 	respmux, _ := http.Get(htmux.URL + "/path1")
-	bodymux, _ := ioutil.ReadAll(respmux.Body)
+	bodymux, _ := io.ReadAll(respmux.Body)
 	fmt.Println("[client]", string(bodymux))
 	respmux, _ = http.Get(htmux.URL + "/path2")
-	bodymux, _ = ioutil.ReadAll(respmux.Body)
+	bodymux, _ = io.ReadAll(respmux.Body)
 	fmt.Println("[client]", string(bodymux))
 }

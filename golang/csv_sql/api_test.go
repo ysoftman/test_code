@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -43,7 +42,7 @@ func TestUpload(t *testing.T) {
 
 	assert.Equal(t, resp.StatusCode, http.StatusOK)
 	defer resp.Body.Close()
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Errorf("error to be nil, got %v", err)
 	}
@@ -67,7 +66,7 @@ func TestQuery(t *testing.T) {
 	resp := w.Result()
 	assert.Equal(t, resp.StatusCode, http.StatusOK)
 	defer resp.Body.Close()
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	// log.Println("====", string(data))
 	if err != nil {
 		t.Errorf("error to be nil, got %v", err)

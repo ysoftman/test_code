@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -30,8 +30,8 @@ func get() {
 	}
 	defer resp.Body.Close()
 	// 응답결과 출력
-	// ioutil.ReadAll 로 resp.Body 읽고 나면 resp.Body 내용은 사라진다.(read 시 offset 이 EOF 로 이동되어서)
-	bodybtyes, err := ioutil.ReadAll(resp.Body)
+	// io.ReadAll 로 resp.Body 읽고 나면 resp.Body 내용은 사라진다.(read 시 offset 이 EOF 로 이동되어서)
+	bodybtyes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal("can't read resp.Body")
 	}
@@ -90,8 +90,8 @@ func post() {
 	defer resp.Body.Close()
 
 	// 응답결과 출력
-	// ioutil.ReadAll 로 resp.Body 읽고 나면 resp.Body 내용은 사라진다.(read 시 offset 이 EOF 로 이동되어서)
-	bodybtyes, err := ioutil.ReadAll(resp.Body)
+	// io.ReadAll 로 resp.Body 읽고 나면 resp.Body 내용은 사라진다.(read 시 offset 이 EOF 로 이동되어서)
+	bodybtyes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal("can't read resp.Body")
 	}

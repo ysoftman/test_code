@@ -7,8 +7,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -192,7 +192,7 @@ func decodeJSON() {
 
 func unmarshalJSONFile() {
 	// json file 로드
-	file, err := ioutil.ReadFile("./json_data.json")
+	file, err := os.ReadFile("./json_data.json")
 	if err != nil {
 		log.Fatal("can't read file ...", err.Error())
 	}

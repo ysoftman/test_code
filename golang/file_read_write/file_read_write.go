@@ -6,7 +6,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"io/ioutil"
 )
 
 func main() {
@@ -25,8 +24,8 @@ func main() {
 
 	// 파일 쓰기 방법2
 	// 파일 생성 시 내용 기록하기
-	buffer := []byte("ioutil.WriteFile() 사용해서 쓰기")
-	ioutil.WriteFile("./test2.txt", buffer, 0644)
+	buffer := []byte("os.WriteFile() 사용해서 쓰기")
+	os.WriteFile("./test2.txt", buffer, 0644)
 
 	// 파일 읽기 방법1
 	// 파일 읽기(os.FILE , error 리턴)
@@ -59,7 +58,7 @@ func main() {
 
 	// 파일 읽기 방법2
 	// 파일 읽기([]bytes, error 리턴)
-	buffer2, err := ioutil.ReadFile("./test2.txt")
+	buffer2, err := os.ReadFile("./test2.txt")
 	if err != nil {
 		fmt.Println("fail to read file")
 		os.Exit(1)

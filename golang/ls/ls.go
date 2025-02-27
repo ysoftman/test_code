@@ -5,9 +5,9 @@ package main
 
 // import "log"
 import (
-	"os"
 	"fmt"
-	"io/ioutil"
+	"log"
+	"os"
 )
 
 func main() {
@@ -24,8 +24,17 @@ func main() {
 	//	log.Println("targetpath= ", targetpath)
 
 	// 대상 경로의 디렉토리 및 파일 리스트 파악
-	fileinfo, _ := ioutil.ReadDir(targetpath)
-	for _, value := range fileinfo {
-		fmt.Printf("Name(%v), Size(%v), IsDir(%v), Mode(%v), ModTime(%v)\n", value.Name(), value.Size(), value.IsDir(), value.Mode(), value.ModTime())
+	entries, _ := os.ReadDir(targetpath)
+	for _, entry := range entries {
+		if entry.Type().IsRegular() {
+			filePath := targetpath + "/" + entry.Name()
+			fileInfo, err := os.Stat(filePath)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			fmt.Printf("Name(%v), Size(%v), IsDir(%v), Mode(%v), ModTime(%v)\n",
+				fileInfo.Name(), fileInfo.Size(), fileInfo.IsDir(), fileInfo.Mode(), fileInfo.ModTime())
+		}
 	}
 }
