@@ -38,6 +38,15 @@ echo "\${PWD%%/*}" ${PWD%%/*}
 echo "\${BASH_VERSION}:" ${BASH_VERSION}
 # 하드웨어 타입
 echo "\${HOSTTYPE}:" ${HOSTTYPE}
+echo "\${OSTYPE}:" ${OSTYPE}
+# 마지막 백그라운 job PID
+echo "\$!:" $!
+# 이전 명령의 마지막 argument
+echo "\$_:" $_
+# 명령 exit status
+echo "\$?:" $?
+# 현재 실행 PID
+echo "\$$:" $$
 
 # 실행중인 스크립트 파일 위치를 나타내는 환경변수
 echo "\${BASH_SOURCE[@]}:" "${BASH_SOURCE[@]}"
