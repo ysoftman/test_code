@@ -32,8 +32,8 @@ fi
 COMMIT_MSG_FILE=$1
 echo "COMMIT_MSG_FILE=$COMMIT_MSG_FILE"
 # commit message 체크
-regex="update|modify|fix|test|feature|add"
-cat $COMMIT_MSG_FILE | rg -v "^#" | rg -i $regex > /dev/null
+regex="update|modify|fix|test|feature|add|refact"
+cat $COMMIT_MSG_FILE | rg -v "^#" | rg -i $regex >/dev/null
 ret=$?
 if [[ $ret != 0 ]]; then
     printf "${red}check message rule(%s)...\nerror(return:%d)${reset_color}\n" "$regex" "$ret"
