@@ -7,7 +7,7 @@ docker rm -f ysoftman_centos
 docker rmi -f ysoftman/centos
 
 # dockerfile 로 이미지 빌드
-docker build -f Dockerfile_centos -t ysoftman/centos .
+docker build -f centos.dockerfile -t ysoftman/centos .
 
 # dockerhub 로그인
 docker login

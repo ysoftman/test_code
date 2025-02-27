@@ -7,7 +7,7 @@ docker rm -f ysoftman_centos_simple
 docker rmi -f ysoftman/centos_simple
 
 # dockerfile 로 이미지 빌드
-docker build -f Dockerfile_centos_simple -t ysoftman/centos_simple .
+docker build -f centos_simple.dockerfile -t ysoftman/centos_simple .
 
 # dockerhub 로그인
 docker login

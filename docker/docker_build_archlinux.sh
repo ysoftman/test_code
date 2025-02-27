@@ -7,7 +7,7 @@ docker rm -f ysoftman_archlinux
 docker rmi -f ysoftman/archlinux
 
 # dockerfile 로 이미지 빌드
-docker build -f Dockerfile_archlinux -t ysoftman/archlinux .
+docker build -f archlinux.dockerfile -t ysoftman/archlinux .
 
 # dockerhub 로그인
 docker login

@@ -7,7 +7,7 @@ docker rm -f redis_cluster_proxy
 docker rmi -f ysoftman/redis_cluster_proxy
 
 # dockerfile 로 이미지 빌드
-docker build -f Dockerfile_redis_cluster_proxy -t ysoftman/redis_cluster_proxy .
+docker build -f redis_cluster_proxy.dockerfile -t ysoftman/redis_cluster_proxy .
 
 # dockerhub 로그인
 docker login

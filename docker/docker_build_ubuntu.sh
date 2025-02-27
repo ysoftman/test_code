@@ -7,7 +7,7 @@ docker rm -f ysoftman_ubuntu
 docker rmi -f ysoftman/ubuntu
 
 # dockerfile 로 이미지 빌드
-docker build -f Dockerfile_ubuntu -t ysoftman/ubuntu .
+docker build -f ubuntu.dockerfile -t ysoftman/ubuntu .
 
 # dockerhub 로그인
 docker login
