@@ -6,7 +6,7 @@
 # author: ysoftman
 #
 # 커밋 메시지는 다음 단어로 시작해 주세요.
-# update|modify|fix|test|feature|add
+# update|modify|fix|test|feature|add|refact
 #
 # 참고로 gitmoji 툴로 커밋을 작성하면 편합니다.
 # 설치
