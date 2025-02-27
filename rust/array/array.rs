@@ -5,7 +5,7 @@ fn main() {
     println!("arr1[0]:{}", arr1[0]);
     println!("arr1[1]:{}", arr1[1]);
     // 안전한 get 함수를 이용하면 없는 index값은 None으로 나온다.
-    // get 함수 결과는 debuf print 로 출력해야 한다.
+    // get 함수 결과는 debug print 로 출력해야 한다.
     println!("arr1[1]:{:?}", arr1.get(2));
     println!("arr1[1]:{:?}", arr1.get(7));
     // &으로 배열 슬라이싱할 수 있다.
