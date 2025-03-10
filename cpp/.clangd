@@ -1,0 +1,17 @@
+# https://clangd.llvm.org/installation
+CompileFlags:
+  Add: 
+    # - "-I/opt/homebrew/opt/gcc/include/c++/14"
+    # - "-I/opt/homebrew/opt/gcc/include/c++/14/bits"
+    # - "-I/opt/homebrew/opt/gcc/include/c++/14/tr1"
+    # - "-I/opt/homebrew/opt/gcc/include/c++/14/tr2"
+    # - "-I/opt/homebrew/opt/gcc/include/c++/14/aarch64-apple-darwin24"
+    # - "-L/opt/homebrew/opt/gcc/lib/gcc/14"
+    - "-I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+    # - "-I/opt/homebrew/opt/llvm/include/c++/v1"
+    - "-L/opt/homebrew/opt/llvm/lib"
+    - "-Wall"
+    - "-xc++"
+    - "-std=c++17"
+Index:
+  StandardLibrary: Yes
