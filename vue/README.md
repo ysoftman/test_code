@@ -10,38 +10,53 @@ npm install -g @vue/cli vuetify bootstrap-vue bootstrap vuedraggable eslint esli
 vue create ysoftman-project
 cd ysoftman-project
 
+# .eslintrc 설정 파일 생성
+eslinit --init
 
 # 2019-11-20
 # vuetify 버전 2 업그레이드
-cd ysoftman-project
 vue upgrade vuetify
 # 기타 업그레이드
 vue upgrade
 
-# .eslintrc 설정 파일 생성
-eslinit --init
+# 2025-03-06
+# lockfile 버전으로 업그레이드
+npm i --lockfile-version 3 --frozen-lockfile
+# npm -> 속도 빠른 bun 을 사용하자
+bun install
+bun update
+# vue/cli 5.08 으로 업데이트
+bun update -g @vue/cli
 ```
 
 ## ysoftman-project Build Setup
 
-``` bash
+```bash
 # package.json 에 명시된 패키지 최신으로 업데이트(사용안함)
 # npm install npm-check-updates
 # ncu -u
+# package.json
+bun add bootstrap fsevents minimist loader-utils thenify shell-quote elliptic node-fetch @babel/traverse eventsource json-schema handlebars archive body-parser
 
 # install dependencies
 # ysoftman-project 에서 npm_modules 용량이 너무 커서 커밋대상에서 제외하자.
 # 패키지 설치
-npm install
+#npm install
+bun install
 
 # serve with hot reload at localhost:8080
-npm run serve
+# npm run serve
+# 'ERR_OSSL_EVP_UNSUPPORTED' 발생시
+export NODE_OPTIONS=--openssl-legacy-provider
+bun run serve
 
 # build for production with minification
-npm run build
+# npm run build
+bun run build
 
 # build for production and view the bundle analyzer report
-npm run build --report
+# npm run build --report
+bun run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
@@ -53,9 +68,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - ESLint 를 설치한 경우 vscode 로 auto formatting 시 vue 문법에 맞지 않게 ; 이나 공백이 사리져 에러 발생 다음 구문을 명시해 비활성화 할 수 있다.
 
   ```javascript
-  <script>
-  /* eslint-disable */
-  </script>
+  <script>/* eslint-disable */</script>
   ```
 
 - npm run serve 에서 component 관련 콘솔에 다음 경고가 발생하는 경우는 런타임용 파일(vue.runtime.esm.js)을 사용하기 때문이다.
