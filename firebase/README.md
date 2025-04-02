@@ -3,13 +3,15 @@
 ## firebase 프로젝트 생성 후 최초 설정
 
 ```bash
-# 프로젝트 정보 참고해 html/web_api_key.js(.gitignore 로 추가했음) 생성
 # https://console.firebase.google.com/u/0/project/ysoftman-firebase/settings/general/
-# 키노출시(깃헙에 푸시된  경우) 아래 링크에서 재생성하자
+# 에서 web api key 참고해 src/web_api_key.js(.gitignore 로 추가했음) 생성
+# 키노출시(깃헙에 푸시된 경우) 다음 링크에서 재생성하자
 # https://console.cloud.google.com/apis/credentials?project=ysoftman-firebase
+cat << zzz >! src/web_api_key.js
 export const webApiKey = () => {
-    return "여기에 api키 설정";
-}
+  return "여기에 api키 설정";
+};
+zzz
 
 # firebase -> storage -> rules
 # 읽기 허용으로 설정
@@ -67,7 +69,7 @@ gsutil mv -pv "gs://ysoftman-firebase.appspot.com/*.jpg" "gs://ysoftman-firebase
 ## firebase 프로젝트 배포
 
 ```bash
-# firebase-tools 설치(bun 설치가 빠르다)
+# firebase-tools (cli) 설치(bun 설치가 빠르다)
 npm install -g firebase-tools
 # or
 yarn global add firebase-tools
@@ -92,15 +94,21 @@ firebase projects:list
 
 # 최초 한번만 패키지 설치
 yarn
+# 또는
+bun install
 
 # 로컬 테스트를 위해 로컬(dist) 서빙
 yarn build && yarn serve
+# 또는
+bun serve
 
 # 로컬 확인
 http://localhost:8080/
 
 # 배포
 yarn build && firebase deploy
+# 또는
+bun run build && firebase deploy
 
 # 배포 확인
 https://ysoftman-firebase.firebaseapp.com/
