@@ -1,4 +1,5 @@
 #!/bin/bash
+# brew install coreutils 로 timeout 커맨드 설치
 
 # timeout duration command command-args
 
