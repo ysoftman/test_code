@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/go-jose/go-jose/v4/json"
 	"github.com/mitchellh/mapstructure"
-	"gopkg.in/square/go-jose.v2/json"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
