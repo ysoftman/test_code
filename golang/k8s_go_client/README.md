@@ -7,5 +7,5 @@
 go build -mod=mod
 
 # 사용방법은 -h 참고
-./myk8s -h
+./k8s_go_clinet -h
 ```
