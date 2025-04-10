@@ -13,7 +13,6 @@ require (
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/stretchr/testify v1.10.0
-	gopkg.in/square/go-jose.v2 v2.6.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
