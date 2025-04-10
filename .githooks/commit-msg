@@ -32,7 +32,7 @@ fi
 COMMIT_MSG_FILE=$1
 echo "COMMIT_MSG_FILE=$COMMIT_MSG_FILE"
 # commit message 체크
-regex="update|modify|fix|test|feature|add|refact"
+regex="update|modify|fix|test|feature|add|refact|rename|remove|delete"
 cat $COMMIT_MSG_FILE | rg -v "^#" | rg -i $regex >/dev/null
 ret=$?
 if [[ $ret != 0 ]]; then
