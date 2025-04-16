@@ -72,7 +72,7 @@ func makeServerVersion() ServerVersion {
 //	@Failure		500	{string}	string	"StatusInternalServerError"
 //	@Router			/version [get]
 func GetServerVersion(c *gin.Context) {
-	c.JSON(http.StatusOK, makeServerVersion())
+	SetResponse(c, http.StatusOK, makeServerVersion())
 }
 
 // PostData
@@ -91,17 +91,15 @@ func GetServerVersion(c *gin.Context) {
 func PostData(c *gin.Context) {
 	data, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, nil)
+		SetResponse(c, http.StatusBadRequest, nil)
 		return
 	}
 	result := Data1{}
 	if err := json.Unmarshal(data, &result); err != nil {
-		c.JSON(http.StatusBadRequest, nil)
+		SetResponse(c, http.StatusBadRequest, nil)
 		return
 	}
-	result.Data1 = "updated by server"
-	result.Data2 = 10
-	c.JSON(http.StatusOK, result)
+	SetResponse(c, http.StatusOK, result)
 }
 
 type MyData struct {
@@ -125,7 +123,7 @@ func CheckReq() gin.HandlerFunc {
 //	           c.Next()
 //	       }),
 //	       timeout.WithResponse(func(c *gin.Context) {
-//	           c.JSON(http.StatusRequestTimeout, gin.H{
+//	           SetResponse(c, http.StatusRequestTimeout, gin.H{
 //	               "message": "timeout",
 //	           })
 //	       }),
@@ -183,6 +181,7 @@ func timeoutMiddleware2() gin.HandlerFunc {
 			panic(p)
 		case <-finish:
 			fmt.Println("finish")
+			Response(c)
 		case <-c.Request.Context().Done():
 			err := c.Request.Context().Err()
 			if err == nil || err.Error() == "" {
@@ -190,10 +189,38 @@ func timeoutMiddleware2() gin.HandlerFunc {
 			}
 			// context.DeadlineExceeded
 			// context.Canceled
-			c.JSON(http.StatusRequestTimeout, gin.H{
+			SetResponse(c, http.StatusRequestTimeout, gin.H{
 				"message": err.Error(),
 			})
+			Response(c)
 		}
+	}
+}
+
+const GinResponse = "GinResponse"
+
+type GinResponseData struct {
+	Status int
+	Object any
+}
+
+// 응답하고 finish 채널로 완료  신호를 보내기 전에 timeout 이 발생하면 응답이 중복될 수 있어 응답 데이터 설정만하고 실제 timeout middleware 에서 응답을 주도록 한다.
+func SetResponse(c *gin.Context, code int, obj any) {
+	resp := GinResponseData{
+		Status: code,
+		Object: obj,
+	}
+	c.Set(GinResponse, resp)
+}
+
+func Response(c *gin.Context) {
+	if respVal, exist := c.Get(GinResponse); exist {
+		resp, ok := respVal.(GinResponseData)
+		if !ok {
+			fmt.Println("invalid GinResponseData type")
+			return
+		}
+		c.JSON(resp.Status, resp.Object)
 	}
 }
 
@@ -273,7 +300,7 @@ func main() {
 		// timeout 발생해보자.
 		// time.Sleep(900 * time.Millisecond)
 
-		c.JSON(http.StatusOK, gin.H{
+		SetResponse(c, http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
