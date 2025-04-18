@@ -18,7 +18,7 @@
 # 응답이 느린 슬로쿼리보다 응답이 빠른 쿼리를 동시에 여러개 부하를 주면 /ready 응답이 부하에 따라 10초이상 느려짐(아래 재현 스크립트로 테스트)
 #
 # [결론]
-# 쿼리 기간을 너무 길게하지 말고 dashboard 하나에 다양한 pane(1개의 pand 에 n 개의 쿼리가 존재) 개수를 너무 많이 넣지 말자
+# 쿼리 기간을 너무 길게하지 말고 dashboard 하나에 다양한 pane(1개의 pand 에 n 개의 쿼리가 존재) 개수를 너무 많이 넣지 말고 요청을 여러번(refresh) 하지말자.
 
 ##### ready 지연 재현을 위한 테스트 #####
 prometheus_host="ysoftman-prometheus.test.abc"
