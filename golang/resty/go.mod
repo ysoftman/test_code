@@ -7,4 +7,4 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 )
 
-require golang.org/x/net v0.37.0 // indirect
+require golang.org/x/net v0.39.0 // indirect
