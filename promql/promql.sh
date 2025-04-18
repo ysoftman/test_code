@@ -65,6 +65,7 @@ for ((i = 0; i < 10; i++)); do
         [[ $q =~ ^# ]] && continue
         # 공백 제거
         # echo $q | sed "s/ //g"
+        # -g, --globoff 를 사용하면 {}[] 문자 인코딩 문제를 해결할 수 있다
         curl -g http://${prometheus_host}/api/v1/query_range?query="${q// /}&start=2025-04-01T00:00:00Z&end=2025-04-17T00:00:00Z&step=1h" >/dev/null &
     done
 done
