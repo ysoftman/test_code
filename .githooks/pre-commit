@@ -31,10 +31,9 @@ fi
 install_python_pkg() {
     # echo ${@}
     for i in "$@"; do
-        ${1} --version 2>&1 /dev/null
-        if [[ $? != 0 ]]; then
+        if ! ${1} --version /dev/null 2>&1; then
             set -e
-            pip3 install ${1} > /dev/null
+            pip3 install ${1} >/dev/null
             set -
         fi
     done
@@ -48,7 +47,6 @@ failed_and_exit() {
     exit 1
 }
 
-
 # --cached(--staged) : 스테이징된것만
 # select only Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), Unmerged (U), Unknown (X)
 # 소문자인로 사용시 exclude
@@ -57,7 +55,7 @@ failed_and_exit() {
 # . ':!./cpp' ':!./boost' : ./cpp 와 ./boost 디렉토리를 제외한 현재 하위 디렉토리에 대해서 diff,
 # : 사용참고 <https://git-scm.com/docs/gitglossary#Documentation/gitglossary.txt-aiddefpathspecapathspec>
 staging_files=$(git diff --diff-filter=d --name-only -- . ':!./cpp' ':!./boost')
-if command -v rg &> /dev/null; then
+if command -v rg &>/dev/null; then
     echo ".go import alias 에 대문자가 포함된 경우 체크"
     for file in $staging_files; do
         echo $file
@@ -79,26 +77,22 @@ fi
 
 # pylint 체크
 for file in $staging_files; do
-    pylint --disable="all" --enable="W0611" $file
-    if [[ $? != 0 ]]; then
+    if ! pylint --disable="all" --enable="W0611" $file; then
         failed_and_exit "pylint"
     fi
 done
 
 # black 포맷팅
 for file in $staging_files; do
-    black $file
-    if [[ $? != 0 ]]; then
+    if ! black $file; then
         failed_and_exit "black"
     fi
     git add $file
 done
 
 # typos 로 오타 체크
-type typos
-if [[ $? == 0 ]]; then
-    typos
-    if [[ $? != 0 ]]; then
+if command -v typos >/dev/null; then
+    if ! typos; then
         failed_and_exit "typos"
     fi
 fi

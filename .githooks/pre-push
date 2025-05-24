@@ -24,14 +24,12 @@ if [[ $current_shell == *"bash"* ]]; then
     ECHO="echo -e"
 fi
 
-
 # git-lfs 관련
 command -v git-lfs >/dev/null 2>&1 || {
-    echo >&2 "\nThis repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting '.git/hooks/pre-push'.\n";
+    printf >&2 "\nThis repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting '.git/hooks/pre-push'.\n"
     $ECHO "${green}[.githooks/pre-push] succeeded~${reset_color}"
-    exit 2;
+    exit 2
 }
 git lfs pre-push "$@"
-
 
 $ECHO "${green}[.githooks/pre-push] succeeded~${reset_color}"
