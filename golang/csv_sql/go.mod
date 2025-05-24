@@ -7,7 +7,7 @@ toolchain go1.24.1
 require (
 	github.com/dgraph-io/ristretto v0.2.0
 	github.com/go-chi/chi v1.5.5
-	github.com/mattn/go-sqlite3 v1.14.24
+	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/stretchr/testify v1.8.4
 	github.com/xwb1989/sqlparser v0.0.0-20180606152119-120387863bf2
 )
@@ -19,6 +19,6 @@ require (
 	github.com/golang/glog v1.2.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
