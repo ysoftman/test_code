@@ -74,13 +74,14 @@ fn main() {
     const MY_NAME: &str = "ysoftman";
     println!("MY_NAME : {}", MY_NAME);
 
-    // shadowing : 같은 변수의 이름을 사용하는 경우, 원래의 변수는잠깐 사라지고 나중에 필요할대
-    // 나타난다
-    let y = 1;
-    {
-        let y = y + 1;
-        println!("y:{}", y);
-    }
+    // shadowing : 같은 변수의 이름을 다시 선언해서 기존 변수를 가리는(덮어쓰는) 기능이다.
+    // mut 변수와 차이는 변수 이름을 유지하면서 타입을 변경하는 효과를 낼 수 있다.
+    // mut 변수는 다음과 같이 타입을 할 수 없다.
+    // let mut my = "aa";
+    // my = my.len() + 1; // error
+    let y = "aaa";
+    let y = y.len() + 1;
+    println!("y:{}", y);
     println!("y:{}", y);
 
     // 문자형식의 불변 변수
