@@ -8,6 +8,7 @@ fn main() {
     // expected expression, found `let` statement
     // let b = let a = 1;
     // println!("b = {b}");
+    // 참고로 c언어에서는 int a = 1, b = a;가 된다.
     let x = 1;
     println!("x = {x}");
     println!("func1 = {}", func1(1));
