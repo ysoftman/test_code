@@ -8,7 +8,8 @@ use std::path::PathBuf;
 use structopt::StructOpt;
 
 use std::env;
-
+//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+#[allow(dead_code)]
 fn main() {
     // 기본 env args 사용
     // map 내의 클로저에서 스트링으로 변환된것을 collect

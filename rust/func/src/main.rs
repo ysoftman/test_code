@@ -1,11 +1,15 @@
 fn mul_number(one: i32, two: i32) -> i32 {
-    let result = {
-        let num = 2;
-        num * one * two
-    };
-    //return result;
-    // do not use ; if return value
-    result
+    // unnecessary let binding
+    // let result = {
+    //     let num = 2;
+    //     num * one * two
+    // };
+    // //return result;
+    // // do not use ; if return value
+    // result
+
+    let num = 2;
+    num * one * two
 }
 
 fn main() {

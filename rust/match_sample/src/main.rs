@@ -64,12 +64,13 @@ fn value_in_cents(coin: Coin) -> u32 {
 fn plus_one(x: Option<i32>) -> Option<i32> {
     // Option 타입은 Some, None 모두 match 패턴으로 명시해야 한다.
     // Some, None 둘 중에 하나라도 빠지면 컴파일 에러 발생한다.
-    match x {
-        None => None,
-        // x는 Some(5), Some(1) 인 경우
-        // i 는 5 또는 1 에 바인딩된다.
-        Some(i) => Some(i + 1),
-    }
+    // match x {
+    //     None => None,
+    //     // x는 Some(5), Some(1) 인 경우
+    //     // i 는 5 또는 1 에 바인딩된다.
+    //     Some(i) => Some(i + 1),
+    // }
+    x.map(|i| i + 1)
 }
 
 fn some_u8_value(u: u8) -> String {
@@ -115,10 +116,12 @@ fn multi_match() {
 
     let point = Point { x: 0, y: 1, z: 2 };
     println!("x:{}, y:{}, z:{}", point.x, point.y, point.z);
-    match point {
-        // x 외 다른 필드는 .. 무시하기
-        Point { x, .. } => println!("x:{}", x),
-    }
+    // match point {
+    //     // x 외 다른 필드는 .. 무시하기
+    //     Point { x, .. } => println!("x:{}", x),
+    // }
+    let Point { x, .. } = point;
+    println!("x:{}", x)
 }
 
 fn some_ref_match() {

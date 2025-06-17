@@ -25,7 +25,7 @@ impl Post {
         // &self 로 부터 state 이동을 위해 as_ref() 로 Option 참조자 사용
         // unwrap() Option 값이 None 이라면 패닉 발생, 다른 포스트의 메소들은 state 가 항상 Some 을 보장하도록 했다.
         // Option 값이 Some 이면 현태 state 의 content() 메소드를 호출한다.
-        self.state.as_ref().unwrap().content(&self)
+        self.state.as_ref().unwrap().content(self)
     }
 
     // 포스트 리뷰

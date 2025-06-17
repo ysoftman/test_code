@@ -3,7 +3,7 @@ fn func1(a: i32) -> i32 {
     a + 1
 }
 fn main() {
-    // 구문(statment)는 리턴이 없다. ;  으로 끝난다
+    // 구문(statement)는 리턴이 없다. ;  으로 끝난다
     // 다음과 같은 구문(리턴이 없으니) 사용할 수 없다.
     // expected expression, found `let` statement
     // let b = let a = 1;

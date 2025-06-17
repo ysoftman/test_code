@@ -10,6 +10,8 @@
 // let b = aa_char:aa('a');
 // 로 실제 타입에 맞는 것로 컴파일시 교체된다.
 
+//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+#[allow(dead_code)]
 // 필드가 모두 같은 값을 가지는 제너릭
 #[derive(Debug)]
 struct Point1<T> {

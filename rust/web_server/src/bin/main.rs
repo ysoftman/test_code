@@ -13,6 +13,10 @@ use std::net::TcpStream;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:9090").unwrap();
+    println!(
+        "start server...{}",
+        listener.local_addr().expect("failed to get local_addr")
+    );
     // 많은 요청 처리를 위해 5개의 쓰레드를 가진 쓰레드풀 생성
     // ThreadPool 은 lib.rs 모듈에 crate 및 구현해놨다.
     let thread_pool = ThreadPool::new(5);
@@ -42,7 +46,7 @@ fn handler1(mut stream: TcpStream) {
     // 0으로 초기화된 512바이트 버퍼 생성
     let mut buffer = [0; 512];
     // 스트림을 버퍼로 읽기
-    stream.read(&mut buffer).unwrap();
+    stream.read_exact(&mut buffer).unwrap();
     // from_utf8_lossy() 는 u8 -> String 으로 변경하는데 유효하지 않는 문자들에 대해서는 U+FFFD REPLACEMENT CHARACTER 로 치환된다.
     // 바이트로 데이터로 채워진 buffer 를  String 으로 변환해 출력
     println!("[Request]\n{}", String::from_utf8_lossy(&buffer[..]));
@@ -78,7 +82,7 @@ fn handler1(mut stream: TcpStream) {
 
     let response = format!("{}\r\n{}\r\n\r\n{}", status_line, headers, contents);
     // 스트림을 통해 응답 주기
-    stream.write(response.as_bytes()).unwrap();
+    stream.write_all(response.as_bytes()).unwrap();
     stream.flush().unwrap();
     println!("[response]\n{}", response);
 }

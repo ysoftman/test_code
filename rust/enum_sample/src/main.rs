@@ -1,11 +1,14 @@
 // ysoftman
 // enum test
+//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+#[allow(dead_code)]
 #[derive(Debug)]
 struct Fruit {
     name: String,
     value: u32,
 }
-
+//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+#[allow(dead_code)]
 #[derive(Debug)]
 // enum(열거형) 이름과 값들(variants)들 모두 carmel case 를 쓰도록 한다. 아니면 경고 발생
 enum YsoftmanEnum {

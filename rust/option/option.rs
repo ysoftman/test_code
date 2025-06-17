@@ -13,14 +13,20 @@ fn main() {
     let none_val: Option<i32> = None;
 
     // Some 은 값이 없을 수도 있기 때문에 match None 에 대한 처리를 해야 한다.
-    let temp_val1 = match val1 {
-        None => 0,
-        Some(v) => v,
-    };
-    let temp_val2 = match val2 {
-        None => 0,
-        Some(v) => v,
-    };
+    // let temp_val1 = match val1 {
+    //     None => 0,
+    //     Some(v) => v,
+    // };
+    // let temp_val1 = val1.unwrap_or_default();
+    // let temp_val1 = val1.unwrap_or(0);
+    // 현재 이 코드는 https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_literal_unwrap 경고로 아래와 사용했다.
+    let temp_val1 = 123;
+    // let temp_val2 = match val2 {
+    //     None => 0,
+    //     Some(v) => v,
+    // };
+    // let temp_val2 = val2.unwrap_or(0);
+    let temp_val2 = 555;
 
     // Option 타입은 디폴트포맷터({})를 사용할 수 없고 {:?}를 사용해야 한다.
     println!(

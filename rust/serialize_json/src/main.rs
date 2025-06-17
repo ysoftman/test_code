@@ -32,7 +32,7 @@ fn main() {
     println!("{}", ser["phones"][0]);
     println!("{}", ser["phones"][1]);
     // serialize
-    println!("{}", ser.to_string());
+    println!("{}", ser);
 
     println!("-----");
 
@@ -51,7 +51,7 @@ fn main() {
     println!("{}", data2["other"]["USA"][0]);
     println!("{}", data2["other"]["USA"][1]);
     // serialize
-    println!("{}", data2.to_string());
+    println!("{}", data2);
 
     println!("-----");
 

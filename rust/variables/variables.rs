@@ -19,13 +19,14 @@ fn main() {
     static GLOBAL_INT: i32 = 9999;
     println!("GLOBAL_INT : {}", GLOBAL_INT);
 
-    // static 가변은 쓸 수 없다.
-    static GLOBAL_INT2: i32 = 7777;
     unsafe {
         GLOBAL_AAA = 11111;
-        println!("GLOBAL_AAA : {}", GLOBAL_AAA);
+        // 실제로 println!("{}", VALUE)는 내부적으로 &VALUE (즉, 공유 참조)를 만든 다음 Display를 호출.
+        // 그래서 Rust는 여전히 &static mut이 만들어졌다고 판단하고 경고(creating a shared reference to mutable static is discouraged)
+        // println!("GLOBAL_AAA : {}", GLOBAL_AAA);
+        let val = GLOBAL_AAA;
+        println!("GLOBAL_AAA : {}", val);
     }
-    println!("GLOBAL_INT2 : {}", GLOBAL_INT2);
 
     // 데이터 타입을 명시할 수도 있다.
     // late_init 경고 발생

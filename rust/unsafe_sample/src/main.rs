@@ -17,9 +17,14 @@ fn main() {
         dangerous();
         println!("{}", abs(-10));
         COUNTER += 1;
-        println!("COUNTER:{}", COUNTER);
+        // 실제로 println!("{}", VALUE)는 내부적으로 &VALUE (즉, 공유 참조)를 만든 다음 Display를 호출.
+        // 그래서 Rust는 여전히 &static mut이 만들어졌다고 판단하고 경고(creating a shared reference to mutable static is discouraged)
+        // println!("COUNTER:{}", COUNTER);
+        let cnt = COUNTER;
+        println!("COUNTER:{}", cnt);
         COUNTER += 1;
-        println!("COUNTER:{}", COUNTER);
+        let cnt = COUNTER;
+        println!("COUNTER:{}", cnt);
     }
 }
 
@@ -35,5 +40,5 @@ extern "C" {
 }
 
 // unsafe trait 도 만들 수 있다.
-unsafe trait Fruit {}
-unsafe impl Fruit for i32 {}
+// unsafe trait Fruit {}
+// unsafe impl Fruit for i32 {}
