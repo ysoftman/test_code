@@ -32,4 +32,7 @@ curl_with_http3/quiche/
 rust/*/target
 target/
 openssl-*/
-bin/
+# 모든 위치에서 bin/redis-* 무시
+**/bin/redis-*
+# bin/*.rs 파일이 있는 경우가 있다.
+!bin/*.rs
