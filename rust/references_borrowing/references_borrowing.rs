@@ -49,8 +49,7 @@ fn calc_length(s: &mut String) -> usize {
 //     &s
 // }
 
-// s 값을 리턴하면 값이 전달되끼 때문에 괜찮다.
+// string 값을 리턴하면 값이 전달되기 때문에 괜찮다.
 fn no_dangling() -> String {
-    let s = String::from("apple");
-    s
+    String::from("apple")
 }

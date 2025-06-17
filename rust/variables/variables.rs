@@ -28,9 +28,11 @@ fn main() {
     println!("GLOBAL_INT2 : {}", GLOBAL_INT2);
 
     // 데이터 타입을 명시할 수도 있다.
-    let a: u8;
+    // late_init 경고 발생
+    // let a: u8;
     // 최초 초기화(u8로 선언되어 있어 0~255값만 가능한다.)
-    a = 255;
+    // a = 255;
+    let a = 255u8;
     println!("a : {}", a);
     // immutable 이라 변경할 수 없다.
     // a = 456;
@@ -40,10 +42,15 @@ fn main() {
     let a = 12.3;
     println!("a : {}", a);
 
-    println!("min i32:{}", std::i32::MIN);
-    println!("max i32:{}", std::i32::MAX);
-    println!("min i64:{}", std::i64::MIN);
-    println!("max i64:{}", std::i64::MAX);
+    // std::숫자형 은 legacy 로 추후 deprecated 예정
+    // println!("min i32:{}", std::i32::MIN);
+    // println!("max i32:{}", std::i32::MAX);
+    // println!("min i64:{}", std::i64::MIN);
+    // println!("max i64:{}", std::i64::MAX);
+    println!("min i32:{}", i32::MIN);
+    println!("max i32:{}", i32::MAX);
+    println!("min i64:{}", i64::MIN);
+    println!("max i64:{}", i64::MAX);
 
     // _(underscore,underbar)로시작하는 변수는 unused 해도 워닝이 발생하지 않는다.
     let _asdf = 123;

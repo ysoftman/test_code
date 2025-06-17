@@ -67,6 +67,7 @@ fn main() {
     if opt.debug {
         println!("opt.debug: {}", opt.debug);
     }
+    println!("opt.verbose: {}", opt.verbose);
     println!("opt.speed: {}", opt.speed);
     println!("opt.level: {:?}", opt.level);
     println!("opt.name1: {}", opt.name1);

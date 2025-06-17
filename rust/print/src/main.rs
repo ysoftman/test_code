@@ -8,8 +8,10 @@ struct User {
 fn main() {
     println!("normal print");
     print!("one");
-    print!("two\n");
-    print!("three\n");
+    // println! 쓰라고 경고 뜬다.
+    // print!("two\n");
+    println!("two");
+    println!("three\n");
 
     let a = 123;
     // pointer

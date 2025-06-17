@@ -26,9 +26,11 @@ fn main() {
     // binary 출력
     println!("{:b}", 255);
     // argument 위치별 출력
-    println!("{0} {1} {0}", 123, "abc");
+    println!("{0} {1} {0}", 123, 999);
     // argument 이름별 출력
-    println!("{val1:} {val2:}", val1 = 1, val2 = "ysoftman");
+    println!("{val1:} ysoftman", val1 = 1);
+    // 문자열을 포맷팅 하지 않고 문자그대로(literal) 사용하라고 clippy 경고가 뜬다.
+    // println!("{val1:} {val2:}", val1 = 1, val2 = "ysoftman");
     // 오른쪽 맞춤(왼쪽에 10 공백을 두고 출력)
     println!("{val1:>10}", val1 = 1);
     // 오른쪽 맞춤(왼쪽에 10 공백을 두고 출력, 변수 뒤에 $를 붙여 usize(unsigned integer)로 취급할 수 있다.)
@@ -39,7 +41,7 @@ fn main() {
     println!("{val1:^10}", val1 = 1);
     // 왼쪽 맞춤(오른쪽에 10 공백을 두고 출력)
     println!("{val1:<10}", val1 = 1);
-    let vec1 = vec![1, 2, 3];
+    let vec1 = [1, 2, 3];
     // debug formatting
     println!("{:?}", vec1);
     // pretty formatting(indent)

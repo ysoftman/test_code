@@ -158,7 +158,8 @@ fn match_guard() {
     let tf = true;
     match num {
         // match 뒤에 if 조건을 추가 할 수 있다.(match guard)
-        10 | 9 | 8 if tf => println!("10 or 9 or 8 s:{}", num),
+        // 10 | 9 | 8 if tf => println!("10 or 9 or 8 s:{}", num),
+        8..=10 if tf => println!("10 or 9 or 8 s:{}", num),
         _ => (),
     }
 }

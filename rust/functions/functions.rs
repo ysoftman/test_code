@@ -35,8 +35,7 @@ fn another_fn(x: i32, y: &str) -> &str {
     // 다음과 같은 식은 허용되지 않는다.
     // a = b = c;
     // temp a 값으로 최초 할당한 후에 읽기에만 사용하기 때문에 불변으로 선언해야 한다.
-    let temp;
-    temp = a;
+    let temp = a;
     a = b;
     b = c;
     c = temp;
@@ -65,7 +64,8 @@ fn another_fn(x: i32, y: &str) -> &str {
 // () 는 유닛(unit) 또는 nil 이라불리는 타입으로 ()라는 값 하나만 가진다.
 // 의미있는 값이 리턴될 필요가 없을때 사용하며 리턴이 없는 경우와 같은데,
 // fn unit_function() {
-fn unit_function() -> () {
+// fn unit_function() -> () { // unneeded unit
+fn unit_function() {
     println!("unit function");
 }
 // 다음과 같이 2개 이상 리턴할때 리턴인덱스를 맞추기 위해서 사용할 수 있다.

@@ -10,7 +10,8 @@
 // }
 
 fn main() {
-    let v1 = vec![1, 2, 3];
+    // let v1 = vec![1, 2, 3]; // useless vec!
+    let v1 = [1, 2, 3];
     // v1_iter 반복자를 생성, v1.iter() 는 반복자를 리턴하는 메소드일 뿐이다.
     // 생성된 반복자를 사용(소비)하면 더이상 사용할 수 없다.
     // 반복자는 항목들을 소비하기 전까지 반복자는 호출해도 아무 동작을 하지 않는다.
@@ -42,14 +43,14 @@ fn main() {
     //     println!("value {}", value);
     // }
 
-    let mut mut_v1 = vec![1, 2, 3];
+    let mut mut_v1 = [1, 2, 3];
     // 가변 참조 변수 반복을 위해선 iter_mut() 을 사용해야 한다.
     for value in mut_v1.iter_mut() {
-        *value = *value + 1;
+        *value += 1;
         println!("value+1 : {}", value);
     }
     for value in mut_v1.iter_mut() {
-        *value = *value + 1;
+        *value += 1;
         println!("value+1 : {}", value);
     }
 
@@ -64,9 +65,12 @@ fn main() {
     assert_eq!(v1_iter.next(), None);
 
     // v1.iter().next()로는 이동되지 않는다.
-    assert_eq!(v1.iter().next(), Some(&1));
-    assert_eq!(v1.iter().next(), Some(&1));
-    assert_eq!(v1.iter().next(), Some(&1));
+    // assert_eq!(v1.iter().next(), Some(&1));
+    // assert_eq!(v1.iter().next(), Some(&1));
+    // assert_eq!(v1.iter().next(), Some(&1));
+    assert_eq!(v1.first(), Some(&1));
+    assert_eq!(v1.first(), Some(&1));
+    assert_eq!(v1.first(), Some(&1));
 
     let v1_iter = v1.iter();
     // sum() 은 next() 로 v1_iter 반복자를 소비해서 이후 v1_iter 를 사용할 수 없다.

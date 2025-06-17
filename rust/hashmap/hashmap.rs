@@ -62,8 +62,8 @@ fn main() {
         hm.get_key_value("apple")
     );
     // 벡터들의 값을 추가
-    let fruit = vec![String::from("orange"), String::from("grape")];
-    let cost = vec![200, 220];
+    let fruit = [String::from("orange"), String::from("grape")];
+    let cost = [200, 220];
     // zip() 으로 fruit, cost 쌍의 튜플을 만들 수 있다.
     // collect() 로 튜플 벡터를 hashmap 으로 바꿀 수 있다.
     // HashMap<_,_> 키와 값에 대해선 입력에 따라 추론되도록 한다.

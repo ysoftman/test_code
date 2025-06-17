@@ -31,7 +31,10 @@ struct LimitTracker<'a, T: 'a + Messenger> {
     value: usize,
     max: usize,
 }
-impl<'a, T> LimitTracker<'a, T>
+//예전에는 'a 같은 라이프타임 annotation 은 명시적으로 자주 썼지만 지금은 Rust가 대부분 자동으로 추론하기 때문에 생략해도 됨.
+// '_ 익명 라이프타임 사용으로 추론 가능하도록 한다.
+// impl<'a, T> LimitTracker<'a, T>
+impl<T> LimitTracker<'_, T>
 where
     T: Messenger,
 {
@@ -46,9 +49,11 @@ where
         self.value = value;
         let percentage_of_max = self.value as f64 / self.max as f64;
 
-        if percentage_of_max >= 0.75 && percentage_of_max < 0.9 {
+        // if percentage_of_max >= 0.75 && percentage_of_max < 0.9 {
+        if (0.75..0.9).contains(&percentage_of_max) {
             self.messenger.send("할당의 75% 이상 사용되었습니다.");
-        } else if percentage_of_max >= 0.9 && percentage_of_max < 1.0 {
+        // } else if percentage_of_max >= 0.9 && percentage_of_max < 1.0 {
+        } else if (0.9..1.0).contains(&percentage_of_max) {
             self.messenger.send("할당의 90% 이상 사용되었습니다.");
         } else if percentage_of_max >= 1.0 {
             self.messenger.send("할당량을 모두 사용했습니다.");

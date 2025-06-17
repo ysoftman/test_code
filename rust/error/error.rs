@@ -11,7 +11,7 @@ use std::io::Read;
 fn main() {
     // panic!("일부러 패닉 발생!");
 
-    // let v = vec![1, 2, 3];
+    // let v = [1, 2, 3];
     // vec library 에서 패닉 발생
     // v[100];
 

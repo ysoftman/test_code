@@ -15,6 +15,7 @@ use rand::Rng;
 /// - 이 주석은 html로 생성할 수 있다.
 /// - markdown 문법을 지원한다.
 /// - 주석자체를 문서화하려면 //! 를 사용한다.
+///
 /// Examples 로 테스트 코드를 명시하면 cargo test 로 테스트도 수행된다.
 /// # Examples
 /// ```

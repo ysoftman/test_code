@@ -19,7 +19,8 @@ fn main() {
     // a 리스트를 만들고
     let a = Node(5, Box::new(Node(10, Box::new(Nil))));
     // a 는 b로 이동해서 b가 소유한다.
-    let b = Node(3, Box::new(a));
+    // _b 로 unused 인 경우 _ prefix 사용해야 경고가 뜨지 않는다.
+    let _b = Node(3, Box::new(a));
     // 위에서 a 는 이미 소유권이 이동된 상태에서 또 a 를 소유할 수는 없다.
     // let c = Node(4, Box::new(a));
 
@@ -31,11 +32,11 @@ fn main() {
     {
         // Rc::clone() 은 깊은 복사가 아닌 참조 카운트만 증가시킨다.
         // rc_b 는 a 리스트를 가리키는 Rc<List> 를 clone하고 이때 참조카운트가 증가된다.
-        let rc_b = RcNode(3, Rc::clone(&rc_a));
+        let _rc_b = RcNode(3, Rc::clone(&rc_a));
         println!("reference count:{}", Rc::strong_count(&rc_a));
         // 스코프가 벗어나면 참조 카운트는 1 감소한다.
     }
     // rc_c 는 a 리스트를 가리키는 Rc<List> 를 clone하고 이때 참조카운트가 증가된다.
-    let rc_c = RcNode(4, Rc::clone(&rc_a));
+    let _rc_c = RcNode(4, Rc::clone(&rc_a));
     println!("reference count:{}", Rc::strong_count(&rc_a));
 }

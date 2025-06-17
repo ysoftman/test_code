@@ -27,12 +27,13 @@ fn main() {
 
     // String 갱신
     let mut s5 = String::from("ysoftman");
-    s5.push_str(",");
+    s5.push(',');
     s5.push_str(" bill");
     s5.push('!');
     let temp = "temp";
     // push_str 는 스트링슬라이스(&str)을 사용하기 때문에 소유권을 가져오지 않는다.
-    s5.push_str(&temp);
+    // s5.push_str(&temp); // needless_borrow https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+    s5.push_str(temp);
     // 그래서 temp 를 출력할 수 있다.
     println!("temp {}", temp);
     println!("s5 {}", s5);
@@ -63,7 +64,8 @@ fn main() {
     // 다음과 같이 스트링 슬라이스 참조를 사용한다.
     // fn add(self, s: &str) -> String {
     // 그리고 &String -> &str 로 강제될 수 있다.
-    let s10 = s6 + "," + &s7 + "," + &s8 + "," + &s9;
+    // let s10 = s6 + "," + &s7 + "," + &s8 + "," + &s9;
+    let s10 = s6 + "," + s7 + "," + &s8 + "," + &s9;
     println!("s10 {}", s10);
     // s7 ~s9 스트링 슬라이스 참조해 소유권이 이동하지 않는다.
     println!("s7 {}", s7);
@@ -92,10 +94,10 @@ fn main() {
     for ch in s12.chars() {
         print!("{} ", ch);
     }
-    println!("");
+    println!();
     // 바이트 단위로 구분할 경우
     for by in s12.bytes() {
         print!("{} ", by);
     }
-    println!("");
+    println!();
 }

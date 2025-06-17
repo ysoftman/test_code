@@ -43,7 +43,8 @@ impl Config {
         // let case_insensitive = env::var("CASE_INSENSITIVE").is_err();
         // CASE_INSENSITIVE 환경변수가 설정되어 있으면 is_ok() 는 true 리턴,
         let case_insensitive = env::var("CASE_INSENSITIVE").is_ok();
-        print!("case_insensitive:{}\n", case_insensitive);
+        // print!("case_insensitive:{}\n", case_insensitive);
+        println!("case_insensitive:{}", case_insensitive);
         Ok(Config {
             query,
             filename,
@@ -114,7 +115,8 @@ pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a st
             results.push(line)
         }
     }
-    return results;
+    // return results;
+    results
 }
 
 #[cfg(test)]

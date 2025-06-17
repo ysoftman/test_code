@@ -48,7 +48,8 @@ where
 }
 
 pub fn run(val: u32) {
-    let x = vec![1, 2, 3];
+    // let x = vec![1, 2, 3]; // useless vec!
+    let x = [1, 2, 3];
     // 일반 내부 함수에서는 함수 밖의 변수에 접근하지 못한다.
     // fn inner_func() {
     //     println!("{:?}", x);

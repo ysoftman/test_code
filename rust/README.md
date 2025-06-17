@@ -13,3 +13,15 @@ for d in $(ls -d */); do pushd $d; cargo check; popd; done
 ```bash
 for d in $(ls -d */); do pushd $d; cargo update; popd; done
 ```
+
+- 정적분석(코드스타일,버그위험,성능개선점,다양한 경고)
+
+```bash
+# rust-analyzer 설치해서 진단 -> 오래 걸리니 clippy 만 하자.
+rustup component add rust-analyzer
+for d in $(ls -d */); do pushd $d; rust-analyzer diagnostics .; popd; done
+
+# clippy 설치해서 진단
+rustup component add clippy
+for d in $(ls -d */); do pushd $d; cargo clippy; popd; done
+```

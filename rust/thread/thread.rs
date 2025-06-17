@@ -26,7 +26,8 @@ fn main() {
     // th1 쓰레드가 종료될때까지 기다린다.(현재 쓰레드는 이곳에서 block 된다.)
     // th1.join().unwrap();
 
-    let v1 = vec![1, 2, 3];
+    // let v1 = vec![1, 2, 3]; // useless vec!
+    let v1 = [1, 2, 3];
     // v1 의 참조자 유효할것인지 모르기 때문에 move 로 v1 의 소유권을 th2 로 강제로 이동시킨다.
     let th2 = thread::spawn(move || {
         println!("th2 - spawned thread! v1 {:?}", v1);

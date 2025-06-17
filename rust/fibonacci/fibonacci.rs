@@ -8,7 +8,7 @@ fn fibonacci(i: i32) -> i32 {
     }
     // let num = fibonacci(i - 1) + fibonacci(i - 2);
     // num
-    return fibonacci(i - 1) + fibonacci(i - 2);
+    fibonacci(i - 1) + fibonacci(i - 2)
 }
 
 fn main() {
