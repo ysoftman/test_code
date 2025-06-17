@@ -61,7 +61,6 @@ fn handler1(mut stream: TcpStream) {
         } else {
             ("HTTP/1.1 404 NOT FOUND", "404.html")
         };
-    let headers = "Content-Type: text/html\r\nConnection: Closed";
 
     // html 으로 응답주기
     // let mut file = File::open("hello.html").unwrap();
@@ -79,10 +78,16 @@ fn handler1(mut stream: TcpStream) {
         Ok(_) => (),
         Err(e) => println!("error! read to string {:?}", e),
     }
+    let headers = format!(
+        "Content-Type: text/html\r\nContent-Length: {}",
+        contents.len()
+    );
 
     let response = format!("{}\r\n{}\r\n\r\n{}", status_line, headers, contents);
     // 스트림을 통해 응답 주기
-    stream.write_all(response.as_bytes()).unwrap();
+    stream
+        .write_all(response.as_bytes())
+        .expect("failed to response");
     stream.flush().unwrap();
     println!("[response]\n{}", response);
 }
