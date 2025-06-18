@@ -21,4 +21,8 @@ fn main() {
         ]
     }"#;
     println!("{}", json_s);
+
+    //파일 같은 큰 문자열을 읽을때 include_str! 매크로 사용
+    let big_text = include_str!("big_text.txt");
+    println!("{}", big_text)
 }

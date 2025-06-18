@@ -4,6 +4,10 @@
 // 모든 참조자는 lifetime 이 있고 컴파일러에 의해 암묵적으로 추론될 수 있다.
 // 추론될 수 없는 경우 lifetime 을 명시해 파라미터간 서로 연관 짓도록 한다.
 
+// 글로벌 static 변수는 자동으로 'static 라이프타임(프로그램 종료때까지 drop(메모리 해제/소멸)되지 않는)을 갖기 때문에,
+// static을 명시하는 것은 의미적으로 중복되지만 타입 시스템의 일환으로, &'static str 같은 타입은 여전히 명시한다.
+// static A: &str = "hello";
+// static B: &'static str = "hello"; // 같은 의미, 타입 명시일 뿐
 fn main() {
     // rust 는 초기화되지 않는 변수를 사용할 수 없다.alloc
     // 아래 스코프가 없으면 에러가 발생하지만
@@ -25,7 +29,7 @@ fn main() {
     let b = "lemon_apple_orange";
     println!("longest_string : {}", longest_string(a, b));
 
-    // 'static 전체 생애주기(lifetime)를 갖는다.
+    // 로컬변수로 'static 전체 생애주기(lifetime)를 명시하면 프로그램 종료때까지 drop(메모리 해제/소멸)되지 않는다.
     let mystr: &'static str = "ysoftman my string";
     println!("{}", mystr)
 }

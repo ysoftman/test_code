@@ -88,7 +88,7 @@ fn main() {
     */
     // Option 열거형은 Options:: 을 명시하지 않는다.
     // Option 은 {} 디폴트 포맷터인 std::fmt::Display trait 이 impl 되어 있지 않다.
-    // OPtion 은 {:?} 또는 {:#?} 을 사용한다.
+    // Option 은 {:?} 또는 {:#?} 을 사용한다.
     let some_num = Some(5);
     println!("some_num {:?}", some_num);
     let some_string = Some("String");
