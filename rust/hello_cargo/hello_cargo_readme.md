@@ -12,6 +12,12 @@ cargo fmt
 # 코드 체크
 cargo check
 
+# cargo-watch 툴 설치
+cargo install cargo-watch
+
+# 코드 변경시 cargo run 자동실행
+cargo watch -x run
+
 # 빌드
 cargo build
 
