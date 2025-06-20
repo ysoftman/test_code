@@ -1,3 +1,6 @@
+// 프로그램은 main.rs 파일에 root module 이 있다.
+// library는 lib.r 파일에 root module 이 있다.
+
 // 테스트를 위한 테스트 모듈
 #[cfg(test)]
 mod tests {
@@ -24,7 +27,7 @@ mod tests {
 
 // fruit 모듈 정의
 // main.rs 등의 binary 내에서도 mod 를 이용한 모듈은 만들 수 있다.
-// mod 기는 기본 private 라 외부에서 쓸려면 pub 으로 공개해야 한다.
+// mod 는 기본 private(자식 mod도) 라 외부에서 쓸려면 pub 으로 공개해야 한다.
 pub mod fruit {
     // fruit 모듈의 list 함수 정의
     // 함수도 pub 로 공개해야 외부에서 사용할 수 있다.

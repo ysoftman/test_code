@@ -1,3 +1,7 @@
+// module 을 선언하는 방법들
+// - .rs 파일 이름을 모듈명을 사용(aaa.rs --> aaa 모듈)
+// - 모듈명 디렉토리를 만들고 그 안에 mod.rs 생성(./aaa/mod.rs --> aaa 모듈)
+// - .rs 파일안에 mod aaa  {...} 로 생성
 // 이 파일은 my_mod(library crate, lib.rs)사용을 위한 binary crate(main.rs)
 // 이 파일은 my_mod crate 와는 별개의 binary crate 이다.
 
