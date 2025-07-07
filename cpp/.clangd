@@ -12,6 +12,6 @@ CompileFlags:
     - "-L/opt/homebrew/opt/llvm/lib"
     - "-Wall"
     - "-xc++"
-    - "-std=c++17"
+    - "-std=c++23"
 Index:
-  StandardLibrary: Yes
+  StandardLibrary: true
