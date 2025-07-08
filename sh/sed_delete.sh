@@ -36,3 +36,7 @@ echo -e "$temp" | sed "s/line.*//"
 
 echo 'trim prefix spaces'
 echo -e "$temp" | sed "s/^[[:space:]]*//"
+
+echo "remove trailing whitespace"
+r=$(printf "hello   " | sed -E "s/[[:space:]]+$//")
+echo "...${r}..."

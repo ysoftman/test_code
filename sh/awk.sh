@@ -88,8 +88,12 @@ orange"
 aa=$(echo "$msg" | tr '\n' ' ' | awk '{print $1}')
 bb=$(echo "$msg" | tr '\n' ' ' | awk '{print $2}')
 cc=$(echo "$msg" | tr '\n' ' ' | awk '{print $3}')
-cat << EOF | xargs echo $*
+cat <<EOF | xargs echo $*
 first:${aa}
 second:${bb}
 third:${cc}
 EOF
+
+echo "remove trailing whitespace"
+r=$(printf "hello   " | awk '{sub(/[[:space:]]+$/, ""); print}')
+echo "...${r}..."
