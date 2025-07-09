@@ -4,23 +4,23 @@
 # valid words
 # typos --words
 extend-ignore-re = [
-    "AttributeID.*Supress.*",
-    "speling_module",
-    "sed.*",
-    "cf-ray.*ICN",
-    "CBCEncrypter",
-    "iterm2",
-    ".mak",
-    ".*styl*",
-    ".*(?i)ysoftman.*",  # ignorecase https://docs.rs/regex/latest/regex/index.html#grouping-and-flags
+  "AttributeID.*Supress.*",
+  "speling_module",
+  "sed.*",
+  "cf-ray.*ICN",
+  "CBCEncrypter",
+  "iterm2",
+  ".mak",
+  ".*styl*",
+  ".*(?i)ysoftman.*",       # ignorecase https://docs.rs/regex/latest/regex/index.html#grouping-and-flags
 ]
 # valid identifiers(snake_case,CamelCase등으로 구분)
 # typos --identifiers
 extend-ignore-identifiers-re = [
-    "AttributeID.*Supress.*",
-    "WSCript",
-    "HELO",
-    "PN.*",
+  "AttributeID.*Supress.*",
+  "WSCript",
+  "HELO",
+  "PN.*",
 ]
 
 [default.extend-identifiers]
@@ -49,26 +49,26 @@ check-file = false
 
 # 커스텀 파일 타입
 [type.raw]
-extend-glob=["*.raw"]
+extend-glob = ["*.raw"]
 check-file = false
 [type.mod]
-extend-glob=["*.mod"]
+extend-glob = ["*.mod"]
 check-file = false
 [type.ysoftman]
-extend-glob=["*.ysoftman"]
+extend-glob = ["*.ysoftman"]
 check-file = false
 
 # typos 검사 제외파일
 [files]
-extend-exclude=[
-"*.storyboard",
-"word2vec.py",
-"which.sh",
-"TinyXMLTest/*",
-"ZlibTest/*",
-"data-science-in-python/*",
-"Android_ServerMon/*",
-"go.sum",
+extend-exclude = [
+  "*.storyboard",
+  "word2vec.py",
+  "which.sh",
+  "TinyXMLTest/*",
+  "ZlibTest/*",
+  "data-science-in-python/*",
+  "Android_ServerMon/*",
+  "go.sum",
 ]
 
 
