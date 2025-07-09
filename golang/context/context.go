@@ -1,6 +1,6 @@
 // author : ysoftman
 // encoding : utf-8
-// title : contetxt 테스트, go 1.7 부터 지원
+// title : context 테스트, go 1.7 부터 지원
 package main
 
 import (
