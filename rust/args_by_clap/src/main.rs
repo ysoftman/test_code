@@ -1,6 +1,8 @@
 // https://docs.rs/clap/latest/clap/index.html
 // cargo run -- -h
-// cargo run -- --b 200 --c lemon
+// cargo run -- -a --b 200 --c lemon
+// cargo watch 사용시
+// cargo watch -c -x "run -- -a --b 200 --c lemon"
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -9,7 +11,7 @@ struct MyArgs {
     // short (-x)
     // long (--xxx) 옵션 사용
     // default_value_t 타임포함 기본값
-    #[arg(short, long = "aaa", default_value_t = true, help = "boolean value")]
+    #[arg(short, long = "aaa", default_value_t = false, help = "boolean value")]
     a: bool,
 
     #[arg(short, long, default_value_t = 100)]
