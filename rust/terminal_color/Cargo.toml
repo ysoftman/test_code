@@ -1,5 +1,5 @@
 [package]
-name = "funcol"
+name = "terminal_color"
 version = "0.1.0"
 authors = ["ysoftman <ysoftman@gmail.com>"]
 edition = "2018"
