@@ -1,19 +1,22 @@
 # blogger 관리
 
-## blogger > 설정 >  콘텐츠 백업(.xml)에서 조회
+## blogger > 설정 > 콘텐츠 백업(.xml)에서 조회(google takeout 으로 백업바뀌면서 구글 드라이브에 저장)
 
 ```bash
 # xml formatting(newline,indentation)
-xmllint --format blog-10-26-2023.xml > blog.xml
+# 예전에 사용됐던 백업 파일 형식
+# xmllint --format blog-10-26-2023.xml > blog.xml
+# google takeout .zip 다운로드 후
+xmllint --format feed.atom > blog.xml
 
 # 포스트 제목 리스트(댓글도 포함되어 있음)
-rg -N '<title type="text">.*</title>' blog.xml
+rg -N '<title.+</title>' blog.xml
 
 # line-height 적용된 포스트의 타이틀 파악
-rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N " line-heightyle" -B1
+rg -N '<title.+</title>|<content type="html">.*</content>' blog.xml | rg -N " line-heightyle" -B1
 
 # style 적용된 포스트의 타이틀 파악
-rg -N '<title type="text">.*</title>|<content type="html">.*</content>' blog.xml | rg -N " style=" -B1
+rg -N '<title.+</title>|<content type="html">.*</content>' blog.xml | rg -N " style=" -B1
 ```
 
 ## blogger api 관련
@@ -39,4 +42,3 @@ curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${ap
 # music 태그 포스트들의 title, id 필드만 조회
 curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${apikey}&labels=music&maxResults=500" | jq '.items[] | "\(.title) --> \(.id)"'
 ```
-
