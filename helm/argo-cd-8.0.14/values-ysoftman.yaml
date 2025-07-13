@@ -1,0 +1,43 @@
+global:
+  env:
+    - name: ysoftman_key1
+      value: ysoftman_value1
+
+configs:
+  cm:
+    # https://docs.cilium.io/en/latest/configuration/argocd-issues/
+    resource.exclusions: |
+      - apiGroups:
+          - cilium.io
+        kinds:
+          - CiliumIdentity
+        clusters:
+          - "*"
+    admin.enabled: true
+  secret:
+    # argocdServerAdminPassword 생성
+    # argocd account bcrypt --password ysoftman | pbcopy
+    # 또는
+    # htpasswd -nbBC 10 "" ysoftman | tr -d ':\n' | sed 's/$2y/$2a/' | pbcopy
+    argocdServerAdminPassword: "$2a$10$r8DxaN.yw3Sf4OCN.Im9sOkmaYPOShM79Wy9HCjfZLdhlzjCBKhAq"
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    annotations:
+      ingress.kubernetes.io/rewrite-target: /
+    hostname: argocd.ysoftman.net
+    extraTls:
+      - hosts:
+          - argocd.ysoftman.net
+
+redis:
+  image:
+    # -- Redis repository
+    # ec-public.aws.com 으로 접근시 403 forbidden 응답으로 아래 주소를 사용한다.
+    # repository: public.ecr.aws/docker/library/redis
+    repository: ecr-public.aws.com/docker/library/redis
+    # -- Redis tag
+    ## Do not upgrade to >= 7.4.0, otherwise you are no longer using an open source version of Redis
+    tag: 7.2.8-alpine
