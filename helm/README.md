@@ -10,6 +10,7 @@ minikube delete
 minikube start
 # ingress-nginx 활성화
 minikube addons enable ingress
+minikube addons enable ingress-dns
 # minikube 선택
 kubectx minikube
 ```
@@ -51,7 +52,10 @@ helm upgrade argocd argo/argo-cd \
 # 서비스 연결시
 kubectl port-forward service/argocd-server -n argocd 8080:443
 
-# 또는 ingress 활성화 설정되어 있는 경우(minikube tunnel, /etc/hosts 수정)
+# 또는 ingress 활성화 설정되어 있는 경우
+# sudo vim /etc/hosts 수정
+# 192.168.49.2  argocd.ysoftman.net
+# minikube tunnel 명령을 사용해야 외부에서 80, 443 포트로 직접 접근
 http://argocd.ysoftman.net
 
 # helm 리스트
