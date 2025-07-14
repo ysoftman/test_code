@@ -14,6 +14,11 @@ configs:
         clusters:
           - "*"
     admin.enabled: true
+
+  params:
+    # -- Run server without TLS
+    server.insecure: true
+
   secret:
     # argocdServerAdminPassword 생성
     # argocd account bcrypt --password ysoftman | pbcopy
