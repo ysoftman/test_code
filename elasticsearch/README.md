@@ -16,4 +16,29 @@ $HOME/workspace/elasticsearch-9.0.3/bin/elasticsearch
 # 동작 확인
 # 로그인: elastic / 터미널화면에 패스워드 사용
 https://localhost:9200
+# 또는
+# config/elasticsearch.yml 에서 https 비활성화
+# xpack.security.enabled: false
+http://localhost:9200
+```
+
+## test
+
+```bash
+# elasticsearch 패키지 설치
+pip install elasticsearch
+
+# 예제 코드 실행
+python es_example1.py
+```
+
+## es api
+
+```bash
+# 사용 가능한 cat api
+http://localhost:9200/_cat/
+# 모든 인덱스 정보
+http://localhost:9200/_cat/indices?v
+# my_documents_index 이름의 인덱스 상세 정보
+http://localhost:9200/my_documents_index?pretty
 ```
