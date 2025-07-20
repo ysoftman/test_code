@@ -37,6 +37,12 @@ cargo doc --open
 # 패키지 업데이트
 cargo update
 
+# cargo.toml 패키지 내용 업그레이드 툴 설치
+cargo install cargo-edit
+
+# cargo.toml 패키지 내용 자동 업그레이드
+cargo upgrade
+
 # cargo 에 github 계정 연동하고, email 확인 받고
 # https://crates.io/me 에서 토큰 생성(한번 생성하고 없어지기 때문에 따로 저장해둬야 한다.)
 # cargo 로그인
