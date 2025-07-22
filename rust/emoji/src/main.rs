@@ -24,8 +24,8 @@ static EMOJI_UNICODE_RANGE: &[(u32, u32, bool)] = &[
     (0xe5fa, 0xe6b7, true), // Seti-UI + Custom
     (0xe700, 0xe8ef, true), // Devicons
     (0xea60, 0xec1e, true), // Codicons
-    (0xed00, 0xefce, true), //Font Awesome
-    (0xf000, 0xf2ff, true), //Font Awesome
+    (0xed00, 0xefce, true), // Font Awesome
+    (0xf000, 0xf2ff, true), // Font Awesome
     (0xf300, 0xf381, true), // Font Logos
     (0xf400, 0xf533, true), // Octicons
     (0xf500, 0xfd46, true), // Material Design
@@ -48,9 +48,9 @@ fn main() {
         for emoji in start..=end {
             let ch = char::from_u32(emoji).unwrap();
             if padding {
-                print!("{} ", ch)
+                print!("{ch} ")
             } else {
-                print!("{}", ch)
+                print!("{ch}")
             }
         }
         println!();
