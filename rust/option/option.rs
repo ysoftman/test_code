@@ -35,6 +35,6 @@ fn main() {
         val2,
         temp_val1 + temp_val2
     );
-    println!("val3 {:?} ", val3);
-    println!("none_vale {:?} ", none_val);
+    println!("val3 {val3:?} ");
+    println!("none_vale {none_val:?} ");
 }

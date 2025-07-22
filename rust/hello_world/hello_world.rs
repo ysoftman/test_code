@@ -43,7 +43,9 @@ fn main() {
     println!("{val1:<10}", val1 = 1);
     let vec1 = [1, 2, 3];
     // debug formatting
-    println!("{:?}", vec1);
+    // println!("{:?}", vec1);  // https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
+    println!("{vec1:?}");
     // pretty formatting(indent)
-    println!("{:#?}", vec1);
+    // println!("{:#?}", vec1); // https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
+    println!("{vec1:#?}");
 }

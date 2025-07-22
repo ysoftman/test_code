@@ -8,10 +8,10 @@ fn main() {
 
     // 구조해체(destructing)
     let (aa, bb, cc) = tup2;
-    println!("tup2:{}", aa);
-    println!("tup2:{}", bb);
-    println!("tup2:{}", cc);
+    println!("tup2:{aa}");
+    println!("tup2:{bb}");
+    println!("tup2:{cc}");
 
     let man: (&str, &str, i32) = ("bill", "lemon", 123);
-    println!("{:?}", man);
+    println!("{man:?}");
 }

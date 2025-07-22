@@ -30,7 +30,7 @@ impl Area {
     // 메소드가 인스턴스의 대한 소유권을 가져 가지 않도록 참조(&)를 사용했다.
     // 메소스내에서 변경이 필요하면 $mut self 를 사용한다.
     fn get_area(&self) -> u32 {
-        println!("self {:#?}", self);
+        println!("self {self:#?}");
         self.width * self.height
     }
 
@@ -57,11 +57,11 @@ fn main() {
         cnt: 99,
         active: true,
     };
-    println!("{:?}", user1);
+    println!("{user1:?}");
     // {:#?} 좀더 newline, indent 등으로 pretty 하게 출력한다.
-    println!("{:#?}", user1);
+    println!("{user1:#?}");
     let user2 = make_user(&String::from("ysoftman2"), 123);
-    println!("{:#?}", user2);
+    println!("{user2:#?}");
 
     let user3 = User {
         name: String::from("ysoftman3"),
@@ -69,10 +69,10 @@ fn main() {
         // 그밖의 필드들은 user1 값을 할당
         ..user1
     };
-    println!("{:#?}", user3);
+    println!("{user3:#?}");
     // 만약 user3 에서 name, email 을 user1 을 사용하면
     // user3 로 move 되었기 때문에 여기서 사용할 수 없다.
-    println!("{:#?}", user1);
+    println!("{user1:#?}");
 
     // tuple struct 생성및 사용
     let tuser1 = TupleUser(0, String::from("aaaa"));
@@ -112,7 +112,7 @@ fn main() {
 
     // 연관함수 사실 메소든은 아니기 때문에 . 대신 호출은 :: 사용해야 한다.
     let sq = Area::make_square(50);
-    println!("sq {:#?}", sq);
+    println!("sq {sq:#?}");
 }
 
 fn make_user(name: &String, cnt: u64) -> User {

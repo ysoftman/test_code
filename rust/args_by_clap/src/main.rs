@@ -22,5 +22,5 @@ struct MyArgs {
 }
 fn main() {
     let args = MyArgs::parse();
-    println!("args {:?}", args);
+    println!("args {args:?}");
 }

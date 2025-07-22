@@ -26,13 +26,13 @@ fn main() {
         }"#;
     // deserialize (unmarshal)
     let ser: Value = serde_json::from_str(data).unwrap();
-    println!("{:?}", ser);
+    println!("{ser:?}");
     println!("{}", ser["name"]);
     println!("{}", ser["age"]);
     println!("{}", ser["phones"][0]);
     println!("{}", ser["phones"][1]);
     // serialize
-    println!("{}", ser);
+    println!("{ser}");
 
     println!("-----");
 
@@ -45,13 +45,13 @@ fn main() {
             "USA" : ["lemon", "apple"]
         }
     });
-    println!("{:?}", data2);
+    println!("{data2:?}");
     println!("{}", data2["name"]);
     println!("{}", data2["cost"]);
     println!("{}", data2["other"]["USA"][0]);
     println!("{}", data2["other"]["USA"][1]);
     // serialize
-    println!("{}", data2);
+    println!("{data2}");
 
     println!("-----");
 
@@ -64,7 +64,7 @@ fn main() {
         "etc" : [ "aaa", "bbb"]
     }"#;
     let ft: Fruit = serde_json::from_str(data).unwrap();
-    println!("{:?}", ft);
+    println!("{ft:?}");
     println!("{:?}", ft.name);
     println!("{:?}", ft.cost);
     println!("{:?}", ft.etc[0]);
@@ -75,5 +75,5 @@ fn main() {
     // struct -> json
     // serialize
     let ft_str = serde_json::to_string(&ft).unwrap();
-    println!("{}", ft_str);
+    println!("{ft_str}");
 }

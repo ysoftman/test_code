@@ -22,7 +22,7 @@ fn main() {
 
     // rx.recv()는 메시지를 받을때까지 블록된다.(기다린다.)
     let received = rx.recv().unwrap();
-    println!("main thread received {}", received);
+    println!("main thread received {received}");
 
     channtest1();
 }
@@ -63,6 +63,6 @@ fn channtest1() {
     // 위 2개의 송신 쓰레드로 부터 수신
     // 수신자를 반복자를 사용해 받을 수 있다.
     for received in rx {
-        println!("received {}", received);
+        println!("received {received}");
     }
 }

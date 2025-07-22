@@ -31,7 +31,7 @@ fn fibonacci2(n: i32) -> i32 {
         } else {
             result = ppre + pre;
         }
-        println!("{}:{}", i, result);
+        println!("{i}:{result}");
         ppre = pre;
         pre = result;
     }

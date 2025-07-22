@@ -2,7 +2,7 @@ fn main() {
     // 튜플(여러개 값)파라미터로 넘기로 튜플로리턴 받기
     let (x, y) = (-100, 100);
     let (a, b, c) = ret_n_values((x, y));
-    println!("{} {} {}", a, b, c);
+    println!("{a} {b} {c}");
     // 리턴값들을 각각 인덱싱할 수도 있다.
     println!("{}", ret_n_values((x, y)).0);
     println!("{}", ret_n_values((x, y)).1);
@@ -11,7 +11,7 @@ fn main() {
     println!("{:?}", ret_n_values((x, y)));
 
     let ret = another_fn(123, "ysoftman");
-    println!("another_fn returns:{}", ret);
+    println!("another_fn returns:{ret}");
 
     unit_function();
     // 1번째 리턴값만 출력
@@ -19,7 +19,7 @@ fn main() {
 }
 
 fn ret_n_values((a, b): (i32, i32)) -> (u32, String, f32) {
-    println!("tuple parameter({}, {})", a, b);
+    println!("tuple parameter({a}, {b})");
     // 여러개 값 리턴
     (123, "ysoftman".to_string(), 1.12)
 }
@@ -27,7 +27,7 @@ fn ret_n_values((a, b): (i32, i32)) -> (u32, String, f32) {
 // -> 리턴타입
 fn another_fn(x: i32, y: &str) -> &str {
     println!("another function!");
-    println!("x:{}, y:{}", x, y);
+    println!("x:{x}, y:{y}");
 
     let mut a = 1;
     let mut b = 2;
@@ -39,12 +39,12 @@ fn another_fn(x: i32, y: &str) -> &str {
     a = b;
     b = c;
     c = temp;
-    println!("temp:{}, a:{}, b:{}, c:{}", temp, a, b, c);
+    println!("temp:{temp}, a:{a}, b:{b}, c:{c}");
     let aa = 10;
     // {} 로 새로운 범위를 지정하는 표현식
     let bb = {
         let bbb = 30;
-        println!("bbb:{}", bbb);
+        println!("bbb:{bbb}");
         // 표현시의 마지막에 ; 를 붙이지 말아야 리턴된다.(암묵적 리턴)
         // 만약 마지막에 ; 을 붙이면 구문으로 취급되면 리턴되지 않는다.
         bbb - 10
@@ -52,7 +52,7 @@ fn another_fn(x: i32, y: &str) -> &str {
     let cc = if bb == 20 { 30 } else { 40 };
     // 분기에서 각각 다른 타입을 리턴할 수 없다.(컴파일 에러)
     // let cc = if bb == 20 { 30 } else { "40" };
-    println!("aa:{}, bb:{}, cc:{}", aa, bb, cc);
+    println!("aa:{aa}, bb:{bb}, cc:{cc}");
 
     // 리턴
     // return "okay";

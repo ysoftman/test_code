@@ -8,7 +8,7 @@ fn main() {
 
     // compute 의 첫번째 인자는 함수명이다.
     let result = compute(add_one, 10);
-    println!("result: {}", result);
+    println!("result: {result}");
 
     // 클로저(내부함수)를 리턴받아서 사용하기
     let closure_fn = return_closure();

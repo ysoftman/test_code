@@ -89,7 +89,7 @@ impl Worker {
                 // 새로운 잡 또는 종료 메시지
                 match message {
                     Message::NewJob(job) => {
-                        println!("Worker {} got a job and executing.", id);
+                        println!("Worker {id} got a job and executing.");
                         // 전달 받은 잡 실행
                         // 아래와 같이 호출해서 사용할 수 없어
                         // (*job)();
@@ -97,7 +97,7 @@ impl Worker {
                         job.call_box();
                     }
                     Message::Terminate => {
-                        println!("Worker {} terminating.", id);
+                        println!("Worker {id} terminating.");
                         break;
                     }
                 }

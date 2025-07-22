@@ -54,7 +54,7 @@ fn value_in_cents(coin: Coin) -> u32 {
         // 패턴 과 매치되는 부분을 받을 수 있다.
         // state 는 UsState::Alaska 또는 UsState::Alabama 에 바인딩 된다.
         Coin::Quarter(state) => {
-            println!("Quarter! state {:?}", state);
+            println!("Quarter! state {state:?}");
             25
         }
     }
@@ -121,7 +121,7 @@ fn multi_match() {
     //     Point { x, .. } => println!("x:{}", x),
     // }
     let Point { x, .. } = point;
-    println!("x:{}", x)
+    println!("x:{x}")
 }
 
 fn some_ref_match() {
@@ -130,30 +130,30 @@ fn some_ref_match() {
         // s 소유권이 이동되어 이후에는 사용하지 못한다.
         // Some(s) => println!("s:{}", s),
         // ref 로 s 를 소유권 이동 없이 빌림으로 사용할 수도 있다.
-        Some(ref s) => println!("s:{}", s),
+        Some(ref s) => println!("s:{s}"),
         None => (),
     }
-    println!("fruit:{:?}", fruit);
+    println!("fruit:{fruit:?}");
 
     let mut mut_fruit = Some(String::from("lemon"));
     match mut_fruit {
         // ref mut 으로 소유권이동없이(빌림) mut_fruit 를 변경할 수 있다.
         Some(ref mut s) => {
-            println!("s:{}", s);
+            println!("s:{s}");
             *s = String::from("orange")
         }
         None => (),
     }
-    println!("mut_fruit:{:?}", mut_fruit);
+    println!("mut_fruit:{mut_fruit:?}");
 }
 
 fn match_guard() {
     let x = Some(5);
     match x {
         // match 뒤에 if 조건을 추가 할 수 있다.(match guard)
-        Some(s) if s == 5 => println!("{} is 5", s),
-        Some(s) if s > 3 => println!("greater than 3 :{}", s),
-        Some(s) => println!("s:{}", s),
+        Some(s) if s == 5 => println!("{s} is 5"),
+        Some(s) if s > 3 => println!("greater than 3 :{s}"),
+        Some(s) => println!("s:{s}"),
         None => (),
     }
 
@@ -162,7 +162,7 @@ fn match_guard() {
     match num {
         // match 뒤에 if 조건을 추가 할 수 있다.(match guard)
         // 10 | 9 | 8 if tf => println!("10 or 9 or 8 s:{}", num),
-        8..=10 if tf => println!("10 or 9 or 8 s:{}", num),
+        8..=10 if tf => println!("10 or 9 or 8 s:{num}"),
         _ => (),
     }
 }
@@ -176,7 +176,7 @@ fn at_binding_match() {
         Message::Hello {
             // @ 는 패턴 매칭을 확인 하는 동시에 해당 값을 갖는 변수를 생성한다.
             id: id_variable @ 3..=7,
-        } => println!("3~7 {}", id_variable),
+        } => println!("3~7 {id_variable}"),
         Message::Hello { id: 8..=10 } => println!("8~10"),
         _ => println!("other"),
     }

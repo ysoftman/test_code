@@ -28,6 +28,6 @@ fn main() {
 
     // 위 문장을 while let 로 짧게 표현할 수 있다.
     while let Some(s) = stack.pop() {
-        println!("{}", s);
+        println!("{s}");
     }
 }

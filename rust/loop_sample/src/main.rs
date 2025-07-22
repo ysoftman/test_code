@@ -22,7 +22,7 @@ fn main() {
         // i++;
         i += 1;
     };
-    println!("break return: {}", l);
+    println!("break return: {l}");
 
     i = 0;
     while i < 7 {
@@ -31,23 +31,23 @@ fn main() {
     }
     i = 0;
     for ele in arr.iter() {
-        println!("arr[{}] : {}", i, ele);
+        println!("arr[{i}] : {ele}");
         i += 1;
     }
 
     // a(포함)..b(미포함) 으로 1-10 반복
     for n in 1..11 {
-        println!("n:{}", n);
+        println!("n:{n}");
     }
 
     // a(포함)..=b(포함) 으로 1-10 반복
     for n in 1..=10 {
-        println!("n:{}", n);
+        println!("n:{n}");
     }
 
     // 10-1 역순으로 반복
     for n in (1..11).rev() {
-        println!("n:{}", n);
+        println!("n:{n}");
     }
 
     // vec! 를 사용할 필요가 없다.
@@ -55,6 +55,6 @@ fn main() {
     let vec = ["lemon", "orange", "banana"];
     // enumerate()로 반복자값에 대한 index 를 추가해 튜플을 만들어 준다.
     for (index, value) in vec.iter().enumerate() {
-        println!("index:{} value:{}", index, value);
+        println!("index:{index} value:{value}");
     }
 }

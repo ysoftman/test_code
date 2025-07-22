@@ -32,7 +32,7 @@ fn main() {
 
     // run 이 Err 를 리턴할때 처리, 성공하면 () 를 리턴
     if let Err(e) = rustgrep::run(config) {
-        eprintln!("run 에러 {}", e);
+        eprintln!("run 에러 {e}");
         process::exit(1);
     }
 }

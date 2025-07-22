@@ -21,12 +21,12 @@ fn main() {
     // entry 를 통해 lemon 키 존재하지 않으면20을 추가(덮어쓰기)
     hm.entry("lemon".to_string()).or_insert(103);
     hm.entry("lemon2".to_string()).or_insert(103);
-    println!("hm {:#?}", hm);
+    println!("hm {hm:#?}");
 
     // hashmap 순회
     // &mut hm(가변참조)로 순회하면서 값을 변경할 수 있도록 한다.
     for (k, v) in &mut hm {
-        println!("key:{}, value:{}", k, v);
+        println!("key:{k}, value:{v}");
         // *역참조로 값을 변경
         *v += 1000;
     }
@@ -68,7 +68,7 @@ fn main() {
     // collect() 로 튜플 벡터를 hashmap 으로 바꿀 수 있다.
     // HashMap<_,_> 키와 값에 대해선 입력에 따라 추론되도록 한다.
     let hm2: HashMap<_, _> = fruit.iter().zip(cost.iter()).collect();
-    println!("hm2 {:#?}", hm2);
+    println!("hm2 {hm2:#?}");
 
     let strdata = "lemon orange lemon apple lemon fineapple";
     println!("count word \"{}\"\n{:#?}", strdata, count_word(strdata));

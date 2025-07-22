@@ -14,5 +14,5 @@ fn mul_number(one: i32, two: i32) -> i32 {
 
 fn main() {
     let num = mul_number(3, 5);
-    println!("num:{}", num)
+    println!("num:{num}")
 }

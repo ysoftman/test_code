@@ -9,12 +9,12 @@ fn main() {
     // aaa 값을 변경할 수 없다.
     // aaa = "bbb";
     // {} 변경자(placeholder)로 변수별 출력 위치 지정
-    println!("{} {}", aaa, bbb);
+    println!("{aaa} {bbb}");
 
     // 가변 변수라 값을 바꿀 수 있다.
     // to_string() 으로 스트링으로 변환해야 한다.
     bbb = "lemon";
-    println!("{} {}", aaa, bbb);
+    println!("{aaa} {bbb}");
 
     hello_cargo::guess_game();
 }

@@ -32,7 +32,7 @@ async fn main() {
 // basic handler that responds with a static strin
 async fn root() -> &'static str {
     let msg = "hello";
-    println!("[get] / ... response: {}", msg);
+    println!("[get] / ... response: {msg}");
     msg
 }
 

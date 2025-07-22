@@ -39,7 +39,7 @@ pub fn guess_game() {
     // 1~100 중 랜덤값
     // thread_rng() os 가 seed 정하고 현재 쓰레드에서만 사용
     let rand_num = rand::thread_rng().gen_range(1, 101);
-    println!("rand_num:{}", rand_num);
+    println!("rand_num:{rand_num}");
 
     // 무한 루프
     loop {
@@ -51,7 +51,7 @@ pub fn guess_game() {
         io::stdin()
             .read_line(&mut guess)
             .expect("Failed to read line");
-        println!("You guessed: {}", guess);
+        println!("You guessed: {guess}");
 
         println!("generate random...");
 

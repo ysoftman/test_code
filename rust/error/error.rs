@@ -61,7 +61,7 @@ fn main() {
     let ret = read_from_file();
     match ret {
         Ok(_) => println!("파일 내용 읽기 성공!"),
-        Err(e) => println!("파일 내용 읽기 실패\nerr => {:?}", e),
+        Err(e) => println!("파일 내용 읽기 실패\nerr => {e:?}"),
     }
 }
 

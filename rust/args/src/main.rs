@@ -16,7 +16,7 @@ fn main() {
     let args: Vec<String> = env::args().map(|x| x.to_string()).collect();
     println!("args.len(): {}", args.len());
     println!("args[0]: {}", args[0]);
-    println!("args: {:?}", args);
+    println!("args: {args:?}");
     println!("args[1..]: {:?}", &args[1..]);
     println!("--------------------------");
 
@@ -63,7 +63,7 @@ fn main() {
         name2: String,
     }
     let opt = Opt::from_args();
-    println!("{:#?}", opt);
+    println!("{opt:#?}");
     // -d --debug 플래그 지정 여부
     if opt.debug {
         println!("opt.debug: {}", opt.debug);

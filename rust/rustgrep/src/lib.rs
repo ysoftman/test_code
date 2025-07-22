@@ -16,7 +16,7 @@ impl Config {
     // args 반복자로 env::args()소유권을 넘겨 받는다.
     // next()을 사용하면 반복자를 소비하고 이때 내부적으로 변경하기 때문에 mut 로 받아야 한다.
     pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
-        println!("{:?}", args);
+        println!("{args:?}");
 
         if args.len() < 3 {
             return Err("인자가 개수가 3개 보다 적습니다.");
@@ -44,7 +44,7 @@ impl Config {
         // CASE_INSENSITIVE 환경변수가 설정되어 있으면 is_ok() 는 true 리턴,
         let case_insensitive = env::var("CASE_INSENSITIVE").is_ok();
         // print!("case_insensitive:{}\n", case_insensitive);
-        println!("case_insensitive:{}", case_insensitive);
+        println!("case_insensitive:{case_insensitive}");
         Ok(Config {
             query,
             filename,
@@ -65,7 +65,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     // f.read_to_string(&mut contents).expect("파일을 읽기에 문제가 발생했습니다.");
     // ? 로 패닉없이 Result Err 이면 리턴, Ok이면 계속 진행
     f.read_to_string(&mut contents)?;
-    println!("[파일내용]\n{}", contents);
+    println!("[파일내용]\n{contents}");
 
     // 대소문자 구별 옵션에 따라 분기
     let results = if config.case_insensitive {

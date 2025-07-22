@@ -44,8 +44,8 @@ fn rc_strong() {
     // a,b 가 서로 순환 참조하기
     // b next -> a
     let b = Rc::new(Node(10, RefCell::new(Rc::clone(&a))));
-    println!("a = {:?}", a);
-    println!("b = {:?}", b);
+    println!("a = {a:?}");
+    println!("b = {b:?}");
     // a next -> b
     if let Some(link) = a.next() {
         *link.borrow_mut() = Rc::clone(&b);
@@ -64,8 +64,8 @@ fn rc_strong() {
 fn rc_weak() {
     let new_a = Rc::new(NewNode(5, RefCell::new(Weak::new())));
     let new_b = Rc::new(NewNode(10, RefCell::new(Weak::new())));
-    println!("new_a = {:?}", new_a);
-    println!("new_b = {:?}", new_b);
+    println!("new_a = {new_a:?}");
+    println!("new_b = {new_b:?}");
     // a,b 가 서로 순환 참조하기
     // a next -> b
     if let Some(next) = new_a.next() {

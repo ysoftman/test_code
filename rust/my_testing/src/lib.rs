@@ -97,5 +97,5 @@ pub fn check_number_range(v: u32) {
     if v > 10 {
         panic!("{} 10보다 큰값이라 패닉발생시켰습니다.", v)
     }
-    println!("{} 는 10보다 작은 값입니다.", v);
+    println!("{v} 는 10보다 작은 값입니다.");
 }

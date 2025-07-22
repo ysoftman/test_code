@@ -32,7 +32,7 @@ enum YsoftmanEnum {
 // enum 메소드
 impl YsoftmanEnum {
     fn call(&self) {
-        println!("self {:#?}", self);
+        println!("self {self:#?}");
     }
 }
 
@@ -63,11 +63,11 @@ fn main() {
         value: 123,
     });
 
-    println!("ipv4 {:#?}", ipv4);
-    println!("ipv4_digit {:#?}", ipv4_digit);
-    println!("ipv6 {:#?}", ipv6);
-    println!("cnt {:#?}", cnt);
-    println!("fruit {:#?}", fruit);
+    println!("ipv4 {ipv4:#?}");
+    println!("ipv4_digit {ipv4_digit:#?}");
+    println!("ipv6 {ipv6:#?}");
+    println!("cnt {cnt:#?}");
+    println!("fruit {fruit:#?}");
 
     let mesg0 = YsoftmanEnum::Quit;
     mesg0.call();
@@ -90,11 +90,11 @@ fn main() {
     // Option 은 {} 디폴트 포맷터인 std::fmt::Display trait 이 impl 되어 있지 않다.
     // Option 은 {:?} 또는 {:#?} 을 사용한다.
     let some_num = Some(5);
-    println!("some_num {:?}", some_num);
+    println!("some_num {some_num:?}");
     let some_string = Some("String");
-    println!("some_string {:?}", some_string);
+    println!("some_string {some_string:?}");
     // None 은 데이터 타입을 알 수 없기때문에
     // 사용하려면 Option 데이터 타입을 명시해야 한다.
     let absent_num: Option<i32> = None;
-    println!("absent_num {:?}", absent_num);
+    println!("absent_num {absent_num:?}");
 }

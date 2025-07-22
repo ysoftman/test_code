@@ -21,7 +21,7 @@ for d in $(ls -d */); do pushd $d; cargo update; popd; done
 rustup component add rust-analyzer
 for d in $(ls -d */); do pushd $d; rust-analyzer diagnostics .; popd; done
 
-# clippy 설치해서 진단
+# clippy(lint) 설치해서 진단
 rustup component add clippy
 for d in $(ls -d */); do pushd $d; cargo clippy; popd; done
 ```

@@ -22,7 +22,7 @@ fn main() {
 
     // array element 의 타입과 크기 지정
     let arr2: [f32; 3] = [1.0, 2.5, 3.7];
-    println!("arr2:{:?}", arr2);
+    println!("arr2:{arr2:?}");
     println!("arr2.len():{:?}", arr2.len());
     println!(
         "arr2 allocated memory size:{:?}",
@@ -31,5 +31,5 @@ fn main() {
 
     // 0값 100개로 초기화
     let arr3 = [0; 100];
-    println!("{:?}", arr3)
+    println!("{arr3:?}")
 }

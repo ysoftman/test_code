@@ -21,7 +21,7 @@ async fn main() {
     task2.await.expect("task2 fails");
 
     let n = num123().await;
-    println!("num123:{}", n);
+    println!("num123:{n}");
 }
 
 // 비동기 함수, await 가 있는 위치에서 실행이 시작된다.(lazy 실행)

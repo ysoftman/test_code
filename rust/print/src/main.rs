@@ -26,16 +26,13 @@ fn main() {
     //`b`, which uses the `Binary` trait
     //`x`, which uses the `LowerHex` trait
     //`X`, which uses the `UpperHex` trait
-    println!("{} {} {:x} {:X}", a, a, a, a); // a 는 포인터 변수가 아니라 {:p} 를 사용하지 못한다
-    println!(
-        "{} {} {:p} {:b} {:e} {:E} {:x} {:X}",
-        b, b, b, b, b, b, b, b
-    );
+    println!("{a} {a} {a:x} {a:X}"); // a 는 포인터 변수가 아니라 {:p} 를 사용하지 못한다
+    println!("{b} {b} {b:p} {b:b} {b:e} {b:E} {b:x} {b:X}");
 
     let title = "lemon apple";
-    println!("{:-^20}", title); // ----lemon apple----
+    println!("{title:-^20}"); // ----lemon apple----
     let bar = "|";
-    println!("{:_<10}{: >10}", bar, bar); // |_________         |
+    println!("{bar:_<10}{bar: >10}"); // |_________         |
 
     let user = User {
         name: String::from("ysoftman"),
@@ -43,6 +40,6 @@ fn main() {
     };
     println!("{}", user.name);
     println!("{}", user.age);
-    //println!("{}", user); // error,{:?} debug print 를 사용해야 한다.
-    println!("{:?}", user);
+    //println!("{user}"); // error,{:?} debug print 를 사용해야 한다.
+    println!("{user:?}");
 }

@@ -8,10 +8,10 @@ use List::{Cons, Nil};
 fn main() {
     // 5 값을 힙 데이터로 저장, 힙도 스코프를 벗어나면 메모리 해제한다.
     let b = Box::new(5);
-    println!("{}", b);
+    println!("{b}");
     // let list = Cons(1, Cons(2, Cons(3, Nil)));
     let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
-    println!("{:?}", list);
+    println!("{list:?}");
 }
 
 //  사용하지 않는 코드 warning 발생하지 않게 하는 attribute

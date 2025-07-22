@@ -23,7 +23,7 @@ fn main() {
         // borrowed value does not live long enough
         // x = &y
     }
-    println!("x:{}", x);
+    println!("x:{x}");
 
     let a = "ysoftman";
     let b = "lemon_apple_orange";
@@ -31,7 +31,7 @@ fn main() {
 
     // 로컬변수로 'static 전체 생애주기(lifetime)를 명시하면 프로그램 종료때까지 drop(메모리 해제/소멸)되지 않는다.
     let mystr: &'static str = "ysoftman my string";
-    println!("{}", mystr)
+    println!("{mystr}")
 }
 
 // &str 로 빌림(borrowed)리턴하면 x 또는 y 어디로부터 빌림하는지

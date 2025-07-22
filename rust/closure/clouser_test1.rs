@@ -60,12 +60,12 @@ pub fn run(val: u32) {
     // let mut cs_closure = Cacher::new(move |num| {
     let mut cs_closure = Cacher::new(|num| {
         // 클로저에서는 외부 변수에 접근 가능하다.
-        println!("calculating something slowly...{:?}", x);
+        println!("calculating something slowly...{x:?}");
         thread::sleep(time::Duration::from_secs(1));
         num
     });
     // 위 클로저가 move 를 사용했다면 소유권이 클로저 안으로 이동되어 여기서 x 를 사용할 수 없다.
-    println!("x {:?}", x);
+    println!("x {x:?}");
     if val < 25 {
         // 최초 한번만 클로저 실행
         println!("val < 25 {}", cs_closure.value(val));

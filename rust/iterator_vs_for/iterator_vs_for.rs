@@ -13,5 +13,5 @@ fn main() {
     let v1: Vec<u32> = (0..100).collect();
     // iter()반복자로 각 요소마다 1더하기
     let result: Vec<u32> = v1.iter().map(|a| a + 1).collect();
-    println!("{:?}", result);
+    println!("{result:?}");
 }

@@ -16,7 +16,7 @@ fn main() {
         // 스마트 포인터 내부 값을 6으로 변경한다.
         *num = 17;
     }
-    println!("mtx = {:?}", mtx);
+    println!("mtx = {mtx:?}");
 
     mutex_test1();
 }

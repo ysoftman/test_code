@@ -68,7 +68,7 @@ fn handler1(mut stream: TcpStream) {
     let mut file = match File::open(file_name) {
         Ok(o) => o,
         Err(e) => {
-            println!("read {} - Error: {:?}", file_name, e);
+            println!("read {file_name} - Error: {e:?}");
             return;
         }
     };
@@ -76,18 +76,18 @@ fn handler1(mut stream: TcpStream) {
     let err = file.read_to_string(&mut contents);
     match err {
         Ok(_) => (),
-        Err(e) => println!("error! read to string {:?}", e),
+        Err(e) => println!("error! read to string {e:?}"),
     }
     let headers = format!(
         "Content-Type: text/html\r\nContent-Length: {}",
         contents.len()
     );
 
-    let response = format!("{}\r\n{}\r\n\r\n{}", status_line, headers, contents);
+    let response = format!("{status_line}\r\n{headers}\r\n\r\n{contents}");
     // 스트림을 통해 응답 주기
     stream
         .write_all(response.as_bytes())
         .expect("failed to response");
     stream.flush().unwrap();
-    println!("[response]\n{}", response);
+    println!("[response]\n{response}");
 }

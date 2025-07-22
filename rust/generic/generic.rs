@@ -47,20 +47,20 @@ enum Fruit<T, A> {
 fn main() {
     // 구조체 제너릭 사용
     let pt = Point1 { x: 1, y: 2 };
-    println!("pt {:#?}", pt);
+    println!("pt {pt:#?}");
     let pt = Point2 { x: 1.10, y: 2.0 };
-    println!("pt {:#?}", pt);
+    println!("pt {pt:#?}");
     let pt = Point2 { x: 1, y: 2.0 };
-    println!("pt {:#?}", pt);
+    println!("pt {pt:#?}");
     println!("pt.get_reference_x {:}", pt.get_reference_x());
     // .3 소소점 3자리까지 표시
     println!("pt.get_reference_y {:.3}", pt.get_reference_y());
 
     // 열거형 제너릭 사용
     let fru: Fruit<i32, char> = Fruit::Apple(123);
-    println!("fru {:?}", fru);
+    println!("fru {fru:?}");
     let fru: Fruit<i32, char> = Fruit::Lemon('l');
-    println!("fru {:?}", fru);
+    println!("fru {fru:?}");
 
     // 함수 파라미터 제너릭 사용
     let numbers = vec![34, 88, 6, 25, 99, 5, 23];

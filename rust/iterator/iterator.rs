@@ -19,7 +19,7 @@ fn main() {
     // v1_iter 의 항목들이 value 로 소비된다.
     // value 를 for {} 스코프가 종료되면 사용할 수 없다.
     for value in v1_iter {
-        println!("value {}", value);
+        println!("value {value}");
     }
     // 위에서 v1_iter 반복자를 소비해 여기서는 사용 못한다.
     // for v in v1_iter {
@@ -29,10 +29,10 @@ fn main() {
     // iter() 메소드를 사용하면 v1을 참조하기 때문에 계속 사용할 수 있다.
     // iter() 는 불변 참조에 대해서만 사용할 수 있다.
     for value in v1.iter() {
-        println!("value {}", value);
+        println!("value {value}");
     }
     for value in v1.iter() {
-        println!("value {}", value);
+        println!("value {value}");
     }
 
     // into_iter() 메소드를 사용하면 v1 소유권이 넘어가기 때문에 계속 사용할 수 없다.
@@ -47,11 +47,11 @@ fn main() {
     // 가변 참조 변수 반복을 위해선 iter_mut() 을 사용해야 한다.
     for value in mut_v1.iter_mut() {
         *value += 1;
-        println!("value+1 : {}", value);
+        println!("value+1 : {value}");
     }
     for value in mut_v1.iter_mut() {
         *value += 1;
-        println!("value+1 : {}", value);
+        println!("value+1 : {value}");
     }
 
     let mut v1_iter = v1.iter();

@@ -19,7 +19,7 @@ fn main() {
     println!("num2:{:?}", &num2);
 
     let mut s = String::from("lemon apple orange");
-    println!("s:{}", s);
+    println!("s:{s}");
     // 슬라이스 전체
     println!("{}", &s[..]);
     // 슬라이스 0~4까지
@@ -32,10 +32,10 @@ fn main() {
     println!("{}", &s[12..s.len()]);
 
     let fw = first_word(&s);
-    println!("first_word:{}", fw);
+    println!("first_word:{fw}");
 
     s.clear();
-    println!("s:{}", s);
+    println!("s:{s}");
 }
 
 // &str 는 스트링 슬라이스를 나타낸다.

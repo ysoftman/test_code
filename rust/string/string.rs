@@ -20,10 +20,10 @@ fn main() {
     // string -> str 로 참조
     // as_str() 사용
     let str1 = s4.as_str();
-    println!("str1 {}", str1);
+    println!("str1 {str1}");
     // 슬라이싱 사용
     let str2 = &s4[..];
-    println!("str2 {}", str2);
+    println!("str2 {str2}");
 
     // String 갱신
     let mut s5 = String::from("ysoftman");
@@ -35,8 +35,8 @@ fn main() {
     // s5.push_str(&temp); // needless_borrow https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
     s5.push_str(temp);
     // 그래서 temp 를 출력할 수 있다.
-    println!("temp {}", temp);
-    println!("s5 {}", s5);
+    println!("temp {temp}");
+    println!("s5 {s5}");
 
     // replace string
     println!(
@@ -46,13 +46,13 @@ fn main() {
     );
 
     // split string
-    println!("split(',') s5:{}", s5);
+    println!("split(',') s5:{s5}");
     for w in s5.split(',') {
-        println!("{}", w);
+        println!("{w}");
     }
-    println!("split_whitespace() s5:{}", s5);
+    println!("split_whitespace() s5:{s5}");
     for w in s5.split_whitespace() {
-        println!("{}", w);
+        println!("{w}");
     }
 
     // 스트링 더하기
@@ -66,15 +66,15 @@ fn main() {
     // 그리고 &String -> &str 로 강제될 수 있다.
     // let s10 = s6 + "," + &s7 + "," + &s8 + "," + &s9;
     let s10 = s6 + "," + s7 + "," + &s8 + "," + &s9;
-    println!("s10 {}", s10);
+    println!("s10 {s10}");
     // s7 ~s9 스트링 슬라이스 참조해 소유권이 이동하지 않는다.
-    println!("s7 {}", s7);
+    println!("s7 {s7}");
     // s6 소유권이 s10 로 이동돼 더이상 유효하지 않다.
     // println!("s6 {}", s6);
 
     // + 대신 format() 을 사용하는것이 코드를 읽기 쉽다.
-    let s11 = format!("{},{},{}", s7, s8, s9);
-    println!("s11 {}", s11);
+    let s11 = format!("{s7},{s8},{s9}");
+    println!("s11 {s11}");
 
     let s12 = "y안녕하세요!";
     // rust str 은 utf8이라 [0][1] 등으로 인덱싱은
@@ -92,12 +92,12 @@ fn main() {
 
     // 문자단위로 안전하게 인덱싱하려면 chars() 를 이용한다.
     for ch in s12.chars() {
-        print!("{} ", ch);
+        print!("{ch} ");
     }
     println!();
     // 바이트 단위로 구분할 경우
     for by in s12.bytes() {
-        print!("{} ", by);
+        print!("{by} ");
     }
     println!();
 }

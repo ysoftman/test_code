@@ -9,7 +9,7 @@ use std::time::{Duration, SystemTime};
 fn main() {
     for i in 1..=3 {
         thread::sleep(Duration::from_secs(1));
-        println!("{} sec...", i);
+        println!("{i} sec...");
     }
 
     // 현재시간(unix epoch time)
@@ -24,7 +24,7 @@ fn main() {
     // chrono 사용
     // UTC 현재시간
     let now = Utc::now();
-    println!("UTC now {}", now);
+    println!("UTC now {now}");
     println!("UTC now.to_rfc2822() {}", now.to_rfc2822());
     println!("UTC now.to_rfc3339() {}", now.to_rfc3339());
     println!("UTC now.timezone() {}", now.timezone());
@@ -74,7 +74,7 @@ fn main() {
     // 특정 날짜 생성
     // let dt = Utc.ymd(2014, 11, 28).and_hms(12, 0, 9); // deprecated
     let dt = Utc.with_ymd_and_hms(2014, 11, 28, 12, 0, 9).unwrap();
-    println!("dt {:?}", dt);
+    println!("dt {dt:?}");
     println!("dt.year() {}", dt.year());
     println!("dt.month() {}", dt.month());
     // println!("dt.date() {}", dt.date()); // deprecated
@@ -83,11 +83,11 @@ fn main() {
 
     // unix epoch -> datetime
     let unix_sec = Local::now().timestamp();
-    println!("unix sec {}", unix_sec);
+    println!("unix sec {unix_sec}");
     // 첫번째 인자는 sec, 두번재 인자는 nano sec
     // let dt = Utc.timestamp(unix_sec, 0);
     let dt = Utc.timestamp_opt(unix_sec, 0).unwrap();
-    println!("dt from timestamp {:?}", dt);
+    println!("dt from timestamp {dt:?}");
     // 현재 로컬 타임존 기준으로 출력
     println!(
         "dt from timestamp {:?}",

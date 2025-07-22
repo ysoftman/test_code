@@ -20,7 +20,7 @@ fn main() {
     // assert_eq!(mock_messenger.sent_message.len(), 2);
     // RefCell 의 borrow()를 사용해야 한다.
     assert_eq!(mock_messenger.sent_message.borrow().len(), 2);
-    println!("{:?}", mock_messenger);
+    println!("{mock_messenger:?}");
 }
 
 trait Messenger {
