@@ -126,23 +126,24 @@ fn multi_match() {
 
 fn some_ref_match() {
     let fruit = Some(String::from("lemon"));
-    match fruit {
-        // s 소유권이 이동되어 이후에는 사용하지 못한다.
-        // Some(s) => println!("s:{}", s),
-        // ref 로 s 를 소유권 이동 없이 빌림으로 사용할 수도 있다.
-        Some(ref s) => println!("s:{s}"),
-        None => (),
+    // https://rust-lang.github.io/rust-clippy/master/index.html#single_match
+    // match fruit {
+    //     // s 소유권이 이동되어 이후에는 사용하지 못한다.
+    //     // Some(s) => println!("s:{}", s),
+    //     // ref 로 s 를 소유권 이동 없이 빌림으로 사용할 수도 있다.
+    //     Some(ref s) => println!("s:{s}"),
+    //     None => (),
+    // }
+    if let Some(ref s) = fruit {
+        println!("s:{s}")
     }
     println!("fruit:{fruit:?}");
 
     let mut mut_fruit = Some(String::from("lemon"));
-    match mut_fruit {
+    if let Some(ref mut s) = mut_fruit {
         // ref mut 으로 소유권이동없이(빌림) mut_fruit 를 변경할 수 있다.
-        Some(ref mut s) => {
-            println!("s:{s}");
-            *s = String::from("orange")
-        }
-        None => (),
+        println!("s:{s}");
+        *s = String::from("orange")
     }
     println!("mut_fruit:{mut_fruit:?}");
 }

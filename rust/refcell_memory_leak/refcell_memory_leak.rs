@@ -87,8 +87,7 @@ fn rc_weak() {
             // 이때 upgrade() 로 Option<Rc<T>> 리턴받는데 Some 타입이면 존재여부를 판단할 수 있다.
             println!("new_b next = {:?}", next.borrow().upgrade());
         }
-        // None => println!("값이 없습니다."),
-        None => {}
+        None => println!("값이 없습니다."),
     }
 
     println!("new_a rc strong_count = {}", Rc::strong_count(&new_a));
