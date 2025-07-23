@@ -134,6 +134,7 @@ fn some_ref_match() {
     //     Some(ref s) => println!("s:{s}"),
     //     None => (),
     // }
+    // match 나 let 바인딩에서 소유권 이동없이 참조하기 위해서 ref 키워드 사용
     if let Some(ref s) = fruit {
         println!("s:{s}")
     }
