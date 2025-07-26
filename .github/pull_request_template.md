@@ -1,8 +1,3 @@
-<!--
-PULL_REQUEST_TEMPLATE/ 은 다음과 같이 url 파라메터로 명시해서 pr 을 생성해야해서 불편하다.
-https://github.com/ysoftman/test_code/compare/45-fix-typo?expand=1&template=pr_release.md
--->
-
 # 📝 PR 요약
 
 ## 🛠️ 변경 내용
