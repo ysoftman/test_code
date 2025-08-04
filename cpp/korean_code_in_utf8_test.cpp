@@ -10,7 +10,7 @@ int main() {
 
     // 한글 유니코드(UCS) 0xAC00(가) ~ 0xD7A3(힣) 11172자 -> utf-8 인코딩으로 변환
     char hangul[3];
-    int cnt = 0;
+    int  cnt = 0;
     for (unsigned short i = 0xAC00; i <= 0xD7A3; i++) {
         // 참고
         // http://www.codeguru.com/cpp/misc/misc/multi-lingualsupport/article.php/c10451/The-Basics-of-UTF8.htm

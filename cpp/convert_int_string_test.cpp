@@ -62,7 +62,7 @@ int main() {
     long num;
     cin >> num;
     cout << "number:" << num << endl;
-    string str = number2string(num);
-    long num2 = string2number(str);
+    string str  = number2string(num);
+    long   num2 = string2number(str);
     return 0;
 }

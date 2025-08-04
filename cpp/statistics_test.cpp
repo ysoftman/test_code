@@ -5,7 +5,7 @@
 
 float GetAverage(float *set, int num) {
     float average = 0.0;
-    int i = 0;
+    int   i       = 0;
     for (i = 0; i < num; i++) {
         average += set[i];
     }
@@ -16,8 +16,8 @@ float GetAverage(float *set, int num) {
 
 float GetVariance(float *set, int num, float average) {
     float deviation = 0.0;
-    float variance = 0.0;
-    int i = 0;
+    float variance  = 0.0;
+    int   i         = 0;
     for (i = 0; i < num; i++) {
         // 편차(deviation) : 평균에서 각각의 수가 떨어진 정도
         deviation = set[i] - average;
@@ -38,9 +38,9 @@ float GetStandardDeviation(float variance) {
 }
 
 float GetCoVariance(float *setX, float *setY, int num, float averageX, float averageY) {
-    float deviation = 0.0;
+    float deviation  = 0.0;
     float covariance = 0.0;
-    int i = 0;
+    int   i          = 0;
     for (i = 0; i < num; i++) {
         covariance += (setX[i] - averageX) * (setY[i] - averageY);
     }
@@ -63,17 +63,17 @@ float GetPCC(float covariance, float sdX, float sdY) {
 }
 
 int main() {
-    float averageX = 0.0;
-    float averageY = 0.0;
-    float variance = 0.0;
-    float sdX = 0.0;
-    float sdY = 0.0;
+    float averageX   = 0.0;
+    float averageY   = 0.0;
+    float variance   = 0.0;
+    float sdX        = 0.0;
+    float sdY        = 0.0;
     float covariance = 0.0;
-    float pcc = 0.0;
-    float setX[4] = {10, 20, 30, 40};
-    float setY[4] = {10, 40, 50, 70};
-    int i = 0;
-    int num = 4;
+    float pcc        = 0.0;
+    float setX[4]    = {10, 20, 30, 40};
+    float setY[4]    = {10, 40, 50, 70};
+    int   i          = 0;
+    int   num        = 4;
 
     printf("setX = { ");
     for (i = 0; i < num; i++) printf("%.2f ", setX[i]);

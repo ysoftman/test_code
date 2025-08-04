@@ -11,8 +11,8 @@
 #include <process.h>
 CRITICAL_SECTION g_cs;
 
-int g_num = 1;
-void common_job(char *caller) {
+int              g_num = 1;
+void             common_job(char *caller) {
     EnterCriticalSection(&g_cs);
 
     // printf("caller(%s), g_num = %d\n", caller, g_num);
@@ -66,14 +66,14 @@ int main() {
 
     HANDLE hThreads[2];
 
-    UINT nThread1ID = 0;
-    UINT nThread2ID = 0;
+    UINT   nThread1ID = 0;
+    UINT   nThread2ID = 0;
 
-    DWORD tick_start;
-    DWORD tick_end;
+    DWORD  tick_start;
+    DWORD  tick_end;
 
     // 처리시간 파악
-    tick_start = GetTickCount();
+    tick_start  = GetTickCount();
 
     hThreads[0] = (HANDLE)_beginthreadex(NULL, 0, thread1, (void *)"arg", 0, &nThread1ID);
     hThreads[1] = (HANDLE)_beginthreadex(NULL, 0, thread2, (void *)"arg", 0, &nThread2ID);

@@ -10,20 +10,20 @@ title: map 관련 테스트
 using namespace std;
 
 struct aa {
-    int a;
+    int  a;
     long b;
 };
 
 struct aa my = {10, 200};
 
-int main() {
+int       main() {
     int a = 10;
     printf("a=%d\n", a);
     std::cout << "a=" << a << std::endl;
     std::cout << "my.a:" << my.a << std::endl;
     std::cout << "my.b:" << my.b << std::endl;
 
-    map<int, int> mymap;
+    map<int, int>           mymap;
     map<int, int>::iterator iter;
     mymap[0] = 1;
     mymap[1] = 2;
@@ -58,7 +58,7 @@ int main() {
     printf("-- map find() 테스트 --\n");
 
     int key = 5;
-    iter = mapTest.find(key);
+    iter    = mapTest.find(key);
     printf("mapTest.find(%d) .. %d\n", key, iter->second);
 
     mapTest.erase(key);

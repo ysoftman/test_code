@@ -7,10 +7,10 @@ using namespace std;
 int main() {
     cout << "typeid() test" << endl;
 
-    string str = "ysoftman";
-    int num = 123;
-    bool bin = true;
-    float fnum = 0.123;
+    string str  = "ysoftman";
+    int    num  = 123;
+    bool   bin  = true;
+    float  fnum = 0.123;
     double dnum = 0.123;
 
     // 값의 타입을 파악하기

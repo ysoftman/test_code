@@ -4,7 +4,7 @@
 #include <string.h>
 
 int main() {
-    FILE *fp = fopen("fwriteTest.txt", "wb");
+    FILE *fp  = fopen("fwriteTest.txt", "wb");
     float set = 123.45;
     // fprintf(fp, "%f", set);
     fwrite(&set, sizeof(float), 1, fp);

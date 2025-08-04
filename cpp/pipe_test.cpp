@@ -34,10 +34,10 @@ int main() {
     fprintf(stdout, "fd[0] F_GETPIPE_SZ size: %d\n", fcntl(fd[0], F_GETPIPE_SZ));
     fprintf(stdout, "fd[1] F_GETPIPE_SZ size: %d\n", fcntl(fd[1], F_GETPIPE_SZ));
 
-    int fdes = open("yoon.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
+    int  fdes        = open("yoon.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
 
-    char LF = '\n';
-    char w = 'c';
+    char LF          = '\n';
+    char w           = 'c';
     char r[MAX_SIZE] = {
         0,
     };

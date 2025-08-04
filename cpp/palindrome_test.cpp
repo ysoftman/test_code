@@ -28,7 +28,7 @@ int main() {
 int isPalindrome(char *str) {
     int index;
     int str_len = strlen(str);
-    int pivot = str_len / 2;
+    int pivot   = str_len / 2;
 
     for (index = 0; index < pivot; index++) {
         // 문자열의 처음과 끝을 비교 -> 문자의 가운데까지 검사

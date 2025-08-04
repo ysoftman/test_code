@@ -5,11 +5,11 @@
 
 int main() {
     // 두 수의 단위 자리는 최대 10자리로 제한
-    int num1[10];
-    int num2[10];
+    int   num1[10];
+    int   num2[10];
 
-    int i1, i2, d1, d2, carry, carrycnt;
-    char line[256];
+    int   i1, i2, d1, d2, carry, carrycnt;
+    char  line[256];
     char *c;
 
     printf("Primary Arithmetic...\n");
@@ -20,7 +20,7 @@ int main() {
         gets(line);
         i1 = 0;
         i2 = 0;
-        c = line;
+        c  = line;
         // 공백은 무시하기
         while (*c == ' ') {
             c++;
@@ -43,7 +43,7 @@ int main() {
             break;
         }
 
-        carry = 0;
+        carry    = 0;
         carrycnt = 0;
 
         // 두 수의 일의 자리 부터 시작

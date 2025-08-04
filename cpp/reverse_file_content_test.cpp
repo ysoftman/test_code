@@ -5,13 +5,13 @@
 #include <string.h>
 
 int main() {
-    char c = NULL;
-    int i = 0;
-    int length = 0;
+    char  c      = NULL;
+    int   i      = 0;
+    int   length = 0;
 
-    FILE *fp = NULL;
+    FILE *fp     = NULL;
 
-    fp = fopen("text.txt", "wb");
+    fp           = fopen("text.txt", "wb");
     fprintf(fp, "YoonByoungHoon\n");
     fclose(fp);
 

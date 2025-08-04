@@ -8,9 +8,9 @@
 extern int nVar3;
 extern int nVar4;
 
-int nVar1 = 0;
+int        nVar1 = 0;
 
-void func1() {
+void       func1() {
     static int nVar2 = 0;
     printf("nVar2 = %d\n", ++nVar2);
 }

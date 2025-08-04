@@ -63,7 +63,8 @@ int main() {
     printf("LLONG_MAX = %lld\n", LLONG_MAX);
     printf("ULLONG_MAX = %llu\n", ULLONG_MAX);
 
-    cout << endl << "using std::numeric_limits" << endl;
+    cout << endl
+         << "using std::numeric_limits" << endl;
     cout << "std::numeric_limits<short>::min() = " << std::numeric_limits<short>::min() << endl;
     cout << "std::numeric_limits<short>::max() = " << std::numeric_limits<short>::max() << endl;
     cout << "std::numeric_limits<unsigned short>::max() = "

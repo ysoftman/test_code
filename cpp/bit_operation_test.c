@@ -3,8 +3,8 @@
 
 void print_binary_digit(int num) {
     const int max_length = 10;
-    int temp = num;
-    int d[max_length], idx = 0;
+    int       temp       = num;
+    int       d[max_length], idx = 0;
     memset(d, 0, sizeof(int) * max_length);
 
     while (temp > 0) {
@@ -31,7 +31,7 @@ int main() {
     printf("(-) -> (+) using not operator ~a+1: %d\n", ~a + 1);
     printf("(+) -> (-) using not operator ~(~a+1)+1: %d\n", ~(~a + 1) + 1);
 
-    a = 100;
+    a     = 100;
     int b = 128;
     printf("a: %d, b: %d\n", a, b);
     int temp = a & b;

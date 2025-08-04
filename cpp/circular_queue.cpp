@@ -7,15 +7,15 @@
 #include <stdio.h>
 
 struct cir_queue {
-    int front;
-    int rear;
-    int size;
+    int  front;
+    int  rear;
+    int  size;
     int *arr;
     cir_queue() {
         front = -1;  // -1 는 데이터가 값이 없음을 의미
-        rear = -1;
-        size = 0;
-        arr = NULL;
+        rear  = -1;
+        size  = 0;
+        arr   = NULL;
     }
 };
 
@@ -46,7 +46,7 @@ void enqueue(cir_queue *q, int val) {
     // 최초 값을 넣는 경우
     if (q->front == -1) {
         q->front = q->rear = 0;
-        q->arr[q->front] = val;
+        q->arr[q->front]   = val;
     }
     // 꽉찬 경우1
     else if (q->front == 0 && q->rear == q->size - 1) {
@@ -60,7 +60,7 @@ void enqueue(cir_queue *q, int val) {
     }
     // 배열의 마지막인 경우 다시 0번째 부터
     else if (q->rear == q->size - 1) {
-        q->rear = 0;
+        q->rear         = 0;
         q->arr[q->rear] = val;
     } else {
         ++q->rear;
@@ -76,10 +76,10 @@ int dequeue(cir_queue *q) {
             printf("empty!\n");
             return 0;
         }
-        val = q->arr[q->front];
+        val      = q->arr[q->front];
         q->front = q->rear = -1;
     } else if (q->front == q->size - 1) {
-        val = q->arr[q->front];
+        val      = q->arr[q->front];
         q->front = 0;
     } else {
         val = q->arr[q->front];
@@ -95,7 +95,7 @@ int main() {
     };
     cir_queue q;
     q.size = 3;
-    q.arr = arr;
+    q.arr  = arr;
     enqueue(&q, 1);
     enqueue(&q, 2);
     enqueue(&q, 3);

@@ -7,9 +7,9 @@
 using namespace std;
 
 struct Fruit {
-    int cost;
+    int    cost;
     string name;
-    void printColor(string color) { cout << color << endl; }
+    void   printColor(string color) { cout << color << endl; }
 };
 
 int add(int a, int b) { return a + b; }
@@ -30,7 +30,7 @@ int main() {
 
     // member 함수를 바인드 할 수도 있다.
     Fruit ft;
-    auto f3 = std::bind(&Fruit::printColor, &ft, std::placeholders::_1);
+    auto  f3 = std::bind(&Fruit::printColor, &ft, std::placeholders::_1);
     cout << "f3(\"yellow\") = ";
     f3("yellow");
     cout << "f3(\"red\") = ";

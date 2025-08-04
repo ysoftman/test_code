@@ -5,13 +5,13 @@
 #include <math.h>
 #include <stdio.h>
 
-const int ELO_CRITERION = 400;
-const int ELO_K = 100;
-const float ELO_GAME_RESULT_WIN = 1.0;
+const int   ELO_CRITERION        = 400;
+const int   ELO_K                = 100;
+const float ELO_GAME_RESULT_WIN  = 1.0;
 const float ELO_GAME_RESULT_DRAW = 0.5;
 const float ELO_GAME_RESULT_LOSE = 0.0;
 
-float EloRating(float Ra, float Rb, float Sa) {
+float       EloRating(float Ra, float Rb, float Sa) {
     // A 의 승률
     float Ea = 1 / (1 + pow(10, ((Rb - Ra) / ELO_CRITERION)));
     // A 의 승률에 기반해 얼마만큼의 추가 점수를 줄 지 결정
@@ -27,7 +27,7 @@ int main() {
     float NewLevelA = 0;
     float NewLevelB = 0;
 
-    NewLevelA = EloRating(PlayerLevelA, PlayerLevelB, ELO_GAME_RESULT_WIN);
+    NewLevelA       = EloRating(PlayerLevelA, PlayerLevelB, ELO_GAME_RESULT_WIN);
     printf("A Win... NewLevel = %f\n", NewLevelA);
     NewLevelA = EloRating(PlayerLevelA, PlayerLevelB, ELO_GAME_RESULT_DRAW);
     printf("A Draw... NewLevel = %f\n", NewLevelA);

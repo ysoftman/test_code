@@ -11,7 +11,7 @@ struct Add {
     Add() { result = 0; }
     // operator() 를 사용하여 객체(class, struct)를 함수처럼 사용한다.
     void operator()(int n) { result = result + n; }
-    int result;
+    int  result;
 };
 
 int main() {

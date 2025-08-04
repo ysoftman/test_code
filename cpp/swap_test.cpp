@@ -8,8 +8,8 @@
 void swap1(int *a, int *b) {
     int temp;
     temp = *a;
-    *a = *b;
-    *b = temp;
+    *a   = *b;
+    *b   = temp;
 }
 
 // 변수 없이 swap 방법

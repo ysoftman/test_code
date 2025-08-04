@@ -23,7 +23,7 @@ int fact_iteration(int input) {
 }
 
 int main() {
-    unsigned int result = 0;
+    unsigned int result    = 0;
     unsigned int in_number = 0;
     printf("[Factorial]Input Number : ");
     scanf("%d", &in_number);

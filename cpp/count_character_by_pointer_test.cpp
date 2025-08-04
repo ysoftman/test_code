@@ -13,9 +13,9 @@ int GetByteLength(char *pByte) {
 }
 
 int main() {
-    char szData[50] = "ABCDEFGHIJ";
-    char *pMunja = szData;
-    int Len = GetByteLength(pMunja);
+    char  szData[50] = "ABCDEFGHIJ";
+    char *pMunja     = szData;
+    int   Len        = GetByteLength(pMunja);
     fprintf(stderr, "Munja = %s\nLen = %d\n", pMunja, Len);
     return 0;
 }

@@ -10,9 +10,9 @@
 using namespace std;
 
 string getStringStream1(string str) {
-    string strResult;
+    string        strResult;
     istringstream is(str);
-    stringbuf strBuf;
+    stringbuf     strBuf;
     // 첫번째 바이트가 \t \n \r 등 특수문자인 경우 제대로 출력되지 않는다.
     is >> &strBuf;
     strResult = strBuf.str();
@@ -20,7 +20,7 @@ string getStringStream1(string str) {
 }
 
 string getStringStream2(string str) {
-    string strResult;
+    string        strResult;
     istringstream iss(str);
     // 모든 스트림을 정상적으로 출력한다.
     iss.seekg(0, iss.end);
@@ -39,9 +39,9 @@ void tokenize_using_istringstream() {
     cout << "[tokenize using istream]" << endl;
     string str = "1.23 z 3.45 ysoftman";
     cout << "str: " << str << endl;
-    float a;
-    char b;
-    float c;
+    float  a;
+    char   b;
+    float  c;
     string d;
     // 문자열에서 타입에 맞게 값을 토크나이즈 할 수 있다.
     istringstream iss(str);
@@ -58,7 +58,7 @@ int main() {
     tokenize_using_istringstream();
 
     cout << "[\\t \\n \\r string stream operator >> omit first byte]" << endl;
-    int llMsgID = 231520362;
+    int    llMsgID = 231520362;
     string strIn;
     string strOut;
 
@@ -92,7 +92,7 @@ int main() {
     szBuffer2[1] = szBuffer[2];
     szBuffer2[2] = szBuffer[1];
     szBuffer2[3] = szBuffer[0];
-    strIn = szBuffer2;
+    strIn        = szBuffer2;
     cout << "in :";
     for (unsigned int i = 0; i < strIn.size(); ++i) {
         cout << (int)strIn[i] << "  ";

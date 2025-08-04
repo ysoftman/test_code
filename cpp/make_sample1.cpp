@@ -4,7 +4,7 @@ using namespace std;
 extern int aaa();
 extern int bbb();
 
-int main() {
+int        main() {
     cout << __FUNCTION__ << endl;
     aaa();
     bbb();

@@ -57,18 +57,18 @@ int main() {
     SYSTEM_INFO SystemInfo;
     GetSystemInfo(&SystemInfo);
     int NumOfProcessors = SystemInfo.dwNumberOfProcessors;
-    int NumOfThread = NumOfProcessors * 2;
+    int NumOfThread     = NumOfProcessors * 2;
     printf("NumOfProcessors = %d\n", NumOfProcessors);
     printf("NumOfThread = %d\n", NumOfThread);
 
     HANDLE hThreads[2];
-    UINT ThreadID;
+    UINT   ThreadID;
 
-    DWORD tick_start;
-    DWORD tick_end;
+    DWORD  tick_start;
+    DWORD  tick_end;
 
     // 처리시간 파악
-    tick_start = GetTickCount();
+    tick_start  = GetTickCount();
 
     hThreads[0] = (HANDLE)_beginthreadex(NULL, 0, Thread1, (void *)1, 0, &ThreadID);
     hThreads[1] = (HANDLE)_beginthreadex(NULL, 0, Thread2, (void *)2, 0, &ThreadID);

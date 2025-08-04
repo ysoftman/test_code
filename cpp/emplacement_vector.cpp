@@ -14,7 +14,7 @@ class ITEM {
     ITEM() { cout << "ITEM() default constructor" << endl; }
     ITEM(string n, int v) {
         name = n;
-        val = v;
+        val  = v;
         if (!enableMsg) {
             return;
         }
@@ -56,7 +56,7 @@ class ITEM {
     }
     // ITEM &operator=(const ITEM &other) = default;
     string name;
-    int val;
+    int    val;
 };
 
 void printItemVector(std::vector<ITEM> itemVector) {
@@ -77,7 +77,7 @@ void printItemList(std::list<ITEM> itemList) {
 int main() {
     cout << "---using vector push_back()---" << endl;
     std::vector<ITEM> vec1;
-    ITEM item1{"apple", 100};
+    ITEM              item1{"apple", 100};
     vec1.push_back(item1);  // Lvalue 인자
     ITEM item2{"banana", 200};
     vec1.push_back(std::move(item2));  // Rvalue 인자
@@ -89,10 +89,11 @@ int main() {
     vec1.push_back({"lemon", 300});
     vec1.push_back({"orange", 400});
 
-    cout << endl << endl;
+    cout << endl
+         << endl;
     cout << "---using vector emplace_back()---" << endl;
     std::vector<ITEM> vec2;
-    ITEM item3{"apple", 100};
+    ITEM              item3{"apple", 100};
     vec2.emplace_back(item3);  // Lvalue 인자
     ITEM item4{"banana", 200};
     vec2.emplace_back(std::move(item4));  // Rvalue 인자
@@ -105,7 +106,8 @@ int main() {
     vec2.emplace_back("lemon", 300);
     vec2.emplace_back("orange", 400);
 
-    cout << endl << endl;
+    cout << endl
+         << endl;
 
     enableMsg = false;
     cout << "---print vec1---" << endl;

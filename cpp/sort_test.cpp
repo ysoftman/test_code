@@ -15,19 +15,19 @@
 using namespace std;
 
 // Maximum Size
-const int MAX = 10000;
+const int MAX      = 10000;
 
-int swap_cnt = 0;
+int       swap_cnt = 0;
 
-void Swap(int *a, int *b);
-void BubbleSort(int arr[], int size);
-void SelectionSort(int arr[], int size);
-void InsertionSort(int arr[], int size);
-void RadixSort(int arr[], int size);
-void MergeSort(int arr[], int left, int right);
-void QuickSort(int arr[], int left, int right);
-void QuickSort2(int arr[], int left, int right);
-void HeapSort(int arr[], int size);
+void      Swap(int *a, int *b);
+void      BubbleSort(int arr[], int size);
+void      SelectionSort(int arr[], int size);
+void      InsertionSort(int arr[], int size);
+void      RadixSort(int arr[], int size);
+void      MergeSort(int arr[], int left, int right);
+void      QuickSort(int arr[], int left, int right);
+void      QuickSort2(int arr[], int left, int right);
+void      HeapSort(int arr[], int size);
 
 // 배열 출력
 void Print(FILE *fp, int arr[], int size, const char *msg) {
@@ -56,7 +56,7 @@ int main() {
     int i = 0;
     int input[MAX];
     srand((unsigned int)time(NULL));
-    FILE *fp = fopen("sort_test_result.txt", "w");
+    FILE   *fp    = fopen("sort_test_result.txt", "w");
 
     clock_t start = clock();
     for (i = 0; i < MAX; i++) {
@@ -75,7 +75,7 @@ int main() {
     Print(fp, c_std_quick_sort, MAX, "C++ quick sort");
 
     // Bubble Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int bubble_sort[MAX];
     memcpy(bubble_sort, input, sizeof(int) * MAX);
@@ -87,7 +87,7 @@ int main() {
     Print(fp, bubble_sort, MAX, "Bubble Sort");
 
     // Selection Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int selection_sort[MAX];
     memcpy(selection_sort, input, sizeof(int) * MAX);
@@ -99,7 +99,7 @@ int main() {
     Print(fp, selection_sort, MAX, "Selection Sort");
 
     // Insertion Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int insertion_sort[MAX];
     memcpy(insertion_sort, input, sizeof(int) * MAX);
@@ -111,7 +111,7 @@ int main() {
     Print(fp, insertion_sort, MAX, "Insertion Sort");
 
     // Radix Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int radix_sort[MAX];
     memcpy(radix_sort, input, sizeof(int) * MAX);
@@ -123,7 +123,7 @@ int main() {
     Print(fp, radix_sort, MAX, "Radix Sort");
 
     // Merge Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int merge_sort[MAX];
     memcpy(merge_sort, input, sizeof(int) * MAX);
@@ -135,7 +135,7 @@ int main() {
     Print(fp, merge_sort, MAX, "Merge Sort");
 
     // Quick Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int quick_sort[MAX];
     memcpy(quick_sort, input, sizeof(int) * MAX);
@@ -147,7 +147,7 @@ int main() {
     Print(fp, quick_sort, MAX, "Quick Sort");
 
     // Quick Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int quick_sort2[MAX];
     memcpy(quick_sort2, input, sizeof(int) * MAX);
@@ -159,7 +159,7 @@ int main() {
     Print(fp, quick_sort2, MAX, "Quick Sort 2");
 
     // Heap Sort
-    start = clock();
+    start    = clock();
     swap_cnt = 0;
     int heap_sort[MAX];
     memcpy(heap_sort, input, sizeof(int) * MAX);
@@ -177,9 +177,9 @@ int main() {
 // Swap
 void Swap(int *a, int *b) {
     int temp = 0;
-    temp = *a;
-    *a = *b;
-    *b = temp;
+    temp     = *a;
+    *a       = *b;
+    *b       = temp;
     ++swap_cnt;
 }
 
@@ -247,8 +247,8 @@ void RadixSort(int arr[], int size) {
     // 10진수(radix)라 0~9의 버킷 준비
     map<int, vector<int>> bucket;
 
-    int digit_cnt = 1;
-    int temp = MAX;
+    int                   digit_cnt = 1;
+    int                   temp      = MAX;
     while (temp >= 10) {
         temp /= 10;
         ++digit_cnt;
@@ -257,7 +257,7 @@ void RadixSort(int arr[], int size) {
     // 1의 자리 부터 max 번째 자리수 만큼
     for (i = 0; i < digit_cnt; ++i) {
         for (j = 0; j < size; ++j) {
-            temp = arr[j];
+            temp          = arr[j];
             int digit_num = 0;
             // 현재 숫자의 i 번째 자리수를 키로 현재 숫자 저장
             for (int k = 0; k < i; k++) {
@@ -391,8 +391,8 @@ void QuickSort2(int *arr, int start, int end) {
 
 // MakeMaxHeap for Heap Sort
 void MakeMaxHeap(int arr[], int CurIdx, int EndIdx) {
-    int MaxChildIdx = 0;
-    bool done = false;
+    int  MaxChildIdx = 0;
+    bool done        = false;
 
     // 참고
     // 배열 원소(노드)는 0부터 시작할때

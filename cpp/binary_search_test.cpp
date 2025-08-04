@@ -29,8 +29,8 @@ int BinarySearch(int arr[], int left, int right, int k) {
 
 // loop 방식
 int BinarySearch2(int arr[], int length, int k) {
-    int cnt = 0;
-    int mid = 0;
+    int cnt  = 0;
+    int mid  = 0;
     int left = 0, right = length - 1;
     while (1) {
         mid = left + (right - left) / 2;
@@ -55,12 +55,12 @@ int BinarySearch2(int arr[], int length, int k) {
 
 void testSample() {
     int sample1[1] = {1};
-    int target1 = 1;
+    int target1    = 1;
     BinarySearch(sample1, 0, sizeof(sample1) / sizeof(int) - 1, target1);
     BinarySearch2(sample1, sizeof(sample1) / sizeof(int), target1);
 
     int sample2[2] = {1, 2};
-    int target2 = 2;
+    int target2    = 2;
     BinarySearch(sample2, 0, sizeof(sample2) / sizeof(int) - 1, target2);
     BinarySearch2(sample2, sizeof(sample2) / sizeof(int), target2);
 }
@@ -69,7 +69,7 @@ int main() {
     testSample();
 
     int array[10] = {25, 37, 56, 99, 120, 521, 590, 709, 1005, 2506};
-    int i = 0;
+    int i         = 0;
     int target;
     printf("Data Array is ");
     int array_length = int(sizeof(array) / sizeof(int));

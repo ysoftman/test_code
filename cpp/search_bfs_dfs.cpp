@@ -11,8 +11,8 @@
 using namespace std;
 
 struct Node {
-    string name;
-    unsigned int nodescnt;
+    string                    name;
+    unsigned int              nodescnt;
     map<unsigned int, Node *> nodes;
 };
 

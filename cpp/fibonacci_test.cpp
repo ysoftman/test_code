@@ -54,8 +54,8 @@ int fibonacci_recursive_with_array(int n, int *arr) {
 int fibonacci_iteration(int n) {
     debug_count++;
     int result = 0;
-    int temp1 = 1;
-    int temp2 = 1;
+    int temp1  = 1;
+    int temp2  = 1;
     int i;
 
     if (n <= 0) {
@@ -81,24 +81,24 @@ int fibonacci_iteration(int n) {
 }
 
 int main() {
-    int num = 0;
+    int num    = 0;
     int result = 0;
     printf("[Fibonacci]Input Number : ");
     scanf("%d", &num);
 
     debug_count = 0;
-    result = fibonacci_iteration(num);
+    result      = fibonacci_iteration(num);
     printf("[iteration] (debug_count:%d) In %d, Fibonacci Number is %d\n", debug_count, num,
            result);
 
     debug_count = 0;
-    result = fibonacci_recursive(num);
+    result      = fibonacci_recursive(num);
     printf("[recursive] (debug_count:%d) In %d, Fibonacci Number is %d\n", debug_count, num,
            result);
 
-    int *arr = new int[num];
+    int *arr    = new int[num];
     debug_count = 0;
-    result = fibonacci_recursive_with_array(num, arr);
+    result      = fibonacci_recursive_with_array(num, arr);
     printf("[recursive_with_array] (debug_count:%d) In %d, Fibonacci Number is %d\n", debug_count,
            num, result);
     delete[] arr;

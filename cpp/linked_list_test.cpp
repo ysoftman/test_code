@@ -41,7 +41,7 @@ void remove_duplicated_node(list<Node> *node) {
 void remove_duplicated_node2(list<Node> *node) {
     // 방법2 - hashset 에 값을 저장해두고 중복 여부 파악
     unordered_set<string> hashset;
-    list<Node>::iterator iter = node->begin();
+    list<Node>::iterator  iter = node->begin();
     while (iter != node->end()) {
         cout << "node(data: " << iter->data << ")";
         if (hashset.find(iter->data) != hashset.end()) {
@@ -59,7 +59,7 @@ void remove_duplicated_node2(list<Node> *node) {
 
 list<Node> create_linked_list() {
     list<Node> node;
-    Node n1{.data = "lemon"};
+    Node       n1{.data = "lemon"};
     node.push_back(n1);
     Node n2{.data = "orange"};
     node.push_back(n2);
@@ -71,7 +71,7 @@ list<Node> create_linked_list() {
     node.push_back(n5);
     Node n6{.data = "banana"};
     node.insert(node.begin(), n6);  // 맨처음 노드로 추가
-    Node n7{.data = "apple"};
+    Node                 n7{.data = "apple"};
     list<Node>::iterator iter = node.begin();
     iter++;
     node.insert(iter, 5, n7);  // 2번째 노르로 연속해서 5개의 노드 추가

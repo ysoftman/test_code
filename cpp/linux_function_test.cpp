@@ -18,12 +18,12 @@
 
 // copy fileA to fileB
 static bool SimpleCopyFile(const char *srcpath, const char *dstpath) {
-    int fd_src;
-    int fd_dst;
+    int         fd_src;
+    int         fd_dst;
     struct stat stat_buf;
-    off_t offset = 0;
+    off_t       offset = 0;
 
-    fd_src = open(srcpath, O_RDONLY);
+    fd_src             = open(srcpath, O_RDONLY);
     if (fd_src == -1) {
         return false;
     }
@@ -51,7 +51,7 @@ int main() {
     // signal(SIGINT, SignalHandler);
 
     // get host name
-    char hostname[256];
+    char   hostname[256];
     size_t hostnamelen = 256;
     if (gethostname(hostname, hostnamelen) == -1) {
         printf("can't read host name\n");
@@ -68,7 +68,7 @@ int main() {
     struct ifaddrs *ifa = NULL;
     for (ifa = ifp; ifa; ifa = ifa->ifa_next) {
         socklen_t salen;
-        char ip[125];
+        char      ip[125];
         if (ifa->ifa_addr->sa_family == AF_INET) {
             salen = sizeof(struct sockaddr_in);
         }
@@ -86,7 +86,7 @@ int main() {
     memset(&CurrentTime, 0, sizeof(CurrentTime));
     time(&CurrentTime);
     struct tm *stCurrentTime = localtime(&CurrentTime);
-    char szDate[32];
+    char       szDate[32];
     memset(szDate, 0, sizeof(szDate));
     snprintf(szDate, sizeof(szDate), "%04d-%02d-%02d %02d-%02d-%02d", stCurrentTime->tm_year + 1900,
              stCurrentTime->tm_mon + 1, stCurrentTime->tm_mday, stCurrentTime->tm_hour,
@@ -100,7 +100,7 @@ int main() {
     printf("%s\n", resolved_path);
 
     // get file status
-    char *path = (char *)"/home/ysoftman/a.txt";
+    char       *path = (char *)"/home/ysoftman/a.txt";
     struct stat filest;
     if (stat(path, &filest) == 0) {
         printf("%s is exist.\n", path);

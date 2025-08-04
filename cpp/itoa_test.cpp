@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 int main() {
-    int Value = 1037626467;
+    int  Value      = 1037626467;
 
     char Result[20] = {
         0,

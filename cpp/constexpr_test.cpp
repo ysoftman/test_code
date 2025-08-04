@@ -13,7 +13,7 @@ constexpr double PI = 3.141592;
 // 함수에서 constexpr 사용시 inline 함수들과 같이 컴파일 된다.
 constexpr double cal_const_value(double a, double b) { return a > b ? 0 : std::pow(a, b); }
 
-int main() {
+int              main() {
     cout << "PI = " << PI << endl;
     cout << "2^8 = " << cal_const_value(2, 8) << endl;
     cout << "8^2 = " << cal_const_value(8, 2) << endl;

@@ -8,15 +8,15 @@
 
 char X[MAX];
 char Y[MAX];
-int b[MAX][MAX];
-int c[MAX][MAX];
+int  b[MAX][MAX];
+int  c[MAX][MAX];
 
-int i, j, m, n;
+int  i, j, m, n;
 
-int LCSlength();
+int  LCSlength();
 void printLCS(int i, int j);
 
-int main() {
+int  main() {
     printf("Input Two String : ");
     scanf("%s", X);
     scanf("%s", Y);

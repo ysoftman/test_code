@@ -33,7 +33,7 @@ int main() {
     printf("Input Number : ");
     scanf("%d", &num);
 
-    vector<int> result;
+    vector<int>           result;
     vector<int>::iterator iter;
     prime_factorization(num, result);
     for (iter = result.begin(); iter != result.end(); ++iter) {

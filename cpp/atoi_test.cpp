@@ -3,10 +3,10 @@
 #include <stdio.h>
 
 int main() {
-    char str[20] = "11020482278";
-    char *pValue = str;
+    char  str[20] = "11020482278";
+    char *pValue  = str;
 
-    long Result = 0;
+    long  Result  = 0;
 
     // 첫번째부터 0 까지 숫자 하나씩 변환
     while (*pValue != '\0') {

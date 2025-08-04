@@ -5,7 +5,7 @@
 
 void PrimeNumber(int);
 
-int main() {
+int  main() {
     int num = 0;
 
     printf("Input Number : ");

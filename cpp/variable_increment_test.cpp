@@ -4,7 +4,7 @@
 
 int main() {
     const int max = 5;
-    int i = 0;
+    int       i   = 0;
 
     // 전위, 후위 증가 연산자의 결과는 같다
     printf("for 문에서 i++ 사용\n");

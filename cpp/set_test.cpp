@@ -17,8 +17,8 @@ using namespace std;
 int main() {
     // set은 저장되는 항목들을 내부적으로 정렬해준다.
     // 내림차순
-    set<int, less<int>> s;
-    set<int, less<int>>::iterator i;
+    set<int, less<int>>                      s;
+    set<int, less<int>>::iterator            i;
 
     std::pair<std::set<int>::iterator, bool> ret;
     // insert 결과로 pair<iterator, bool> 로

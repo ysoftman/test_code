@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
             exit(-1);
         }
         unsigned long cnt = 0;
-        int ch;
+        int           ch;
         // fgetc함수는 리턴값이 int형이다
         // 한글 한문자는 2바이트 차지 -> 2개
         while ((ch = fgetc(fp1)) != EOF) {

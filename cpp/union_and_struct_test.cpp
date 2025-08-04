@@ -5,12 +5,12 @@
 
 struct ST {
     unsigned char ucChar;
-    unsigned int unInt;
+    unsigned int  unInt;
 };
 
 union UI {
     unsigned char ucChar;
-    unsigned int unInt;
+    unsigned int  unInt;
 };
 
 int main() {
@@ -34,7 +34,7 @@ int main() {
 
     // struct 의 멤버는 각각의 독립적인 메모리 공간이 있어 각각 값을 유지한다.
     stInstance.ucChar = 255;
-    stInstance.unInt = 65535;
+    stInstance.unInt  = 65535;
     printf("stInstance.ucChar = %d   stInstance.unInt = %d\n", stInstance.ucChar, stInstance.unInt);
     printf("stInstance.ucChar[0] = %x\n", stInstance.ucChar);
     // little/big endian 에 따라 byte order 가 다르게 나올 수 있다.
@@ -45,7 +45,7 @@ int main() {
     printf("\n");
 
     // 가장 큰 메모리 공간을 공유함으로 각 바이트는 최근에 할당한 값이 유지된다.
-    uiInstance.unInt = 65535;
+    uiInstance.unInt  = 65535;
     uiInstance.ucChar = 1;
     printf("uiInstance.ucChar = %d   uiInstance.b = %d\n", uiInstance.ucChar, uiInstance.unInt);
     printf("uiInstance.ucChar[0] = %x\n", uiInstance.ucChar);

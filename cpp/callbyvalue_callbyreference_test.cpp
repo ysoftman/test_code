@@ -20,18 +20,18 @@ void reference(int *a) {
 class Dummy {
    public:
     Dummy() {
-        nVal = 0;
+        nVal   = 0;
         strVal = "empty";
     }
     ~Dummy() {};
 
-    int nVal;
+    int         nVal;
     std::string strVal;
 };
 void func1(std::vector<Dummy *> vecDummy) {
     std::vector<Dummy *>::iterator iter;
-    int idx = 0;
-    std::string str = "";
+    int                            idx = 0;
+    std::string                    str = "";
     for (iter = vecDummy.begin(); iter != vecDummy.end(); ++iter) {
         (*iter)->nVal = ++idx;
         str += "a";

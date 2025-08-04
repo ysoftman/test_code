@@ -8,7 +8,7 @@
 // 헤더 추가 없이 시그니처를 명시하는 방법(.c 인경우만)
 // double sin(double x);
 double sin();
-int main() {
+int    main() {
     float i = 0;
     for (;;) {
         i++;

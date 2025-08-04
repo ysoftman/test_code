@@ -4,7 +4,7 @@
 
 int main() {
     struct bitField {
-        unsigned int nNum;
+        unsigned int  nNum;
         unsigned char bitNum : 1;  // 8비트가 아닌 1비트만 메모리 할당한다.
     };
 

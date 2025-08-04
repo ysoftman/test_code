@@ -10,11 +10,11 @@ using namespace std;
 
 class myclass {
    public:
-    int nNum;
-    char szString[3];
+    int            nNum;
+    char           szString[3];
     vector<string> vecString;
     myclass() {
-        nNum = 0;
+        nNum        = 0;
         szString[0] = '\0';
         szString[1] = '\0';
         szString[2] = '\0';
@@ -25,7 +25,7 @@ class myclass {
     ~myclass() {}
 
     void func1() {
-        nNum = 10;
+        nNum        = 10;
         szString[0] = 'a';
         szString[1] = 'b';
         szString[2] = '\0';
@@ -50,7 +50,7 @@ int main() {
     // ConstNum = 2;
     printf("ConstNum=%d\n", ConstNum);
 
-    int num = 10;
+    int  num     = 10;
     int *pNormal = NULL;
 
     printf("&num:%p\n", &num);
@@ -93,13 +93,13 @@ int main() {
     printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
     mc.func2();
     printf("nNum=%d szString=%s\n", mc.nNum, mc.szString);
-    vector<string> &myStringVec = mc.func3();
+    vector<string>          &myStringVec = mc.func3();
     vector<string>::iterator iter;
     for (iter = myStringVec.begin(); iter != myStringVec.end(); ++iter) {
         cout << *iter << endl;
     }
     // const reference 는 const 변수로 받아야 한다.
-    const vector<string> &myStringVec2 = mc.func4();
+    const vector<string>          &myStringVec2 = mc.func4();
     vector<string>::const_iterator iter2;
     for (iter2 = myStringVec2.begin(); iter2 != myStringVec2.end(); ++iter2) {
         cout << *iter2 << endl;

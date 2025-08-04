@@ -5,7 +5,7 @@
 
 int main() {
     // 4byte int 범위 -2,147,483,648 to 2,147,483,647
-    int left = 2000000000;
+    int left  = 2000000000;
     int right = 2000000010;
     printf("left:%d  right:%d\n", left, right);
     // 심플하게 생각하면 다음과 같이 중간 위치를 구하려고 하지만

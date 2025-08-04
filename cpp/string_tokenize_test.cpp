@@ -12,12 +12,12 @@ void StringTokenize(string str, vector<string> &tokens, string delimiter) {
     // 처음 구분자가 있을경우을 대비해서
     // find_first_not_of 는 offset 부터 구분자가 아닌 문자가 처음 나온 곳을 찾는다.
     string::size_type frompos = str.find_first_not_of(delimiter, 0);
-    string::size_type topos = str.find_first_of(delimiter, frompos);
+    string::size_type topos   = str.find_first_of(delimiter, frompos);
     while (topos != string::npos) {
         // substr(offset, count)
         tokens.push_back(str.substr(frompos, topos - frompos));
         frompos = str.find_first_not_of(delimiter, topos);
-        topos = str.find_first_of(delimiter, frompos);
+        topos   = str.find_first_of(delimiter, frompos);
     }
     // 마지막에 구분자가 없을때는 현재까지의 frompos 부터 끝까지를 하나의 토큰을 본다.
     if (frompos != string::npos) {
@@ -28,7 +28,7 @@ void StringTokenize(string str, vector<string> &tokens, string delimiter) {
 int main() {
     string strTest = "가나,다라마바,사아자,차카타파,하";
     cout << strTest << endl;
-    vector<string> vecTokens;
+    vector<string>           vecTokens;
     vector<string>::iterator iter;
     StringTokenize(strTest, vecTokens, ",");
     for (iter = vecTokens.begin(); iter != vecTokens.end(); ++iter) {

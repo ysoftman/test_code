@@ -4,9 +4,9 @@
 
 int main() {
 #if defined(_WIN32) || defined(_WIN64)
-    int a = 1000000000;
-    __int64 b = 10000000000;
-    long long c = 10000000000;
+    int        a = 1000000000;
+    __int64    b = 10000000000;
+    long long  c = 10000000000;
     __time32_t d = 1000000000;
     __time64_t e = 10000000000;
 

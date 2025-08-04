@@ -24,8 +24,8 @@ char *UTF8ToANSI(char *pUTF8) {
     // widechar UTF8 이 NULL 로 끝나도록
     pwcUTF8[nwcUTF8Size - 1] = L'\0';
     // widechar UTF8 크기 파악
-    int nANSISize = WideCharToMultiByte(CP_ACP, 0, pwcUTF8, -1, NULL, NULL, NULL, NULL);
-    char *pANSI = new char[nANSISize];
+    int   nANSISize = WideCharToMultiByte(CP_ACP, 0, pwcUTF8, -1, NULL, NULL, NULL, NULL);
+    char *pANSI     = new char[nANSISize];
     memset(pANSI, 0, sizeof(char) * (nANSISize));
     // widechar UTF8 을 multibyte ANSI(euc-kr, euc-kr...) 로 변환
     if (WideCharToMultiByte(CP_ACP, 0, pwcUTF8, -1, pANSI, nANSISize, NULL, NULL) == 0) {
@@ -56,8 +56,8 @@ char *ANSIToUTF8(char *pANSI) {
     // widechar ANSI(euc-kr, euc-kr...) 이 NULL 로 끝나도록
     pwcANSI[nwcANSISize - 1] = L'\0';
     // widechar ANSI(euc-kr, euc-kr...) 크기 파악
-    int UTF8Size = WideCharToMultiByte(CP_UTF8, 0, pwcANSI, -1, NULL, NULL, NULL, NULL);
-    char *pUTF8 = new char[UTF8Size];
+    int   UTF8Size = WideCharToMultiByte(CP_UTF8, 0, pwcANSI, -1, NULL, NULL, NULL, NULL);
+    char *pUTF8    = new char[UTF8Size];
     memset(pUTF8, 0, sizeof(char) * (UTF8Size));
     // widechar ANSI(euc-kr, euc-kr...) 을 multibyte UTF8 로 변환
     if (WideCharToMultiByte(CP_UTF8, 0, pwcANSI, -1, pUTF8, UTF8Size, NULL, NULL) == 0) {
@@ -72,10 +72,10 @@ char *ANSIToUTF8(char *pANSI) {
 }
 
 int main() {
-    FILE *fp = fopen("EncodingTest.txt", "w");
+    FILE *fp             = fopen("EncodingTest.txt", "w");
 
-    char TestString[50] = "Yoon,ByoungHoon 윤병훈 인코딩 테스트...";
-    char *pTestString = TestString;
+    char  TestString[50] = "Yoon,ByoungHoon 윤병훈 인코딩 테스트...";
+    char *pTestString    = TestString;
     printf("Default: %s\n", pTestString);
     fprintf(fp, "%s\n", pTestString);
 

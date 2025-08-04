@@ -22,7 +22,7 @@ int main() {
     // char szValue2[50] = "ysoftman_123+asdf&";
     //  &로 끝나지 않은 경우
     char szValue2[50] = "ysoftman_123+asdf";
-    p = szValue2;
+    p                 = szValue2;
     while (*p != '\0' && *p != '&') {
         // printf("%d\n", *p);
         *p = 'X';

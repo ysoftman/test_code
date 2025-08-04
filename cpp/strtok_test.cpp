@@ -16,8 +16,8 @@
 #include <string.h>
 
 int main() {
-    char str[50] = "My name is Byoung Hoon,,, Yoon...";
-    char *pToken = NULL;
+    char  str[50] = "My name is Byoung Hoon,,, Yoon...";
+    char *pToken  = NULL;
     // 구분자로 공백 , . 등 여러개를 사용할 수 있다.
     const char Separator[] = " ,.";
     printf("1) %s  (Separator:%s)\n", str, Separator);

@@ -3,9 +3,9 @@
 using namespace std;
 
 struct my_struct {
-    int num;
-    string str;
-    float fnum;
+    int         num;
+    string      str;
+    float       fnum;
     const char *cstr;
 };
 
@@ -21,9 +21,9 @@ int main() {
     // initialize struct - case1
     my_struct my1;
     my1.fnum = 12.34;
-    my1.str = "ysoftman1";
+    my1.str  = "ysoftman1";
     my1.cstr = "ysoftman2";
-    my1.num = 100;
+    my1.num  = 100;
     print_my_struct(my1);
 
     // initialize struct - case2

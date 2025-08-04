@@ -15,12 +15,12 @@
 #include <unistd.h>
 
 const int THREAD_CNT = 1;
-const int MAX_LEN = 100000;
+const int MAX_LEN    = 100000;
 
 struct thread_args {
-    int fd;
+    int   fd;
     FILE *fp;
-    char buffer[MAX_LEN + 1];
+    char  buffer[MAX_LEN + 1];
     thread_args() {
         fd = 0;
         fp = NULL;
@@ -51,7 +51,7 @@ int main() {
     printf("SSIZE_MAX : %ld\n", SSIZE_MAX);
 
     FILE *fp = fopen("yoon.txt", "a");
-    int fd = open("yoon2.txt", O_CREAT | O_WRONLY | O_APPEND, 0664);
+    int   fd = open("yoon2.txt", O_CREAT | O_WRONLY | O_APPEND, 0664);
 
     // 데이터 준비
     thread_args th_arg1;
@@ -71,7 +71,7 @@ int main() {
     strcat(th_arg2.buffer, "\n");
 
     // 멀티 쓰레드로 파일 하나에 동시 쓰기
-    int status;
+    int       status;
     pthread_t pth[THREAD_CNT];
     for (int i = 0; i < THREAD_CNT; i++) {
         if (i % 2 == 0) {

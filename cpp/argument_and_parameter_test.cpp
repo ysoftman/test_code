@@ -9,7 +9,7 @@
 // a 는 parameter
 void func(int a) { printf("%d\n", a); }
 
-int main() {
+int  main() {
     // 10 은 argument
     func(10);
     return 0;

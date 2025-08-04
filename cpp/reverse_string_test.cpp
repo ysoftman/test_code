@@ -5,7 +5,7 @@
 #include <string.h>  // strlen()함수 사용
 
 int main() {
-    int i = 0, n = 0;
+    int  i = 0, n = 0;
     char ch[50];
     char result_str[50];
 
@@ -34,7 +34,7 @@ int main() {
     n = strlen(ch);
 
     for (i = 0; i < n; i += 2) {
-        result_str[i] = ch[n - i - 2];
+        result_str[i]     = ch[n - i - 2];
         result_str[i + 1] = ch[n - i - 1];
 
         // 문장의 마지막에 끝을 표시

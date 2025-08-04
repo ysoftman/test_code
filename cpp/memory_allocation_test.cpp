@@ -16,10 +16,10 @@ int main() {
     printf("_WIN32 size_t -> %d bytes\n", sizeof(size_t));
 #endif
 
-    const int cnt = 10000;
-    const int size = 1024 * 1024;
+    const int    cnt        = 10000;
+    const int    size       = 1024 * 1024;
     unsigned int total_size = 0;
-    char *pHeap[cnt];
+    char        *pHeap[cnt];
 
     // 32bit 빌드가 2GB까지 할당
     // (32bit 윈도우에서 4GB 메모리를 인식하고 이중 2GB 커널모드공간, 2GB는 유저모드 공간 즉

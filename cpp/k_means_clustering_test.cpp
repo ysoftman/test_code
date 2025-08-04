@@ -17,13 +17,13 @@ struct DOT {
 
 bool KMeansClustering(DOT *pInput, int nClass);
 
-int main() {
+int  main() {
     srand((unsigned int)time(NULL));
     DOT *pInput = new DOT[MAX_SET];
     // 입력으로 사용할 점들을 랜덤하게 만든다.
     for (int i = 0; i < MAX_SET; i++) {
-        pInput[i].x = rand() % 10;
-        pInput[i].y = rand() % 10;
+        pInput[i].x     = rand() % 10;
+        pInput[i].y     = rand() % 10;
         pInput[i].group = 0;
         fprintf(stderr, "pInput[%3d] = (%3d,%3d)\n", i, pInput[i].x, pInput[i].y);
     }
@@ -34,14 +34,14 @@ int main() {
 }
 
 bool KMeansClustering(DOT *pInput, int nClass) {
-    int i = 0, j = 0, PreDist = 0, CurDist = 0, Cnt = 0;
-    bool bFind = false;
+    int  i = 0, j = 0, PreDist = 0, CurDist = 0, Cnt = 0;
+    bool bFind      = false;
 
     DOT *pCenterDot = new DOT[nClass];
     // 초기의 각 클래스를 대표할 중점은 입력 샘플로 부터 선택한다.
     for (int i = 0; i < nClass; i++) {
-        pCenterDot[i].x = pInput[i].x;
-        pCenterDot[i].y = pInput[i].y;
+        pCenterDot[i].x     = pInput[i].x;
+        pCenterDot[i].y     = pInput[i].y;
         pCenterDot[i].group = 0;
     }
 

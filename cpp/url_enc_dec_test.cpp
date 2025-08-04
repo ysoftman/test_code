@@ -36,7 +36,7 @@ string URLEncoding(char *pIn) {
     }
 
     string result;
-    char temp = 0;
+    char   temp = 0;
     while (*pIn != 0) {
         temp = *pIn;
         // ASCII 대소문자와 숫자인 경우만 그대로 저장
@@ -67,7 +67,7 @@ string URLDecoding(char *pIn) {
     }
 
     string result;
-    char temp = 0;
+    char   temp = 0;
     while (*pIn != 0) {
         temp = *pIn;
         // ASCII 대소문자와 숫자인 경우만 그대로 저장
@@ -84,11 +84,11 @@ string URLDecoding(char *pIn) {
             char buf = 0;
             pIn++;
             temp = *pIn;
-            buf = hex2int(temp);
+            buf  = hex2int(temp);
 
             pIn++;
             temp = *pIn;
-            buf = buf << 4 | hex2int(temp);
+            buf  = buf << 4 | hex2int(temp);
 
             result += buf;
         }
@@ -99,7 +99,7 @@ string URLDecoding(char *pIn) {
 }
 
 int main() {
-    char pInput[] = "윤병훈 qwer 1234 QWER !@#$";
+    char   pInput[] = "윤병훈 qwer 1234 QWER !@#$";
     string Result;
 
     fprintf(stdout, "input = %s\n", pInput);

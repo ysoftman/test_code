@@ -8,10 +8,10 @@ class Child : public Parent {
     virtual void f() {};
 };
 int main() {
-    long long lNumber = 123456789123456789;
+    long long lNumber      = 123456789123456789;
     const int CONST_NUMBER = 123;
-    double fNumber = 3.141592;
-    char szStr[10] = "ysoftman";
+    double    fNumber      = 3.141592;
+    char      szStr[10]    = "ysoftman";
     for (int i = 0; i < 10; ++i) {
         printf("%c\n", szStr[i]);
     }
@@ -48,7 +48,7 @@ int main() {
 
     // C++ reinterpret_cast : 포인터끼리 또는 포인터와 값간에 변환할때
     int *pNumber = NULL;
-    pNumber = reinterpret_cast<int *>(lNumber);
+    pNumber      = reinterpret_cast<int *>(lNumber);
     printf("pNumber = %p\n", pNumber);
     pNumber = reinterpret_cast<int *>(CONST_NUMBER);
     printf("pNumber = %p\n", pNumber);
@@ -61,11 +61,11 @@ int main() {
     printf("\n");
 
     // C++ dynamic_cast : 상속관계에서 upcasting 변환 가능 downcasting 은 안됨
-    Parent *pParent = new Parent();
+    Parent *pParent  = new Parent();
     Parent *pParent2 = NULL;
-    Child *pChild = new Child();
-    Child *pChild2 = NULL;
-    pParent2 = dynamic_cast<Parent *>(pChild);  // upcasting ok
+    Child  *pChild   = new Child();
+    Child  *pChild2  = NULL;
+    pParent2         = dynamic_cast<Parent *>(pChild);  // upcasting ok
     printf("pParent = %p\n", pParent2);
     pChild2 = dynamic_cast<Child *>(pParent);  // downcasting null
     printf("pChild = %p\n", pChild2);

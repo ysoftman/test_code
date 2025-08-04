@@ -9,9 +9,9 @@ class myinfo {
    public:
     map<string, string> _info_map;
 
-    void setinfomap(const string& key, const string& value) { _info_map[key] = value; }
+    void                setinfomap(const string& key, const string& value) { _info_map[key] = value; }
 
-    void getmyinfo(string target) const {
+    void                getmyinfo(string target) const {
         // 값을 변경할 수 없는 const 형식의 함수에서는 const_iterator 를 사용해야 한다.
         map<string, string>::const_iterator citer;
         citer = _info_map.find(target);
@@ -33,7 +33,7 @@ int main() {
         cout << iter->first << "=" << iter->second << endl;
     }
 
-    myinfo mi;
+    myinfo       mi;
     const string k = "111";
     const string v = "222";
     mi.setinfomap(k, v);

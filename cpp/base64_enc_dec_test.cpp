@@ -14,7 +14,7 @@ static char base64_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
                               'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
                               'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
                               '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/', '\0'};
-static char base64_pad = '=';
+static char base64_pad     = '=';
 
 typedef union {
     struct {
@@ -31,7 +31,7 @@ char *Base64Encoding(char *src, int Length) {
     memset(result, 0, sizeof(char) * Length * 4);
 
     int i, j = 0;
-    BF temp;
+    BF  temp;
     for (i = 0; i < Length; i = i + 3, j = j + 4) {
         temp.c3 = src[i];
 
@@ -45,7 +45,7 @@ char *Base64Encoding(char *src, int Length) {
         else
             temp.c1 = src[i + 2];
 
-        result[j] = base64_table[temp.e4];
+        result[j]     = base64_table[temp.e4];
         result[j + 1] = base64_table[temp.e3];
         result[j + 2] = base64_table[temp.e2];
         result[j + 3] = base64_table[temp.e1];
@@ -61,7 +61,7 @@ char *Base64Encoding(char *src, int Length) {
 // 4byte(24bit) 단위로 인코딩) 한다. 한글문자는 인코딩이 안되는 문제가 있다
 string Base64EncodingOld(char *pIn, int Length) {
     string result;
-    char temp = '\0';
+    char   temp = '\0';
     // 24bit 가 유지될 동안 진행한다.
     while (Length > 2) {
         // 4byte(24bit) 단위로 처리한다.
@@ -110,7 +110,7 @@ string Base64EncodingOld(char *pIn, int Length) {
 }
 
 char *Base64Decoding(char *pIn, int Length) {
-    int ch, i = 0, j = 0, k;
+    int   ch, i = 0, j = 0, k;
 
     short reverse_table[256];
 
@@ -185,8 +185,8 @@ char *Base64Decoding(char *pIn, int Length) {
 }
 
 int main() {
-    char teststring[100] = "윤병훈 yoon byoung hoon 1234 !@#$";
-    char *pInput = teststring;
+    char  teststring[100] = "윤병훈 yoon byoung hoon 1234 !@#$";
+    char *pInput          = teststring;
 
     fprintf(stdout, "[input text] = %s\n", pInput);
 

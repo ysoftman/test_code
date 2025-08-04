@@ -26,8 +26,8 @@ int main() {
     cout << "str1:" << str1 << endl;
     cout << "str2:" << str2 << endl;
 
-    string lemon = "lemon";
-    string apple = "apple";
+    string         lemon = "lemon";
+    string         apple = "apple";
     vector<string> plates;
     // lemon 값을 plates 벡터에 복사한다.
     plates.push_back(lemon);

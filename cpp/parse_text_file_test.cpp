@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 
     // 디렉토리 생성
     const char *pAnswerDIR = "@answer/";
-    const char *pRecogDIR = "@recog/";
+    const char *pRecogDIR  = "@recog/";
 
 #if defined(_WIN32) || defined(_WIN64)
     _mkdir(pAnswerDIR);
@@ -49,9 +49,9 @@ int main(int argc, char *argv[]) {
     mkdir(pRecogDIR, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 #endif
 
-    bool bUnicode = false;
-    bool bUTF8 = false;
-    int code_check[3] = {0, 0, 0};
+    bool bUnicode      = false;
+    bool bUTF8         = false;
+    int  code_check[3] = {0, 0, 0};
     // unicode(utf-16) 코드 검사(2바이트 헤더 검사)
     for (int i = 0; i <= 1; i++) {
         code_check[i] = fgetc(fpInput);
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
         bUnicode = true;
     }
 
-    FILE *fpOutput = NULL;
+    FILE       *fpOutput = NULL;
 
     std::string strAnswerFileName;
     std::string strRecogFileName;
@@ -83,10 +83,10 @@ int main(int argc, char *argv[]) {
     std::string strRecog;
     std::string strTemp;
 
-    char c = 0;
-    int len = 0;
-    int tabcnt = 0;
-    bool bLine = false;
+    char        c      = 0;
+    int         len    = 0;
+    int         tabcnt = 0;
+    bool        bLine  = false;
     while (!feof(fpInput)) {
         c = (char)fgetc(fpInput);
 
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
                 strRecog.clear();
                 strTemp.clear();
                 strTemp.clear();
-                len = 0;
+                len    = 0;
                 tabcnt = 0;
             }
         } else {

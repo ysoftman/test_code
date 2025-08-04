@@ -12,7 +12,7 @@ enum MY_FRUIT_TYPE {
 };
 
 struct testEnum {
-    std::string type_str;
+    std::string   type_str;
     MY_FRUIT_TYPE type;
 
     // gcc 최신 버전에서 enum 타입의 변수가 0으로 초기화 되지 않는다.

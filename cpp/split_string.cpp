@@ -21,7 +21,7 @@ int main() {
     // 방법1
     // 공백 구분해서 벡터로 담기
     cout << "[method1]" << endl;
-    istringstream iss(str);
+    istringstream  iss(str);
     vector<string> vecStr((istream_iterator<string>(iss)), (istream_iterator<string>()));
     printVecStr(vecStr);
 
@@ -30,7 +30,7 @@ int main() {
     // getline 세번째 파라미터로 구분자 , 를 사용할 수 있다.(기본은 값은 \n)
     cout << "[method2]" << endl;
     istringstream iss2(str);
-    string out;
+    string        out;
     while (getline(iss2, out, ' ')) {
         cout << out << endl;
     }

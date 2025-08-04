@@ -5,10 +5,9 @@
 
 #include <stack>
 
-const int X = 99999;         // 무한대
-const int NUM_OF_NODES = 9;  // 노드 수
-int Dijkstra(int N, int Matrix[NUM_OF_NODES][NUM_OF_NODES], int nStartPos, int Distance[],
-             int PreNode[]) {
+const int X            = 99999;  // 무한대
+const int NUM_OF_NODES = 9;      // 노드 수
+int       Dijkstra(int N, int Matrix[NUM_OF_NODES][NUM_OF_NODES], int nStartPos, int Distance[], int PreNode[]) {
     if (nStartPos < 0 || nStartPos >= N) {
         return -1;
     }
@@ -16,19 +15,19 @@ int Dijkstra(int N, int Matrix[NUM_OF_NODES][NUM_OF_NODES], int nStartPos, int D
     bool bFind[NUM_OF_NODES];
     for (int i = 0; i < N; i++) {
         Distance[i] = X;
-        bFind[i] = false;
-        PreNode[i] = 0;
+        bFind[i]    = false;
+        PreNode[i]  = 0;
     }
 
     Distance[nStartPos] = 0;
     for (;;) {
         int min = X;
-        int i = -1;
+        int i   = -1;
 
         for (int j = 0; j < N; j++) {
             if (bFind[j] == false && Distance[j] < min) {
                 min = Distance[j];
-                i = j;
+                i   = j;
             }
         }
         // 더이상 탐색할 노드가 없다면 끝낸다.
@@ -85,14 +84,12 @@ int main() {
     // H X X X X X X X 0 X
     // I X X X X X X X 1 0
     int Matrix[NUM_OF_NODES][NUM_OF_NODES] = {
-        {0, 6, 3, 2, X, X, X, X, X}, {X, 0, X, X, 2, X, X, X, X}, {X, 2, 0, X, X, 4, X, X, X},
-        {X, X, X, 0, X, X, 1, X, X}, {X, X, X, X, 0, X, X, 1, X}, {X, X, X, X, X, 0, X, X, 3},
-        {X, X, X, X, X, 3, 0, X, X}, {X, X, X, X, X, X, X, 0, X}, {X, X, X, X, X, X, X, 1, 0}};
+        {0, 6, 3, 2, X, X, X, X, X}, {X, 0, X, X, 2, X, X, X, X}, {X, 2, 0, X, X, 4, X, X, X}, {X, X, X, 0, X, X, 1, X, X}, {X, X, X, X, 0, X, X, 1, X}, {X, X, X, X, X, 0, X, X, 3}, {X, X, X, X, X, 3, 0, X, X}, {X, X, X, X, X, X, X, 0, X}, {X, X, X, X, X, X, X, 1, 0}};
 
     int Distance[NUM_OF_NODES];
     int PreNode[NUM_OF_NODES];
     int nStartPos = 0;
-    int nEndPos = 7;
+    int nEndPos   = 7;
     Dijkstra(NUM_OF_NODES, Matrix, nStartPos, Distance, PreNode);
     int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i = 0;
     a = Distance[0];
@@ -122,7 +119,7 @@ int main() {
 
     // 최단 경로 파악
     std::stack<int> ShortestPath;
-    int temp = nEndPos;
+    int             temp = nEndPos;
     for (int i = 0; i < NUM_OF_NODES; i++) {
         ShortestPath.push(temp);
         if (temp == 0) {

@@ -12,11 +12,11 @@ class ITEM {
     ITEM(string n, int v) {
         cout << "ITEM(string n, int v) copy constructor" << endl;
         name = n;
-        val = v;
+        val  = v;
     }
     ~ITEM() { cout << "~ITEM() destructor" << endl; }
     string name;
-    int val;
+    int    val;
 };
 
 void printItemMap(std::map<int, ITEM> itemMap) {

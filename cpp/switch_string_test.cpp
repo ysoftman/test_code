@@ -22,9 +22,9 @@ int main() {
 
     // switch 는 문자열을 허용하지 않는다.
     // 그래서 쓰고 싶다면 hash 값을 정수로 변경해서 써야 한다.
-    std::string str = "a";
+    std::string            str = "a";
     std::hash<std::string> hash_fn;
-    size_t sz = hash_fn(str);
+    size_t                 sz = hash_fn(str);
     std::cout << sz << std::endl;
     switch (sz) {
         case 2603192927274642682:

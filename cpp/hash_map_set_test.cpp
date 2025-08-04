@@ -46,7 +46,7 @@ int main() {
 
     // Unordered_set are containers that store unique elements in no particular order, and which
     // allow for fast retrieval of individual elements based on their value.
-    unordered_set<string> hashset;
+    unordered_set<string>                                 hashset;
 
     std::pair<std::unordered_set<string>::iterator, bool> ret;
     // insert 결과로 pair<iterator, bool> 로

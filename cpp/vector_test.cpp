@@ -114,7 +114,7 @@ void vector_test2() {
 
 void vector_test3() {
     int arr[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
-    int len = sizeof(arr) / sizeof(int);
+    int len   = sizeof(arr) / sizeof(int);
     cout << "len: " << len << endl;
 
     // array to vector

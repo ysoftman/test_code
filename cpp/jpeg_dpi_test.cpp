@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
         dpi = 200;
     }
     // 입력 파일크기 얻기
-    int size = GetFileSize(fpIn);
+    int   size    = GetFileSize(fpIn);
     char *pBuffer = (char *)malloc(sizeof(char) * size);
     memset(pBuffer, 0, sizeof(char) * size);
     // 입력 파일 메모리로 복사하기
@@ -52,10 +52,10 @@ int main(int argc, char *argv[]) {
     char readbyte = 0;
 
     // 수평 해상도
-    readbyte = pBuffer[15];
+    readbyte    = pBuffer[15];
     pBuffer[15] = dpi;
     // 수직 해상도
-    readbyte = pBuffer[17];
+    readbyte    = pBuffer[17];
     pBuffer[17] = dpi;
 
     // 출력 파일 만들기

@@ -7,9 +7,9 @@
 #define min(x, y) ((x) < (y) ? (x) : (y))
 
 int main() {
-    char *s;
-    char str1[100];
-    char str2[100];
+    char        *s;
+    char         str1[100];
+    char         str2[100];
 
     unsigned int cnt1[256];
     unsigned int cnt2[256];

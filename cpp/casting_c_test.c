@@ -4,10 +4,10 @@
 #include <stdio.h>
 
 int main() {
-    long long lNumber = 123456789123456789;
+    long long lNumber      = 123456789123456789;
     const int CONST_NUMBER = 123;
-    double fNumber = 3.141592;
-    char szStr[10] = "ysoftman";
+    double    fNumber      = 3.141592;
+    char      szStr[10]    = "ysoftman";
     for (int i = 0; i < 10; ++i) {
         printf("%c\n", szStr[i]);
     }

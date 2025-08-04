@@ -16,7 +16,7 @@ void TestPrintf(const char *format, ...) {
 }
 
 int main() {
-    int a = 10, b = 20;
+    int  a = 10, b = 20;
     char pTemp[] = "YoonByoungHoon";
     TestPrintf("%d %d %s\n", a, b, pTemp);
 

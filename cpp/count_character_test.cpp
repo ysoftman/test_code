@@ -5,9 +5,9 @@
 
 int main() {
     char str[100];
-    int n = 0;
-    int i = 0;
-    int cnt = 0;
+    int  n   = 0;
+    int  i   = 0;
+    int  cnt = 0;
 
     printf("\nInput String To Count Character 'a' :  ");
     scanf("%s", str);

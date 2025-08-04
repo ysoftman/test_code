@@ -14,9 +14,9 @@
 #include <string.h>
 
 int main() {
-    FILE *fp = NULL;
-    int num_of_bytes = 0;
-    char c = NULL;
+    FILE *fp           = NULL;
+    int   num_of_bytes = 0;
+    char  c            = NULL;
 
     // 파일 쓰기
     fp = fopen("CRLF.txt", "w");
@@ -24,7 +24,7 @@ int main() {
     fclose(fp);
 
     // text 모드로 읽기
-    fp = fopen("CRLF.txt", "rt");
+    fp           = fopen("CRLF.txt", "rt");
     num_of_bytes = 0;
     while ((c = fgetc(fp)) != EOF) {
         num_of_bytes++;
@@ -33,7 +33,7 @@ int main() {
     fclose(fp);
 
     // binary 모드로 읽기
-    fp = fopen("CRLF.txt", "rb");
+    fp           = fopen("CRLF.txt", "rb");
     num_of_bytes = 0;
     while ((c = fgetc(fp)) != EOF) {
         num_of_bytes++;

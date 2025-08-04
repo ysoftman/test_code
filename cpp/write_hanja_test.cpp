@@ -5,8 +5,8 @@
 #include <string.h>
 
 int main() {
-    FILE *fp = NULL;
-    char str[3] = {
+    FILE *fp     = NULL;
+    char  str[3] = {
         0,
     };
 

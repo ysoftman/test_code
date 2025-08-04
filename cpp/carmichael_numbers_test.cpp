@@ -10,7 +10,7 @@
 
 static char Carmichael[MAX];
 
-void CheckPrime() {
+void        CheckPrime() {
     int i;
     int j;
 

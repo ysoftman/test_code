@@ -11,7 +11,7 @@ void print_array(int *arr, int size) {
 
 int main() {
     const int size = 100;
-    int a[size];
+    int       a[size];
     print_array(a, size);
     // int b[size] = {};  // invalid C but valid C++ way to zero-out a block-scope array
     int b[size] = {0};  // valid C and C++ way to zero-out a block-scope array

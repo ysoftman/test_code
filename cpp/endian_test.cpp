@@ -13,7 +13,7 @@
 struct STUDENT {
     char name[5];
     long Name[4];  // for Number Expression of Character Name
-    int age;
+    int  age;
 };
 
 int main() {
@@ -33,7 +33,7 @@ int main() {
 
     printf("\nTransferring... Windows -> UNIX\n");
 
-    std.age = htonl(std.age);
+    std.age     = htonl(std.age);
 
     std.Name[0] = htonl(66);
     std.Name[1] = htonl(73);
@@ -48,7 +48,7 @@ int main() {
 
     printf("\nTransferring...UNIX -> Windows\n");
 
-    std.age = htonl(std.age);
+    std.age     = htonl(std.age);
 
     std.Name[0] = htonl(std.Name[0]);
     std.Name[1] = htonl(std.Name[1]);

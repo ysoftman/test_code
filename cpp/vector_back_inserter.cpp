@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    vector<string> vec = {"lemon", "apple", "orange"};
+    vector<string> vec        = {"lemon", "apple", "orange"};
     vector<string> add_fruits = {"mango", "banana"};
 
     // 기존 벡터 뒤에 새로운 벡터를 추가할 수 있다.

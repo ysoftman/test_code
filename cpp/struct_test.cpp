@@ -27,7 +27,7 @@ int main() {
     char a = 'a';
     for (int i = 0; i < 26; ++i) {
         Node nn;
-        nn.data = a++;
+        nn.data     = a++;
         mynode.n[i] = &nn;
         printf("mynode.n[%d]: %c\n", i, mynode.n[i]->data);
     }

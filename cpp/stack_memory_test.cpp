@@ -19,9 +19,9 @@ Dummy::Dummy() {
 Dummy::~Dummy() { printf("%s this(0x%p)\n", __FUNCTION__, this); }
 
 Dummy g_RootDummy;
-int g_Cnt = 0;
+int   g_Cnt = 0;
 
-void setRootDummy() {
+void  setRootDummy() {
     printf("%s\n", __FUNCTION__);
 
     // Dummy 인스턴스를 스택공간에 생성

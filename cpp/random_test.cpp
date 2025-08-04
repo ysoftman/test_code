@@ -40,7 +40,7 @@ rand() 로 나올 수 있는 값은 0 ~ RAND_MAX
 랜덤 값이 균등하게 분포하지 않는다.
 */
 void randomCStyle() {
-    int num = 0;
+    int num  = 0;
     int seed = (unsigned int)time(NULL);
     srand(seed);
     for (int i = 0; i < 10; i++) {

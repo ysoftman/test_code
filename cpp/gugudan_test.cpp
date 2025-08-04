@@ -5,7 +5,7 @@
 #include <string.h>
 
 int main() {
-    int num1, num2;
+    int  num1, num2;
     char ch;
 
     // 출력할 단 입력 받기

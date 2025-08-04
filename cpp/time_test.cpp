@@ -109,7 +109,7 @@ int main() {
     // 7000년은 3000 년이 지났기 때문에 mktime 이 실패(-1) 한다.
     memset(tmCurtime, 0, sizeof(tm));
     tmCurtime->tm_year = 7000 - 1900;
-    time_t llCurtime2 = mktime(tmCurtime);
+    time_t llCurtime2  = mktime(tmCurtime);
     printf("llCurtime2 = %ld\n\n", llCurtime2);
     llCurtime2 = mktime(tmCurtime);
     printf("llCurtime2 = %ld\n\n", llCurtime2);

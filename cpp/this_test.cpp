@@ -8,7 +8,7 @@ using namespace std;
 
 class foobar {
    public:
-    int num;
+    int     num;
     foobar &set_num(int num) {
         // this 사용이유 1
         // 파리미터와 클래스 멤버변수가 이름이 같을때 구분하기 위해
@@ -35,7 +35,7 @@ class foobar {
     foobar *this_pointer() { return this; }
     // this 역참조에 대한 주소값을 리턴
     foobar &this_reference() { return *this; }
-    foobar this_dereference() { return *this; }
+    foobar  this_dereference() { return *this; }
 };
 
 int main() {

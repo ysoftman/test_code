@@ -8,10 +8,10 @@
 using namespace std;
 
 void make_KOR_COM_CODE_2350() {
-    char ch[3] = "";
-    int i;
-    int j;
-    int cnt = 0;
+    char  ch[3] = "";
+    int   i;
+    int   j;
+    int   cnt = 0;
     FILE *fp;
     fp = fopen("kor_com_code_2350.txt", "w");
     // KS X 1001 한글 2350자 EUC-KR
@@ -38,10 +38,10 @@ void make_KOR_COM_CODE_2350() {
 }
 
 void make_KOR_COM_CODE_8822() {
-    char ch[3] = "";
-    int i;
-    int j;
-    int cnt = 0;
+    char  ch[3] = "";
+    int   i;
+    int   j;
+    int   cnt = 0;
     FILE *fp;
     fp = fopen("kor_com_code_8822.txt", "w");
     // CP949
@@ -123,22 +123,22 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     const int MAX_LEN = 50;
-    char target[MAX_LEN];
-    char targettype[MAX_LEN];
+    char      target[MAX_LEN];
+    char      targettype[MAX_LEN];
     memset(target, 0, sizeof(char) * MAX_LEN);
     memset(targettype, 0, sizeof(char) * MAX_LEN);
 
-    FILE *fpIn = fopen(argv[1], "r");
+    FILE  *fpIn = fopen(argv[1], "r");
 
     string outputfilename;
     outputfilename = argv[1];
     outputfilename += "_check_korcode.txt";
-    FILE *fpOut = fopen(outputfilename.c_str(), "w");
+    FILE *fpOut     = fopen(outputfilename.c_str(), "w");
 
-    int len = 0;
-    int i = 0;
-    int unkonwcnt = 0;
-    int logincnt = 0;
+    int   len       = 0;
+    int   i         = 0;
+    int   unkonwcnt = 0;
+    int   logincnt  = 0;
     while (fscanf(fpIn, "%d %s", &logincnt, target) != EOF) {
         len = strlen(target);
         // 텍스트 파일의 글자가 ASCII / 완성형 코드가 아닌경우 체크
