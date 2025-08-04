@@ -25,6 +25,23 @@ fn main() {
     println!("break return: {l}");
 
     i = 0;
+    // loop 레이블 명시해서 중첩 반복 탈출(c,golang 에서 goto 효과)
+    'outer_loop: loop {
+        println!("outer_loop {i}");
+        loop {
+            i += 1;
+            println!("inner loop {i}");
+            if i >= 10 {
+                break 'outer_loop; // outer_loop 를 탈출
+            }
+            // outer_loop 가 loop (2번 이상 반복)되지 않으면 #[deny(clippy::never_loop)] 조건으로 경고 발생
+            if i == 7 {
+                break;
+            }
+        }
+    }
+
+    i = 0;
     while i < 7 {
         println!("arr[{}] : {}", i, arr[i]);
         i += 1;
