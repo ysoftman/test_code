@@ -169,6 +169,21 @@ export const getFirestoreVisitCnt = function (coll, docName, htmlId) {
     });
 };
 
+const version =
+  "last_version: " +
+  __LAST_VERSION_TAG__ +
+  "<br>" +
+  "last_commit_hash: " +
+  __LAST_COMMIT_HASH__ +
+  "<br>" +
+  "last_commit_date: " +
+  __LAST_COMMIT_DATE__ +
+  "<br>" +
+  "last_commit_message: " +
+  __LAST_COMMIT_MESSAGE__ +
+  "<br>";
+document.getElementById("version").innerHTML = version;
+
 async function loadImg(path) {
   const imgNames = await getImageList(path);
   // image div 태그를 구성해 이미지 순서를 보장
