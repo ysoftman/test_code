@@ -37,7 +37,11 @@ service cloud.firestore {
 
 # firebase -> 데이터 -> 컬렉션시작
 index 컬렉션 생성
+```
 
+## firebase 파일 업로드/이동 CLI 작업시
+
+```bash
 # firebase storage 업로드
 # gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
 # gs(googlestorage) url 는 gsutil(google-cloud-sdk)로 접근할 수 있다.
