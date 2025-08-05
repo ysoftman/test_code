@@ -1,8 +1,12 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
-const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import path from "path";
+import { fileURLToPath } from "url";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 const isProduction = process.env.NODE_ENV == "production";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const config = {
   entry: {
@@ -60,7 +64,7 @@ const config = {
   },
 };
 
-module.exports = () => {
+export default () => {
   if (isProduction) {
     config.mode = "production";
   } else {
