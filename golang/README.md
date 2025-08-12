@@ -7,5 +7,5 @@ golang test code
 - 모든 패키지들 업데이트
 
 ```bash
-for d in $(ls -d */); do pushd $d; go mod tidy; go get -u ./...; popd; done
+for d in $(ls -d */); do pushd $d; go get -u ./...; go mod tidy; popd; done
 ```
