@@ -97,3 +97,9 @@ EOF
 echo "remove trailing whitespace"
 r=$(printf "hello   " | awk '{sub(/[[:space:]]+$/, ""); print}')
 echo "...${r}..."
+
+# 외부 변수 전달
+apple_msg="oh~apple"
+lemon_msg="oh~lemon"
+
+echo "a b" | awk -v msg1=$lemon_msg -v msg2=$apple_msg '{ print msg1,$1,$2,msg2 }'
