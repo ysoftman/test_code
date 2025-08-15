@@ -1,9 +1,9 @@
 #!/bin/bash
 # ysoftman
 # '' 에 사용하는 프로그래밍은 c 언어 문법과 비슷함
-# BEGIN/END(대문자) 패턴 
+# BEGIN/END(대문자) 패턴
 
-cat << 'zzz' > file.txt
+cat <<'zzz' >file.txt
 name age
 alice 21
 ryan 30
