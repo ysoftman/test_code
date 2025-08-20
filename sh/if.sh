@@ -29,11 +29,24 @@ if [ ! -z $EDITOR ]; then
     echo "\$EDITOR = $EDITOR"
 fi
 
-# [[ ]] 내에서는 C 와 같은 연산을 할 수 있다.
 # var="a"
 var="a"
 var2="lemon"
-echo $var
+
+# -a AND
+# -o OR
+# -a 사용보단 [ ] && [ ] 를 권고
+# -o 사용보단 [ ] || [ ] 를 권고
+# if [ $var = 'a' -a $var2 = "lemon" ]; then
+if [ $var = 'a' ] && [ $var2 = "lemon" ]; then
+    echo "if and condition"
+fi
+# if [ $var = 'b' -o $var2 = "lemon" ]; then
+if [ $var = 'b' ] || [ $var2 = "lemon" ]; then
+    echo "if or condition"
+fi
+
+# [[ ]] 내에서는 C 와 같은 연산을 할 수 있다.
 if [[ $var == 'a' ]] && [[ $var2 == 'lemon1' ]]; then
     echo 'first'
 elif [[ $var == 'a' ]] || [[ $var2 == 'lemon1' ]]; then
