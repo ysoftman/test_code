@@ -10,7 +10,7 @@ echo $input
 read -r -n 3 ysoftman
 echo $ysoftman
 
-# 이스케이프문자 처리 ex) a\t\t\b
+# 이스케이프문자로 처리 하지 않고 있는 그대로(raw) 처리 ex) a\t\t\b
 read -r var1
 echo $var1
 
