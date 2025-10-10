@@ -22,7 +22,6 @@ lightwhite='\033[1;37m'
 # This hook is invoked by git-commit(1), and can be bypassed with the --no-verify option.
 
 ECHO="echo"
-# "bash"
 current_shell=$(ps -p $$ | awk 'NR==2')
 if [[ $current_shell == *"bash"* ]]; then
     ECHO="echo -e"
@@ -33,19 +32,24 @@ install_python_pkg() {
     for i in "$@"; do
         if ! ${1} --version /dev/null 2>&1; then
             set -e
-            pip3 install ${1} >/dev/null
+            uv pip3 install --system ${1} >/dev/null
             set -
         fi
     done
 }
-
-install_python_pkg "pylint black"
 
 failed_and_exit() {
     local check_name=${1}
     $ECHO "${red}[.githooks/pre-commit] failed to check $check_name\nplease check errors/warnings above${reset_color}"
     exit 1
 }
+
+if ! command -v rg &>/dev/null; then
+    failed_and_exit "rg(can't find ripgrep)"
+fi
+if ! command -v typos >/dev/null; then
+    failed_and_exit "typos(can't find typos)"
+fi
 
 # --cached(--staged) : 스테이징된것만
 # select only Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), Unmerged (U), Unknown (X)
@@ -54,44 +58,42 @@ failed_and_exit() {
 # --name-only : diff 내용없이 파일명만 출력
 # . ':!./cpp' ':!./boost' : ./cpp 와 ./boost 디렉토리를 제외한 현재 하위 디렉토리에 대해서 diff,
 # : 사용참고 <https://git-scm.com/docs/gitglossary#Documentation/gitglossary.txt-aiddefpathspecapathspec>
-staging_files=$(git diff --diff-filter=d --name-only -- . ':!./cpp' ':!./boost')
-if command -v rg &>/dev/null; then
+staging_files=$(git diff --diff-filter=d --name-only -- . ':!./cpp' ':!./boost' | rg -i ".go$")
+if [[ ${staging_files} == "" ]]; then
+    $ECHO "${cyan}[.githooks/pre-commit] there're no *.go in staging files, so skip golang check.${reset_color}"
+else
     echo ".go import alias 에 대문자가 포함된 경우 체크"
     for file in $staging_files; do
         echo $file
-        if [[ $file != *".go" ]]; then
-            continue
-        fi
         import_alias=$(rg -e github. -IN -g $file | sed -e 's/^[[:space:]]*//' | rg -iv "^//|^--|^#" | sed -e 's/"?github.*$//' | sort | uniq | rg '[A-Z]')
         if [[ $import_alias != "" ]]; then
             failed_and_exit "import alias 에 대문자가 포함되어 있습니다.\n$import_alias in $file"
         fi
     done
 fi
-
-staging_files=$(git diff --diff-filter=d --cached --name-only -- . ':!./cpp' ':!./boost' | grep ".py$")
+# python check(lint,formatting)
+staging_files=$(git diff --diff-filter=d --cached --name-only -- . ':!./cpp' ':!./boost' | rg -i ".py$")
 if [[ ${staging_files} == "" ]]; then
-    $ECHO "${cyan}[.githooks/pre-commit] there's no staging files...${reset_color}"
-    exit 0
+    $ECHO "${cyan}[.githooks/pre-commit] there're no *.py in staging files, so skip python lint and formatting.${reset_color}"
+else
+    if ! command -v ruff >/dev/null; then
+        echo "install ruff for python check(lint,formatting)"
+        # install_python_pkg "pylint black ruff"
+        install_python_pkg "ruff"
+    fi
+    if ! ruff check $staging_files; then
+        failed_and_exit "ruff check"
+    fi
+    if ! ruff format $staging_files; then
+        failed_and_exit "ruff format"
+    fi
 fi
 
-# pylint 체크
-for file in $staging_files; do
-    if ! pylint --disable="all" --enable="W0611" $file; then
-        failed_and_exit "pylint"
-    fi
-done
-
-# black 포맷팅
-for file in $staging_files; do
-    if ! black $file; then
-        failed_and_exit "black"
-    fi
-    git add $file
-done
-
 # typos 로 오타 체크
-if command -v typos >/dev/null; then
+staging_files=$(git diff --diff-filter=d --cached --name-only -- . ':!./cpp' ':!./boost')
+if [[ ${staging_files} == "" ]]; then
+    $ECHO "${cyan}[.githooks/pre-commit] there're no staging files, so skip typos.${reset_color}"
+else
     if ! typos; then
         failed_and_exit "typos"
     fi
