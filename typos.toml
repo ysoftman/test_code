@@ -1,6 +1,6 @@
 # https://github.com/crate-ci/typos/blob/master/docs/reference.md
 [default]
-# 오타 대상에서 제외
+# 파일 전체에서 오타 제외시킬 대상들 설정
 # valid words
 # typos --words
 extend-ignore-re = [
@@ -14,7 +14,9 @@ extend-ignore-re = [
   ".*styl*",
   ".*(?i)ysoftman.*",       # ignorecase https://docs.rs/regex/latest/regex/index.html#grouping-and-flags
   "(?i)ratatui",
+  "APR_TCP_DEFER_ACCEP",
 ]
+# 변수이름,함수이름등의 프그래밍 식별자로 분류되는 것들 중에서 오타 제외시킬 대상들 설정
 # valid identifiers(snake_case,CamelCase등으로 구분)
 # typos --identifiers
 extend-ignore-identifiers-re = [

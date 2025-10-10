@@ -5,21 +5,18 @@
 ## 1주차 - 인공지능의 소개
 
 - 인공지능의 정의
-
   - 정의가 쉽지 않다.
   - computation model 로 구현하는 학문
   - 결국에서 사람이 잘하는 일을 컴퓨터가 할 수 있게 하는 학문
   - 지능적인 행동을 자동화 하는것
 
 - 지능이란?
-
   - 정의가 쉽지 않다.
   - 지식이나 여러가지 기술을 습득하는 능력
   - holistic(전체적인) intelligence(지능)은 정의 하기 어렵지만, 지능을 갖추려면 어떤 요소가 필요한지 나열하기는 쉽다.(지능적인 행동의 정의 쉽다.)
   - 지능은 다양한 레벨로 정의 할 수 있다.
 
 - AI 4가지 관점
-
   - think humanly : 사람처럼 생각
   - think rationally : 이성적으로 생각
   - action humanly : 사람처럼 행동
@@ -29,12 +26,10 @@
 - 약인공지능(weak AI)
   - applied AI 또는 narrow AI 라고 불리며, 특정 도메인 또는 주어진 환경에만 적용 가능한 좁은 영역의 인공지능
 - 강인공지능(string AI)
-
   - 사람을 모방하지지 않고, 자유의지, 자각을 가지고 스스로 행동하는 인공지능, SF 영화에서 등장하고 아직 현실세계에 없음.
   - 쉽게 도래하지 않을것 같음.
 
 - 특이점(technological singularity)
-
   - 인공지능이 사람의 지능을 뛰어 넘는것
   - 알파고가 이세돌을 이긴 경우 바둑의 영역에서 약간의 특이점을 엿볼수 있다.
   - 특이점은 물리학 블랙홀에서 나온 용어로 사건의 지평선 내부는 빛조차도 빠져나올 수 없는 미지의 영역이라는 의미
@@ -56,7 +51,6 @@
 ## 2주차 - 문제 해결 및 탐색 전략
 
 - romania(루마니아) 문제
-
   - arad(state,상태) 에서 시작해서 여러개의 action을 통해 도시를 옮겨 bucharest(state) 까지 갈때의 sequence 와 action 을 solution(해) 으로 정의할 수 있다.
   - 여러 해중 최단거리를 최고의 해라고 할 수 있다.
     1. initial state(초기상태)
@@ -66,7 +60,6 @@
   - 실세계는 매우 복잡하니 추상화시켜 간단하게 표현
 
 - tree search algorithm
-
   - 위와 같은 문제는 tree search 알고리즘을 사용
   - 모든 가능한 상태를 펼쳐놓은 트리구조로 되어 있고, 상태(노드)를 이동(탐색) 하는 edge는 액션
   - 탐색시 다음 4가지 정보를 제외하고 정보가 없는것을 uninformed search 전략이라고 한다.
@@ -76,7 +69,6 @@
     - optimality : 최적의 솔루션을 찾을 수 있느냐
 
 - uninformed search 전략
-
   - breadth first state(BFS, 너비우선탐색)
     - FIFO(first in first out) queue 에 탐색 중인 노드를 기록하면서 탐색
     - fringe(주변,가장자리): FIFO queue, 아직 펼쳐지지 않은 노드
@@ -145,7 +137,6 @@ a
 - greedy best-first search
   - 휴리스틱함수 : 휴리스틱한정보(bucharest까지 가는 직선거리를 알고 있는 경우)를 보고 평가하는 함수
 - A\*(star) search
-
   - best-fist search 기반(greedy best-first search 아님)
   - Breadth-first search 의 한 종류
   - f(n) = g(n) + h(n)
@@ -157,7 +148,6 @@ a
   - greedy best-first search 보다 최적의 솔루션을 찾을 수 있다.
 
 - admissible(허용될 수 있는) heuristic
-
   - h(n) <= h\*(n) 일때 admissble heuristic 이라고 한다.
   - h(n) : 우리가 사용하는 휴리스틱
   - h\*(n) : 실제 골까지의 비용
@@ -210,14 +200,12 @@ a
   - exploration 예: 가보지 않는 식당을 시도해본다.
   - exploitation 예: 이미 알고 있는 좋은 식당에 간다.
 - prediction(예측) and control(제어)
-
   - prediction : policy 가 주어졌을때 value function 를 구하는 과정
   - control : reward 를 최대화 할 수 있는 policy 를 찾는 과정(optimal policy를 구하는 과정)
   - V\* : optimal value function
   - pi\* : optimal policy(수많은 policy 중 reward 를 maximizing)
 
 - markove decision process(MDP,마르코프 결정 과정)
-
   - S : state 집합
   - P : transition function 상태 전이 확률, NxN 행렬로 표현, 확률 분포의 합은 1이다
   - episode(에피소드) : 초기 state 주어진 transition function 을 이용해 하나의 경험를 샘플링해보는 것(하나의 경우를 따져보는것)
@@ -282,7 +270,6 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       - 구하는 방법2: identity matrix(단위행렬) matrix 식을 역행렬고 변환해서 구한다.(nxn 역행렬의 복작도는 n^3 으로 추천하는 방법은 아니다.)
       - 구하는 방법3: 위 두 방법보다 효율적인 dynamic programming 로 구한다.
 - optimal value functions
-
   - 주어진 문제에선 모든 policy 를 다 고려했을대 가장 최대가 되는 value function
   - MDP 에선 optimal policy 는 항상 존재한다.
   - optimal policy 를 따랐을때 value function = optimal value function
@@ -299,7 +286,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
     - MDP 의 S, A, P, R, r 이 주어졌을때 알 수 있다.
   - iterative policy evaluation
     - policy 가 주어졌을대 이걸 evaluation 하는것(V pi 를 구하는 과정이다.)
-    - v 초기화후 matrix muliplication 으로 주어진 수식대로 반복하면 V 가 수렴한다. 수렴된 결과가 policy 에 대한 evaluation 이 끝났것
+    - v 초기화후 matrix multiplication 으로 주어진 수식대로 반복하면 V 가 수렴한다. 수렴된 결과가 policy 에 대한 evaluation 이 끝났것
     - 예제 4x4 grid world
       - 조건1 MDP r = 1
       - 조건2 terminal state(종료 state) : 맨왼쪽 맨위, 맨오른쪽 맨아래 2개가 있음
@@ -348,12 +335,10 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       - nuclear arms race(핵무기 경쟁)
       - climate change(기후협약 탈퇴), 지구 전체를 위해선 협약을 지켜야 되지만 개인의 이득을 위해선 탈퇴하는게 좋을 수 있다.
 - 게임을 정규 형태로 표현을 위한 3가지 component
-
   - N : 참여자(player) 개수, indexed by i
   - A : A1... An 로 action 집합
   - U : utility function(효용함수), ui(a) : player i 가 action a 를 취했을대의 효용성
   - 죄수의 딜레마에 적용해보면
-
     - N : 2
     - A : {Silent, Implicate} x {Silent, Implicate}
     - U u(a) 는 다음과 같은 경우가 된다. 2x1 벡터이다.
@@ -421,10 +406,8 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
   - multi player 가 되면 갑자기 어려워져서 이번 강의에선 다루진 않습니다.
     - N 명의 player 에 있어서의 명확한 이론은 아직 개발 되지 못했다.
   - non-zero-sum game 의 경우
-
     - 특정 게임에서 nash equilibrium(ne) 을 찾을 수 있지만 모든 non-zero-sum 통일해서 ne 를 찾는건 어렵다.
     - stag hunt(수사슴 사냥) 게임
-
       - 2명의 사냥꾼은 사슴을 잡던지, 산토끼를 잡는 선택한다.
       - 사슴은 항상 2명의 사냥꾼이 있어야 잡는다.
       - 산토끼는 1명의 사냥꾼이 잡을 수 있다. 하지만 사슴보다 utility 보다 훨씬 낮다.
@@ -437,7 +420,6 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       ```
 
     - battle of the sexes(성대결) 게임
-
       - 남편은 풋볼을 보러 가는걸 원한다.
       - 부인의 경우 발레를 보러 가는걸 원한다.
       - 부부가 서로 얘기하지 않는 상황
@@ -449,7 +431,6 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       ```
 
     - game of chicken(치킨게임)
-
       - 갈등이 증폭되는 과정을 표현하는 모델로 많이 사용된다.
       - 사거리에서 두마의 (닭)사람이 있는 경우 둘다 직진하면 서로 나고, 둘다 양보하면 둘다 못가지만 사고는 막을 수 있다.
 
@@ -521,7 +502,7 @@ iteration 해도 변화가 없으면 멈춰야 된다.
   - machine translation(MT) 기계 번역
   - information extraction(IE) 문장으로 보고 정보를 뽑아 내는 일
 - still really hard(아직 어려운 문제)
-  - question ansering(QA) 질의 응답
+  - question answering(QA) 질의 응답
   - paraphrase 문장을 써놓기 그 문장과 같은 뜻이지만 다른 형태로 표현하는 과정
   - summarization task 문서 요약
   - dialog 기계와 대화화기
@@ -645,7 +626,6 @@ iteration 해도 변화가 없으면 멈춰야 된다.
 - image processing : image -> image 변환하는 과정을 주로 다룬다.
 - computer vision : image processing 기술을 많이 사용하지만 인식을 하는 high level 까지 적용하는 학문이다.
 - challenges : 컴퓨터 비전이 어려운 이유
-
   - view point variation : 어디서 어떻게 찍었냐에 따라 사진이 달라진다.(3d -> 2d, projection from 3d to 2d)
   - illumination : 조명(광원)이 어디에 있느냐에 따라 사진이 달라진다. ex) shadow, relections, Fog, rain
   - occlusion(폐쇄, 가림) : 물체거 가려져 있는 사진. ex) 사람, 자동차가 가려져 있을때 몇명, 몇대가 있나?

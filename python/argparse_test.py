@@ -13,7 +13,7 @@ def generalArg(*args, **kwargs):
     for i in range(len(args)):
         print(f"args[{i}]: {args[i]}")
     print(kwargs)
-    print(kwargs.get("a", "a_devault_value"))
+    print(kwargs.get("a", "a_default_value"))
     print(kwargs.get("b", "b_default_value"))
     print(kwargs.get("c", "c_default_value"))
     print(kwargs.get("d", ""))  # default value: empty

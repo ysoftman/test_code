@@ -6,7 +6,6 @@
 import numpy as np
 import tensorflow as tf
 
-
 # 텐서플로우를 실행하기 위한 세션 선언
 sess = tf.Session()
 
@@ -59,19 +58,19 @@ z1 = tf.placeholder(tf.float32)
 z2 = tf.placeholder(tf.float32)
 z3 = z1 + z2
 # sess.run 할때 feed_dict 으로 placeholder 노드에 실제 값을 명시(대입)한다.
-print(sess.run([z3], feed_dict={z1: [5.], z2: [7.]}))
+print(sess.run([z3], feed_dict={z1: [5.0], z2: [7.0]}))
 
 # 같은 shape 의 값만 명시해야 한다.
 z3 = tf.placeholder(tf.float32, shape=[1, 2])  # 1x2 차원
 z4 = tf.placeholder(tf.float32, shape=[1, 2])  # 1x2 차원
 z5 = z3 + z4
-print(sess.run([z5], feed_dict={z3: [[5., 6.]], z4: [[7., 8.]]}))
+print(sess.run([z5], feed_dict={z3: [[5.0, 6.0]], z4: [[7.0, 8.0]]}))
 
 
 #####
 # reduce_sum : 차원내 모든 요소들의 합
 # reduce_mean : 차원내 모든 요소들의 평균
-x = tf.constant([[1., 1.], [2., 2.]])
+x = tf.constant([[1.0, 1.0], [2.0, 2.0]])
 # (1+1+2+2)
 print(sess.run(tf.reduce_sum(x)))
 # 0번째 차원은 제외하고 더한다. [(1+2), (1+2)]

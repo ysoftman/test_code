@@ -81,7 +81,6 @@ P(Y|F ... Fn,n) = P(Y)ㅠP(Fi,j|Y)
 ```
 
 - overfitting : training data 에 너무 fitting 되어 실제 데이터에서는 인식이 잘 안되는 것
-
   - likelihood 가 확률적으로 (극단적인경우)0 나오면 안되기 때문에 lapalce smoothing 기법(실제 관찰값보다 +1)으로 해결
   - P라플라스(x) = c(x) + 1 / sum(x) { c(x) + 1} = c(x) + 1 / N + |X|
 
@@ -234,12 +233,10 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - 결정트리의 가장 큰 단점 중 하나는 overfitting 이다.
 - 실제 데이터를 ID3 로 pure 노드까지 가게할 경우 node 개수가 많아 지면서 overfitting 이 발생할 수 있다.
 - overfitting 을 막는 방법
-
   - 통계적으로 무의미한 노드들은 나누지(split) 않는다. ex) 1000 데이터 대해서 95 : 5 정도로 나누는 경우
   - 결정트리가 만들어진 상태에서 Validation Data 의 정확도(accuracy) 를 기준으로 sub-tree 를 제거(prune)한다. prune 의미는 child-node 는 제거하고 parent node 는 pure 하지 않더라도 그대로 놔둔다.
 
 - random forest
-
   - 결정트리 하나만 쓰면 prediction accuracy 가 좋기지 않기 때문에, bagging 과 attribute 둘다 random 하게 두는 random forest 방법을 사용한다.
   - bagging(bootstrap aggregating) tree : training data 에서 랜덤하게 k개를 랜덤하게 고른다. -> subset (training) data 로 ID3 등의 알고리즘으로 결정트리를 생성한다. 이과정을 B번 반복하여 B 개의 결정트리르 만든다. classification 시 B 개의 트리들 사용해서 majority vote(다수의 트리가 선택한쪽, 다수결)
     - decreases variance while bias stays same : overfitting(bias 의미) 이 늘어나지 않으면서 variance 를 줄이는 것
@@ -417,7 +414,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - max-pooling gradient : 0 except for delta xij+p`,k+q` l = delta yijk l
   - average-pooling gradient : { umsample(delta y l) } / m\*m
   - jarret 2009년 논문에 rectification(개정, 수정) 를 사용 : 모든 layer 에 대해서 값이 다 나오는데 그값에 대해서 absolute value 를 쓰운다. convolution의 특징은 잡는단 것은 결국 edge 를 찾는것으로 흰색에서 검은색으로, 검은색에서 흰색으로 변하는 구간인데, rectification 을 적용하여 흰색->검은색으로 가던 검은색->흰색으로 가던 구분없이 모두 edge 로 하겠다는 의미다.
-    - contrast nomalization : 비슷한 neighbor local한 부분에 대해서 contrast 에 대한 평균값을 빼고 standard deviation 으로 나눈다. 모든 layer 에서 contrast-normalization 을 하여 비슷한 부분은 무시되고 정말 다른 부분만 잡아내겠다는 의미
+    - contrast normalization : 비슷한 neighbor local한 부분에 대해서 contrast 에 대한 평균값을 빼고 standard deviation 으로 나눈다. 모든 layer 에서 contrast-normalization 을 하여 비슷한 부분은 무시되고 정말 다른 부분만 잡아내겠다는 의미
     - input image -> convolution -> rectification -> contrast normalization -> pooling/subsample ...
     - rectification, contrast normalization 등을 적용하니 인식률이 좋아지고, 2번 적용하니 더 좋아지더라.
     - 그리고 random filters(kernel)를 적용하더라도 어느정도 패턴을 잡아내기는 한다.

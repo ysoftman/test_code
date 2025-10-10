@@ -29,7 +29,7 @@ async fn main() {
         .expect("failed to start server");
 }
 
-// basic handler that responds with a static strin
+// basic handler that responds with a static string
 async fn root() -> &'static str {
     let msg = "hello";
     println!("[get] / ... response: {msg}");

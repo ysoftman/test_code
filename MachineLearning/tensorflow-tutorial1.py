@@ -139,7 +139,7 @@ with tf.Session() as sess:
 
 ##########
 
-# 노드는 const, variable 로 값을 직점 명시하는 대신 placehold 로 표할 수 있다.(feed 메커니즘)
+# 노드는 const, variable 로 값을 직점 명시하는 대신 placeholder 로 표할 수 있다.(feed 메커니즘)
 var1 = tf.placeholder(tf.float32)
 var2 = tf.placeholder(tf.float32)
 # var3 = tf.multiply(var1, var2)
