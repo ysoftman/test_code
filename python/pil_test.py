@@ -4,8 +4,7 @@
 # desc : PIL(python Imaging Library)  test
 # pip install pillow
 
-from PIL import Image
-from PIL import ImageFilter
+from PIL import Image, ImageFilter
 
 
 def pil_test():
