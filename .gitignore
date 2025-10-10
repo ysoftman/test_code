@@ -21,6 +21,7 @@ tags
 cpp/*.txt
 golang/*/*.txt
 __pycache__
+python/lena_copy.png
 .ipynb_checkpoints
 MachineLearning/MNIST-data/
 apr_test/aprtest
