@@ -8,7 +8,7 @@ import h5py
 import numpy as np
 
 # hdf5 파일 쓰기
-file = h5py.File('dset.h5', 'w')
+file = h5py.File("dset.h5", "w")
 # 루트 그룹에 데이터 생성
 dataset = file.create_dataset("dset", (4, 6), h5py.h5t.STD_I32BE)
 print("Dataset dataspace is", dataset.shape)
@@ -31,8 +31,8 @@ file.close()
 
 
 # hdf5 파일 읽기
-file = h5py.File('dset.h5', 'r')
-dataset = file['/dset']
+file = h5py.File("dset.h5", "r")
+dataset = file["/dset"]
 data_read = dataset[...]
 print("data_read", data_read)
 file.close()

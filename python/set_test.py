@@ -3,7 +3,7 @@
 # python version : 2.x 3.x
 # desc : set 테스트
 
-data = ['aaa', 'bbb', 'aaa', 'ccc']
+data = ["aaa", "bbb", "aaa", "ccc"]
 print(list(data))
 # set 은 중복 데이터를 제거한다.(순서없음)
 set_data = set(data)
@@ -16,22 +16,22 @@ set_data.add("lemon")  # 중복 추가 안된다.
 print(set_data)
 
 # element 제거
-set_data.remove('banana')
+set_data.remove("banana")
 print(set_data)
 
 # set 을 추가
-set_data.update(set(['aaa', 'zzz']))
+set_data.update(set(["aaa", "zzz"]))
 print(set_data)
 
 # y, o 를 원소하는 set 을 추가
-set_data.update('yo')
+set_data.update("yo")
 print(set_data)
 
 # subset 여부 확인
-if (set(['aaa', 'ccc']).issubset(set_data)):
-    print('issubset == true')
+if set(["aaa", "ccc"]).issubset(set_data):
+    print("issubset == true")
 else:
-    print('issubset == false')
+    print("issubset == false")
 print(set_data)
 
 # 임의의 element 제거

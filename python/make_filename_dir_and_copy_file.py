@@ -39,7 +39,7 @@ def show_current_files():
 
                 presskey = input("생성한 디렉토리를 삭제하려면 'd' 키를 누르세요.")
                 print("presskey = ", presskey)
-                if presskey == 'd':
+                if presskey == "d":
                     shutil.rmtree(file[0])
                     print(file[0], "디렉토리 삭제")
                 else:
@@ -47,6 +47,3 @@ def show_current_files():
 
 
 show_current_files()
-
-
-

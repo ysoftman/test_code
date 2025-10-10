@@ -11,7 +11,6 @@ def modify_data(str):
 
 
 if __name__ == "__main__":
-
     # 큰 따옴표 "  를 포함 시키고 싶을때
     str1 = '"ysoftman"'
     print(str1)
@@ -100,9 +99,7 @@ hoon"""
     str1 = """
         "number:{},
         "name":{}
-    """.format(
-        123, "ysoftman"
-    )
+    """.format(123, "ysoftman")
     print("str =", str1)
 
     # 멀티라인에서 {} 자체를 출력하기 위해선 {{ }} 사용
@@ -116,9 +113,7 @@ hoon"""
         "number:{0:,.3f},
         "name":{1}
     }}
-    """.format(
-        123456789, "ysoftman"
-    )
+    """.format(123456789, "ysoftman")
     print("str =", str1)
 
     # 문자열 앞,뒤 공백 제거

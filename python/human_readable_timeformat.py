@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+
 # docker cli 참고 https://github.com/docker/cli/blob/master/vendor/github.com/docker/go-units/duration.go#L12
 def to_human_readable_timeformat(timestr: str) -> str:
     if timestr is None:
@@ -28,13 +29,13 @@ def to_human_readable_timeformat(timestr: str) -> str:
     elif hours < 48:
         return f"{hours} hours"
     elif hours < 24 * 7 * 2:
-        return f"{int(hours/24)} days"
+        return f"{int(hours / 24)} days"
     elif hours < 24 * 30 * 2:
-        return f"{int(hours/24/7)} weeks"
+        return f"{int(hours / 24 / 7)} weeks"
     elif hours < 24 * 365 * 2:
-        return f"{int(hours/24/30)} months"
+        return f"{int(hours / 24 / 30)} months"
 
-    return f"{int(hours/24/365)} years"
+    return f"{int(hours / 24 / 365)} years"
 
 
 TZ = "+09:00"  # KST

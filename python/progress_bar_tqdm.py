@@ -4,12 +4,18 @@
 # desc : tqdm progress bar test
 
 
+import asyncio
+import os
+import time
+
+import aiofiles
+import aiohttp
+import requests
+
 # tqdm
 # https://github.com/tqdm/tqdm
 # pip install tqdm aiofiles aiohttp
 from tqdm import tqdm
-import requests, time, os
-import asyncio, aiofiles, aiohttp
 
 
 def sample():
@@ -30,15 +36,15 @@ def download_test(url):
     # 받을 전체 크기 파악
     response = requests.head(url)
     # print(response.headers)
-    if response.headers.get("Content-Length") == None:
-        print(f"[HEAD] can't find Content-Length header")
+    if response.headers.get("Content-Length") is None:
+        print("[HEAD] can't find Content-Length header")
     else:
         content_length = int(response.headers.get("Content-Length"))
         print(f"[HEAD] Content-Length:{content_length}")
 
     response = requests.get(url, stream=True)
-    if response.headers.get("Content-Length") == None:
-        print(f"[GET] can't find Content-Length header")
+    if response.headers.get("Content-Length") is None:
+        print("[GET] can't find Content-Length header")
     else:
         content_length = int(response.headers.get("Content-Length"))
         print(f"[GET] Content-Length:{content_length}")
@@ -118,7 +124,6 @@ async def upload_test(aiohttpSession, url, filename):
 
 
 async def upload_main():
-    aiohttpSession = aiohttp.ClientSession()
     # 세션은 한번 생성하고 upload_main() 가 종료될때까지 재사용한다.
     async with aiohttp.ClientSession() as aiohttpSession:
         # 비동기로 chunk 만큼 파일 데이터를 읽어가며 업로드한다.

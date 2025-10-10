@@ -24,6 +24,7 @@ def dosomething(func):
         print("before something")
         func(*argc, **argv)
         print("after something\n")
+
     return inner_func
 
 
@@ -37,6 +38,7 @@ def myfunc3(arg):
 @dosomething
 def myfunc4(a, b):
     print(a + b)
+
 
 if __name__ == "__main__":
     myfunc1("ysoftman")

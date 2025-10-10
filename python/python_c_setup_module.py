@@ -4,10 +4,11 @@
 
 from distutils.core import setup, Extension
 
-module1 = Extension('MyModule',
-                    sources=['python_c_test.cpp'])
+module1 = Extension("MyModule", sources=["python_c_test.cpp"])
 
-setup(name='MyPackage',
-      version='1.0',
-      description='This is a test package',
-      ext_modules=[module1])
+setup(
+    name="MyPackage",
+    version="1.0",
+    description="This is a test package",
+    ext_modules=[module1],
+)

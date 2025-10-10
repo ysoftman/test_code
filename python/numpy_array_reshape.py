@@ -22,5 +22,5 @@ def reshape_array():
     print("arr -> newarr2.shape:", newarr2.shape)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     reshape_array()

@@ -3,6 +3,7 @@
 # python version : 2.x 3.x
 # desc : staticmethod 테스트
 
+
 class AppleClass:
     # 생성자
     def __init__(self):
@@ -20,6 +21,7 @@ class AppleClass:
     # 클래스 인스턴스 속성에 영향을 주지 않는 경우만 정적 메소드로 만들자.
     def func2(parameter):
         print("func2 parameter = ", parameter)
+
 
 # 클래스내의 함수는 클래스 인스턴스를 생성해 호출하는데
 temp = AppleClass()

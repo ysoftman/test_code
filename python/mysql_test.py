@@ -13,7 +13,6 @@
 # pip list
 
 import pymysql
-import sys
 
 db_host = "127.0.0.1"
 db_port = 13306

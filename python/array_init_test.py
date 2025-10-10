@@ -4,11 +4,11 @@
 # desc : arr init test
 
 # aaaaaaaaaa 생성
-arr_str = 'a' * 10
+arr_str = "a" * 10
 print(type(arr_str))
 print(arr_str)
 
-print('-----')
+print("-----")
 
 # 값이 0인 원소 10개를 생성
 arr1 = [0] * 10
@@ -18,7 +18,7 @@ arr1[1] = 1
 arr1[2] = 2
 print(arr1)
 
-print('-----')
+print("-----")
 
 
 # 값이 0인 2차원 배열 생성
@@ -26,7 +26,7 @@ print('-----')
 # https://www.geeksforgeeks.org/python-using-2d-arrays-lists-the-right-way/
 arr2 = [[0, 0]] * 10
 # 또는
-arr2 = [[0]*2] * 10
+arr2 = [[0] * 2] * 10
 print(type(arr2))
 arr2[0][0] = 2
 # 원소의 주소값을 보면 모두 같아서 하나를 바꾸면 모두 바뀌게 된다.
@@ -34,7 +34,7 @@ print(id(arr2[0]))
 print(id(arr2[1]))
 print(arr2)
 
-print('-----')
+print("-----")
 
 # 값이 0인 2차원 배열 arr comprehension 방식으로 생성
 arr2_arr_comprehension = [[0, 0] for _ in range(10)]

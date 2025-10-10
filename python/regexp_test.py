@@ -20,8 +20,8 @@ billyoon 777-999-111
     print(re.findall(r"^bi\w*", data, re.MULTILINE))
 
     # bill 부분을  z 로 변경
-    print(re.sub('bill', 'z', data))
+    print(re.sub("bill", "z", data))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     do_regular_expression()

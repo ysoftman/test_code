@@ -4,16 +4,16 @@
 
 def binarysearch(array, target):
     while True:
-        l = len(array)
+        length = len(array)
         print("array:", array)
-        pivot = int(l/2)
+        pivot = int(length / 2)
         if array[pivot] == target:
             return array[pivot]
         elif array[pivot] > target:
             array = array[:pivot]
         elif array[pivot] < target:
             array = array[pivot:]
-        if l == 1:
+        if length == 1:
             return -1
 
 

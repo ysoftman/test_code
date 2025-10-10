@@ -5,6 +5,7 @@
 import time
 import asyncio
 
+
 # native 코루틴
 async def task(param1):
     if param1 == "lemon":
@@ -37,7 +38,7 @@ begin = time.time()
 # 위 과정을 간단하게 run 으로 대신할 수 있다.
 asyncio.run(start())
 end = time.time()
-print(f"elapsed: {end-begin}s")
+print(f"elapsed: {end - begin}s")
 
 
 # 비동기 함수라도 순차적으로 실행하면 동기처럼 오래걸린다.

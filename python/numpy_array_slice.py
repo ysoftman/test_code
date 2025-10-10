@@ -10,7 +10,7 @@ import numpy as np
 def do_array():
     # 6x6 배열 생성
     # ar1 = np.arange(start=0, stop=36, step=1, dtype='int')
-    ar1 = np.arange(0, 36, 1, 'int')
+    ar1 = np.arange(0, 36, 1, "int")
     print("ar1 =\n", ar1)
     ar1 = ar1.reshape(6, 6)
     print("ar1.reshape(6, 6) =\n", ar1)
@@ -32,5 +32,5 @@ def do_array():
     print("ar1[2::2, 2::2] =\n", ar1[2::2, 2::2])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     do_array()

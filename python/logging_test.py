@@ -14,8 +14,8 @@ def DoLogging():
 
     # stdout, file 동시에 로깅하기
     filehandler = logging.StreamHandler()
-    streamhandler = logging.FileHandler('./logging.log', mode='w')
-    mylogger = logging.getLogger('ysoftman')
+    streamhandler = logging.FileHandler("./logging.log", mode="w")
+    mylogger = logging.getLogger("ysoftman")
     # 파일, 스트림 핸들러 추가
     mylogger.addHandler(filehandler)
     mylogger.addHandler(streamhandler)
@@ -38,5 +38,5 @@ def DoLogging():
     mylogger.debug("디버그 로그")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     DoLogging()

@@ -7,11 +7,12 @@
 from PIL import Image
 from PIL import ImageFilter
 
+
 def pil_test():
     # 이미지 열기
     img = Image.open("lena.png")
     img.show()
-    
+
     # 이미지 복사
     img.save("lena_copy.png")
 
@@ -20,8 +21,9 @@ def pil_test():
     img2.show()
 
     # 리사이즈
-    img2 = img.resize((200,200), Image.ANTIALIAS)
+    img2 = img.resize((200, 200), Image.ANTIALIAS)
     img2.show()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     pil_test()

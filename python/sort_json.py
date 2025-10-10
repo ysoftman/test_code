@@ -34,10 +34,10 @@ jsonstr = """
 
 data = json.loads(jsonstr)
 print(data)
-for obj in data['data']:
-    print(obj['name'], obj['uptime'])
+for obj in data["data"]:
+    print(obj["name"], obj["uptime"])
 
 
 # data 부분 uptime 필드 기준으로 내림차순
-result = sorted(data['data'], key=lambda x: x['uptime'], reverse=True)
-print(result[0]['name'])
+result = sorted(data["data"], key=lambda x: x["uptime"], reverse=True)
+print(result[0]["name"])

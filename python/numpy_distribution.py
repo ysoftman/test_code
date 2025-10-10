@@ -1,8 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
-import matplotlib
-import matplotlib.pyplot as plt
-
 
 # 이항분포 : p 확률로 성공하는 n 번의 독립적인 시행에서 확률변수 x의 분포
 # 50% 확률로 성공(앞면을 성공으로 가정)한는 동전던지기를 1번 수행했을때 성공 횟수가 리턴된다.

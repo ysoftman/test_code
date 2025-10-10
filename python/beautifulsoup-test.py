@@ -2,7 +2,6 @@
 # author : ysoftman
 # title : beautifulsoup test
 # python version : 2.x
-import sys
 
 # http://docs.python-requests.org/en/master/
 import requests
@@ -14,7 +13,7 @@ from bs4 import BeautifulSoup
 
 def parse_html():
     print(parse_html.func_name)
-    html = '''<html>
+    html = """<html>
 <head>
 <title>
 ysoftman
@@ -33,9 +32,9 @@ ysoftman
 </p>
 </body>
 </html>
-'''
+"""
     # print ("html =", html)
-    result = BeautifulSoup(html, 'html.parser')
+    result = BeautifulSoup(html, "html.parser")
     # 파싱 결과 출력
     print(result.title)
     print(result.title.string)
@@ -48,7 +47,7 @@ def parse_url(url):
     resp = requests.get(url)
 
     # 컨텐츠에서 해당 파싱하기
-    result = BeautifulSoup(resp.content, 'html.parser')
+    result = BeautifulSoup(resp.content, "html.parser")
     # 파싱 결과 출력
     print(result.title)
     print(result.title.string)
@@ -67,7 +66,7 @@ def parse_url2(url):
     resp = requests.get(url)
 
     # 컨텐츠에서 해당 파싱하기
-    result = BeautifulSoup(resp.content, 'html.parser')
+    result = BeautifulSoup(resp.content, "html.parser")
     # 파싱 결과 출력
     print(result.title)
     print(result.title.string)
@@ -80,7 +79,7 @@ def parse_url2(url):
     print(result2[0].text)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("beautifulsoup test")
     parse_html()
     print("\n")

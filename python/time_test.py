@@ -7,7 +7,6 @@ import time
 import datetime
 
 if __name__ == "__main__":
-
     # epoch time
     print(time.time())
 

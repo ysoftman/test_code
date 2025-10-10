@@ -1,6 +1,7 @@
 import os
 import subprocess
 
+
 # subprcoess shell=True 로 명령을 실행할때
 # 경로 인자로 single quote(')등이 있을때 \'와 같이 별도 이스케이프 하지 않아야 한다.
 # 하지만 ' " 동시에 있는경우 이스케이스 \ 자체도 이스케이프 필요
@@ -30,7 +31,7 @@ try:
     os.remove(f"{filename2}")
     os.remove(f"{escaped_filename1}")
 except FileNotFoundError as err:
-    # print("err:", err)
+    print("err:", err)
     pass
 
 # shell=True 로 쉘로 실행할때는
@@ -51,7 +52,7 @@ exec_Command(f"touch '{filename2}'", True)
 
 # ' " 동시에 있는경우 이스케이스 \ 자체도 이스케이프 필요
 # bash -c "touch zzz\'s\ \\\"a.txt"
-exec_Command(f"touch zzz\\'s\ \\\"a.txt", True)
+exec_Command("touch zzz\\'s\ \\\"a.txt", True)
 
 """
 # 실행 결과 확인

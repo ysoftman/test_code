@@ -5,10 +5,10 @@
 
 import gzip
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # gz 압축 파일 생성
     content = "my name is byoung hoon, yoon."
-    fp = gzip.open('gzip_file.gz', 'wb')
+    fp = gzip.open("gzip_file.gz", "wb")
     # python 2.x
     fp.write(bytes(content))
     # python 3.x
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     fp.close()
 
     # gz 압축 파일 읽기
-    fp2 = gzip.open('gzip_file.gz', 'rb')
+    fp2 = gzip.open("gzip_file.gz", "rb")
     data = fp2.read()
     print(data)
     fp2.close()

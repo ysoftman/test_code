@@ -8,7 +8,7 @@ def myfunc(fruit):
     return "i like " + fruit
 
 
-mylist = ['apple', 'banana', 'lemon', 'orange', 'strawberry']
+mylist = ["apple", "banana", "lemon", "orange", "strawberry"]
 
 # 내장함수 map 사용하기
 # map object 의 메모리 주소만 출력된다.

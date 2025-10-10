@@ -47,7 +47,6 @@ def url_request(url):
 
 
 def url_post_request(url):
-
     # dictionary 로 표현
     data = {"mydata1": "123", "mydata2": "aaaa"}
     headers = {"Content-Type": "application/json"}

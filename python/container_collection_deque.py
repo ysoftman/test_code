@@ -4,7 +4,6 @@
 # desc : collection(컨테이너) 중 deque 테스트
 
 from collections import deque
-import operator
 
 # queue 를 list 로 구현할 수 있지만 pop(0) 할때 원소들이 이동해야 하기때문에 O(N) 시간복잡도가 된다.
 list = [1, 2, "lemon", 10.1]

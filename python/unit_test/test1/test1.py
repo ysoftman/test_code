@@ -4,6 +4,7 @@
 # import sys
 import unittest
 
+
 # unittest.Test 를 상속받아 클래스 생성
 class test1(unittest.TestCase):
     def test1_case1(self):

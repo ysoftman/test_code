@@ -2,15 +2,15 @@
 # python versioni 3.9
 
 
-from functools import cache
-import functools
 import time
+from functools import cache
 
 
 def factorial(n) -> int:
     if n == 0 or n == 1:
         return n
     return n * factorial(n - 1)
+
 
 # lru 기반 최 1000 계산 결과를 캐싱
 # @functools.lru_cache(maxsize=1000)

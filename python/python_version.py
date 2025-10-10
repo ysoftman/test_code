@@ -2,7 +2,6 @@
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : python 2/3 버전 체크해 분기
-import imp
 import sys
 
 print(sys.version_info)

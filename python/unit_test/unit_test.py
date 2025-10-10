@@ -4,6 +4,7 @@
 # import sys
 import unittest
 
+
 # unittest.Test 를 상속받아 클래스 생성
 class mytest(unittest.TestCase):
     # test 로 시작하는 함수 생성

@@ -11,6 +11,6 @@ print("os.curdir:", os.curdir)
 print("os.path.abspath:", os.path.abspath(__file__))
 print("os.path.dirname:", os.path.dirname(os.path.abspath(__file__)))
 
-print("glob.glob(\"*.py\")")
+print('glob.glob("*.py")')
 for f in glob.glob("*.py"):
     print(f)

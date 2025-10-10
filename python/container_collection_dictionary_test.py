@@ -6,6 +6,7 @@
 # import os
 # import sys
 import operator
+from collections import OrderedDict
 
 # dictionary 테스트
 val1 = {}
@@ -33,7 +34,7 @@ print("val1.get('key3'] = ", val1.get("key3"))
 print("val1.keys() = ", val1.keys())
 
 # key3 값이 없으면 추가
-if not "key3" in val1:
+if "key3" not in val1:
     val1["key3"] = "aaaa"
     print("add {key3:aaa}")
 # key3 값이 있으면 값 변경
@@ -55,9 +56,7 @@ for i in val2:
     print("val2[%d] = %d" % (i, val2[i]))
 
 # 내림 차순 정렬
-val3 = collections.OrderedDict(
-    sorted(val2.items(), key=operator.itemgetter(1), reverse=True)
-)
+val3 = OrderedDict(sorted(val2.items(), key=operator.itemgetter(1), reverse=True))
 print(val3)
 for i in val3:
     print("val3[%d] = %d" % (i, val3[i]))

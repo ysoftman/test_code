@@ -7,6 +7,8 @@
 # a: int = "1" # 변수 타입 힌트를 명시할대는 : 타입사용
 a: int = 1
 b: str = "ysoftman"
+
+
 # 리턴 타입을 힌트로 명시할때는 -> 사용
 def func1(param1: int, param2: float, param3: str) -> bool:
     print("{}-{}-{}".format(param1, param2, param3))

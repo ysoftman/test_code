@@ -2,8 +2,8 @@
 # python version : 3.x
 # author: ysoftman
 # desc : json 파싱
-import os
 import json
+import os
 import sys
 
 # python 2.x 한글 파일 저장을 위해 필요
@@ -66,8 +66,8 @@ def parse_json():
             # 또는
             if isinstance(value, list):
                 print("array{} value:{}".format(type(value), value))
-                for l in value:
-                    print(l)
+                for length in value:
+                    print(length)
 
     # file 로 쓰기
     print("outfile :", outfile)
@@ -92,7 +92,7 @@ def parse_json():
     print("fromJSONFile['obj2']['key2']:", fromJSONFile["obj2"]["key2"])
 
     # key3 필드가 없으면
-    if fromJSONFile["obj2"].get("key3") == None:
+    if fromJSONFile["obj2"].get("key3") is None:
         print("fromJSONFile['obj2']['key3'] is null")
     # key3 필드가 없으면 0 값으로 대체
     print(

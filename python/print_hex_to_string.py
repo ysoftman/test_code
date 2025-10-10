@@ -4,9 +4,9 @@ import unicodedata
 print(" _is_nbsp")
 
 # NBSP 문자 출력 방법
-print("\u00A0")
+print("\u00a0")
 print("\xa0")
-test = "a \u00A0 b"
+test = "a \u00a0 b"
 print("add nbsp:", test)
 test = "a \xa0 b"
 print("add nbsp:", test)
