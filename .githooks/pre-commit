@@ -51,14 +51,14 @@ if ! command -v typos >/dev/null; then
     failed_and_exit "typos(can't find typos)"
 fi
 
-# --cached(--staged) : 스테이징된것만
+# --cached(--staged) : git add 나 git commit -a 로 스테이징된(커밋될)것과 HEAD 차이
 # select only Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), Unmerged (U), Unknown (X)
 # 소문자인로 사용시 exclude
 # --diff-filter=d : 삭제된 파일은 빼고
 # --name-only : diff 내용없이 파일명만 출력
 # . ':!./cpp' ':!./boost' : ./cpp 와 ./boost 디렉토리를 제외한 현재 하위 디렉토리에 대해서 diff,
 # : 사용참고 <https://git-scm.com/docs/gitglossary#Documentation/gitglossary.txt-aiddefpathspecapathspec>
-staging_files=$(git diff --diff-filter=d --name-only -- . ':!./cpp' ':!./boost' | rg -i ".go$")
+staging_files=$(git diff --diff-filter=d --cached --name-only -- . ':!./cpp' ':!./boost' | rg -i ".go$")
 if [[ ${staging_files} == "" ]]; then
     $ECHO "${cyan}[.githooks/pre-commit] there're no *.go in staging files, so skip golang check.${reset_color}"
 else
