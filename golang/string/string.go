@@ -43,12 +43,13 @@ func main() {
 		// Replace 함수의 마지막 인자(n) 은 교체 횟수 제한을 뜻한다.
 		// n 문자열의 앞에서부터 교체할 수 있는 회수를 정한다
 		// n < 0 인경우 교체 회수에 제한을 두지 않는다.
-		str2 := strings.Replace(string(str), "_", "", -1)
+		// str2 := strings.Replace(string(str), "_", "", -1)
+		str2 := strings.ReplaceAll(string(str), "_", "")
 		fmt.Printf("str = %s\n", str)
 		fmt.Printf("str2 = %s\n", str2)
-		str2 = strings.Replace(str2, "\t", "", -1)
+		str2 = strings.ReplaceAll(str2, "\t", "")
 		fmt.Printf("str2 = %s\n", str2)
-		str2 = strings.Replace(str2, " ", "", -1)
+		str2 = strings.ReplaceAll(str2, " ", "")
 		fmt.Printf("str2 = %s\n", str2)
 	}()
 
@@ -98,9 +99,14 @@ func main() {
 
 	func() {
 		fmt.Println("-----")
-		str1 := "lemon apple banana mango orange"
+		str1 := "lemon       apple banana mango orange"
 		// count
 		fmt.Println("strings.Count(str1, \"a\"):", strings.Count(str1, "a"))
 		fmt.Println("strings.Count(str1, \"e\"):", strings.Count(str1, "e"))
+
+		// split
+		fmt.Println("strings.Split(str1):", strings.Split(str1, " "))
+		// Fields : 여러 공백들을 제거하여 구분
+		fmt.Println("strings.Split(str1):", strings.Fields(str1))
 	}()
 }
