@@ -100,5 +100,6 @@ val1 = set(val1)
 print(val1)
 
 # 마지막 원소 삭제
+# list append(), pop() 으로 stack 처럼 사용가능
 val1.pop()
 print(val1)
