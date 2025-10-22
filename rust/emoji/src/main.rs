@@ -1,5 +1,7 @@
 // static 전역 메모리 상수로 슬라이스 참조 가능(고정 메모리 주소)
 static EMOJI_UNICODE_RANGE: &[(u32, u32, bool)] = &[
+    // 아이콘 참조: https://www.nerdfonts.com/cheat-sheet
+
     // 기본 이모지 유니코드 범위 (Unicode Emojis)
     (0x1F600, 0x1F64F, false), // 이모티콘
     (0x1F300, 0x1F5FF, false), // 그림 문자
