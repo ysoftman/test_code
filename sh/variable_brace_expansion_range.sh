@@ -77,7 +77,10 @@ echo '${aaa: -3}' ${aaa: -3}
 echo '${aaa: -3:2}' ${aaa: -3:2}
 
 aaa="lemon_apple_banana"
+# 첫번째 항목만 _ 를 - 로 replace
+echo '${aaa/_/-/}' ${aaa/_/-}
 # _ 를 - 로 replace
+# 모든 항목을 _ 를 - 로 replace
 echo '${aaa//_/-/}' ${aaa//_/-}
 
 aaa="cherry_ORANGE"
