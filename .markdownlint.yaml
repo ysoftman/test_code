@@ -1,0 +1,33 @@
+# markdownlint-cli2 설치
+# brew install markdownlint-cli2
+# 하위 모든 .md 파일 검사 node_modules 등 경로 제외
+# markdownlint-cli2 "**/*.md" "#**/node_modules" "#**/helm"
+# 자동 수정할 수 있는건 수정
+# markdownlint-cli2 --fix "**/*.md" "#**/node_modules" "#**/helm"
+#
+#
+# MD013/line-length : Line length : https://github.com/DavidAnson/markdownlint/blob/v0.39.0/doc/md013.md
+# MD013:
+#   # Number of characters
+#   line_length: 80
+#   # Number of characters for headings
+#   heading_line_length: 80
+#   # Number of characters for code blocks
+#   code_block_line_length: 80
+#   # Include code blocks
+#   code_blocks: true
+#   # Include tables
+#   tables: true
+#   # Include headings
+#   headings: true
+#   # Strict length checking
+#   strict: false
+#   # Stern length checking
+#   stern: false
+MD013: false
+# MD033/no-inline-html : Inline HTML : https://github.com/DavidAnson/markdownlint/blob/v0.39.0/doc/md033.md
+MD033:
+  # Allowed elements
+  allowed_elements: ["br"]
+  # Allowed elements in tables
+  table_allowed_elements: []

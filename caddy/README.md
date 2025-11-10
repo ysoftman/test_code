@@ -13,11 +13,13 @@ brew install caddy
 ```
 
 - webdav 기능 추가(add-package 사용)
-```
+
+```bash
 caddy add-package github.com/mholt/caddy-webdav
 ```
 
 - webdav 기능 추가(참고로 빌드하는 경우)
+
 ```bash
 # xcaddy(Custom Caddy Builder) 설치
 go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest

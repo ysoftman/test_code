@@ -1,6 +1,6 @@
 # spark 사용하기
 
-- 스칼라,스파크 참고 https://wikidocs.net/book/2350
+- 스칼라,스파크 참고 <https://wikidocs.net/book/2350>
 
 ## 설치(mac 환경)
 
@@ -38,4 +38,4 @@ scala> :quit
 ```
 
 - spark-shell(scala) 외 spark-submit(scala jar), sparkR(R), pyspark(python) 를 이용할 수 있다.
-- http://127.0.0.1:4040 를 제공한다.
+- <http://127.0.0.1:4040> 를 제공한다.

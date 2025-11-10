@@ -2,12 +2,12 @@
 
 ## 실습 환경
 
-- java sdk 1.8.0 이상 http://www.oracle.com/technetwork/java/javase/downloads/index.html
-- yTextMiner 설치 http://informatics.yonsei.ac.kr:8080/yTextMiner/home.html
+- java sdk 1.8.0 이상 <http://www.oracle.com/technetwork/java/javase/downloads/index.html>
+- yTextMiner 설치 <http://informatics.yonsei.ac.kr:8080/yTextMiner/home.html>
 
 ### eclipse 사용시
 
-- eclipse 설치 https://www.eclipse.org/downloads/
+- eclipse 설치 <https://www.eclipse.org/downloads/>
 - eclipse -> file -> open projects from file system -> import source -> yTextMiner 경로 추가
 - src -> edu.yonsei.lexical_analysis -> SimpleTokenizer.java -> (pop-up menu) run as -> java application
 - JRE 빌드 환경에 에러 발생시
@@ -98,10 +98,12 @@ java -classpath lib\*;. edu.yonsei.lexical_analysis.SimpleTokenizer
 - stemming : 어간 추출, 어근만을 남겨두고 제거하는 것
   - automate, automatic, automation -> automat
   - 영어에서는 포터 어간 추출 알고리즘이 많이 쓰임
+
     ```bash
     ATION -> ATE   ex) relational -> relate
     TIONAL -> TION ex) conditional -> condition
     ```
+
 - stopword removal : 불용어 삭제
   - the, a, of, in, to 등의 전치사 삭제
   - 불용어 리스트를 참고해서 삭제

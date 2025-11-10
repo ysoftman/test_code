@@ -2,7 +2,7 @@
 
 ## thrift 설치
 
-- 참고: https://thrift.apache.org/docs/install/
+- 참고: <https://thrift.apache.org/docs/install/>
 
 ### prerequisite
 
@@ -31,7 +31,7 @@ brew install thrift
 
 ### thrift 코드 생성
 
-- 참고: https://thrift.apache.org/tutorial/go
+- 참고: <https://thrift.apache.org/tutorial/go>
 
 ```bash
 # golang 에서 사용한 데이터 구조 생성(gen-go/)

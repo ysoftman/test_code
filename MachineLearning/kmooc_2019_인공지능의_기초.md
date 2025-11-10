@@ -295,7 +295,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       - 조건5 random policy(현재 상태에서 취할 수 있는 액션을 같게)로 동,서,남,북 가는 확률을 0.25로 동일하게 했다.
       - next step value function = reward + gamma + state transition probability P + V
         - 처음에는 iteration 0 에서는 V k(policy) 를 모두 0 으로 초기화
-        - 다음 stop value function(V) = R + (P _ gamma _ V)
+        - 다음 ```text stop value function(V) = R +  (P _ gamma _ V)```
         - K(policy) = 1,2,... 까지 위 과정을 반복 => greedy policy 를 구하는것
         - 계속 V 를 구해가면서 각 state 에서 value function 이 최대가 되는 방향으로 화살표(이동방향)을 표시하면, greedy policy 를 구할 수 있다.
         - greedy policy 경우 step 3정도까지만 V 를 구해가면 optimal policy 에 수렴된 greepy policy 를 구할 수 있다.

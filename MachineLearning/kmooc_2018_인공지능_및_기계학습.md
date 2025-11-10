@@ -197,6 +197,7 @@ math.fabs((1*3)+(-2*1)+(3*2)+(-1*4) + 2) / math.sqrt((1**2)+((-2)**2)+(3**2)+((-
   - 모든 child node 에 대해, 그 노드가 "pure" 하면 멈추고, 그렇지 않으면 그 child node 에 대해 처음부터 다시 반복한다.
 - entropy(복잡도) : 좋은 attribute 를 정하기 위해 계산
   - H(S) = -(P1 Log2 P1) \* -(P2 Log2 P2) , P1 or P2 : 전체 S 개중 class A or B 의 확률, An / S or Bn / S
+
     ```text
     # 노드에 대한 entropy 구하는 예시
     전체 데이터 (9, 5) - class a 에 속하는 경우 9개, class b 에 속하는 겨웅 5개, 전체 15개
@@ -206,6 +207,7 @@ math.fabs((1*3)+(-2*1)+(3*2)+(-1*4) + 2) / math.sqrt((1**2)+((-2)**2)+(3**2)+((-
     -(9.0/14.0 * math.log(9.0/14.0, 2)) -(5.0/14.0 * math.log(5.0/14.0, 2)) = 0.9402859586706309
     H = 0.94
     ```
+
   - 노드 마다 entropy 를 구할 수 있다. pure 노드는 H(entpropy) = 0
   - best attribute 를 구한다고했을때, decision 노드들에 대해서, attribute를 정하면 엔트로피가 감소하고, 엔트로피를 가장 많이 감소하게 할 수 있을 꺼라는 것을 염두해 두고 고르면 best attribute 가 나온다.(entropy 를 감소하는 쪽으로 가는 attribute 가 best 이다.)
 - information gain(정보획득) : entropy 를 감소하기 위해 계산

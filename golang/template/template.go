@@ -56,7 +56,7 @@ val3 = {{.Value3}}
 `
 
 const sprigTemplate = `
---- use spring tmeplate ---
+--- use spring template ---
 --- https://github.com/Masterminds/sprig ---
 {{/* sprig 패키지를 사용하면 다음과 같은 pipeline function 을 사용할 수 있다. */}}
 {{- .Message}}
