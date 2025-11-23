@@ -72,6 +72,7 @@ extend-exclude = [
   "data-science-in-python/*",
   "Android_ServerMon/*",
   "go.sum",
+  "go.mod",
   "cjson",
   "helm/argo-cd*",
 ]
