@@ -10,6 +10,6 @@
 #
 # 참고로 gitmoji 툴로 커밋을 작성하면 편합니다.
 # 설치
-# brew install gimoji
+# brew install gitmoji
 # 커밋할때
 # gitmoji -c
