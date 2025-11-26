@@ -49,6 +49,11 @@ echo "\$?:" $?
 echo "\$$:" $$
 
 # 실행중인 스크립트 파일 위치를 나타내는 환경변수
+# 현재 실행 중인 스크립트 파일 경로
+echo "\${BASH_SOURCE[0]}:" "${BASH_SOURCE[0]}"
+# 현재 스크립트를 호출한 상위 스크립트
+echo "\${BASH_SOURCE[1]}:" "${BASH_SOURCE[1]}"
+# ${BASH_SOURCE[@]} # 전체 호출 스택
 echo "\${BASH_SOURCE[@]}:" "${BASH_SOURCE[@]}"
 current_file_path=$(readlink -f "${BASH_SOURCE[0]}")
 echo "current_file_path:" $current_file_path
