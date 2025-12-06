@@ -1,4 +1,4 @@
-commmmon:
+common:
   project: default
   server: https://kubernetes.default.svc
 

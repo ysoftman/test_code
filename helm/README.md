@@ -73,3 +73,7 @@ helm list -A
 # 삭제시
 helm uninstall argocd --namespace argocd
 ```
+
+## charts
+
+- ./charts/argocd-apps/README.md 참고
