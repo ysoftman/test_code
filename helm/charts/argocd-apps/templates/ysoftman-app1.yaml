@@ -16,7 +16,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
   source:
-    repoURL: {{ index .Values "ysoftman-app1" "source" "RepoURL" }}
+    repoURL: {{ index .Values "ysoftman-app1" "source" "repoURL" }}
     path: {{ index .Values "ysoftman-app1" "source" "path" }}
     targetRevision: {{ index .Values "ysoftman-app1" "source" "targetRevision" }}
     helm:

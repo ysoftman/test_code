@@ -6,9 +6,9 @@ ysoftman-app1:
   enabled: true
   name: ysoftman-app1
   source:
-    project:
     repoURL: https://github.com/ysoftman/test_code
     path: helm/charts/ysoftman-app1
+    targetRevision: HEAD
   valueFiles:
     - values.yaml
   values:
