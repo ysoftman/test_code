@@ -4,6 +4,8 @@ helm 설치 테스트
 
 ## local kubernetes
 
+- minikube 환경 사용시
+
 ```bash
 # 기존 minikube 삭제 후 새로 시작
 minikube delete
@@ -12,6 +14,17 @@ minikube start
 minikube addons enable ingress
 minikube addons enable ingress-dns
 # minikube 선택
+kubectx minikube
+```
+
+- colima k8s 환경 사용시
+
+```bash
+# colima + k8s 시작
+colima start --cpu 4 --memory 4 --kubernetes
+# k8s 설정 리셋(필요시)
+colima k8s reset
+# colima 선택(colima 시작하면 자동 선택)
 kubectx minikube
 ```
 
@@ -37,16 +50,11 @@ helm fetch argo/argo-cd --version 8.0.14
 tar zxvf argo-cd-8.0.14.tgz
 mv argo-cd argo-cd-8.0.14
 
-# 설치
-cd argo-cd-8.0.14
-helm install argocd argo/argo-cd \
+# 설치/업그레이드시
+cd argo-cd argo-cd-8.0.14
+helm upgrade --install argocd argo/argo-cd \
 --namespace argocd \
 --create-namespace \
---values values-ysoftman.yaml
-
-# 업그레이드시
-helm upgrade argocd argo/argo-cd \
---namespace argocd \
 --values values-ysoftman.yaml
 
 # 서비스 연결시
