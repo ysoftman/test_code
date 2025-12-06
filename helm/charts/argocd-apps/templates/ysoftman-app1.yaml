@@ -9,6 +9,7 @@ metadata:
 spec:
   destination:
     server: {{ .Values.common.server }}
+    namespace: {{ index .Values "ysoftman-app1" "name" }}
   project: {{ .Values.common.project }}
   syncPolicy:
     automated:
