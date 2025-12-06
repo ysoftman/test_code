@@ -1,0 +1,16 @@
+{{- if eq .Values.ysoftman-app1.enabled true }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.ysoftman-app1.name }}
+  namespace: argocd
+spec:
+  destination:
+    namespace: {{ .Values.ysoftman-app1.name }}
+    server: {{ .Values.common.server }}
+  project: {{ .Values.common.project }}
+  source:
+    repoURL: {{ .Values.ysoftman-app1.source.RepoURL }}
+    path: {{ .Values.ysoftman-app1.source.path }}
+    targetRevision: {{ .Values.ysoftman-app1.source.targetRevision }}
+{{- end }}
