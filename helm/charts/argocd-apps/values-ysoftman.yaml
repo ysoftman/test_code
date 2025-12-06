@@ -11,3 +11,5 @@ ysoftman-app1:
     path: helm/charts/ysoftman-app1
   valueFiles:
     - values.yaml
+  values:
+    test1: test1

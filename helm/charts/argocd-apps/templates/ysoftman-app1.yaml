@@ -19,4 +19,9 @@ spec:
     repoURL: {{ index .Values "ysoftman-app1" "source" "RepoURL" }}
     path: {{ index .Values "ysoftman-app1" "source" "path" }}
     targetRevision: {{ index .Values "ysoftman-app1" "source" "targetRevision" }}
+    helm:
+      releaseName: {{ index .Values "ysoftman-app1" "name" }}
+      valueFiles: {{ index .Values "ysoftman-app1" "valueFiles" }}
+      values: |
+        {{ toYaml (index .Values "ysoftman-app1" "values") | nindent 8 }}
 {{- end }}
