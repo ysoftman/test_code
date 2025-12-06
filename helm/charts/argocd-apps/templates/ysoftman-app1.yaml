@@ -4,10 +4,17 @@ kind: Application
 metadata:
   name: {{ index .Values "ysoftman-app1" "name" }}
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: {{ .Values.common.server }}
   project: {{ .Values.common.project }}
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
   source:
     repoURL: {{ index .Values "ysoftman-app1" "source" "RepoURL" }}
     path: {{ index .Values "ysoftman-app1" "source" "path" }}
