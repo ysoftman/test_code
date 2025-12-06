@@ -16,6 +16,7 @@ argocd application(app)들을 통합 관리하기 위한 app of apps 패턴의 �
   - repository URL: "<https://github.com/ysoftman/test_code>" (위 argocd settings 에 등록되어 있어 리스트에 보인다.), GIT
   - revision : HEAD, Branches
   - path: helm/charts/argocd-apps
+- helm > values files: values-ysoftman.yaml
 
 > [!TIP]
 >
