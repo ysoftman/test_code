@@ -66,8 +66,8 @@ kubectl port-forward service/argocd-server -n argocd 8080:443
 # 또는 ingress 활성화 설정되어 있는 경우
 # minikube tunnel 명령을 사용해야 외부에서 80, 443 포트로 직접 접근, 127.0.0.1로 포트 포워딩
 # sudo vim /etc/hosts 수정
-# 127.0.0.1  argocd.ysoftman.net
-http://argocd.ysoftman.net
+# 127.0.0.1  argocd.ysoftman
+http://argocd.ysoftman
 
 # helm 리스트
 helm list -A
