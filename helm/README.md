@@ -24,8 +24,10 @@ kubectx minikube
 colima start --cpu 4 --memory 4 --kubernetes
 # k8s 설정 리셋(필요시)
 colima k8s reset
+# ingress nginx controller 설치
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 # colima 선택(colima 시작하면 자동 선택)
-kubectx minikube
+kubectx colima
 ```
 
 ## helm repo
