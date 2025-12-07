@@ -10,6 +10,6 @@ ysoftman-app1:
     path: helm/charts/ysoftman-app1
     targetRevision: HEAD
   valueFiles:
-    - values.yaml
+    - values-ysoftman.yaml
   values:
     test1: test1
