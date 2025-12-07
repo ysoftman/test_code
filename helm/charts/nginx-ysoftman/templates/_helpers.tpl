@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "ysoftman-app1.name" -}}
+{{- define "nginx-ysoftman.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "ysoftman-app1.fullname" -}}
+{{- define "nginx-ysoftman.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "ysoftman-app1.chart" -}}
+{{- define "nginx-ysoftman.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "ysoftman-app1.labels" -}}
-helm.sh/chart: {{ include "ysoftman-app1.chart" . }}
-{{ include "ysoftman-app1.selectorLabels" . }}
+{{- define "nginx-ysoftman.labels" -}}
+helm.sh/chart: {{ include "nginx-ysoftman.chart" . }}
+{{ include "nginx-ysoftman.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "ysoftman-app1.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ysoftman-app1.name" . }}
+{{- define "nginx-ysoftman.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "nginx-ysoftman.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "ysoftman-app1.serviceAccountName" -}}
+{{- define "nginx-ysoftman.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "ysoftman-app1.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "nginx-ysoftman.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

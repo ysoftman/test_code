@@ -6,7 +6,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: nginx.ysoftman-app1
+    - host: nginx.nginx-ysoftman
       paths:
         - path: /
           pathType: ImplementationSpecific
