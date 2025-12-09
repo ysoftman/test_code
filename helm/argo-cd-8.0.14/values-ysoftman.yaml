@@ -32,10 +32,10 @@ server:
     ingressClassName: "nginx"
     annotations:
       ingress.kubernetes.io/rewrite-target: /
-    hostname: argocd.ysoftman
+    hostname: ysoftman.argocd
     extraTls:
       - hosts:
-          - argocd.ysoftman
+          - ysoftmana.argocd
 
 redis:
   image:
