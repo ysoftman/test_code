@@ -35,7 +35,7 @@ server:
     hostname: ysoftman.argocd
     extraTls:
       - hosts:
-          - ysoftmana.argocd
+          - ysoftman.argocd
 
 redis:
   image:
