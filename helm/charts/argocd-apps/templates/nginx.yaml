@@ -1,0 +1,28 @@
+{{- if eq (index .Values "nginx" "enabled") true }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ index .Values "nginx" "name" }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ .Values.common.server }}
+    namespace: {{ index .Values "nginx" "name" }}
+  project: {{ .Values.common.project }}
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: {{ index .Values "nginx" "source" "repoURL" }}
+    path: {{ index .Values "nginx" "source" "path" }}
+    targetRevision: {{ index .Values "nginx" "source" "targetRevision" }}
+    helm:
+      releaseName: {{ index .Values "nginx" "name" }}
+      valueFiles: {{ index .Values "nginx" "valueFiles" }}
+      values: |
+        {{ toYaml (index .Values "nginx" "values") | nindent 8 }}
+{{- end }}

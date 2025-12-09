@@ -2,12 +2,12 @@ common:
   project: default
   server: https://kubernetes.default.svc
 
-nginx-ysoftman:
+nginx:
   enabled: true
-  name: nginx-ysoftman
+  name: nginx
   source:
     repoURL: https://github.com/ysoftman/test_code
-    path: helm/charts/nginx-ysoftman
+    path: helm/charts/nginx
     targetRevision: HEAD
   valueFiles:
     - values-ysoftman.yaml

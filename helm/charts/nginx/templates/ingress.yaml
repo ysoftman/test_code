@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "nginx-ysoftman.fullname" . }}
+  name: {{ include "nginx.fullname" . }}
   labels:
-    {{- include "nginx-ysoftman.labels" . | nindent 4 }}
+    {{- include "nginx.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "nginx-ysoftman.fullname" $ }}
+                name: {{ include "nginx.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}
