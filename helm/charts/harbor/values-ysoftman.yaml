@@ -79,9 +79,10 @@ persistence:
     filesystem:
       rootdirectory: /storage
 
+# admin 으로 로그인한후 암호를 변경해야지 변경된다.
 existingSecretAdminPassword: ""
 existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
-harborAdminPassword: "Ysoftman12345"
+harborAdminPassword: "Harbor12345"
 
 # Run the migration job via helm hook
 enableMigrateHelmHook: false
