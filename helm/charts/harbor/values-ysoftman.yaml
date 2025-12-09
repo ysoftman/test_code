@@ -81,7 +81,7 @@ persistence:
 
 existingSecretAdminPassword: ""
 existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
-harborAdminPassword: "Harbor12345"
+harborAdminPassword: "ysoftman"
 
 # Run the migration job via helm hook
 enableMigrateHelmHook: false
