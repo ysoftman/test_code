@@ -25,3 +25,9 @@ helm upgrade --install vector . \
 # 127.0.0.1  ysoftman.vector
 http://ysoftman.vector
 ```
+
+- vector 처리 확인
+
+```bash
+kubectl exec -it $(kubectl get pod --no-headers -n vector | awk '{print $1}') -- vector top
+```
