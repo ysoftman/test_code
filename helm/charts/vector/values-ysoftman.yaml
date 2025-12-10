@@ -28,8 +28,8 @@ ingress:
          # Specify the port name or number on the Service
          # Using name requires Kubernetes >=1.19
          port:
-           name: ""
-           number: ""
+           name: "vector"
+           number: 6000
   # ingress.tls -- Configure TLS for the Ingress.
   tls: []
   #  - secretName: chart-example-tls
