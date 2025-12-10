@@ -72,14 +72,10 @@ customConfig:
         # . = {} # 모든 필드를 제거하고 아래 필드만 다시 추가할 경우 사용
 
         # 5. 최종 메시지를 생성합니다.
-        level_str = to_string(.level) ?? "UNKNOWN"
-        level_up = upcase(level_str) ?? "UNKNOWN"
+        level_str = to_string(.level)
+        level_up = upcase(level_str)
 
-        simple_time = .simple_time ?? "-"
-        pod_name = .kubernetes.pod_name ?? "-"
-        trimmed = .trimmed_message ?? ""
-
-        .final_message = "[ " + simple_time + " | " + level_up + " | " + pod_name + " ] " + trimmed
+        .final_message = "[ " + .simple_time + " | " + level_up + " | " + .kubernetes.pod_name + " ] " + .trimmed_message
 
   sinks:
     # 표준 출력(stdout)으로 데이터를 내보내는 Sink
