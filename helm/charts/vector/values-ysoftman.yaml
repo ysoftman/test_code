@@ -72,8 +72,7 @@ customConfig:
         # . = {} # 모든 필드를 제거하고 아래 필드만 다시 추가할 경우 사용
 
         # 5. 최종 메시지를 생성합니다.
-        .final_message = "[ " + .simple_time + " | " + upcase(to_string!(.level)) + " | " + .kubernetes.pod_name + " ] " + .trimmed_message
-
+        .final_message, err = "[ " + .simple_time + " | " + upcase(to_string(.level)) + " | " + .kubernetes.pod_name + " ] " + .trimmed_message
   sinks:
     # 표준 출력(stdout)으로 데이터를 내보내는 Sink
     stdout_sink:
