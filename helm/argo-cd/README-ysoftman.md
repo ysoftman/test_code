@@ -32,3 +32,5 @@ helm list -A
 # 삭제시
 helm uninstall argocd --namespace argocd
 ```
+
+- colima 환경에서 argocd-dex-server runAsNonRoot 에러 발생하면, deployment > spec > template > spec > 0(argocd-dex) > securityContext > runAsNonRoot: false 로 변경
