@@ -45,7 +45,8 @@ customConfig:
     container_logs:
       type: "kubernetes_logs"
       host_path: "/var/log/pods"
-      glob: "*.log"
+      include_paths_glob_patterns:
+      - "/var/log/pods/*.log"
   transforms:
     # 로그 데이터를 재매핑(Remap)하는 Transform
     remap_log_fields:
