@@ -66,13 +66,14 @@ customConfig:
         .simple_time = format_timestamp!(.timestamp, format: "iso8601")
 
         # 3. 원본 로그 메시지에서 불필요한 공백/개행을 제거합니다.
-        .simple_message = strip_whitespace(.message)
+        .simple_message = strip_whitespace!(.message)
 
         # 4. 최종적으로 출력할 필드만 남깁니다. (선택 사항: . = {})
         # . = {} # 모든 필드를 제거하고 아래 필드만 다시 추가할 경우 사용
 
         # 5. 최종 메시지를 생성합니다.
-        .final_message = "[ " + .simple_time + " | " + upcase!(to_string!(.level)) + " | " + .kubernetes.pod_name + " ] " + .trimmed_message
+        .final_message = "[ " + .simple_time + " | " + upcase(to_string(.level)) + " | " + .kubernetes.pod_name + " ] " + .trimmed_message
+
   sinks:
     # 표준 출력(stdout)으로 데이터를 내보내는 Sink
     stdout_sink:
