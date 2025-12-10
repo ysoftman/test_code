@@ -42,11 +42,13 @@ customConfig:
     playground: true
   sources:
     # Pod의 File Log를 읽어옵니다.
+    # 참고: https://vector.dev/docs/reference/configuration/sources/kubernetes_logs/
     container_logs:
       type: "kubernetes_logs"
-      host_path: "/var/log/pods"
       include_paths_glob_patterns:
       - "/var/log/pods/*.log"
+      glob_minimum_cooldown_ms: 8000
+      max_line_bytes: 204800
   transforms:
     # 로그 데이터를 재매핑(Remap)하는 Transform
     remap_log_fields:
