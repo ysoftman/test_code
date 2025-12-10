@@ -29,5 +29,5 @@ http://ysoftman.vector
 - vector 처리 확인
 
 ```bash
-kubectl exec -it $(kubectl get pod --no-headers -n vector | awk '{print $1}') -- vector top
+kubectl exec -it $(kubectl get pod --no-headers -n vector | awk '{print $1}' | head -1) -n vector -- vector top
 ```
