@@ -63,10 +63,10 @@ customConfig:
         .level = if !exists(.level) { "info" } else { .level }
 
         # 2. 타임스탬프를 ISO 8601 형식으로 변환하여 새 필드에 저장합니다.
-        .simple_time = format_timestamp(.timestamp, format: "iso8601")
+        .simple_time = format_timestamp!(.timestamp, format: "iso8601")
 
         # 3. 원본 로그 메시지에서 불필요한 공백/개행을 제거합니다.
-        .simple_message = trim(.message)
+        .simple_message = string::trim(.message)
 
         # 4. 최종적으로 출력할 필드만 남깁니다. (선택 사항: . = {})
         # . = {} # 모든 필드를 제거하고 아래 필드만 다시 추가할 경우 사용
