@@ -1,0 +1,39 @@
+common:
+  project: default
+  server: https://kubernetes.default.svc
+
+nginx:
+  enabled: true
+  name: nginx
+  source:
+    repoURL: https://github.com/ysoftman/test_code
+    path: helm/charts/nginx
+    targetRevision: HEAD
+  valueFiles:
+    - values-ysoftman.yaml
+  values:
+    test1: test1
+
+harbor:
+  enabled: true
+  name: harbor
+  source:
+    repoURL: https://github.com/ysoftman/test_code
+    path: helm/charts/harbor
+    targetRevision: HEAD
+  valueFiles:
+    - values-ysoftman.yaml
+  values:
+    test1: test1
+
+vector:
+  enabled: true
+  name: vector
+  source:
+    repoURL: https://github.com/ysoftman/test_code
+    path: helm/charts/vector
+    targetRevision: HEAD
+  valueFiles:
+    - values-ysoftman.yaml
+  values:
+    test1: test1
