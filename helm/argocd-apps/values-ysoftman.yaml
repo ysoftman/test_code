@@ -7,7 +7,7 @@ nginx:
   name: nginx
   source:
     repoURL: https://github.com/ysoftman/test_code
-    path: helm/charts/nginx
+    path: helm/nginx
     targetRevision: HEAD
   valueFiles:
     - values-ysoftman.yaml
@@ -19,7 +19,7 @@ harbor:
   name: harbor
   source:
     repoURL: https://github.com/ysoftman/test_code
-    path: helm/charts/harbor
+    path: helm/harbor
     targetRevision: HEAD
   valueFiles:
     - values-ysoftman.yaml
@@ -31,7 +31,7 @@ vector:
   name: vector
   source:
     repoURL: https://github.com/ysoftman/test_code
-    path: helm/charts/vector
+    path: helm/vector
     targetRevision: HEAD
   valueFiles:
     - values-ysoftman.yaml

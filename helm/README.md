@@ -26,7 +26,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 kubectx colima
 ```
 
-- ./argo-cd-xxx : argocd-cd 설치
-- ./charts/argocd-apps : argocd applications(app)들을 관리하는 app
-- ./charts/harbo : harbor app
-- ./charts/nginx : nginx app
+- ./argo-cd : argocd-cd 설치
+- ./argocd-apps : argocd applications(app)들을 관리하는 app
+- ./harbor : harbor app
+- ./nginx : nginx app
