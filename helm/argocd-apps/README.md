@@ -29,9 +29,8 @@ argocd app create argocd-apps \
   --revision HEAD \
   --path helm/argocd-apps \
   --dest-server https://kubernetes.default.svc \
-  --dest-namespace argocd-apps \
-  --sync-policy automated
-
+  --sync-policy automated \
+  --values values-ysoftman.yaml
 ```
 
 > [!TIP]
