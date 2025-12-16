@@ -49,6 +49,8 @@ stringData:
 # argocd-notifications-cm 슬랙 사용시 위에서 저장한 시크릿을 토큰으로 참조하도록 한다.
 kind: ConfigMap
 data:
+  context: |
+    argocdUrl: https://ysoftman.argocd
   service.slack: |
     token: $slack-token
 
