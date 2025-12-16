@@ -34,3 +34,29 @@ helm uninstall argocd --namespace argocd
 ```
 
 - colima 환경에서 argocd-dex-server runAsNonRoot 에러 발생하면, deployment > spec > template > spec > 0(argocd-dex) > securityContext > runAsNonRoot: false 로 변경
+- argocd notification - slack 연동<https://argo-cd.readthedocs.io/en/stable/operator-manual/notifications/services/slack/>
+
+```bash
+# 기본 트리거 설정을 다음과 같이 설치하면 configmap 에 추가된다.
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
+
+# argocd-notifications-secret 에 슬랙 토큰을 추가한다.
+# 참고로 stringData 로 저장하면 data 로 바뀌고 값은 base64 인코딩된다.
+kind: Secret
+stringData:
+  slack-token: <slack oauth access token>
+
+# argocd-notifications-cm 슬랙 사용시 위에서 저장한 시크릿을 토큰으로 참조하도록 한다.
+kind: ConfigMap
+data:
+  service.slack: |
+    token: $slack-token
+
+# 알림을 발생한 앱에 annotations 설정
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-running.slack: my_channel
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: my_channel
+```
