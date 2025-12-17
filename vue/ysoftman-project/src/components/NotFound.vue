@@ -4,13 +4,9 @@
   </v-container>
 </template>
 
-
-<script>
-export default {
-    name: "NotFound",
-    props: {
-        msg: String,
-    },
-};
+<script setup>
+defineProps({
+    msg: String,
+});
 </script>
 

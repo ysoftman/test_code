@@ -1,68 +1,54 @@
 <template>
   <v-container fluid>
     <div id="customtag1">
-      arr = {{ arr }}
+      arr = {{ arrayStore.arr }}
       <br />
     </div>
 
-    <b-form-group id label="insert value" label-for="Input1">
-      <b-form-input
-        id="Input1"
-        type="text"
-        v-model="form.val1"
-        required
-        placeholder="추가할 값을 입력해주세요."
-      ></b-form-input>
-    </b-form-group>
+    <v-text-field
+      v-model="form.val1"
+      label="Insert value"
+      placeholder="추가할 값을 입력해주세요."
+    ></v-text-field>
 
-    <b-btn @click="pushElement(form.val1)" variant="info">추가</b-btn>
-    <!-- m-1 모든 지만 1 설정, ml-10 왼쪽 마진 10으로 설정 -->
-    <b-btn @click="popElement" variant="info" class="ml-10">삭제</b-btn>
+    <v-btn @click="pushElement(form.val1)" color="info">추가</v-btn>
+    <v-btn @click="popElement" color="info" class="ml-4">삭제</v-btn>
   </v-container>
 </template>
 
 <script setup>
+import { reactive } from "vue";
 import { useArrayStore } from "@/store";
 
+// Pinia store 가져오기
 const arrayStore = useArrayStore();
-</script>
 
+// 폼 데이터
+const form = reactive({
+    val1: "",
+});
 
-<script>
-export default {
-  data() {
-    return {
-      form: {
-        va1: "",
-        va2: ""
-      },
-      // arr: []
-      // vuex 로 이 컴포넌트의 arr 상태 공유
-      arr : this.$store.state.arr
-    };
-  },
-  methods: {
-    pushElement(ele) {
-      // this.arr.push(ele);
-      // vuex 로 이 컴포넌트의 arr 상태 저장
-      arrayStore.pushArray(ele);
-      // this.$store.commit('pushArray', {
-      //   element: ele,
-      // });
-    },
-    popElement(ele) {
-      arrayStore.pushArray(ele);
-      // this.$store.commit('popArray', {
-      //   element: ele,
-      // });
+// 배열에 추가
+const pushElement = (ele) => {
+    if (ele) {
+        arrayStore.pushArray(ele);
+        form.val1 = ""; // 입력 초기화
     }
-  }
+};
+
+// 배열에서 제거
+const popElement = () => {
+    arrayStore.popArray();
 };
 </script>
 
-<style>
+<style scoped>
 #customtag1 {
   color: red;
   font-size: 100%;
 }
+.ml-4 {
+  margin-left: 16px;
+}
 </style>
+

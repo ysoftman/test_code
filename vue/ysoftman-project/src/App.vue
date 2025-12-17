@@ -1,3 +1,8 @@
+<script setup>
+import logo from "@/assets/logo.png";
+import ToolBar from "@/components/ToolBar.vue";
+</script>
+
 <template>
   <!-- Vuetify 3에서도 v-app은 필수 -->
   <v-app>
@@ -7,7 +12,7 @@
 
       <v-row align="center" justify="center">
         <v-img
-          src="/img/logo.png"
+          :src="logo"
           aspect-ratio="1"
           max-width="300"
           max-height="300"
@@ -20,9 +25,6 @@
   </v-app>
 </template>
 
-<script setup>
-import ToolBar from "@/components/ToolBar.vue";
-</script>
 
 <style>
 .router-link-active {
