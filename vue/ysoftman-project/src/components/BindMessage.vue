@@ -11,11 +11,11 @@
 <script>
 /* eslint-disable */
 export default {
-  name: "BindMessage",
-  data() {
-    return {
-      message: "동적으로 생성되는 메시지\n현재 시간: " + new Date()
-    };
-  }
+    name: "BindMessage",
+    data() {
+        return {
+            message: "동적으로 생성되는 메시지\n현재 시간: " + new Date(),
+        };
+    },
 };
 </script>

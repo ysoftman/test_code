@@ -1,21 +1,21 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from "vue";
 
-const dismissSecs = 10
-const dismissCountDown = ref(0)
-const showDismissibleAlert = ref(false)
+const dismissSecs = 10;
+const dismissCountDown = ref(0);
+const showDismissibleAlert = ref(false);
 
 function showAlert() {
-  dismissCountDown.value = dismissSecs
+    dismissCountDown.value = dismissSecs;
 }
 
 watch(dismissCountDown, (val) => {
-  if (val > 0) {
-    setTimeout(() => {
-      dismissCountDown.value--
-    }, 1000)
-  }
-})
+    if (val > 0) {
+        setTimeout(() => {
+            dismissCountDown.value--;
+        }, 1000);
+    }
+});
 </script>
 
 <template>

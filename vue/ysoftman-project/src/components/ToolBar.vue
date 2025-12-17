@@ -41,50 +41,44 @@
   </v-toolbar>
 </template>
 
-<script>
-// eventBus 가 export 시 default 가 아니면 import 중괄호를 써야 한다. - ES6
-// @ 는  /src 경로로 webpack 에처 처리한다.
-// @/main 는 ../main 과도 같다.
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useTheme } from "vuetify";
 import { eventBus } from "@/main";
 
-export default {
-  name: "ToolBar",
-  props: {
-    msg: String
-  },
-  data() {
-    return {
-      examples: [
-        "HelloWorld",
-        "Alert",
-        "BindMessage",
-        "MyComponent",
-        "DataList",
-        "DataTable",
-        "ModifyArray",
-        "Draggable",
-        "VuetifyDark"
-      ]
-    };
-  },
-  methods: {
-    linkItem(iname) {
-      this.$router.push({ name: iname }).catch(err => {});
-    },
-    toggleDark() {
-      if (this.$vuetify.theme.dark === true) {
-        this.$vuetify.theme.dark = false;
-        // localStorage value 는 스트링으로 저장된다.
-        localStorage.setItem("dark_theme", "false");
-      } else {
-        this.$vuetify.theme.dark = true;
-        localStorage.setItem("dark_theme", "true");
-      }
-      // changeDraggableColor 이벤트 발생
-      // emit( eventName, […args] )
-      eventBus.emit("changeDraggableColor", "val1");
-    }
-  }
+const props = defineProps({
+    msg: String,
+});
+
+const router = useRouter();
+const theme = useTheme();
+
+const examples = ref([
+    "HelloWorld",
+    "Alert",
+    "BindMessage",
+    "MyComponent",
+    "DataList",
+    "DataTable",
+    "ModifyArray",
+    "Draggable",
+    "VuetifyDark",
+]);
+
+const linkItem = (iname) => {
+    router.push({ name: iname }).catch((err) => {
+        // Suppress navigation aborted error
+    });
+};
+
+const toggleDark = () => {
+    theme.global.current.value.dark = !theme.global.current.value.dark;
+    localStorage.setItem(
+        "dark_theme",
+        theme.global.current.value.dark.toString(),
+    );
+    eventBus.emit("changeDraggableColor", "val1");
 };
 </script>
 

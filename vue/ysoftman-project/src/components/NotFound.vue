@@ -7,10 +7,10 @@
 
 <script>
 export default {
-  name: "NotFound",
-  props: {
-    msg: String
-  }
+    name: "NotFound",
+    props: {
+        msg: String,
+    },
 };
 </script>
 

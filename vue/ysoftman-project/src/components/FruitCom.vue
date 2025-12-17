@@ -4,10 +4,10 @@
 
 <script>
 export default {
-  name: "FruitCom",
-  props: ["item"],
-  data() {
-    return {};
-  }
+    name: "FruitCom",
+    props: ["item"],
+    data() {
+        return {};
+    },
 };
 </script>

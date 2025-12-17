@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { useArrayStore } from '@/store';
+import { useArrayStore } from "@/store";
 
 const arrayStore = useArrayStore();
 </script>

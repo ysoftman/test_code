@@ -20,9 +20,9 @@
 
 <script>
 export default {
-  name: "VuetifyDark",
-  data() {
-    return { enable_dark: true };
-  }
+    name: "VuetifyDark",
+    data() {
+        return { enable_dark: true };
+    },
 };
 </script>

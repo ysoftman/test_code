@@ -19,17 +19,17 @@
 <script>
 /* eslint-disable */
 export default {
-  name: "DataList",
-  data() {
-    return {
-      msg: "Welcome to Your Vue.js App",
-      aaa_list: [
-        { a: 111, b: "aaa" },
-        { a: 222, b: "bbb" },
-        { a: 333, b: "ddd" }
-      ]
-    };
-  }
+    name: "DataList",
+    data() {
+        return {
+            msg: "Welcome to Your Vue.js App",
+            aaa_list: [
+                { a: 111, b: "aaa" },
+                { a: 222, b: "bbb" },
+                { a: 333, b: "ddd" },
+            ],
+        };
+    },
 };
 </script>
 
