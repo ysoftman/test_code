@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { createRouter, createWebHistory } from "vue-router";
-
 import HelloWorld from "@/components/HelloWorld.vue";
 import Alert from "@/components/Alert.vue";
 import BindMessage from "@/components/BindMessage.vue";

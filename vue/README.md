@@ -125,4 +125,5 @@ bun install vuetify
 # Vue 2 코드 → 전부 제거, Vue 3 으로 대체
 # Vue CLI → 전부 제거
 # Vite + Vue 3 + Vuetify 3 조합
+# vuex → pinia(앞으로 vue 에선 pinia 가 표준) 대체
 ```

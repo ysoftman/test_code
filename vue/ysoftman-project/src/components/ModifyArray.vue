@@ -21,6 +21,13 @@
   </v-container>
 </template>
 
+<script setup>
+import { useArrayStore } from '@/store';
+
+const arrayStore = useArrayStore();
+</script>
+
+
 <script>
 export default {
   data() {
@@ -38,15 +45,16 @@ export default {
     pushElement(ele) {
       // this.arr.push(ele);
       // vuex 로 이 컴포넌트의 arr 상태 저장
-      this.$store.commit('pushArray', {
-        element: ele,
-      });
+      arrayStore.pushArray(ele);
+      // this.$store.commit('pushArray', {
+      //   element: ele,
+      // });
     },
     popElement(ele) {
-      // this.arr.pop();
-      this.$store.commit('popArray', {
-        element: ele,
-      });
+      arrayStore.pushArray(ele);
+      // this.$store.commit('popArray', {
+      //   element: ele,
+      // });
     }
   }
 };

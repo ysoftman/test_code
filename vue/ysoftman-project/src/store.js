@@ -1,23 +1,17 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { defineStore } from "pinia";
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: {
+export const useArrayStore = defineStore("array", {
+  state: () => ({
     arr: [],
-  },
-  mutations: {
-    pushArray(state, payload) {
-      state.arr.push(payload.element);
-      console.log('pushArray()state.arr:', state.arr);
-    },
-    popArray(state, payload) {
-      state.arr.pop(payload.element);
-      console.log('popArray() state.arr:', state.arr);
-    },
-  },
+  }),
   actions: {
-
-  }
-})
+    pushArray(element) {
+      this.arr.push(element);
+      console.log("pushArray():", this.arr);
+    },
+    popArray() {
+      this.arr.pop();
+      console.log("popArray():", this.arr);
+    },
+  },
+});

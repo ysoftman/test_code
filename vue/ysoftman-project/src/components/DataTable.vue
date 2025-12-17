@@ -17,6 +17,12 @@
   </v-container>
 </template>
 
+<script setup>
+import { useArrayStore } from '@/store';
+
+const arrayStore = useArrayStore();
+</script>
+
 <script>
 export default {
   name: "DataTable",
@@ -60,9 +66,18 @@ export default {
 
       let addid = 6;
       // vuex 에 저장된 arr 도 추가
-      this.$store.state.arr.forEach((element, index) => {
-        this.desserts.push({ id: addid+index, name: element, fruit: "ModifyArray 컴포넌트" });
+
+      arrayStore.arr.forEach((element, index) => {
+        desserts.value.push({
+            id: addid + index,
+            name: element,
+            fruit: 'ModifyArray 컴포넌트',
+        });
       });
+
+      // this.$store.state.arr.forEach((element, index) => {
+      //   this.desserts.push({ id: addid+index, name: element, fruit: "ModifyArray 컴포넌트" });
+      // });
 
     }
   },
