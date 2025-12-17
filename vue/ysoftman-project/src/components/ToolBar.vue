@@ -82,7 +82,7 @@ export default {
       }
       // changeDraggableColor 이벤트 발생
       // emit( eventName, […args] )
-      eventBus.$emit("changeDraggableColor", "val1");
+      eventBus.emit("changeDraggableColor", "val1");
     }
   }
 };

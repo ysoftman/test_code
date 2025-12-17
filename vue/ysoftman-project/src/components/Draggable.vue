@@ -161,7 +161,7 @@ export default {
     // changeDraggableColor 이벤트 발생시 처리로직 구현
     // 참고로 $on 은 자식에서 호출되는 경우 감지 하지 않는다.
     // on( event, callback )
-    eventBus.$on("changeDraggableColor", function(param) {
+    eventBus.on("changeDraggableColor", function(param) {
       console.log(
         "[event on changeDraggableColor] forEventDebugging:",
         self.forEventDebugging

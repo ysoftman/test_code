@@ -1,60 +1,74 @@
+<script setup>
+import { ref, watch } from 'vue'
+
+const dismissSecs = 10
+const dismissCountDown = ref(0)
+const showDismissibleAlert = ref(false)
+
+function showAlert() {
+  dismissCountDown.value = dismissSecs
+}
+
+watch(dismissCountDown, (val) => {
+  if (val > 0) {
+    setTimeout(() => {
+      dismissCountDown.value--
+    }, 1000)
+  }
+})
+</script>
+
 <template>
-  <!-- 레이아웃 구조 v-container > v-layout > v-flex 순이다. -->
   <v-container fluid>
-    <b-alert show>Default Alert</b-alert>
-    <b-alert variant="success" show>Success Alert</b-alert>
-    <b-alert
-      variant="danger"
-      dismissible
-      :show="showDismissibleAlert"
-      @dismissed="showDismissibleAlert=false"
-    >Dismissible Alert!</b-alert>
+    <!-- 기본 알림 -->
+    <v-alert type="info" class="mb-3">
+      Default Alert
+    </v-alert>
 
-    <b-alert
-      :show="dismissCountDown"
-      dismissible
-      variant="warning"
-      @dismissed="dismissCountDown=0"
-      @dismiss-count-down="countDownChanged"
+    <!-- 성공 알림 -->
+    <v-alert type="success" class="mb-3">
+      Success Alert
+    </v-alert>
+
+    <!-- 닫을 수 있는 알림 -->
+    <v-alert
+      v-if="showDismissibleAlert"
+      type="error"
+      closable
+      class="mb-3"
+      @click:close="showDismissibleAlert = false"
     >
-      <p>This alert will dismiss after {{dismissCountDown}} seconds...</p>
-      <b-progress variant="warning" :max="dismissSecs" :value="dismissCountDown" height="4px"></b-progress>
-    </b-alert>
+      Dismissible Alert!
+    </v-alert>
 
-    <b-btn @click="showAlert" variant="info">Show alert with count-down timer</b-btn>
-    <!-- m-1 모든 지만 1 설정, ml-10 왼쪽 마진 10으로 설정 -->
-    <b-btn
-      @click="showDismissibleAlert=true"
-      variant="info"
-      class="ml-10"
-    >Show dismissible alert ({{showDismissibleAlert?'visible':'hidden'}})</b-btn>
+    <!-- 카운트다운 알림 -->
+    <v-alert
+      v-if="dismissCountDown > 0"
+      type="warning"
+      closable
+      class="mb-3"
+      @click:close="dismissCountDown = 0"
+    >
+      <p>
+        This alert will dismiss after {{ dismissCountDown }} seconds...
+      </p>
+
+      <v-progress-linear
+        color="warning"
+        :max="dismissSecs"
+        :model-value="dismissCountDown"
+        height="4"
+      />
+    </v-alert>
+
+    <!-- 버튼 -->
+    <v-btn color="info" class="mr-4" @click="showAlert">
+      Show alert with count-down timer
+    </v-btn>
+
+    <v-btn color="info" @click="showDismissibleAlert = true">
+      Show dismissible alert
+      ({{ showDismissibleAlert ? 'visible' : 'hidden' }})
+    </v-btn>
   </v-container>
 </template>
-
-<script>
-import Vue from "vue";
-// bootstrap-vue 사용을 위해 패키지와 css 임포트
-import BootstrapVue from "bootstrap-vue";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
-
-Vue.use(BootstrapVue);
-
-export default {
-  data() {
-    return {
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false
-    };
-  },
-  methods: {
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
-    },
-    showAlert() {
-      this.dismissCountDown = this.dismissSecs;
-    }
-  }
-};
-</script>

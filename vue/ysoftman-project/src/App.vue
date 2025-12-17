@@ -11,15 +11,8 @@
   </v-app>
 </template>
 
-<script>
-import ToolBar from "@/components/ToolBar";
-/* eslint-disable */
-export default {
-  name: "App",
-  components: {
-    toolbar: ToolBar
-  }
-};
+<script setup>
+import ToolBar from '@/components/ToolBar.vue'
 </script>
 
 
