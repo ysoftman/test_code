@@ -45,9 +45,11 @@ bun run build
 # build for production and view the bundle analyzer report
 # npm run build --report
 bun run build --report
-```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+# 일괄 포맷팅
+# biome.json 설정 참고
+biome format --write
+```
 
 ## troubleshooting
 
@@ -81,17 +83,20 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   zzz
   ```
 
-## 업데이트 사항
+## 변경 이력
+
+- 2019-11-20
 
 ```bash
-
-# 2019-11-20
 # vuetify 버전 2 업그레이드
 vue upgrade vuetify
 # 기타 업그레이드
 vue upgrade
+```
 
-# 2025-03-06
+- 2025-03-06
+
+```bash
 # lockfile 버전으로 업그레이드
 npm i --lockfile-version 3 --frozen-lockfile
 # npm -> 속도 빠른 bun 을 사용하자
@@ -99,8 +104,11 @@ bun install
 bun update
 # vue/cli 5.08 으로 업데이트
 bun update -g @vue/cli
+```
 
-# 2025-12-17
+- 2025-12-17
+
+```bash
 # vue-cli/webpack 관련 패키지 제거, 대신 vite 사용
 cd ysoftman-project
 bun remove vue-cli-plugin-vuetify vuetify-loader \
