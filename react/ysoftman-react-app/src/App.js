@@ -1,7 +1,7 @@
-import logo from './logo.svg';
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import MyComp1 from './mycomp1';
+import logo from "./logo.svg";
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import MyComp1 from "./mycomp1";
 
 // Create Component, (컴포넌트는 대문자로 시작해야 한다.)
 function Create(props) {
@@ -139,12 +139,12 @@ function App() {
 
   // 초기값 lemon 을 갖는 state 생성
   // state 는 2길이의 0번째는 값, 1번째는 설정함수를 가진다.
-  const [mode, setMode] = useState('');
+  const [mode, setMode] = useState("");
   const [click_id, setClickID] = useState(null);
   const [mylist, setMylist] = useState([
-    { id: 1, name: 'lemon', cost: 100 },
-    { id: 2, name: 'apple', cost: 200 },
-    { id: 3, name: 'orange', cost: 300 },
+    { id: 1, name: "lemon", cost: 100 },
+    { id: 2, name: "apple", cost: 200 },
+    { id: 3, name: "orange", cost: 300 },
   ]);
 
   // 컴포넌트가 마운트될때와 렌더딩될때마다 호출
@@ -157,23 +157,23 @@ function App() {
   // }, [])
   // 컴포넌트가 마운트될때와 [] 의 값이 변경됐을때만 호출
   useEffect(() => {
-    console.log('useEffect 컴포넌트가 마운트될때와 [click_id, mode] = %s %s의 값이 변경됐을때만 호출', click_id, mode);
+    console.log("useEffect 컴포넌트가 마운트될때와 [click_id, mode] = %s %s의 값이 변경됐을때만 호출", click_id, mode);
   }, [click_id, mode]);
 
   const [nextId, setNextId] = useState(4);
   let updateDeleteComponent = null;
   let message = null;
-  if (mode === 'read') {
-    message = 'click_id:' + click_id;
+  if (mode === "read") {
+    message = "click_id:" + click_id;
     // <> 빈태그를 사용하면 그룹핑 할 수 있다.
     updateDeleteComponent = (
       <>
         <li>
           <a
-            href={'/' + click_id}
+            href={"/" + click_id}
             onClick={(event) => {
               event.preventDefault();
-              setMode('update');
+              setMode("update");
             }}
           >
             update
@@ -186,21 +186,21 @@ function App() {
             onClick={() => {
               // 삭제할 아이템 빼고 새로우 리스트 구성
               const newMylist = [];
-              console.log('click_id:', click_id);
+              console.log("click_id:", click_id);
               for (let i = 0; i < mylist.length; i++) {
                 if (mylist[i].id !== Number(click_id)) {
                   newMylist.push(mylist[i]);
                 }
               }
-              console.log('--->', newMylist);
+              console.log("--->", newMylist);
               setMylist(newMylist);
-              setMode('read');
+              setMode("read");
             }}
           ></input>
         </li>
       </>
     );
-  } else if (mode === 'create') {
+  } else if (mode === "create") {
     message = (
       <Create
         onCreate={(_name, _cost) => {
@@ -218,7 +218,7 @@ function App() {
         }}
       ></Create>
     ); // create 컴포넌트 사용
-  } else if (mode === 'update') {
+  } else if (mode === "update") {
     let _name,
       _cost = null;
     for (let i = 0; i < mylist.length; i++) {
@@ -247,7 +247,7 @@ function App() {
             }
           }
           setMylist(newList);
-          setMode('read');
+          setMode("read");
         }}
       ></Update>
     ); // update 컴포넌트 사용
@@ -259,16 +259,16 @@ function App() {
       <MYHeader
         title123="my title"
         onChangeMode111={() => {
-          alert('test');
+          alert("test");
         }}
       >
-        {' '}
+        {" "}
       </MYHeader>
       <MyContents
         items={mylist}
         onChangeMode222={(id, name) => {
           // console.log("id:", id, "name:", name)
-          setMode('read'); // App() 컴포넌트를 다시 실행한다.
+          setMode("read"); // App() 컴포넌트를 다시 실행한다.
           setClickID(id); // click_id 변경
         }}
       ></MyContents>
@@ -283,7 +283,7 @@ function App() {
             href="/"
             onClick={(event) => {
               event.preventDefault();
-              setMode('create');
+              setMode("create");
             }}
           >
             create
