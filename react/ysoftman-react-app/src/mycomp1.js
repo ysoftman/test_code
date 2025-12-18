@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const MyComp1 = (props) => {
   const { param1, param2 } = props;

@@ -26,3 +26,10 @@ bun update
 
 # npm update (package-lock.json) 는 너무 느려서 사용하지 말자.
 ```
+
+## 일괄 포맷팅
+
+```bash
+# biome.json 설정 참고
+biome format --write
+```
