@@ -134,7 +134,7 @@ App.propTypes = {
 };
 
 function App() {
-  const [mode, setMode] = useState("");
+  const [command, setMode] = useState("");
   const [clickId, setClickId] = useState(null);
   const [mylist, setMylist] = useState([
     { id: 1, name: "lemon", cost: 100 },
@@ -143,8 +143,8 @@ function App() {
   ]);
 
   useEffect(() => {
-    console.log(`useEffect: clickId=${clickId}, mode=${mode}`);
-  }, [clickId, mode]);
+    console.log(`useEffect: clickId=${clickId}, command=${command}`);
+  }, [clickId, command]);
 
   const [nextId, setNextId] = useState(4);
 
@@ -175,10 +175,10 @@ function App() {
   };
 
   let updateDeleteComponent = null;
-  let message = null;
-
-  if (mode === "read") {
-    message = `click_id: ${clickId}`;
+  let action = null;
+  let clickIDMsg = null;
+  clickIDMsg = <h2>clickID: {clickId}</h2>;
+  if (command === "read") {
     updateDeleteComponent = (
       <>
         <li>
@@ -197,12 +197,12 @@ function App() {
         </li>
       </>
     );
-  } else if (mode === "create") {
-    message = <Create onCreate={handleCreate} />;
-  } else if (mode === "update") {
+  } else if (command === "create") {
+    action = <Create onCreate={handleCreate} />;
+  } else if (command === "update") {
     const item = mylist.find((item) => item.id === Number(clickId));
     if (item) {
-      message = <Update name={item.name} cost={item.cost} onUpdate={handleUpdate} />;
+      action = <Update name={item.name} cost={item.cost} onUpdate={handleUpdate} />;
     }
   }
 
@@ -210,8 +210,9 @@ function App() {
     <div>
       <MyHeader title="my title" onChangeMode={handleHeaderClick} />
       <MyContents items={mylist} onChangeMode={handleContentClick} />
-      {message}
-      {message && <MyComp1 param1={message} param2="ok" />}
+      {clickIDMsg}
+      {action}
+      {action && <MyComp1 command={command} result="ok" />}
       <br />
       <ul>
         <li>
