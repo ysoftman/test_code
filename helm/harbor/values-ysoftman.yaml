@@ -9,7 +9,7 @@ expose:
       secretName: ""
   ingress:
     hosts:
-      core: ysoftman.harbor
+      core: harbor.ysoftman
     controller: default
     kubeVersionOverride: ""
     className: "nginx"

@@ -22,6 +22,6 @@ helm upgrade --install harbor . \
 
 ```bash
 # sudo vim /etc/hosts 수정
-# 127.0.0.1  ysoftman.harbor
-http://ysoftman.harbor
+# 127.0.0.1  harbor.ysoftman
+http://harbor.ysoftman
 ```

@@ -22,8 +22,8 @@ helm upgrade --install vector . \
 
 ```bash
 # sudo vim /etc/hosts 수정
-# 127.0.0.1  ysoftman.vector
-http://ysoftman.vector
+# 127.0.0.1  vector.ysoftman
+http://vector.ysoftman
 ```
 
 - vector 처리 확인

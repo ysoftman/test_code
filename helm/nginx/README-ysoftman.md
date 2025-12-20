@@ -6,6 +6,6 @@
 
 ```bash
 # sudo vim /etc/hosts 수정
-# 127.0.0.1  ysoftman.nginx
-http://ysoftman.nginx
+# 127.0.0.1  nginx.ysoftman
+http://nginx.ysoftman
 ```

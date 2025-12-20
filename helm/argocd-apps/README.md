@@ -8,7 +8,7 @@ argocd application(app)들을 통합 관리하기 위한 app of apps 패턴의 �
 - 또는 argocd cli 사용시
 
 ```bash
-argocd login --insecure ysoftman.argocd --grpc-web --username admin --password ysoftman
+argocd login --insecure argocd.ysoftman --grpc-web --username admin --password ysoftman
 argocd repo add https://github.com/ysoftman/test_code
 ```
 

@@ -11,7 +11,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   # ingress.hosts -- Configure the hosts and paths for the Ingress.
   hosts:
-   - host: ysoftman.vector
+   - host: vector.ysoftman
      paths:
        - path: /
          pathType: ImplementationSpecific
