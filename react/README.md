@@ -11,11 +11,7 @@ npx create-react-app ysoftman-react-app
 
 ```bash
 cd ysoftman-react-app
-npm start
-# 또는
 bun start
-# 또는
-yarn start
 ```
 
 ## update package dependency
