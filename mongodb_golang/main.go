@@ -81,19 +81,19 @@ type sampleData1 struct {
 	Desc   string `json:"desc"`
 }
 
-type samepleDoc1 struct {
+type sampleDoc1 struct {
 	ObjId  primitive.ObjectID `bson:"_id,omitempty"`
 	Name   string             `json:"name"`
 	Number int                `json:"number"`
 	Desc   string             `json:"desc"`
 }
 
-func PrintDoc(docs []samepleDoc1) {
+func PrintDoc(docs []sampleDoc1) {
 	for i := 0; i < len(docs); i++ {
 		fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
 	}
-
 }
+
 func main() {
 	c := CreateMongoDBClient()
 
@@ -115,7 +115,7 @@ func main() {
 	// filter := bson.D{{Key: "number", Value: bson.D{{Key: "$eq", Value: num}}}}
 	// find documents where document.Number < num
 	filter := bson.D{{Key: "number", Value: bson.D{{Key: "$gt", Value: num}}}}
-	docs := make([]samepleDoc1, 0)
+	docs := make([]sampleDoc1, 0)
 	c.FindByPageSize(filter, &docs, 2)
 	for i := 0; i < len(docs); i++ {
 		fmt.Printf("%v %v %v %v\n", docs[i].ObjId, docs[i].Name, docs[i].Number, docs[i].Desc)
@@ -126,7 +126,7 @@ func main() {
 	// A 4-byte timestamp + A 5-byte random value + A 3-byte incrementing counter
 	// 가장 오래된 document 파악
 	filter = bson.D{{Key: "number", Value: bson.D{{Key: "$gt", Value: 0}}}}
-	docs = make([]samepleDoc1, 0)
+	docs = make([]sampleDoc1, 0)
 	// 가장 오래된 document 부터 2개 문서 가져오기
 	c.FindByPageSize(filter, &docs, 2)
 	page := 0
@@ -138,7 +138,7 @@ func main() {
 	for len(docs) > 0 {
 		lastObjID := docs[len(docs)-1].ObjId
 		filter = bson.D{{Key: "_id", Value: bson.D{{Key: "$gt", Value: lastObjID}}}}
-		docs = make([]samepleDoc1, 0)
+		docs = make([]sampleDoc1, 0)
 		c.FindByPageSize(filter, &docs, 2)
 		PrintDoc(docs)
 		page++

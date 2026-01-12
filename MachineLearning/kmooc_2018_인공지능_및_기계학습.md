@@ -245,7 +245,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - attribute 무작위 선택 : bagging 과정의 subset data 에 대해 모든 attriibute 를 사용해서 tree 를 만들경우, 특정 attribute 가 압도적으로 많이 나와(항상 결정트리에 포함되) 모든 결정트리에 영향을 주는 것을 막기위해 랜덤하게 하게 attribute 를 선택한다.
 
 - 결정트리와 random foreset 정리
-  - 결정트리는 svm, nerual network 등의 다른 기계학습과 달리 사람이 이해하기 쉬운 classifier 다.
+  - 결정트리는 svm, neural network 등의 다른 기계학습과 달리 사람이 이해하기 쉬운 classifier 다.
   - 결정트리는 svm 과 같이 linear 가 아닌 non-linear 바운더리 형태로 나타낼 수 있다.
   - O(height of tree) 의 시간복잡도로 비교적 빠른 prediction 이 가능하다.
   - random forest 등을 사용할 경우 prediction accuracy 을 높일 수 있다.
@@ -286,7 +286,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 - training data 를 가장 잘 설명할 수 있는 가장 적합한 parameter 를 찾는게 인공신경망 training 이고 이를 해결하기 위한 대표적인 방법으로 risk minimization을 사용한다.
 - empirical risk minimization 알고리즘(수식)은
   - 수식에서 1번 부분(l 부분) : loss function
-    - l(loss function)은 f(모든 nerual network 의 모든 계산을 거처 나온 최종 output)과 정답과의 차이 구하는 함수
+    - l(loss function)은 f(모든 neural network 의 모든 계산을 거처 나온 최종 output)과 정답과의 차이 구하는 함수
     - 주어진 training data 에서 정답을 가장 잘 맞출 수 있는 parameter 를 구하는것
     - 학습데이터와 다른 그 차이에 대한 패널티을 주는 부분
     - 우리가 최적화(optimization) 하고자 하는 실제 목적(objective)을 나타내는 부분이다.
@@ -322,7 +322,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 ### 딥 러닝 소개(Introduction to Deep Learnging)
 
 - 딥러닝의 역사
-  - NN 의 20년간 암흑기가 있었는데, 캐나다 토론토 대학의 Geoff Hinton 교수가 2006년 reducing the dimensionality of data with nerual networks 라는 논문을 사인언스에 내게 된다. restricted boltzmann machines (RBM) 을 이용해 학습한다. 현재는 RBM 보다 좋은 알고리즘들을 사용한다.
+  - NN 의 20년간 암흑기가 있었는데, 캐나다 토론토 대학의 Geoff Hinton 교수가 2006년 reducing the dimensionality of data with neural networks 라는 논문을 사인언스에 내게 된다. restricted boltzmann machines (RBM) 을 이용해 학습한다. 현재는 RBM 보다 좋은 알고리즘들을 사용한다.
   - 2009년 훨씬 큰 데이터와, 현실적인 데이터를 가지고 convolutional rbm 을 만들어서 한번더 관심을 받게 된다.
   - 2012년 ICML(머신러닝에서 가장 큰 학회) 에서 Google 과 스탠포드 Andrew Ng 가 논문을 발표하게 된다. 천만개의 이미지와 16천개의 코어와 3일동안 트레이닝을 하는등 엄청 큰 스케일의 데이터와 하드웨어로 사용하였다. 딥러닝의 잠재력은 높다.
 - 여러개의 Levels of Abstraction 을 가진다. (Ex. Pixel - 직선 - 눈코입 - 얼굴 (in Face Recognition Example))
@@ -378,7 +378,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
 ### 딥 뉴럴 네트워크 정규화(Deep Neural Network Regularization)
 
 - 딥러닝 = representation learning = distributed(첫번재 hidden layer 픽셀 특징, 두번재 hidden layer 눈,코입....특징, 등 layer 를 쌓아 올려) representation
-- multi layer feed forward nerual net 이 표현할 수 있는 function 은 complexity 가 높은 function 이다.
+- multi layer feed forward neurall net 이 표현할 수 있는 function 은 complexity 가 높은 function 이다.
 - 2가지 문제점
   - underfitting : parameter optimization 잘 못한다. 최적화 의미는 backpropagation 에서 layer 마다 gradient 를 구하고 그 뒤로 가는것, stochastic gradidnet descent 를 통한 최적화. hyperbolic tangent, sigmoid 등에서 0에 가까울때는 slope(경사, gradient)가 있지만 0에서 멀어질수록 slope 가 거의 0에 가까워진다. gradient이 거의 0이 되면 다음 iteration 에서 parameter update 할때 잘 되지 않는다. iteration 마다 처음 시작했던 weight 보다 좋은쪽으로 움직여야 하는데 움직이지 못한다는것으로 이를 vanishing gradient problem 이라고 한다.
   - overfitting : training data 에 너무 fitting 되서 실제 데이터에 prediction 할수있는 generalization power 가 떨어진다. 학습할 수 있는 함수의 범위가 매우 크기 때문에 overfitting 이 잘 일어난다.
@@ -432,7 +432,7 @@ Information Gain = 0.9182958340544896 - ( (17.0/30.0)*0.672294817075638 + (13.0/
   - continuous word representation : one-hot encoding 이 단점을 보완하기 위해 나온 방법, 모든 dimension 에대해서 0 아닌 value 를 가질 수 있도록 한다. vector(dimension) 값들이 서로 비슷한 단어들은 서로 비슷하다고 할 수 있도록 하는것이 continuous word representation가 추구하는 목표이다.
 - Language Model : 문서에서 단어들 (Sequence of Words)이 나타날 분포에 대한 확률적 모델이다. 영어, 한국어등 하나의 언어에 쓰이는 단어들의 distribution 을 표현한것으로 많은 텍스트가 주어졌을때 텍스트에서 단어들이 어떤 순서로 나오는지를 보고 모델링하면 영어에서는 어떤 단어들이 어떤 단어들 다음에 나온다는것을 확률적으로 표현 할 수 있다.
   - n-gram model : 지금까지 가장 많이 쓰이는 language model. n-gram 모델에서는 (n-1) 개의 순차적인 단어들 후에 나올 n 번째 단어에 대한 확률을 나타내는 모델이다. n=1 이면 unigram, n=2 이면 bigram, n=3 이면 trigram(음성인식, 자동기계번역에서 많이 쓰임)
-    - 학습 과정에서 한 번도 보지 못했던 n-gram 은 확률 모델이 잘 설명할 수 없기 때문에 Data Sparsity(희박함) 문제가 있다. trigram 에 없는 모델은 bigram 과 unigram 을 조합해서 Data Sparsity 문제를 부분적으로 해결할 수 있지만 근본적으로 해결할 수 없어 Nerual Network 를 활용하기 시작했다.
+    - 학습 과정에서 한 번도 보지 못했던 n-gram 은 확률 모델이 잘 설명할 수 없기 때문에 Data Sparsity(희박함) 문제가 있다. trigram 에 없는 모델은 bigram 과 unigram 을 조합해서 Data Sparsity 문제를 부분적으로 해결할 수 있지만 근본적으로 해결할 수 없어 Neural Network 를 활용하기 시작했다.
   - Neural Network Language Model : continuous Word Representation 을 input 으로 하고 output 은 전체 문장의 확률 혹은 전체문장에 context 가 주어졌을때 그 단어 하나가 나올 조거부확률(conditional probability)이 된다.
     - continuous Word Representation 을 Input 으로 하고, 각각의 단어가 나올 확률을 Output 으로 하는 Neural Network 구조로 표현할 수 있다.
     - "cat" 과 "dog" 라는 단어를 continuous Word Representation 으로 표현했을 때, 비슷한 Vector 값을 가지도록 Neural Network 를 학습함으로서 Data Sparsity 문제를 다룰 수 있다.
