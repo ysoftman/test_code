@@ -21,12 +21,6 @@ eslinit --init
 ## ysoftman-project Build Setup
 
 ```bash
-# package.json 에 명시된 패키지 최신으로 업데이트(사용안함)
-# npm install npm-check-updates
-# ncu -u
-# package.json
-bun add bootstrap fsevents minimist loader-utils thenify shell-quote elliptic node-fetch @babel/traverse eventsource json-schema handlebars archive body-parser vuedraggable
-
 # install dependencies
 # ysoftman-project 에서 npm_modules 용량이 너무 커서 커밋대상에서 제외하자.
 # 패키지 설치
