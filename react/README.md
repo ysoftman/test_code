@@ -11,7 +11,7 @@ npx create-react-app ysoftman-react-app
 
 ```bash
 cd ysoftman-react-app
-bun start
+bun run start
 ```
 
 ## update package dependency
