@@ -115,22 +115,21 @@ export const setFirestoreDoc = async (coll, docName) => {
 export const getFirestoreVisitCnt = (coll, docName, htmlId) => {
   const docRef = doc(db, coll, docName);
   // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
-  runTransaction(db, (transaction) => {
+  runTransaction(db, async (transaction) => {
     // This code may get re-run multiple times if there are conflicts.
-    return transaction.get(docRef).then((doc1) => {
-      if (!doc1.exists() || doc1.data().visitCnt === undefined) {
-        //throw "Document doest not exist!";
-        setFirestoreDoc(coll, docName);
-        document.getElementById(htmlId).innerHTML = `1`;
-        return;
-      }
-      let newCnt = doc1.data().visitCnt;
-      newCnt += 1;
-      transaction.update(docRef, {
-        visitCnt: newCnt,
-      });
-      document.getElementById(htmlId).innerHTML = `${newCnt}`;
+    const doc1 = await transaction.get(docRef);
+    if (!doc1.exists() || doc1.data().visitCnt === undefined) {
+      //throw "Document doest not exist!";
+      setFirestoreDoc(coll, docName);
+      document.getElementById(htmlId).innerHTML = `1`;
+      return;
+    }
+    let newCnt = doc1.data().visitCnt;
+    newCnt += 1;
+    transaction.update(docRef, {
+      visitCnt: newCnt,
     });
+    document.getElementById(htmlId).innerHTML = `${newCnt}`;
   })
     .then(() => {
       console.log("Transaction successfully committed!");

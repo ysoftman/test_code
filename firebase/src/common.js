@@ -76,7 +76,7 @@ const checkLogin = () => {
 
 // firebase > authentication > 익명 로그인 활성화했음
 const loginAnonymous = () => {
-  if (auth.currentUser != null && auth.currentUser.isAnonymous) {
+  if (auth.currentUser?.isAnonymous) {
     logout();
     document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous";
     return;
@@ -107,7 +107,7 @@ const loginGoogle = () => {
       const userName = `${result.user.displayName} ${result.user.email}`;
       document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous";
       document.getElementById(loginBoxID).innerHTML = makeLogoutBoxHTML(userName);
-      //GoogleLoginResult()
+      GoogleLoginResult();
     })
     .catch((error) => {
       alert(`errCode:${error.code}\nerrMessage:${error.message}\nerrMail:${error.mail}`);
@@ -133,6 +133,6 @@ const GoogleLoginResult = () => {
       console.log("GoogleLoginResult result.user:", result.user);
     })
     .catch((error) => {
-      alert(`errCode:${error.code}\nerrMessage:${error.message}\nerrMail:${error.mail}`);
+      console.log(`errCode:${error.code}\nerrMessage:${error.message}\nerrMail:${error.mail}`);
     });
 };

@@ -1,10 +1,14 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import path from "node:path";
-import webpack from "webpack";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
+
+// Node.js 내장 모듈
 import { execSync } from "node:child_process";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+// 외부 패키지
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import webpack from "webpack";
 
 function getGitInfo() {
   try {
