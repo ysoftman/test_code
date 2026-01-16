@@ -1,10 +1,10 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
-import path from "path";
-import { fileURLToPath } from "url";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import { execSync } from "child_process";
+import path from "path";
 import webpack from "webpack";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import { execSync } from "child_process";
+import { fileURLToPath } from "url";
 
 function getGitInfo() {
   try {
@@ -21,27 +21,11 @@ function getGitInfo() {
     // "git describe master --tags --exact-match 2> /dev/null || echo 'develop'",
     // 커밋 해시나 태그 이후의 커밋 수를 포함하지 않고, 가장 가까운 태그 이름만 출력
     // "git describe master --tags --abbrev=0 2> /dev/null || echo 'develop'",
-    const lastGitTag = execSync(
-      "git describe master --tags 2> /dev/null || echo 'develop'",
-    )
-      .toString()
-      .trim();
+    const lastGitTag = execSync("git describe master --tags 2> /dev/null || echo 'develop'").toString().trim();
 
-    const lastGitCommitHash = execSync(
-      "git log master -1 --date=iso-strict --pretty=format:'%H'",
-    )
-      .toString()
-      .trim();
-    const lastGitCommitDate = execSync(
-      "git log master -1 --date=iso-strict --pretty=format:'%cd'",
-    )
-      .toString()
-      .trim();
-    const lastGitCommitMessage = execSync(
-      "git log master -1 --pretty=format:'%s'",
-    )
-      .toString()
-      .trim();
+    const lastGitCommitHash = execSync("git log master -1 --date=iso-strict --pretty=format:'%H'").toString().trim();
+    const lastGitCommitDate = execSync("git log master -1 --date=iso-strict --pretty=format:'%cd'").toString().trim();
+    const lastGitCommitMessage = execSync("git log master -1 --pretty=format:'%s'").toString().trim();
     return {
       LAST_GIT_TAG: JSON.stringify(lastGitTag),
       LAST_GIT_COMMIT_HASH: JSON.stringify(lastGitCommitHash),
@@ -60,7 +44,7 @@ function getGitInfo() {
 }
 const gitInfo = getGitInfo();
 
-const isProduction = process.env.NODE_ENV == "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

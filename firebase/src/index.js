@@ -1,26 +1,13 @@
-import "@fontsource/press-start-2p";
-// yarn add nes.css --ignore-engines
-import "nes.css/css/nes.min.css";
 import "./common.js";
-import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
-import {
-  getFirestore,
-  collection,
-  doc,
-  getDocs,
-  setDoc,
-  query,
-  where,
-  orderBy,
-  runTransaction,
-  updateDoc,
-  deleteField,
-} from "firebase/firestore";
+import "@fontsource/press-start-2p";
+import "nes.css/css/nes.min.css";
+import { collection, doc, getFirestore, runTransaction, setDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
 
 const storage = getStorage();
 const db = getFirestore();
 
-export const loadImages = async function (htmlId, imageNames) {
+export const loadImages = async (htmlId, imageNames) => {
   document.getElementById(htmlId).innerHTML = "";
   let isImage = true;
   let item = "";
@@ -30,21 +17,9 @@ export const loadImages = async function (htmlId, imageNames) {
       isImage = false;
     }
     if (isImage) {
-      item =
-        `<div class="nes-container with-title"><p class="title">` +
-        name +
-        ` (<span id="` +
-        name +
-        `_img_size"></span>)</p><div id="` +
-        name +
-        `_img"></div></div>`;
+      item = `<div class="nes-container with-title"><p class="title">${name} (<span id="${name}_img_size"></span>)</p><div id="${name}_img"></div></div>`;
     } else {
-      item =
-        `<div class="nes-container with-title"><p class="title">` +
-        name +
-        `</p><div id="` +
-        name +
-        `_video"></div></div>`;
+      item = `<div class="nes-container with-title"><p class="title">${name}</p><div id="${name}_video"></div></div>`;
     }
     document.getElementById(htmlId).insertAdjacentHTML("beforeend", item);
   }
@@ -52,7 +27,7 @@ export const loadImages = async function (htmlId, imageNames) {
   //imageNames.forEaCh(function (name) {})
   for (const name of imageNames) {
     // firestorage 에 저장된 이미지 url 불러오기
-    let storageRef = ref(storage, name);
+    const storageRef = ref(storage, name);
     getDownloadURL(storageRef).then((url) => {
       isImage = true;
       if (name.endsWith("mp4")) {
@@ -60,13 +35,10 @@ export const loadImages = async function (htmlId, imageNames) {
       }
       let id = name;
       if (isImage) {
-        item = `<img loading="lazy" src=` + url + `></img>`;
+        item = `<img loading="lazy" src=${url}></img>`;
         id += "_img";
       } else {
-        item =
-          `<video width="640" controls autoplay muted><source type="video/mp4" src=` +
-          url +
-          `></video>`;
+        item = `<video width="640" controls autoplay muted><source type="video/mp4" src=${url}></video>`;
         id += "_video";
       }
       if (document.getElementById(id) == null) {
@@ -79,13 +51,12 @@ export const loadImages = async function (htmlId, imageNames) {
         //    let imgSize="<span>"+img.naturalWidth+"x"+img.naturalHeight+"</span>"
         //    document.getElementById(url+"_size").innerHTML = imgSize
         //})
-        getMeta(url, (err, img) => {
-          let imgSize =
-            "<span>" + img.naturalWidth + "x" + img.naturalHeight + "</span>";
-          if (document.getElementById(name + "_img_size") == null) {
+        getMeta(url, (_err, img) => {
+          const imgSize = `<span>${img.naturalWidth}x${img.naturalHeight}</span>`;
+          if (document.getElementById(`${name}_img_size`) == null) {
             return;
           }
-          document.getElementById(name + "_img_size").innerHTML = imgSize;
+          document.getElementById(`${name}_img_size`).innerHTML = imgSize;
         });
       }
     });
@@ -108,8 +79,8 @@ export const getMeta = (url, cb) => {
   img.src = url;
 };
 
-export const getImageDirs = async function (path) {
-  let listRef = ref(storage, path);
+export const getImageDirs = async (path) => {
+  const listRef = ref(storage, path);
   const pathList = [];
   const res = await listAll(listRef);
   res.prefixes.forEach((folderRef) => {
@@ -119,8 +90,8 @@ export const getImageDirs = async function (path) {
   return pathList;
 };
 // firestorage 에 저장된 이미지 list
-export const getImageList = async function (path) {
-  let listRef = ref(storage, path);
+export const getImageList = async (path) => {
+  const listRef = ref(storage, path);
   const imgList = [];
   // Find all the prefixes and items.
   const res = await listAll(listRef);
@@ -132,7 +103,7 @@ export const getImageList = async function (path) {
 };
 
 // firestore 문서 생성
-export const setFirestoreDoc = async function (coll, docName) {
+export const setFirestoreDoc = async (coll, docName) => {
   const newdocRef = doc(collection(db, coll), docName);
   await setDoc(newdocRef, {
     name: docName,
@@ -141,13 +112,13 @@ export const setFirestoreDoc = async function (coll, docName) {
 };
 
 // firestore 테스트 방문카운트 및 조회
-export const getFirestoreVisitCnt = function (coll, docName, htmlId) {
-  let docRef = doc(db, coll, docName);
+export const getFirestoreVisitCnt = (coll, docName, htmlId) => {
+  const docRef = doc(db, coll, docName);
   // likeCnt 값을 읽어 1개 증가를 트랜젹션(원자적 읽기/쓰기)으로 처리한다.
-  runTransaction(db, function (transaction) {
+  runTransaction(db, (transaction) => {
     // This code may get re-run multiple times if there are conflicts.
-    return transaction.get(docRef).then(function (doc1) {
-      if (!doc1.exists() || doc1.data().visitCnt == undefined) {
+    return transaction.get(docRef).then((doc1) => {
+      if (!doc1.exists() || doc1.data().visitCnt === undefined) {
         //throw "Document doest not exist!";
         setFirestoreDoc(coll, docName);
         document.getElementById(htmlId).innerHTML = `1`;
@@ -161,27 +132,15 @@ export const getFirestoreVisitCnt = function (coll, docName, htmlId) {
       document.getElementById(htmlId).innerHTML = `${newCnt}`;
     });
   })
-    .then(function () {
+    .then(() => {
       console.log("Transaction successfully committed!");
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log("Transaction failed: ", error);
     });
 };
 
-const version =
-  "last_version: " +
-  __LAST_VERSION_TAG__ +
-  "<br>" +
-  "last_commit_hash: " +
-  __LAST_COMMIT_HASH__ +
-  "<br>" +
-  "last_commit_date: " +
-  __LAST_COMMIT_DATE__ +
-  "<br>" +
-  "last_commit_message: " +
-  __LAST_COMMIT_MESSAGE__ +
-  "<br>";
+const version = `last_version: ${__LAST_VERSION_TAG__}<br>last_commit_hash: ${__LAST_COMMIT_HASH__}<br>last_commit_date: ${__LAST_COMMIT_DATE__}<br>last_commit_message: ${__LAST_COMMIT_MESSAGE__}<br>`;
 document.getElementById("version").innerHTML = version;
 
 async function loadImg(path) {
@@ -192,16 +151,9 @@ async function loadImg(path) {
 
 const imgDirs = await getImageDirs("/");
 for (const dir of imgDirs) {
-  const item =
-    `<button class="nes-btn is-primary" id='load_` +
-    dir +
-    `'>` +
-    dir +
-    `</button>`;
-  document
-    .getElementById("load_img_buttons")
-    .insertAdjacentHTML("beforeend", item);
-  document.getElementById("load_" + dir).addEventListener("click", () => {
+  const item = `<button class="nes-btn is-primary" id='load_${dir}'>${dir}</button>`;
+  document.getElementById("load_img_buttons").insertAdjacentHTML("beforeend", item);
+  document.getElementById(`load_${dir}`).addEventListener("click", () => {
     if (document.getElementById("images") != null) {
       document.getElementById("images").innerHTML = "";
     }
