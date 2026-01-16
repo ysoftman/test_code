@@ -47,6 +47,9 @@ index 컬렉션 생성
 # gs(googlestorage) url 는 gsutil(google-cloud-sdk)로 접근할 수 있다.
 # gcloud gsutil 설치 참고
 # https://cloud.google.com/storage/docs/gsutil_install#mac
+# gcloud gsutil 설치 - mac
+brew install google-cloud-sdk
+
 # gcloud 로 컴포넌트 업데이트
 gcloud components update
 
