@@ -73,6 +73,9 @@ gsutil mv -pv "gs://ysoftman-firebase.appspot.com/*.jpg" "gs://ysoftman-firebase
 ## firebase 프로젝트 배포
 
 ```bash
+# mise 툴로 이프로젝트에서 사용할 node 버전 고정 및 설치
+mise use node@24
+
 # firebase-tools (cli) 설치(bun 설치가 빠르다)
 yarn global add firebase-tools
 # or
