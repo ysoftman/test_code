@@ -28,7 +28,7 @@ const auth = getAuth();
 const loginBoxID = "login_google";
 const loginAnonymousBoxID = "login_anonymous";
 
-export const makeLogoutBoxHTML = function (userName) {
+const makeLogoutBoxHTML = function (userName) {
   if (userName.length == 0) {
     return `Anonymous (logout)`;
   }
@@ -58,7 +58,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // 로그인 유지설정(필요한 경우에만 호출)
-export const setAuthPersistence = function () {
+const setAuthPersistence = function () {
   setPersistence(auth, firebase.auth.Auth.Persistence.SESSION)
     .then(function () {
       return signInWithEmailAndPassword(auth, email, password);
@@ -68,7 +68,7 @@ export const setAuthPersistence = function () {
     });
 };
 
-export const checkLogin = () => {
+const checkLogin = () => {
   console.log("auth.currentUser: ", auth.currentUser);
   if (auth.currentUser == null) {
     return false;
@@ -80,7 +80,7 @@ export const checkLogin = () => {
 };
 
 // firebase > authentication > 익명 로그인 활성화했음
-export const loginAnonymous = function () {
+const loginAnonymous = function () {
   if (auth.currentUser != null && auth.currentUser.isAnonymous) {
     logout();
     document.getElementById(loginAnonymousBoxID).innerHTML = "login Anonymous";
@@ -100,7 +100,7 @@ export const loginAnonymous = function () {
 };
 
 // 구글 로그인하기
-export const loginGoogle = function () {
+const loginGoogle = function () {
   if (checkLogin()) {
     logout();
     return;
@@ -130,7 +130,7 @@ export const loginGoogle = function () {
 };
 
 // 로그아웃
-export const logout = function () {
+const logout = function () {
   signOut(auth);
   console.log("logout...");
   document
@@ -141,7 +141,7 @@ export const logout = function () {
 };
 
 // 구글 로그인 이후 결과 정보
-export const GoogleLoginResult = function () {
+const GoogleLoginResult = function () {
   getRedirectResult(auth)
     .then(function (result) {
       if (result.credential) {

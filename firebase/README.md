@@ -74,11 +74,9 @@ gsutil mv -pv "gs://ysoftman-firebase.appspot.com/*.jpg" "gs://ysoftman-firebase
 
 ```bash
 # firebase-tools (cli) 설치(bun 설치가 빠르다)
-npm install -g firebase-tools
-# or
 yarn global add firebase-tools
 # or
-bun add -g firebase-tools
+bun install -g firebase-tools
 
 # 프로젝트 초기화(프로젝트 환경구성을 위해 최초 한번만)
 firebase init
