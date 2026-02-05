@@ -42,3 +42,8 @@ curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${ap
 # music 태그 포스트들의 title, id 필드만 조회
 curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${apikey}&labels=music&maxResults=500" | jq '.items[] | "\(.title) --> \(.id)"'
 ```
+
+## tags 페이지 만들기
+
+- tag 가젯 사용지 전체 태그를 표시하면 포스트 내용보타 커져 스팸으로 취급될 수 있어 tags 이름의 페이지를 만든다.
+- blogger > 페이지 > tags 이름으로 페이지 생성, 내용은 tags.html 참고

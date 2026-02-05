@@ -1,0 +1,270 @@
+<div
+  id="tag-cloud-container"
+  style="line-height: 1.5em; padding: 0px; text-align: justify"
+>
+  <span>loading tags...</span>
+</div>
+
+<script type="text/javascript">
+  (function () {
+    var CACHE_KEY = "blogTagCloud";
+    var CACHE_TTL = 60 * 60 * 1000; // 1시간
+    var tagMap = {};
+    var batchSize = 150; // Blogger API max-results 제한
+    var completedRequests = 0;
+    var totalRequests = 0;
+    var hasCachedData = false;
+
+    function escapeHtml(str) {
+      var escapeMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      };
+      return str.replace(/[&<>"']/g, function (c) {
+        return escapeMap[c];
+      });
+    }
+
+    function showError(message) {
+      document.getElementById("tag-cloud-container").innerHTML =
+        '<span style="color: #e06c75">' + escapeHtml(message) + "</span>";
+    }
+
+    function getCache() {
+      try {
+        var cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          var data = JSON.parse(cached);
+          if (Date.now() - data.timestamp < CACHE_TTL) {
+            return data.tagMap;
+          }
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    function setCache(map) {
+      try {
+        localStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify({ tagMap: map, timestamp: Date.now() }),
+        );
+      } catch (e) {}
+    }
+
+    function processEntries(entries) {
+      if (!entries) return;
+      for (var i = 0; i < entries.length; i++) {
+        var categories = entries[i].category;
+        if (categories) {
+          for (var j = 0; j < categories.length; j++) {
+            var name = categories[j].term;
+            tagMap[name] = (tagMap[name] || 0) + 1;
+          }
+        }
+      }
+    }
+
+    function renderTagCloud(map) {
+      var tagData = [];
+      var counts = [];
+      for (var name in map) {
+        if (Object.prototype.hasOwnProperty.call(map, name)) {
+          tagData.push({
+            name: name,
+            count: map[name],
+            url: "/search/label/" + encodeURIComponent(name),
+          });
+          counts.push(map[name]);
+        }
+      }
+
+      if (tagData.length === 0) {
+        document.getElementById("tag-cloud-container").innerHTML =
+          '<span style="color: #abb2bf">태그가 없습니다.</span>';
+        return;
+      }
+
+      tagData.sort(function (a, b) {
+        return a.name.localeCompare(b.name);
+      });
+
+      var max = Math.max.apply(null, counts);
+      var min = Math.min.apply(null, counts);
+
+      var colors = [
+        "#abb2bf",
+        "#61afef",
+        "#56b6c2",
+        "#98c379",
+        "#e5c07b",
+        "#c678dd",
+        "#e06c75",
+      ];
+
+      var html = "";
+      for (var i = 0; i < tagData.length; i++) {
+        var tag = tagData[i];
+        var weight = max === min ? 0 : (tag.count - min) / (max - min);
+        var fontSize = 13 + weight * 23;
+        var colorIndex = Math.floor(weight * (colors.length - 1));
+        var color = colors[colorIndex];
+        var fontWeight = weight > 0.5 ? "bold" : "500";
+        var escapedName = escapeHtml(tag.name);
+
+        html +=
+          '<a href="' +
+          tag.url +
+          '" class="t-link" style="font-size:' +
+          fontSize +
+          "px; color:" +
+          color +
+          "; font-weight:" +
+          fontWeight +
+          ';">' +
+          escapedName +
+          '<span class="t-count">' +
+          tag.count +
+          "</span></a> ";
+      }
+
+      document.getElementById("tag-cloud-container").innerHTML = html;
+    }
+
+    function fetchBatch(startIndex) {
+      var script = document.createElement("script");
+      var callbackName = "tagCallback_" + startIndex;
+      var timeoutId;
+
+      function cleanup() {
+        clearTimeout(timeoutId);
+        delete window[callbackName];
+        if (script.parentNode) {
+          script.remove();
+        }
+      }
+
+      window[callbackName] = function (json) {
+        var entries = json.feed.entry;
+        processEntries(entries);
+        completedRequests++;
+
+        if (completedRequests === totalRequests) {
+          renderTagCloud(tagMap);
+          setCache(tagMap);
+        }
+
+        cleanup();
+      };
+
+      script.onerror = function () {
+        completedRequests++;
+        if (completedRequests === totalRequests && !hasCachedData) {
+          showError("태그를 불러오지 못했습니다.");
+        }
+        cleanup();
+      };
+
+      timeoutId = setTimeout(function () {
+        if (window[callbackName]) {
+          completedRequests++;
+          if (completedRequests === totalRequests && !hasCachedData) {
+            showError("태그 로딩 시간이 초과되었습니다.");
+          }
+          cleanup();
+        }
+      }, 30000);
+
+      script.src =
+        "/feeds/posts/summary?alt=json-in-script&callback=" +
+        callbackName +
+        "&start-index=" +
+        startIndex +
+        "&max-results=" +
+        batchSize;
+      document.body.appendChild(script);
+    }
+
+    // 캐시 확인 후 즉시 렌더링
+    var cached = getCache();
+    if (cached) {
+      hasCachedData = true;
+      renderTagCloud(cached);
+    }
+
+    // 백그라운드에서 최신 데이터 가져오기
+    window.tagCallbackInit = function (json) {
+      var totalPosts = parseInt(json.feed.openSearch$totalResults.$t, 10);
+      var entries = json.feed.entry;
+      processEntries(entries);
+
+      // 첫 배치 즉시 렌더링
+      renderTagCloud(tagMap);
+
+      if (totalPosts <= batchSize) {
+        setCache(tagMap);
+        return;
+      }
+
+      totalRequests = Math.ceil((totalPosts - batchSize) / batchSize);
+      completedRequests = 0;
+
+      for (var i = 1; i <= totalRequests; i++) {
+        fetchBatch(1 + i * batchSize);
+      }
+    };
+
+    // 초기 스크립트 로딩 실패 처리
+    var initScript = document.querySelector('script[src*="tagCallbackInit"]');
+    if (initScript) {
+      initScript.onerror = function () {
+        if (!hasCachedData) {
+          showError("태그를 불러오지 못했습니다.");
+        }
+      };
+    }
+
+    // 타임아웃 처리
+    setTimeout(function () {
+      var container = document.getElementById("tag-cloud-container");
+      if (container && container.textContent === "loading tags...") {
+        showError("태그 로딩 시간이 초과되었습니다.");
+      }
+    }, 30000);
+  })();
+</script>
+<script src="/feeds/posts/summary?alt=json-in-script&amp;callback=tagCallbackInit&amp;max-results=150"></script>
+
+<style>
+  #tag-cloud-container {
+    font-family:
+      "Fira code", "FiraCode", "Consolas", "Monaco", "Courier New", monospace;
+  }
+  .t-link {
+    position: relative;
+    margin-right: 20px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+  }
+  .t-link:hover {
+    transform: scale(1.1);
+    z-index: 10;
+  }
+  .t-link:focus {
+    outline: 2px solid #61afef;
+    outline-offset: 2px;
+  }
+  /* 태그 개수 스타일 */
+  .t-count {
+    font-size: 0.6em;
+    vertical-align: super;
+    margin-left: 4px;
+    opacity: 0.7;
+    font-weight: normal;
+  }
+</style>
