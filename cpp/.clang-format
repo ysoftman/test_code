@@ -23,7 +23,7 @@ AlignConsecutiveTableGenBreakingDAGArgColons:
   PadOperators: true
 AllowAllParametersOfDeclarationOnNextLine: true
 NamespaceIndentation: None
-BinPackParameters: false
+BinPackParameters: BinPack
 # 파일 전체 포맷팅
 # brew install clang-format
 # --style=file 로 지정하면 .clang-format 파일을 참고한다.
