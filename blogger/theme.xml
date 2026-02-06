@@ -9,7 +9,7 @@
     </title>
     <b:skin><![CDATA[
 :root {
-    /* ysoftman custom vairables */
+    /* ysoftman custom variables */
     /* One Half Dark https://raw.githubusercontent.com/joshdick/onedark.vim/main/img/color_reference.png */
     --black       : #282c34;
     --white       : #abb2bf;
@@ -394,7 +394,7 @@ h3.post-title {
     padding: 0;
     font-size: xxx-large;
     display: flex;
-    flow-row: row warp:
+    flex-flow: row wrap;
 }
 .blog-pager-newer-link {
     width: 33.3%;
@@ -421,7 +421,7 @@ h3.post-title {
 }
 
 /* searchbox ----------------- */
-from.ysoftman-search-box {
+form.ysoftman-search-box {
     font-size: 1em;
     border-style: none;
     border-width: 0;
