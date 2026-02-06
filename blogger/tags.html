@@ -105,14 +105,32 @@
         "#e06c75",
       ];
 
+      // 고유 카운트 기반 순위로 색상 배분 (같은 카운트 = 같은 색상)
+      var uniqueCounts = counts
+        .slice()
+        .sort(function (a, b) {
+          return a - b;
+        })
+        .filter(function (v, i, arr) {
+          return i === 0 || v !== arr[i - 1];
+        });
+      var countRankMap = {};
+      for (var i = 0; i < uniqueCounts.length; i++) {
+        countRankMap[uniqueCounts[i]] = i;
+      }
+
       var html = "";
       for (var i = 0; i < tagData.length; i++) {
         var tag = tagData[i];
-        var weight = max === min ? 0 : (tag.count - min) / (max - min);
-        var fontSize = 13 + weight * 23;
-        var colorIndex = Math.floor(weight * (colors.length - 1));
+        var countWeight = max === min ? 0 : (tag.count - min) / (max - min);
+        var rankWeight =
+          uniqueCounts.length <= 1
+            ? 0
+            : countRankMap[tag.count] / (uniqueCounts.length - 1);
+        var fontSize = 13 + countWeight * 23;
+        var colorIndex = Math.floor(rankWeight * (colors.length - 1));
         var color = colors[colorIndex];
-        var fontWeight = weight > 0.5 ? "bold" : "500";
+        var fontWeight = countWeight > 0.5 ? "bold" : "500";
         var escapedName = escapeHtml(tag.name);
 
         html +=
