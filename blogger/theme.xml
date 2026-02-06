@@ -11,6 +11,7 @@
 :root {
     /* ysoftman custom variables */
     /* One Half Dark https://raw.githubusercontent.com/joshdick/onedark.vim/main/img/color_reference.png */
+      /*
     --black       : #282c34;
     --white       : #abb2bf;
     --blue        : #61afef;
@@ -19,7 +20,7 @@
     --yellow      : #e5c07b;
     --purple      : #c678dd;
     --red         : #e06c75;
-
+      */
 
     /* boostrap5 https://getbootstrap.com/docs/5.0/customize/color/ */
     --blue: #0d6efd;
@@ -38,7 +39,6 @@
 
     /* custom color */
     --black1: #333333;
-    --gray1: #5e5e5e;
 }
 
 /* ysoftman custom color class */
@@ -195,6 +195,7 @@ a:hover {
 }
 
 
+/*
 @keyframes animate {
     from {
         filter: hue-rotate(0deg);
@@ -203,6 +204,7 @@ a:hover {
         filter: hue-rotate(360deg);
     }
 }
+*/
 
 /* Headings ----------------------------------------------- */
 h2 {
@@ -324,6 +326,7 @@ h3.post-title {
   color: var(--purple);
 }
 
+/*
 .label-size-1, .label-size-1 a {
     color: var(--teal);
 }
@@ -346,6 +349,7 @@ h3.post-title {
 .label-size-5 a:hover {
     color: var(--purple);
 }
+*/
 
 /* Comments ----------------------------------------------- */
 #comments {
@@ -842,7 +846,7 @@ input.ysoftman-input {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray1);'>
+                                    <div style='color: var(--gray);'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -863,7 +867,7 @@ input.ysoftman-input {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray1);'>
+                                    <div style='color: var(--gray);'>
                                       OlderPage
                                     </div>
                                   </b:if>
@@ -966,7 +970,7 @@ input.ysoftman-input {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray1);'>
+                                    <div style='color: var(--gray);'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -982,7 +986,7 @@ input.ysoftman-input {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray1);'>
+                                    <div style='color: var(--gray);'>
                                       OlderPage
                                     </div>
                                   </b:if>
