@@ -39,6 +39,7 @@
 
     /* custom color */
     --black1: #333333;
+    --dark-gray: #6c757d;
 }
 
 /* ysoftman custom color class */
@@ -846,7 +847,7 @@ input.ysoftman-input {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray);'>
+                                    <div style='color: var(--dark-gray);'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -867,7 +868,7 @@ input.ysoftman-input {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray);'>
+                                    <div style='color: var(--dark-gray);'>
                                       OlderPage
                                     </div>
                                   </b:if>
@@ -970,7 +971,7 @@ input.ysoftman-input {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray);'>
+                                    <div style='color: var(--dark-gray);'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -986,7 +987,7 @@ input.ysoftman-input {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--gray);'>
+                                    <div style='color: var(--dark-gray);'>
                                       OlderPage
                                     </div>
                                   </b:if>
@@ -1046,9 +1047,11 @@ input.ysoftman-input {
                                     <span class='post-icons'>
                                       <b:include data='post' name='postQuickEdit'/>
                                     </span>
-                                    <span class='post-timestamp'>
-                                      <data:post.timestamp/>
-                                    </span>
+                                    <b:if cond='data:blog.pageType != &quot;static_page&quot;'>
+                                      <span class='post-timestamp'>
+                                        <data:post.timestamp/>
+                                      </span>
+                                    </b:if>
                                   </div>
                                   <div class='post-footer-line post-footer-line-2'>
                                     <span class='post-location'>
