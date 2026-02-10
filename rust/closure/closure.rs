@@ -5,7 +5,7 @@
 use std::thread;
 use std::time;
 
-mod clouser_test1;
+mod closure_test1;
 
 fn main() {
     // 함수 호출을 변수에 담아 사용할 수 있다.
@@ -46,5 +46,5 @@ fn main() {
         println!("val >= 25 {}", cs_closure(val));
     }
 
-    clouser_test1::run(12);
+    closure_test1::run(12);
 }
