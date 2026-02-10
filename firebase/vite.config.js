@@ -30,7 +30,7 @@ function getGitInfo() {
   } catch {
     console.warn("Git command failed, returning default values.");
     return {
-      GIT_TAG: JSON.stringify("unknown"),
+      LAST_GIT_TAG: JSON.stringify("unknown"),
       LAST_GIT_COMMIT_HASH: JSON.stringify("unknown"),
       LAST_GIT_COMMIT_DATE: JSON.stringify("unknown"),
       LAST_GIT_COMMIT_MESSAGE: JSON.stringify("unknown"),
