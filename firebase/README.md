@@ -41,6 +41,9 @@ index 컬렉션 생성
 
 ## firebase 파일 업로드/이동 CLI 작업시
 
+- 202602 부터 유료 요금제 사용자만 storage 웹에서 액세스(조회/수정등)가 가능하다.
+- gsutil cli 는 무료에서도 사용가능한다.
+
 ```bash
 # firebase storage 업로드
 # gs(googlestorage) url 과 일반 http url 로 파일에 접근할 수 있다.
