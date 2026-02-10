@@ -5,28 +5,18 @@
   "license": "MIT",
   "dependencies": {
     "@fontsource/press-start-2p": "^5.2.7",
-    "clean-webpack-plugin": "^4.0.0",
     "firebase": "^12.8.0",
     "nes.css": "^2.3.0",
-    "sass": "^1.97.2",
-    "sass-loader": "^16.0.6",
-    "webpack": "^5.104.1"
+    "sass": "^1.97.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.6",
-    "@babel/preset-env": "^7.28.6",
-    "babel-loader": "^10.0.0",
-    "css-loader": "^7.1.2",
-    "html-webpack-plugin": "^5.6.5",
-    "style-loader": "^4.0.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.3"
+    "vite": "^6.3.5"
   },
   "description": "ysoftman firebase",
   "scripts": {
-    "build": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "build": "vite build",
+    "build:prod": "vite build",
+    "watch": "vite build --watch",
+    "serve": "vite"
   }
 }
