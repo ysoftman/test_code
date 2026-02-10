@@ -11,7 +11,7 @@ int main() {
     string str3 = "3";
     string result;
 
-    // cosnt char * 타입은 + 연산을 할 수 없다.
+    // const char * 타입은 + 연산을 할 수 없다.
     // result += "1" + "2" + "3";
     // result += str1.c_str() + str2.c_str() + str3.c_str();
 

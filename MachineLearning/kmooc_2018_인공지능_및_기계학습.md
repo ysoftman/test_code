@@ -179,7 +179,7 @@ math.fabs((1*3)+(-2*1)+(3*2)+(-1*4) + 2) / math.sqrt((1**2)+((-2)**2)+(3**2)+((-
 
 - 결정 트리는
   - 데이터들이 linear 하게 분류 할수 없는 경우에 여러개의 룰을 가진 classifier, tree 형식으로 조건에 해당하는 leaf 노드를 선택해 나간다.
-  - linear serparation 보다 복잡한 function 으로 데이터를 분류하고 싶을때 많이 사용
+  - linear separation 보다 복잡한 function 으로 데이터를 분류하고 싶을때 많이 사용
   - 커널 방법이 좋지 않은 경우 결정트리를 이용할 수 있다.
   - 사람이 이해하기 편한다.
   - 앙상블 러닝(ensemble learning, 여러개의 결정트리를 조합) - random forest 가 대표적
