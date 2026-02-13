@@ -88,7 +88,6 @@ a:hover {
 /* Header ----------------------------------------------- */
 .header-outer {
     background: var(--blue) url(//www.blogblog.com/1kt/simple/gradients_light.png) repeat-x scroll 0 -400px;
-    _background-image: none;
 }
 .Header h1 {
     font: 2.5em;
@@ -494,6 +493,9 @@ input.ysoftman-input {
     input.ysoftman-input {
         width: 100%;
     }
+    .blog-pager {
+        font-size: x-large;
+    }
 }
 
 
@@ -530,7 +532,7 @@ input.ysoftman-input {
                       <div class='ysoftman-nav'>
                         <div class='ysoftman-nav-title'>
                           <span class='ysoftman-home'><a href='/'>Sentimental Programmer</a></span>
-                          <span class='ysoftman-github-io'><a href='http://ysoftman.github.io' target='_blink'>| ysoftman</a></span>
+                          <span class='ysoftman-github-io'><a href='https://ysoftman.github.io' target='_blank'>| ysoftman</a></span>
                         </div>
                         <div class='ysoftman-nav-actions'>
                           <span class='ysoftman-tags'><a href='https://yoonbh2714.blogspot.com/p/tags.html'>tags</a></span>
