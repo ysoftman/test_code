@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
   <head>
-    <link expr:href='data:blog.canonicalUrl' rel='canonical'/>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
     <b:include data='blog' name='all-head-content'/>
     <title>
       <data:blog.pageTitle/>
@@ -425,6 +425,28 @@ h3.post-title {
     margin-top: 2em;
 }
 
+/* Navigation ------------------------------------------- */
+.ysoftman-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+.ysoftman-nav-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.ysoftman-nav-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 /* searchbox ----------------- */
 form.ysoftman-search-box {
     font-size: 1em;
@@ -441,8 +463,30 @@ input.ysoftman-input {
     padding: 5px;
     margin: 0px;
     width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
     background: var(--black1);
     color: var(--yellow);
+}
+
+/* Mobile responsive ------------------------------------ */
+@media screen and (max-width: 768px) {
+    .ysoftman-nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .ysoftman-nav-actions {
+        width: 100%;
+    }
+    .ysoftman-home a {
+        font-size: 1.5em;
+    }
+    .ysoftman-tags a {
+        font-size: 1.5em;
+    }
+    input.ysoftman-input {
+        width: 100%;
+    }
 }
 
 
@@ -476,24 +520,18 @@ input.ysoftman-input {
                   <div class='columns-inner'>
                     <div class='column-center-outer'>
 
-                      <table style='width: 100%;'>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <span class='ysoftman-home'><a href='/'>Sentimental Programmer</a></span>
-                              <span class='ysoftman-github-io'><a href='http://ysoftman.github.io' target='_blink'>| ysoftman</a></span>
-                            </td>
-                            <td>
-                              <span class='ysoftman-tags'><a href='https://yoonbh2714.blogspot.com/p/tags.html'>tags</a></span>
-                            </td>
-                            <td>
-                              <form align='right' class='ysoftman-search-box' expr:action='data:blog.searchUrl'>
-                                <input autocomplete='off' class='ysoftman-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' placeholder='search' size='100' title='search' type='text'/>
-                              </form>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div class='ysoftman-nav'>
+                        <div class='ysoftman-nav-title'>
+                          <span class='ysoftman-home'><a href='/'>Sentimental Programmer</a></span>
+                          <span class='ysoftman-github-io'><a href='http://ysoftman.github.io' target='_blink'>| ysoftman</a></span>
+                        </div>
+                        <div class='ysoftman-nav-actions'>
+                          <span class='ysoftman-tags'><a href='https://yoonbh2714.blogspot.com/p/tags.html'>tags</a></span>
+                          <form class='ysoftman-search-box' expr:action='data:blog.searchUrl'>
+                            <input autocomplete='off' class='ysoftman-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' placeholder='search' title='search' type='text'/>
+                          </form>
+                        </div>
+                      </div>
 
                     <div class='column-center-inner'>
                         <b:section class='main' id='main' name='Main' showaddelement='no'>
