@@ -279,6 +279,13 @@ h3.post-title {
     font-size: 110%;
     line-height: 1.4;
     position: relative;
+    overflow-x: auto;
+}
+.post-body iframe,
+.post-body video,
+.post-body embed,
+.post-body object {
+    max-width: 100%;
 }
 
 .post-body img, .post-body .tr-caption-container, .Profile img, .Image img,
