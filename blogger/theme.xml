@@ -1674,6 +1674,36 @@ h1.post-title {
         </div>
       </div>
     </div>
+    <b:if cond='data:blog.pageType == &quot;item&quot;'>
+      <script type='text/javascript'>
+        //<![CDATA[
+        (function() {
+          var iframes = document.querySelectorAll('.post-body iframe[src*="youtube.com/embed"]');
+          if (!iframes.length) return;
+          var date = document.querySelector('meta[itemprop="datePublished"]');
+          var title = document.querySelector('h1.post-title');
+          iframes.forEach(function(iframe) {
+            var m = iframe.src.match(/youtube\.com\/embed\/([^?&#]+)/);
+            if (!m) return;
+            var vid = m[1];
+            var s = document.createElement('script');
+            s.type = 'application/ld+json';
+            s.text = JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'VideoObject',
+              'name': iframe.title || (title ? title.textContent : document.title),
+              'description': title ? title.textContent : document.title,
+              'thumbnailUrl': 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg',
+              'uploadDate': date ? date.content : '',
+              'contentUrl': 'https://www.youtube.com/watch?v=' + vid,
+              'embedUrl': 'https://www.youtube.com/embed/' + vid
+            });
+            document.head.appendChild(s);
+          });
+        })();
+        //]]>
+      </script>
+    </b:if>
     <script type='text/javascript'>
       window.setTimeout(function () {
       document.body.className = document.body.className.replace(&#39;loading&#39;,&#39;&#39;);
