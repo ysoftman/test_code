@@ -184,12 +184,13 @@ a:hover {
     margin: 0px 10px 0px 10px
 }
 h1.ysoftman-home {
+    display: inline;
     font-size: inherit;
     font-weight: inherit;
     margin: 0;
 }
 .ysoftman-home {
-    padding: 0px 0px 10px 0px;
+    padding: 0;
 }
 .ysoftman-home a {
     font-size: 2em;
@@ -437,23 +438,38 @@ h3.post-title {
 /* Accents ---------------------------------------------- */
 #blog-pager,
 .blog-pager {
-    margin: 0;
+    margin: 10px 0;
     padding: 0;
-    font-size: xxx-large;
+    font-size: 1em;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
-.blog-pager-newer-link {
-    width: 33.3%;
-    text-align: left;
+.blog-pager a {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid var(--green);
+    border-radius: 4px;
+    color: var(--green);
+    font-size: 0.9em;
+    transition: background-color 0.2s, color 0.2s;
 }
-.blog-pager-home-link {
-    width: 33.3%;
+.blog-pager a:hover {
+    background-color: var(--green);
+    color: var(--black);
+}
+.blog-pager-newer-link,
+.blog-pager-home-link,
+.blog-pager-older-link {
     text-align: center;
 }
-.blog-pager-older-link {
-    width: 33.3%;
-    text-align: right;
+.blog-pager-newer-link div,
+.blog-pager-older-link div {
+    padding: 8px 16px;
+    color: var(--dark-gray);
+    font-size: 0.9em;
 }
 
 .footer-outer {
@@ -478,7 +494,7 @@ h3.post-title {
 }
 .ysoftman-nav-title {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     flex-wrap: wrap;
     gap: 5px;
 }
@@ -563,7 +579,16 @@ h1.post-title {
         width: 100%;
     }
     .blog-pager {
-        font-size: x-large;
+        gap: 4px;
+    }
+    .blog-pager a {
+        padding: 6px 12px;
+        font-size: 0.85em;
+    }
+    .blog-pager-newer-link div,
+    .blog-pager-older-link div {
+        padding: 6px 12px;
+        font-size: 0.85em;
     }
     .post-outer {
         padding: 8px;
@@ -611,8 +636,14 @@ h1.post-title {
     .ysoftman-tags a {
         font-size: 1.2em;
     }
-    .blog-pager {
-        font-size: large;
+    .blog-pager a {
+        padding: 5px 10px;
+        font-size: 0.8em;
+    }
+    .blog-pager-newer-link div,
+    .blog-pager-older-link div {
+        padding: 5px 10px;
+        font-size: 0.8em;
     }
     h1.post-title,
     h3.post-title {
