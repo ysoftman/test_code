@@ -81,6 +81,12 @@
 .gray   {color: var(--gray);}
 
 
+/* Text selection */
+::selection {
+    background-color: var(--teal);
+    color: var(--black);
+}
+
 /* Content ----------------------------------------------- */
 body, .body-fauxcolumn-outer {
     font: 1.2em Arial, Verdana, Helvetica;
@@ -212,7 +218,7 @@ h1.ysoftman-home {
     padding: 0px 0px 0px 0px;
 }
 .ysoftman-github-io a {
-    font-size: 1.2em;
+    font-size: 2em;
     font-weight: bold;
     color: var(--white);
     text-shadow:
@@ -225,8 +231,18 @@ h1.ysoftman-home {
 }
 
 .ysoftman-tags a {
-    padding: 0px 0px 0px 0px;
-    font-size: 2em;
+    display: inline-block;
+    padding: 4px 14px;
+    border: 1px solid var(--teal);
+    border-radius: 14px;
+    color: var(--teal);
+    font-size: 1em;
+    font-weight: normal;
+    transition: background-color 0.2s, color 0.2s;
+}
+.ysoftman-tags a:hover {
+    background-color: var(--teal);
+    color: var(--black);
 }
 
 
@@ -356,18 +372,30 @@ h3.post-title {
 }
 .post-footer {
     margin: 0px 0px 0;
-    padding: 0px 0px;
+    padding: 10px 0 0;
+    border-top: 1px solid var(--black1);
     color: var(--green);
     background-color: var(--black);
     line-height: 1.4;
     font-size: 125%;
 }
+.post-labels {
+  color: var(--teal);
+}
 .post-labels a {
-  font-weight: bold;
-  color: var(--orange);
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 2px 0;
+  border: 1px solid var(--teal);
+  border-radius: 12px;
+  color: var(--teal);
+  font-size: 0.85em;
+  font-weight: normal;
+  transition: background-color 0.2s, color 0.2s;
 }
 .post-labels a:hover {
-  color: var(--purple);
+  background-color: var(--teal);
+  color: var(--black);
 }
 
 /*
@@ -453,7 +481,7 @@ h3.post-title {
     border: 1px solid var(--green);
     border-radius: 4px;
     color: var(--green);
-    font-size: 0.9em;
+    font-size: 1em;
     transition: background-color 0.2s, color 0.2s;
 }
 .blog-pager a:hover {
@@ -469,7 +497,7 @@ h3.post-title {
 .blog-pager-older-link div {
     padding: 8px 16px;
     color: var(--dark-gray);
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 .footer-outer {
@@ -516,9 +544,9 @@ form.ysoftman-search-box {
 input.ysoftman-input {
     font-size: 1em;
     border: 2px solid var(--yellow);
-    border-radius: 5px;
+    border-radius: 14px;
     outline: none;
-    padding: 5px;
+    padding: 6px 14px;
     margin: 0px;
     width: 300px;
     max-width: 100%;
@@ -568,15 +596,25 @@ h1.post-title {
     }
     .ysoftman-nav-actions {
         width: 100%;
+        flex-wrap: nowrap;
     }
-    .ysoftman-home a {
+    .ysoftman-home a,
+    .ysoftman-github-io a {
         font-size: 1.5em;
     }
     .ysoftman-tags a {
-        font-size: 1.5em;
+        font-size: 0.9em;
+        padding: 3px 12px;
+    }
+    form.ysoftman-search-box {
+        flex: 1;
+        min-width: 0;
     }
     input.ysoftman-input {
         width: 100%;
+        padding: 6px 12px;
+        border-radius: 14px;
+        font-size: 0.9em;
     }
     .blog-pager {
         gap: 4px;
@@ -630,11 +668,13 @@ h1.post-title {
     body, .body-fauxcolumn-outer {
         font-size: 0.95em;
     }
-    .ysoftman-home a {
+    .ysoftman-home a,
+    .ysoftman-github-io a {
         font-size: 1.2em;
     }
     .ysoftman-tags a {
-        font-size: 1.2em;
+        font-size: 0.85em;
+        padding: 2px 10px;
     }
     .blog-pager a {
         padding: 5px 10px;
