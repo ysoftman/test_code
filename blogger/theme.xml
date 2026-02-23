@@ -373,7 +373,7 @@ h3.post-title {
 .post-footer {
     margin: 0px 0px 0;
     padding: 10px 0 0;
-    border-top: 1px solid var(--black1);
+    border-top: none;
     color: var(--green);
     background-color: var(--black);
     line-height: 1.4;
@@ -481,7 +481,7 @@ h3.post-title {
     border: 1px solid var(--green);
     border-radius: 4px;
     color: var(--green);
-    font-size: 1em;
+    font-size: 1.2em;
     transition: background-color 0.2s, color 0.2s;
 }
 .blog-pager a:hover {
@@ -497,18 +497,23 @@ h3.post-title {
 .blog-pager-older-link div {
     padding: 8px 16px;
     color: var(--dark-gray);
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 .footer-outer {
-    border-top: 0 dashed #bbbbbb;
+    border-top: 0;
     padding: 0;
 }
 .ysoftman-footer-inner {
     padding: 0px;
+    border: none;
 }
 #footer-1 {
     margin-top: 2em;
+    border: none;
+}
+footer {
+    border: none;
 }
 
 /* Navigation ------------------------------------------- */
@@ -765,7 +770,7 @@ h1.post-title {
                               <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
                               <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
                               <b:widget-setting name='showLabels'>true</b:widget-setting>
-                              <b:widget-setting name='postLabelsLabel'>tags:</b:widget-setting>
+                              <b:widget-setting name='postLabelsLabel'></b:widget-setting>
                               <b:widget-setting name='showBacklinks'>false</b:widget-setting>
                               <b:widget-setting name='showInlineAds'>true</b:widget-setting>
                               <b:widget-setting name='showReactions'>false</b:widget-setting>
@@ -876,7 +881,7 @@ h1.post-title {
                                 <b:else/>
                                 <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
                                   <!-- <data:post.commentLabelFull/>: -->
-                                  comments: <data:post.numComments/>
+                                  <data:post.numComments/> comments
                                 </a>
                               </b:if>
                             </b:includable>
@@ -1291,7 +1296,6 @@ h1.post-title {
                                   <div class='post-footer-line post-footer-line-1'>
                                     <span class='post-labels'>
                                       <b:if cond='data:top.showPostLabels and data:post.labels'>
-                                        <data:postLabelsLabel/>
                                         <b:loop values='data:post.labels' var='label'>
                                           <a expr:href='data:label.url' rel='tag'>
                                             <data:label.name/>
