@@ -157,11 +157,10 @@
           startIndex +
           "&max-results=" +
           batchSize,
-      )
-        .then(function (response) {
-          if (!response.ok) throw new Error("HTTP " + response.status);
-          return response.json();
-        });
+      ).then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      });
     }
 
     // 캐시 확인 후 즉시 렌더링
@@ -212,7 +211,6 @@
   }
   .t-link {
     position: relative;
-    margin-right: 20px;
     text-decoration: none;
     display: inline-block;
     transition: all 0.2s ease-in-out;

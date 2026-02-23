@@ -379,6 +379,9 @@ h3.post-title {
     line-height: 1.4;
     font-size: 125%;
 }
+.post-footer:not(:has(a)) {
+    display: none;
+}
 .post-labels {
   color: var(--teal);
 }
