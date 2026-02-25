@@ -23,7 +23,7 @@ func main() {
 	fmt.Printf("%3d(%10b)\n", 0xf^aa, 0xf^aa)
 
 	bb := 5 // 0101
-	// singed 형이라면 위 설명대로 -1 ^ bb 가 된다.
+	// signed 형이라면 위 설명대로 -1 ^ bb 가 된다.
 	fmt.Printf("%3d(%10b)\n", ^bb, ^bb)
 
 	// 양수 -> 음수, MSB(Most Significant Bit) 는 음수가 된다.

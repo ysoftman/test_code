@@ -163,7 +163,7 @@ func queryData(w http.ResponseWriter, r *http.Request) error {
 	resp, err := json.Marshal(results)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("error, failed to marsahl json"))
+		w.Write([]byte("error, failed to marshal json"))
 		return errors.New("error")
 	}
 

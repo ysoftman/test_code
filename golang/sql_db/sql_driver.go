@@ -48,7 +48,7 @@ func DoSqlDriver() {
 	fmt.Println(result.LastInsertId())
 	fmt.Println(result.RowsAffected())
 
-	// 컬럼명이 order 등과 같은 mysql 에약어인 경우가 있을 수 있어 ``(grave) 로 묶어주는게 좋다.
+	// 컬럼명이 order 등과 같은 mysql 예약어인 경우가 있을 수 있어 ``(grave) 로 묶어주는게 좋다.
 	result, err = db.Exec("insert into test_info(`age`, `name`, `last_date`, `enable`) values(?,?,now(),?)", 20, "ysoftman", 0)
 	if err != nil {
 		fmt.Println("insert error!")
@@ -57,7 +57,7 @@ func DoSqlDriver() {
 	fmt.Println(result.LastInsertId())
 	fmt.Println(result.RowsAffected())
 
-	// prepare 로 sql 처리 하고 살행하면 좀더 빠르게 처리할 수 있다.
+	// prepare 로 sql 처리 하고 실행하면 좀더 빠르게 처리할 수 있다.
 	q := fmt.Sprintf("insert into test_info(`age`, `name`, `last_date`) values('%d','%s',now())", 20, "윤병훈")
 	fmt.Println(q)
 	stmt, err := db.Prepare(q)

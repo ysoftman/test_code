@@ -13,7 +13,7 @@ type week int
 // 	Sunday   week = 1
 // 	Monday        = 2
 // 	Tuesday       = 3
-// 	Wednesda      = 4
+// 	Wednesday     = 4
 // 	Thursday      = 5
 // 	Friday        = 6
 // 	Saturday      = 7
@@ -27,7 +27,7 @@ const (
 
 	Monday
 	Tuesday
-	Wednesda
+	Wednesday
 	Thursday
 	Friday
 	Saturday
@@ -39,7 +39,7 @@ const (
 	// left shift 연산으로 증가하도록
 	apple fruit = 1 << iota
 	lemon
-	fineapple
+	pineapple
 	banana
 	mango
 	strawberry
@@ -58,7 +58,7 @@ func main() {
 	printday(Sunday)
 	printday(Monday)
 	printday(Tuesday)
-	printday(Wednesda)
+	printday(Wednesday)
 	printday(Thursday)
 	printday(Friday)
 	printday(Saturday)
@@ -69,7 +69,7 @@ func main() {
 	fmt.Println("[fruit]")
 	printfruit(apple)
 	printfruit(lemon)
-	printfruit(fineapple)
+	printfruit(pineapple)
 	printfruit(banana)
 	printfruit(mango)
 	printfruit(strawberry)

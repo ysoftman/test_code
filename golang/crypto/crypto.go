@@ -29,7 +29,7 @@ func encryptAESCTR(key, iv, plaintext string) string {
 }
 
 // decryptAESCTR aes ctr 복호화
-// CTR : blocker counter mode, cipher block size 와 iv 길이는 같아야 한다.
+// CTR : block counter mode, cipher block size 와 iv 길이는 같아야 한다.
 func decryptAESCTR(key, iv, encryptedtext string) string {
 	byteKey := []byte(key)
 	byteIV := []byte(iv)

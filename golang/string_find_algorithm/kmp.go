@@ -45,7 +45,7 @@ func kmp(s, w string) (indexes []int, results []string) {
 func failFunction(w string) (failp []int) {
 	wl := len(w)
 	failp = make([]int, wl, wl)
-	// word 의 부분 문자열 마다 preifx == suffix 을때 가장 긴 길이
+	// word 의 부분 문자열 마다 prefix == suffix 일때 가장 긴 길이
 	// ex) abcabc 의 부분문자열의 각 prefix == suffix 최대 길이
 	// a -> 0
 	// ab -> 0

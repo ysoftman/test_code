@@ -26,12 +26,12 @@ func main() {
 	fmt.Println("c=", *c)
 	fmt.Println("d=", *d)
 
-	getfalg()
+	getFlag()
 }
 
-func getfalg() {
-	fmt.Println("getlfag a:", flag.Lookup("a").Value.String())
-	fmt.Println("getlfag b:", flag.Lookup("b").Value.String())
-	fmt.Println("getlfag c:", flag.Lookup("c").Value.String())
-	fmt.Println("getlfag d:", flag.Lookup("d").Value.String())
+func getFlag() {
+	fmt.Println("getFlag a:", flag.Lookup("a").Value.String())
+	fmt.Println("getFlag b:", flag.Lookup("b").Value.String())
+	fmt.Println("getFlag c:", flag.Lookup("c").Value.String())
+	fmt.Println("getFlag d:", flag.Lookup("d").Value.String())
 }

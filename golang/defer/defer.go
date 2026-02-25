@@ -38,5 +38,5 @@ func aaa() (result string) {
 		result = "lemon"
 	}()
 	// apple 리턴 후 result = "lemon" 이 수행되 최종적으로 lemon 이 리턴된다.
-	return "appple"
+	return "apple"
 }

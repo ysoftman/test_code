@@ -6,7 +6,7 @@ func main() {
 	aaa1 := []int{99, 100}
 	fmt.Printf("aaa1(%p) cap(aaa1)%v : %v\n", &aaa1, cap(aaa1), aaa1)
 
-	modifySliceVale(aaa1)
+	modifySliceValue(aaa1)
 	// reference 으로 넘긴 slice 파라메터가 메모리 공간의 변화가 없다면 aaa1 의 메모리를 공유한다.
 	fmt.Printf("aaa1(%p) cap(aaa1)%v : %v\n", &aaa1, cap(aaa1), aaa1)
 
@@ -32,7 +32,7 @@ func funcCallByValue4(slice []int) {
 
 // slice : (default) call by reference
 // slice 파라메터는 구조체(포인터,len,cap)값을 받는다.
-func modifySliceVale(s []int) {
+func modifySliceValue(s []int) {
 	if len(s) >= 1 {
 		// s 의 크기가 변경되지 않으면 파라메터 s 는 caller 의 메모리 공간을 그대로 사용(공유)한다.
 		s[0] = 20

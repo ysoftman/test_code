@@ -84,10 +84,10 @@ func startClientReq(jobNum int) {
 			panic(err.Error())
 		}
 		reqCnt++
-		var bodybtyes []byte
-		bodybtyes, err = io.ReadAll(resp.Body)
+		var bodyBytes []byte
+		bodyBytes, err = io.ReadAll(resp.Body)
 		if err == nil {
-			fmt.Println("Client (", jobNum, "-", reqCnt, ")", string(bodybtyes))
+			fmt.Println("Client (", jobNum, "-", reqCnt, ")", string(bodyBytes))
 		}
 		// resp.Body 는 다음 http 연결(소켓)에 재사용되기 때문에 devNull 로 만들어야 한다.
 		io.Copy(io.Discard, resp.Body)
@@ -105,10 +105,10 @@ func startCustomClientReq(jobNum int) {
 			panic(err.Error())
 		}
 		reqCnt++
-		var bodybtyes []byte
-		bodybtyes, err = io.ReadAll(resp.Body)
+		var bodyBytes []byte
+		bodyBytes, err = io.ReadAll(resp.Body)
 		if err == nil {
-			fmt.Println("Client (", jobNum, "-", reqCnt, ")", string(bodybtyes))
+			fmt.Println("Client (", jobNum, "-", reqCnt, ")", string(bodyBytes))
 		}
 		// resp.Body 는 다음 http 연결(소켓)에 재사용되기 때문에 devNull 로 만들어야 한다.
 		io.Copy(io.Discard, resp.Body)

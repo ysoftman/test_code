@@ -14,7 +14,7 @@ import (
 // gVal1 := 1
 var gVal1 int = 10
 
-// 함수 밖에서는 선어 후에 = 를 사용할 수 없다.
+// 함수 밖에서는 선언 후에 = 를 사용할 수 없다.
 // non-declaration statement outside function body
 // gVal1 = 0
 

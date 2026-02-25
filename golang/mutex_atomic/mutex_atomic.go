@@ -1,6 +1,6 @@
 // author : ysoftman
 // encoding : utf-8
-// title : mutext, atomic 테스트
+// title : mutex, atomic 테스트
 package main
 
 import (
@@ -51,7 +51,7 @@ func main() {
 	g_value = 0
 	g_atomic_value = 0
 	wg.Add(3)
-	// mutext 사용한 경우 g_value 순서 보장
+	// mutex 사용한 경우 g_value 순서 보장
 	go thread(&wg, 1, true)
 	go thread(&wg, 2, true)
 	go thread(&wg, 3, true)

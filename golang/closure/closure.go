@@ -16,7 +16,7 @@ func count() func() int {
 func main() {
 	fmt.Println("Closure test")
 
-	// count() 호출해서 클로저 함수 인스터를 caller 에 할당
+	// count() 호출해서 클로저 함수 인스턴스를 caller 에 할당
 	caller := count()
 
 	for i := 0; i < 10; i++ {

@@ -6,7 +6,7 @@ package main
 import "fmt"
 
 func main() {
-	fruits := [...]string{"apple", "fineapple", "banana", "mango", "lemon"}
+	fruits := [...]string{"apple", "pineapple", "banana", "mango", "lemon"}
 	// 배열, 슬라이스 출력시 대괄호와 공백이 들어간다.
 	fmt.Println(fruits)
 	fmt.Println(fruits[1:2])

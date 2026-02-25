@@ -23,7 +23,7 @@ func WordCount(s string) map[string]int {
 }
 
 func main() {
-	mapData := WordCount("apple fineapple cheese milk yogurt orange apple cheese")
+	mapData := WordCount("apple pineapple cheese milk yogurt orange apple cheese")
 
 	for key, value := range mapData {
 		fmt.Println("mapData[", key, "] = ", value)

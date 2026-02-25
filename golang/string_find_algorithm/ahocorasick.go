@@ -100,14 +100,14 @@ func makeTrie(words []string) *Node {
 	lst.PushBack(root)
 	for lst.Len() > 0 {
 		// 리스트의 처음(부모 노드)는 삭제한다.
-		// lst.Remove 는 해당 노드를 삭제하고 삭제된 노의 값을 리턴
+		// lst.Remove 는 해당 노드를 삭제하고 삭제된 노드의 값을 리턴
 		curnode := lst.Remove(lst.Front()).(*Node)
 		for _, child := range curnode.child {
 			// 자식 노드가 있으면 리스트로 추가
 			if child != nil {
 				lst.PushBack(child)
 			}
-			// 실패노드는 현재 노드보다 부모노들중 가장 긴 매칭 문자열을 가지는 노드여야 한다.
+			// 실패노드는 현재 노드보다 부모노드들중 가장 긴 매칭 문자열을 가지는 노드여야 한다.
 			// 현재 노드까지 매칭된 값으로 부모노드들중 실패노드가 될 수 있는 것을 찾는다.
 			for i := 1; i < len(child.accstr); i++ {
 				// 현재 노드까지의 스트링과 같은 노드를 찾으면 안되니, 첫 스트링부터 제외하고 찾아야 하다.(suffix 를 줄여가며)
@@ -141,7 +141,7 @@ func insertNode(root *Node, w string) {
 		if node.child == nil {
 			node.child = make(map[string]*Node)
 		}
-		// 현재 노드의 자식노들중 해당 문자가 없는 경우만 새로 추가(생성)
+		// 현재 노드의 자식노드들중 해당 문자가 없는 경우만 새로 추가(생성)
 		if node.child[string(w[i])] != nil {
 			// fmt.Println("exist-node", string(w[i]))
 			node = node.child[string(w[i])]
@@ -161,7 +161,7 @@ func insertNode(root *Node, w string) {
 			node = node.child[string(w[i])]
 		}
 	}
-	// words 입력이 끝났을때 마직 노드가 한 word(패턴)를 찾은 지점으로 표시해둔다.
+	// words 입력이 끝났을때 마지막 노드가 한 word(패턴)를 찾은 지점으로 표시해둔다.
 	node.find = true
 	node.out = node
 	fmt.Printf("setOutNode: %d, %s -> %p, %d, %s\n", node.depth, node.accstr, node.out, node.out.depth, node.out.accstr)

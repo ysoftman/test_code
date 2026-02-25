@@ -41,7 +41,7 @@ func main() {
 
 		// http (헤더, 바디) 대신 커스텀 데이터를 기록한다.
 		// 응답 데이터 쓰기 방법1 - buff Writer 에 쓰기
-		buff.WriteString("hijaking... aaa\n")
+		buff.WriteString("hijacking... aaa\n")
 		buff.Flush()
 		// 응답 데이터 쓰기 방법2
 		conn.Write([]byte("hijacking... bbbbb\n"))
