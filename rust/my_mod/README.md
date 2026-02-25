@@ -19,7 +19,7 @@ cargo test
 cargo build
 
 # library 라서 실행은 할 수 없다.
-# 하지만 my_mod 에는 main() 도 같이 만둘오 둬 빌드 할 수 있다.
+# 하지만 my_mod 에는 main() 도 같이 만들어 둬 빌드 할 수 있다.
 cargo run
 
 # my_mod/target/ 이 생성된다.

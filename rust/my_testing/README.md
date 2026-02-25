@@ -24,10 +24,10 @@ cargo test
 cargo test -- --test-threads=1
 
 # 기본적으로 테스트 라이브러리는 stdout 를 캡쳐하기 때문에,
-# cargo test 수행히 println!은 화면에 보이지 않는다.
+# cargo test 수행시 println!은 화면에 보이지 않는다.
 # 이를 보이기 위해선 --nocapture 옵션을 사용해야 한다.
 cargo test -- --nocapture
-# 하나의 쓰레드에서 테스트코드결과와 코드의stdout를 같이 츨력하려면
+# 하나의 쓰레드에서 테스트코드결과와 코드의stdout를 같이 출력하려면
 cargo test -- --nocapture --test-threads=1
 
 # 테스트할 함수 별도 지정할 수 있다.
@@ -42,7 +42,7 @@ cargo test -- --ignored
 cargo build
 
 # library 라서 실행은 할 수 없다.
-# 하지만 my_testing 에는 main() 도 같이 만둘오 둬 빌드 할 수 있다.
+# 하지만 my_testing 에는 main() 도 같이 만들어 둬 빌드 할 수 있다.
 cargo run
 
 # my_testing/target/ 이 생성된다.

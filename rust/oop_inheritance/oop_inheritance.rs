@@ -9,7 +9,7 @@ trait Draw {
 struct Screen {
     // Box<Draw> 타입의 components 벡터 정의
     // trait objects without an explicit `dyn` are deprecated
-    // trait 오브젝트 사용할때는 dyn 을 명사하지 않으면 경고가 발생한다.
+    // trait 오브젝트 사용할때는 dyn 을 명시하지 않으면 경고가 발생한다.
     pub components: Vec<Box<dyn Draw>>,
 }
 // 다음과 같이 제너릭을 이용하면 전부 Button 또는 전부 SelectBox 만 사용해야 한다.
@@ -31,7 +31,7 @@ struct Button {
     height: u32,
     label: String,
 }
-// Button 에서 사용할 Draw 트렛 내용 구현
+// Button 에서 사용할 Draw 트레잇 내용 구현
 impl Draw for Button {
     fn draw(&self) {
         println!("버튼 그리기 {} {} {}", self.width, self.height, self.label);
@@ -43,7 +43,7 @@ struct SelectBox {
     height: u32,
     options: Vec<String>,
 }
-// SelectBox 에서 사용할 Draw 트렛 내용 구현
+// SelectBox 에서 사용할 Draw 트레잇 내용 구현
 impl Draw for SelectBox {
     fn draw(&self) {
         println!(
