@@ -14,7 +14,7 @@ fi
 var1=1
 # -n : non-zero 값이 있는 경우
 if [ -n "${var1}" ]; then
-    echo "var1 is non-zone, var1 =" ${var1}
+    echo "var1 is non-zero, var1 =" ${var1}
 else
     echo "var1 is empty"
 fi

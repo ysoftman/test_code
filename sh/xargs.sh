@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# xargx -I 옵션로 인자 자리를 나타내는 표시를 설정할 수 있다.
+# xargs -I 옵션으로 인자 자리를 나타내는 표시를 설정할 수 있다.
 echo ccc | xargs -I{} echo {} "a" "b"
 echo ccc | xargs -I{} echo "a" {} "b"
 echo ccc | xargs echo "a" "b"

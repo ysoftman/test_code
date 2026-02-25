@@ -18,13 +18,13 @@ echo "current shell:" $(ps $(echo $$) | awk '{print $5}' | sed -n "2p")
 echo "\${SECONDS}:" ${SECONDS}
 # 디폴트 프롬프트
 echo "\${PS1}:" ${PS1}
-# continue 프롬프트, 커맨드라인에더 다음줄에 계속 입력할때 표시되는 프롬프트
+# continue 프롬프트, 커맨드라인에서 다음줄에 계속 입력할때 표시되는 프롬프트
 echo "\${PS2}:" ${PS2}
 # select 명령 수행시 선택입력을 위해 표시되는 프롬프트
 echo "\${PS3}:" ${PS3}
-# 이전 디랙토리 전체 경로 출력
+# 이전 디렉토리 전체 경로 출력
 echo "\${OLDPWD}:" ${OLDPWD}
-# 현재 디랙토리 전체 경로 출력(Print Working Directory)
+# 현재 디렉토리 전체 경로 출력(Print Working Directory)
 echo "\${PWD}:" ${PWD}
 # ${var#Pattern} 변수 앞에서부터 패턴과 매치되는 가장 짧은 부분 제거
 # ${var##Pattern} 변수 앞에서부터 패턴과 매치되는 가장 긴 부분 제거
@@ -39,7 +39,7 @@ echo "\${BASH_VERSION}:" ${BASH_VERSION}
 # 하드웨어 타입
 echo "\${HOSTTYPE}:" ${HOSTTYPE}
 echo "\${OSTYPE}:" ${OSTYPE}
-# 마지막 백그라운 job PID
+# 마지막 백그라운드 job PID
 echo "\$!:" $!
 # 이전 명령의 마지막 argument
 echo "\$_:" $_

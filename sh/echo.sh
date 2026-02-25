@@ -36,7 +36,7 @@ echo "banana"
 
 # stdout 확인
 # bash ./echo.sh 2> /dev/null
-echo "stout message"
+echo "stdout message"
 # stderr 확인
 # bash ./echo.sh > /dev/null
 # >&2: 출력 방향을 2번(=stderr)로 변경

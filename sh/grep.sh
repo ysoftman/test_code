@@ -6,9 +6,9 @@
 # -E : 확장 정규식 사용 or(|) 연산을 사용하기 위해
 # "ysoftman|bill" : ysoftman 또는 bill 문자열이 있는 경우
 # . : 시작할 디렉토리
-# 정규식 OR 연사자 |
+# 정규식 OR 연산자 |
 grep -rn --include="grep.txt" -E "name|yoon" .
-# 정규식 AND 연자사는 없어어 "pattern2.*pattern2" 로 찾는다.
+# 정규식 AND 연산자는 없어 "pattern2.*pattern2" 로 찾는다.
 grep -rn --include="grep.txt" -E "name.*yoon" .
 
 # tab 이 포함된 경우 다음과 같은 공백으로는 grep 되지 않는다.
@@ -26,19 +26,18 @@ ps -ef | grep -e "PID" -e "grep"
 # 현재 계정으로 실행중인 프로세스들에서 grep 빼고 보기
 ps | grep "" | grep -v "grep"
 
-# -i --ignore-care 대소문자 구별 없이 찾기
+# -i --ignore-case 대소문자 구별 없이 찾기
 echo 'fruite lemon apple' | grep -i "LEMON"
 
 # -m num, --max-count=num 개수만큼 매칭하고 reading 중지
 ls -1 | grep .sh -m 5 -n
 
-# easy or medium or hard 단어거 없는 파일명 파악
-# -i --ignore-care 대소문자 구별 없이 찾기
+# easy or medium or hard 단어가 없는 파일명 파악
+# -i --ignore-case 대소문자 구별 없이 찾기
 # -E easy|medium|hard : easy or medium or hard 가 있는 라인 찾기
 # -c : 찾은 라인 카운트
 # | grep ":0" : 앞서 찾은 파일:카운트 중 :0 인것만 파악
 grep -i -E "easy|medium|hard" *.go -c | grep :0
-
 
 # apple 이전 1줄 결과에 포함
 echo -e 'fruite\nlemon\napple\nbanana' | grep -i "apple" --color=never -B 1

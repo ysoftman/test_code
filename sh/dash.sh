@@ -2,11 +2,11 @@
 set -x
 
 # - (dash) 로 끝나면 - 이후에 옵션은 모두 무시되며
-# 파일명이나 아큐먼트로 취급한다.
+# 파일명이나 아규먼트로 취급한다.
 # echo 출력(/dev/stdout) 후 file 에서 - 는 /dev/stdin 으로 받는다.
 echo ysoftman | file -
 
-cat > dash_test.sh << EOF
+cat >dash_test.sh <<EOF
 #!/bin/bash
 echo test
 EOF

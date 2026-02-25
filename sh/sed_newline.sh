@@ -23,7 +23,6 @@ lemon_empty_line
 apple_empty_line
 " | sed '/^$/d'
 
-
 # delete newline
 # sed 's/\n//' 로 newline 을 제거할 수 없다.
 # sed ':a;N;$!ba;s/\n//g'\
@@ -44,7 +43,7 @@ file_colorls="${colorls_path##*/}"
 # echo $file_colorls
 if [[ $file_colorls == "colorls" ]]; then
     # colorls *.txt 출력은 newline 중복(\n\n)된다.
-    # sed 로 두번재 newline(\n 있고 아무것도 없는 줄) 지우기
+    # sed 로 두번째 newline(\n 있고 아무것도 없는 줄) 지우기
     echo "remove \n\n using sed '/^$/d'"
     colorls *.txt | sed -e '/^$/d'
     echo "remove \n\n using tr -s '\n'"

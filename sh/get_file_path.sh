@@ -21,7 +21,7 @@ echo onlydir=${onlydir}
 onlydir2=$(realpath ../)
 echo onlydir2=${onlydir2}
 
-# if exist symbloic link file, delete
+# if exist symbolic link file, delete
 if [ -h $0.link ]; then
     echo "exist link file $0.link"
     unlink $0.link

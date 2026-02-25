@@ -1,5 +1,5 @@
 #!/bin/bash
-# tild expansion 테스트
+# tilde expansion 테스트
 # 참고 http://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html
 
 # ~ 는 $HOME 과 같다.
@@ -9,8 +9,6 @@ echo ~
 # ~+  는 $PWD 와 같다.
 echo $PWD
 echo ~+
-
-
 
 testfile="~/aaa.txt"
 echo ${testfile}

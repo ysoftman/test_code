@@ -2,7 +2,7 @@
 #/bin/bash -> GNU bash, version 3.2.57(1) 오랜된 버전이라 ${var^} 등의 expansion 이 동작하지 않는다.
 
 # ysoftman
-# brace expansiot
+# brace expansion
 
 is_zsh() {
     shell_name=$(ps -o command -p "$$")

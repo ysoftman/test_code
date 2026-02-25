@@ -1,7 +1,7 @@
 #!/bin/sh
 # ysoftman
 # 모든파일(a), 심볼릭링크도(h), 자세히리스팅(l), 보기
-ls -ahl 
+ls -ahl
 
 # 파일 이름만 보기
 ls -1
@@ -25,5 +25,5 @@ ls --full-time
 # 년도까지 보기(mac)
 ls -T
 
-# 하위디렉토기까지 보기(Recursive)
+# 하위디렉토리까지 보기(Recursive)
 ls -R

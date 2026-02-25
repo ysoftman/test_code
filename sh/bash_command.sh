@@ -2,7 +2,7 @@
 # bash test
 
 # -- 이후로는 bash arguments 로 취급하지 않는다.(bash option 끝을 나타낸다.)
-bash -c -- "echo ysofmtan"
+bash -c -- "echo ysoftman"
 
 # bash 는 기본적으로 스크립트 파일(.sh)을 새 bash 프로세스에서 실행한다.
 # -c 옵션을 주면 뒤에 스트링을 명령으로 취급해 실행할 수 있다.
@@ -15,7 +15,6 @@ bash -c "echo ysoftman; alias"
 # .bashrc 실행해서 alias 설정된게 있다.
 bash -ic "echo ysoftman; alias"
 
-
 # -s 옵션을 주면 stdin 으로 입력 받을 수 있다.
 # bash < bash_args.sh lemon 123
-bash -s < bash_args.sh lemon 123
+bash -s lemon 123 <bash_args.sh

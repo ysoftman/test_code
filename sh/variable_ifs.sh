@@ -7,7 +7,7 @@ set -e
 echo "\${IFS}:" ${IFS} "(space)"
 # 20: space
 # 09: tab
-# 0a: newlin
+# 0a: newline
 echo -n "$IFS" | xxd
 if [[ "$IFS" == $' \t\n' ]]; then
     echo ok

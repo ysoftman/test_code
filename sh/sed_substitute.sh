@@ -17,7 +17,7 @@ echo "ysoftman @open (12345) /abc/def/ggg" | sed -e "s/abc/aaa/" -e "s/def/bbb/"
 # 공백@ 뒤로 삭제
 echo "ysoftman @open (12345)" | sed "s/ @.*$//"
 
-# 컬문자의 경우
+# 컬러문자의 경우
 reset_color='\033[0m'
 green='\033[0;32m'
 # 공백이 아닌 컬러 문자가 포함되어 공백 뒤 삭제가 안된다.

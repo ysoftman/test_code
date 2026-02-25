@@ -9,7 +9,7 @@ function aaa() {
     echo '$*:' "$*"
     printf "$*\n"
 
-    # lint error) argument mixes string and arrayu
+    # lint error) argument mixes string and array
     # echo "echo-arguments: $@"
     echo "echo-arguments: $*"
     # printf 로 arguments 배열를 출력하면 각 원소 마다 printf format 으로 출력 된다.
