@@ -5,7 +5,14 @@
 # arr=(1,23,4,"a")
 # echo $arr
 
-# 원소 구분은 공백으로 한다.
+# 원소 구분은 스페이스, 탭, 줄발꿈 으로 한다.
+arr_sample=(1 23 4 "a")
+echo "${arr_sample[@]}"
+arr_sample=(1
+    23
+    4
+    "a")
+echo "${arr_sample[@]}"
 arr=(1 23 4 "a")
 echo "${arr}" # arr 로 접근하면 첫번째 원소값만 보인다.
 echo "----- arr[0] ~ arr[4]"
