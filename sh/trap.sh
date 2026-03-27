@@ -48,6 +48,6 @@ trap "echo SIGQUIT; exit 0" SIGQUIT # ctrl+\
 trap -p
 
 for (( ; ; )); do
-	echo "trap testing, press ctlr+c or ctrl+\\"
-	sleep 1
+    echo "trap testing, press ctlr+c or ctrl+\\"
+    sleep 1
 done

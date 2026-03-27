@@ -23,9 +23,9 @@ jjj line11' >${TEMP_FILE}
 # 원본 백업 파일을 생성하지 않고 대상 파일을 변경한다.
 echo 'replace ysoftman to bill in '${TEMP_FILE}
 if [[ $(uname -s) =~ ^Darwin.* ]]; then
-	sed -i '' -e 's/ysoftman/bill/g' ${TEMP_FILE}
+    sed -i '' -e 's/ysoftman/bill/g' ${TEMP_FILE}
 elif [[ $(uname -s) =~ ^Linux.* ]]; then
-	sed -i -e 's/ysoftman/bill/g' ${TEMP_FILE}
+    sed -i -e 's/ysoftman/bill/g' ${TEMP_FILE}
 fi
 cat ${TEMP_FILE}
 

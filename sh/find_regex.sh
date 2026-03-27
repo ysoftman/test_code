@@ -5,7 +5,7 @@
 # bsd(OSX)
 # -E 를 find 뒤에 명시해야 한다.
 if [ $(uname | tr '[:upper:]' '[:lower:]') == 'darwin' ]; then
-	find -E . -regex ".*.md$|.*.sh$"
+    find -E . -regex ".*.md$|.*.sh$"
 fi
 
 # linux
@@ -24,5 +24,5 @@ fi
 # posix-minimal-basic
 # sed
 if [ $(uname | tr '[:upper:]' '[:lower:]') == 'linux' ]; then
-	find . -regextype awk ".*.md$|.*.sh$"
+    find . -regextype awk ".*.md$|.*.sh$"
 fi

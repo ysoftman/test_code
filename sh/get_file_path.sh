@@ -2,13 +2,13 @@
 # get this file fullpath
 fullpath=''
 if [ "$(uname)" == 'Darwin' ]; then
-	# fullpath=${PWD}
-	fullpath=$(
-		cd "$(dirname $0)" || exit
-		pwd
-	)
+    # fullpath=${PWD}
+    fullpath=$(
+        cd "$(dirname $0)" || exit
+        pwd
+    )
 elif [ "$(uname)" == 'Linux' ]; then
-	fullpath=$(readlink -f $0)
+    fullpath=$(readlink -f $0)
 fi
 echo fullpath=${fullpath}
 
@@ -23,8 +23,8 @@ echo onlydir2=${onlydir2}
 
 # if exist symbolic link file, delete
 if [ -h $0.link ]; then
-	echo "exist link file $0.link"
-	unlink $0.link
+    echo "exist link file $0.link"
+    unlink $0.link
 fi
 ln -s $0 $0.link
 

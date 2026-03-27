@@ -42,11 +42,11 @@ colorls_path=$(which colorls)
 file_colorls="${colorls_path##*/}"
 # echo $file_colorls
 if [[ $file_colorls == "colorls" ]]; then
-	# colorls *.txt 출력은 newline 중복(\n\n)된다.
-	# sed 로 두번째 newline(\n 있고 아무것도 없는 줄) 지우기
-	echo "remove \n\n using sed '/^$/d'"
-	colorls *.txt | sed -e '/^$/d'
-	echo "remove \n\n using tr -s '\n'"
-	# 또는 tr -s (Squeeze)옵션으로 중복되는 문자를 하나로 줄인다.
-	colorls *.txt | tr -s '\n'
+    # colorls *.txt 출력은 newline 중복(\n\n)된다.
+    # sed 로 두번째 newline(\n 있고 아무것도 없는 줄) 지우기
+    echo "remove \n\n using sed '/^$/d'"
+    colorls *.txt | sed -e '/^$/d'
+    echo "remove \n\n using tr -s '\n'"
+    # 또는 tr -s (Squeeze)옵션으로 중복되는 문자를 하나로 줄인다.
+    colorls *.txt | tr -s '\n'
 fi

@@ -26,7 +26,7 @@ tom 5555
 # 파싱시 기본 구분자는 공백
 echo 'parse text_file_sample'
 while read -r a b c; do
-	echo $a $b $c
+    echo $a $b $c
 done <text_file_sample
 
 # 텍스트 파일 삭제

@@ -14,7 +14,7 @@ echo "sleep 2 && sleep 1 elapsed time" >time_command.log
 
 # 명령에러(aaaaa) stderr 출력 및 파일에도 기록된다.
 (time (
-	sleep 2
-	aaaaa
-	sleep 1
+    sleep 2
+    aaaaa
+    sleep 1
 )) 2> >(tee -a time_command.log)

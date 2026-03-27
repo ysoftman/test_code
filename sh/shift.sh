@@ -5,7 +5,7 @@ echo "argc: $#"
 echo "args: $@"
 
 while [[ $# -gt 0 ]]; do
-	echo $1
-	# 입력 받은 인자를 왼쪽으로 n 만큼 이동시킨다.
-	shift 1
+    echo $1
+    # 입력 받은 인자를 왼쪽으로 n 만큼 이동시킨다.
+    shift 1
 done

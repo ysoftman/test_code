@@ -21,6 +21,6 @@ mem_usage=$(free | grep -i mem | awk '{print (($2-$7)/$2)*100}')%
 # free memory  = (total - used + buffer + cache)
 # memory utilized = ((total-free)/total*100)
 if [[ $(free | grep -i 'buff/cache') == "" ]]; then
-	mem_usage=$(free | grep -i mem | awk '{print (($2-($2-$3+$6+$7))/$2)*100}')%
+    mem_usage=$(free | grep -i mem | awk '{print (($2-($2-$3+$6+$7))/$2)*100}')%
 fi
 echo -e "${cpu_usage}\t${mem_usage}"

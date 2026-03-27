@@ -4,9 +4,9 @@
 
 # openssl 설치
 if [ $(uname) == 'Darwin' ]; then
-	brew install openssl
-	export PATH="/usr/local/opt/openssl/bin:$PATH"
-	source ~/.zshrc
+    brew install openssl
+    export PATH="/usr/local/opt/openssl/bin:$PATH"
+    source ~/.zshrc
 fi
 # openssl 버전 확인()
 openssl version

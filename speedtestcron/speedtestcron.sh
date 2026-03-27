@@ -17,7 +17,7 @@ PATH=$PATH:/usr/local/bin
 # speedtest-cli 설치
 speedtestpath=$(which speedtest)
 if [[ ${speedtestpath##*/} != 'speedtest' ]]; then
-	pip install speedtest-cli
+    pip install speedtest-cli
 fi
 
 outfile="$HOME/speedtestcron.out"

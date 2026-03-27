@@ -5,11 +5,11 @@ httpd_version="2.4.38"
 dest_dir="/home/ysoftman"
 yum --version
 if [ $? == 0 ]; then
-	package_program="yum -y"
-	packages="expat-devel pcre-devel zlib-devel libxml2-devel openldap-devel openssl-devel"
+    package_program="yum -y"
+    packages="expat-devel pcre-devel zlib-devel libxml2-devel openldap-devel openssl-devel"
 else
-	package_program="apt-get -y --fix-missing"
-	packages="libexpat-dev libpcre3 libz-dev libxml2-dev libldap2-dev libssl-dev"
+    package_program="apt-get -y --fix-missing"
+    packages="libexpat-dev libpcre3 libz-dev libxml2-dev libldap2-dev libssl-dev"
 fi
 echo "package_program ${package_program}"
 

@@ -1,9 +1,9 @@
 # nginx
 if [ ! -e nginx-1.14.0.tar.gz ]; then
-	wget https://nginx.org/download/nginx-1.14.0.tar.gz
+    wget https://nginx.org/download/nginx-1.14.0.tar.gz
 fi
 if [ ! -d nginx-1.14.0 ]; then
-	tar zxvf nginx-1.14.0.tar.gz
+    tar zxvf nginx-1.14.0.tar.gz
 fi
 
 # nginx 모듈은 다음 2개의 파일로 구성된다.
@@ -15,8 +15,8 @@ fi
 # 동적라이브러리르 사용한다면 --add-dynamic-module 옵션 사용
 cd nginx-1.14.0
 ./configure --add-module=$(
-	cd ..
-	pwd
+    cd ..
+    pwd
 )
 make -j8
 sudo make install
