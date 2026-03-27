@@ -5,9 +5,6 @@
 # this is commit message template
 # author: ysoftman
 #
-# 커밋 메시지는 다음 단어로 시작해 주세요.
-# upgrade|update|modify|fix|test|feature|add|refact|rename|remove|delete
-#
 # 참고로 gitmoji 툴로 커밋을 작성하면 편합니다.
 # 설치
 # brew install gitmoji
