@@ -39,16 +39,15 @@ trap -l
 # 30    SIGUSR1          terminate process    User defined signal 1
 # 31    SIGUSR2          terminate process    User defined signal 2
 
-
 # signal 발생시 수행할 동작
 trap "echo SIGHUP" SIGHUP
-trap "echo SIGINT; exit 2" SIGINT # ctrl+c
+trap "echo SIGINT; exit 2" SIGINT   # ctrl+c
 trap "echo SIGQUIT; exit 0" SIGQUIT # ctrl+\
 
 # 현재 설정된 trap 보기
 trap -p
 
-for ((;;)) do
-    echo "trap testing, press ctlr+c or ctrl+\\"
-    sleep 1;
+for (( ; ; )); do
+	echo "trap testing, press ctlr+c or ctrl+\\"
+	sleep 1
 done

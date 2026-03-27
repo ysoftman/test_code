@@ -14,7 +14,6 @@ echo ""
 echo "user->$user"
 echo "password->$password"
 
-
 # 터미널에서 자동 입력 방법1
 # echo 'ysoftman' | bash ./read_password_test.sh
 

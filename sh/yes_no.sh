@@ -14,7 +14,7 @@ answer=$(echo ${answer} | tr '[:upper:]' '[:lower:]')
 # echo ${answer}
 
 if [[ ${answer} == 'y' ]]; then
-    echo 'Yes'
+	echo 'Yes'
 else
-    echo 'No'
+	echo 'No'
 fi

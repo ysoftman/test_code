@@ -29,7 +29,7 @@ cluster=""
 # hwatch -n 1 "curl http://${prometheus_host}/-/ready"
 
 queries=$(
-    cat <<zzz
+	cat <<zzz
 sum(rate(container_cpu_usage_seconds_total{namespace=~"$namespace", container!=""}[5m])) / sum(kube_pod_container_resource_limits{namespace=~"$namespace", resource="cpu"})
 sum(container_memory_working_set_bytes{namespace=~"$namespace", container!=""}) / sum(kube_pod_container_resource_limits{namespace=~"$namespace", resource="memory"})
 sum(container_memory_working_set_bytes{namespace=~"$namespace", container!=""}) by (pod)
@@ -60,12 +60,12 @@ zzz
 # 응답 ~2초걸리는 빠른 쿼리 더라도 여러번 날리면 응답이 느려지면서 /ready 응답이 10~20초까지 느려진다.
 IFS=$'\n'
 for ((i = 0; i < 10; i++)); do
-    for q in $queries; do
-        # 주석 스킵
-        [[ $q =~ ^# ]] && continue
-        # 공백 제거
-        # echo $q | sed "s/ //g"
-        # -g, --globoff 를 사용하면 {}[] 문자 인코딩 문제를 해결할 수 있다
-        curl -g http://${prometheus_host}/api/v1/query_range?query="${q// /}&start=2025-04-01T00:00:00Z&end=2025-04-17T00:00:00Z&step=1h" >/dev/null &
-    done
+	for q in $queries; do
+		# 주석 스킵
+		[[ $q =~ ^# ]] && continue
+		# 공백 제거
+		# echo $q | sed "s/ //g"
+		# -g, --globoff 를 사용하면 {}[] 문자 인코딩 문제를 해결할 수 있다
+		curl -g http://${prometheus_host}/api/v1/query_range?query="${q// /}&start=2025-04-01T00:00:00Z&end=2025-04-17T00:00:00Z&step=1h" >/dev/null &
+	done
 done

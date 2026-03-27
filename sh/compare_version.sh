@@ -9,7 +9,7 @@ echo 'version2='${version2}
 highest_version="$(printf "%s\n%s" ${version1} ${version2} | sort -r | head -n1)"
 echo 'highest_version='${highest_version}
 if [ "${highest_version}" == "${version1}" ]; then
-    echo "${version1} > ${version2}"
+	echo "${version1} > ${version2}"
 else
-    echo "${version1} < ${version2}"
+	echo "${version1} < ${version2}"
 fi

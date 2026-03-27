@@ -13,7 +13,7 @@
 
 # 다음과 같은 방법을 사용하자.
 # zzz 가 입력되기까지의 모든 문자를 연결해서 stdout 으로 보낸다.
-cat << "zzz"
+cat <<"zzz"
                   __ _
  _   _ ___  ___  / _| |_ _ __ ___   __ _ _ __
 | | | / __|/ _ \| |_| __| '_ ` _ \ / _` | '_ \
@@ -28,7 +28,7 @@ filename=${filename%%.sh}.out
 echo "outfilename : ${filename}"
 rm -rf ${filename}
 # ysoftman 파일로 입력
-cat > ${filename} << 'zzz'
+cat >${filename} <<'zzz'
 ysoftman input test
 zzz
 # _`', 등이 명령어로 처리되면서
@@ -37,7 +37,7 @@ zzz
 # cat >> ${filename} << zzz
 # 명령어 취급 에러를 처리하기 위해선 구분자를 quote 로 묶어 확장되는것을 막아야 한다.
 # 'zzz' 또는 "zzz"
-cat >> ${filename} << "zzz"
+cat >>${filename} <<"zzz"
                   __ _
  _   _ ___  ___  / _| |_ _ __ ___   __ _ _ __
 | | | / __|/ _ \| |_| __| '_ ` _ \ / _` | '_ \
@@ -46,10 +46,9 @@ cat >> ${filename} << "zzz"
  |___/
 zzz
 
-
 # $(dollar sign)을 살리기 위해선 구분자를 quote 로 묶어 확장되는것을 막아야 한다.
 # 'zzz' 또는 "zzz"
-cat >> ${filename} << 'zzz'
+cat >>${filename} <<'zzz'
 a="ysoftman"
 echo ${a}
 zzz

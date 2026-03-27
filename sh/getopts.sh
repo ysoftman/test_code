@@ -13,16 +13,16 @@
 # : 로 끝나면 arg값이 있는 경우 옵션이다.
 # getopts 는 short 옵션만 처리가능하다.
 while getopts "a:b:c" opt; do
-    case ${opt} in
-        a|c)
-            echo "a|c ${OPTIND} ${OPTARG}"
-            ;;
-        'b')
-            echo "b ${OPTIND} ${OPTARG}"
-            ;;
-        *)
-            echo "undefined option ${OPTIND} ${OPTARG}"
-            exit 1
-            ;;
-    esac
+	case ${opt} in
+	a | c)
+		echo "a|c ${OPTIND} ${OPTARG}"
+		;;
+	'b')
+		echo "b ${OPTIND} ${OPTARG}"
+		;;
+	*)
+		echo "undefined option ${OPTIND} ${OPTARG}"
+		exit 1
+		;;
+	esac
 done

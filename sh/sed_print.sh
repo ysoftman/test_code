@@ -30,4 +30,4 @@ echo -e 'print only line 3~5, 7~8'
 echo -e ${temp} | sed -n "3,5p;7,8p;"
 # ccc ~ ggg 패턴 사이의 내용 출력
 echo -e 'print only pattern ccc ~ ggg'
-echo -e ${temp} | sed  -n "/^ccc/,/^ggg/p;"
+echo -e ${temp} | sed -n "/^ccc/,/^ggg/p;"

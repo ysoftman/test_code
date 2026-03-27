@@ -30,7 +30,7 @@ echo "---echoysoftman2---"
 echoysoftman2
 
 # 해결방법 2
-# 또는 커맨드 하나당 한줄로해도 잘 동작한다. 
+# 또는 커맨드 하나당 한줄로해도 잘 동작한다.
 alias echoysoftman3='echo ysoftman1 &&
 echo ysoftman2 &&
 echo -e ysoftman3'

@@ -15,7 +15,6 @@ touch -a -d "10 min ago" $filename
 # modify 날짜만 변경
 touch -m -d "5 min ago" $filename
 
-
 # stat 메타 정보 파악
 stat $filename
 

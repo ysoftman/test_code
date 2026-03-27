@@ -40,4 +40,4 @@ echo "aaa
 bbb
 ccc
 ddd
-eee" |rg -i -v "bbb|ddd"
+eee" | rg -i -v "bbb|ddd"

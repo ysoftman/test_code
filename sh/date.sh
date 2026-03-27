@@ -11,14 +11,12 @@ date +%H:%M
 # 현재 unix (epoch) time seconds
 date +%s
 
-
 # [linux]
 # 특정 date -> unix time
 date -d "2014-02-15" +%s
 
 # 특정 unix time -> date
 date -d "@1392390000"
-
 
 # [mac]
 # 특정 date -> unix time

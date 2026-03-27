@@ -16,9 +16,9 @@ test -f "aaa.txt"
 echo $?
 
 # not
-test ! -f  "aaa.txt"
+test ! -f "aaa.txt"
 echo $?
 
 # -d directory does exist
-test -d  "aaa"
+test -d "aaa"
 echo $?

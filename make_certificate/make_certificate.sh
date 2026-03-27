@@ -4,9 +4,9 @@
 
 # openssl 설치
 if [ $(uname) == 'Darwin' ]; then
-    brew install openssl
-    export PATH="/usr/local/opt/openssl/bin:$PATH"
-    source ~/.zshrc
+	brew install openssl
+	export PATH="/usr/local/opt/openssl/bin:$PATH"
+	source ~/.zshrc
 fi
 # openssl 버전 확인()
 openssl version
@@ -52,7 +52,7 @@ organizationName_default        = ${CA_NAME}
 commonName                     = Common Name
 commonName_default             = ${CA_NAME} Self Signed CA
 commonName_max                 = 64 
-" > ./${CA_NAME}-rootca-openssl.conf
+" >./${CA_NAME}-rootca-openssl.conf
 
 # 2-2. 앞서 생성한 개인키와 설정파일을 이용하여 csr 생성
 openssl req -new -key ./${CA_NAME}-rootca.key -config ./${CA_NAME}-rootca-openssl.conf -out ./${CA_NAME}-rootca.csr
@@ -60,15 +60,14 @@ openssl req -new -key ./${CA_NAME}-rootca.key -config ./${CA_NAME}-rootca-openss
 # 3. crt 생성
 openssl x509 -req -days 3650 -extensions v3_ca -set_serial 1 -in ./${CA_NAME}-rootca.csr -signkey ./${CA_NAME}-rootca.key -out ./${CA_NAME}-rootca.crt -extfile ./${CA_NAME}-rootca-openssl.conf
 
-
 ##########
 # SSL 인증서 만들기
 # 1. SSL 서버에서 사용할 개인키
 openssl genrsa -aes256 -out ./${DOMAIN}.key 2048
 
 # 1-1. 웹서버 구동시 마다 암호 입력을 피하기 위해 암호 제거
-cp  ./${DOMAIN}.key ./${DOMAIN}.key.enc
-openssl rsa -in  ./${DOMAIN}.key.enc -out ./${DOMAIN}.key
+cp ./${DOMAIN}.key ./${DOMAIN}.key.enc
+openssl rsa -in ./${DOMAIN}.key.enc -out ./${DOMAIN}.key
 
 # 2. CSR(Certificate Signing Request, 인증기관에 인증서 발급을 요청하는 파일) 만들기
 # 2-1. csr 생성에 사용할 설정 파일 생성
@@ -109,10 +108,10 @@ organizationalUnitName_default  = Organizational Unit Name
 commonName                      = Common Name
 commonName_default              = ${DOMAIN}
 commonName_max                  = 64
-" > ./${DOMAIN}-host-openssl.conf
+" >./${DOMAIN}-host-openssl.conf
 
 # 2-2. 앞서 생성한 개인키와 설정파일을 이용하여 csr 생성
-openssl req -new  -key ./${DOMAIN}.key -out ./${DOMAIN}.csr -config ./${DOMAIN}-host-openssl.conf
+openssl req -new -key ./${DOMAIN}.key -out ./${DOMAIN}.csr -config ./${DOMAIN}-host-openssl.conf
 
 # 3. crt 생성
 openssl x509 -req -days 3650 -extensions v3_user -set_serial 1 -in ./${DOMAIN}.csr -signkey ./${DOMAIN}.key -out ./${DOMAIN}.crt -extfile ./${DOMAIN}-host-openssl.conf

@@ -2,8 +2,8 @@
 # 터미널 창 크기 변경에 따른 columns, lines 크기 파악하기
 
 function output {
-    clear
-    echo "cols: $(tput cols), lines: $(tput lines)"
+	clear
+	echo "cols: $(tput cols), lines: $(tput lines)"
 }
 
 # SIGWINCH Window size change
@@ -12,6 +12,6 @@ trap output WINCH
 
 output
 while true; do
-    sleep 0.1
-    continue
+	sleep 0.1
+	continue
 done

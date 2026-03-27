@@ -12,4 +12,3 @@ var1="ysoftman"
 var2="123"
 var3="${var1} ${var2}"
 echo "\${var3}:"${var3}
-

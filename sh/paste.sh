@@ -18,10 +18,10 @@ c" | paste -s -
 echo "======"
 echo "a
 b
-c" > paste_tmp1
+c" >paste_tmp1
 
 echo "lemon
-123" > paste_tmp2
+123" >paste_tmp2
 
 echo "======"
 # delimiter , 사용(디폴트 tab)

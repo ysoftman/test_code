@@ -2,7 +2,7 @@
 # declare(typeset 이름으로도 사용), 변수 타입(특성) 지정
 
 function aaa {
-    echo "aaa"
+	echo "aaa"
 }
 
 # 함수 실행
@@ -27,7 +27,7 @@ echo "var_readonly:" $var_readonly
 declare -i var_number
 var_number=123
 echo "var_number:" $var_number
-var_number="aaa"  # 정수값이 아니라 0 으로 취급한다.
+var_number="aaa" # 정수값이 아니라 0 으로 취급한다.
 echo "var_number:" $var_number
 
 # 변수를 배열 타입으로 선언

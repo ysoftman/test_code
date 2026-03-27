@@ -18,7 +18,6 @@ echo ${msg::-1}
 # trim 으로 사용하기 좋을 것 같다.
 echo ${msg:1:-1}
 
-
 echo ${msg}
 # 뒤에서 매치하는 부분(mon.")을 삭제
 echo ${msg%mon.\"}
