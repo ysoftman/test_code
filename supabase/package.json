@@ -1,0 +1,22 @@
+{
+  "name": "ysoftman-supabase",
+  "version": "1.0.0",
+  "author": "ysoftman",
+  "license": "MIT",
+  "dependencies": {
+    "@fontsource/press-start-2p": "^5.2.7",
+    "@supabase/supabase-js": "^2.49.0",
+    "nes.css": "^2.3.0",
+    "sass": "^1.97.2"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  },
+  "description": "ysoftman supabase",
+  "scripts": {
+    "build": "vite build",
+    "build:prod": "vite build",
+    "watch": "vite build --watch",
+    "serve": "vite"
+  }
+}
