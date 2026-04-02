@@ -502,6 +502,13 @@ h3.post-title {
     color: var(--dark-gray);
     font-size: 1.2em;
 }
+#page-info,
+#mobile-page-info {
+    display: inline-block;
+    padding: 8px 16px;
+    color: var(--dark-gray);
+    font-size: 1.2em;
+}
 
 .footer-outer {
     border-top: 0;
@@ -1106,9 +1113,7 @@ h1.post-title {
                                   </b:if>
                                 </div>
                                 <div class='mobile-link-button' id='blog-pager-home-link'>
-                                  <a class='blog-pager-home-link' expr:href='data:blog.homepageUrl'>
-                                    Home
-                                  </a>
+                                  <span id='mobile-page-info'/>
                                 </div>
                                 <div class='mobile-desktop-link'>
                                   <a class='blog-pager-home-link' expr:href='data:desktopLinkUrl'>
@@ -1230,9 +1235,7 @@ h1.post-title {
                                   </b:if>
                                 </div>
                                 <div class='blog-pager-home-link'>
-                                  <a expr:href='data:blog.homepageUrl'>
-                                    Home
-                                  </a>
+                                  <span id='page-info'/>
                                 </div>
                                 <div class='blog-pager-older-link'>
                                   <b:if cond='data:olderPageUrl'>
@@ -1716,6 +1719,128 @@ h1.post-title {
       window.setTimeout(function () {
       document.body.className = document.body.className.replace(&#39;loading&#39;,&#39;&#39;);
       }, 10);
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+      (function () {
+        var pageInfoEl = document.getElementById('page-info');
+        var mobilePageInfoEl = document.getElementById('mobile-page-info');
+        if (!pageInfoEl && !mobilePageInfoEl) return;
+
+        var CACHE_KEY = 'blogTotalPosts';
+        var CACHE_TTL = 3600000; // 1 hour
+        var SESSION_PAGE_KEY = 'blogPage';
+        var SESSION_CONTEXT_KEY = 'blogPageContext';
+
+        function isHomePage() {
+          var path = window.location.pathname;
+          return path === '/' || path === '/index.html';
+        }
+
+        function isLabelPage() {
+          return window.location.pathname.indexOf('/search/label/') !== -1;
+        }
+
+        function getPostsPerPage() {
+          var posts = document.querySelectorAll('.post.hentry');
+          return posts.length || 7;
+        }
+
+        function getPageContext() {
+          if (isLabelPage()) return 'label:' + window.location.pathname;
+          return 'index';
+        }
+
+        function updatePageInfo(totalPosts) {
+          var postsPerPage = getPostsPerPage();
+          var totalPages = Math.ceil(totalPosts / postsPerPage);
+          var currentContext = getPageContext();
+          var storedContext = sessionStorage.getItem(SESSION_CONTEXT_KEY);
+
+          // Reset counter on context change (e.g. label filter change)
+          if (storedContext !== currentContext) {
+            sessionStorage.removeItem(SESSION_PAGE_KEY);
+            sessionStorage.setItem(SESSION_CONTEXT_KEY, currentContext);
+          }
+
+          // Home page always page 1
+          if (isHomePage()) {
+            sessionStorage.setItem(SESSION_PAGE_KEY, '1');
+            sessionStorage.setItem(SESSION_CONTEXT_KEY, currentContext);
+          }
+
+          var pageNum = parseInt(sessionStorage.getItem(SESSION_PAGE_KEY), 10);
+          var text;
+          if (pageNum && pageNum > 0) {
+            text = 'Page ' + pageNum + ' / ' + totalPages + ' (' + totalPosts + ' posts)';
+          } else {
+            text = totalPosts + ' posts';
+          }
+
+          if (pageInfoEl) pageInfoEl.textContent = text;
+          if (mobilePageInfoEl) mobilePageInfoEl.textContent = text;
+        }
+
+        function attachPagerListeners() {
+          var newerLinks = document.querySelectorAll('.blog-pager-newer-link a');
+          var olderLinks = document.querySelectorAll('.blog-pager-older-link a');
+
+          for (var i = 0; i < newerLinks.length; i++) {
+            newerLinks[i].addEventListener('click', function () {
+              var cur = parseInt(sessionStorage.getItem(SESSION_PAGE_KEY), 10) || 1;
+              if (cur > 1) sessionStorage.setItem(SESSION_PAGE_KEY, String(cur - 1));
+            });
+          }
+          for (var i = 0; i < olderLinks.length; i++) {
+            olderLinks[i].addEventListener('click', function () {
+              var cur = parseInt(sessionStorage.getItem(SESSION_PAGE_KEY), 10) || 1;
+              sessionStorage.setItem(SESSION_PAGE_KEY, String(cur + 1));
+            });
+          }
+
+          // Home link resets to page 1
+          var homeLinks = document.querySelectorAll('.blog-pager-home-link a');
+          for (var i = 0; i < homeLinks.length; i++) {
+            homeLinks[i].addEventListener('click', function () {
+              sessionStorage.setItem(SESSION_PAGE_KEY, '1');
+              sessionStorage.setItem(SESSION_CONTEXT_KEY, 'index');
+            });
+          }
+        }
+
+        function fetchTotalPosts() {
+          // Check localStorage cache
+          try {
+            var cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+              var parsed = JSON.parse(cached);
+              if (Date.now() - parsed.time < CACHE_TTL) {
+                updatePageInfo(parsed.total);
+                attachPagerListeners();
+                return;
+              }
+            }
+          } catch (e) {}
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/feeds/posts/summary?alt=json&max-results=0', true);
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              try {
+                var data = JSON.parse(xhr.responseText);
+                var total = parseInt(data.feed.openSearch$totalResults.$t, 10);
+                localStorage.setItem(CACHE_KEY, JSON.stringify({ total: total, time: Date.now() }));
+                updatePageInfo(total);
+                attachPagerListeners();
+              } catch (e) {}
+            }
+          };
+          xhr.send();
+        }
+
+        fetchTotalPosts();
+      })();
+      //]]>
     </script>
   </body>
   <macro:includable id='sections' var='col'>
