@@ -491,9 +491,9 @@ h3.post-title {
     background-color: var(--green);
     color: var(--black);
 }
-.blog-pager-newer-link,
-.blog-pager-home-link,
-.blog-pager-older-link {
+.blog-pager-prev,
+.blog-pager-info,
+.blog-pager-next {
     text-align: center;
 }
 .blog-pager-disabled {
@@ -504,8 +504,8 @@ h3.post-title {
     color: var(--dark-gray);
     font-size: 1.2em;
 }
-#page-info,
-#mobile-page-info {
+#pager-info,
+#mobile-pager-info {
     display: inline-block;
     padding: 8px 16px;
     color: var(--dark-gray);
@@ -642,13 +642,10 @@ h1.post-title {
         font-size: 0.85em;
     }
     .blog-pager-disabled,
-    #page-info,
-    #mobile-page-info {
+    #pager-info,
+    #mobile-pager-info {
         padding: 6px 12px;
         font-size: 0.85em;
-    }
-    .pager-line {
-        display: block;
     }
     .post-outer {
         padding: 8px;
@@ -702,8 +699,8 @@ h1.post-title {
         padding: 5px 10px;
         font-size: 0.8em;
     }
-    .blog-pager-newer-link div,
-    .blog-pager-older-link div {
+    .blog-pager-prev div,
+    .blog-pager-next div {
         padding: 5px 10px;
         font-size: 0.8em;
     }
@@ -1107,33 +1104,33 @@ h1.post-title {
                             </b:includable>
                             <b:includable id='mobile-nextprev'>
                               <div class='blog-pager' id='blog-pager'>
-                                <div class='mobile-link-button' id='blog-pager-newer-link'>
+                                <div class='mobile-link-button' id='blog-pager-prev'>
                                   <b:if cond='data:newerPageUrl'>
-                                    <a class='blog-pager-newer-link' expr:href='data:newerPageUrl'>
-                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
+                                    <a class='blog-pager-prev' expr:href='data:newerPageUrl'>
+                                      Prev
                                     </a>
                                     <b:else/>
                                     <div class='blog-pager-disabled'>
-                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
+                                      Prev
                                     </div>
                                   </b:if>
                                 </div>
-                                <div class='mobile-link-button' id='blog-pager-home-link'>
-                                  <span id='mobile-page-info'/>
+                                <div class='mobile-link-button' id='blog-pager-info'>
+                                  <span id='mobile-pager-info'/>
                                 </div>
                                 <div class='mobile-desktop-link'>
-                                  <a class='blog-pager-home-link' expr:href='data:desktopLinkUrl'>
+                                  <a class='blog-pager-info' expr:href='data:desktopLinkUrl'>
                                     Desktop
                                   </a>
                                 </div>
-                                <div class='mobile-link-button' id='blog-pager-older-link'>
+                                <div class='mobile-link-button' id='blog-pager-next'>
                                   <b:if cond='data:olderPageUrl'>
-                                    <a class='blog-pager-older-link' expr:href='data:olderPageUrl'>
-                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
+                                    <a class='blog-pager-next' expr:href='data:olderPageUrl'>
+                                      Next
                                     </a>
                                     <b:else/>
                                     <div class='blog-pager-disabled'>
-                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
+                                      Next
                                     </div>
                                   </b:if>
                                 </div>
@@ -1229,28 +1226,28 @@ h1.post-title {
                             </b:includable>
                             <b:includable id='nextprev'>
                               <div class='blog-pager' id='blog-pager'>
-                                <div class='blog-pager-newer-link'>
+                                <div class='blog-pager-prev'>
                                   <b:if cond='data:newerPageUrl'>
                                     <a expr:href='data:newerPageUrl'>
-                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
+                                      Prev
                                     </a>
                                     <b:else/>
                                     <div class='blog-pager-disabled'>
-                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
+                                      Prev
                                     </div>
                                   </b:if>
                                 </div>
-                                <div class='blog-pager-home-link'>
-                                  <span id='page-info'/>
+                                <div class='blog-pager-info'>
+                                  <span id='pager-info'/>
                                 </div>
-                                <div class='blog-pager-older-link'>
+                                <div class='blog-pager-next'>
                                   <b:if cond='data:olderPageUrl'>
                                     <a expr:href='data:olderPageUrl'>
-                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
+                                      Next
                                     </a>
                                     <b:else/>
                                     <div class='blog-pager-disabled'>
-                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
+                                      Next
                                     </div>
                                   </b:if>
                                 </div>
@@ -1729,13 +1726,13 @@ h1.post-title {
     <script type='text/javascript'>
       //<![CDATA[
       (function () {
-        var pageInfoEl = document.getElementById('page-info');
-        var mobilePageInfoEl = document.getElementById('mobile-page-info');
-        if (!pageInfoEl && !mobilePageInfoEl) return;
+        var pagerInfoEl = document.getElementById('pager-info');
+        var mobilePagerInfoEl = document.getElementById('mobile-pager-info');
+        if (!pagerInfoEl && !mobilePagerInfoEl) return;
 
         var CACHE_TTL = 3600000; // 1 hour
-        var SESSION_PAGE_KEY = 'blogPage';
-        var SESSION_CONTEXT_KEY = 'blogPageContext';
+        var SESSION_HISTORY_KEY = 'blogPagerHistory';
+        var SESSION_CONTEXT_KEY = 'blogPagerContext';
 
         function isHomePage() {
           var path = window.location.pathname;
@@ -1745,11 +1742,6 @@ h1.post-title {
         function getLabelName() {
           var match = window.location.pathname.match(/\/search\/label\/(.+)/);
           return match ? decodeURIComponent(match[1]) : null;
-        }
-
-        function getPostsPerPage() {
-          var posts = document.querySelectorAll('.post.hentry');
-          return posts.length || 7;
         }
 
         function getPageContext() {
@@ -1770,70 +1762,79 @@ h1.post-title {
           return '/feeds/posts/summary?alt=json&max-results=0';
         }
 
-        function updatePageInfo(totalPosts) {
-          var postsPerPage = getPostsPerPage();
-          var totalPages = Math.ceil(totalPosts / postsPerPage);
+        function getHistory() {
+          try {
+            var h = JSON.parse(sessionStorage.getItem(SESSION_HISTORY_KEY));
+            if (Array.isArray(h) && h.length > 0) return h;
+          } catch (e) {}
+          return [1];
+        }
+
+        function setHistory(h) {
+          sessionStorage.setItem(SESSION_HISTORY_KEY, JSON.stringify(h));
+        }
+
+        function getPostCount() {
+          return document.querySelectorAll('.post.hentry').length;
+        }
+
+        function updatePagerInfo(totalPosts) {
           var currentContext = getPageContext();
           var storedContext = sessionStorage.getItem(SESSION_CONTEXT_KEY);
 
-          // Reset counter on context change (e.g. label filter change)
-          if (storedContext !== currentContext) {
-            sessionStorage.setItem(SESSION_PAGE_KEY, '1');
+          // Reset on context change (e.g. label filter change)
+          if (storedContext !== currentContext || isHomePage()) {
+            setHistory([1]);
             sessionStorage.setItem(SESSION_CONTEXT_KEY, currentContext);
           }
 
-          // Home page always page 1
-          if (isHomePage()) {
-            sessionStorage.setItem(SESSION_PAGE_KEY, '1');
-            sessionStorage.setItem(SESSION_CONTEXT_KEY, currentContext);
-          }
+          var history = getHistory();
+          var startIndex = history[history.length - 1];
+          var count = getPostCount();
+          var endIndex = startIndex + count - 1;
 
-          var pageNum = parseInt(sessionStorage.getItem(SESSION_PAGE_KEY), 10);
           var text;
-          if (pageNum && pageNum > 0) {
-            text = 'Page ' + pageNum + ' / ' + totalPages + ' (' + totalPosts + ' posts)';
+          if (startIndex > 0 && count > 0) {
+            text = startIndex + '-' + endIndex + ' / ' + totalPosts + ' posts';
           } else {
             text = totalPosts + ' posts';
           }
 
-          if (pageInfoEl) pageInfoEl.textContent = text;
-          if (mobilePageInfoEl) mobilePageInfoEl.textContent = text;
+          if (pagerInfoEl) pagerInfoEl.textContent = text;
+          if (mobilePagerInfoEl) mobilePagerInfoEl.textContent = text;
 
           // Disable pager links at boundaries
-          var olderLinks = document.querySelectorAll('.blog-pager-older-link a');
-          var newerLinks = document.querySelectorAll('.blog-pager-newer-link a');
-          if (pageNum >= totalPages) {
-            for (var i = 0; i < olderLinks.length; i++) {
-              olderLinks[i].removeAttribute('href');
-              olderLinks[i].style.color = 'var(--dark-gray)';
-              olderLinks[i].style.borderColor = 'var(--dark-gray)';
-              olderLinks[i].style.pointerEvents = 'none';
+          function disableLinks(selector) {
+            var links = document.querySelectorAll(selector);
+            for (var i = 0; i < links.length; i++) {
+              links[i].removeAttribute('href');
+              links[i].style.color = 'var(--dark-gray)';
+              links[i].style.borderColor = 'var(--dark-gray)';
+              links[i].style.pointerEvents = 'none';
             }
           }
-          if (pageNum <= 1) {
-            for (var i = 0; i < newerLinks.length; i++) {
-              newerLinks[i].removeAttribute('href');
-              newerLinks[i].style.color = 'var(--dark-gray)';
-              newerLinks[i].style.borderColor = 'var(--dark-gray)';
-              newerLinks[i].style.pointerEvents = 'none';
-            }
-          }
+          if (endIndex >= totalPosts) disableLinks('.blog-pager-next a');
+          if (startIndex <= 1) disableLinks('.blog-pager-prev a');
         }
 
         function attachPagerListeners() {
-          var newerLinks = document.querySelectorAll('.blog-pager-newer-link a');
-          var olderLinks = document.querySelectorAll('.blog-pager-older-link a');
+          var prevLinks = document.querySelectorAll('.blog-pager-prev a');
+          var nextLinks = document.querySelectorAll('.blog-pager-next a');
+          var count = getPostCount();
 
-          for (var i = 0; i < newerLinks.length; i++) {
-            newerLinks[i].addEventListener('click', function () {
-              var cur = parseInt(sessionStorage.getItem(SESSION_PAGE_KEY), 10) || 1;
-              if (cur > 1) sessionStorage.setItem(SESSION_PAGE_KEY, String(cur - 1));
+          for (var i = 0; i < nextLinks.length; i++) {
+            nextLinks[i].addEventListener('click', function () {
+              var history = getHistory();
+              var startIndex = history[history.length - 1];
+              history.push(startIndex + count);
+              setHistory(history);
             });
           }
-          for (var i = 0; i < olderLinks.length; i++) {
-            olderLinks[i].addEventListener('click', function () {
-              var cur = parseInt(sessionStorage.getItem(SESSION_PAGE_KEY), 10) || 1;
-              sessionStorage.setItem(SESSION_PAGE_KEY, String(cur + 1));
+          for (var i = 0; i < prevLinks.length; i++) {
+            prevLinks[i].addEventListener('click', function () {
+              var history = getHistory();
+              if (history.length > 1) history.pop();
+              setHistory(history);
             });
           }
         }
@@ -1847,7 +1848,7 @@ h1.post-title {
             if (cached) {
               var parsed = JSON.parse(cached);
               if (Date.now() - parsed.time < CACHE_TTL) {
-                updatePageInfo(parsed.total);
+                updatePagerInfo(parsed.total);
                 attachPagerListeners();
                 return;
               }
@@ -1862,7 +1863,7 @@ h1.post-title {
                 var data = JSON.parse(xhr.responseText);
                 var total = parseInt(data.feed.openSearch$totalResults.$t, 10);
                 localStorage.setItem(cacheKey, JSON.stringify({ total: total, time: Date.now() }));
-                updatePageInfo(total);
+                updatePagerInfo(total);
                 attachPagerListeners();
               } catch (e) {}
             }
