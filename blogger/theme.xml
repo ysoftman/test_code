@@ -496,12 +496,6 @@ h3.post-title {
 .blog-pager-older-link {
     text-align: center;
 }
-.blog-pager-newer-link div,
-.blog-pager-older-link div {
-    padding: 8px 16px;
-    color: var(--dark-gray);
-    font-size: 1.2em;
-}
 #page-info,
 #mobile-page-info {
     display: inline-block;
@@ -1107,7 +1101,7 @@ h1.post-title {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--dark-gray);'>
+                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -1126,7 +1120,7 @@ h1.post-title {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--dark-gray);'>
+                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
                                       OlderPage
                                     </div>
                                   </b:if>
@@ -1229,7 +1223,7 @@ h1.post-title {
                                       NewerPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--dark-gray);'>
+                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
                                       NewerPage
                                     </div>
                                   </b:if>
@@ -1243,7 +1237,7 @@ h1.post-title {
                                       OlderPage
                                     </a>
                                     <b:else/>
-                                    <div style='color: var(--dark-gray);'>
+                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
                                       OlderPage
                                     </div>
                                   </b:if>
@@ -1727,7 +1721,6 @@ h1.post-title {
         var mobilePageInfoEl = document.getElementById('mobile-page-info');
         if (!pageInfoEl && !mobilePageInfoEl) return;
 
-        var CACHE_KEY = 'blogTotalPosts';
         var CACHE_TTL = 3600000; // 1 hour
         var SESSION_PAGE_KEY = 'blogPage';
         var SESSION_CONTEXT_KEY = 'blogPageContext';
@@ -1737,8 +1730,9 @@ h1.post-title {
           return path === '/' || path === '/index.html';
         }
 
-        function isLabelPage() {
-          return window.location.pathname.indexOf('/search/label/') !== -1;
+        function getLabelName() {
+          var match = window.location.pathname.match(/\/search\/label\/(.+)/);
+          return match ? decodeURIComponent(match[1]) : null;
         }
 
         function getPostsPerPage() {
@@ -1747,8 +1741,21 @@ h1.post-title {
         }
 
         function getPageContext() {
-          if (isLabelPage()) return 'label:' + window.location.pathname;
-          return 'index';
+          var label = getLabelName();
+          return label ? 'label:' + label : 'index';
+        }
+
+        function getCacheKey() {
+          var label = getLabelName();
+          return label ? 'blogTotalPosts_label_' + label : 'blogTotalPosts';
+        }
+
+        function getFeedUrl() {
+          var label = getLabelName();
+          if (label) {
+            return '/feeds/posts/summary/-/' + encodeURIComponent(label) + '?alt=json&max-results=0';
+          }
+          return '/feeds/posts/summary?alt=json&max-results=0';
         }
 
         function updatePageInfo(totalPosts) {
@@ -1759,7 +1766,7 @@ h1.post-title {
 
           // Reset counter on context change (e.g. label filter change)
           if (storedContext !== currentContext) {
-            sessionStorage.removeItem(SESSION_PAGE_KEY);
+            sessionStorage.setItem(SESSION_PAGE_KEY, '1');
             sessionStorage.setItem(SESSION_CONTEXT_KEY, currentContext);
           }
 
@@ -1779,6 +1786,26 @@ h1.post-title {
 
           if (pageInfoEl) pageInfoEl.textContent = text;
           if (mobilePageInfoEl) mobilePageInfoEl.textContent = text;
+
+          // Disable pager links at boundaries
+          var olderLinks = document.querySelectorAll('.blog-pager-older-link a');
+          var newerLinks = document.querySelectorAll('.blog-pager-newer-link a');
+          if (pageNum >= totalPages) {
+            for (var i = 0; i < olderLinks.length; i++) {
+              olderLinks[i].removeAttribute('href');
+              olderLinks[i].style.color = 'var(--dark-gray)';
+              olderLinks[i].style.borderColor = 'var(--dark-gray)';
+              olderLinks[i].style.pointerEvents = 'none';
+            }
+          }
+          if (pageNum <= 1) {
+            for (var i = 0; i < newerLinks.length; i++) {
+              newerLinks[i].removeAttribute('href');
+              newerLinks[i].style.color = 'var(--dark-gray)';
+              newerLinks[i].style.borderColor = 'var(--dark-gray)';
+              newerLinks[i].style.pointerEvents = 'none';
+            }
+          }
         }
 
         function attachPagerListeners() {
@@ -1797,21 +1824,14 @@ h1.post-title {
               sessionStorage.setItem(SESSION_PAGE_KEY, String(cur + 1));
             });
           }
-
-          // Home link resets to page 1
-          var homeLinks = document.querySelectorAll('.blog-pager-home-link a');
-          for (var i = 0; i < homeLinks.length; i++) {
-            homeLinks[i].addEventListener('click', function () {
-              sessionStorage.setItem(SESSION_PAGE_KEY, '1');
-              sessionStorage.setItem(SESSION_CONTEXT_KEY, 'index');
-            });
-          }
         }
 
         function fetchTotalPosts() {
+          var cacheKey = getCacheKey();
+
           // Check localStorage cache
           try {
-            var cached = localStorage.getItem(CACHE_KEY);
+            var cached = localStorage.getItem(cacheKey);
             if (cached) {
               var parsed = JSON.parse(cached);
               if (Date.now() - parsed.time < CACHE_TTL) {
@@ -1823,13 +1843,13 @@ h1.post-title {
           } catch (e) {}
 
           var xhr = new XMLHttpRequest();
-          xhr.open('GET', '/feeds/posts/summary?alt=json&max-results=0', true);
+          xhr.open('GET', getFeedUrl(), true);
           xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
               try {
                 var data = JSON.parse(xhr.responseText);
                 var total = parseInt(data.feed.openSearch$totalResults.$t, 10);
-                localStorage.setItem(CACHE_KEY, JSON.stringify({ total: total, time: Date.now() }));
+                localStorage.setItem(cacheKey, JSON.stringify({ total: total, time: Date.now() }));
                 updatePageInfo(total);
                 attachPagerListeners();
               } catch (e) {}
