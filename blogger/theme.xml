@@ -496,6 +496,14 @@ h3.post-title {
 .blog-pager-older-link {
     text-align: center;
 }
+.blog-pager-disabled {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid var(--dark-gray);
+    border-radius: 4px;
+    color: var(--dark-gray);
+    font-size: 1.2em;
+}
 #page-info,
 #mobile-page-info {
     display: inline-block;
@@ -633,10 +641,14 @@ h1.post-title {
         padding: 6px 12px;
         font-size: 0.85em;
     }
-    .blog-pager-newer-link div,
-    .blog-pager-older-link div {
+    .blog-pager-disabled,
+    #page-info,
+    #mobile-page-info {
         padding: 6px 12px;
         font-size: 0.85em;
+    }
+    .pager-line {
+        display: block;
     }
     .post-outer {
         padding: 8px;
@@ -1098,11 +1110,11 @@ h1.post-title {
                                 <div class='mobile-link-button' id='blog-pager-newer-link'>
                                   <b:if cond='data:newerPageUrl'>
                                     <a class='blog-pager-newer-link' expr:href='data:newerPageUrl'>
-                                      NewerPage
+                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
                                     </a>
                                     <b:else/>
-                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
-                                      NewerPage
+                                    <div class='blog-pager-disabled'>
+                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
                                     </div>
                                   </b:if>
                                 </div>
@@ -1117,11 +1129,11 @@ h1.post-title {
                                 <div class='mobile-link-button' id='blog-pager-older-link'>
                                   <b:if cond='data:olderPageUrl'>
                                     <a class='blog-pager-older-link' expr:href='data:olderPageUrl'>
-                                      OlderPage
+                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
                                     </a>
                                     <b:else/>
-                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
-                                      OlderPage
+                                    <div class='blog-pager-disabled'>
+                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
                                     </div>
                                   </b:if>
                                 </div>
@@ -1220,11 +1232,11 @@ h1.post-title {
                                 <div class='blog-pager-newer-link'>
                                   <b:if cond='data:newerPageUrl'>
                                     <a expr:href='data:newerPageUrl'>
-                                      NewerPage
+                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
                                     </a>
                                     <b:else/>
-                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
-                                      NewerPage
+                                    <div class='blog-pager-disabled'>
+                                      <span class='pager-line'>Newer</span><span class='pager-line'>Page</span>
                                     </div>
                                   </b:if>
                                 </div>
@@ -1234,11 +1246,11 @@ h1.post-title {
                                 <div class='blog-pager-older-link'>
                                   <b:if cond='data:olderPageUrl'>
                                     <a expr:href='data:olderPageUrl'>
-                                      OlderPage
+                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
                                     </a>
                                     <b:else/>
-                                    <div style='display: inline-block; padding: 8px 16px; border: 1px solid var(--dark-gray); border-radius: 4px; color: var(--dark-gray); font-size: 1.2em;'>
-                                      OlderPage
+                                    <div class='blog-pager-disabled'>
+                                      <span class='pager-line'>Older</span><span class='pager-line'>Page</span>
                                     </div>
                                   </b:if>
                                 </div>
