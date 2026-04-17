@@ -1,0 +1,19 @@
+[project]
+name = "vector-embedding-benchmark"
+version = "0.1.0"
+description = "bge-m3 vs qwen3-embedding-0.6b benchmark on Korean"
+requires-python = ">=3.10"
+dependencies = [
+    "FlagEmbedding>=1.2.10",
+    "sentence-transformers>=3.0.0,<5.0",
+    "transformers>=4.44,<5.0",
+    "torch>=2.2.0",
+    "numpy>=1.26,<2.3",
+    "scipy>=1.11",
+    "psutil>=5.9",
+    "tabulate>=0.9",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
