@@ -18,6 +18,9 @@
 # 스크립트 실행
 # at -f 스크립트파일 now + 1 minute
 
+# 1 분후에 명령 실행
+echo "ysoftman" >>/tmp/at_test.log 2>&1 | at now+1
+
 # 예약된 작업 리스트
 at -l
 
@@ -31,6 +34,6 @@ at -l
 at -r
 
 # 예약된 작업들 모두 삭제
-at -r $(at -l | awk '{print $1}' ORS=' ')
+at -r "$(at -l | awk '{print $1}' ORS=' ')"
 # 또는
 at -l | awk '{print $1}' ORS=' ' | xargs ar -r
