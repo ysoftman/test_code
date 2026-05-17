@@ -5,6 +5,16 @@ set -ex
 msg="lemon (days 1) 100\napple (days 2) 200"
 echo -e $msg
 
+# awk ; 는 한 줄에 여러 문장(statement)을 구분하는 구분자
+# 줄바꿈과 동일한 역할 (개행 또는 ; 로 문장 종료)
+echo -e $msg | awk '{a=$1; b=$2; print a,b}'
+# 위는 아래와 동일
+echo -e $msg | awk '{
+    a=$1
+    b=$2
+    print a,b
+}'
+
 # 결과의 모든열 출력
 echo -e $msg | awk '{print $0}'
 
@@ -103,3 +113,11 @@ apple_msg="oh~apple"
 lemon_msg="oh~lemon"
 
 echo "a b" | awk -v msg1=$lemon_msg -v msg2=$apple_msg '{ print msg1,$1,$2,msg2 }'
+
+# awk 스크립트 내부 주석은 # 사용 (라인 끝까지 주석 처리)
+echo -e $msg | awk '{
+    # 첫번째 필드 출력
+    print $1
+    # 두번째 필드 출력
+    print $2  # 인라인 주석도 가능
+}'
