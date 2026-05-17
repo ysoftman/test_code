@@ -14,6 +14,13 @@ echo -e $msg | awk '{
     b=$2
     print a,b
 }'
+# awk 스크립트 내부 주석은 # 사용 (라인 끝까지 주석 처리)
+echo -e $msg | awk '{
+    # 첫번째 필드 출력
+    print $1
+    # 두번째 필드 출력
+    print $2  # 인라인 주석도 가능
+}'
 
 # 결과의 모든열 출력
 echo -e $msg | awk '{print $0}'
@@ -113,11 +120,3 @@ apple_msg="oh~apple"
 lemon_msg="oh~lemon"
 
 echo "a b" | awk -v msg1=$lemon_msg -v msg2=$apple_msg '{ print msg1,$1,$2,msg2 }'
-
-# awk 스크립트 내부 주석은 # 사용 (라인 끝까지 주석 처리)
-echo -e $msg | awk '{
-    # 첫번째 필드 출력
-    print $1
-    # 두번째 필드 출력
-    print $2  # 인라인 주석도 가능
-}'
