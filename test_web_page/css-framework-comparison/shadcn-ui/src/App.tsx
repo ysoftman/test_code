@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,12 +18,21 @@ import { cn } from "@/lib/utils";
 const ROLES = ["Frontend", "Backend", "Designer", "PM"];
 
 export default function App() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
 
   const [name, setName] = useState("");
   const [role, setRole] = useState(ROLES[0]);
   const [agree, setAgree] = useState(false);
   const [submitted, setSubmitted] = useState<string | null>(null);
+
+  // 부모(비교 페이지)에서 일괄 테마 적용 메시지를 받는다.
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.data?.type === "setTheme") setDark(!!e.data.dark);
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
 
   return (
     <div className={dark ? "dark" : ""}>

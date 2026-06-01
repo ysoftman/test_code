@@ -8,12 +8,15 @@
       :root {
         color-scheme: light dark;
         --bg: #0f1115;
-        --card: #1a1d23;
+        --panel: #1a1d23;
         --border: #2a2e36;
         --fg: #e6e6e6;
         --muted: #9aa0aa;
         --accent: #6ea8fe;
         --badge: #2a2e36;
+        /* 크기 조절: 슬라이더/버튼으로 바뀜 (iframe 내용 배율 + 프레임 높이) */
+        --zoom: 1;
+        --frame-base: 900px;
       }
       * {
         box-sizing: border-box;
@@ -24,164 +27,342 @@
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: var(--bg);
         color: var(--fg);
-        line-height: 1.6;
+        line-height: 1.5;
       }
-      .wrap {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 48px 20px;
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 10px 16px;
+        background: rgba(15, 17, 21, 0.95);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--border);
       }
-      a.back {
+      .toolbar a.back {
         color: var(--muted);
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
       }
-      a.back:hover {
+      .toolbar a.back:hover {
         color: var(--accent);
       }
-      h1 {
-        font-size: 2rem;
-        margin: 12px 0 4px;
+      .toolbar h1 {
+        font-size: 1.05rem;
+        margin: 0;
       }
-      .sub {
+      .ctl {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
         color: var(--muted);
-        margin: 0 0 32px;
+      }
+      .ctl input[type="range"] {
+        width: 160px;
+        accent-color: var(--accent);
+      }
+      .btn {
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--fg);
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 0.85rem;
+      }
+      .btn:hover {
+        border-color: var(--accent);
+      }
+      .spacer {
+        flex: 1 1 auto;
+      }
+      .wrap {
+        padding: 14px 16px 48px;
       }
       .grid {
         display: grid;
-        gap: 16px;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(560px, 1fr));
       }
-      .card {
-        background: var(--card);
+      .panel {
         border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--panel);
+        display: flex;
+        flex-direction: column;
       }
-      .card h2 {
-        margin: 0 0 8px;
-        font-size: 1.1rem;
+      .panel-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-bottom: 1px solid var(--border);
       }
-      .card p {
-        margin: 0 0 12px;
-        color: var(--muted);
+      .panel-head h2 {
+        margin: 0;
         font-size: 0.9rem;
       }
       .badge {
-        display: inline-block;
         background: var(--badge);
         color: var(--fg);
         border-radius: 999px;
-        padding: 2px 10px;
+        padding: 1px 8px;
+        font-size: 0.65rem;
+        white-space: nowrap;
+      }
+      .panel-head .right {
+        margin-left: auto;
+        display: flex;
+        gap: 10px;
         font-size: 0.75rem;
-        margin: 0 4px 4px 0;
+        white-space: nowrap;
       }
-      .badge.candidate {
-        color: var(--muted);
-      }
-      .links a {
+      .panel-head a {
         color: var(--accent);
         text-decoration: none;
-        font-size: 0.85rem;
-        margin-right: 12px;
       }
-      .links a:hover {
+      .panel-head a:hover {
         text-decoration: underline;
+      }
+      /* iframe 내용을 --zoom 배율로 표시, 프레임 높이도 배율에 비례 */
+      .frame {
+        height: calc(var(--frame-base) * var(--zoom));
+        overflow: hidden;
+        background: #fff;
+      }
+      .frame iframe {
+        width: calc(100% / var(--zoom));
+        height: calc(100% / var(--zoom));
+        transform: scale(var(--zoom));
+        transform-origin: top left;
+        border: 0;
+        display: block;
       }
     </style>
   </head>
   <body>
-    <div class="wrap">
+    <div class="toolbar">
       <a class="back" href="../">← test_web_page</a>
       <h1>CSS Framework Comparison</h1>
-      <p class="sub">
-        같은 UI 예제(다크모드 · 버튼 · 카드 · 폼)를 여러 스타일링 솔루션으로
-        구현해 비교합니다.
-      </p>
 
+      <div class="ctl">
+        <span>크기</span>
+        <button class="btn" id="zoomMinus" title="축소">−</button>
+        <input
+          type="range"
+          id="zoom"
+          min="0.4"
+          max="1.2"
+          step="0.05"
+          value="1"
+        />
+        <button class="btn" id="zoomPlus" title="확대">+</button>
+        <span id="zoomVal" style="min-width: 3em">100%</span>
+      </div>
+
+      <button class="btn" id="themeBtn">🌙 전체 다크</button>
+
+      <div class="spacer"></div>
+      <span class="ctl" style="font-size: 0.75rem"
+        >7개 솔루션 · 같은 데모 비교</span
+      >
+    </div>
+
+    <div class="wrap">
       <div class="grid">
-        <div class="card">
-          <h2>MUI</h2>
-          <p>Material UI · 컴포넌트 라이브러리</p>
-          <span class="badge">Emotion (runtime)</span>
-          <div class="links">
-            <a href="https://mui.com/" target="_blank" rel="noopener">docs</a>
-            <a href="./mui/">folder</a>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>MUI</h2>
+            <span class="badge">Emotion</span>
+            <span class="right">
+              <a href="https://mui.com/" target="_blank" rel="noopener">docs</a>
+              <a href="./mui/" target="_blank">단독</a>
+            </span>
+          </div>
+          <div class="frame">
+            <iframe src="./mui/" title="MUI" loading="lazy"></iframe>
           </div>
         </div>
-        <div class="card">
-          <h2>Tailwind CSS</h2>
-          <p>유틸리티 우선 CSS</p>
-          <span class="badge">zero runtime</span>
-          <div class="links">
-            <a href="https://tailwindcss.com/" target="_blank" rel="noopener"
-              >docs</a
-            >
-            <a href="./tailwind/">folder</a>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Tailwind CSS</h2>
+            <span class="badge">zero runtime</span>
+            <span class="right">
+              <a href="https://tailwindcss.com/" target="_blank" rel="noopener"
+                >docs</a
+              >
+              <a href="./tailwind/" target="_blank">단독</a>
+            </span>
+          </div>
+          <div class="frame">
+            <iframe
+              src="./tailwind/"
+              title="Tailwind CSS"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
-        <div class="card">
-          <h2>Panda CSS</h2>
-          <p>빌드 타임 CSS-in-JS</p>
-          <span class="badge">zero runtime</span>
-          <div class="links">
-            <a href="https://panda-css.com/" target="_blank" rel="noopener"
-              >docs</a
-            >
-            <a href="./panda-css/">folder</a>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Panda CSS</h2>
+            <span class="badge">zero runtime</span>
+            <span class="right">
+              <a href="https://panda-css.com/" target="_blank" rel="noopener"
+                >docs</a
+              >
+              <a href="./panda-css/" target="_blank">단독</a>
+            </span>
+          </div>
+          <div class="frame">
+            <iframe
+              src="./panda-css/"
+              title="Panda CSS"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
-        <div class="card">
-          <h2>Chakra UI</h2>
-          <p>컴포넌트 라이브러리 · v3 (Panda 기반)</p>
-          <span class="badge">runtime 주입</span>
-          <div class="links">
-            <a href="https://chakra-ui.com/" target="_blank" rel="noopener"
-              >docs</a
-            >
-            <a href="./chakra-ui/">folder</a>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Chakra UI</h2>
+            <span class="badge">v3 · runtime</span>
+            <span class="right">
+              <a href="https://chakra-ui.com/" target="_blank" rel="noopener"
+                >docs</a
+              >
+              <a href="./chakra-ui/" target="_blank">단독</a>
+            </span>
+          </div>
+          <div class="frame">
+            <iframe
+              src="./chakra-ui/"
+              title="Chakra UI"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
-        <div class="card">
-          <h2>shadcn/ui</h2>
-          <p>복붙형 컴포넌트 + Tailwind + Radix</p>
-          <span class="badge">zero runtime</span>
-          <div class="links">
-            <a href="https://ui.shadcn.com/" target="_blank" rel="noopener"
-              >docs</a
-            >
-            <a href="./shadcn-ui/">folder</a>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>shadcn/ui</h2>
+            <span class="badge">zero runtime</span>
+            <span class="right">
+              <a href="https://ui.shadcn.com/" target="_blank" rel="noopener"
+                >docs</a
+              >
+              <a href="./shadcn-ui/" target="_blank">단독</a>
+            </span>
+          </div>
+          <div class="frame">
+            <iframe
+              src="./shadcn-ui/"
+              title="shadcn/ui"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
-        <div class="card">
-          <h2>styled-components</h2>
-          <p>CSS-in-JS</p>
-          <span class="badge">runtime</span>
-          <div class="links">
-            <a
-              href="https://styled-components.com/"
-              target="_blank"
-              rel="noopener"
-              >docs</a
-            >
-            <a href="./styled-components/">folder</a>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>styled-components</h2>
+            <span class="badge">runtime</span>
+            <span class="right">
+              <a
+                href="https://styled-components.com/"
+                target="_blank"
+                rel="noopener"
+                >docs</a
+              >
+              <a href="./styled-components/" target="_blank">단독</a>
+            </span>
+          </div>
+          <div class="frame">
+            <iframe
+              src="./styled-components/"
+              title="styled-components"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
-        <div class="card">
-          <h2>vanilla-extract</h2>
-          <p>빌드 타임 CSS-in-JS (.css.ts)</p>
-          <span class="badge">zero runtime</span>
-          <div class="links">
-            <a
-              href="https://vanilla-extract.style/"
-              target="_blank"
-              rel="noopener"
-              >docs</a
-            >
-            <a href="./vanilla-extract/">folder</a>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>vanilla-extract</h2>
+            <span class="badge">zero runtime</span>
+            <span class="right">
+              <a
+                href="https://vanilla-extract.style/"
+                target="_blank"
+                rel="noopener"
+                >docs</a
+              >
+              <a href="./vanilla-extract/" target="_blank">단독</a>
+            </span>
+          </div>
+          <div class="frame">
+            <iframe
+              src="./vanilla-extract/"
+              title="vanilla-extract"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
       </div>
     </div>
+
+    <script>
+      const root = document.documentElement;
+
+      // --- 크기 조절 ---
+      const zoom = document.getElementById("zoom");
+      const zoomVal = document.getElementById("zoomVal");
+      function applyZoom(v) {
+        v = Math.min(1.2, Math.max(0.4, Math.round(v * 100) / 100));
+        zoom.value = String(v);
+        root.style.setProperty("--zoom", String(v));
+        zoomVal.textContent = Math.round(v * 100) + "%";
+      }
+      zoom.addEventListener("input", (e) =>
+        applyZoom(parseFloat(e.target.value)),
+      );
+      document
+        .getElementById("zoomMinus")
+        .addEventListener("click", () =>
+          applyZoom(parseFloat(zoom.value) - 0.05),
+        );
+      document
+        .getElementById("zoomPlus")
+        .addEventListener("click", () =>
+          applyZoom(parseFloat(zoom.value) + 0.05),
+        );
+      applyZoom(parseFloat(zoom.value));
+
+      // --- 전체 테마 일괄 적용 (각 iframe 에 postMessage) ---
+      let dark = false;
+      const frames = () => Array.from(document.querySelectorAll("iframe"));
+      function sendTheme(frame) {
+        if (frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: "setTheme", dark }, "*");
+        }
+      }
+      function broadcast() {
+        frames().forEach(sendTheme);
+      }
+      const themeBtn = document.getElementById("themeBtn");
+      themeBtn.addEventListener("click", () => {
+        dark = !dark;
+        themeBtn.textContent = dark ? "☀️ 전체 라이트" : "🌙 전체 다크";
+        broadcast();
+      });
+      // 각 iframe 이 로드되면 현재 테마를 전달 (lazy 로드 대응)
+      frames().forEach((f) => f.addEventListener("load", () => sendTheme(f)));
+    </script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -22,12 +22,22 @@ import { useColorMode } from "./color-mode";
 const ROLES = ["Frontend", "Backend", "Designer", "PM"];
 
 export default function App() {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode, setColorMode, toggleColorMode } = useColorMode();
 
   const [name, setName] = useState("");
   const [role, setRole] = useState(ROLES[0]);
   const [agree, setAgree] = useState(false);
   const [submitted, setSubmitted] = useState<string | null>(null);
+
+  // 부모(비교 페이지)에서 일괄 테마 적용 메시지를 받는다.
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.data?.type === "setTheme")
+        setColorMode(e.data.dark ? "dark" : "light");
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, [setColorMode]);
 
   return (
     <Box minH="100vh">

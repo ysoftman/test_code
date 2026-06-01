@@ -12,8 +12,9 @@ PORT="${PORT:-3000}"
 echo "▶ assembling into $SITE"
 rm -rf "$OUT"
 mkdir -p "$SITE/css-framework-comparison"
-cp "$SRC/index.html" "$SITE/index.html"
-cp "$SRC/css-framework-comparison/index.html" "$SITE/css-framework-comparison/index.html"
+# 랜딩 HTML 은 정적이라 심볼릭 링크 → 수정 후 브라우저 새로고침만 하면 반영됨
+ln -sf "$SRC/index.html" "$SITE/index.html"
+ln -sf "$SRC/css-framework-comparison/index.html" "$SITE/css-framework-comparison/index.html"
 
 for dir in "$SRC"/css-framework-comparison/*/; do
   app="$(basename "$dir")"
@@ -26,5 +27,13 @@ done
 
 echo ""
 echo "✅ open:  http://localhost:$PORT/test_code/css-framework-comparison/"
+echo "   (랜딩 index.html 은 심볼릭 링크 → 수정 후 브라우저 새로고침만 하면 반영)"
 echo ""
-exec bunx serve -l "$PORT" "$OUT"
+# python http.server 는 심볼릭 링크를 따라가서, 랜딩 수정이 새로고침만으로 반영됨.
+# (serve 는 심볼릭 링크를 막아 landing live-edit 가 안 됨)
+if command -v python3 >/dev/null 2>&1; then
+  exec python3 -m http.server "$PORT" --directory "$OUT"
+else
+  echo "python3 없음 → bunx serve 로 폴백 (랜딩 live-edit 는 비활성)"
+  exec bunx serve -l "$PORT" "$OUT"
+fi

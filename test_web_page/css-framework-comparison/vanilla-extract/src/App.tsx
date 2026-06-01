@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as s from "./styles.css";
 
 // 모든 프레임워크가 공유하는 데모 사양:
@@ -7,12 +7,21 @@ import * as s from "./styles.css";
 const ROLES = ["Frontend", "Backend", "Designer", "PM"];
 
 export default function App() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   const [name, setName] = useState("");
   const [role, setRole] = useState(ROLES[0]);
   const [agree, setAgree] = useState(false);
   const [submitted, setSubmitted] = useState<string | null>(null);
+
+  // 부모(비교 페이지)에서 일괄 테마 적용 메시지를 받는다.
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.data?.type === "setTheme") setIsDark(!!e.data.dark);
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
 
   return (
     <div className={`${isDark ? s.darkClass : s.lightClass} ${s.root}`}>

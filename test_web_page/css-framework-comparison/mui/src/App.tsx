@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AppBar,
   Box,
@@ -30,13 +30,22 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 const ROLES = ["Frontend", "Backend", "Designer", "PM"];
 
 export default function App() {
-  const [mode, setMode] = useState<"light" | "dark">("dark");
+  const [mode, setMode] = useState<"light" | "dark">("light");
   const theme = useMemo(() => createTheme({ palette: { mode } }), [mode]);
 
   const [name, setName] = useState("");
   const [role, setRole] = useState(ROLES[0]);
   const [agree, setAgree] = useState(false);
   const [submitted, setSubmitted] = useState<string | null>(null);
+
+  // 부모(비교 페이지)에서 일괄 테마 적용 메시지를 받는다.
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.data?.type === "setTheme") setMode(e.data.dark ? "dark" : "light");
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { css, cx } from "../styled-system/css";
 
 // 모든 프레임워크가 공유하는 데모 사양:
@@ -72,12 +72,21 @@ const field = css({
 });
 
 export default function App() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
 
   const [name, setName] = useState("");
   const [role, setRole] = useState(ROLES[0]);
   const [agree, setAgree] = useState(false);
   const [submitted, setSubmitted] = useState<string | null>(null);
+
+  // 부모(비교 페이지)에서 일괄 테마 적용 메시지를 받는다.
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.data?.type === "setTheme") setDark(!!e.data.dark);
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
 
   return (
     <div
