@@ -104,7 +104,6 @@ bun update -g @vue/cli
 
 ```bash
 # vue-cli/webpack 관련 패키지 제거, 대신 vite 사용
-cd ysoftman-project
 bun remove vue-cli-plugin-vuetify vuetify-loader \
   @vue/cli-service \
   @vue/cli-plugin-babel \
