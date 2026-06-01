@@ -60,6 +60,12 @@ jobs:
             fi
           done
 
+          # 3) build info (배포 날짜 / 커밋 버전) — 랜딩 우측 상단에 표시
+          DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
+          SHA=$(echo "${GITHUB_SHA:-local}" | cut -c1-7)
+          printf 'window.__BUILD_INFO__ = { date: "%s", version: "%s" };\n' \
+            "$DATE" "$SHA" >"$OUT/css-framework-comparison/build-info.js"
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

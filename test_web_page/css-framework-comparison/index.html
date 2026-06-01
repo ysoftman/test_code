@@ -213,6 +213,53 @@
         padding: 1px 5px;
         font-size: 0.85em;
       }
+      /* 성능(번들) 막대그래프 */
+      .bar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 6px 0;
+        font-size: 0.82rem;
+      }
+      .bar-row .name {
+        flex: 0 0 130px;
+      }
+      .bar-track {
+        flex: 1 1 auto;
+        height: 18px;
+        background: var(--border);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+        border-radius: 4px;
+      }
+      .bar-fill.lib {
+        background: #f0883e;
+      }
+      .bar-row .val {
+        flex: 0 0 64px;
+        text-align: right;
+        color: var(--muted);
+      }
+      .legend {
+        display: flex;
+        gap: 16px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin: 4px 0 10px;
+      }
+      .legend i {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 5px;
+        vertical-align: -1px;
+      }
     </style>
   </head>
   <body>
@@ -264,9 +311,22 @@
         용어 설명
       </button>
 
+      <button class="btn" id="perfBtn" title="성능(번들 사이즈) 비교">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M4 9h4v11H4zm6-5h4v16h-4zm6 8h4v8h-4z" />
+        </svg>
+        성능 비교
+      </button>
+
       <div class="spacer"></div>
-      <span class="ctl" style="font-size: 0.75rem"
-        >7개 솔루션 · 같은 데모 비교</span
+      <span class="ctl" id="buildInfo" style="font-size: 0.75rem"
+        >local dev</span
       >
     </div>
 
@@ -498,8 +558,160 @@
       </div>
     </div>
 
+    <div class="modal-overlay" id="perf">
+      <div class="modal">
+        <div class="modal-head">
+          <h2>성능 비교 — 번들 사이즈</h2>
+          <button class="modal-close" id="perfClose" aria-label="닫기">
+            ✕
+          </button>
+        </div>
+        <p class="axis">
+          같은 데모를 프로덕션 빌드(<code>bun run build</code>)했을 때 dist
+          크기. React(gzip ~45KB) 포함 전체. 전송·파싱 비용의 직접 지표이며,
+          숫자가 작을수록 가볍습니다. (런타임 비용은 "용어 설명" 참고)
+        </p>
+
+        <h3>로딩 속도 (FCP) — 작을수록 빠름</h3>
+        <p class="axis">
+          <b>측정 시점: 각 프레임 로드 시 실시간</b> (새로고침마다 재측정). 각
+          프레임이 처음 화면을 그리기까지 시간(First Contentful Paint). iframe
+          이 화면에 보일 때 측정되므로 스크롤해 모두 로드한 뒤 확인하세요.
+          환경·캐시에 따라 달라져 절대값보다 상대 비교용입니다.
+        </p>
+        <div id="fcpOut"></div>
+
+        <h3>전송 크기 (JS + CSS, gzip) — 작을수록 좋음</h3>
+        <p class="axis">
+          <b>측정 시점: 빌드 시 1회(수동 입력 고정값)</b> · 기준 빌드 2026-06-01
+          (각 프레임 최신 버전). 코드·버전 변경 시 자동 갱신되지 않습니다.
+        </p>
+        <div class="legend">
+          <span
+            ><i style="background: var(--accent)"></i>유틸리티 / CSS-in-JS</span
+          >
+          <span><i style="background: #f0883e"></i>컴포넌트 라이브러리</span>
+        </div>
+
+        <div class="bar-row">
+          <span class="name">vanilla-extract</span>
+          <span class="bar-track"
+            ><span class="bar-fill" style="width: 39%"></span
+          ></span>
+          <span class="val">48.7KB</span>
+        </div>
+        <div class="bar-row">
+          <span class="name">Tailwind</span>
+          <span class="bar-track"
+            ><span class="bar-fill" style="width: 41%"></span
+          ></span>
+          <span class="val">51.4KB</span>
+        </div>
+        <div class="bar-row">
+          <span class="name">Panda CSS</span>
+          <span class="bar-track"
+            ><span class="bar-fill" style="width: 47%"></span
+          ></span>
+          <span class="val">59.2KB</span>
+        </div>
+        <div class="bar-row">
+          <span class="name">styled-components</span>
+          <span class="bar-track"
+            ><span class="bar-fill" style="width: 48%"></span
+          ></span>
+          <span class="val">60.4KB</span>
+        </div>
+        <div class="bar-row">
+          <span class="name">shadcn/ui</span>
+          <span class="bar-track"
+            ><span class="bar-fill" style="width: 52%"></span
+          ></span>
+          <span class="val">65.8KB</span>
+        </div>
+        <div class="bar-row">
+          <span class="name">MUI</span>
+          <span class="bar-track"
+            ><span class="bar-fill lib" style="width: 96%"></span
+          ></span>
+          <span class="val">120.5KB</span>
+        </div>
+        <div class="bar-row">
+          <span class="name">Chakra UI</span>
+          <span class="bar-track"
+            ><span class="bar-fill lib" style="width: 100%"></span
+          ></span>
+          <span class="val">125.6KB</span>
+        </div>
+
+        <h3>상세 (raw / gzip)</h3>
+        <table>
+          <tr>
+            <th>프레임워크</th>
+            <th>JS</th>
+            <th>CSS</th>
+            <th>합계 (gzip)</th>
+          </tr>
+          <tr>
+            <td>vanilla-extract</td>
+            <td>148.4KB (47.9)</td>
+            <td>2.6KB (0.8)</td>
+            <td><b>48.7KB</b></td>
+          </tr>
+          <tr>
+            <td>Tailwind</td>
+            <td>149.6KB (48.2)</td>
+            <td>11.7KB (3.2)</td>
+            <td><b>51.4KB</b></td>
+          </tr>
+          <tr>
+            <td>Panda CSS</td>
+            <td>163.9KB (53.6)</td>
+            <td>18.5KB (5.6)</td>
+            <td><b>59.2KB</b></td>
+          </tr>
+          <tr>
+            <td>styled-components</td>
+            <td>180.6KB (60.4)</td>
+            <td>—</td>
+            <td><b>60.4KB</b></td>
+          </tr>
+          <tr>
+            <td>shadcn/ui</td>
+            <td>195.6KB (62.6)</td>
+            <td>11.8KB (3.2)</td>
+            <td><b>65.8KB</b></td>
+          </tr>
+          <tr>
+            <td>MUI</td>
+            <td>379.2KB (120.5)</td>
+            <td>—</td>
+            <td><b>120.5KB</b></td>
+          </tr>
+          <tr>
+            <td>Chakra UI</td>
+            <td>440.4KB (125.6)</td>
+            <td>—</td>
+            <td><b>125.6KB</b></td>
+          </tr>
+        </table>
+        <p class="axis">
+          ※ MUI/Chakra 는 컴포넌트 라이브러리라 완성 컴포넌트·접근성·테마
+          시스템이 포함돼 큽니다(트레이드오프). CSS-in-JS(MUI·styled·Chakra)는
+          스타일이 JS 런타임에 주입돼 별도 CSS 파일이 없습니다.
+        </p>
+      </div>
+    </div>
+
+    <!-- 배포/프리뷰 시 생성됨 (window.__BUILD_INFO__ 주입). 없으면 무시 -->
+    <script src="./build-info.js" onerror="void 0"></script>
     <script>
       const root = document.documentElement;
+
+      // --- 배포 날짜 / 빌드 버전 표시 ---
+      const bi = window.__BUILD_INFO__;
+      document.getElementById("buildInfo").textContent = bi
+        ? `build ${bi.version} · ${bi.date}`
+        : "local dev";
 
       // --- 용어 설명 모달 ---
       const glossary = document.getElementById("glossary");
@@ -515,8 +727,52 @@
       glossary.addEventListener("click", (e) => {
         if (e.target === glossary) closeGlossary(); // 배경 클릭 시 닫기
       });
+
+      // --- 성능 비교 모달 ---
+      const perf = document.getElementById("perf");
+      document
+        .getElementById("perfBtn")
+        .addEventListener("click", () => perf.classList.add("open"));
+      function closePerf() {
+        perf.classList.remove("open");
+      }
+      document.getElementById("perfClose").addEventListener("click", closePerf);
+      perf.addEventListener("click", (e) => {
+        if (e.target === perf) closePerf();
+      });
+
+      // --- 로딩 속도(FCP) 수집: 각 앱이 postMessage 로 보고 ---
+      const fcpData = {};
+      const fcpOut = document.getElementById("fcpOut");
+      function renderFcp() {
+        const rows = Object.entries(fcpData).sort((a, b) => a[1] - b[1]);
+        if (!rows.length) {
+          fcpOut.innerHTML =
+            '<p class="axis">프레임이 로드되면 표시됩니다. (스크롤해 모두 로드)</p>';
+          return;
+        }
+        const max = Math.max(...rows.map((r) => r[1]));
+        fcpOut.innerHTML = rows
+          .map(([name, ms]) => {
+            const pct = max ? Math.round((ms / max) * 100) : 0;
+            return `<div class="bar-row"><span class="name">${name}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%"></span></span><span class="val">${ms}ms</span></div>`;
+          })
+          .join("");
+      }
+      renderFcp();
+      window.addEventListener("message", (e) => {
+        const d = e.data;
+        if (d && d.type === "perf" && typeof d.fcp === "number") {
+          fcpData[d.name] = d.fcp;
+          renderFcp();
+        }
+      });
+
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeGlossary();
+        if (e.key === "Escape") {
+          closeGlossary();
+          closePerf();
+        }
       });
 
       // --- 크기 조절 ---
@@ -550,7 +806,8 @@
       const SUN_PATH =
         "M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z";
 
-      let dark = false;
+      // 테마 설정은 localStorage 에 저장 → 새로고침해도 유지
+      let dark = localStorage.getItem("cfcTheme") === "dark";
       const themeIconPath = document.querySelector("#themeIcon path");
       const themeLabel = document.getElementById("themeLabel");
       function updateThemeBtn() {
@@ -571,6 +828,7 @@
       const themeBtn = document.getElementById("themeBtn");
       themeBtn.addEventListener("click", () => {
         dark = !dark;
+        localStorage.setItem("cfcTheme", dark ? "dark" : "light");
         updateThemeBtn();
         broadcast();
       });

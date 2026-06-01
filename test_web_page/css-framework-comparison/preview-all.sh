@@ -25,6 +25,12 @@ for dir in "$SRC"/css-framework-comparison/*/; do
   fi
 done
 
+# 배포 날짜 / 빌드 버전 주입 (랜딩 우측 상단에 표시)
+BUILD_DATE="$(date '+%Y-%m-%d %H:%M')"
+BUILD_SHA="$(git -C "$HERE" rev-parse --short HEAD 2>/dev/null || echo local)"
+printf 'window.__BUILD_INFO__ = { date: "%s", version: "%s (local)" };\n' \
+  "$BUILD_DATE" "$BUILD_SHA" >"$SITE/css-framework-comparison/build-info.js"
+
 echo ""
 echo "✅ open:  http://localhost:$PORT/test_code/css-framework-comparison/"
 echo "   (랜딩 index.html 은 심볼릭 링크 → 수정 후 브라우저 새로고침만 하면 반영)"
