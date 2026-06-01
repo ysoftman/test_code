@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.preview/
+*.log
+
+# panda / vanilla-extract codegen output
+styled-system/
+.vanilla-extract/

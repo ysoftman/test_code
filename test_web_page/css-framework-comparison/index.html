@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Framework Comparison</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0f1115;
+        --card: #1a1d23;
+        --border: #2a2e36;
+        --fg: #e6e6e6;
+        --muted: #9aa0aa;
+        --accent: #6ea8fe;
+        --badge: #2a2e36;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+      a.back {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      a.back:hover {
+        color: var(--accent);
+      }
+      h1 {
+        font-size: 2rem;
+        margin: 12px 0 4px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 32px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+      }
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 1.1rem;
+      }
+      .card p {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .badge {
+        display: inline-block;
+        background: var(--badge);
+        color: var(--fg);
+        border-radius: 999px;
+        padding: 2px 10px;
+        font-size: 0.75rem;
+        margin: 0 4px 4px 0;
+      }
+      .badge.candidate {
+        color: var(--muted);
+      }
+      .links a {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 0.85rem;
+        margin-right: 12px;
+      }
+      .links a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <a class="back" href="../">← test_web_page</a>
+      <h1>CSS Framework Comparison</h1>
+      <p class="sub">
+        같은 UI 예제(다크모드 · 버튼 · 카드 · 폼)를 여러 스타일링 솔루션으로
+        구현해 비교합니다.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h2>MUI</h2>
+          <p>Material UI · 컴포넌트 라이브러리</p>
+          <span class="badge">Emotion (runtime)</span>
+          <div class="links">
+            <a href="https://mui.com/" target="_blank" rel="noopener">docs</a>
+            <a href="./mui/">folder</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Tailwind CSS</h2>
+          <p>유틸리티 우선 CSS</p>
+          <span class="badge">zero runtime</span>
+          <div class="links">
+            <a href="https://tailwindcss.com/" target="_blank" rel="noopener"
+              >docs</a
+            >
+            <a href="./tailwind/">folder</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Panda CSS</h2>
+          <p>빌드 타임 CSS-in-JS</p>
+          <span class="badge">zero runtime</span>
+          <div class="links">
+            <a href="https://panda-css.com/" target="_blank" rel="noopener"
+              >docs</a
+            >
+            <a href="./panda-css/">folder</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Chakra UI</h2>
+          <p>컴포넌트 라이브러리 · v3 (Panda 기반)</p>
+          <span class="badge">runtime 주입</span>
+          <div class="links">
+            <a href="https://chakra-ui.com/" target="_blank" rel="noopener"
+              >docs</a
+            >
+            <a href="./chakra-ui/">folder</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2>shadcn/ui</h2>
+          <p>복붙형 컴포넌트 + Tailwind + Radix</p>
+          <span class="badge">zero runtime</span>
+          <div class="links">
+            <a href="https://ui.shadcn.com/" target="_blank" rel="noopener"
+              >docs</a
+            >
+            <a href="./shadcn-ui/">folder</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2>styled-components</h2>
+          <p>CSS-in-JS</p>
+          <span class="badge">runtime</span>
+          <div class="links">
+            <a
+              href="https://styled-components.com/"
+              target="_blank"
+              rel="noopener"
+              >docs</a
+            >
+            <a href="./styled-components/">folder</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2>vanilla-extract</h2>
+          <p>빌드 타임 CSS-in-JS (.css.ts)</p>
+          <span class="badge">zero runtime</span>
+          <div class="links">
+            <a
+              href="https://vanilla-extract.style/"
+              target="_blank"
+              rel="noopener"
+              >docs</a
+            >
+            <a href="./vanilla-extract/">folder</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

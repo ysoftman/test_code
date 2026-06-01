@@ -1,0 +1,73 @@
+name: Deploy test_web_page to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "test_web_page/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment, cancel in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        working-directory: test_web_page/css-framework-comparison
+        run: bun install
+
+      - name: Build all framework apps
+        working-directory: test_web_page/css-framework-comparison
+        run: bun run build:all
+
+      - name: Assemble _site
+        run: |
+          set -euo pipefail
+          SRC=test_web_page
+          OUT=_site
+
+          # 1) static landing pages
+          mkdir -p "$OUT/css-framework-comparison"
+          cp "$SRC/index.html" "$OUT/index.html"
+          cp "$SRC/css-framework-comparison/index.html" "$OUT/css-framework-comparison/index.html"
+
+          # 2) each framework app that produced a dist
+          for dir in "$SRC"/css-framework-comparison/*/; do
+            app=$(basename "$dir")
+            if [ -d "$dir/dist" ]; then
+              echo "include built app: $app"
+              mkdir -p "$OUT/css-framework-comparison/$app"
+              cp -r "$dir/dist/." "$OUT/css-framework-comparison/$app/"
+            fi
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,25 @@
+{
+  "name": "css-framework-comparison",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "mui",
+    "tailwind",
+    "panda-css",
+    "styled-components",
+    "vanilla-extract",
+    "chakra-ui",
+    "shadcn-ui"
+  ],
+  "scripts": {
+    "build:all": "bun run --filter '*' build",
+    "preview:all": "bun run build:all && bash ./preview-all.sh",
+    "dev:mui": "bun run --filter mui dev",
+    "dev:tailwind": "bun run --filter tailwind dev",
+    "dev:panda": "bun run --filter panda-css dev",
+    "dev:styled": "bun run --filter styled-components dev",
+    "dev:vanilla": "bun run --filter vanilla-extract dev",
+    "dev:chakra": "bun run --filter chakra-ui dev",
+    "dev:shadcn": "bun run --filter shadcn-ui dev"
+  }
+}
