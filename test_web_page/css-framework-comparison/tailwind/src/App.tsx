@@ -1,9 +1,49 @@
 import { useEffect, useState } from "react";
+import twPkg from "tailwindcss/package.json";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
 
 const ROLES = ["Frontend", "Backend", "Designer", "PM"];
+
+// 모든 프레임워크 공통 테마 토글 아이콘 (라이브러리 없이 인라인 SVG, Material 아이콘 path)
+const MOON_PATH =
+  "M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z";
+const SUN_PATH =
+  "M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z";
+
+function ThemeIcon({ dark }: { dark: boolean }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      style={{ display: "block" }}
+    >
+      <path d={dark ? SUN_PATH : MOON_PATH} />
+    </svg>
+  );
+}
+
+const HEART_PATH =
+  "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
+
+function HeartIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      style={{ display: "block" }}
+    >
+      <path d={HEART_PATH} />
+    </svg>
+  );
+}
 
 const btnBase =
   "inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50";
@@ -40,7 +80,7 @@ export default function App() {
         <header className="flex items-center gap-3 border-b border-gray-200 px-6 py-3 dark:border-gray-800">
           <h1 className="text-lg font-semibold">Tailwind CSS</h1>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            유틸리티 우선 · zero runtime
+            Tailwind CSS v{twPkg.version} · 유틸리티 CSS (zero runtime)
           </span>
           <button
             type="button"
@@ -48,7 +88,7 @@ export default function App() {
             aria-label="toggle dark mode"
             className="ml-auto rounded-md border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
           >
-            {dark ? "☀️ Light" : "🌙 Dark"}
+            <ThemeIcon dark={dark} />
           </button>
         </header>
 
@@ -61,7 +101,7 @@ export default function App() {
               <button className={btnOutlined}>Outlined</button>
               <button className={btnText}>Text</button>
               <button className={btnContained}>
-                <span>❤</span> With Icon
+                <HeartIcon /> With Icon
               </button>
               <button className={btnContained} disabled>
                 Disabled

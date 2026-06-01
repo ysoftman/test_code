@@ -2,3 +2,9 @@
 
 /* class 기반 다크모드: 루트에 .dark 가 있으면 dark: 유틸 적용 */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* 모든 프레임워크 공통 폰트 */
+@theme {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}

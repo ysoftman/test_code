@@ -1,1 +1,8 @@
 @layer reset, base, tokens, recipes, utilities;
+
+/* 모든 프레임워크 공통 폰트 (unlayered 라 Panda reset 보다 우선) */
+html,
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}

@@ -13,7 +13,6 @@
         --fg: #e6e6e6;
         --muted: #9aa0aa;
         --accent: #6ea8fe;
-        --badge: #2a2e36;
         /* 크기 조절: 슬라이더/버튼으로 바뀜 (iframe 내용 배율 + 프레임 높이) */
         --zoom: 1;
         --frame-base: 900px;
@@ -66,6 +65,9 @@
         accent-color: var(--accent);
       }
       .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         cursor: pointer;
         border: 1px solid var(--border);
         background: var(--panel);
@@ -96,31 +98,15 @@
         display: flex;
         flex-direction: column;
       }
+      /* 이름/runtime 은 각 앱 자체 헤더에 표시되므로 여기선 링크만 (중복 제거) */
       .panel-head {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 5px 12px;
         border-bottom: 1px solid var(--border);
-      }
-      .panel-head h2 {
-        margin: 0;
-        font-size: 0.9rem;
-      }
-      .badge {
-        background: var(--badge);
-        color: var(--fg);
-        border-radius: 999px;
-        padding: 1px 8px;
-        font-size: 0.65rem;
-        white-space: nowrap;
-      }
-      .panel-head .right {
-        margin-left: auto;
-        display: flex;
-        gap: 10px;
         font-size: 0.75rem;
-        white-space: nowrap;
       }
       .panel-head a {
         color: var(--accent);
@@ -142,6 +128,90 @@
         transform-origin: top left;
         border: 0;
         display: block;
+      }
+      /* 용어 설명 모달 */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        z-index: 100;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .modal {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        max-width: 760px;
+        width: 100%;
+        max-height: 85vh;
+        overflow: auto;
+        padding: 24px 28px;
+      }
+      .modal-head {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .modal-head h2 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+      .modal-close {
+        margin-left: auto;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--fg);
+        border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+      }
+      .modal-close:hover {
+        border-color: var(--accent);
+      }
+      .modal h3 {
+        margin: 18px 0 6px;
+        font-size: 1rem;
+        color: var(--accent);
+      }
+      .modal p {
+        margin: 4px 0;
+        font-size: 0.9rem;
+      }
+      .modal .axis {
+        color: var(--muted);
+        font-size: 0.82rem;
+        margin: 2px 0 0;
+      }
+      .modal table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        margin: 10px 0 4px;
+      }
+      .modal th,
+      .modal td {
+        border: 1px solid var(--border);
+        padding: 6px 9px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .modal th {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .modal code {
+        background: var(--border);
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-size: 0.85em;
       }
     </style>
   </head>
@@ -165,7 +235,34 @@
         <span id="zoomVal" style="min-width: 3em">100%</span>
       </div>
 
-      <button class="btn" id="themeBtn">🌙 전체 다크</button>
+      <button class="btn" id="themeBtn">
+        <svg
+          id="themeIcon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="" />
+        </svg>
+        <span id="themeLabel">전체 다크</span>
+      </button>
+
+      <button class="btn" id="glossaryBtn" title="용어 설명">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+          />
+        </svg>
+        용어 설명
+      </button>
 
       <div class="spacer"></div>
       <span class="ctl" style="font-size: 0.75rem"
@@ -177,12 +274,8 @@
       <div class="grid">
         <div class="panel">
           <div class="panel-head">
-            <h2>MUI</h2>
-            <span class="badge">Emotion</span>
-            <span class="right">
-              <a href="https://mui.com/" target="_blank" rel="noopener">docs</a>
-              <a href="./mui/" target="_blank">단독</a>
-            </span>
+            <a href="https://mui.com/" target="_blank" rel="noopener">docs ↗</a>
+            <a href="./mui/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
             <iframe src="./mui/" title="MUI" loading="lazy"></iframe>
@@ -191,14 +284,10 @@
 
         <div class="panel">
           <div class="panel-head">
-            <h2>Tailwind CSS</h2>
-            <span class="badge">zero runtime</span>
-            <span class="right">
-              <a href="https://tailwindcss.com/" target="_blank" rel="noopener"
-                >docs</a
-              >
-              <a href="./tailwind/" target="_blank">단독</a>
-            </span>
+            <a href="https://tailwindcss.com/" target="_blank" rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./tailwind/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
             <iframe
@@ -211,14 +300,10 @@
 
         <div class="panel">
           <div class="panel-head">
-            <h2>Panda CSS</h2>
-            <span class="badge">zero runtime</span>
-            <span class="right">
-              <a href="https://panda-css.com/" target="_blank" rel="noopener"
-                >docs</a
-              >
-              <a href="./panda-css/" target="_blank">단독</a>
-            </span>
+            <a href="https://panda-css.com/" target="_blank" rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./panda-css/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
             <iframe
@@ -231,14 +316,10 @@
 
         <div class="panel">
           <div class="panel-head">
-            <h2>Chakra UI</h2>
-            <span class="badge">v3 · runtime</span>
-            <span class="right">
-              <a href="https://chakra-ui.com/" target="_blank" rel="noopener"
-                >docs</a
-              >
-              <a href="./chakra-ui/" target="_blank">단독</a>
-            </span>
+            <a href="https://chakra-ui.com/" target="_blank" rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./chakra-ui/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
             <iframe
@@ -251,14 +332,10 @@
 
         <div class="panel">
           <div class="panel-head">
-            <h2>shadcn/ui</h2>
-            <span class="badge">zero runtime</span>
-            <span class="right">
-              <a href="https://ui.shadcn.com/" target="_blank" rel="noopener"
-                >docs</a
-              >
-              <a href="./shadcn-ui/" target="_blank">단독</a>
-            </span>
+            <a href="https://ui.shadcn.com/" target="_blank" rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./shadcn-ui/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
             <iframe
@@ -271,17 +348,13 @@
 
         <div class="panel">
           <div class="panel-head">
-            <h2>styled-components</h2>
-            <span class="badge">runtime</span>
-            <span class="right">
-              <a
-                href="https://styled-components.com/"
-                target="_blank"
-                rel="noopener"
-                >docs</a
-              >
-              <a href="./styled-components/" target="_blank">단독</a>
-            </span>
+            <a
+              href="https://styled-components.com/"
+              target="_blank"
+              rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./styled-components/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
             <iframe
@@ -294,17 +367,13 @@
 
         <div class="panel">
           <div class="panel-head">
-            <h2>vanilla-extract</h2>
-            <span class="badge">zero runtime</span>
-            <span class="right">
-              <a
-                href="https://vanilla-extract.style/"
-                target="_blank"
-                rel="noopener"
-                >docs</a
-              >
-              <a href="./vanilla-extract/" target="_blank">단독</a>
-            </span>
+            <a
+              href="https://vanilla-extract.style/"
+              target="_blank"
+              rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./vanilla-extract/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
             <iframe
@@ -317,8 +386,138 @@
       </div>
     </div>
 
+    <div class="modal-overlay" id="glossary">
+      <div class="modal">
+        <div class="modal-head">
+          <h2>스타일링 용어 설명</h2>
+          <button class="modal-close" id="glossaryClose" aria-label="닫기">
+            ✕
+          </button>
+        </div>
+
+        <p class="axis">
+          헷갈리는 이유: "runtime" 이 두 축에서 쓰입니다. ① CSS 를
+          <b>언제</b> 만드나(생성 시점) ② 브라우저에서 스타일용 JS 가
+          <b>도나</b>(런타임 비용).
+        </p>
+
+        <h3>CSS-in-JS</h3>
+        <p>
+          CSS 를 별도 <code>.css</code> 파일이 아니라 JS/TS 코드 안에서 작성하는
+          방식. 라이브러리가 클래스명을 자동 생성·스코프 격리해 줍니다. (예: MUI
+          Emotion, styled-components, Panda, vanilla-extract)
+        </p>
+
+        <h3>유틸리티 CSS</h3>
+        <p>
+          <code>flex</code>, <code>px-4</code> 같은 작은 단위 클래스를 조합해
+          스타일링. 빌드 때 사용한 클래스만 CSS 로 생성. CSS-in-JS 가 아닙니다.
+          (예: Tailwind, shadcn)
+        </p>
+
+        <h3>컴포넌트 라이브러리</h3>
+        <p>
+          버튼·카드 등 완성된 컴포넌트를 제공하는 묶음. (예: MUI, Chakra UI) —
+          내부 스타일 엔진은 별개(MUI=Emotion runtime, Chakra v3=Panda 기반).
+        </p>
+
+        <h3>① 생성 시점 — build-time vs runtime</h3>
+        <table>
+          <tr>
+            <th>구분</th>
+            <th>CSS 를 만드는 시점</th>
+            <th>결과</th>
+          </tr>
+          <tr>
+            <td><b>build-time</b></td>
+            <td>개발자가 빌드(<code>bun run build</code>)할 때</td>
+            <td>정적 <code>.css</code> 로 미리 추출</td>
+          </tr>
+          <tr>
+            <td><b>runtime</b></td>
+            <td>사용자가 페이지를 열어 브라우저에서 JS 실행될 때</td>
+            <td>JS 가 <code>&lt;style&gt;</code> 을 동적 주입</td>
+          </tr>
+        </table>
+
+        <h3>② 런타임 비용 — zero runtime vs runtime</h3>
+        <p>
+          <b>zero runtime</b>: 브라우저에서 스타일 생성을 위해 도는 JS 가 0.
+          보통 build-time 의 결과입니다(미리 다 구워둠 → 브라우저는 완성된 CSS
+          만 로드). <b>runtime</b>: 스타일 엔진 JS 가 브라우저에서 동작 → 약간의
+          비용, 대신 props 기반 동적 스타일에 유연.
+        </p>
+        <p class="axis">
+          비유 — zero runtime: 미리 구워둔 빵(바로 가져감) · runtime: 주문 시
+          굽는 빵(유연하지만 매번 작업).
+        </p>
+
+        <h3>이 데모의 분류</h3>
+        <table>
+          <tr>
+            <th>프레임워크</th>
+            <th>분류</th>
+            <th>런타임</th>
+          </tr>
+          <tr>
+            <td>Tailwind</td>
+            <td>유틸리티 CSS</td>
+            <td>zero runtime</td>
+          </tr>
+          <tr>
+            <td>shadcn/ui</td>
+            <td>유틸리티 CSS (Tailwind + Radix)</td>
+            <td>zero runtime</td>
+          </tr>
+          <tr>
+            <td>Panda CSS</td>
+            <td>CSS-in-JS (build-time)</td>
+            <td>zero runtime</td>
+          </tr>
+          <tr>
+            <td>vanilla-extract</td>
+            <td>CSS-in-JS (build-time)</td>
+            <td>zero runtime</td>
+          </tr>
+          <tr>
+            <td>Chakra UI v3</td>
+            <td>컴포넌트 라이브러리 (Panda 기반)</td>
+            <td>zero runtime</td>
+          </tr>
+          <tr>
+            <td>MUI</td>
+            <td>컴포넌트 라이브러리 (Emotion)</td>
+            <td>runtime</td>
+          </tr>
+          <tr>
+            <td>styled-components</td>
+            <td>CSS-in-JS</td>
+            <td>runtime</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
     <script>
       const root = document.documentElement;
+
+      // --- 용어 설명 모달 ---
+      const glossary = document.getElementById("glossary");
+      document
+        .getElementById("glossaryBtn")
+        .addEventListener("click", () => glossary.classList.add("open"));
+      function closeGlossary() {
+        glossary.classList.remove("open");
+      }
+      document
+        .getElementById("glossaryClose")
+        .addEventListener("click", closeGlossary);
+      glossary.addEventListener("click", (e) => {
+        if (e.target === glossary) closeGlossary(); // 배경 클릭 시 닫기
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeGlossary();
+      });
 
       // --- 크기 조절 ---
       const zoom = document.getElementById("zoom");
@@ -345,7 +544,21 @@
       applyZoom(parseFloat(zoom.value));
 
       // --- 전체 테마 일괄 적용 (각 iframe 에 postMessage) ---
+      // 각 앱과 동일한 토글 아이콘 (Material 달/해 SVG path)
+      const MOON_PATH =
+        "M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z";
+      const SUN_PATH =
+        "M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z";
+
       let dark = false;
+      const themeIconPath = document.querySelector("#themeIcon path");
+      const themeLabel = document.getElementById("themeLabel");
+      function updateThemeBtn() {
+        // light 상태면 '다크로 전환' 의미의 달 아이콘, dark 상태면 해 아이콘
+        themeIconPath.setAttribute("d", dark ? SUN_PATH : MOON_PATH);
+        themeLabel.textContent = dark ? "전체 라이트" : "전체 다크";
+      }
+
       const frames = () => Array.from(document.querySelectorAll("iframe"));
       function sendTheme(frame) {
         if (frame.contentWindow) {
@@ -358,9 +571,10 @@
       const themeBtn = document.getElementById("themeBtn");
       themeBtn.addEventListener("click", () => {
         dark = !dark;
-        themeBtn.textContent = dark ? "☀️ 전체 라이트" : "🌙 전체 다크";
+        updateThemeBtn();
         broadcast();
       });
+      updateThemeBtn();
       // 각 iframe 이 로드되면 현재 테마를 전달 (lazy 로드 대응)
       frames().forEach((f) => f.addEventListener("load", () => sendTheme(f)));
     </script>

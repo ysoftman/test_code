@@ -37,6 +37,8 @@
 
 /* CSS 변수를 Tailwind 색상 유틸로 매핑 (bg-background, text-foreground ...) */
 @theme inline {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
