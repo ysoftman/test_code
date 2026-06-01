@@ -41,6 +41,22 @@ uv sync
 
 `uv sync`는 `pyproject.toml` + `uv.lock` 을 기준으로 `.venv`를 만들고 의존성을 설치한다.
 
+## 패키지 업그레이드
+
+```bash
+# 1. 업그레이드 가능한(outdated) 패키지 목록 확인
+uv pip list --outdated
+
+# 2. pyproject.toml 제약 범위 내에서 모든 패키지를 최신으로 lock 갱신
+uv lock --upgrade
+
+# 3. 갱신된 lock 대로 .venv 동기화
+uv sync
+```
+
+- 특정 패키지만 갱신: `uv lock --upgrade-package <name>`
+- 버전 제약 자체를 올리려면 `uv add "<name>>=<ver>"` (또는 `pyproject.toml` 편집 후 `uv lock && uv sync`)
+
 ## 실행
 
 ### 전체 벤치마크

@@ -5,9 +5,9 @@ description = "bge-m3 vs qwen3-embedding-0.6b benchmark on Korean"
 requires-python = ">=3.10"
 dependencies = [
     "FlagEmbedding>=1.2.10",
-    "sentence-transformers>=3.0.0,<5.0",
-    "transformers>=4.44,<5.0",
-    "torch>=2.2.0",
+    "sentence-transformers>=5.0",
+    "transformers>=5.0",
+    "torch>=2.12.0",
     "numpy>=1.26,<2.3",
     "scipy>=1.11",
     "psutil>=5.9",
