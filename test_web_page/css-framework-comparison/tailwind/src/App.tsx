@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import twPkg from "tailwindcss/package.json";
+import { StressTest } from "./StressTest";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
@@ -73,8 +74,28 @@ export default function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  // 렌더 테스트 아이템: 구조는 유틸리티 클래스, 동적 색은 inline style (zero runtime)
+  const renderStressItem = (i: number, tick: number) => {
+    const hue = (i * 37 + tick * 90) % 360;
+    return (
+      <div
+        className="rounded-md border border-gray-200 bg-white p-2 text-xs text-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100"
+        style={{ borderTop: `3px solid hsl(${hue} 70% 50%)` }}
+      >
+        <div>Item {i}</div>
+        <button
+          className="mt-1 inline-flex h-[26px] items-center rounded px-2.5 text-xs font-semibold leading-none text-white"
+          style={{ background: `hsl(${hue} 65% 45%)` }}
+        >
+          Go
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className={dark ? "dark" : ""}>
+      <StressTest name="Tailwind" renderItem={renderStressItem} />
       <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
         {/* Header */}
         <header className="flex items-center gap-3 border-b border-gray-200 px-6 py-3 dark:border-gray-800">

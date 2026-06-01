@@ -18,6 +18,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import muiPkg from "@mui/material/package.json";
+import { StressTest } from "./StressTest";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
@@ -101,9 +102,53 @@ export default function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  // 렌더 테스트 아이템: 동적 색을 sx 로 줘 Emotion 런타임 스타일 생성 비용을 노출
+  const renderStressItem = (i: number, tick: number) => {
+    const hue = (i * 37 + tick * 90) % 360;
+    return (
+      <Card
+        sx={{
+          p: 1,
+          borderRadius: 1.5,
+          border: 1,
+          borderColor: "divider",
+          borderTop: 3,
+          borderTopColor: `hsl(${hue} 70% 50%)`,
+          boxShadow: "none",
+        }}
+      >
+        <Typography
+          variant="caption"
+          sx={{ display: "block", color: `hsl(${hue} 70% 40%)` }}
+        >
+          Item {i}
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            mt: "4px",
+            minWidth: 0,
+            height: "26px",
+            px: "10px",
+            py: 0,
+            fontSize: "12px",
+            fontWeight: 600,
+            lineHeight: 1,
+            borderRadius: "4px",
+            boxShadow: "none",
+            bgcolor: `hsl(${hue} 65% 45%)`,
+          }}
+        >
+          Go
+        </Button>
+      </Card>
+    );
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <StressTest name="MUI" renderItem={renderStressItem} />
       {/* Header — 다른 프레임워크와 동일한 단순 상단바 */}
       <Box
         component="header"

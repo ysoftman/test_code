@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useColorMode } from "./color-mode";
 import chakraPkg from "@chakra-ui/react/package.json";
+import { StressTest } from "./StressTest";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
@@ -79,8 +80,43 @@ export default function App() {
     return () => window.removeEventListener("message", onMsg);
   }, [setColorMode]);
 
+  // 렌더 테스트 아이템: Chakra 라이브러리 컴포넌트, 동적 색은 inline style
+  const renderStressItem = (i: number, tick: number) => {
+    const hue = (i * 37 + tick * 90) % 360;
+    return (
+      <Box
+        bg="bg.panel"
+        color="fg"
+        borderWidth="1px"
+        borderColor="border"
+        rounded="md"
+        p="2"
+        fontSize="xs"
+        style={{ borderTop: `3px solid hsl(${hue} 70% 50%)` }}
+      >
+        <Text fontSize="xs">Item {i}</Text>
+        <Button
+          colorPalette="blue"
+          mt="4px"
+          minW="0"
+          h="26px"
+          px="10px"
+          py="0"
+          fontSize="12px"
+          fontWeight="600"
+          lineHeight="1"
+          rounded="4px"
+          style={{ background: `hsl(${hue} 65% 45%)` }}
+        >
+          Go
+        </Button>
+      </Box>
+    );
+  };
+
   return (
     <Box minH="100vh">
+      <StressTest name="Chakra UI" renderItem={renderStressItem} />
       <Flex
         align="center"
         gap="3"

@@ -79,6 +79,27 @@
       .btn:hover {
         border-color: var(--accent);
       }
+      /* 강조 액션 버튼 (성능 측정 모달) — 색 채움으로 잘 보이게 */
+      .btn-accent {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #07203f;
+        font-weight: 700;
+      }
+      .btn-accent:hover {
+        filter: brightness(1.1);
+        border-color: var(--accent);
+      }
+      .btn-warn {
+        background: #f0883e;
+        border-color: #f0883e;
+        color: #2a1505;
+        font-weight: 700;
+      }
+      .btn-warn:hover {
+        filter: brightness(1.1);
+        border-color: #f0883e;
+      }
       .spacer {
         flex: 1 1 auto;
       }
@@ -296,6 +317,35 @@
         <span id="themeLabel">전체 다크</span>
       </button>
 
+      <div class="ctl">
+        <span>폰트</span>
+        <select
+          id="fontSel"
+          class="btn"
+          title="데모 폰트 (모든 프레임 적용)"
+          style="padding: 5px 8px"
+        >
+          <option value="">시스템</option>
+          <option value="Georgia, 'Times New Roman', serif">Serif</option>
+          <option value="'SF Mono', Menlo, Consolas, monospace">Mono</option>
+          <option value="'Comic Sans MS', 'Apple SD Gothic Neo', cursive">
+            Cursive
+          </option>
+        </select>
+        <select
+          id="fontSizeSel"
+          class="btn"
+          title="데모 글자 크기 (모든 프레임 적용)"
+          style="padding: 5px 8px"
+        >
+          <option value="">기본</option>
+          <option value="13px">작게</option>
+          <option value="16px">보통</option>
+          <option value="18px">크게</option>
+          <option value="22px">아주 크게</option>
+        </select>
+      </div>
+
       <button class="btn" id="glossaryBtn" title="용어 설명">
         <svg
           width="16"
@@ -311,18 +361,34 @@
         용어 설명
       </button>
 
-      <button class="btn" id="perfBtn" title="성능(번들 사이즈) 비교">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
+      <div class="ctl">
+        <select
+          id="renderCount"
+          class="btn"
+          title="렌더링할 컴포넌트 개수"
+          style="padding: 5px 8px"
         >
-          <path d="M4 9h4v11H4zm6-5h4v16h-4zm6 8h4v8h-4z" />
-        </svg>
-        성능 비교
-      </button>
+          <option value="100">100개</option>
+          <option value="500">500개</option>
+          <option value="1000">1000개</option>
+        </select>
+        <button
+          class="btn"
+          id="perfBtn"
+          title="성능 측정 (선택 개수만큼 렌더링 + 로딩·번들)"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M4 9h4v11H4zm6-5h4v16h-4zm6 8h4v8h-4z" />
+          </svg>
+          성능 측정
+        </button>
+      </div>
 
       <div class="spacer"></div>
       <span class="ctl" id="buildInfo" style="font-size: 0.75rem"
@@ -334,27 +400,27 @@
       <div class="grid">
         <div class="panel">
           <div class="panel-head">
-            <a href="https://mui.com/" target="_blank" rel="noopener">docs ↗</a>
-            <a href="./mui/" target="_blank">단독 ↗</a>
+            <a href="https://chakra-ui.com/" target="_blank" rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./chakra-ui/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
-            <iframe src="./mui/" title="MUI" loading="lazy"></iframe>
+            <iframe
+              src="./chakra-ui/"
+              title="Chakra UI"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
 
         <div class="panel">
           <div class="panel-head">
-            <a href="https://tailwindcss.com/" target="_blank" rel="noopener"
-              >docs ↗</a
-            >
-            <a href="./tailwind/" target="_blank">단독 ↗</a>
+            <a href="https://mui.com/" target="_blank" rel="noopener">docs ↗</a>
+            <a href="./mui/" target="_blank">단독 ↗</a>
           </div>
           <div class="frame">
-            <iframe
-              src="./tailwind/"
-              title="Tailwind CSS"
-              loading="lazy"
-            ></iframe>
+            <iframe src="./mui/" title="MUI" loading="lazy"></iframe>
           </div>
         </div>
 
@@ -369,22 +435,6 @@
             <iframe
               src="./panda-css/"
               title="Panda CSS"
-              loading="lazy"
-            ></iframe>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-head">
-            <a href="https://chakra-ui.com/" target="_blank" rel="noopener"
-              >docs ↗</a
-            >
-            <a href="./chakra-ui/" target="_blank">단독 ↗</a>
-          </div>
-          <div class="frame">
-            <iframe
-              src="./chakra-ui/"
-              title="Chakra UI"
               loading="lazy"
             ></iframe>
           </div>
@@ -420,6 +470,22 @@
             <iframe
               src="./styled-components/"
               title="styled-components"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <a href="https://tailwindcss.com/" target="_blank" rel="noopener"
+              >docs ↗</a
+            >
+            <a href="./tailwind/" target="_blank">단독 ↗</a>
+          </div>
+          <div class="frame">
+            <iframe
+              src="./tailwind/"
+              title="Tailwind CSS"
               loading="lazy"
             ></iframe>
           </div>
@@ -561,16 +627,55 @@
     <div class="modal-overlay" id="perf">
       <div class="modal">
         <div class="modal-head">
-          <h2>성능 비교 — 번들 사이즈</h2>
+          <h2>성능 측정</h2>
           <button class="modal-close" id="perfClose" aria-label="닫기">
             ✕
           </button>
         </div>
         <p class="axis">
-          같은 데모를 프로덕션 빌드(<code>bun run build</code>)했을 때 dist
-          크기. React(gzip ~45KB) 포함 전체. 전송·파싱 비용의 직접 지표이며,
-          숫자가 작을수록 가볍습니다. (런타임 비용은 "용어 설명" 참고)
+          렌더링(런타임)·로딩(FCP)·번들 크기 세 축으로 비교합니다. 렌더링은 아래
+          버튼으로 즉석 측정하고, FCP 는 프레임 로드 시 자동 수집됩니다.
         </p>
+
+        <h3>렌더링 성능 — 마운트 / 리렌더 (작을수록 빠름)</h3>
+        <p class="axis">
+          <b>측정 시점: 버튼 클릭 시 실시간.</b> 선택한 개수의 컴포넌트를 각
+          프레임이 한 번에 렌더하는 시간(mount)과, 그 전체를 한 번 더 그리는
+          시간(update)을 잽니다. <code>flushSync</code> 로 React 렌더+커밋을
+          동기 실행해 그 앞뒤 시간차를 측정 — CSS-in-JS 가 커밋 때 스타일을
+          생성·주입하는 비용이 그대로 잡힙니다(브라우저 페인트는 제외해 프레임
+          경계로 값이 뭉치지 않음). runtime CSS-in-JS(MUI·styled-components)는
+          컴포넌트마다 스타일을 만들어 비용이 커지고, zero-runtime 계열은
+          가볍습니다. iframe 이 lazy 로드라
+          <b>스크롤해 모든 프레임을 띄운 뒤</b>
+          실행하세요. 환경에 따라 달라져 절대값보다 상대 비교용입니다.
+        </p>
+        <p class="axis" style="margin-top: 6px">
+          <b>이 팝업이 프레임을 가려도 측정 이득은 없습니다.</b> 측정을
+          <code>flushSync</code> 기반으로 하기 때문입니다 — React 의 렌더 +
+          커밋(DOM 생성 + CSS-in-JS 스타일 규칙 주입)까지만 동기로 재고,
+          브라우저 페인트(화면에 픽셀 찍기)는 측정에서 제외합니다. "가려짐"이
+          줄여줄 수 있는 비용은 오직 페인트인데, 그 페인트가 애초에 측정값에
+          없으니 가려지든 아니든 값은 같습니다. 또 다른 요소에 z-index 로 덮인
+          것은 <code>display:none</code> 과 달라서, 가려진 iframe 도 JS·layout·
+          스타일 주입을 그대로 다 수행합니다(7/7 프레임 응답이 그 증거). 7 개
+          프레임이 동일 조건으로 덮이므로 상대 비교에도 영향이 없습니다.
+        </p>
+        <div
+          style="display: flex; gap: 8px; align-items: center; margin: 8px 0"
+        >
+          <button class="btn btn-accent" id="renderRun">↻ 다시 실행</button>
+          <button class="btn btn-warn" id="renderClose">
+            ✕ 생성 컴포넌트 닫기
+          </button>
+          <span class="axis" id="renderStatus">
+            툴바의 "성능 측정" 버튼으로 실행됩니다.
+          </span>
+        </div>
+        <p class="axis" style="margin-top: 10px">마운트 (mount)</p>
+        <div id="mountOut"></div>
+        <p class="axis" style="margin-top: 10px">리렌더 (update)</p>
+        <div id="updateOut"></div>
 
         <h3>로딩 속도 (FCP) — 작을수록 빠름</h3>
         <p class="axis">
@@ -582,6 +687,11 @@
         <div id="fcpOut"></div>
 
         <h3>전송 크기 (JS + CSS, gzip) — 작을수록 좋음</h3>
+        <p class="axis">
+          같은 데모를 프로덕션 빌드(<code>bun run build</code>)했을 때 dist
+          크기. React(gzip ~45KB) 포함 전체. 전송·파싱 비용의 직접 지표이며,
+          숫자가 작을수록 가볍습니다. (런타임 비용은 "용어 설명" 참고)
+        </p>
         <p class="axis">
           <b>측정 시점: 빌드 시 1회(수동 입력 고정값)</b> · 기준 빌드 2026-06-01
           (각 프레임 최신 버전). 코드·버전 변경 시 자동 갱신되지 않습니다.
@@ -728,13 +838,15 @@
         if (e.target === glossary) closeGlossary(); // 배경 클릭 시 닫기
       });
 
-      // --- 성능 비교 모달 ---
+      // --- 성능 측정 모달 ---
       const perf = document.getElementById("perf");
+      // "성능 측정" 버튼 = 선택 개수만큼 렌더링 테스트 실행 + 모달 열기
       document
         .getElementById("perfBtn")
-        .addEventListener("click", () => perf.classList.add("open"));
+        .addEventListener("click", () => runStress());
       function closePerf() {
         perf.classList.remove("open");
+        closeStress(); // 모달을 닫으면 각 프레임의 생성 컴포넌트도 일괄 닫기
       }
       document.getElementById("perfClose").addEventListener("click", closePerf);
       perf.addEventListener("click", (e) => {
@@ -760,11 +872,108 @@
           .join("");
       }
       renderFcp();
+
+      // --- 렌더링 성능(마운트/리렌더) 수집 & 막대그래프 ---
+      const renderData = {}; // name -> { mount?: number, update?: number }
+      const mountOut = document.getElementById("mountOut");
+      const updateOut = document.getElementById("updateOut");
+      const renderStatus = document.getElementById("renderStatus");
+      const TOTAL_FRAMES = document.querySelectorAll("iframe").length;
+
+      function renderBars(metric, el) {
+        const rows = Object.entries(renderData)
+          .filter(([, v]) => typeof v[metric] === "number")
+          .sort((a, b) => a[1][metric] - b[1][metric]);
+        if (!rows.length) {
+          el.innerHTML = '<p class="axis">실행하면 표시됩니다.</p>';
+          return;
+        }
+        const max = Math.max(...rows.map((r) => r[1][metric]));
+        el.innerHTML = rows
+          .map(([name, v]) => {
+            const ms = v[metric];
+            const pct = max ? Math.round((ms / max) * 100) : 0;
+            return `<div class="bar-row"><span class="name">${name}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%"></span></span><span class="val">${ms}ms</span></div>`;
+          })
+          .join("");
+      }
+      function renderRenderBars() {
+        renderBars("mount", mountOut);
+        renderBars("update", updateOut);
+        const done = Object.values(renderData).filter(
+          (v) => typeof v.update === "number",
+        ).length;
+        renderStatus.textContent = `응답 ${done}/${TOTAL_FRAMES} 프레임`;
+      }
+      renderRenderBars();
+
+      // 렌더링이 끝나면(모든 프레임 응답) 성능 측정 팝업을 띄운다.
+      // 응답 없는(미로드) 프레임 대비 타임아웃 폴백.
+      let awaitingRun = 0; // 기다리는 프레임 수 (0 = 대기 안 함)
+      let awaitTimer = null;
+      function showPerfNow() {
+        if (awaitTimer) {
+          clearTimeout(awaitTimer);
+          awaitTimer = null;
+        }
+        awaitingRun = 0;
+        perf.classList.add("open");
+      }
+      function checkRenderDone() {
+        if (!awaitingRun) return;
+        const done = Object.values(renderData).filter(
+          (v) => typeof v.update === "number",
+        ).length;
+        if (done >= awaitingRun) {
+          awaitingRun = 0; // 중복 방지
+          // 완성된 컴포넌트를 잠깐 보여준 뒤 팝업
+          setTimeout(showPerfNow, 450);
+        }
+      }
+
+      function runStress() {
+        const count =
+          parseInt(document.getElementById("renderCount").value, 10) || 100;
+        for (const k in renderData) delete renderData[k];
+        // 렌더링 동안 생성 컴포넌트가 보이도록 팝업은 닫아 둔다
+        perf.classList.remove("open");
+        let requested = 0;
+        frames().forEach((f) => {
+          if (f.contentWindow) {
+            f.contentWindow.postMessage({ type: "stressRender", count }, "*");
+            requested++;
+          }
+        });
+        renderRenderBars();
+        renderStatus.textContent = `${count.toLocaleString()}개 요청 · ${requested}/${TOTAL_FRAMES} 프레임 (로드 안 된 프레임은 응답 없음)`;
+        // 렌더 완료 시 팝업 표시 (폴백: 응답이 늦거나 없으면 3초 후 표시)
+        awaitingRun = requested;
+        if (awaitTimer) clearTimeout(awaitTimer);
+        awaitTimer = setTimeout(showPerfNow, 3000);
+      }
+      // 각 프레임에 생성된 렌더 테스트 컴포넌트를 일괄로 닫는다
+      function closeStress() {
+        frames().forEach((f) => {
+          if (f.contentWindow) {
+            f.contentWindow.postMessage({ type: "stressClose" }, "*");
+          }
+        });
+      }
+      document.getElementById("renderRun").addEventListener("click", runStress);
+      document
+        .getElementById("renderClose")
+        .addEventListener("click", closeStress);
+
       window.addEventListener("message", (e) => {
         const d = e.data;
-        if (d && d.type === "perf" && typeof d.fcp === "number") {
+        if (!d || d.type !== "perf") return;
+        if (typeof d.fcp === "number") {
           fcpData[d.name] = d.fcp;
           renderFcp();
+        } else if (d.metric && typeof d.ms === "number") {
+          (renderData[d.name] ||= {})[d.metric] = d.ms;
+          renderRenderBars();
+          checkRenderDone();
         }
       });
 
@@ -833,8 +1042,47 @@
         broadcast();
       });
       updateThemeBtn();
-      // 각 iframe 이 로드되면 현재 테마를 전달 (lazy 로드 대응)
-      frames().forEach((f) => f.addEventListener("load", () => sendTheme(f)));
+
+      // --- 폰트 / 글자 크기 일괄 적용 (각 iframe 에 postMessage, localStorage 유지) ---
+      const fontSel = document.getElementById("fontSel");
+      const fontSizeSel = document.getElementById("fontSizeSel");
+      let demoFont = localStorage.getItem("cfcFont") || "";
+      let demoFontSize = localStorage.getItem("cfcFontSize") || "";
+      fontSel.value = demoFont;
+      fontSizeSel.value = demoFontSize;
+      function sendFont(frame) {
+        if (frame.contentWindow) {
+          frame.contentWindow.postMessage(
+            { type: "setFont", font: demoFont },
+            "*",
+          );
+          frame.contentWindow.postMessage(
+            { type: "setFontSize", size: demoFontSize },
+            "*",
+          );
+        }
+      }
+      function broadcastFont() {
+        frames().forEach(sendFont);
+      }
+      fontSel.addEventListener("change", () => {
+        demoFont = fontSel.value;
+        localStorage.setItem("cfcFont", demoFont);
+        broadcastFont();
+      });
+      fontSizeSel.addEventListener("change", () => {
+        demoFontSize = fontSizeSel.value;
+        localStorage.setItem("cfcFontSize", demoFontSize);
+        broadcastFont();
+      });
+
+      // 각 iframe 이 로드되면 현재 테마·폰트·글자크기를 전달 (lazy 로드 대응)
+      frames().forEach((f) =>
+        f.addEventListener("load", () => {
+          sendTheme(f);
+          sendFont(f);
+        }),
+      );
     </script>
   </body>
 </html>

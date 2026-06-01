@@ -1,6 +1,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { css, cx } from "../styled-system/css";
 import pandaPkg from "@pandacss/dev/package.json";
+import { StressTest } from "./StressTest";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
@@ -128,6 +129,44 @@ export default function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  // 렌더 테스트 아이템: 구조는 빌드타임 css(), 동적 색은 inline style (zero runtime)
+  const renderStressItem = (i: number, tick: number) => {
+    const hue = (i * 37 + tick * 90) % 360;
+    return (
+      <div
+        className={css({
+          rounded: "md",
+          border: "1px solid var(--border)",
+          background: "var(--card)",
+          color: "var(--fg)",
+          p: "2",
+          fontSize: "xs",
+        })}
+        style={{ borderTop: `3px solid hsl(${hue} 70% 50%)` }}
+      >
+        <div>Item {i}</div>
+        <button
+          className={css({
+            mt: "1",
+            display: "inline-flex",
+            alignItems: "center",
+            height: "26px",
+            rounded: "sm",
+            px: "2.5",
+            fontSize: "12px",
+            fontWeight: "semibold",
+            lineHeight: "1",
+            color: "white",
+            cursor: "pointer",
+          })}
+          style={{ background: `hsl(${hue} 65% 45%)` }}
+        >
+          Go
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div
       style={dark ? darkVars : lightVars}
@@ -137,6 +176,7 @@ export default function App() {
         color: "var(--fg)",
       })}
     >
+      <StressTest name="Panda CSS" renderItem={renderStressItem} />
       {/* Header */}
       <header
         className={css({

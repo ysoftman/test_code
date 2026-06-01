@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import twPkg from "tailwindcss/package.json";
+import { StressTest } from "./StressTest";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
@@ -74,8 +75,28 @@ export default function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  // 렌더 테스트 아이템: shadcn Button(CVA) + 유틸리티 클래스, 동적 색은 inline style
+  const renderStressItem = (i: number, tick: number) => {
+    const hue = (i * 37 + tick * 90) % 360;
+    return (
+      <div
+        className="rounded-md border bg-card p-2 text-xs text-card-foreground"
+        style={{ borderTop: `3px solid hsl(${hue} 70% 50%)` }}
+      >
+        <div>Item {i}</div>
+        <Button
+          className="mt-1 inline-flex h-[26px] items-center rounded px-2.5 py-0 text-xs font-semibold leading-none text-white"
+          style={{ background: `hsl(${hue} 65% 45%)` }}
+        >
+          Go
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <div className={dark ? "dark" : ""}>
+      <StressTest name="shadcn/ui" renderItem={renderStressItem} />
       <div className="min-h-screen bg-background text-foreground">
         {/* Header */}
         <header className="flex items-center gap-3 border-b px-6 py-3">

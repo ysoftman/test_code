@@ -188,6 +188,31 @@ export const divider = style({
   margin: 0,
 });
 
+// 렌더 테스트 아이템: 구조는 빌드타임 추출, 동적 색은 inline style (zero runtime)
+export const stressItem = style({
+  border: `1px solid ${vars.color.border}`,
+  background: vars.color.card,
+  color: vars.color.fg,
+  borderRadius: 6,
+  padding: 8,
+  fontSize: 12,
+});
+
+export const stressGo = style({
+  marginTop: 4,
+  display: "inline-flex",
+  alignItems: "center",
+  height: 26,
+  padding: "0 10px",
+  border: "none",
+  borderRadius: 4,
+  fontSize: 12,
+  fontWeight: 600,
+  lineHeight: 1,
+  color: "#fff",
+  cursor: "pointer",
+});
+
 export const pre = style({
   marginTop: 16,
   maxWidth: "24rem",

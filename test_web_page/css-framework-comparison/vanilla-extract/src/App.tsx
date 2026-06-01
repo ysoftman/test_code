@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as s from "./styles.css";
 import vePkg from "@vanilla-extract/css/package.json";
+import { StressTest } from "./StressTest";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
@@ -63,8 +64,27 @@ export default function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  const renderStressItem = (i: number, tick: number) => {
+    const hue = (i * 37 + tick * 90) % 360;
+    return (
+      <div
+        className={s.stressItem}
+        style={{ borderTop: `3px solid hsl(${hue} 70% 50%)` }}
+      >
+        <div>Item {i}</div>
+        <button
+          className={s.stressGo}
+          style={{ background: `hsl(${hue} 65% 45%)` }}
+        >
+          Go
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className={`${isDark ? s.darkClass : s.lightClass} ${s.root}`}>
+      <StressTest name="vanilla-extract" renderItem={renderStressItem} />
       <header className={s.header}>
         <h1 className={s.title}>vanilla-extract</h1>
         <span className={s.subtle}>

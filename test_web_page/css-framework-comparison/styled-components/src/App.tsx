@@ -5,6 +5,7 @@ import styled, {
   type DefaultTheme,
 } from "styled-components";
 import scPkg from "styled-components/package.json";
+import { StressTest } from "./StressTest";
 
 // 모든 프레임워크가 공유하는 데모 사양:
 // 1) 다크모드 토글  2) 버튼 변형  3) 카드  4) 폼(입력 -> 제출 결과 표시)
@@ -249,6 +250,33 @@ const Divider = styled.hr`
   margin: 0;
 `;
 
+// 렌더 테스트 아이템: 동적 $hue 마다 새 클래스가 런타임 생성됨 (CSS-in-JS 비용)
+const StressItem = styled.div<{ $hue: number }>`
+  border: 1px solid ${(p) => p.theme.colors.border};
+  border-top: 3px solid ${(p) => `hsl(${p.$hue} 70% 50%)`};
+  background: ${(p) => p.theme.colors.card};
+  color: ${(p) => p.theme.colors.fg};
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 12px;
+`;
+
+const StressGo = styled.button<{ $hue: number }>`
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  background: ${(p) => `hsl(${p.$hue} 65% 45%)`};
+`;
+
 export default function App() {
   const [isDark, setIsDark] = useState(false);
 
@@ -266,9 +294,20 @@ export default function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  const renderStressItem = (i: number, tick: number) => {
+    const hue = (i * 37 + tick * 90) % 360;
+    return (
+      <StressItem $hue={hue}>
+        <div>Item {i}</div>
+        <StressGo $hue={hue}>Go</StressGo>
+      </StressItem>
+    );
+  };
+
   return (
     <ThemeProvider theme={isDark ? dark : light}>
       <GlobalStyle />
+      <StressTest name="styled-components" renderItem={renderStressItem} />
       <Header>
         <Title>styled-components</Title>
         <Subtle>
