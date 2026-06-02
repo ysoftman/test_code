@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "ysoftman-project",
+      "name": "ysoftman-vue-app",
       "dependencies": {
         "pinia": "^3.0.4",
         "vue": "^3.5.25",
