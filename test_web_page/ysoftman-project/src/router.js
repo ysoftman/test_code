@@ -1,15 +1,15 @@
 /* eslint-disable */
 import { createRouter, createWebHistory } from "vue-router";
-import HelloWorld from "@/components/HelloWorld.vue";
 import Alert from "@/components/Alert.vue";
 import BindMessage from "@/components/BindMessage.vue";
-import DataTable from "@/components/DataTable.vue";
 import DataList from "@/components/DataList.vue";
-import MyComponent from "@/components/MyComponent.vue";
-import ModifyArray from "@/components/ModifyArray.vue";
+import DataTable from "@/components/DataTable.vue";
 import Draggable from "@/components/Draggable.vue";
-import VuetifyDark from "@/components/VuetifyDark.vue";
+import HelloWorld from "@/components/HelloWorld.vue";
+import ModifyArray from "@/components/ModifyArray.vue";
+import MyComponent from "@/components/MyComponent.vue";
 import NotFound from "@/components/NotFound.vue";
+import VuetifyDark from "@/components/VuetifyDark.vue";
 
 const routes = [
   {
@@ -70,7 +70,8 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  // base 경로(GitHub Pages 서브패스)는 Vite 의 BASE_URL 을 따른다.
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 

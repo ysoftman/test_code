@@ -39,6 +39,14 @@ jobs:
         working-directory: test_web_page/css-framework-comparison
         run: bun run build:all
 
+      - name: Install ysoftman-project dependencies
+        working-directory: test_web_page/ysoftman-project
+        run: bun install
+
+      - name: Build ysoftman-project
+        working-directory: test_web_page/ysoftman-project
+        run: bun run build
+
       - name: Assemble _site
         run: |
           set -euo pipefail
@@ -59,6 +67,15 @@ jobs:
               cp -r "$dir/dist/." "$OUT/css-framework-comparison/$app/"
             fi
           done
+
+          # 2b) ysoftman-project (Vue + Vuetify SPA)
+          if [ -d "$SRC/ysoftman-project/dist" ]; then
+            echo "include built app: ysoftman-project"
+            mkdir -p "$OUT/ysoftman-project"
+            cp -r "$SRC/ysoftman-project/dist/." "$OUT/ysoftman-project/"
+            # SPA(history mode) 새로고침/딥링크 대비 404 fallback
+            cp "$OUT/ysoftman-project/index.html" "$OUT/ysoftman-project/404.html"
+          fi
 
           # 3) build info (배포 날짜 / 커밋 버전) — 랜딩 우측 상단에 표시
           DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
