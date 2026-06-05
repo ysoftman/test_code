@@ -1,6 +1,8 @@
 <!--
+이렇게도 쓸 수 있다라는 것을 알기 위해 남겨놓음.
 PULL_REQUEST_TEMPLATE/ 은 다음과 같이 url 파라메터로 명시해서 pr 을 생성해야해서 불편하다.
 https://github.com/ysoftman/test_code/compare/45-fix-typo?expand=1&template=pr_release.md
+그냥 .github/pull_request_template.md 만 명세해놓으면 자동으로 인식된다.
 -->
 
 # 📝 PR 요약
