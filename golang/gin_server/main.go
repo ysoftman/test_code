@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gin_server/docs"
 	"io"
 	"log"
 	"net/http"
@@ -12,6 +11,8 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
+
+	"gin_server/docs"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
@@ -235,6 +236,11 @@ func main() {
 		if param.Latency > time.Minute {
 			param.Latency = param.Latency.Truncate(time.Second)
 		}
+		// json.Marshal 은 interface{} 키를 지원하지 않으므로 map[string]any 로 변환
+		keys := make(map[string]any, len(param.Keys))
+		for k, v := range param.Keys {
+			keys[fmt.Sprintf("%v", k)] = v
+		}
 		p := struct {
 			// Request   *http.Request
 			TimeStamp time.Time
@@ -264,7 +270,7 @@ func main() {
 			Method:       param.Method,
 			Path:         param.Path,
 			ErrorMessage: param.ErrorMessage,
-			Keys:         param.Keys,
+			Keys:         keys,
 		}
 		// param.Request = nil
 		out, err := json.Marshal(p)
