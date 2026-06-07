@@ -1,0 +1,20 @@
+/* 페이지 스타일 — 전체 화면 캔버스, 어두운 우주 배경. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0e1a;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+#app canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

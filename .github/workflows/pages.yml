@@ -55,6 +55,14 @@ jobs:
         working-directory: test_web_page/ysoftman-react-app
         run: bun run build
 
+      - name: Install particle dependencies
+        working-directory: test_web_page/particle
+        run: bun install
+
+      - name: Build particle
+        working-directory: test_web_page/particle
+        run: bun run build
+
       - name: Assemble _site
         run: |
           set -euo pipefail
@@ -90,6 +98,13 @@ jobs:
             echo "include built app: ysoftman-react-app"
             mkdir -p "$OUT/ysoftman-react-app"
             cp -r "$SRC/ysoftman-react-app/build/." "$OUT/ysoftman-react-app/"
+          fi
+
+          # 2d) particle (PixiJS + Matter.js 게임)
+          if [ -d "$SRC/particle/dist" ]; then
+            echo "include built app: particle"
+            mkdir -p "$OUT/particle"
+            cp -r "$SRC/particle/dist/." "$OUT/particle/"
           fi
 
           # 3) build info (배포 날짜 / 커밋 버전) — 랜딩 우측 상단에 표시
