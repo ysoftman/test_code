@@ -1,6 +1,7 @@
 // 통합 엔트리포인트 — 코어 엔진, 엔티티, 게임플레이 모듈을 와이어링한다.
 import { Body } from "matter-js";
 import "./style.css";
+import { playHit, unlockAudio } from "./audio";
 import { COLORS } from "./constants";
 import { Game } from "./core/game";
 import { createRenderer } from "./core/renderer";
@@ -26,6 +27,12 @@ async function bootstrap(): Promise<void> {
   // 터치 기기에서는 화면 위 가상 버튼 오버레이를 추가한다 (키보드와 동일한 InputState 공유).
   // 데스크탑에서는 null 을 반환하고 아무 DOM 도 만들지 않는다.
   createTouchControls(input);
+
+  // 브라우저 자동재생 정책: 첫 사용자 제스처에서 오디오 컨텍스트를 깨운다.
+  const unlock = (): void => unlockAudio();
+  for (const ev of ["keydown", "pointerdown", "touchstart"] as const) {
+    window.addEventListener(ev, unlock, { once: true });
+  }
   const game = new Game(app, input);
 
   const hud = new Hud(app.screen.width, app.screen.height, INITIAL_LIVES);
@@ -59,6 +66,7 @@ async function bootstrap(): Promise<void> {
     for (const fragment of rock.split(hitX, hitY)) {
       ctx.spawn(fragment);
     }
+    playHit();
     hud.rockDestroyed(rock.sizeLevel);
 
     // 살아있는 바위가 하나도 없으면 웨이브 클리어 (분열 조각도 바위로 집계).

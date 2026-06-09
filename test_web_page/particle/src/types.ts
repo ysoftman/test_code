@@ -1,8 +1,8 @@
 // 공유 계약(인터페이스) 정의.
-// 모듈 의존 규칙:
-//   core/**      import 가능: types, constants, matter-js, pixi.js  (entities/, game/ 금지)
-//   entities/**  import 가능: types, constants, matter-js, pixi.js  (core/, game/ 금지)
-//   game/**      import 가능: types, constants, pixi.js             (core/, entities/ 금지)
+// 모듈 의존 규칙 (audio 는 게임 로직 없는 리프 유틸이라 어디서든 import 가능):
+//   core/**      import 가능: types, constants, audio, matter-js, pixi.js  (entities/, game/ 금지)
+//   entities/**  import 가능: types, constants, audio, matter-js, pixi.js  (core/, game/ 금지)
+//   game/**      import 가능: types, constants, audio, pixi.js             (core/, entities/ 금지)
 //   main.ts      모든 모듈을 와이어링하는 통합 지점
 
 import type { Body } from "matter-js";

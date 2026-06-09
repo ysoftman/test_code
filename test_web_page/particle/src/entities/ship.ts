@@ -1,6 +1,7 @@
 // 플레이어 비행체 — ctx.input 의 키보드 입력으로 조종되는 시안색 삼각형.
 import { Bodies, Body } from "matter-js";
 import { Container, Graphics } from "pixi.js";
+import { playFire } from "../audio";
 import { BULLET, COLLISION, COLORS, SHIP } from "../constants";
 import type { Entity, GameContext } from "../types";
 import { Bullet } from "./bullet";
@@ -121,6 +122,7 @@ export class Ship implements Entity {
           body.velocity.y,
         ),
       );
+      playFire();
     }
 
     if (this.invulnerableLeft > 0) {
