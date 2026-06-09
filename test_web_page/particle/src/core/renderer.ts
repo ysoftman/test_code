@@ -14,11 +14,21 @@ export async function createRenderer(parent?: HTMLElement): Promise<Application>
     resizeTo: window,
     background: COLORS.background,
     antialias: true,
-    resolution: window.devicePixelRatio || 1,
+    // 고해상도 모바일 성능 보호: devicePixelRatio 를 최대 2 로 캡.
+    resolution: Math.min(window.devicePixelRatio || 1, 2),
     autoDensity: true,
   });
 
   const host = parent ?? document.getElementById("app") ?? document.body;
   host.appendChild(app.canvas);
+
+  // resizeTo:window 는 window 의 resize 이벤트를 따라가므로 모바일 주소창
+  // 표시/숨김과 일반 회전에도 반응한다. 다만 일부 모바일 브라우저는
+  // orientationchange 직후 resize 가 누락되거나 옛 크기를 보고할 수 있어,
+  // 안전하게 한 번 더 강제 리사이즈한다.
+  window.addEventListener("orientationchange", () => {
+    app.resize();
+  });
+
   return app;
 }

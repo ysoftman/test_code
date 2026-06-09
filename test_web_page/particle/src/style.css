@@ -3,9 +3,30 @@ html,
 body {
   margin: 0;
   padding: 0;
+  /* iOS 주소창 출렁임 대응: 기본 100% 폴백, 지원 브라우저는 아래 @supports 로 100dvh. */
   height: 100%;
   overflow: hidden;
   background: #0b0e1a;
+  /* 모바일: 터치 제스처(스크롤/줌)·선택·탭 하이라이트 비활성화. */
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 동적 뷰포트 단위 지원 브라우저는 100dvh 로 iOS 주소창 변화에 맞춘다. */
+@supports (height: 100dvh) {
+  html,
+  body {
+    height: 100dvh;
+  }
+}
+
+/* 바운스 스크롤/주소창 변화로 인한 레이아웃 출렁임 방지: body 고정. */
+body {
+  position: fixed;
+  inset: 0;
 }
 
 #app {

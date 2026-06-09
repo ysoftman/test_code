@@ -1,0 +1,135 @@
+/* 모바일 터치 조작 오버레이 스타일.
+   - 화면 전체를 덮는 오버레이는 pointer-events:none 으로 캔버스 입력을 가리지 않는다.
+   - pointer-events 는 상속 속성이므로 실제 버튼에만 auto 로 되살린다.
+   - 노치/홈바를 피하기 위해 env(safe-area-inset-*) 를 사용한다. */
+
+.touch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  /* 오버레이 자체는 입력을 통과시킨다(캔버스 조작 보존). */
+  pointer-events: none;
+  /* 스크롤/줌/하이라이트 방지. */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-cluster {
+  position: absolute;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 3vmin);
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5vmin;
+}
+
+/* 왼쪽: 4방향 십자(D-패드). 빈 모서리를 둔 3×3 그리드로 한 엄지가 가운데에서
+   상하좌우로 닿게 한다. ▲추진(위) / ◀▶회전(좌우) / ▼후진(아래). */
+.touch-dpad {
+  left: calc(env(safe-area-inset-left, 0px) + 3vmin);
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+  gap: 1.2vmin;
+  place-items: center;
+}
+
+.touch-up {
+  grid-column: 2;
+  grid-row: 1;
+}
+.touch-turnleft {
+  grid-column: 1;
+  grid-row: 2;
+}
+.touch-turnright {
+  grid-column: 3;
+  grid-row: 2;
+}
+.touch-down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.touch-right {
+  right: calc(env(safe-area-inset-right, 0px) + 3vmin);
+}
+
+.touch-btn {
+  /* 버튼만 입력을 받는다. */
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  box-sizing: border-box;
+  min-width: 64px;
+  min-height: 64px;
+  width: 16vmin;
+  height: 16vmin;
+  max-width: 110px;
+  max-height: 110px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid rgba(120, 220, 255, 0.55);
+  border-radius: 50%;
+  background: rgba(20, 40, 60, 0.35);
+  color: rgba(200, 240, 255, 0.9);
+  font-family: system-ui, sans-serif;
+  font-size: 4.2vmin;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  transition:
+    background 60ms linear,
+    transform 60ms linear,
+    border-color 60ms linear;
+}
+
+/* 4방향 화살표 버튼은 약간 작게 해 십자 묶음이 한 엄지 반경에 들어오게 한다. */
+.touch-dir {
+  min-width: 58px;
+  min-height: 58px;
+  width: 14vmin;
+  height: 14vmin;
+  max-width: 92px;
+  max-height: 92px;
+  font-size: 4.6vmin;
+}
+
+/* FIRE 는 오른쪽 엄지 전용 주 액션 — 라벨 텍스트라 폰트를 줄이고 크고 둥글게. */
+.touch-fire {
+  min-width: 84px;
+  min-height: 84px;
+  width: 22vmin;
+  height: 22vmin;
+  max-width: 140px;
+  max-height: 140px;
+  border-radius: 50%;
+  font-size: 3.6vmin;
+  letter-spacing: 0.04em;
+  border-color: rgba(255, 140, 120, 0.6);
+  color: rgba(255, 210, 200, 0.92);
+  background: rgba(60, 24, 20, 0.35);
+}
+
+/* 눌림 표시 — JS 의 정확한 상태(.is-active) 와 브라우저 :active 둘 다 처리. */
+.touch-btn.is-active,
+.touch-btn:active {
+  background: rgba(120, 220, 255, 0.45);
+  border-color: rgba(160, 240, 255, 0.95);
+  transform: scale(0.94);
+}
+
+.touch-fire.is-active,
+.touch-fire:active {
+  background: rgba(255, 140, 120, 0.5);
+  border-color: rgba(255, 180, 160, 0.95);
+}

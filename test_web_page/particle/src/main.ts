@@ -10,6 +10,7 @@ import { Ship } from "./entities/ship";
 import { Hud } from "./game/hud";
 import { createInput } from "./game/input";
 import { waveSpawns } from "./game/spawner";
+import { createTouchControls } from "./game/touch";
 import type { Entity, GameContext, RockEntity } from "./types";
 
 const INITIAL_LIVES = 3;
@@ -22,6 +23,9 @@ async function bootstrap(): Promise<void> {
   app.stage.sortableChildren = true;
 
   const input = createInput();
+  // 터치 기기에서는 화면 위 가상 버튼 오버레이를 추가한다 (키보드와 동일한 InputState 공유).
+  // 데스크탑에서는 null 을 반환하고 아무 DOM 도 만들지 않는다.
+  createTouchControls(input);
   const game = new Game(app, input);
 
   const hud = new Hud(app.screen.width, app.screen.height, INITIAL_LIVES);
@@ -97,11 +101,15 @@ async function bootstrap(): Promise<void> {
     }
   });
 
-  // 게임 오버 후 R 키로 재시작.
+  // 게임 오버 후 재시작: 데스크탑은 R 키, 터치 기기는 화면 탭.
   window.addEventListener("keydown", (e) => {
     if (isGameOver && e.code === "KeyR") {
       window.location.reload();
     }
+  });
+  // 터치 기기에서는 게임 오버 후 화면 어디든 탭하면 재시작 (HUD 의 "TAP TO RESTART" 와 일치).
+  window.addEventListener("touchend", () => {
+    if (isGameOver) window.location.reload();
   });
 
   spawnWave(game);
