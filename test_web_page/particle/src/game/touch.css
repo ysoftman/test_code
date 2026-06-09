@@ -16,44 +16,50 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.touch-cluster {
+/* 좌하단: 아날로그 조이스틱. 누른 채 드래그하면 360° 방향으로 조종한다.
+   베이스(고정 원)와 그 안에서 움직이는 썸(작은 원)으로 구성. */
+.touch-joy-base {
   position: absolute;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 3vmin);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 4vmin);
+  left: calc(env(safe-area-inset-left, 0px) + 4vmin);
+  box-sizing: border-box;
+
+  /* 입력은 베이스가 받는다(오버레이는 통과). */
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  width: 40vmin;
+  height: 40vmin;
+  min-width: 130px;
+  min-height: 130px;
+  max-width: 200px;
+  max-height: 200px;
+
   display: flex;
-  align-items: flex-end;
-  gap: 2.5vmin;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid rgba(120, 220, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(20, 40, 60, 0.28);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
-/* 왼쪽: 4방향 십자(D-패드). 빈 모서리를 둔 3×3 그리드로 한 엄지가 가운데에서
-   상하좌우로 닿게 한다. ▲추진(위) / ◀▶회전(좌우) / ▼후진(아래). */
-.touch-dpad {
-  left: calc(env(safe-area-inset-left, 0px) + 3vmin);
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  grid-template-rows: repeat(3, auto);
-  gap: 1.2vmin;
-  place-items: center;
-}
-
-.touch-up {
-  grid-column: 2;
-  grid-row: 1;
-}
-.touch-turnleft {
-  grid-column: 1;
-  grid-row: 2;
-}
-.touch-turnright {
-  grid-column: 3;
-  grid-row: 2;
-}
-.touch-down {
-  grid-column: 2;
-  grid-row: 3;
-}
-
-.touch-right {
-  right: calc(env(safe-area-inset-right, 0px) + 3vmin);
+.touch-joy-thumb {
+  /* 썸 자체는 입력을 받지 않는다(베이스가 처리). */
+  pointer-events: none;
+  width: 45%;
+  height: 45%;
+  border-radius: 50%;
+  border: 2px solid rgba(160, 240, 255, 0.85);
+  background: rgba(120, 220, 255, 0.42);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
+  /* JS 가 translate 로 위치를 갱신; 부드럽게 따라오게 짧은 트랜지션. */
+  transition: transform 40ms linear;
 }
 
 .touch-btn {
@@ -93,25 +99,17 @@
     border-color 60ms linear;
 }
 
-/* 4방향 화살표 버튼은 약간 작게 해 십자 묶음이 한 엄지 반경에 들어오게 한다. */
-.touch-dir {
-  min-width: 58px;
-  min-height: 58px;
-  width: 14vmin;
-  height: 14vmin;
-  max-width: 92px;
-  max-height: 92px;
-  font-size: 4.6vmin;
-}
-
-/* FIRE 는 오른쪽 엄지 전용 주 액션 — 라벨 텍스트라 폰트를 줄이고 크고 둥글게. */
+/* FIRE 는 오른쪽 엄지 전용 주 액션 — 우하단 고정, 라벨 텍스트라 폰트를 줄이고 크고 둥글게. */
 .touch-fire {
+  position: absolute;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 4vmin);
+  right: calc(env(safe-area-inset-right, 0px) + 4vmin);
   min-width: 84px;
   min-height: 84px;
-  width: 22vmin;
-  height: 22vmin;
-  max-width: 140px;
-  max-height: 140px;
+  width: 24vmin;
+  height: 24vmin;
+  max-width: 150px;
+  max-height: 150px;
   border-radius: 50%;
   font-size: 3.6vmin;
   letter-spacing: 0.04em;

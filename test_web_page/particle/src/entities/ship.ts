@@ -64,27 +64,46 @@ export class Ship implements Entity {
 
     // 즉답성 있는 회전을 위해 각도를 직접 제어; 충돌로 비행체가 회전하지 않는다.
     let angle = body.angle;
-    if (input.turnLeft) angle -= SHIP.turnSpeed * dtScale;
-    if (input.turnRight) angle += SHIP.turnSpeed * dtScale;
-    if (angle !== body.angle) Body.setAngle(body, angle);
-    Body.setAngularVelocity(body, 0);
+    let thrusting = false;
+
+    if (input.aim) {
+      // 터치 조이스틱: 비행체를 조이스틱 방향(360°)으로 향하게 하고 세기에 비례해 추진.
+      angle = input.aim.angle;
+      Body.setAngle(body, angle);
+      Body.setAngularVelocity(body, 0);
+      const f = SHIP.thrustForce * input.aim.magnitude;
+      Body.applyForce(body, body.position, {
+        x: Math.cos(angle) * f,
+        y: Math.sin(angle) * f,
+      });
+      thrusting = input.aim.magnitude > 0;
+    } else {
+      // 키보드: 좌우 회전 + 전/후진.
+      if (input.turnLeft) angle -= SHIP.turnSpeed * dtScale;
+      if (input.turnRight) angle += SHIP.turnSpeed * dtScale;
+      if (angle !== body.angle) Body.setAngle(body, angle);
+      Body.setAngularVelocity(body, 0);
+
+      const dirX = Math.cos(angle);
+      const dirY = Math.sin(angle);
+      if (input.thrust) {
+        Body.applyForce(body, body.position, {
+          x: dirX * SHIP.thrustForce,
+          y: dirY * SHIP.thrustForce,
+        });
+        thrusting = true;
+      }
+      if (input.reverse) {
+        const f = SHIP.thrustForce * REVERSE_FORCE_RATIO;
+        Body.applyForce(body, body.position, { x: -dirX * f, y: -dirY * f });
+      }
+    }
 
     const dirX = Math.cos(angle);
     const dirY = Math.sin(angle);
 
-    if (input.thrust) {
-      Body.applyForce(body, body.position, {
-        x: dirX * SHIP.thrustForce,
-        y: dirY * SHIP.thrustForce,
-      });
-    }
-    if (input.reverse) {
-      const f = SHIP.thrustForce * REVERSE_FORCE_RATIO;
-      Body.applyForce(body, body.position, { x: -dirX * f, y: -dirY * f });
-    }
-
-    this.flame.visible = input.thrust;
-    if (input.thrust) {
+    this.flame.visible = thrusting;
+    if (thrusting) {
       // 약간의 랜덤 깜빡임으로 화염을 생동감 있게 만든다.
       this.flame.scale.set(0.85 + Math.random() * 0.3, 1);
     }

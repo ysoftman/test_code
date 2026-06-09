@@ -18,6 +18,7 @@ export function createInput(): InputState {
     turnLeft: false,
     turnRight: false,
     fire: false,
+    aim: null, // 터치 조이스틱 전용; 키보드는 사용하지 않는다.
   };
 
   const apply = (code: string, pressed: boolean): void => {

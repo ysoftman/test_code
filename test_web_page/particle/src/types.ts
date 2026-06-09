@@ -37,13 +37,24 @@ export interface RockEntity extends Entity {
   split(hitX: number, hitY: number): Entity[];
 }
 
-/** 키보드 상태 — game/input.ts 가 쓰고 비행체가 읽는다. */
+/** 아날로그 조준/추진 상태 — 터치 조이스틱이 쓴다. angle=라디안, magnitude=0..1. */
+export interface AimState {
+  angle: number;
+  magnitude: number;
+}
+
+/** 입력 상태 — game/input.ts(키보드)와 game/touch.ts(터치)가 쓰고 비행체가 읽는다. */
 export interface InputState {
   thrust: boolean;
   reverse: boolean;
   turnLeft: boolean;
   turnRight: boolean;
   fire: boolean;
+  /**
+   * 터치 조이스틱의 아날로그 조준/추진. 비활성 시 null.
+   * 설정되면 비행체는 angle 방향을 향하고 magnitude 에 비례해 추진한다(키보드 회전/추진 무시).
+   */
+  aim: AimState | null;
 }
 
 /** core/game.ts 가 모든 엔티티와 충돌 핸들러에 제공한다. */
