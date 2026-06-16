@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: ysoftman
-# python version : 2.x 3.x
+# python version : 3.x
 # desc : set 테스트
 
 data = ["aaa", "bbb", "aaa", "ccc"]
@@ -44,8 +44,10 @@ set_data.clear()
 print(set_data)
 
 
+# set([1, 3, 5]) 는 옛날 스타일(Python 2.6 이하). 2.7/3.1 부터 set 리터럴 {1, 3, 5} 사용 권장 (ruff C405).
+# 단 빈 set 은 리터럴 표기가 없어서 set() 가 유일한 방법 (빈 {} 는 버전 무관 영원히 dict). set([]) 는 결과는 같지만 불필요한 형태.
 seta = set([1, 3, 5])
-setb = set([1, 2, 4])
+setb = {1, 2, 4}
 print(seta)
 print(setb)
 
