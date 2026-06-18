@@ -2,16 +2,12 @@ module mongodb_test
 
 go 1.24.0
 
-require (
-	github.com/mitchellh/mapstructure v1.5.0
-	go.mongodb.org/mongo-driver v1.17.6
-)
+require go.mongodb.org/mongo-driver v1.17.7
 
 require (
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/klauspost/compress v1.18.1 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
