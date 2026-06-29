@@ -1,0 +1,92 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #e6e6e6;
+  background: #05060a;
+  overflow: hidden;
+}
+#tsparticles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+#tsparticles canvas {
+  display: block;
+}
+#ui {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(20, 23, 30, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid #2a2e36;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+h1 {
+  font-size: 1rem;
+  margin: 0;
+  align-self: center;
+  padding-right: 6px;
+  white-space: nowrap;
+}
+button {
+  font: inherit;
+  font-size: 0.9rem;
+  color: #e6e6e6;
+  background: #1a1d23;
+  border: 1px solid #2a2e36;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+button:hover {
+  border-color: #6ea8fe;
+}
+button.active {
+  background: #6ea8fe;
+  color: #0f1115;
+  border-color: #6ea8fe;
+}
+#codepanel {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10;
+  max-width: min(440px, 90vw);
+  max-height: 55vh;
+  overflow: auto;
+  background: rgba(20, 23, 30, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid #2a2e36;
+  border-radius: 12px;
+  padding: 14px;
+  display: none;
+}
+#codepanel.show {
+  display: block;
+}
+#codepanel pre {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: pre;
+  color: #cdd3dd;
+}

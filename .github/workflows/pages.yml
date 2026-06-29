@@ -63,6 +63,14 @@ jobs:
         working-directory: test_web_page/particle
         run: bun run build
 
+      - name: Install tsparticles dependencies
+        working-directory: test_web_page/tsparticles
+        run: bun install
+
+      - name: Build tsparticles
+        working-directory: test_web_page/tsparticles
+        run: bun run build
+
       - name: Assemble _site
         run: |
           set -euo pipefail
@@ -105,6 +113,13 @@ jobs:
             echo "include built app: particle"
             mkdir -p "$OUT/particle"
             cp -r "$SRC/particle/dist/." "$OUT/particle/"
+          fi
+
+          # 2e) tsparticles (tsParticles 프리셋 예시)
+          if [ -d "$SRC/tsparticles/dist" ]; then
+            echo "include built app: tsparticles"
+            mkdir -p "$OUT/tsparticles"
+            cp -r "$SRC/tsparticles/dist/." "$OUT/tsparticles/"
           fi
 
           # 3) build info (배포 날짜 / 커밋 버전) — 랜딩 우측 상단에 표시
