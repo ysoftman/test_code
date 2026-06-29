@@ -39,20 +39,20 @@ jobs:
         working-directory: test_web_page/css-framework-comparison
         run: bun run build:all
 
-      - name: Install ysoftman-vue-app dependencies
-        working-directory: test_web_page/ysoftman-vue-app
+      - name: Install vue-sample dependencies
+        working-directory: test_web_page/vue-sample
         run: bun install
 
-      - name: Build ysoftman-vue-app
-        working-directory: test_web_page/ysoftman-vue-app
+      - name: Build vue-sample
+        working-directory: test_web_page/vue-sample
         run: bun run build
 
-      - name: Install ysoftman-react-app dependencies
-        working-directory: test_web_page/ysoftman-react-app
+      - name: Install react-sample dependencies
+        working-directory: test_web_page/react-sample
         run: bun install
 
-      - name: Build ysoftman-react-app
-        working-directory: test_web_page/ysoftman-react-app
+      - name: Build react-sample
+        working-directory: test_web_page/react-sample
         run: bun run build
 
       - name: Install particle dependencies
@@ -92,20 +92,20 @@ jobs:
             fi
           done
 
-          # 2b) ysoftman-vue-app (Vue + Vuetify SPA)
-          if [ -d "$SRC/ysoftman-vue-app/dist" ]; then
-            echo "include built app: ysoftman-vue-app"
-            mkdir -p "$OUT/ysoftman-vue-app"
-            cp -r "$SRC/ysoftman-vue-app/dist/." "$OUT/ysoftman-vue-app/"
+          # 2b) vue-sample (Vue + Vuetify SPA)
+          if [ -d "$SRC/vue-sample/dist" ]; then
+            echo "include built app: vue-sample"
+            mkdir -p "$OUT/vue-sample"
+            cp -r "$SRC/vue-sample/dist/." "$OUT/vue-sample/"
             # SPA(history mode) 새로고침/딥링크 대비 404 fallback
-            cp "$OUT/ysoftman-vue-app/index.html" "$OUT/ysoftman-vue-app/404.html"
+            cp "$OUT/vue-sample/index.html" "$OUT/vue-sample/404.html"
           fi
 
-          # 2c) ysoftman-react-app (CRA, build/ 출력)
-          if [ -d "$SRC/ysoftman-react-app/build" ]; then
-            echo "include built app: ysoftman-react-app"
-            mkdir -p "$OUT/ysoftman-react-app"
-            cp -r "$SRC/ysoftman-react-app/build/." "$OUT/ysoftman-react-app/"
+          # 2c) react-sample (CRA, build/ 출력)
+          if [ -d "$SRC/react-sample/build" ]; then
+            echo "include built app: react-sample"
+            mkdir -p "$OUT/react-sample"
+            cp -r "$SRC/react-sample/build/." "$OUT/react-sample/"
           fi
 
           # 2d) particle (PixiJS + Matter.js 게임)

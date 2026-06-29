@@ -1,8 +1,8 @@
 {
-  "name": "ysoftman-react-app",
+  "name": "react-sample",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/test_code/ysoftman-react-app/",
+  "homepage": "/test_code/react-sample/",
   "dependencies": {
     "prop-types": "^15.8.1",
     "react": "^19.2.3",

@@ -1,6 +1,6 @@
 {
-  "name": "ysoftman-vue-app",
-  "short_name": "ysoftman-vue-app",
+  "name": "vue-sample",
+  "short_name": "vue-sample",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

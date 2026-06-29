@@ -7,22 +7,22 @@
 # npm install -g @vue/cli vuetify eslint eslint-plugin-vue
 
 # webpack (번들러, 의존성을 가진 모듈들을 묶어 정적인 asset 생성) template 를 이용해 프로젝트 생성
-# vue create ysoftman-vue-app
-# cd ysoftman-vue-app
+# vue create vue-sample
+# cd vue-sample
 
 # vue-cli 대신 create-vue(vue+vite)을 사용한다.
-bun create vue@latest ysoftman-vue-app
+bun create vue@latest vue-sample
 
 # .eslintrc 설정 파일 생성
 bun install -g eslint
 eslinit --init
 ```
 
-## ysoftman-vue-app Build Setup
+## vue-sample Build Setup
 
 ```bash
 # install dependencies
-# ysoftman-vue-app 에서 npm_modules 용량이 너무 커서 커밋대상에서 제외하자.
+# vue-sample 에서 npm_modules 용량이 너무 커서 커밋대상에서 제외하자.
 # 패키지 설치
 #npm install
 bun install
@@ -47,7 +47,7 @@ biome format --write
 
 ## troubleshooting
 
-- npm run dev 실행 후 ysoftman-vue-app/src 소스 수정 후 저장하면 바로 컴파일되어 오류 또는 결과를 볼 수 있다.
+- npm run dev 실행 후 vue-sample/src 소스 수정 후 저장하면 바로 컴파일되어 오류 또는 결과를 볼 수 있다.
 - ESLint 를 설치한 경우 vscode 로 auto formatting 시 vue 문법에 맞지 않게 ; 이나 공백이 사리져 에러 발생 다음 구문을 명시해 비활성화 할 수 있다.
 
   ```javascript

@@ -3,8 +3,8 @@
 ## 앱 생성시
 
 ```bash
-mkdir ysoftman-react-app
-npx create-react-app ysoftman-react-app
+mkdir react-sample
+npx create-react-app react-sample
 ```
 
 ## 앱 실행
