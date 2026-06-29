@@ -101,11 +101,11 @@ jobs:
             cp "$OUT/vue-sample/index.html" "$OUT/vue-sample/404.html"
           fi
 
-          # 2c) react-sample (CRA, build/ 출력)
-          if [ -d "$SRC/react-sample/build" ]; then
+          # 2c) react-sample (Vite, dist/ 출력)
+          if [ -d "$SRC/react-sample/dist" ]; then
             echo "include built app: react-sample"
             mkdir -p "$OUT/react-sample"
-            cp -r "$SRC/react-sample/build/." "$OUT/react-sample/"
+            cp -r "$SRC/react-sample/dist/." "$OUT/react-sample/"
           fi
 
           # 2d) particle (PixiJS + Matter.js 게임)
