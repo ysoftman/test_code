@@ -1,0 +1,6 @@
+# helm fetch 로 받은 chart 원본(tgz 압축 해제 파일)은 커밋하지 않는다.
+# 커스텀 파일만 git 으로 관리한다.
+*
+!.gitignore
+!values-ysoftman.yaml
+!README-ysoftman.md

@@ -37,12 +37,5 @@ server:
       - hosts:
           - argocd.ysoftman
 
-redis:
-  image:
-    # -- Redis repository
-    # ec-public.aws.com 으로 접근시 403 forbidden 응답으로 아래 주소를 사용한다.
-    # repository: public.ecr.aws/docker/library/redis
-    repository: ecr-public.aws.com/docker/library/redis
-    # -- Redis tag
-    ## Do not upgrade to >= 7.4.0, otherwise you are no longer using an open source version of Redis
-    tag: 7.2.8-alpine
+# redis image override 제거 (chart 10.x 부터 기본값이 ecr-public.aws.com/docker/library/redis 로 변경됐고,
+# 기본 tag 8.2.3-alpine 은 다시 오픈소스(AGPL) 라이선스라 pin 이 불필요해짐)
