@@ -3,6 +3,12 @@ global:
     - name: ysoftman_key1
       value: ysoftman_value1
 
+# CRD 는 helm 릴리스에 포함하지 않고 kubectl 로 직접 관리한다.
+# chart 10.x 부터 CRD 가 커져 릴리스를 포함한 helm secret 이 1MB(k8s secret 제한)를 초과해 upgrade 가 실패하기 때문.
+# CRD 적용/업그레이드: helm template argocd . --set crds.install=true -s templates/crds/crd-application.yaml -s templates/crds/crd-applicationset.yaml -s templates/crds/crd-appproject.yaml | kubectl apply --server-side --force-conflicts -f -
+crds:
+  install: false
+
 configs:
   cm:
     # https://docs.cilium.io/en/latest/configuration/argocd-issues/
@@ -14,6 +20,77 @@ configs:
         clusters:
           - "*"
     admin.enabled: true
+
+  # navy 테마 적용 (https://github.com/ysoftman/argocd-themes fix/dark-theme-support 브랜치의 themes/navy.css)
+  # chart 가 이 CSS 를 argocd-custom-styles ConfigMap 으로 만들고 ui.cssurl 설정까지 자동 처리한다.
+  styles: |
+    .sidebar {
+        background: #05203c !important
+    }
+
+    .nav-bar {
+        background: #05203c !important
+    }
+
+    .page__content-wrapper:not(.theme-dark *) {
+        background: #f2eee8 !important
+    }
+
+    .sliding-panel__header:not(.theme-dark *) {
+        background: #f2eee8 !important
+    }
+
+    .sliding-panel__body:not(.theme-dark *) {
+        background: #f2eee8 !important
+    }
+
+    .argo-button--base {
+        color: #FFFFFF !important;
+        background: #0f6bcb !important
+    }
+
+    .argo-button--base:hover {
+        opacity: 0.8 !important
+    }
+
+    .argo-button--base:focus {
+        border-color: #FFFFFF !important
+    }
+
+    .argo-button--base-o {
+        color: #0f6bcb !important;
+        box-shadow: inset 0 0 0 1px #0f6bcb !important
+    }
+
+    .argo-button--base-o:hover {
+        color: #fff !important;
+        background-color: #0f6bcb !important
+    }
+
+    .argo-button--base-o:focus {
+        color: #fff !important;
+        background-color: #0f6bcb !important
+    }
+
+    .top-bar__title {
+        color: #0f6bcb !important
+    }
+
+    a {
+        color: #0f6bcb !important
+    }
+
+    .settings-overview__redirect-panel__title {
+        color: #0f6bcb !important
+    }
+
+    .selected {
+        color: #0f6bcb !important
+    }
+
+    .tabs__indicator {
+        background: #0f6bcb !important
+    }
 
   params:
     # -- Run server without TLS
