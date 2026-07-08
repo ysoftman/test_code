@@ -23,7 +23,7 @@ cd argo-cd
 helm upgrade --install argocd . \
 --namespace argocd \
 --create-namespace \
---values values-ysoftman.yaml
+--values ../values-ysoftman.yaml
 
 # 서비스 연결시
 # admin / ysoftman
