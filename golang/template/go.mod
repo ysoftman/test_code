@@ -1,8 +1,6 @@
 module template
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.25.0
 
 require github.com/go-task/slim-sprig v2.20.0+incompatible
 
@@ -13,5 +11,5 @@ require (
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
-	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/crypto v0.53.0 // indirect
 )

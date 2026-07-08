@@ -1,13 +1,11 @@
 module main
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.25.0
 
 require (
 	github.com/dgraph-io/ristretto v0.2.0
 	github.com/go-chi/chi v1.5.5
-	github.com/mattn/go-sqlite3 v1.14.32
+	github.com/mattn/go-sqlite3 v1.14.47
 	github.com/stretchr/testify v1.8.4
 	github.com/xwb1989/sqlparser v0.0.0-20180606152119-120387863bf2
 )
@@ -18,6 +16,6 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/sys v0.46.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

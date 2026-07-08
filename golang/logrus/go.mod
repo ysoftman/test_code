@@ -1,15 +1,15 @@
 module logrustest
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/natefinch/lumberjack v2.0.0+incompatible
-	github.com/sirupsen/logrus v1.9.3
+	github.com/sirupsen/logrus v1.9.4
 )
 
 require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
-	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/sys v0.46.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
