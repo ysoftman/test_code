@@ -29,9 +29,9 @@ configs:
 server:
   ingress:
     enabled: true
-    ingressClassName: "nginx"
-    annotations:
-      ingress.kubernetes.io/rewrite-target: /
+    # colima k3s 기본 내장 traefik ingress controller 사용
+    # (nginx 의 rewrite-target annotation 은 traefik 미지원이며 root path 라 불필요)
+    ingressClassName: "traefik"
     hostname: argocd.ysoftman
     extraTls:
       - hosts:

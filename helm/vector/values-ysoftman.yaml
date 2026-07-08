@@ -4,7 +4,8 @@ ingress:
   enabled: true
   # ingress.className -- Specify the [ingressClassName](https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress),
   # requires Kubernetes >= 1.18
-  className: "nginx"
+  # colima k3s 기본 내장 traefik ingress controller 사용
+  className: "traefik"
   # ingress.annotations -- Set annotations on the Ingress.
   annotations: {}
     # kubernetes.io/ingress.class: nginx
