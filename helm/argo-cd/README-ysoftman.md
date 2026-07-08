@@ -1,13 +1,11 @@
 # argo-cd
 
-- chart 원본 파일(Chart.yaml, templates/, charts/, values.yaml 등 tgz 압축 해제 결과물)은
-  `.gitignore` 로 커밋 대상에서 제외되어 있다.
+- chart 원본은 `.gitignore` 로 커밋 대상에서 제외되어 있다.
   git 으로 관리하는 파일은 `values-ysoftman.yaml`, `README-ysoftman.md`, `.gitignore` 뿐이다.
-- 따라서 클론 직후에는 chart 원본이 없으므로 아래처럼 helm fetch 로 받아서 압축을 풀어야 한다.
+- 클론 직후에는 chart 원본이 없으므로 이 디렉토리 안에서 helm fetch 로 받아서 압축을 푼다.
+  압축을 풀면 chart 는 중첩된 `argo-cd/` 디렉토리에 들어간다.
 
 ```bash
-# helm(상위) 디렉토리에서 실행하면 argo-cd/ 에 chart 파일이 풀리면서 기존 커스텀 파일과 병합된다.
-cd ..
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 helm fetch argo/argo-cd --version 10.1.2
@@ -15,10 +13,14 @@ tar zxvf argo-cd-10.1.2.tgz
 rm argo-cd-10.1.2.tgz
 ```
 
+- ⚠️ helm 명령은 반드시 중첩된 `argo-cd/` (chart 루트) 에서 실행한다.
+  chart 디렉토리에 다른 chart 복사본이나 tgz 가 섞여 있으면 helm 이 릴리스 secret 에
+  통째로 패키징해서 k8s secret 1MB 제한을 초과해 upgrade 가 실패한다.
+
 - argo-cd 설치
 
 ```bash
-# 설치/업그레이드시
+# 설치/업그레이드시 (중첩된 chart 디렉토리로 이동)
 cd argo-cd
 helm upgrade --install argocd . \
 --namespace argocd \

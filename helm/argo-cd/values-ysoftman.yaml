@@ -3,12 +3,6 @@ global:
     - name: ysoftman_key1
       value: ysoftman_value1
 
-# CRD 는 helm 릴리스에 포함하지 않고 kubectl 로 직접 관리한다.
-# chart 10.x 부터 CRD 가 커져 릴리스를 포함한 helm secret 이 1MB(k8s secret 제한)를 초과해 upgrade 가 실패하기 때문.
-# CRD 적용/업그레이드: helm template argocd . --set crds.install=true -s templates/crds/crd-application.yaml -s templates/crds/crd-applicationset.yaml -s templates/crds/crd-appproject.yaml | kubectl apply --server-side --force-conflicts -f -
-crds:
-  install: false
-
 configs:
   cm:
     # https://docs.cilium.io/en/latest/configuration/argocd-issues/
