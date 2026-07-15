@@ -62,3 +62,13 @@ echo "----- loop array test2"
 for ((i = 0; i < ${#arr[@]}; i++)); do
     echo "[${i}] ${arr[$i]}"
 done
+
+# read -a 로 array 저장하기(zsh 에선 -A 옵션을 사용해야 한다.)
+read -r -a arr <<<"1 2 3 4 5"
+echo "----- read -r -a arr <<< \"1 2 3 4 5\" arr[0] ~ arr[4]"
+echo ${arr[0]}
+echo ${arr[1]}
+echo ${arr[2]}
+echo ${arr[3]}
+echo ${arr[4]}
+echo ${arr[5]}
