@@ -15,12 +15,14 @@ arr_sample=(1
 echo "${arr_sample[@]}"
 arr=(1 23 4 "a")
 echo "${arr}" # arr 로 접근하면 첫번째 원소값만 보인다.
+# bash 0 , zsh 1 부터 인덱스 시작이다.
 echo "----- arr[0] ~ arr[4]"
 echo ${arr[0]}
 echo ${arr[1]}
 echo ${arr[2]}
 echo ${arr[3]}
 echo ${arr[4]}
+echo ${arr[5]}
 echo "----- all elements in array"
 echo "${arr[@]}"
 echo "----- all elements in array with newline"
