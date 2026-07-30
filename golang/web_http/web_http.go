@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -51,23 +52,18 @@ func main() {
 	http.HandleFunc("/test", testPage)
 	// imgs 의 파이들에 접급 허용
 	http.Handle("/imgs/", http.StripPrefix("/imgs", http.FileServer(http.Dir("./imgs"))))
-	http.ListenAndServe(":55555", nil)
-
-	// https 로 띄우기(https://localhost/main 로 테스트)
-	// Go 1.6 부터 net/http  에서 http2 지원
-	// crt, key 파일 생성
-	// openssl req -newkey rsa:2048 -nodes -keyout server.key -x509 -days 365 -out server.crt
-	// 기본 https + http2
-	// curl -Iv -k 'https://localhost/main'
-	// https + http1.1 로 요청시
-	// curl -Iv -k 'https://localhost/main' --http1.1
-	// http.ListenAndServeTLS(":443", "server.crt", "server.key", nil)
-
+	go func() {
+		fmt.Println("http url: http://localhost/main")
+		log.Fatal(http.ListenAndServe(":80", nil))
+	}()
 	// 서버띄우기 방법2
 	// ServeHTTP(이미 정의됨) 함수를 mythttp 핸들로 사용
 	// var web myHTTP
-	// //http.ListenAndServe("127.0.0.1:55555", web)
 	// http.ListenAndServe(":55555", web)
+
+	// https 로 띄우기(Go 1.6 부터 net/http  에서 http2 지원)
+	fmt.Println("https url: https://localhost/main")
+	log.Fatal(http.ListenAndServeTLS(":443", "cert/server.crt", "cert/server.key", nil))
 }
 
 // ServeHTTP 인터페이스 구현
