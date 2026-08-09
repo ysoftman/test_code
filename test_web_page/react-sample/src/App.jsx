@@ -1,233 +1,39 @@
-import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useState } from "react";
 import "./App.css";
-import MyComp1 from "./mycomp1.jsx";
+import CrudApp from "./crud/CrudApp.jsx";
+import HooksExample from "./hooks/HooksExample.jsx";
+import React19Example from "./react19/React19Example.jsx";
 
-Create.propTypes = {
-  onCreate: PropTypes.func.isRequired,
-};
-
-function Create({ onCreate }) {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const name = event.target.name.value;
-    const cost = event.target.cost.value;
-    onCreate(name, cost);
-  };
-
-  return (
-    <article>
-      <h2>Create</h2>
-      <form onSubmit={handleSubmit}>
-        <p>
-          <input type="text" name="name" placeholder="title" />
-        </p>
-        <p>
-          <textarea name="cost" placeholder="cost" />
-        </p>
-        <p>
-          <input type="submit" value="Create" />
-        </p>
-      </form>
-    </article>
-  );
-}
-
-Update.propTypes = {
-  name: PropTypes.string.isRequired,
-  cost: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  onUpdate: PropTypes.func.isRequired,
-};
-
-function Update({ name: initialName, cost: initialCost, onUpdate }) {
-  const [name, setName] = useState(initialName);
-  const [cost, setCost] = useState(initialCost);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    onUpdate(name, cost);
-  };
-
-  return (
-    <article>
-      <h2>Update</h2>
-      <form onSubmit={handleSubmit}>
-        <p>
-          <input
-            type="text"
-            name="name"
-            placeholder="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </p>
-        <p>
-          <textarea name="cost" placeholder="cost" value={cost} onChange={(event) => setCost(event.target.value)} />
-        </p>
-        <p>
-          <input type="submit" value="Update" />
-        </p>
-      </form>
-    </article>
-  );
-}
-MyHeader.propTypes = {
-  title: PropTypes.string.isRequired,
-  onChangeMode: PropTypes.func.isRequired,
-};
-
-function MyHeader({ title, onChangeMode }) {
-  const handleClick = (event) => {
-    event.preventDefault();
-    onChangeMode();
-  };
-
-  return (
-    <header>
-      <h1>
-        <a href="/" onClick={handleClick}>
-          aaaa
-        </a>
-      </h1>
-      <h1>
-        <a href="/">{title}</a>
-      </h1>
-    </header>
-  );
-}
-
-MyContents.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      cost: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    }),
-  ).isRequired,
-  onChangeMode: PropTypes.func.isRequired,
-};
-
-function MyContents({ items, onChangeMode }) {
-  const handleClick = (event) => {
-    event.preventDefault();
-    onChangeMode(event.target.id, event.target.name);
-  };
-
-  return (
-    <article>
-      <h2>contents</h2>
-      bla bla~
-      <ol>
-        {items.map((item) => (
-          <li key={item.id}>
-            <a id={item.id} name={item.name} href="/" onClick={handleClick}>
-              {item.name} - {item.cost}
-            </a>
-          </li>
-        ))}
-      </ol>
-    </article>
-  );
-}
-App.propTypes = {
-  // Add prop types if App receives props in the future
-};
+const TABS = [
+  { id: "crud", label: "CRUD", component: CrudApp },
+  { id: "hooks", label: "Hooks", component: HooksExample },
+  { id: "react19", label: "React 19", component: React19Example },
+];
 
 function App() {
-  const [command, setMode] = useState("");
-  const [clickId, setClickId] = useState(null);
-  const [mylist, setMylist] = useState([
-    { id: 1, name: "lemon", cost: 100 },
-    { id: 2, name: "apple", cost: 200 },
-    { id: 3, name: "orange", cost: 300 },
-  ]);
-
-  useEffect(() => {
-    console.log(`useEffect: clickId=${clickId}, command=${command}`);
-  }, [clickId, command]);
-
-  const [nextId, setNextId] = useState(4);
-
-  const handleCreate = (name, cost) => {
-    const newItem = { id: nextId, name, cost };
-    setMylist([...mylist, newItem]);
-    setNextId(nextId + 1);
-  };
-
-  const handleUpdate = (name, cost) => {
-    const updatedItem = { id: Number(clickId), name, cost };
-    setMylist(mylist.map((item) => (item.id === Number(clickId) ? updatedItem : item)));
-    setMode("read");
-  };
-
-  const handleDelete = () => {
-    setMylist(mylist.filter((item) => item.id !== Number(clickId)));
-    setMode("read");
-  };
-
-  const handleContentClick = (id, name) => {
-    setMode("read");
-    setClickId(id);
-  };
-
-  const handleHeaderClick = () => {
-    alert("test");
-  };
-
-  let updateDeleteComponent = null;
-  let action = null;
-  let clickIDMsg = null;
-  clickIDMsg = <h2>clickID: {clickId}</h2>;
-  if (command === "read") {
-    updateDeleteComponent = (
-      <>
-        <li>
-          <a
-            href={`/${clickId}`}
-            onClick={(event) => {
-              event.preventDefault();
-              setMode("update");
-            }}
-          >
-            update
-          </a>
-        </li>
-        <li>
-          <input type="button" value="delete" onClick={handleDelete} />
-        </li>
-      </>
-    );
-  } else if (command === "create") {
-    action = <Create onCreate={handleCreate} />;
-  } else if (command === "update") {
-    const item = mylist.find((item) => item.id === Number(clickId));
-    if (item) {
-      action = <Update name={item.name} cost={item.cost} onUpdate={handleUpdate} />;
-    }
-  }
+  const [activeTab, setActiveTab] = useState(TABS[0].id);
+  const ActiveComponent = TABS.find((tab) => tab.id === activeTab).component;
 
   return (
-    <div>
-      <MyHeader title="my title" onChangeMode={handleHeaderClick} />
-      <MyContents items={mylist} onChangeMode={handleContentClick} />
-      {clickIDMsg}
-      {action}
-      {action && <MyComp1 command={command} result="ok" />}
-      <br />
-      <ul>
-        <li>
-          <a
-            href="/"
-            onClick={(event) => {
-              event.preventDefault();
-              setMode("create");
-            }}
-          >
-            create
-          </a>
-        </li>
-        {updateDeleteComponent}
-      </ul>
+    <div className="app">
+      <header className="app-header">
+        <h1>React 19 + Vite sample</h1>
+        <nav className="tabs">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              className={activeTab === tab.id ? "tab active" : "tab"}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </header>
+      <main className="app-main">
+        <ActiveComponent />
+      </main>
     </div>
   );
 }
