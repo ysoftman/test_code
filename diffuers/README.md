@@ -97,6 +97,27 @@ hf download Alpha-VLLM/Lumina-Image-2.0
   --timing
 ```
 
+### 인터랙티브 모드 (모델 1회 로드 + 프롬프트 반복 입력)
+
+스크립트 실행 시마다 모델을 다시 로딩하는 비용(약 30초)을 없애고 싶다면
+`-i`(또는 `--interactive`) 옵션으로 모델을 한 번만 로드한 뒤 프롬프트를
+계속 입력받을 수 있습니다. 시드는 매 프롬프트마다 자동으로 증가하고,
+출력은 `outputs/..._000.png`, `_001.png` ... 로 저장됩니다.
+
+```bash
+.venv/bin/python generate_image.py --offline -i
+
+# prompt> a cute cat on a sofa
+# prompt> a mountain landscape at sunrise
+# prompt> (빈 줄 또는 'exit'/'quit' 입력 시 종료)
+```
+
+파이프/리다이렉트로 일괄 입력도 가능합니다:
+
+```bash
+printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i --steps 30 --output outputs/batch.png
+```
+
 ### 스모크 테스트 (빠른 검증)
 
 ```bash
@@ -128,6 +149,7 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 | `--cpu-offload` | off | VRAM 부족 시 CPU 오프로드 (accelerate 필요) |
 | `--offline` | off | 로컬 캐시만 사용 (네트워크 차단) |
 | `--timing` | off | 로딩/생성 소요 시간 출력 |
+| `-i` / `--interactive` | off | 모델 1회 로드 후 프롬프트 반복 입력 (Ctrl-C 또는 `exit`/`quit`로 종료) |
 
 ## 참고 사항
 

@@ -83,7 +83,65 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--timing", action="store_true", help="Print load/generate timing"
     )
+    parser.add_argument(
+        "-i",
+        "--interactive",
+        action="store_true",
+        help="Keep the pipeline loaded and accept prompts repeatedly from stdin",
+    )
     return parser.parse_args()
+
+
+def generate_image(
+    pipe: Lumina2Pipeline,
+    prompt: str,
+    args: argparse.Namespace,
+    output: Path,
+    seed: int,
+) -> float:
+    generator = torch.Generator("cpu").manual_seed(seed)
+    with contextlib.redirect_stdout(io.StringIO()):
+        t1 = time.perf_counter()
+        image = pipe(
+            prompt=prompt,
+            negative_prompt=args.negative_prompt,
+            height=args.height,
+            width=args.width,
+            guidance_scale=args.guidance,
+            num_inference_steps=args.steps,
+            cfg_trunc_ratio=args.cfg_trunc_ratio,
+            cfg_normalization=True,
+            generator=generator,
+        ).images[0]
+    gen_time = time.perf_counter() - t1
+    output.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output)
+    return gen_time
+
+
+def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
+    print(
+        "[info] interactive mode - type a prompt and press Enter. "
+        "empty line, 'exit' or 'quit' to stop."
+    )
+    counter = 0
+    try:
+        while True:
+            try:
+                prompt = input("prompt> ").strip()
+            except EOFError:
+                break
+            if not prompt or prompt.lower() in ("exit", "quit", "q"):
+                break
+            output = args.output.with_name(
+                f"{args.output.stem}_{counter:03d}{args.output.suffix}"
+            )
+            gen_time = generate_image(pipe, prompt, args, output, args.seed + counter)
+            print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
+            counter += 1
+    except KeyboardInterrupt:
+        print("\n[info] interrupted")
+    print("[info] bye")
 
 
 def main() -> None:
@@ -114,24 +172,11 @@ def main() -> None:
     else:
         pipe.to(device)
 
-    generator = torch.Generator("cpu").manual_seed(args.seed)
-    with contextlib.redirect_stdout(io.StringIO()):
-        t1 = time.perf_counter()
-        image = pipe(
-            prompt=args.prompt,
-            negative_prompt=args.negative_prompt,
-            height=args.height,
-            width=args.width,
-            guidance_scale=args.guidance,
-            num_inference_steps=args.steps,
-            cfg_trunc_ratio=args.cfg_trunc_ratio,
-            cfg_normalization=True,
-            generator=generator,
-        ).images[0]
-    gen_time = time.perf_counter() - t1
+    if args.interactive:
+        run_interactive(pipe, args)
+        return
 
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    image.save(args.output)
+    gen_time = generate_image(pipe, args.prompt, args, args.output, args.seed)
     print(f"[info] generation took {gen_time:.1f}s -> saved to {args.output}")
     if args.timing:
         print(
