@@ -1,0 +1,19 @@
+[project]
+name = "diffuers"
+version = "0.1.0"
+description = "Load and generate images with Alpha-VLLM/Lumina-Image-2.0 using Hugging Face Diffusers"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch>=2.13",
+    "diffusers>=0.39",
+    "transformers>=5.15",
+    "accelerate>=1.14",
+    "sentencepiece>=0.2",
+]
+
+[dependency-groups]
+dev = []
+
+[tool.uv]
+package = false
