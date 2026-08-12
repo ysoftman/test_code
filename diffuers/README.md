@@ -80,7 +80,7 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 # 로컬 캐시만 사용(오프라인) + 기본 파라미터(1024x1024, 50 스텝)
 .venv/bin/python generate_image.py --offline
 
-# 결과: outputs/lumina2_demo.png
+# 결과: outputs/lumina-image-2-0_2026-08-13_00-09-41.png (모델명_생성시각 YYYY-MM-DD_hh-mm-ss)
 ```
 
 ### 옵션 지정 예시
@@ -102,7 +102,12 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 스크립트 실행 시마다 모델을 다시 로딩하는 비용(약 30초)을 없애고 싶다면
 `-i`(또는 `--interactive`) 옵션으로 모델을 한 번만 로드한 뒤 프롬프트를
 계속 입력받을 수 있습니다. 시드는 매 프롬프트마다 자동으로 증가하고,
-출력은 `outputs/..._000.png`, `_001.png` ... 로 저장됩니다.
+출력은 `outputs/모델명_YYYY-MM-DD_hh-mm-ss_카운터.png`
+(예: `lumina-image-2-0_2026-08-13_00-10-51_000.png`) 로 저장됩니다.
+
+프롬프트 입력에는 readline 이 활성화되어 **화살표 위/아래로 이전 프롬프트
+기록을 불러올 수** 있으며, 히스토리는 `outputs/.prompt_history` 에 저장되어
+다음 실행에서도 유지됩니다 (gitignore 대상).
 
 ```bash
 .venv/bin/python generate_image.py --offline -i
@@ -145,6 +150,7 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 | `--guidance` | `4.0` | 가이던스 스케일 (클수록 프롬프트 충실도↑) |
 | `--cfg-trunc-ratio` | `0.25` | Lumina2 의 CFG 절단 비율 |
 | `--seed` | `0` | 재현용 시드 |
+| `--output` | 없음 | 출력 경로. 기본은 `outputs/<모델명>_<YYYY-MM-DD_hh-mm-ss>.png` (인터랙티브: `_카운터` 추가) |
 | `--device` | `auto` | `cuda` / `mps` / `cpu` 자동 선택 |
 | `--cpu-offload` | off | VRAM 부족 시 CPU 오프로드 (accelerate 필요) |
 | `--offline` | off | 로컬 캐시만 사용 (네트워크 차단) |

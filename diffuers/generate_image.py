@@ -4,11 +4,27 @@
 import argparse
 import contextlib
 import io
+import re
 import time
+from datetime import datetime
 from pathlib import Path
 
 import torch
 from diffusers import Lumina2Pipeline
+from PIL import Image
+
+DEFAULT_OUTPUT = Path("outputs/lumina2_demo.png")
+HISTORY_FILE = Path("outputs/.prompt_history")
+
+try:
+    import readline
+
+    try:
+        readline.read_history_file(HISTORY_FILE)
+    except OSError:
+        pass
+except ImportError:
+    readline = None  # no arrow-key history on platforms without readline
 
 
 def resolve_device(device: str) -> torch.device:
@@ -69,7 +85,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--device", choices=["auto", "cuda", "mps", "cpu"], default="auto"
     )
-    parser.add_argument("--output", type=Path, default=Path("outputs/lumina2_demo.png"))
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Output image path (default: outputs/<model>_<timestamp>.png)",
+    )
     parser.add_argument(
         "--cpu-offload",
         action="store_true",
@@ -92,13 +113,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def timestamp() -> str:
+    return datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+
+def model_short_name(model: str) -> str:
+    name = Path(model).name or model
+    return re.sub(r"[^A-Za-z0-9]+", "-", name).strip("-").lower()
+
+
 def generate_image(
     pipe: Lumina2Pipeline,
     prompt: str,
     args: argparse.Namespace,
-    output: Path,
     seed: int,
-) -> float:
+) -> tuple[Image.Image, float]:
     generator = torch.Generator("cpu").manual_seed(seed)
     with contextlib.redirect_stdout(io.StringIO()):
         t1 = time.perf_counter()
@@ -114,9 +143,7 @@ def generate_image(
             generator=generator,
         ).images[0]
     gen_time = time.perf_counter() - t1
-    output.parent.mkdir(parents=True, exist_ok=True)
-    image.save(output)
-    return gen_time
+    return image, gen_time
 
 
 def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
@@ -133,14 +160,21 @@ def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
                 break
             if not prompt or prompt.lower() in ("exit", "quit", "q"):
                 break
-            output = args.output.with_name(
-                f"{args.output.stem}_{counter:03d}{args.output.suffix}"
+            image, gen_time = generate_image(pipe, prompt, args, args.seed + counter)
+            base = args.output or DEFAULT_OUTPUT
+            output = base.parent / (
+                f"{model_short_name(args.model)}_{timestamp()}_{counter:03d}"
+                f"{base.suffix}"
             )
-            gen_time = generate_image(pipe, prompt, args, output, args.seed + counter)
-            print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
+            output.parent.mkdir(parents=True, exist_ok=True)
+            image.save(output)
             counter += 1
+            print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
     except KeyboardInterrupt:
         print("\n[info] interrupted")
+    if readline is not None:
+        HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+        readline.write_history_file(HISTORY_FILE)
     print("[info] bye")
 
 
@@ -176,8 +210,13 @@ def main() -> None:
         run_interactive(pipe, args)
         return
 
-    gen_time = generate_image(pipe, args.prompt, args, args.output, args.seed)
-    print(f"[info] generation took {gen_time:.1f}s -> saved to {args.output}")
+    image, gen_time = generate_image(pipe, args.prompt, args, args.seed)
+    output = args.output or Path("outputs") / (
+        f"{model_short_name(args.model)}_{timestamp()}.png"
+    )
+    output.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output)
+    print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
     if args.timing:
         print(
             f"[timing] load={load_time:.1f}s generate={gen_time:.1f}s total={load_time + gen_time:.1f}s"
