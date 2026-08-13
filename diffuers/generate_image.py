@@ -4,6 +4,7 @@
 import argparse
 import contextlib
 import io
+import random
 import re
 import sys
 import time
@@ -13,9 +14,14 @@ from pathlib import Path
 import torch
 from diffusers import Lumina2Pipeline
 from PIL import Image
+from PIL.PngImagePlugin import PngInfo
 
 DEFAULT_OUTPUT = Path("outputs/lumina2_demo.png")
 HISTORY_FILE = Path("outputs/.prompt_history")
+DEFAULT_NEGATIVE_PROMPT = (
+    "blurry, low quality, distorted face, deformed hands, extra fingers, "
+    "bad anatomy, watermark, text, oversaturated, plastic skin"
+)
 C_RESET = "\033[0m"
 C_BOLD = "\033[1m"
 C_CYAN = "\033[36m"
@@ -119,7 +125,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--negative-prompt",
         default=None,
-        help="Negative prompt (things to avoid in the image)",
+        help="Negative prompt (default: preset artifact-prevention prompt)",
     )
     parser.add_argument("--width", type=int, default=1024)
     parser.add_argument("--height", type=int, default=1024)
@@ -128,7 +134,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--guidance", type=float, default=4.0, help="Guidance scale")
     parser.add_argument("--cfg-trunc-ratio", type=float, default=0.25)
-    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Seed for reproducibility (default: random)",
+    )
     parser.add_argument(
         "-n",
         "--count",
@@ -182,19 +193,57 @@ def expand_prompt(prompt: str) -> str:
     return prompt
 
 
+def resolve_negative_prompt(args: argparse.Namespace) -> str:
+    if args.negative_prompt is not None:
+        return args.negative_prompt
+    return DEFAULT_NEGATIVE_PROMPT
+
+
+def resolve_seed(base_seed: int | None, offset: int) -> int:
+    if base_seed is None:
+        return random.randint(0, 2**32 - 1)
+    return base_seed + offset
+
+
+def build_metadata(
+    args: argparse.Namespace,
+    raw_prompt: str,
+    expanded_prompt: str,
+    seed: int,
+    gen_time: float,
+    device: torch.device,
+    dtype: torch.dtype,
+) -> dict[str, str]:
+    return {
+        "model": args.model,
+        "prompt": expanded_prompt,
+        "prompt_raw": raw_prompt,
+        "negative_prompt": resolve_negative_prompt(args),
+        "seed": str(seed),
+        "steps": str(args.steps),
+        "guidance": str(args.guidance),
+        "cfg_trunc_ratio": str(args.cfg_trunc_ratio),
+        "width": str(args.width),
+        "height": str(args.height),
+        "device": str(device),
+        "dtype": str(dtype),
+        "generated_at": timestamp(),
+        "gen_time_s": f"{gen_time:.1f}",
+    }
+
+
 def generate_image(
     pipe: Lumina2Pipeline,
     prompt: str,
     args: argparse.Namespace,
     seed: int,
 ) -> tuple[Image.Image, float]:
-    prompt = expand_prompt(prompt)
     generator = torch.Generator("cpu").manual_seed(seed)
     with contextlib.redirect_stdout(io.StringIO()):
         t1 = time.perf_counter()
         image = pipe(
             prompt=prompt,
-            negative_prompt=args.negative_prompt,
+            negative_prompt=resolve_negative_prompt(args),
             height=args.height,
             width=args.width,
             guidance_scale=args.guidance,
@@ -213,11 +262,18 @@ def save_image(
     gen_time: float,
     count: int,
     index: int,
+    metadata: dict[str, str] | None = None,
 ) -> None:
     stem = f"{output.stem}_{index:03d}" if count > 1 else output.stem
     output = output.with_name(stem + output.suffix)
     output.parent.mkdir(parents=True, exist_ok=True)
-    image.save(output)
+    if metadata:
+        pnginfo = PngInfo()
+        for key, value in metadata.items():
+            pnginfo.add_text(key, value)
+        image.save(output, pnginfo=pnginfo)
+    else:
+        image.save(output)
     print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
 
 
@@ -234,7 +290,12 @@ def marker_guide() -> str:
     return "\n".join(lines)
 
 
-def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
+def run_interactive(
+    pipe: Lumina2Pipeline,
+    args: argparse.Namespace,
+    device: torch.device,
+    dtype: torch.dtype,
+) -> None:
     print(
         "[info] interactive mode - type a prompt and press Enter. "
         "empty line, 'exit' or 'quit' to stop."
@@ -253,18 +314,19 @@ def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
             if not prompt or prompt.lower() in ("exit", "quit", "q"):
                 break
             for i in range(args.count):
-                image, gen_time = generate_image(
-                    pipe,
-                    prompt,
-                    args,
-                    args.seed + counter * args.count + i,
-                )
+                seed = resolve_seed(args.seed, counter * args.count + i)
+                print(f"[info] seed={seed}")
+                expanded_prompt = expand_prompt(prompt)
+                image, gen_time = generate_image(pipe, expanded_prompt, args, seed)
                 base = args.output or DEFAULT_OUTPUT
                 output = base.parent / (
                     f"{model_short_name(args.model)}_{timestamp()}_{counter:03d}"
                     f"{base.suffix}"
                 )
-                save_image(image, output, gen_time, args.count, i)
+                metadata = build_metadata(
+                    args, prompt, expanded_prompt, seed, gen_time, device, dtype
+                )
+                save_image(image, output, gen_time, args.count, i, metadata)
             counter += 1
     except KeyboardInterrupt:
         print("\n[info] interrupted")
@@ -305,16 +367,22 @@ def main() -> None:
         pipe.to(device)
 
     if args.interactive:
-        run_interactive(pipe, args)
+        run_interactive(pipe, args, device, dtype)
         return
 
     total_gen = 0.0
     for i in range(args.count):
-        image, gen_time = generate_image(pipe, args.prompt, args, args.seed + i)
+        seed = resolve_seed(args.seed, i)
+        print(f"[info] seed={seed}")
+        expanded_prompt = expand_prompt(args.prompt)
+        image, gen_time = generate_image(pipe, expanded_prompt, args, seed)
         output = args.output or Path("outputs") / (
             f"{model_short_name(args.model)}_{timestamp()}.png"
         )
-        save_image(image, output, gen_time, args.count, i)
+        metadata = build_metadata(
+            args, args.prompt, expanded_prompt, seed, gen_time, device, dtype
+        )
+        save_image(image, output, gen_time, args.count, i, metadata)
         total_gen += gen_time
     print(f"[info] total generation took {total_gen:.1f}s for {args.count} image(s)")
     if args.timing:

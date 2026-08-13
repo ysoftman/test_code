@@ -100,7 +100,8 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 ### 여러 장 생성 (프롬프트당 N개)
 
 `-n`(또는 `--count`) 옵션으로 프롬프트 하나당 여러 장을 생성할 수 있습니다.
-이미지마다 시드가 자동으로 증가하며, 파일명에 `_000`, `_001` ... 인덱스가 붙습니다.
+`--seed` 지정 시 이미지마다 시드가 자동으로 증가하며(42, 43, 44 ...), 미지정 시
+매번 랜덤 시드를 사용합니다. 파일명에 `_000`, `_001` ... 인덱스가 붙습니다.
 
 ```bash
 # 프롬프트 하나로 3장 생성 (시드 42, 43, 44)
@@ -115,6 +116,12 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 #       outputs/lumina-image-2-0_2026-08-13_00-10-51_002.png
 ```
 
+```bash
+# 시드 미지정: 매번 다른 이미지 (사용된 시드는 로그로 출력)
+.venv/bin/python generate_image.py --prompt "a cute corgi puppy" --offline
+# [info] seed=1234567890
+```
+
 인터랙티브 모드에서도 프롬프트마다 N장씩 생성합니다:
 
 ```bash
@@ -126,7 +133,8 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 
 스크립트 실행 시마다 모델을 다시 로딩하는 비용(약 30초)을 없애고 싶다면
 `-i`(또는 `--interactive`) 옵션으로 모델을 한 번만 로드한 뒤 프롬프트를
-계속 입력받을 수 있습니다. 시드는 매 프롬프트마다 자동으로 증가하고,
+계속 입력받을 수 있습니다. 시드는 `--seed` 지정 시 매 프롬프트마다 자동으로 증가하고,
+미지정 시 매번 랜덤 시드를 사용합니다.
 출력은 `outputs/모델명_YYYY-MM-DD_hh-mm-ss_카운터.png`
 (예: `lumina-image-2-0_2026-08-13_00-10-51_000.png`) 로 저장됩니다.
 
@@ -176,12 +184,12 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 | --- | --- | --- |
 | `--model` | `Alpha-VLLM/Lumina-Image-2.0` | Hub repo id 또는 로컬 모델 경로 |
 | `--prompt` | 샘플 프롬프트 | 생성할 이미지 설명 (영어 권장) |
-| `--negative-prompt` | 없음 | 이미지에 포함하지 않을 내용 (선택) |
+| `--negative-prompt` | 없음 | 이미지에 포함하지 않을 내용 (미지정 시 얼굴 변형/아티팩트 방지 프리셋 자동 적용) |
 | `--width` / `--height` | `1024` / `1024` | 생성 이미지 크기 (**8의 배수 필수**, VAE 다운샘플 배수) |
 | `--steps` | `50` | 노이즈 제거 스텝 수 (클수록 품질↑, 시간↑) |
 | `--guidance` | `4.0` | 가이던스 스케일 (클수록 프롬프트 충실도↑) |
 | `--cfg-trunc-ratio` | `0.25` | Lumina2 의 CFG 절단 비율 |
-| `--seed` | `0` | 재현용 시드 |
+| `--seed` | `random` | 재현용 시드 (미지정 시 매번 랜덤, 사용된 시드는 로그와 PNG 메타데이터에 기록) |
 | `-n` / `--count` | `1` | 프롬프트당 생성할 이미지 수 (각기 다른 시드, 파일명에 `_000`... 인덱스 추가) |
 | `--output` | 없음 | 출력 경로. 기본은 `outputs/<모델명>_<YYYY-MM-DD_hh-mm-ss>.png` (인터랙티브: `_카운터` 추가) |
 | `--device` | `auto` | `cuda` / `mps` / `cpu` 자동 선택 |
@@ -191,6 +199,15 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 | `-i` / `--interactive` | off | 모델 1회 로드 후 프롬프트 반복 입력 (Ctrl-C 또는 `exit`/`quit`로 종료) |
 
 ## 참고 사항
+
+- **PNG 메타데이터**: 생성에 사용한 프롬프트(원본/확장), 시드, steps, guidance,
+  해상도, device, dtype 등이 이미지 파일에 함께 저장됩니다. `--seed` 를 다시
+  지정하면 동일한 이미지를 재현할 수 있습니다.
+
+  ```bash
+  # 확인 방법 (PIL)
+  .venv/bin/python -c "from PIL import Image; print(Image.open('outputs/xxx.png').info)"
+  ```
 
 - **dtype**: 자동으로 `cuda -> bfloat16`, `mps(Mac)-> float16`, `cpu -> float32` 로 설정합니다.
   (Mac MPS 는 bfloat16 미지원 이슈가 있어 float16 사용)
