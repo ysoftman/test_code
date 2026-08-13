@@ -241,10 +241,23 @@ Lumina 공식 클라우드 서비스 대비 로컬(M1 Max) 실행 결과가 인�
 ### 1. 프롬프트 상세 묘사 (가장 큰 차이)
 
 로컬은 입력한 텍스트가 그대로 디퓨전 모델에 전달되므로 피부 질감, 미세한 조명,
-눈동자 디테일이 생략됩니다. 이 프로젝트는 프롬프트에 `{realism}` 마커를 넣으면
-아래 키워드로 자동 확장합니다 (직접 명시도 가능).
+눈동자 디테일이 생략됩니다. 이 프로젝트는 프롬프트에 마커(`{realism}` 등)를
+넣으면 아래 프리셋 키워드로 자동 확장합니다 (직접 명시도 가능).
+
+| 마커 | 확장 키워드 (요약) |
+| --- | --- |
+| `{realism}` | raw photo, realistic skin pores, subsurface scattering, 85mm, f/1.8, 8k |
+| `{portrait}` | professional portrait, 85mm f/1.8, shallow depth of field, studio lighting |
+| `{cinematic}` | cinematic still, film grain, anamorphic lens, color grading, 35mm film |
+| `{landscape}` | wide angle, golden hour, dramatic sky, HDR, professional photography |
+| `{product}` | commercial product photo, studio lighting, softbox, clean background |
+| `{anime}` | anime illustration, clean line art, vibrant colors, detailed eyes |
+| `{macro}` | macro photography, extreme close-up, shallow depth of field |
+
+여러 마커를 함께 쓸 수도 있으며, 같은 키워드 세트를 직접 붙여 넣어도 됩니다.
 
 ```text
+# {realism} 마커가 확장하는 실제 키워드
 raw photo, realistic skin pores, fine wrinkles, subsurface scattering,
 natural soft lighting, shot on 85mm lens, f/1.8, subtle imperfections, 8k resolution
 ```

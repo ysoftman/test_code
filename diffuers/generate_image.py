@@ -35,6 +35,32 @@ PROMPT_MARKERS = {
         "natural soft lighting, shot on 85mm lens, f/1.8, subtle imperfections, "
         "8k resolution"
     ),
+    "portrait": (
+        "professional portrait photography, 85mm lens, f/1.8, shallow depth of "
+        "field, soft bokeh background, sharp focus on eyes, natural skin tones, "
+        "studio lighting"
+    ),
+    "cinematic": (
+        "cinematic still, film grain, anamorphic lens, dramatic lighting, "
+        "cinematic color grading, moody atmosphere, shallow depth of field, "
+        "35mm film"
+    ),
+    "landscape": (
+        "wide angle landscape photography, golden hour, dramatic sky, rich "
+        "detail, natural colors, high dynamic range, professional photography"
+    ),
+    "product": (
+        "commercial product photography, studio lighting, softbox, high detail, "
+        "clean background, professional advertising shot, sharp focus"
+    ),
+    "anime": (
+        "anime illustration style, clean line art, vibrant colors, detailed "
+        "eyes, studio quality animation, high quality anime artwork"
+    ),
+    "macro": (
+        "macro photography, extreme close-up, shallow depth of field, fine "
+        "detail, natural light, sharp focus on subject"
+    ),
 }
 
 try:
