@@ -295,6 +295,23 @@ const GOBLIN_TILE = [
   "................",
 ];
 
+function makeCave(scene: Phaser.Scene): void {
+  const g = scene.add.graphics();
+  g.fillStyle(0x2a2a3a, 1);
+  g.fillRect(0, 0, 64, 64);
+  g.fillStyle(0x3d3650, 1);
+  g.fillRect(0, 0, 64, 6);
+  g.fillRect(0, 0, 6, 64);
+  g.fillRect(58, 0, 6, 64);
+  g.fillStyle(0x141418, 1);
+  g.fillTriangle(8, 6, 32, 40, 56, 6);
+  g.fillRect(10, 6, 44, 40);
+  g.fillStyle(0x0b0b0e, 1);
+  g.fillRect(10, 30, 44, 34);
+  g.generateTexture("cave", 64, 64);
+  g.destroy();
+}
+
 function makeSign(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(0x4a2f1a, 1);
@@ -535,6 +552,7 @@ export class BootScene extends Phaser.Scene {
     makeSign(this);
     makeMoon(this);
     makeStars(this);
+    makeCave(this);
     makeBattleBg(this);
     makeTitleBg(this);
   }

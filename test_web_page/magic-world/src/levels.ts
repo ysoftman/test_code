@@ -65,6 +65,7 @@ export function buildLevel(): number[][] {
   stamp(map, 3, 2, ["HH", "HH"]);
   stamp(map, 1, 7, ["PPPPPPPPPPPPPPPPPPPP"]);
   stamp(map, 7, 3, ["P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "P"]);
+  stamp(map, 5, 7, ["P", "P"]);
   stamp(map, 3, 13, ["hh", "hh"]);
   stamp(map, 17, 12, ["hh", "hh"]);
   stamp(map, 6, 4, [".T.", "TTT"]);
@@ -78,3 +79,51 @@ export function buildLevel(): number[][] {
 export const PLAYER_SPAWN = { x: 9 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
 export const NPC_POS = { x: 11 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
 export const HOUSE_POS = { x: 3 * TILE, y: 2 * TILE };
+export const SHOP_POS = { x: 5 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
+export const CAVE_POS = { x: 19 * TILE + TILE / 2, y: 2 * TILE + TILE / 2 };
+
+export const DUNGEON_W = 20;
+export const DUNGEON_H = 14;
+export const DUNGEON_ENTRY = { x: 10 * TILE + TILE / 2, y: 1 * TILE + TILE / 2 };
+
+export const DUNGEON_ZONES: MonsterZone[] = [
+  { cx: 4 * TILE, cy: 5 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3 },
+  { cx: 15 * TILE, cy: 6 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3 },
+  { cx: 10 * TILE, cy: 12 * TILE, w: 3 * TILE, h: 2 * TILE, count: 1 },
+];
+
+export function buildDungeon(): number[][] {
+  const map: number[][] = Array.from({ length: DUNGEON_H }, () =>
+    Array<number>(DUNGEON_W).fill(T_PATH)
+  );
+
+  for (let x = 0; x < DUNGEON_W; x++) {
+    map[0][x] = T_TREE;
+    map[DUNGEON_H - 1][x] = T_TREE;
+  }
+  for (let y = 0; y < DUNGEON_H; y++) {
+    map[y][0] = T_TREE;
+    map[y][DUNGEON_W - 1] = T_TREE;
+  }
+
+  stamp(map, 1, 2, ["WWW", "WWW"]);
+  stamp(map, 14, 2, ["WWW", "WWW", "WWW"]);
+  stamp(map, 2, 9, ["WWW", "WWW"]);
+  stamp(map, 15, 9, ["WW", "WW", "WW"]);
+
+  stamp(map, 8, 4, ["TT", "..", ".."]);
+  stamp(map, 4, 7, [".T", "T."]);
+
+  for (let x = 6; x <= 13; x++) {
+    map[10][x] = T_TREE;
+  }
+  map[11][6] = T_TREE;
+  map[12][6] = T_TREE;
+  map[11][13] = T_TREE;
+  map[12][13] = T_TREE;
+  for (let x = 7; x <= 12; x++) {
+    map[13][x] = T_PATH;
+  }
+
+  return map;
+}

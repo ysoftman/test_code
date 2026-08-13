@@ -3,6 +3,7 @@ import { GAME_WIDTH, GAME_HEIGHT } from "./config";
 import { BootScene } from "./scenes/BootScene";
 import { TitleScene } from "./scenes/TitleScene";
 import { WorldScene } from "./scenes/WorldScene";
+import { DungeonScene } from "./scenes/DungeonScene";
 import { BattleScene } from "./scenes/BattleScene";
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -23,7 +24,7 @@ const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [BootScene, TitleScene, WorldScene, BattleScene],
+  scene: [BootScene, TitleScene, WorldScene, DungeonScene, BattleScene],
 };
 
 new Phaser.Game(config);

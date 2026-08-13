@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
+import { GameState } from "../gameState";
 import { retroStyle } from "../pixelart";
+import { Sfx } from "../audio";
 
 export class TitleScene extends Phaser.Scene {
   private started = false;
@@ -27,7 +29,7 @@ export class TitleScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     const prompt = this.add
-      .text(GAME_WIDTH / 2, 312, "PRESS ENTER", retroStyle(8, "#ffffff"))
+      .text(GAME_WIDTH / 2, 296, "PRESS ENTER", retroStyle(8, "#ffffff"))
       .setOrigin(0.5);
     this.tweens.add({
       targets: prompt,
@@ -37,20 +39,46 @@ export class TitleScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    const continueText = this.add
+      .text(
+        GAME_WIDTH / 2,
+        330,
+        GameState.hasSave() ? "C: CONTINUE  (Q: DELETE SAVE)" : "NO SAVE FOUND",
+        retroStyle(6, "#8ecbff")
+      )
+      .setOrigin(0.5);
+
+    const start = (continueGame: boolean) => {
+      if (this.started) return;
+      this.started = true;
+      Sfx.buy();
+      if (continueGame) {
+        GameState.load();
+        this.scene.start("World");
+        return;
+      }
+      GameState.reset();
+      GameState.clearSave();
+      this.cameras.main.fadeOut(400, 0, 0, 0);
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+        this.scene.start("World");
+      });
+    };
+
     this.input.keyboard!.on("keydown", (e: KeyboardEvent) => {
+      Sfx.ensure();
       if (e.key === "Enter" || e.key === "z" || e.key === "Z" || e.key === " ") {
-        this.startGame();
+        start(false);
+      } else if ((e.key === "c" || e.key === "C") && GameState.hasSave()) {
+        start(true);
+      } else if (e.key === "q" || e.key === "Q") {
+        GameState.clearSave();
+        continueText.setText("NO SAVE FOUND");
       }
     });
-    this.input.on("pointerdown", () => this.startGame());
-  }
-
-  private startGame(): void {
-    if (this.started) return;
-    this.started = true;
-    this.cameras.main.fadeOut(400, 0, 0, 0);
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start("World");
+    this.input.on("pointerdown", () => {
+      Sfx.ensure();
+      start(false);
     });
   }
 }

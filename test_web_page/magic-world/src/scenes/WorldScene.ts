@@ -1,21 +1,25 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
-import { GameState } from "../gameState";
+import { GameState, expToNext, isNight, timeLabel, clock, dayCount } from "../gameState";
 import { retroStyle } from "../pixelart";
 import { DialogueBox } from "../ui/DialogueBox";
+import { ShopUI } from "../ui/Shop";
+import { Sfx } from "../audio";
 import {
   buildLevel,
   MAP_W,
   MAP_H,
+  TILE,
   PLAYER_SPAWN,
   NPC_POS,
+  SHOP_POS,
   HOUSE_POS,
+  CAVE_POS,
   MONSTER_ZONES,
   SOLID,
   T_WATER_A,
   T_WATER_B,
   TALL_GRASS,
-  TILE,
 } from "../levels";
 
 const ENCOUNTER_RATE = 0.18;
@@ -45,14 +49,23 @@ const IDLE_TEXTURE: Record<LastMove, string> = {
 export class WorldScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
   private playerShadow!: Phaser.GameObjects.Ellipse;
-  private npc!: Phaser.GameObjects.Sprite;
   private layer!: Phaser.Tilemaps.TilemapLayer;
   private dialogue!: DialogueBox;
+  private shop!: ShopUI;
   private dust!: Phaser.GameObjects.Particles.ParticleEmitter;
   private roamerGroup!: Phaser.Physics.Arcade.Group;
   private roamers: Roamer[] = [];
   private encounterCooldown = 0;
   private lastMove: LastMove = "down";
+  private nightOverlay!: Phaser.GameObjects.Rectangle;
+  private moon!: Phaser.GameObjects.Image;
+  private stars!: Phaser.GameObjects.Image;
+  private homeLabel!: Phaser.GameObjects.Text;
+  private homeBubble!: Phaser.GameObjects.Container;
+  private bubbleVisible = false;
+  private resting = false;
+  private zQueued = false;
+  private bQueued = false;
 
   private keyLeft!: Phaser.Input.Keyboard.Key;
   private keyRight!: Phaser.Input.Keyboard.Key;
@@ -65,8 +78,11 @@ export class WorldScene extends Phaser.Scene {
   private keyZ!: Phaser.Input.Keyboard.Key;
   private keySpace!: Phaser.Input.Keyboard.Key;
   private keyB!: Phaser.Input.Keyboard.Key;
+  private keyS!: Phaser.Input.Keyboard.Key;
 
   private statusText!: Phaser.GameObjects.Text;
+  private statusPanel!: Phaser.GameObjects.Rectangle;
+  private expBar!: Phaser.GameObjects.Rectangle;
   private statusLast = "";
 
   constructor() {
@@ -75,8 +91,9 @@ export class WorldScene extends Phaser.Scene {
 
   create(): void {
     this.roamers = [];
-    this.encounterCooldown = 0;
+    this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";
+    this.resting = false;
 
     const level = buildLevel();
     const map = this.make.tilemap({
@@ -90,27 +107,55 @@ export class WorldScene extends Phaser.Scene {
 
     this.physics.world.setBounds(0, 0, MAP_W * TILE, MAP_H * TILE);
 
-    this.add
+    this.moon = this.add
       .image(140, 72, "moon")
       .setScrollFactor(0)
-      .setDepth(-50);
-    this.add
+      .setDepth(-50)
+      .setVisible(isNight());
+    this.stars = this.add
       .image(GAME_WIDTH / 2, 72, "stars")
       .setScrollFactor(0)
-      .setDepth(-50);
+      .setDepth(-50)
+      .setVisible(isNight());
 
     this.add
       .image(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE, "house")
       .setOrigin(0.5, 0.5);
+    this.homeLabel = this.add
+      .text(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE - 52, "HOME", retroStyle(5, "#9f9fd0"))
+      .setOrigin(0.5)
+      .setDepth(11);
+    this.homeBubble = this.buildHomeBubble();
+    this.homeBubble.setVisible(false);
 
-    this.npc = this.add.sprite(NPC_POS.x, NPC_POS.y, "npc").setDepth(10);
+    this.add
+      .sprite(NPC_POS.x, NPC_POS.y, "npc").setDepth(10);
     this.add
       .ellipse(NPC_POS.x, NPC_POS.y + 14, 20, 8, 0x000000, 0.4)
       .setDepth(5);
+    this.add
+      .text(NPC_POS.x, NPC_POS.y - 34, "ELDER", retroStyle(5, "#9f9fd0"))
+      .setOrigin(0.5)
+      .setDepth(11);
+
+    this.add.sprite(SHOP_POS.x, SHOP_POS.y, "npc").setDepth(10).setTint(0xffd166);
+    this.add
+      .ellipse(SHOP_POS.x, SHOP_POS.y + 14, 20, 8, 0x000000, 0.4)
+      .setDepth(5);
+    this.add
+      .text(SHOP_POS.x, SHOP_POS.y - 34, "SHOP", retroStyle(5, "#ffd166"))
+      .setOrigin(0.5)
+      .setDepth(11);
+
+    this.add.image(CAVE_POS.x, CAVE_POS.y, "cave").setDepth(9);
+    this.add
+      .text(CAVE_POS.x, CAVE_POS.y + 16, "CAVE", retroStyle(6, "#9f9fd0"))
+      .setOrigin(0.5)
+      .setDepth(11);
 
     this.player = this.physics.add.sprite(
-      PLAYER_SPAWN.x,
-      PLAYER_SPAWN.y,
+      GameState.pos?.x ?? PLAYER_SPAWN.x,
+      GameState.pos?.y ?? PLAYER_SPAWN.y,
       "hero-idle-down"
     );
     this.player.setCollideWorldBounds(true);
@@ -166,6 +211,12 @@ export class WorldScene extends Phaser.Scene {
       if (this.encounterCooldown <= 0) this.startBattle("slime");
     });
 
+    const cave = this.add.zone(CAVE_POS.x, CAVE_POS.y, TILE, TILE).setDepth(1);
+    this.physics.add.existing(cave);
+    this.physics.add.overlap(this.player, cave, () => {
+      this.enterDungeon();
+    });
+
     this.time.addEvent({
       delay: 400,
       loop: true,
@@ -185,62 +236,162 @@ export class WorldScene extends Phaser.Scene {
     this.keyK = kb.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.keyL = kb.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.keyZ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+    this.keyZ.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.zQueued = true;
+    });
     this.keySpace = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.keySpace.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.zQueued = true;
+    });
     this.keyB = kb.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+    this.keyB.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.bQueued = true;
+    });
+    this.keyS = kb.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
-    this.dialogue = new DialogueBox(this, [
-      "Welcome to MAGIC WORLD!",
-      "I am Elder Willow.",
-      "Slimes lurk in the tall grass.",
-      "Press Z to fight them.",
-      "Bring peace to our village!",
-    ]);
+    this.dialogue = new DialogueBox(this, []);
+    this.shop = new ShopUI(this);
 
     const hint = this.add
       .text(
-        GAME_WIDTH / 2,
+        GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "ARROWS/HJKL:MOVE  Z:TALK  ESC:SKIP",
+        "HJKL:MOVE  Z:TALK/REST  S:HUD  ESC:SKIP",
         retroStyle(6, "#9f9fd0")
       )
-      .setOrigin(0.5, 1)
+      .setOrigin(1, 1)
       .setScrollFactor(0)
       .setDepth(100);
 
-    this.add
-      .rectangle(8, GAME_HEIGHT - 8, 128, 68, 0x0b0b2b, 0.88)
+    this.nightOverlay = this.add
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x1a1a4a, 0)
+      .setScrollFactor(0)
+      .setDepth(90);
+
+    const statusDummy = [
+      "HERO",
+      "LV 1",
+      "HP 30/30",
+      "MP 10/10",
+      "G 0",
+      "DAY 1",
+      "00:00 DAY",
+      "SLIMES 0/5",
+    ].join("\n");
+    this.statusText = this.add
+      .text(16, 0, statusDummy, retroStyle(6, "#ffffff"))
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setDepth(101);
+    const statusH = this.statusText.height + 24;
+    this.statusText.setY(GAME_HEIGHT - 8 - statusH + 12);
+    this.statusPanel = this.add
+      .rectangle(8, GAME_HEIGHT - 8, 180, statusH, 0x0b0b2b, 0.88)
       .setOrigin(0, 1)
       .setStrokeStyle(1, 0xffffff)
       .setScrollFactor(0)
       .setDepth(100);
-    this.statusText = this.add
-      .text(16, GAME_HEIGHT - 60, "", retroStyle(6, "#ffffff"))
-      .setOrigin(0, 0)
+    this.expBar = this.add
+      .rectangle(16, GAME_HEIGHT - 10, 164, 4, 0x22c55e)
+      .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(101);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      GameState.pos = { x: this.player.x, y: this.player.y };
+      GameState.save();
       this.dialogue.destroy();
+      this.shop.destroy();
       hint.destroy();
     });
   }
 
-  update(_time: number, delta: number): void {
-    this.updateStatus();
+  private buildHomeBubble(): Phaser.GameObjects.Container {
+    const lines = ["HOME", "Z: REST - FULL HP/MP", "SLEEP UNTIL MORNING"];
+    const text = this.add
+      .text(0, 0, lines.join("\n"), retroStyle(5, "#f5f5f5"))
+      .setOrigin(0.5)
+      .setAlign("center")
+      .setLineSpacing(4);
+    const pad = 10;
+    const w = text.width + pad * 2;
+    const h = text.height + pad * 2;
+    const border = this.add.rectangle(0, 0, w + 4, h + 4, 0xffffff).setOrigin(0.5);
+    const box = this.add.rectangle(0, 0, w, h, 0x0b0b2b).setOrigin(0.5);
+    const tail = this.add
+      .triangle(0, h / 2 + 2, -12, 0, 12, 0, 0, 14, 0x0b0b2b)
+      .setStrokeStyle(2, 0xffffff)
+      .setOrigin(0.5);
+    return this.add
+      .container(
+        HOUSE_POS.x + TILE,
+        HOUSE_POS.y + TILE - h / 2 - 16,
+        [border, box, text, tail]
+      )
+      .setDepth(12);
+  }
 
-    if (this.dialogue.isActive()) {
+  private nearHouse(): boolean {
+    const dx = this.player.x - (HOUSE_POS.x + TILE);
+    const dy = this.player.y - (HOUSE_POS.y + 2 * TILE);
+    return dx * dx + dy * dy <= 72 * 72;
+  }
+
+  private updateHomeBubble(): void {
+    const near = this.nearHouse();
+    if (near === this.bubbleVisible) return;
+    this.bubbleVisible = near;
+    this.homeBubble.setVisible(near);
+    this.homeLabel.setVisible(!near);
+    if (near) {
+      this.tweens.killTweensOf(this.homeBubble);
+      this.homeBubble.setAlpha(0);
+      this.tweens.add({
+        targets: this.homeBubble,
+        alpha: 1,
+        duration: 160,
+      });
+    }
+  }
+
+  private enterDungeon(): void {
+    if (this.dialogue.isActive() || this.shop.isActive()) return;
+    Sfx.night();
+    this.player.setVelocity(0, 0);
+    this.cameras.main.fadeOut(200, 0, 0, 0);
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+      this.scene.start("Dungeon");
+    });
+  }
+
+  update(_time: number, delta: number): void {
+    GameState.minutes += delta / 1000;
+    this.updateStatus();
+    this.updateDayNight();
+    this.updateHomeBubble();
+
+    if (Phaser.Input.Keyboard.JustDown(this.keyS)) {
+      this.toggleStatus();
+    }
+
+    if (this.dialogue.isActive() || this.shop.isActive()) {
+      this.zQueued = false;
+      this.bQueued = false;
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
       this.dust.emitting = false;
       this.dialogue.update();
+      this.shop.update();
       this.updateRoamers(delta);
       return;
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.keyZ) || Phaser.Input.Keyboard.JustDown(this.keySpace)) {
+    if (this.zQueued) {
+      this.zQueued = false;
       if (this.tryTalk()) return;
     }
-    if (Phaser.Input.Keyboard.JustDown(this.keyB)) {
+    if (this.bQueued) {
+      this.bQueued = false;
       this.startBattle();
       return;
     }
@@ -269,32 +420,149 @@ export class WorldScene extends Phaser.Scene {
       this.player.setTexture(IDLE_TEXTURE[this.lastMove]);
     }
 
-    this.playerShadow.setPosition(this.player.x, this.player.y + 7);
+    this.playerShadow.setPosition(this.player.x, this.player.y + 14);
     this.dust.emitting = moving;
     this.updateRoamers(delta);
     this.checkEncounter(delta);
   }
 
+  private toggleStatus(): void {
+    const visible = !this.statusPanel.visible;
+    this.statusPanel.setVisible(visible);
+    this.statusText.setVisible(visible);
+    this.expBar.setVisible(visible);
+  }
+
+  private updateDayNight(): void {
+    this.nightOverlay.setAlpha(isNight() ? 0.32 : 0);
+    const night = isNight();
+    this.moon.setVisible(night);
+    this.stars.setVisible(night);
+  }
+
   private updateStatus(): void {
     const p = GameState.player;
+    const q = GameState.quest;
+    const questLine = q.bossDefeated
+      ? "QUEST DONE"
+      : `SLIMES ${q.slimes}/5`;
     const text = [
       p.name,
+      `LV ${p.level}`,
       `HP ${p.hp}/${p.maxHp}`,
       `MP ${p.mp}/${p.maxMp}`,
       `G ${GameState.gold}`,
+      `DAY ${dayCount()}`,
+      `${clock()} ${timeLabel()}`,
+      questLine,
     ].join("\n");
     if (text !== this.statusLast) {
       this.statusLast = text;
       this.statusText.setText(text);
     }
+    this.expBar.setScale(
+      Math.max(0, p.exp / expToNext(p.level)),
+      1
+    );
   }
 
   private tryTalk(): boolean {
-    const dx = this.player.x - this.npc.x;
-    const dy = this.player.y - this.npc.y;
-    if (dx * dx + dy * dy > 60 * 60) return false;
-    this.dialogue.start();
-    return true;
+    const near = (x: number, y: number): boolean => {
+      const dx = this.player.x - x;
+      const dy = this.player.y - y;
+      return dx * dx + dy * dy <= 60 * 60;
+    };
+
+    if (near(NPC_POS.x, NPC_POS.y)) {
+      this.startElderDialogue();
+      return true;
+    }
+    if (near(SHOP_POS.x, SHOP_POS.y)) {
+      Sfx.buy();
+      this.shop.open();
+      return true;
+    }
+    if (near(HOUSE_POS.x + TILE, HOUSE_POS.y + 2 * TILE)) {
+      this.rest();
+      return true;
+    }
+    return false;
+  }
+
+  private rest(): void {
+    if (this.resting) return;
+    this.resting = true;
+    this.player.setVelocity(0, 0);
+    Sfx.night();
+    this.cameras.main.fadeOut(400, 0, 0, 0);
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+      GameState.player.hp = GameState.player.maxHp;
+      GameState.player.mp = GameState.player.maxMp;
+      GameState.minutes = (Math.floor(GameState.minutes / 1440) + 1) * 1440 + 360;
+      GameState.save();
+      this.statusLast = "";
+      this.cameras.main.fadeIn(400, 0, 0, 0);
+      this.resting = false;
+      const note = this.add
+        .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "RESTED! HP/MP FULL", retroStyle(8, "#ffd166"))
+        .setOrigin(0.5)
+        .setScrollFactor(0)
+        .setDepth(120);
+      this.tweens.add({
+        targets: note,
+        y: GAME_HEIGHT / 2 - 30,
+        alpha: 0,
+        delay: 800,
+        duration: 600,
+        onComplete: () => note.destroy(),
+      });
+    });
+  }
+
+  private startElderDialogue(): void {
+    const q = GameState.quest;
+    if (!q.slimeReward && q.slimes >= 5) {
+      q.slimeReward = true;
+      GameState.gold += 30;
+      Sfx.buy();
+      this.dialogue.start(
+        [
+          "Well done, hero!",
+          "You hunted 5 slimes.",
+          "Take these 30 gold!",
+        ],
+        "ELDER"
+      );
+      return;
+    }
+    if (!q.bossDefeated) {
+      this.dialogue.start(
+        [
+          "Welcome back!",
+          "Slimes lurk in the grass.",
+          "Hunt 5 slimes first.",
+          "Then face the KING SLIME",
+          "in the cave up north!",
+        ],
+        "ELDER"
+      );
+      return;
+    }
+    if (!q.finalReward) {
+      q.finalReward = true;
+      GameState.gold += 100;
+      Sfx.buy();
+      this.dialogue.start(
+        [
+          "You are our hero!",
+          "The KING SLIME is gone.",
+          "Take this 100 gold!",
+        ],
+        "ELDER"
+      );
+      return;
+    }
+    this.dialogue.start(["The village is at peace."], "ELDER");
   }
 
   private checkEncounter(delta: number): void {
@@ -304,7 +572,8 @@ export class WorldScene extends Phaser.Scene {
     }
     const tile = this.layer.getTileAtWorldXY(this.player.x, this.player.y);
     if (!tile || tile.index !== TALL_GRASS) return;
-    if (Math.random() < ENCOUNTER_RATE) {
+    const rate = ENCOUNTER_RATE * (isNight() ? 1.8 : 1) * (delta / 1000);
+    if (Math.random() < rate) {
       this.startBattle();
     }
   }
