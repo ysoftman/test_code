@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
+import { GameState } from "../gameState";
 import { retroStyle } from "../pixelart";
 import { DialogueBox } from "../ui/DialogueBox";
 import {
@@ -60,6 +61,9 @@ export class WorldScene extends Phaser.Scene {
   private keyZ!: Phaser.Input.Keyboard.Key;
   private keySpace!: Phaser.Input.Keyboard.Key;
   private keyB!: Phaser.Input.Keyboard.Key;
+
+  private statusText!: Phaser.GameObjects.Text;
+  private statusLast = "";
 
   constructor() {
     super("World");
@@ -195,6 +199,18 @@ export class WorldScene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100);
 
+    this.add
+      .rectangle(4, GAME_HEIGHT - 4, 92, 42, 0x0b0b2b, 0.88)
+      .setOrigin(0, 1)
+      .setStrokeStyle(1, 0xffffff)
+      .setScrollFactor(0)
+      .setDepth(100);
+    this.statusText = this.add
+      .text(10, GAME_HEIGHT - 36, "", retroStyle(6, "#ffffff"))
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setDepth(101);
+
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.dialogue.destroy();
       hint.destroy();
@@ -202,6 +218,8 @@ export class WorldScene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number): void {
+    this.updateStatus();
+
     if (this.dialogue.isActive()) {
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
@@ -247,6 +265,20 @@ export class WorldScene extends Phaser.Scene {
     this.dust.emitting = moving;
     this.updateRoamers(delta);
     this.checkEncounter(delta);
+  }
+
+  private updateStatus(): void {
+    const p = GameState.player;
+    const text = [
+      p.name,
+      `HP ${p.hp}/${p.maxHp}`,
+      `MP ${p.mp}/${p.maxMp}`,
+      `G ${GameState.gold}`,
+    ].join("\n");
+    if (text !== this.statusLast) {
+      this.statusLast = text;
+      this.statusText.setText(text);
+    }
   }
 
   private tryTalk(): boolean {

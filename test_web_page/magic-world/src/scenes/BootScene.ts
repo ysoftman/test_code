@@ -60,24 +60,24 @@ const WATER_B = [
   "WWBBWWWWWWWWWWWW",
 ];
 
-const TREE_PALETTE = { d: 0x0d4528, t: 0x3d2c18 };
+const TREE_PALETTE = { b: 0x0a331f, d: 0x0d4528, L: 0x155e38, t: 0x3d2c18 };
 const TREE_TILE = [
-  "................",
-  "................",
-  ".....dddddd.....",
-  "...dddddddddd...",
-  "..dddddddddddd..",
-  "..dddddddddddd..",
-  ".dddddddddddddd.",
-  ".dddddddddddddd.",
-  ".dddddddddddddd.",
-  "..dddddddddddd..",
-  "....dddddddd....",
-  "......tttt......",
-  "......tttt......",
-  "......tttt......",
-  ".....tttttt.....",
-  "................",
+  "bbbbbbbbbbbbbbbb",
+  "bbbbbbbbbbbbbbbb",
+  "bbbbLddddddLbbbb",
+  "bbbddddddddddbbb",
+  "bbddddddddddddbb",
+  "bbddddddddddddbb",
+  "bddddddddddddddb",
+  "bddddddddddddddb",
+  "bddddddddddddddb",
+  "bbddddddddddddbb",
+  "bbbbddddddddbbbb",
+  "bbbbbbttttbbbbbb",
+  "bbbbbbttttbbbbbb",
+  "bbbbbbttttbbbbbb",
+  "bbbbbttttttbbbbb",
+  "bbbbbbbbbbbbbbbb",
 ];
 
 const PATH_PALETTE = { p: 0x735f43, P: 0x5e4c33 };
@@ -186,7 +186,7 @@ const HERO_SIDE_HEAD = [
   "....hhhhhhhh....",
   "...hhhhhhhhhh...",
   "...hssssssssss..",
-  "...hseessssssss.",
+  "...hsssssseess..",
   "...hssssssssss..",
   "....hhhhhhhh....",
 ];
