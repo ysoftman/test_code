@@ -29,10 +29,14 @@ extend-ignore-identifiers-re = [
 [default.extend-identifiers]
 # *sigh* this just isn't worth the cost of fixing
 AttributeIDSupressMenu = "AttributeIDSupressMenu"
+# PNG filter name (Paeth predictor), not a typo of "Path"
+Paeth = "Paeth"
 
 [default.extend-words]
 # Don't correct the surname "Teh"
 teh = "teh"
+# PNG filter name (Paeth predictor), not a typo of "Path"
+Paeth = "Paeth"
 
 # typos 검사 제외 파일타입
 # 지원되는 타입 확인
