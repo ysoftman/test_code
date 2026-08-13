@@ -83,6 +83,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cfg-trunc-ratio", type=float, default=0.25)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument(
+        "-n",
+        "--count",
+        type=int,
+        default=1,
+        help="Number of images to generate per prompt (each with a different seed)",
+    )
+    parser.add_argument(
         "--device", choices=["auto", "cuda", "mps", "cpu"], default="auto"
     )
     parser.add_argument(
@@ -146,6 +153,20 @@ def generate_image(
     return image, gen_time
 
 
+def save_image(
+    image: Image.Image,
+    output: Path,
+    gen_time: float,
+    count: int,
+    index: int,
+) -> None:
+    stem = f"{output.stem}_{index:03d}" if count > 1 else output.stem
+    output = output.with_name(stem + output.suffix)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output)
+    print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
+
+
 def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
     print(
         "[info] interactive mode - type a prompt and press Enter. "
@@ -160,16 +181,20 @@ def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
                 break
             if not prompt or prompt.lower() in ("exit", "quit", "q"):
                 break
-            image, gen_time = generate_image(pipe, prompt, args, args.seed + counter)
-            base = args.output or DEFAULT_OUTPUT
-            output = base.parent / (
-                f"{model_short_name(args.model)}_{timestamp()}_{counter:03d}"
-                f"{base.suffix}"
-            )
-            output.parent.mkdir(parents=True, exist_ok=True)
-            image.save(output)
+            for i in range(args.count):
+                image, gen_time = generate_image(
+                    pipe,
+                    prompt,
+                    args,
+                    args.seed + counter * args.count + i,
+                )
+                base = args.output or DEFAULT_OUTPUT
+                output = base.parent / (
+                    f"{model_short_name(args.model)}_{timestamp()}_{counter:03d}"
+                    f"{base.suffix}"
+                )
+                save_image(image, output, gen_time, args.count, i)
             counter += 1
-            print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
     except KeyboardInterrupt:
         print("\n[info] interrupted")
     if readline is not None:
@@ -189,6 +214,8 @@ def main() -> None:
         raise SystemExit(
             "[error] width/height must be a multiple of 8 (VAE downscale factor)"
         )
+    if args.count < 1:
+        raise SystemExit("[error] --count must be >= 1")
 
     if args.offline:
         import os
@@ -210,16 +237,19 @@ def main() -> None:
         run_interactive(pipe, args)
         return
 
-    image, gen_time = generate_image(pipe, args.prompt, args, args.seed)
-    output = args.output or Path("outputs") / (
-        f"{model_short_name(args.model)}_{timestamp()}.png"
-    )
-    output.parent.mkdir(parents=True, exist_ok=True)
-    image.save(output)
-    print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
+    total_gen = 0.0
+    for i in range(args.count):
+        image, gen_time = generate_image(pipe, args.prompt, args, args.seed + i)
+        output = args.output or Path("outputs") / (
+            f"{model_short_name(args.model)}_{timestamp()}.png"
+        )
+        save_image(image, output, gen_time, args.count, i)
+        total_gen += gen_time
+    print(f"[info] total generation took {total_gen:.1f}s for {args.count} image(s)")
     if args.timing:
         print(
-            f"[timing] load={load_time:.1f}s generate={gen_time:.1f}s total={load_time + gen_time:.1f}s"
+            f"[timing] load={load_time:.1f}s generate={total_gen:.1f}s "
+            f"total={load_time + total_gen:.1f}s"
         )
 
 

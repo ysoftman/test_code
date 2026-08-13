@@ -97,6 +97,31 @@ hf download Alpha-VLLM/Lumina-Image-2.0
   --timing
 ```
 
+### 여러 장 생성 (프롬프트당 N개)
+
+`-n`(또는 `--count`) 옵션으로 프롬프트 하나당 여러 장을 생성할 수 있습니다.
+이미지마다 시드가 자동으로 증가하며, 파일명에 `_000`, `_001` ... 인덱스가 붙습니다.
+
+```bash
+# 프롬프트 하나로 3장 생성 (시드 42, 43, 44)
+.venv/bin/python generate_image.py \
+  --prompt "a cute corgi puppy sitting on a grassy hill" \
+  -n 3 \
+  --seed 42 \
+  --offline
+
+# 결과: outputs/lumina-image-2-0_2026-08-13_00-10-51_000.png
+#       outputs/lumina-image-2-0_2026-08-13_00-10-51_001.png
+#       outputs/lumina-image-2-0_2026-08-13_00-10-51_002.png
+```
+
+인터랙티브 모드에서도 프롬프트마다 N장씩 생성합니다:
+
+```bash
+.venv/bin/python generate_image.py --offline -i -n 3
+# prompt> a cute cat on a sofa  -> 3장 생성
+```
+
 ### 인터랙티브 모드 (모델 1회 로드 + 프롬프트 반복 입력)
 
 스크립트 실행 시마다 모델을 다시 로딩하는 비용(약 30초)을 없애고 싶다면
@@ -150,6 +175,7 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 | `--guidance` | `4.0` | 가이던스 스케일 (클수록 프롬프트 충실도↑) |
 | `--cfg-trunc-ratio` | `0.25` | Lumina2 의 CFG 절단 비율 |
 | `--seed` | `0` | 재현용 시드 |
+| `-n` / `--count` | `1` | 프롬프트당 생성할 이미지 수 (각기 다른 시드, 파일명에 `_000`... 인덱스 추가) |
 | `--output` | 없음 | 출력 경로. 기본은 `outputs/<모델명>_<YYYY-MM-DD_hh-mm-ss>.png` (인터랙티브: `_카운터` 추가) |
 | `--device` | `auto` | `cuda` / `mps` / `cpu` 자동 선택 |
 | `--cpu-offload` | off | VRAM 부족 시 CPU 오프로드 (accelerate 필요) |
