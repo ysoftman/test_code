@@ -200,13 +200,13 @@ export class WorldScene extends Phaser.Scene {
       .setDepth(100);
 
     this.add
-      .rectangle(4, GAME_HEIGHT - 4, 92, 42, 0x0b0b2b, 0.88)
+      .rectangle(4, GAME_HEIGHT - 4, 64, 34, 0x0b0b2b, 0.88)
       .setOrigin(0, 1)
       .setStrokeStyle(1, 0xffffff)
       .setScrollFactor(0)
       .setDepth(100);
     this.statusText = this.add
-      .text(10, GAME_HEIGHT - 36, "", retroStyle(6, "#ffffff"))
+      .text(8, GAME_HEIGHT - 30, "", retroStyle(6, "#ffffff"))
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(101);
