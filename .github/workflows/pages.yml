@@ -71,6 +71,14 @@ jobs:
         working-directory: test_web_page/tsparticles
         run: bun run build
 
+      - name: Install magic-world dependencies
+        working-directory: test_web_page/magic-world
+        run: bun install
+
+      - name: Build magic-world
+        working-directory: test_web_page/magic-world
+        run: bun run build
+
       - name: Assemble _site
         run: |
           set -euo pipefail
@@ -120,6 +128,13 @@ jobs:
             echo "include built app: tsparticles"
             mkdir -p "$OUT/tsparticles"
             cp -r "$SRC/tsparticles/dist/." "$OUT/tsparticles/"
+          fi
+
+          # 2f) magic-world (Phaser 3 게임)
+          if [ -d "$SRC/magic-world/dist" ]; then
+            echo "include built app: magic-world"
+            mkdir -p "$OUT/magic-world"
+            cp -r "$SRC/magic-world/dist/." "$OUT/magic-world/"
           fi
 
           # 3) build info (배포 날짜 / 커밋 버전) — 랜딩 우측 상단에 표시
