@@ -91,11 +91,11 @@ export class WorldScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, MAP_W * TILE, MAP_H * TILE);
 
     this.add
-      .image(70, 36, "moon")
+      .image(140, 72, "moon")
       .setScrollFactor(0)
       .setDepth(-50);
     this.add
-      .image(GAME_WIDTH / 2, 36, "stars")
+      .image(GAME_WIDTH / 2, 72, "stars")
       .setScrollFactor(0)
       .setDepth(-50);
 
@@ -105,7 +105,7 @@ export class WorldScene extends Phaser.Scene {
 
     this.npc = this.add.sprite(NPC_POS.x, NPC_POS.y, "npc").setDepth(10);
     this.add
-      .ellipse(NPC_POS.x, NPC_POS.y + 7, 10, 4, 0x000000, 0.4)
+      .ellipse(NPC_POS.x, NPC_POS.y + 14, 20, 8, 0x000000, 0.4)
       .setDepth(5);
 
     this.player = this.physics.add.sprite(
@@ -115,11 +115,11 @@ export class WorldScene extends Phaser.Scene {
     );
     this.player.setCollideWorldBounds(true);
     this.player.setDepth(10);
-    this.player.body?.setSize(10, 8).setOffset(3, 8);
+    this.player.body?.setSize(20, 16).setOffset(6, 16);
     this.physics.add.collider(this.player, this.layer);
 
     this.playerShadow = this.add
-      .ellipse(this.player.x, this.player.y + 7, 10, 4, 0x000000, 0.4)
+      .ellipse(this.player.x, this.player.y + 14, 20, 8, 0x000000, 0.4)
       .setDepth(5);
 
     const walkFrames = (dir: string): Phaser.Types.Animations.AnimationFrame[] =>
@@ -158,7 +158,7 @@ export class WorldScene extends Phaser.Scene {
       frequency: 70,
       emitting: false,
     });
-    this.dust.startFollow(this.player, 0, 7);
+    this.dust.startFollow(this.player, 0, 14);
 
     this.spawnMonsters();
 
@@ -208,13 +208,13 @@ export class WorldScene extends Phaser.Scene {
       .setDepth(100);
 
     this.add
-      .rectangle(4, GAME_HEIGHT - 4, 64, 34, 0x0b0b2b, 0.88)
+      .rectangle(8, GAME_HEIGHT - 8, 128, 68, 0x0b0b2b, 0.88)
       .setOrigin(0, 1)
       .setStrokeStyle(1, 0xffffff)
       .setScrollFactor(0)
       .setDepth(100);
     this.statusText = this.add
-      .text(8, GAME_HEIGHT - 30, "", retroStyle(6, "#ffffff"))
+      .text(16, GAME_HEIGHT - 60, "", retroStyle(6, "#ffffff"))
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(101);
@@ -247,10 +247,10 @@ export class WorldScene extends Phaser.Scene {
 
     let vx = 0;
     let vy = 0;
-    if (this.keyLeft.isDown || this.keyH.isDown) vx = -60;
-    else if (this.keyRight.isDown || this.keyL.isDown) vx = 60;
-    if (this.keyUp.isDown || this.keyK.isDown) vy = -60;
-    else if (this.keyDown.isDown || this.keyJ.isDown) vy = 60;
+    if (this.keyLeft.isDown || this.keyH.isDown) vx = -120;
+    else if (this.keyRight.isDown || this.keyL.isDown) vx = 120;
+    if (this.keyUp.isDown || this.keyK.isDown) vy = -120;
+    else if (this.keyDown.isDown || this.keyJ.isDown) vy = 120;
 
     this.player.setVelocity(vx, vy);
 
@@ -292,7 +292,7 @@ export class WorldScene extends Phaser.Scene {
   private tryTalk(): boolean {
     const dx = this.player.x - this.npc.x;
     const dy = this.player.y - this.npc.y;
-    if (dx * dx + dy * dy > 30 * 30) return false;
+    if (dx * dx + dy * dy > 60 * 60) return false;
     this.dialogue.start();
     return true;
   }
@@ -312,16 +312,16 @@ export class WorldScene extends Phaser.Scene {
   private spawnMonsters(): void {
     this.roamerGroup = this.physics.add.group();
     for (const zone of MONSTER_ZONES) {
-      const signX = zone.cx - zone.w / 2 - 8;
+      const signX = zone.cx - zone.w / 2 - 16;
       this.add.image(signX, zone.cy, "sign").setDepth(9);
       const bang = this.add
-        .text(signX, zone.cy - 16, "!", retroStyle(10, "#ffdd44"))
+        .text(signX, zone.cy - 32, "!", retroStyle(10, "#ffdd44"))
         .setOrigin(0.5)
         .setStroke("#7c2d12", 2)
         .setDepth(11);
       this.tweens.add({
         targets: bang,
-        y: zone.cy - 21,
+        y: zone.cy - 42,
         duration: 420,
         yoyo: true,
         repeat: -1,
@@ -337,17 +337,17 @@ export class WorldScene extends Phaser.Scene {
           "slime"
         ) as Phaser.Physics.Arcade.Sprite;
         sprite.setDepth(10);
-        sprite.body?.setSize(10, 6).setOffset(3, 8);
+        sprite.body?.setSize(20, 12).setOffset(6, 16);
         this.roamers.push({
           sprite,
-          minX: zone.cx - zone.w / 2 + 2,
-          maxX: zone.cx + zone.w / 2 - 2,
-          minY: zone.cy - zone.h / 2 + 2,
-          maxY: zone.cy + zone.h / 2 - 2,
+          minX: zone.cx - zone.w / 2 + 4,
+          maxX: zone.cx + zone.w / 2 - 4,
+          minY: zone.cy - zone.h / 2 + 4,
+          maxY: zone.cy + zone.h / 2 - 4,
           targetX: x,
           targetY: y,
           wait: 300 + Math.random() * 800,
-          speed: 14 + Math.random() * 10,
+          speed: 28 + Math.random() * 20,
         });
         this.tweens.add({
           targets: sprite,

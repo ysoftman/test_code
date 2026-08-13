@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { RETRO_FONT } from "./config";
+import { RETRO_FONT, PIXEL } from "./config";
 
 export interface PixelMap {
   [ch: string]: number;
@@ -11,7 +11,7 @@ export function retroStyle(
 ): Phaser.Types.GameObjects.Text.TextStyle {
   return {
     fontFamily: RETRO_FONT,
-    fontSize: `${size}px`,
+    fontSize: `${size * PIXEL}px`,
     color,
     align: "left",
     resolution: 1,
@@ -31,7 +31,7 @@ export function drawRows(
       const color = palette[row[x]];
       if (color !== undefined) {
         g.fillStyle(color, 1);
-        g.fillRect(ox + x, oy + y, 1, 1);
+        g.fillRect(ox + x * PIXEL, oy + y * PIXEL, PIXEL, PIXEL);
       }
     }
   }
@@ -47,7 +47,7 @@ export function makeTexture(
   const h = rows.length;
   const g = scene.add.graphics();
   drawRows(g, rows, palette, 0, 0);
-  g.generateTexture(key, w, h);
+  g.generateTexture(key, w * PIXEL, h * PIXEL);
   g.destroy();
 }
 
@@ -58,7 +58,7 @@ export function makeTilesetTexture(
   tileSize: number
 ): void {
   const g = scene.add.graphics();
-  tiles.forEach((t, i) => drawRows(g, t.rows, t.palette, i * tileSize, 0));
-  g.generateTexture(key, tiles.length * tileSize, tileSize);
+  tiles.forEach((t, i) => drawRows(g, t.rows, t.palette, i * tileSize * PIXEL, 0));
+  g.generateTexture(key, tiles.length * tileSize * PIXEL, tileSize * PIXEL);
   g.destroy();
 }

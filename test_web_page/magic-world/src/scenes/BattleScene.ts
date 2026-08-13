@@ -65,56 +65,56 @@ export class BattleScene extends Phaser.Scene {
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "battle-bg");
 
     this.enemySprite = this.add
-      .sprite(GAME_WIDTH - 80, 70, this.enemy.texture)
+      .sprite(GAME_WIDTH - 160, 140, this.enemy.texture)
       .setScale(2);
-    this.playerSprite = this.add.sprite(80, 92, "hero-down-0").setScale(2);
+    this.playerSprite = this.add.sprite(160, 184, "hero-down-0").setScale(2);
     this.playerSprite.setFlipX(true);
 
-    this.window(8, 6, 116, 44);
-    this.window(GAME_WIDTH - 124, 6, 116, 44);
+    this.window(16, 12, 232, 88);
+    this.window(GAME_WIDTH - 248, 12, 232, 88);
 
     this.add
-      .text(16, 10, GameState.player.name, retroStyle(7, "#ffd166"))
+      .text(32, 20, GameState.player.name, retroStyle(7, "#ffd166"))
       .setOrigin(0, 0);
     this.playerHpText = this.add
-      .text(16, 22, "HP " + GameState.player.hp + "/" + GameState.player.maxHp, retroStyle(6, "#ffffff"))
+      .text(32, 44, "HP " + GameState.player.hp + "/" + GameState.player.maxHp, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
     this.playerMpText = this.add
-      .text(16, 34, "MP " + GameState.player.mp + "/" + GameState.player.maxMp, retroStyle(6, "#8ecbff"))
+      .text(32, 68, "MP " + GameState.player.mp + "/" + GameState.player.maxMp, retroStyle(6, "#8ecbff"))
       .setOrigin(0, 0);
 
-    this.playerHpBar = this.add.rectangle(70, 26, 44, 4, 0x22c55e).setOrigin(0, 0.5);
+    this.playerHpBar = this.add.rectangle(140, 52, 88, 8, 0x22c55e).setOrigin(0, 0.5);
 
     this.add
-      .text(GAME_WIDTH - 116, 10, this.enemy.name, retroStyle(7, "#ff5555"))
+      .text(GAME_WIDTH - 232, 20, this.enemy.name, retroStyle(7, "#ff5555"))
       .setOrigin(0, 0);
     this.enemyHpText = this.add
-      .text(GAME_WIDTH - 116, 22, "HP " + this.enemy.curHp + "/" + this.enemy.hp, retroStyle(6, "#ffffff"))
+      .text(GAME_WIDTH - 232, 44, "HP " + this.enemy.curHp + "/" + this.enemy.hp, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
     this.enemyHpBar = this.add
-      .rectangle(GAME_WIDTH - 70, 26, 44, 4, 0xef4444)
+      .rectangle(GAME_WIDTH - 140, 52, 88, 8, 0xef4444)
       .setOrigin(0, 0.5);
 
     this.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 15, GAME_WIDTH - 16, 28, 0x0b0b2b, 0.92)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 30, GAME_WIDTH - 32, 56, 0x0b0b2b, 0.92)
       .setStrokeStyle(1, 0xffffff);
     this.msgText = this.add
-      .text(16, GAME_HEIGHT - 26, "", retroStyle(8, "#f5f5f5"))
-      .setWordWrapWidth(GAME_WIDTH - 32);
+      .text(32, GAME_HEIGHT - 52, "", retroStyle(8, "#f5f5f5"))
+      .setWordWrapWidth(GAME_WIDTH - 64);
 
-    const menuY = GAME_HEIGHT - 46;
+    const menuY = GAME_HEIGHT - 92;
     const labels: Record<MenuAction, string> = {
       fight: "FIGHT",
       magic: "MAGIC",
       run: "RUN",
     };
-    let x = 40;
+    let x = 80;
     for (const item of this.menuItems) {
       const t = this.add
         .text(x, menuY, labels[item], retroStyle(8, "#ffffff"))
         .setOrigin(0.5);
       this.menuTexts.push(t);
-      x += 64;
+      x += 128;
     }
     this.cursor = this.add.text(0, menuY, ">", retroStyle(8, "#ffd166")).setOrigin(0.5);
     this.hideMenu();
@@ -172,7 +172,7 @@ export class BattleScene extends Phaser.Scene {
     for (const t of this.menuTexts) t.setVisible(true);
     this.cursor.setVisible(true);
     const target = this.menuTexts[this.menuIndex];
-    this.cursor.setX(target.x - 22);
+    this.cursor.setX(target.x - 44);
     this.cursor.setY(target.y);
   }
 
@@ -253,7 +253,7 @@ export class BattleScene extends Phaser.Scene {
 
   private async lunge(): Promise<void> {
     const startX = this.playerSprite.x;
-    const targetX = this.enemySprite.x - 20;
+    const targetX = this.enemySprite.x - 40;
     this.playerSprite.x = startX;
     await this.tweenPromise(this.playerSprite, { x: targetX }, 140);
     await this.tweenPromise(this.playerSprite, { x: startX }, 160);
@@ -261,12 +261,12 @@ export class BattleScene extends Phaser.Scene {
 
   private flashDamage(x: number, y: number, amount: number): void {
     const t = this.add
-      .text(x + 10, y - 20, String(amount), retroStyle(10, "#ffdd44"))
+      .text(x + 20, y - 40, String(amount), retroStyle(10, "#ffdd44"))
       .setOrigin(0.5)
       .setStroke("#7c2d12", 2);
     this.tweens.add({
       targets: t,
-      y: y - 40,
+      y: y - 80,
       alpha: 0,
       duration: 800,
       onComplete: () => t.destroy(),

@@ -1,4 +1,4 @@
-export const TILE = 16;
+export const TILE = 32;
 
 export const T_GRASS = 0;
 export const T_WATER_A = 1;

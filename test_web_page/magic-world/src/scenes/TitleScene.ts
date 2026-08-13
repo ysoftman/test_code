@@ -15,19 +15,19 @@ export class TitleScene extends Phaser.Scene {
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "title-bg");
 
     const title = this.add
-      .text(GAME_WIDTH / 2, 54, "MAGIC WORLD", retroStyle(24, "#ffd166"))
+      .text(GAME_WIDTH / 2, 108, "MAGIC WORLD", retroStyle(24, "#ffd166"))
       .setOrigin(0.5);
-    title.setShadow(2, 2, "#7c2d12", 1, true, true);
+    title.setShadow(4, 4, "#7c2d12", 1, true, true);
 
     this.add
-      .text(GAME_WIDTH / 2, 92, "A TALE OF MAGIC", retroStyle(8, "#c4b5fd"))
+      .text(GAME_WIDTH / 2, 184, "A TALE OF MAGIC", retroStyle(8, "#c4b5fd"))
       .setOrigin(0.5);
     this.add
-      .text(GAME_WIDTH / 2, 104, "AND ADVENTURE", retroStyle(8, "#c4b5fd"))
+      .text(GAME_WIDTH / 2, 208, "AND ADVENTURE", retroStyle(8, "#c4b5fd"))
       .setOrigin(0.5);
 
     const prompt = this.add
-      .text(GAME_WIDTH / 2, 156, "PRESS ENTER", retroStyle(8, "#ffffff"))
+      .text(GAME_WIDTH / 2, 312, "PRESS ENTER", retroStyle(8, "#ffffff"))
       .setOrigin(0.5);
     this.tweens.add({
       targets: prompt,

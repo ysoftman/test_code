@@ -26,20 +26,20 @@ export class DialogueBox {
     this.lines = lines;
 
     this.border = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 34, GAME_WIDTH - 12, 52, 0xffffff)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 68, GAME_WIDTH - 24, 104, 0xffffff)
       .setScrollFactor(0)
       .setDepth(200);
     this.box = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 34, GAME_WIDTH - 16, 48, 0x0b0b2b)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 68, GAME_WIDTH - 32, 96, 0x0b0b2b)
       .setScrollFactor(0)
       .setDepth(201);
     this.text = scene.add
-      .text(12, GAME_HEIGHT - 56, "", retroStyle(8, "#f5f5f5"))
+      .text(24, GAME_HEIGHT - 112, "", retroStyle(8, "#f5f5f5"))
       .setScrollFactor(0)
       .setDepth(202)
-      .setWordWrapWidth(GAME_WIDTH - 32);
+      .setWordWrapWidth(GAME_WIDTH - 64);
     this.nameText = scene.add
-      .text(12, GAME_HEIGHT - 66, "", retroStyle(6, "#ffd166"))
+      .text(24, GAME_HEIGHT - 132, "", retroStyle(6, "#ffd166"))
       .setScrollFactor(0)
       .setDepth(202);
 
