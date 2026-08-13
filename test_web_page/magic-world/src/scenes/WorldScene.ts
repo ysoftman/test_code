@@ -66,6 +66,10 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.roamers = [];
+    this.encounterCooldown = 0;
+    this.lastMove = "down";
+
     const level = buildLevel();
     const map = this.make.tilemap({
       data: level,

@@ -56,6 +56,10 @@ export class BattleScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.menuIndex = 0;
+    this.menuTexts = [];
+    this.waitingAction = null;
+
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "battle-bg");
 
     this.enemySprite = this.add

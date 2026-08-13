@@ -10,6 +10,8 @@ export class TitleScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.started = false;
+
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "title-bg");
 
     const title = this.add
