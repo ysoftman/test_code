@@ -44,6 +44,8 @@ export class BattleScene extends Phaser.Scene {
 
   private keyLeft!: Phaser.Input.Keyboard.Key;
   private keyRight!: Phaser.Input.Keyboard.Key;
+  private keyH!: Phaser.Input.Keyboard.Key;
+  private keyL!: Phaser.Input.Keyboard.Key;
   private keyZ!: Phaser.Input.Keyboard.Key;
 
   constructor() {
@@ -120,6 +122,8 @@ export class BattleScene extends Phaser.Scene {
     const kb = this.input.keyboard!;
     this.keyLeft = kb.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     this.keyRight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+    this.keyH = kb.addKey(Phaser.Input.Keyboard.KeyCodes.H);
+    this.keyL = kb.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.keyZ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
     this.running = true;
@@ -128,11 +132,17 @@ export class BattleScene extends Phaser.Scene {
 
   update(_time: number, _delta: number): void {
     if (this.waitingAction) {
-      if (Phaser.Input.Keyboard.JustDown(this.keyLeft)) {
+      if (
+        Phaser.Input.Keyboard.JustDown(this.keyLeft) ||
+        Phaser.Input.Keyboard.JustDown(this.keyH)
+      ) {
         this.menuIndex = (this.menuIndex + this.menuItems.length - 1) % this.menuItems.length;
         this.renderMenu();
       }
-      if (Phaser.Input.Keyboard.JustDown(this.keyRight)) {
+      if (
+        Phaser.Input.Keyboard.JustDown(this.keyRight) ||
+        Phaser.Input.Keyboard.JustDown(this.keyL)
+      ) {
         this.menuIndex = (this.menuIndex + 1) % this.menuItems.length;
         this.renderMenu();
       }

@@ -58,6 +58,10 @@ export class WorldScene extends Phaser.Scene {
   private keyRight!: Phaser.Input.Keyboard.Key;
   private keyUp!: Phaser.Input.Keyboard.Key;
   private keyDown!: Phaser.Input.Keyboard.Key;
+  private keyH!: Phaser.Input.Keyboard.Key;
+  private keyJ!: Phaser.Input.Keyboard.Key;
+  private keyK!: Phaser.Input.Keyboard.Key;
+  private keyL!: Phaser.Input.Keyboard.Key;
   private keyZ!: Phaser.Input.Keyboard.Key;
   private keySpace!: Phaser.Input.Keyboard.Key;
   private keyB!: Phaser.Input.Keyboard.Key;
@@ -176,6 +180,10 @@ export class WorldScene extends Phaser.Scene {
     this.keyRight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     this.keyUp = kb.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.keyDown = kb.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+    this.keyH = kb.addKey(Phaser.Input.Keyboard.KeyCodes.H);
+    this.keyJ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+    this.keyK = kb.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+    this.keyL = kb.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.keyZ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     this.keySpace = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.keyB = kb.addKey(Phaser.Input.Keyboard.KeyCodes.B);
@@ -192,7 +200,7 @@ export class WorldScene extends Phaser.Scene {
       .text(
         GAME_WIDTH / 2,
         GAME_HEIGHT - 6,
-        "ARROWS:MOVE  Z:TALK/ATTACK",
+        "ARROWS/HJKL:MOVE  Z:TALK  ESC:SKIP",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(0.5, 1)
@@ -239,10 +247,10 @@ export class WorldScene extends Phaser.Scene {
 
     let vx = 0;
     let vy = 0;
-    if (this.keyLeft.isDown) vx = -60;
-    else if (this.keyRight.isDown) vx = 60;
-    if (this.keyUp.isDown) vy = -60;
-    else if (this.keyDown.isDown) vy = 60;
+    if (this.keyLeft.isDown || this.keyH.isDown) vx = -60;
+    else if (this.keyRight.isDown || this.keyL.isDown) vx = 60;
+    if (this.keyUp.isDown || this.keyK.isDown) vy = -60;
+    else if (this.keyDown.isDown || this.keyJ.isDown) vy = 60;
 
     this.player.setVelocity(vx, vy);
 

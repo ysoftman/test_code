@@ -19,6 +19,7 @@ export class DialogueBox {
   private z: Phaser.Input.Keyboard.Key;
   private space: Phaser.Input.Keyboard.Key;
   private enter: Phaser.Input.Keyboard.Key;
+  private esc: Phaser.Input.Keyboard.Key;
 
   constructor(scene: Phaser.Scene, lines: string[]) {
     this.scene = scene;
@@ -51,6 +52,7 @@ export class DialogueBox {
     this.z = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     this.space = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.enter = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+    this.esc = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
   }
 
   start(lines?: string[], name?: string): void {
@@ -93,6 +95,10 @@ export class DialogueBox {
 
   update(): void {
     if (!this.active) return;
+    if (Phaser.Input.Keyboard.JustDown(this.esc)) {
+      this.close();
+      return;
+    }
     const pressed =
       Phaser.Input.Keyboard.JustDown(this.z) ||
       Phaser.Input.Keyboard.JustDown(this.space) ||
@@ -134,5 +140,6 @@ export class DialogueBox {
     this.z.destroy();
     this.space.destroy();
     this.enter.destroy();
+    this.esc.destroy();
   }
 }
