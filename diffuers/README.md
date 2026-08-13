@@ -134,12 +134,19 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 기록을 불러올 수** 있으며, 히스토리는 `outputs/.prompt_history` 에 저장되어
 다음 실행에서도 유지됩니다 (gitignore 대상).
 
+실행 시 사용 가능한 프롬프트 마커(`{realism}` 등)와 종료 방법 안내가
+컬러로 표시되며, `help` 를 입력하면 언제든 다시 볼 수 있습니다.
+(파이프/리다이렉트 사용 시에는 색상이 제거됩니다)
+
 ```bash
 .venv/bin/python generate_image.py --offline -i
 
-# prompt> a cute cat on a sofa
-# prompt> a mountain landscape at sunrise
-# prompt> (빈 줄 또는 'exit'/'quit' 입력 시 종료)
+# [info] prompt markers (type 'help' to show this again):
+#   {realism} -> raw photo, realistic skin pores, ...
+#   exit or quit to stop
+# prompt> a cute cat on a sofa, {realism}
+# prompt> help  -> 마커/종료 안내 다시 표시
+# prompt> exit  -> 종료
 ```
 
 파이프/리다이렉트로 일괄 입력도 가능합니다:
@@ -217,3 +224,85 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 - `--width/height 1024 -> 768` 로 줄이면 픽셀 수 비례 단축
 - CUDA GPU 대비 M1 Max 는 느리므로, 그 외 추가 최적화 여지(flash-attention,
   `torch.compile`)는 MPS 에서 지원되지 않음
+
+## 실사 품질 개선 가이드 (클라우드 vs 로컬)
+
+Lumina 공식 클라우드 서비스 대비 로컬(M1 Max) 실행 결과가 인물 묘사 품질이
+떨어지거나 인공적(AI 느낌)으로 보이는 이유는 크게 네 가지입니다.
+
+1. 클라우드는 입력 프롬프트를 내부 LLM/캡셔너(예: UniCap)가 이미지 생성에
+   최적화된 상세 프롬프트로 자동 확장(Expansion)합니다.
+2. 클라우드는 H100/A100 수준 GPU에서 원본 정밀도(BF16/FP16)로 추론합니다.
+   로컬에서 8-bit/4-bit 양자화 웨이트를 쓰면 디테일이 손실됩니다.
+3. 샘플링 파라미터(스텝 수, CFG, shift) 차이에 따라 질감 감도가 달라집니다.
+4. 클라우드는 생성 후 자동으로 얼굴 보정(Face Restoration)과
+   업스케일(Hi-Res) 후처리를 수행합니다.
+
+### 1. 프롬프트 상세 묘사 (가장 큰 차이)
+
+로컬은 입력한 텍스트가 그대로 디퓨전 모델에 전달되므로 피부 질감, 미세한 조명,
+눈동자 디테일이 생략됩니다. 이 프로젝트는 프롬프트에 `{realism}` 마커를 넣으면
+아래 키워드로 자동 확장합니다 (직접 명시도 가능).
+
+```text
+raw photo, realistic skin pores, fine wrinkles, subsurface scattering,
+natural soft lighting, shot on 85mm lens, f/1.8, subtle imperfections, 8k resolution
+```
+
+사용 예시:
+
+```bash
+# 마커 없이 간단한 프롬프트
+.venv/bin/python generate_image.py --prompt "portrait of a young woman, natural light" --offline
+
+# {realism} 마커로 실사 키워드 자동 확장
+.venv/bin/python generate_image.py \
+  --prompt "portrait of a young woman, natural light, {realism}" \
+  --offline
+```
+
+인터랙티브 모드에서도 동일하게 마커를 사용할 수 있습니다:
+
+LLM 확장 대체 방법: Ollama/MLX 등 로컬 LLM에 "다음 문장을 실사 인물 생성을 위한
+세부 디퓨전 프롬프트로 확장해줘" 시스템 프롬프트를 거친 결과를 입력해도 효과적입니다.
+
+### 2. 정밀도(Precision) 확인
+
+- 클라우드는 BF16/FP16 원본 정밀도로 추론하며, 양자화 웨이트는 피부의 부드러운
+  음영이나 눈동자 반사 디테일을 잃어 "플라스틱 같은" AI 느낌을 강화합니다.
+- 이 프로젝트는 MPS에서 자동으로 **float16**을 사용하므로 이미 권장 수준입니다
+  (M1 Max 는 통합 메모리 32GB + 400 GB/s 대역폭으로 fp16 로딩에 충분).
+- ComfyUI 사용 시 `--highvram` 옵션과 MPS(Metal) 설정에서 정밀도 다운스케일링이
+  적용되어 있지 않은지 확인하세요.
+
+### 3. 샘플링 파라미터 최적화
+
+| 파라미터 | 권장값 | 설명 |
+| --- | --- | --- |
+| Steps | 30~50 | 기본 20스텝보다 높여 디테일 형성 (이 프로젝트 기본값 50) |
+| CFG Scale | 4.0 ~ 6.0 | 너무 높으면 피부가 매끄럽고 인공적 색감 (기본값 4.0) |
+| Sampler / Scheduler | Euler / DPM++ 2M 계열 | 디테일과 자연스러움 균형 |
+
+### 4. 얼굴 보정 + 업스케일 파이프라인 (ComfyUI)
+
+클라우드는 생성 후 자동으로 후처리하므로, 로컬(ComfyUI)에서는 다음을 추가하세요.
+
+- **Face Detailer** (Impact Pack / ReActor): 파이프라인 후단에 연결해 얼굴 영역만
+  고해상도로 재합성(Inpaint) — 눈동자, 속눈썹, 입술 질감이 크게 개선됩니다.
+- **Hi-Res Fix / Tile Upscale**: 1차 생성 이미지(예: 1024x1024)에 Denoise 0.3~0.4 로
+  1.5x~2x 업스케일 — 피부 솜털이나 모공 디테일이 추가됩니다.
+
+### 요약 (M1 Max 실사 품질 추천 세팅)
+
+```bash
+# 프롬프트의 {realism} 마커가 실사 키워드로 자동 확장됨
+.venv/bin/python generate_image.py \
+  --prompt "portrait of a young woman, natural light, {realism}" \
+  --steps 50 --guidance 4.0 \
+  --device mps --offline
+```
+
+- 프롬프트에 `{realism}` 마커로 실사 텍스처 키워드(raw photo, skin pores, natural lighting, 85mm) 자동 추가
+- Steps 35 이상, CFG 5.0 이하로 설정
+- M1 Max 메모리가 허용하는 한 BF16/FP16 원본 정밀도 (MPS 는 float16, 이미 적용됨)
+- ComfyUI 로 Face Detailer + Upscale 파이프라인 구축

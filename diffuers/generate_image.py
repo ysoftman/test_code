@@ -5,6 +5,7 @@ import argparse
 import contextlib
 import io
 import re
+import sys
 import time
 from datetime import datetime
 from pathlib import Path
@@ -15,6 +16,26 @@ from PIL import Image
 
 DEFAULT_OUTPUT = Path("outputs/lumina2_demo.png")
 HISTORY_FILE = Path("outputs/.prompt_history")
+C_RESET = "\033[0m"
+C_BOLD = "\033[1m"
+C_CYAN = "\033[36m"
+C_GREEN = "\033[32m"
+C_YELLOW = "\033[33m"
+
+
+def c(text: str, *codes: str) -> str:
+    if not sys.stdout.isatty():
+        return text
+    return "".join(codes) + text + C_RESET
+
+
+PROMPT_MARKERS = {
+    "realism": (
+        "raw photo, realistic skin pores, fine wrinkles, subsurface scattering, "
+        "natural soft lighting, shot on 85mm lens, f/1.8, subtle imperfections, "
+        "8k resolution"
+    ),
+}
 
 try:
     import readline
@@ -129,12 +150,19 @@ def model_short_name(model: str) -> str:
     return re.sub(r"[^A-Za-z0-9]+", "-", name).strip("-").lower()
 
 
+def expand_prompt(prompt: str) -> str:
+    for name, keywords in PROMPT_MARKERS.items():
+        prompt = prompt.replace(f"{{{name}}}", keywords)
+    return prompt
+
+
 def generate_image(
     pipe: Lumina2Pipeline,
     prompt: str,
     args: argparse.Namespace,
     seed: int,
 ) -> tuple[Image.Image, float]:
+    prompt = expand_prompt(prompt)
     generator = torch.Generator("cpu").manual_seed(seed)
     with contextlib.redirect_stdout(io.StringIO()):
         t1 = time.perf_counter()
@@ -167,11 +195,25 @@ def save_image(
     print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
 
 
+def marker_guide() -> str:
+    lines = [
+        c("[info] prompt markers (type 'help' to show this again):", C_BOLD, C_CYAN)
+    ]
+    for name, keywords in PROMPT_MARKERS.items():
+        marker = c(f"{{{name}}}", C_BOLD, C_YELLOW)
+        lines.append(f"  {marker} -> {c(keywords, C_GREEN)}")
+    lines.append(
+        f"  {c('exit', C_BOLD, C_YELLOW)} or {c('quit', C_BOLD, C_YELLOW)} to stop"
+    )
+    return "\n".join(lines)
+
+
 def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
     print(
         "[info] interactive mode - type a prompt and press Enter. "
         "empty line, 'exit' or 'quit' to stop."
     )
+    print(marker_guide())
     counter = 0
     try:
         while True:
@@ -179,6 +221,9 @@ def run_interactive(pipe: Lumina2Pipeline, args: argparse.Namespace) -> None:
                 prompt = input("prompt> ").strip()
             except EOFError:
                 break
+            if prompt.lower() == "help":
+                print(marker_guide())
+                continue
             if not prompt or prompt.lower() in ("exit", "quit", "q"):
                 break
             for i in range(args.count):
