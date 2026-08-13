@@ -184,7 +184,7 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 | --- | --- | --- |
 | `--model` | `Alpha-VLLM/Lumina-Image-2.0` | Hub repo id 또는 로컬 모델 경로 |
 | `--prompt` | 샘플 프롬프트 | 생성할 이미지 설명 (영어 권장) |
-| `--negative-prompt` | 없음 | 이미지에 포함하지 않을 내용 (미지정 시 얼굴 변형/아티팩트 방지 프리셋 자동 적용) |
+| `--negative-prompt` | 없음 | 이미지에 포함하지 않을 내용 (미지정 시 빈 문자열 — Lumina-2.0 공식 권장, 부정 프롬프트는 효과가 제한적) |
 | `--width` / `--height` | `1024` / `1024` | 생성 이미지 크기 (**8의 배수 필수**, VAE 다운샘플 배수) |
 | `--steps` | `50` | 노이즈 제거 스텝 수 (클수록 품질↑, 시간↑) |
 | `--guidance` | `4.0` | 가이던스 스케일 (클수록 프롬프트 충실도↑) |

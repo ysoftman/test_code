@@ -19,8 +19,7 @@ from PIL.PngImagePlugin import PngInfo
 DEFAULT_OUTPUT = Path("outputs/lumina2_demo.png")
 HISTORY_FILE = Path("outputs/.prompt_history")
 DEFAULT_NEGATIVE_PROMPT = (
-    "blurry, low quality, distorted face, deformed hands, extra fingers, "
-    "bad anatomy, watermark, text, oversaturated, plastic skin"
+    ""  # official recommendation for Lumina-Image-2.0 (empty string)
 )
 C_RESET = "\033[0m"
 C_BOLD = "\033[1m"
@@ -125,7 +124,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--negative-prompt",
         default=None,
-        help="Negative prompt (default: preset artifact-prevention prompt)",
+        help="Negative prompt (default: empty string, the official recommendation for Lumina-Image-2.0)",
     )
     parser.add_argument("--width", type=int, default=1024)
     parser.add_argument("--height", type=int, default=1024)
