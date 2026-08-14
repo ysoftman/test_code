@@ -28,8 +28,10 @@ export class TitleScene extends Phaser.Scene {
       .text(GAME_WIDTH / 2, 208, "AND ADVENTURE", retroStyle(8, "#c4b5fd"))
       .setOrigin(0.5);
 
+    const hasSave = GameState.hasSave();
+
     const prompt = this.add
-      .text(GAME_WIDTH / 2, 296, "PRESS ENTER", retroStyle(8, "#ffffff"))
+      .text(GAME_WIDTH / 2, 296, hasSave ? "PRESS ENTER TO CONTINUE" : "PRESS ENTER", retroStyle(8, "#ffffff"))
       .setOrigin(0.5);
     this.tweens.add({
       targets: prompt,
@@ -43,7 +45,7 @@ export class TitleScene extends Phaser.Scene {
       .text(
         GAME_WIDTH / 2,
         330,
-        GameState.hasSave() ? "C: CONTINUE  (Q: DELETE SAVE)" : "NO SAVE FOUND",
+        hasSave ? "C: CONTINUE  N: NEW GAME  Q: DELETE SAVE" : "NO SAVE FOUND",
         retroStyle(6, "#8ecbff")
       )
       .setOrigin(0.5);
@@ -68,17 +70,20 @@ export class TitleScene extends Phaser.Scene {
     this.input.keyboard!.on("keydown", (e: KeyboardEvent) => {
       Sfx.ensure();
       if (e.key === "Enter" || e.key === "z" || e.key === "Z" || e.key === " ") {
+        start(GameState.hasSave());
+      } else if (e.key === "n" || e.key === "N") {
         start(false);
       } else if ((e.key === "c" || e.key === "C") && GameState.hasSave()) {
         start(true);
       } else if (e.key === "q" || e.key === "Q") {
         GameState.clearSave();
         continueText.setText("NO SAVE FOUND");
+        prompt.setText("PRESS ENTER");
       }
     });
     this.input.on("pointerdown", () => {
       Sfx.ensure();
-      start(false);
+      start(GameState.hasSave());
     });
   }
 }

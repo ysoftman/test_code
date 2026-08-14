@@ -115,15 +115,13 @@ export function buildDungeon(): number[][] {
   stamp(map, 4, 7, [".T", "T."]);
 
   for (let x = 6; x <= 13; x++) {
+    if (x === 9 || x === 10) continue; // doorway down into the boss room
     map[10][x] = T_TREE;
   }
   map[11][6] = T_TREE;
   map[12][6] = T_TREE;
   map[11][13] = T_TREE;
   map[12][13] = T_TREE;
-  for (let x = 7; x <= 12; x++) {
-    map[13][x] = T_PATH;
-  }
 
   return map;
 }

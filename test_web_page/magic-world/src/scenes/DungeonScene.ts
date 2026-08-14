@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
-import { GameState, isNight, timeLabel, clock, dayCount } from "../gameState";
-import { retroStyle } from "../pixelart";
+import { GameState, isNight, clock, dayCount, onSaved } from "../gameState";
+import { retroStyle, showToast } from "../pixelart";
 import { Sfx } from "../audio";
 import {
   buildDungeon,
@@ -16,6 +16,10 @@ import {
 } from "../levels";
 
 type LastMove = "down" | "up" | "right" | "left";
+
+const ENCOUNTER_COOLDOWN = 600;
+const EXIT_SAFE_RADIUS_X = TILE * 2;
+const EXIT_SAFE_RADIUS_Y = TILE * 2.5;
 
 interface Roamer {
   sprite: Phaser.Physics.Arcade.Sprite;
@@ -40,11 +44,15 @@ const IDLE_TEXTURE: Record<LastMove, string> = {
 export class DungeonScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
   private playerShadow!: Phaser.GameObjects.Ellipse;
+  private weaponOverlay!: Phaser.GameObjects.Sprite;
+  private shieldOverlay!: Phaser.GameObjects.Sprite;
   private layer!: Phaser.Tilemaps.TilemapLayer;
   private dust!: Phaser.GameObjects.Particles.ParticleEmitter;
   private roamerGroup!: Phaser.Physics.Arcade.Group;
   private roamers: Roamer[] = [];
   private encounterCooldown = 0;
+  private exitingDungeon = false;
+  private sQueued = false;
   private lastMove: LastMove = "down";
 
   private keyLeft!: Phaser.Input.Keyboard.Key;
@@ -56,6 +64,8 @@ export class DungeonScene extends Phaser.Scene {
   private keyK!: Phaser.Input.Keyboard.Key;
   private keyL!: Phaser.Input.Keyboard.Key;
   private keyS!: Phaser.Input.Keyboard.Key;
+  private keyM!: Phaser.Input.Keyboard.Key;
+  private mQueued = false;
 
   private statusText!: Phaser.GameObjects.Text;
   private statusPanel!: Phaser.GameObjects.Rectangle;
@@ -67,8 +77,16 @@ export class DungeonScene extends Phaser.Scene {
 
   create(): void {
     this.roamers = [];
-    this.encounterCooldown = GameState.encountersLocked() ? 600 : 0;
+    this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";
+    this.exitingDungeon = false;
+
+    // Registered before the SHUTDOWN handler below that calls GameState.save()
+    // — SHUTDOWN listeners fire in registration order, so this unsubscribes
+    // before that save happens and no toast gets created on a scene that's
+    // already tearing down. Keep this the first SHUTDOWN listener.
+    const unsubSaved = onSaved(() => showToast(this, "SAVED"));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubSaved);
 
     const level = buildDungeon();
     const map = this.make.tilemap({
@@ -107,33 +125,50 @@ export class DungeonScene extends Phaser.Scene {
       .ellipse(this.player.x, this.player.y + 14, 20, 8, 0x000000, 0.4)
       .setDepth(5);
 
+    this.weaponOverlay = this.add
+      .sprite(this.player.x, this.player.y, "equip-sword")
+      .setDepth(11)
+      .setVisible(false);
+    this.shieldOverlay = this.add
+      .sprite(this.player.x, this.player.y, "equip-shield")
+      .setDepth(11)
+      .setVisible(false);
+
     const walkFrames = (dir: string): Phaser.Types.Animations.AnimationFrame[] =>
       [0, 1, 2, 3].map((i) => ({ key: `hero-${dir}-${i}` }));
 
-    this.anims.create({
-      key: "walk-down",
-      frames: walkFrames("down"),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "walk-up",
-      frames: walkFrames("up"),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "walk-right",
-      frames: walkFrames("right"),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "walk-left",
-      frames: walkFrames("left"),
-      frameRate: 10,
-      repeat: -1,
-    });
+    if (!this.anims.exists("walk-down")) {
+      this.anims.create({
+        key: "walk-down",
+        frames: walkFrames("down"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
+    if (!this.anims.exists("walk-up")) {
+      this.anims.create({
+        key: "walk-up",
+        frames: walkFrames("up"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
+    if (!this.anims.exists("walk-right")) {
+      this.anims.create({
+        key: "walk-right",
+        frames: walkFrames("right"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
+    if (!this.anims.exists("walk-left")) {
+      this.anims.create({
+        key: "walk-left",
+        frames: walkFrames("left"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
 
     this.dust = this.add.particles(0, 0, "dust", {
       speed: { min: 8, max: 22 },
@@ -150,14 +185,15 @@ export class DungeonScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.roamerGroup, (_p, roamer) => {
       if (this.encounterCooldown > 0) return;
       const r = this.roamers.find((r) => r.sprite === roamer);
-      if (r?.kind === "king") Sfx.boss();
+      // BattleScene.runBattle() already plays the boss fanfare for the boss
+      // enemy; playing it here too would sound it twice.
       this.startBattle(r?.kind ?? "slime");
     });
 
     const exit = this.add.zone(DUNGEON_ENTRY.x, DUNGEON_ENTRY.y, TILE * 2, TILE * 2);
     this.physics.add.existing(exit);
     this.physics.add.overlap(this.player, exit, () => {
-      this.exitDungeon();
+      if (!this.exitingDungeon) this.exitDungeon();
     });
 
     this.time.addEvent({
@@ -179,12 +215,19 @@ export class DungeonScene extends Phaser.Scene {
     this.keyK = kb.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.keyL = kb.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.keyS = kb.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.keyS.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.sQueued = true;
+    });
+    this.keyM = kb.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+    this.keyM.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.mQueued = true;
+    });
 
     this.add
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE  FIND THE KING!",
+        "HJKL:MOVE  S:HUD  M:MUTE  FIND THE KING!",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
@@ -196,12 +239,13 @@ export class DungeonScene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(90);
 
-    const statusDummy = ["HERO", "LV 1", "HP 30/30", "MP 10/10", "DAY 1  00:00 DAY"].join("\n");
+    const statusDummy = ["HERO", "LV 1", "HP 30/30", "MP 10/10", "DAY 1 00:00"].join("\n");
     this.statusText = this.add
       .text(16, 0, statusDummy, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0)
       .setScrollFactor(0)
-      .setDepth(101);
+      .setDepth(101)
+      .setVisible(GameState.hudVisible);
     const statusH = this.statusText.height + 24;
     this.statusText.setY(GAME_HEIGHT - 8 - statusH + 12);
     this.statusPanel = this.add
@@ -209,7 +253,8 @@ export class DungeonScene extends Phaser.Scene {
       .setOrigin(0, 1)
       .setStrokeStyle(1, 0xffffff)
       .setScrollFactor(0)
-      .setDepth(100);
+      .setDepth(100)
+      .setVisible(GameState.hudVisible);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       GameState.save();
@@ -221,8 +266,15 @@ export class DungeonScene extends Phaser.Scene {
     GameState.minutes += delta / 1000;
     this.updateStatus();
 
-    if (Phaser.Input.Keyboard.JustDown(this.keyS)) {
+    if (this.sQueued) {
+      this.sQueued = false;
       this.toggleStatus();
+    }
+
+    if (this.mQueued) {
+      this.mQueued = false;
+      const muted = Sfx.toggleMuted();
+      showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
     }
 
     let vx = 0;
@@ -251,14 +303,33 @@ export class DungeonScene extends Phaser.Scene {
 
     this.playerShadow.setPosition(this.player.x, this.player.y + 14);
     this.dust.emitting = moving;
+    this.updateEquipOverlays();
     this.updateRoamers(delta);
     this.checkEncounter(delta);
+  }
+
+  private updateEquipOverlays(): void {
+    this.weaponOverlay.setVisible(!!GameState.equipped.weapon);
+    this.shieldOverlay.setVisible(!!GameState.equipped.armor);
+    this.weaponOverlay.setTexture(
+      GameState.equipped.weapon === "ironSword" ? "equip-iron-sword" : "equip-sword"
+    );
+    this.shieldOverlay.setTexture(
+      GameState.equipped.armor === "ironShield" ? "equip-iron-shield" : "equip-shield"
+    );
+    const flip = this.lastMove === "left";
+    this.weaponOverlay.setFlipX(flip);
+    this.shieldOverlay.setFlipX(flip);
+    this.weaponOverlay.setPosition(this.player.x + 7, this.player.y + 2);
+    this.shieldOverlay.setPosition(this.player.x - 7, this.player.y + 4);
   }
 
   private toggleStatus(): void {
     const visible = !this.statusPanel.visible;
     this.statusPanel.setVisible(visible);
     this.statusText.setVisible(visible);
+    GameState.hudVisible = visible;
+    GameState.saveSettings();
   }
 
   private updateStatus(): void {
@@ -266,9 +337,9 @@ export class DungeonScene extends Phaser.Scene {
     const text = [
       p.name,
       `LV ${p.level}`,
-      `HP ${p.hp}/${p.maxHp}`,
+      `HP ${p.hp}/${GameState.effMaxHp()}`,
       `MP ${p.mp}/${p.maxMp}`,
-      `DAY ${dayCount()}  ${clock()} ${timeLabel()}`,
+      `DAY ${dayCount()} ${clock()}`,
     ].join("\n");
     if (text !== this.statusLast) {
       this.statusLast = text;
@@ -277,11 +348,13 @@ export class DungeonScene extends Phaser.Scene {
   }
 
   private exitDungeon(): void {
+    if (this.exitingDungeon) return;
+    this.exitingDungeon = true;
     Sfx.night();
     this.player.setVelocity(0, 0);
     this.cameras.main.fadeOut(200, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start("World");
+      this.scene.start("World", { fromDungeon: true });
     });
   }
 
@@ -290,8 +363,10 @@ export class DungeonScene extends Phaser.Scene {
       this.encounterCooldown -= delta;
       return;
     }
-    const tile = this.layer.getTileAtWorldXY(this.player.x, this.player.y);
-    if (!tile) return;
+    const nearExit =
+      Math.abs(this.player.x - DUNGEON_ENTRY.x) < EXIT_SAFE_RADIUS_X &&
+      Math.abs(this.player.y - DUNGEON_ENTRY.y) < EXIT_SAFE_RADIUS_Y;
+    if (nearExit) return;
     const rate = (isNight() ? 0.1 : 0.06) * (delta / 1000);
     if (Math.random() < rate) {
       this.startBattle();
@@ -313,13 +388,12 @@ export class DungeonScene extends Phaser.Scene {
         const sprite = this.roamerGroup.create(
           x,
           y,
-          kind === "king" ? "slime" : kind
+          kind === "king" ? "king" : kind
         ) as Phaser.Physics.Arcade.Sprite;
         sprite.setDepth(10);
         sprite.body?.setSize(20, 12).setOffset(6, 16);
         if (kind === "king") {
           sprite.setScale(1.5);
-          sprite.setTint(0xff7777);
         }
         this.roamers.push({
           sprite,
@@ -374,12 +448,13 @@ export class DungeonScene extends Phaser.Scene {
   }
 
   private startBattle(enemy?: "slime" | "goblin" | "king"): void {
+    if (this.encounterCooldown > 0) return; // already fading into a battle
     this.player.setVelocity(0, 0);
-    this.encounterCooldown = 600;
+    this.encounterCooldown = ENCOUNTER_COOLDOWN;
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
       const kind = enemy ?? (Math.random() < 0.4 ? "slime" : "goblin");
-      this.scene.start("Battle", { enemy: kind });
+      this.scene.start("Battle", { enemy: kind, from: "Dungeon" });
     });
   }
 

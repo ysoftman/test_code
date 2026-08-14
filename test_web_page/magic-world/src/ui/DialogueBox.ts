@@ -20,6 +20,8 @@ export class DialogueBox {
   private space: Phaser.Input.Keyboard.Key;
   private enter: Phaser.Input.Keyboard.Key;
   private esc: Phaser.Input.Keyboard.Key;
+  private advanceQueued = false;
+  private escQueued = false;
 
   constructor(scene: Phaser.Scene, lines: string[]) {
     this.scene = scene;
@@ -53,6 +55,15 @@ export class DialogueBox {
     this.space = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.enter = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.esc = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+    const queueAdvance = () => {
+      this.advanceQueued = true;
+    };
+    this.z.on(Phaser.Input.Keyboard.Events.DOWN, queueAdvance);
+    this.space.on(Phaser.Input.Keyboard.Events.DOWN, queueAdvance);
+    this.enter.on(Phaser.Input.Keyboard.Events.DOWN, queueAdvance);
+    this.esc.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.escQueued = true;
+    });
   }
 
   start(lines?: string[], name?: string): void {
@@ -60,6 +71,8 @@ export class DialogueBox {
     this.index = 0;
     this.charIndex = 0;
     this.active = true;
+    this.advanceQueued = false;
+    this.escQueued = false;
 
     this.border.setVisible(true);
     this.box.setVisible(true);
@@ -95,15 +108,13 @@ export class DialogueBox {
 
   update(): void {
     if (!this.active) return;
-    if (Phaser.Input.Keyboard.JustDown(this.esc)) {
+    if (this.escQueued) {
+      this.escQueued = false;
       this.close();
       return;
     }
-    const pressed =
-      Phaser.Input.Keyboard.JustDown(this.z) ||
-      Phaser.Input.Keyboard.JustDown(this.space) ||
-      Phaser.Input.Keyboard.JustDown(this.enter);
-    if (!pressed) return;
+    if (!this.advanceQueued) return;
+    this.advanceQueued = false;
 
     if (this.typing) {
       this.typing = false;

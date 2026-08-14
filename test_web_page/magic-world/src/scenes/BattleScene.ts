@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
-import { GameState, expToNext } from "../gameState";
-import { retroStyle } from "../pixelart";
+import { GameState, expToNext, onSaved } from "../gameState";
+import { retroStyle, showToast } from "../pixelart";
 import { Sfx } from "../audio";
 
 interface EnemyDef {
@@ -12,7 +12,8 @@ interface EnemyDef {
   def: number;
   exp: number;
   gold: number;
-  boss?: boolean;
+  boss?: boolean; // the KING SLIME story boss: quest flag, uncatchable, boss dialogue
+  giant?: boolean; // just a bigger sprite + boss fanfare, no quest/story hooks
 }
 
 const ENEMIES: Record<string, EnemyDef> = {
@@ -20,7 +21,7 @@ const ENEMIES: Record<string, EnemyDef> = {
   goblin: { name: "GOBLIN", texture: "goblin", hp: 22, atk: 7, def: 1, exp: 14, gold: 9 },
   king: {
     name: "KING SLIME",
-    texture: "slime",
+    texture: "king",
     hp: 60,
     atk: 9,
     def: 2,
@@ -28,11 +29,21 @@ const ENEMIES: Record<string, EnemyDef> = {
     gold: 120,
     boss: true,
   },
+  troll: {
+    name: "TROLL KING",
+    texture: "troll",
+    hp: 90,
+    atk: 13,
+    def: 3,
+    exp: 150,
+    gold: 200,
+    giant: true,
+  },
 };
 
 const MP_COST = 3;
 
-type MenuAction = "fight" | "magic" | "run" | "potion" | "mPotion" | "candy";
+type MenuAction = "fight" | "magic" | "run" | "potion" | "mPotion" | "candy" | "hiPotion" | "ether" | "elixir" | "bomb";
 
 interface ItemSlot {
   label: string;
@@ -44,23 +55,33 @@ const ITEM_SLOTS: ItemSlot[] = [
   { label: "POTION", key: "potion", action: "potion" },
   { label: "MPOTION", key: "mPotion", action: "mPotion" },
   { label: "CANDY", key: "candy", action: "candy" },
+  { label: "HI-POTION", key: "hiPotion", action: "hiPotion" },
+  { label: "ETHER", key: "ether", action: "ether" },
+  { label: "ELIXIR", key: "elixir", action: "elixir" },
+  { label: "BOMB", key: "bomb", action: "bomb" },
 ];
+
+const ITEMS_PER_ROW = 4;
+const ITEM_COL_X = 24;
+const ITEM_COL_WIDTH = 140;
+const ITEM_TEXT_OFFSET = 16;
 
 export class BattleScene extends Phaser.Scene {
   private enemy!: EnemyDef & { curHp: number };
   private enemySprite!: Phaser.GameObjects.Sprite;
   private playerSprite!: Phaser.GameObjects.Sprite;
+  private weaponOverlay!: Phaser.GameObjects.Sprite;
+  private shieldOverlay!: Phaser.GameObjects.Sprite;
   private msgText!: Phaser.GameObjects.Text;
 
-  private menuIndex = 0;
   private menuItems: ("fight" | "magic" | "item" | "run")[] = ["fight", "magic", "item", "run"];
   private menuTexts: Phaser.GameObjects.Text[] = [];
-  private cursor!: Phaser.GameObjects.Text;
 
   private inItems = false;
   private itemIndex = 0;
   private itemTexts: Phaser.GameObjects.Text[] = [];
   private itemCursor!: Phaser.GameObjects.Text;
+  private hintText!: Phaser.GameObjects.Text;
 
   private playerHpBar!: Phaser.GameObjects.Rectangle;
   private enemyHpBar!: Phaser.GameObjects.Rectangle;
@@ -70,38 +91,43 @@ export class BattleScene extends Phaser.Scene {
 
   private running = false;
   private waitingAction: { resolve: (a: MenuAction) => void } | null = null;
-
-  private keyLeft!: Phaser.Input.Keyboard.Key;
-  private keyRight!: Phaser.Input.Keyboard.Key;
-  private keyH!: Phaser.Input.Keyboard.Key;
-  private keyL!: Phaser.Input.Keyboard.Key;
-  private keyZ!: Phaser.Input.Keyboard.Key;
-  private keyEsc!: Phaser.Input.Keyboard.Key;
+  private origin: "World" | "Dungeon" = "World";
 
   constructor() {
     super("Battle");
   }
 
-  init(data: { enemy: string }): void {
-    const def = ENEMIES[data.enemy] ?? ENEMIES.slime;
+  init(data: { enemy: string; from?: "World" | "Dungeon" }): void {
+    const def = ENEMIES[data?.enemy ?? ""] ?? ENEMIES.slime;
     this.enemy = { ...def, curHp: def.hp };
+    this.origin = data?.from === "Dungeon" ? "Dungeon" : "World";
   }
 
   create(): void {
-    this.menuIndex = 0;
     this.menuTexts = [];
     this.itemTexts = [];
     this.inItems = false;
     this.itemIndex = 0;
     this.waitingAction = null;
 
+    const unsubSaved = onSaved(() => showToast(this, "SAVED"));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubSaved);
+
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "battle-bg");
 
     this.enemySprite = this.add
       .sprite(GAME_WIDTH - 160, 140, this.enemy.texture)
-      .setScale(this.enemy.boss ? 3 : 2);
+      .setScale(this.enemy.boss || this.enemy.giant ? 3 : 2);
     this.playerSprite = this.add.sprite(160, 184, "hero-down-0").setScale(2);
     this.playerSprite.setFlipX(true);
+    this.weaponOverlay = this.add
+      .sprite(174, 184, GameState.equipped.weapon === "ironSword" ? "equip-iron-sword" : "equip-sword")
+      .setScale(2);
+    this.shieldOverlay = this.add
+      .sprite(146, 184, GameState.equipped.armor === "ironShield" ? "equip-iron-shield" : "equip-shield")
+      .setScale(2);
+    this.weaponOverlay.setVisible(!!GameState.equipped.weapon);
+    this.shieldOverlay.setVisible(!!GameState.equipped.armor);
 
     this.window(16, 12, 232, 88);
     this.window(GAME_WIDTH - 248, 12, 232, 88);
@@ -110,13 +136,13 @@ export class BattleScene extends Phaser.Scene {
       .text(32, 20, GameState.player.name, retroStyle(7, "#ffd166"))
       .setOrigin(0, 0);
     this.playerHpText = this.add
-      .text(32, 44, "HP " + GameState.player.hp + "/" + GameState.player.maxHp, retroStyle(6, "#ffffff"))
+      .text(32, 44, "HP " + GameState.player.hp + "/" + GameState.effMaxHp(), retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
     this.playerMpText = this.add
       .text(32, 68, "MP " + GameState.player.mp + "/" + GameState.player.maxMp, retroStyle(6, "#8ecbff"))
       .setOrigin(0, 0);
 
-    this.playerHpBar = this.add.rectangle(140, 52, 88, 8, 0x22c55e).setOrigin(0, 0.5);
+    this.playerHpBar = this.add.rectangle(32, 62, 88, 8, 0x22c55e).setOrigin(0, 0.5);
 
     this.add
       .text(GAME_WIDTH - 232, 20, this.enemy.name, retroStyle(7, "#ff5555"))
@@ -125,7 +151,7 @@ export class BattleScene extends Phaser.Scene {
       .text(GAME_WIDTH - 232, 44, "HP " + this.enemy.curHp + "/" + this.enemy.hp, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
     this.enemyHpBar = this.add
-      .rectangle(GAME_WIDTH - 140, 52, 88, 8, 0xef4444)
+      .rectangle(GAME_WIDTH - 232, 62, 88, 8, 0xef4444)
       .setOrigin(0, 0.5);
 
     this.add
@@ -137,10 +163,10 @@ export class BattleScene extends Phaser.Scene {
 
     const menuY = GAME_HEIGHT - 92;
     const labels: Record<string, string> = {
-      fight: "FIGHT",
-      magic: "MAGIC",
-      item: "ITEM",
-      run: "RUN",
+      fight: "A:FIGHT",
+      magic: "F:MAGIC",
+      item: "I:ITEM",
+      run: "ESC:RUN",
     };
     let x = 64;
     for (const item of this.menuItems) {
@@ -150,65 +176,68 @@ export class BattleScene extends Phaser.Scene {
       this.menuTexts.push(t);
       x += 128;
     }
-    this.cursor = this.add.text(0, menuY, ">", retroStyle(8, "#ffd166")).setOrigin(0.5);
     this.hideMenu();
 
+    this.hintText = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT - 72, "", retroStyle(4, "#9f9fd0"))
+      .setOrigin(0.5)
+      .setDepth(30);
+
     const itemY = GAME_HEIGHT - 116;
-    let ix = 96;
-    for (const slot of ITEM_SLOTS) {
+    for (let i = 0; i < ITEM_SLOTS.length; i++) {
+      const slot = ITEM_SLOTS[i];
+      const colX = ITEM_COL_X + (i % ITEMS_PER_ROW) * ITEM_COL_WIDTH;
       const t = this.add
-        .text(ix, itemY, `${slot.label} x${GameState.inventory[slot.key]}`, retroStyle(6, "#ffffff"))
-        .setOrigin(0.5)
+        .text(
+          colX + ITEM_TEXT_OFFSET,
+          itemY + Math.floor(i / ITEMS_PER_ROW) * 20,
+          `${slot.label} x${GameState.inventory[slot.key]}`,
+          retroStyle(6, "#ffffff")
+        )
+        .setOrigin(0, 0.5)
         .setVisible(false);
       this.itemTexts.push(t);
-      ix += 150;
     }
     this.itemCursor = this.add
       .text(0, itemY, ">", retroStyle(6, "#ffd166"))
-      .setOrigin(0.5)
+      .setOrigin(0, 0.5)
       .setVisible(false);
 
-    const kb = this.input.keyboard!;
-    this.keyLeft = kb.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-    this.keyRight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-    this.keyH = kb.addKey(Phaser.Input.Keyboard.KeyCodes.H);
-    this.keyL = kb.addKey(Phaser.Input.Keyboard.KeyCodes.L);
-    this.keyZ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-    this.keyEsc = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+    this.input.keyboard!.on("keydown", this.onKey, this);
+    this.input.keyboard!.on("keydown-M", () => {
+      const muted = Sfx.toggleMuted();
+      showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
+    });
 
     this.running = true;
     this.runBattle();
   }
 
-  update(_time: number, _delta: number): void {
-    if (!this.waitingAction) return;
+  // keydown events, not JustDown polling: Key.onUp resets _justDown, so a
+  // press whose down/up land in the same frame queue is silently dropped
+  private onKey(e: KeyboardEvent): void {
+    if (e.repeat || !this.waitingAction) return;
 
     if (this.inItems) {
-      if (
-        Phaser.Input.Keyboard.JustDown(this.keyLeft) ||
-        Phaser.Input.Keyboard.JustDown(this.keyH)
-      ) {
+      if (e.code === "ArrowLeft" || e.code === "KeyH") {
         this.itemIndex = (this.itemIndex + ITEM_SLOTS.length - 1) % ITEM_SLOTS.length;
         Sfx.move();
         this.renderItems();
         return;
       }
-      if (
-        Phaser.Input.Keyboard.JustDown(this.keyRight) ||
-        Phaser.Input.Keyboard.JustDown(this.keyL)
-      ) {
+      if (e.code === "ArrowRight" || e.code === "KeyL") {
         this.itemIndex = (this.itemIndex + 1) % ITEM_SLOTS.length;
         Sfx.move();
         this.renderItems();
         return;
       }
-      if (Phaser.Input.Keyboard.JustDown(this.keyEsc)) {
+      if (e.code === "Escape") {
         this.inItems = false;
         this.hideItems();
         this.renderMenu();
         return;
       }
-      if (Phaser.Input.Keyboard.JustDown(this.keyZ)) {
+      if (e.code === "KeyZ") {
         const slot = ITEM_SLOTS[this.itemIndex];
         if (GameState.inventory[slot.key] <= 0) {
           Sfx.error();
@@ -216,44 +245,35 @@ export class BattleScene extends Phaser.Scene {
         }
         this.inItems = false;
         this.hideItems();
-        const waiter = this.waitingAction;
-        this.waitingAction = null;
-        this.hideMenu();
-        waiter.resolve(slot.action);
+        this.resolveAction(slot.action);
       }
       return;
     }
 
-    if (
-      Phaser.Input.Keyboard.JustDown(this.keyLeft) ||
-      Phaser.Input.Keyboard.JustDown(this.keyH)
-    ) {
-      this.menuIndex = (this.menuIndex + this.menuItems.length - 1) % this.menuItems.length;
-      Sfx.move();
-      this.renderMenu();
+    if (e.code === "Escape") {
+      this.resolveAction("run");
       return;
     }
-    if (
-      Phaser.Input.Keyboard.JustDown(this.keyRight) ||
-      Phaser.Input.Keyboard.JustDown(this.keyL)
-    ) {
-      this.menuIndex = (this.menuIndex + 1) % this.menuItems.length;
-      Sfx.move();
-      this.renderMenu();
+    if (e.code === "KeyA") {
+      this.resolveAction("fight");
       return;
     }
-    if (Phaser.Input.Keyboard.JustDown(this.keyZ)) {
-      const item = this.menuItems[this.menuIndex];
-      if (item === "item") {
-        this.renderItems();
-        this.inItems = true;
-        return;
-      }
-      const waiter = this.waitingAction;
-      this.waitingAction = null;
+    if (e.code === "KeyF") {
+      this.resolveAction("magic");
+      return;
+    }
+    if (e.code === "KeyI") {
       this.hideMenu();
-      waiter.resolve(item);
+      this.renderItems();
+      this.inItems = true;
     }
+  }
+
+  private resolveAction(action: MenuAction): void {
+    const waiter = this.waitingAction!;
+    this.waitingAction = null;
+    this.hideMenu();
+    waiter.resolve(action);
   }
 
   private window(x: number, y: number, w: number, h: number): void {
@@ -265,15 +285,11 @@ export class BattleScene extends Phaser.Scene {
 
   private hideMenu(): void {
     for (const t of this.menuTexts) t.setVisible(false);
-    this.cursor.setVisible(false);
   }
 
   private renderMenu(): void {
     for (const t of this.menuTexts) t.setVisible(true);
-    this.cursor.setVisible(true);
-    const target = this.menuTexts[this.menuIndex];
-    this.cursor.setX(target.x - 44);
-    this.cursor.setY(target.y);
+    this.hintText.setText(""); // the menu buttons above already show the hotkeys
   }
 
   private hideItems(): void {
@@ -290,19 +306,20 @@ export class BattleScene extends Phaser.Scene {
     }
     this.itemCursor.setVisible(true);
     const target = this.itemTexts[this.itemIndex];
-    this.itemCursor.setX(target.x - 44);
+    this.itemCursor.setX(target.x - ITEM_TEXT_OFFSET);
     this.itemCursor.setY(target.y);
+    this.hintText.setText("H/L:NAV  Z:OK  ESC:BACK");
   }
 
   private async runBattle(): Promise<void> {
-    if (this.enemy.boss) Sfx.boss();
+    if (this.enemy.boss || this.enemy.giant) Sfx.boss();
     await this.say(`${this.enemy.name} blocks your way!`);
 
     while (this.running) {
       if (GameState.player.hp <= 0) return this.defeat();
 
       let action = await this.playerTurn();
-      if (action === "magic" && GameState.player.mp < MP_COST) {
+      while (action === "magic" && GameState.player.mp < MP_COST) {
         await this.say("Not enough MP!");
         action = await this.playerTurn();
       }
@@ -331,6 +348,18 @@ export class BattleScene extends Phaser.Scene {
           break;
         case "candy":
           await this.throwCandy();
+          break;
+        case "hiPotion":
+          await this.useHiPotion();
+          break;
+        case "ether":
+          await this.useEther();
+          break;
+        case "elixir":
+          await this.useElixir();
+          break;
+        case "bomb":
+          await this.throwBomb();
           break;
       }
 
@@ -365,6 +394,7 @@ export class BattleScene extends Phaser.Scene {
     GameState.player.mp -= MP_COST;
     this.updatePlayerStats();
     const dmg = 10 + Math.floor(Math.random() * 5);
+    await this.fireball();
     this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
     this.enemySprite.setTintFill(0xffa500);
     this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg);
@@ -374,30 +404,98 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async usePotion(): Promise<void> {
+    if (GameState.player.hp >= GameState.effMaxHp()) {
+      Sfx.error();
+      await this.say("HP is already full!");
+      return;
+    }
     Sfx.buy();
     GameState.inventory.potion -= 1;
-    const healed = Math.min(GameState.player.maxHp - GameState.player.hp, 25);
+    const healed = Math.min(GameState.effMaxHp() - GameState.player.hp, 25);
     GameState.player.hp += healed;
     this.updatePlayerStats();
-    await this.say(healed > 0 ? `Potion heals ${healed} HP!` : "Potion has no effect!");
+    await this.say(`Potion heals ${healed} HP!`);
   }
 
   private async useMPotion(): Promise<void> {
+    if (GameState.player.mp >= GameState.player.maxMp) {
+      Sfx.error();
+      await this.say("MP is already full!");
+      return;
+    }
     Sfx.buy();
     GameState.inventory.mPotion -= 1;
     const restored = Math.min(GameState.player.maxMp - GameState.player.mp, 8);
     GameState.player.mp += restored;
     this.updatePlayerStats();
-    await this.say(restored > 0 ? `Magic restores ${restored} MP!` : "MPotion has no effect!");
+    await this.say(`Magic restores ${restored} MP!`);
+  }
+
+  private async useHiPotion(): Promise<void> {
+    if (GameState.player.hp >= GameState.effMaxHp()) {
+      Sfx.error();
+      await this.say("HP is already full!");
+      return;
+    }
+    Sfx.buy();
+    GameState.inventory.hiPotion -= 1;
+    const healed = Math.min(GameState.effMaxHp() - GameState.player.hp, 50);
+    GameState.player.hp += healed;
+    this.updatePlayerStats();
+    await this.say(`Hi-Potion heals ${healed} HP!`);
+  }
+
+  private async useEther(): Promise<void> {
+    if (GameState.player.mp >= GameState.player.maxMp) {
+      Sfx.error();
+      await this.say("MP is already full!");
+      return;
+    }
+    Sfx.buy();
+    GameState.inventory.ether -= 1;
+    const restored = Math.min(GameState.player.maxMp - GameState.player.mp, 12);
+    GameState.player.mp += restored;
+    this.updatePlayerStats();
+    await this.say(`Ether restores ${restored} MP!`);
+  }
+
+  private async useElixir(): Promise<void> {
+    if (
+      GameState.player.hp >= GameState.effMaxHp() &&
+      GameState.player.mp >= GameState.player.maxMp
+    ) {
+      Sfx.error();
+      await this.say("HP and MP are already full!");
+      return;
+    }
+    Sfx.buy();
+    GameState.inventory.elixir -= 1;
+    GameState.player.hp = GameState.effMaxHp();
+    GameState.player.mp = GameState.player.maxMp;
+    this.updatePlayerStats();
+    await this.say("Elixir fully restores HP and MP!");
+  }
+
+  private async throwBomb(): Promise<void> {
+    Sfx.hit();
+    GameState.inventory.bomb -= 1;
+    const dmg = 12;
+    this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
+    this.enemySprite.setTintFill(0xffa500);
+    this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg);
+    await this.say(`BOOM! ${dmg} damage!`);
+    this.enemySprite.clearTint();
+    this.updateEnemyHp();
   }
 
   private async throwCandy(): Promise<void> {
-    Sfx.capture();
-    GameState.inventory.candy -= 1;
     if (this.enemy.boss) {
+      Sfx.error();
       await this.say("The KING SLIME is too strong!");
       return;
     }
+    Sfx.capture();
+    GameState.inventory.candy -= 1;
     const ratio = this.enemy.curHp / this.enemy.hp;
     let chance = 0.15;
     if (ratio < 0.5) chance = 0.4 + (1 - ratio) * 0.3;
@@ -412,6 +510,7 @@ export class BattleScene extends Phaser.Scene {
 
   private async enemyTurn(): Promise<void> {
     Sfx.hit();
+    await this.enemyLunge();
     const dmg = this.calcDamage(this.enemy.atk, GameState.effDef());
     GameState.player.hp = Math.max(0, GameState.player.hp - dmg);
     this.playerSprite.setTintFill(0xff6666);
@@ -421,12 +520,61 @@ export class BattleScene extends Phaser.Scene {
     this.updatePlayerStats();
   }
 
+  private async enemyLunge(): Promise<void> {
+    const startX = this.enemySprite.x;
+    const targetX = this.playerSprite.x + 40;
+    await this.tweenPromise(this.enemySprite, { x: targetX }, 140);
+    await this.tweenPromise(this.enemySprite, { x: startX }, 160);
+  }
+
   private async lunge(): Promise<void> {
     const startX = this.playerSprite.x;
     const targetX = this.enemySprite.x - 40;
+    const hasWeapon = !!GameState.equipped.weapon;
+    const syncOverlays = () => {
+      this.weaponOverlay.x = this.playerSprite.x + 14;
+      this.shieldOverlay.x = this.playerSprite.x - 14;
+    };
     this.playerSprite.x = startX;
-    await this.tweenPromise(this.playerSprite, { x: targetX }, 140);
-    await this.tweenPromise(this.playerSprite, { x: startX }, 160);
+    syncOverlays();
+    if (hasWeapon) {
+      // wind-up, then swing down through the lunge
+      this.weaponOverlay.setAngle(-20);
+      this.tweens.add({ targets: this.weaponOverlay, angle: 60, duration: 140, ease: "Sine.easeIn" });
+    }
+    await this.tweenPromise(this.playerSprite, { x: targetX }, 140, syncOverlays);
+    syncOverlays();
+    if (hasWeapon) {
+      this.tweens.add({ targets: this.weaponOverlay, angle: 0, duration: 160, ease: "Sine.easeOut" });
+    }
+    await this.tweenPromise(this.playerSprite, { x: startX }, 160, syncOverlays);
+    syncOverlays();
+  }
+
+  private async fireball(): Promise<void> {
+    const fb = this.add
+      .circle(this.playerSprite.x + 20, this.playerSprite.y - 10, 8, 0xffa500)
+      .setDepth(20);
+    this.tweens.add({
+      targets: fb,
+      alpha: { from: 1, to: 0.5 },
+      duration: 90,
+      repeat: -1,
+      yoyo: true,
+    });
+    await this.tweenPromise(fb, { x: this.enemySprite.x, y: this.enemySprite.y }, 240);
+    this.tweens.killTweensOf(fb); // the repeat:-1 pulse tween outlives destroy() otherwise
+    fb.destroy();
+    const boom = this.add
+      .circle(this.enemySprite.x, this.enemySprite.y, 12, 0xff5500)
+      .setDepth(20);
+    this.tweens.add({
+      targets: boom,
+      scale: 3,
+      alpha: 0,
+      duration: 280,
+      onComplete: () => boom.destroy(),
+    });
   }
 
   private flashDamage(x: number, y: number, amount: number): void {
@@ -453,9 +601,9 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private updatePlayerStats(): void {
-    this.playerHpText.setText(`HP ${GameState.player.hp}/${GameState.player.maxHp}`);
+    this.playerHpText.setText(`HP ${GameState.player.hp}/${GameState.effMaxHp()}`);
     this.playerMpText.setText(`MP ${GameState.player.mp}/${GameState.player.maxMp}`);
-    this.playerHpBar.setScale(Math.max(0, GameState.player.hp / GameState.player.maxHp), 1);
+    this.playerHpBar.setScale(Math.max(0, GameState.player.hp / GameState.effMaxHp()), 1);
   }
 
   private async victory(caught = false): Promise<void> {
@@ -465,7 +613,7 @@ export class BattleScene extends Phaser.Scene {
       GameState.battles += 1;
       if (this.enemy.name === "SLIME") GameState.quest.slimes += 1;
       if (this.enemy.boss) GameState.quest.bossDefeated = true;
-      GameState.player.hp = Math.min(GameState.player.maxHp, GameState.player.hp + 5);
+      GameState.player.hp = Math.min(GameState.effMaxHp(), GameState.player.hp + 5);
       GameState.player.mp = Math.min(GameState.player.maxMp, GameState.player.mp + 2);
       Sfx.victory();
       await this.say(`${this.enemy.name} is defeated!`);
@@ -479,7 +627,7 @@ export class BattleScene extends Phaser.Scene {
         GameState.player.maxMp += 2;
         GameState.player.atk += 1;
         GameState.player.def += 1;
-        GameState.player.hp = GameState.player.maxHp;
+        GameState.player.hp = GameState.effMaxHp();
         GameState.player.mp = GameState.player.maxMp;
         Sfx.levelup();
         msg = `LEVEL UP! LV ${GameState.player.level}`;
@@ -487,8 +635,9 @@ export class BattleScene extends Phaser.Scene {
       await this.say(msg);
       if (this.enemy.boss) await this.say("The KING SLIME is no more!");
     }
+    GameState.lockEncounters(4000);
     GameState.save();
-    await this.say("Press Z to continue.");
+    await this.say("Battle won!");
     this.end();
   }
 
@@ -510,7 +659,7 @@ export class BattleScene extends Phaser.Scene {
     GameState.lockEncounters(4000);
     this.cameras.main.fadeOut(400, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start("World");
+      this.scene.start(this.origin === "Dungeon" ? "Dungeon" : "World");
     });
   }
 
@@ -534,13 +683,20 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private awaitAdvance(resolve: () => void): void {
+    this.hintText.setText("Z/A/F/ESC:CONTINUE");
     const done = () => {
       this.input.keyboard?.removeListener("keydown-Z", done);
+      this.input.keyboard?.removeListener("keydown-A", done);
+      this.input.keyboard?.removeListener("keydown-F", done);
+      this.input.keyboard?.removeListener("keydown-ESC", done);
       this.input.keyboard?.removeListener("keydown-SPACE", done);
       this.input.off("pointerdown", done);
       resolve();
     };
     this.input.keyboard?.once("keydown-Z", done);
+    this.input.keyboard?.once("keydown-A", done);
+    this.input.keyboard?.once("keydown-F", done);
+    this.input.keyboard?.once("keydown-ESC", done);
     this.input.keyboard?.once("keydown-SPACE", done);
     this.input.once("pointerdown", done);
   }
@@ -548,13 +704,15 @@ export class BattleScene extends Phaser.Scene {
   private tweenPromise(
     target: Phaser.GameObjects.GameObject,
     props: object,
-    duration: number
+    duration: number,
+    onUpdate?: () => void
   ): Promise<void> {
     return new Promise((resolve) => {
       this.tweens.add({
         targets: target,
         ...props,
         duration,
+        onUpdate,
         onComplete: () => resolve(),
       });
     });

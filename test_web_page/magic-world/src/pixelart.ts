@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { RETRO_FONT, PIXEL } from "./config";
+import { RETRO_FONT, PIXEL, GAME_WIDTH } from "./config";
 
 export interface PixelMap {
   [ch: string]: number;
@@ -16,6 +16,33 @@ export function retroStyle(
     align: "left",
     resolution: 1,
   };
+}
+
+const TOAST_NAME = "__toast";
+
+export function showToast(scene: Phaser.Scene, text: string): void {
+  // Reuse one toast per scene instead of stacking a new Text on every call —
+  // otherwise mashing the key that triggers it (e.g. mute) overlaps garbled
+  // text from multiple in-flight instances.
+  let t = scene.children.getByName(TOAST_NAME) as Phaser.GameObjects.Text | null;
+  if (!t) {
+    t = scene.add
+      .text(GAME_WIDTH / 2, 8, "", retroStyle(5, "#8ecbff"))
+      .setName(TOAST_NAME)
+      .setOrigin(0.5, 0)
+      .setScrollFactor(0)
+      .setDepth(200)
+      .setAlpha(0);
+  }
+  scene.tweens.killTweensOf(t);
+  t.setText(text).setAlpha(0);
+  scene.tweens.add({
+    targets: t,
+    alpha: 1,
+    duration: 200,
+    yoyo: true,
+    hold: 900,
+  });
 }
 
 export function drawRows(

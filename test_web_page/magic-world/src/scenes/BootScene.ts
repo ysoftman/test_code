@@ -222,6 +222,49 @@ const HERO_LEGS_IDLE = [
   "................",
 ];
 
+const EQUIP_SWORD_PALETTE = { w: 0xd1d5db, d: 0x64748b, g: 0xf59e0b, b: 0x6b4226 };
+const EQUIP_SWORD_TILE = [
+  "................",
+  "................",
+  "................",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....wwww.......",
+  ".....gggg.......",
+  ".....bbbb.......",
+  ".....bb.........",
+  "................",
+];
+
+const EQUIP_SHIELD_PALETTE = { s: 0x94a3b8, S: 0x64748b, d: 0x475569 };
+const EQUIP_SHIELD_TILE = [
+  "................",
+  "................",
+  "................",
+  "................",
+  "....ssssssss....",
+  "...ssssssssss...",
+  "...sSSSSSSSSs...",
+  "...sSSddddSSs...",
+  "...sSSddddSSs...",
+  "...sSSSSSSSSs...",
+  "...ssssssssss...",
+  "....ssssssss....",
+  "................",
+  "................",
+  "................",
+  "................",
+];
+
+const EQUIP_IRON_SWORD_PALETTE = { w: 0xe2e8f0, d: 0x334155, g: 0x60a5fa, b: 0x1e3a8a };
+const EQUIP_IRON_SHIELD_PALETTE = { s: 0x60a5fa, S: 0x3b82f6, d: 0x1e3a8a };
+
 const NPC_PALETTE = {
   h: 0xf59e0b,
   s: 0xf8c896,
@@ -250,6 +293,7 @@ const NPC_TILE = [
 ];
 
 const SLIME_PALETTE = { g: 0x4ade80, G: 0x1c5c38, m: 0x14532d };
+const KING_SLIME_PALETTE = { g: 0xff7a7a, G: 0xb91c1c, m: 0x7f1d1d };
 const SLIME_TILE = [
   "................",
   "................",
@@ -275,6 +319,13 @@ const GOBLIN_PALETTE = {
   e: 0xff5555,
   h: 0x4ade80,
   r: 0x8b5a2b,
+};
+const TROLL_PALETTE = {
+  s: 0x4d5d4d,
+  S: 0x2f3a2f,
+  e: 0xffd166,
+  h: 0x1f2e1f,
+  r: 0x7c2d12,
 };
 const GOBLIN_TILE = [
   "................",
@@ -542,9 +593,16 @@ export class BootScene extends Phaser.Scene {
       HERO_PALETTE
     );
 
+    makeTexture(this, "equip-sword", EQUIP_SWORD_TILE, EQUIP_SWORD_PALETTE);
+    makeTexture(this, "equip-shield", EQUIP_SHIELD_TILE, EQUIP_SHIELD_PALETTE);
+    makeTexture(this, "equip-iron-sword", EQUIP_SWORD_TILE, EQUIP_IRON_SWORD_PALETTE);
+    makeTexture(this, "equip-iron-shield", EQUIP_SHIELD_TILE, EQUIP_IRON_SHIELD_PALETTE);
+
     makeTexture(this, "npc", NPC_TILE, NPC_PALETTE);
     makeTexture(this, "slime", SLIME_TILE, SLIME_PALETTE);
+    makeTexture(this, "king", SLIME_TILE, KING_SLIME_PALETTE);
     makeTexture(this, "goblin", GOBLIN_TILE, GOBLIN_PALETTE);
+    makeTexture(this, "troll", GOBLIN_TILE, TROLL_PALETTE);
 
     makeTexture(this, "dust", ["dd", "dd"], { d: 0xcbbfa8 });
 

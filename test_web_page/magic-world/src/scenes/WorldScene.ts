@@ -1,9 +1,10 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
-import { GameState, expToNext, isNight, timeLabel, clock, dayCount } from "../gameState";
-import { retroStyle } from "../pixelart";
+import { GameState, expToNext, isNight, nightFactor, timeLabel, clock, dayCount, onSaved } from "../gameState";
+import { retroStyle, showToast } from "../pixelart";
 import { DialogueBox } from "../ui/DialogueBox";
 import { ShopUI } from "../ui/Shop";
+import { InventoryUI } from "../ui/InventoryUI";
 import { Sfx } from "../audio";
 import {
   buildLevel,
@@ -24,6 +25,7 @@ import {
 
 const ENCOUNTER_RATE = 0.18;
 const ENCOUNTER_COOLDOWN = 600;
+const TROLL_KING_SPAWN_CHANCE = 0.35;
 
 type LastMove = "down" | "up" | "right" | "left";
 
@@ -37,6 +39,7 @@ interface Roamer {
   targetY: number;
   wait: number;
   speed: number;
+  kind: "slime" | "troll";
 }
 
 const IDLE_TEXTURE: Record<LastMove, string> = {
@@ -49,9 +52,12 @@ const IDLE_TEXTURE: Record<LastMove, string> = {
 export class WorldScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
   private playerShadow!: Phaser.GameObjects.Ellipse;
+  private weaponOverlay!: Phaser.GameObjects.Sprite;
+  private shieldOverlay!: Phaser.GameObjects.Sprite;
   private layer!: Phaser.Tilemaps.TilemapLayer;
   private dialogue!: DialogueBox;
   private shop!: ShopUI;
+  private inventory!: InventoryUI;
   private dust!: Phaser.GameObjects.Particles.ParticleEmitter;
   private roamerGroup!: Phaser.Physics.Arcade.Group;
   private roamers: Roamer[] = [];
@@ -64,8 +70,13 @@ export class WorldScene extends Phaser.Scene {
   private homeBubble!: Phaser.GameObjects.Container;
   private bubbleVisible = false;
   private resting = false;
+  private enteringDungeon = false;
   private zQueued = false;
   private bQueued = false;
+  private sQueued = false;
+  private iQueued = false;
+  private gCheatQueued = false;
+  private mQueued = false;
 
   private keyLeft!: Phaser.Input.Keyboard.Key;
   private keyRight!: Phaser.Input.Keyboard.Key;
@@ -79,6 +90,9 @@ export class WorldScene extends Phaser.Scene {
   private keySpace!: Phaser.Input.Keyboard.Key;
   private keyB!: Phaser.Input.Keyboard.Key;
   private keyS!: Phaser.Input.Keyboard.Key;
+  private keyI!: Phaser.Input.Keyboard.Key;
+  private keyG!: Phaser.Input.Keyboard.Key;
+  private keyM!: Phaser.Input.Keyboard.Key;
 
   private statusText!: Phaser.GameObjects.Text;
   private statusPanel!: Phaser.GameObjects.Rectangle;
@@ -89,11 +103,19 @@ export class WorldScene extends Phaser.Scene {
     super("World");
   }
 
-  create(): void {
+  create(data?: { fromDungeon?: boolean }): void {
     this.roamers = [];
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";
     this.resting = false;
+    this.enteringDungeon = false;
+
+    // Registered before the SHUTDOWN handler below that calls GameState.save()
+    // — SHUTDOWN listeners fire in registration order, so this unsubscribes
+    // before that save happens and no toast gets created on a scene that's
+    // already tearing down. Keep this the first SHUTDOWN listener.
+    const unsubSaved = onSaved(() => showToast(this, "SAVED"));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubSaved);
 
     const level = buildLevel();
     const map = this.make.tilemap({
@@ -110,13 +132,15 @@ export class WorldScene extends Phaser.Scene {
     this.moon = this.add
       .image(140, 72, "moon")
       .setScrollFactor(0)
-      .setDepth(-50)
-      .setVisible(isNight());
+      .setDepth(2)
+      .setVisible(false)
+      .setAlpha(0);
     this.stars = this.add
       .image(GAME_WIDTH / 2, 72, "stars")
       .setScrollFactor(0)
-      .setDepth(-50)
-      .setVisible(isNight());
+      .setDepth(1)
+      .setVisible(false)
+      .setAlpha(0);
 
     this.add
       .image(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE, "house")
@@ -153,9 +177,24 @@ export class WorldScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(11);
 
+    const respawn = GameState.pos ?? PLAYER_SPAWN;
+    // Position-based fallback for old saves / any other path that lands here
+    // without the explicit flag. The real signal is `data.fromDungeon`, set
+    // by DungeonScene.exitDungeon() — inferring "near the cave" from raw
+    // coordinates undercounts the actual overlap-trigger radius (player body
+    // half-width extends it further than this box), so it can't be trusted
+    // alone.
+    const nearCave =
+      Math.abs(respawn.x - CAVE_POS.x) <= TILE / 2 &&
+      Math.abs(respawn.y - CAVE_POS.y) <= TILE / 2;
+    const fromDungeon = !!data?.fromDungeon || nearCave;
+    const spawn = fromDungeon ? { x: CAVE_POS.x, y: CAVE_POS.y + TILE * 2 } : respawn;
+    // just walked out of the cave: hold off re-triggering it in case the
+    // player is still holding the "up" key from walking in
+    if (fromDungeon) this.encounterCooldown = Math.max(this.encounterCooldown, ENCOUNTER_COOLDOWN);
     this.player = this.physics.add.sprite(
-      GameState.pos?.x ?? PLAYER_SPAWN.x,
-      GameState.pos?.y ?? PLAYER_SPAWN.y,
+      spawn.x,
+      spawn.y,
       "hero-idle-down"
     );
     this.player.setCollideWorldBounds(true);
@@ -167,33 +206,50 @@ export class WorldScene extends Phaser.Scene {
       .ellipse(this.player.x, this.player.y + 14, 20, 8, 0x000000, 0.4)
       .setDepth(5);
 
+    this.weaponOverlay = this.add
+      .sprite(this.player.x, this.player.y, "equip-sword")
+      .setDepth(11)
+      .setVisible(false);
+    this.shieldOverlay = this.add
+      .sprite(this.player.x, this.player.y, "equip-shield")
+      .setDepth(11)
+      .setVisible(false);
+
     const walkFrames = (dir: string): Phaser.Types.Animations.AnimationFrame[] =>
       [0, 1, 2, 3].map((i) => ({ key: `hero-${dir}-${i}` }));
 
-    this.anims.create({
-      key: "walk-down",
-      frames: walkFrames("down"),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "walk-up",
-      frames: walkFrames("up"),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "walk-right",
-      frames: walkFrames("right"),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "walk-left",
-      frames: walkFrames("left"),
-      frameRate: 10,
-      repeat: -1,
-    });
+    if (!this.anims.exists("walk-down")) {
+      this.anims.create({
+        key: "walk-down",
+        frames: walkFrames("down"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
+    if (!this.anims.exists("walk-up")) {
+      this.anims.create({
+        key: "walk-up",
+        frames: walkFrames("up"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
+    if (!this.anims.exists("walk-right")) {
+      this.anims.create({
+        key: "walk-right",
+        frames: walkFrames("right"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
+    if (!this.anims.exists("walk-left")) {
+      this.anims.create({
+        key: "walk-left",
+        frames: walkFrames("left"),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
 
     this.dust = this.add.particles(0, 0, "dust", {
       speed: { min: 8, max: 22 },
@@ -207,13 +263,28 @@ export class WorldScene extends Phaser.Scene {
 
     this.spawnMonsters();
 
-    this.physics.add.overlap(this.player, this.roamerGroup, () => {
-      if (this.encounterCooldown <= 0) this.startBattle("slime");
+    this.physics.add.overlap(this.player, this.roamerGroup, (_p, roamer) => {
+      if (this.encounterCooldown > 0) return;
+      if (this.dialogue.isActive() || this.shop.isActive() || this.inventory.isActive()) return;
+      // the monster zones are cramped enough that a slime can overlap the
+      // player at the same moment as the troll; always let the rare one win
+      // the tie instead of whichever roamer the physics engine happened to
+      // report first
+      const troll = this.roamers.find((r) => r.kind === "troll");
+      const r =
+        troll && this.physics.overlap(this.player, troll.sprite)
+          ? troll
+          : this.roamers.find((r) => r.sprite === roamer);
+      // BattleScene.runBattle() already plays the boss fanfare for boss/giant
+      // enemies; playing it here too would sound it twice.
+      this.startBattle(r?.kind ?? "slime");
     });
 
     const cave = this.add.zone(CAVE_POS.x, CAVE_POS.y, TILE, TILE).setDepth(1);
     this.physics.add.existing(cave);
     this.physics.add.overlap(this.player, cave, () => {
+      if (this.enteringDungeon || this.encounterCooldown > 0) return;
+      if (this.dialogue.isActive() || this.shop.isActive() || this.inventory.isActive()) return;
       this.enterDungeon();
     });
 
@@ -248,15 +319,31 @@ export class WorldScene extends Phaser.Scene {
       this.bQueued = true;
     });
     this.keyS = kb.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.keyS.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.sQueued = true;
+    });
+    this.keyI = kb.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+    this.keyI.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.iQueued = true;
+    });
+    this.keyG = kb.addKey(Phaser.Input.Keyboard.KeyCodes.G);
+    this.keyG.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      if (this.keyG.ctrlKey) this.gCheatQueued = true;
+    });
+    this.keyM = kb.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+    this.keyM.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.mQueued = true;
+    });
 
     this.dialogue = new DialogueBox(this, []);
     this.shop = new ShopUI(this);
+    this.inventory = new InventoryUI(this);
 
     const hint = this.add
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE  Z:TALK/REST  S:HUD  ESC:SKIP",
+        "HJKL:MOVE Z:TALK/REST I:ITEMS S:HUD M:MUTE ESC:SKIP",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
@@ -264,9 +351,10 @@ export class WorldScene extends Phaser.Scene {
       .setDepth(100);
 
     this.nightOverlay = this.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x1a1a4a, 0)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x1a1a4a, 1)
       .setScrollFactor(0)
-      .setDepth(90);
+      .setDepth(90)
+      .setAlpha(0);
 
     const statusDummy = [
       "HERO",
@@ -277,12 +365,14 @@ export class WorldScene extends Phaser.Scene {
       "DAY 1",
       "00:00 DAY",
       "SLIMES 0/5",
+      "CAUGHT 0",
     ].join("\n");
     this.statusText = this.add
       .text(16, 0, statusDummy, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0)
       .setScrollFactor(0)
-      .setDepth(101);
+      .setDepth(101)
+      .setVisible(GameState.hudVisible);
     const statusH = this.statusText.height + 24;
     this.statusText.setY(GAME_HEIGHT - 8 - statusH + 12);
     this.statusPanel = this.add
@@ -290,18 +380,21 @@ export class WorldScene extends Phaser.Scene {
       .setOrigin(0, 1)
       .setStrokeStyle(1, 0xffffff)
       .setScrollFactor(0)
-      .setDepth(100);
+      .setDepth(100)
+      .setVisible(GameState.hudVisible);
     this.expBar = this.add
       .rectangle(16, GAME_HEIGHT - 10, 164, 4, 0x22c55e)
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
-      .setDepth(101);
+      .setDepth(101)
+      .setVisible(GameState.hudVisible);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       GameState.pos = { x: this.player.x, y: this.player.y };
       GameState.save();
       this.dialogue.destroy();
       this.shop.destroy();
+      this.inventory.destroy();
       hint.destroy();
     });
   }
@@ -355,7 +448,8 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private enterDungeon(): void {
-    if (this.dialogue.isActive() || this.shop.isActive()) return;
+    if (this.enteringDungeon) return;
+    this.enteringDungeon = true;
     Sfx.night();
     this.player.setVelocity(0, 0);
     this.cameras.main.fadeOut(200, 0, 0, 0);
@@ -370,19 +464,44 @@ export class WorldScene extends Phaser.Scene {
     this.updateDayNight();
     this.updateHomeBubble();
 
-    if (Phaser.Input.Keyboard.JustDown(this.keyS)) {
+    if (this.gCheatQueued) {
+      this.gCheatQueued = false;
+      GameState.gold += 100;
+      GameState.save();
+      this.flashNote("+100G (CHEAT)");
+    }
+
+    if (this.sQueued) {
+      this.sQueued = false;
       this.toggleStatus();
     }
 
-    if (this.dialogue.isActive() || this.shop.isActive()) {
+    if (this.mQueued) {
+      this.mQueued = false;
+      const muted = Sfx.toggleMuted();
+      showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
+    }
+
+    if (this.dialogue.isActive() || this.shop.isActive() || this.inventory.isActive()) {
       this.zQueued = false;
       this.bQueued = false;
+      if (this.iQueued) {
+        this.iQueued = false;
+        if (this.inventory.isActive()) this.inventory.close();
+      }
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
       this.dust.emitting = false;
       this.dialogue.update();
       this.shop.update();
+      this.inventory.update();
       this.updateRoamers(delta);
+      return;
+    }
+
+    if (this.iQueued) {
+      this.iQueued = false;
+      this.inventory.open();
       return;
     }
 
@@ -422,8 +541,39 @@ export class WorldScene extends Phaser.Scene {
 
     this.playerShadow.setPosition(this.player.x, this.player.y + 14);
     this.dust.emitting = moving;
+    this.updateEquipOverlays();
     this.updateRoamers(delta);
     this.checkEncounter(delta);
+  }
+
+  private flashNote(text: string): void {
+    const n = this.add
+      .text(this.player.x, this.player.y - 26, text, retroStyle(6, "#ffd166"))
+      .setOrigin(0.5)
+      .setDepth(120);
+    this.tweens.add({
+      targets: n,
+      y: n.y - 20,
+      alpha: 0,
+      duration: 900,
+      onComplete: () => n.destroy(),
+    });
+  }
+
+  private updateEquipOverlays(): void {
+    this.weaponOverlay.setVisible(!!GameState.equipped.weapon);
+    this.shieldOverlay.setVisible(!!GameState.equipped.armor);
+    this.weaponOverlay.setTexture(
+      GameState.equipped.weapon === "ironSword" ? "equip-iron-sword" : "equip-sword"
+    );
+    this.shieldOverlay.setTexture(
+      GameState.equipped.armor === "ironShield" ? "equip-iron-shield" : "equip-shield"
+    );
+    const flip = this.lastMove === "left";
+    this.weaponOverlay.setFlipX(flip);
+    this.shieldOverlay.setFlipX(flip);
+    this.weaponOverlay.setPosition(this.player.x + 7, this.player.y + 2);
+    this.shieldOverlay.setPosition(this.player.x - 7, this.player.y + 4);
   }
 
   private toggleStatus(): void {
@@ -431,13 +581,17 @@ export class WorldScene extends Phaser.Scene {
     this.statusPanel.setVisible(visible);
     this.statusText.setVisible(visible);
     this.expBar.setVisible(visible);
+    GameState.hudVisible = visible;
+    GameState.saveSettings();
   }
 
   private updateDayNight(): void {
-    this.nightOverlay.setAlpha(isNight() ? 0.32 : 0);
-    const night = isNight();
-    this.moon.setVisible(night);
-    this.stars.setVisible(night);
+    const factor = nightFactor();
+    this.nightOverlay.setAlpha(factor * 0.45);
+    this.moon.setVisible(factor > 0);
+    this.stars.setVisible(factor > 0);
+    this.moon.setAlpha(factor);
+    this.stars.setAlpha(factor);
   }
 
   private updateStatus(): void {
@@ -449,12 +603,13 @@ export class WorldScene extends Phaser.Scene {
     const text = [
       p.name,
       `LV ${p.level}`,
-      `HP ${p.hp}/${p.maxHp}`,
+      `HP ${p.hp}/${GameState.effMaxHp()}`,
       `MP ${p.mp}/${p.maxMp}`,
       `G ${GameState.gold}`,
       `DAY ${dayCount()}`,
       `${clock()} ${timeLabel()}`,
       questLine,
+      `CAUGHT ${GameState.caught.length}`,
     ].join("\n");
     if (text !== this.statusLast) {
       this.statusLast = text;
@@ -496,7 +651,7 @@ export class WorldScene extends Phaser.Scene {
     Sfx.night();
     this.cameras.main.fadeOut(400, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      GameState.player.hp = GameState.player.maxHp;
+      GameState.player.hp = GameState.effMaxHp();
       GameState.player.mp = GameState.player.maxMp;
       GameState.minutes = (Math.floor(GameState.minutes / 1440) + 1) * 1440 + 360;
       GameState.save();
@@ -617,6 +772,7 @@ export class WorldScene extends Phaser.Scene {
           targetY: y,
           wait: 300 + Math.random() * 800,
           speed: 28 + Math.random() * 20,
+          kind: "slime",
         });
         this.tweens.add({
           targets: sprite,
@@ -628,6 +784,36 @@ export class WorldScene extends Phaser.Scene {
           ease: "Sine.easeInOut",
         });
       }
+    }
+
+    if (Math.random() < TROLL_KING_SPAWN_CHANCE) {
+      const zone = MONSTER_ZONES[Math.floor(Math.random() * MONSTER_ZONES.length)];
+      const x = zone.cx + (Math.random() - 0.5) * zone.w * 0.6;
+      const y = zone.cy + (Math.random() - 0.5) * zone.h * 0.6;
+      const sprite = this.roamerGroup.create(x, y, "troll") as Phaser.Physics.Arcade.Sprite;
+      sprite.setDepth(10).setScale(1.6);
+      sprite.body?.setSize(20, 12).setOffset(6, 16);
+      this.roamers.push({
+        sprite,
+        minX: zone.cx - zone.w / 2 + 4,
+        maxX: zone.cx + zone.w / 2 - 4,
+        minY: zone.cy - zone.h / 2 + 4,
+        maxY: zone.cy + zone.h / 2 - 4,
+        targetX: x,
+        targetY: y,
+        wait: 300 + Math.random() * 800,
+        speed: 22 + Math.random() * 12,
+        kind: "troll",
+      });
+      this.tweens.add({
+        targets: sprite,
+        scaleX: 1.72,
+        scaleY: 1.48,
+        duration: 280,
+        yoyo: true,
+        repeat: -1,
+        ease: "Sine.easeInOut",
+      });
     }
   }
 
@@ -658,13 +844,14 @@ export class WorldScene extends Phaser.Scene {
     r.targetY = r.minY + Math.random() * (r.maxY - r.minY);
   }
 
-  private startBattle(enemy?: "slime" | "goblin"): void {
+  private startBattle(enemy?: "slime" | "goblin" | "troll"): void {
+    if (this.encounterCooldown > 0) return; // already fading into a battle
     this.player.setVelocity(0, 0);
     this.encounterCooldown = ENCOUNTER_COOLDOWN;
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
       const kind = enemy ?? (Math.random() < 0.5 ? "slime" : "goblin");
-      this.scene.start("Battle", { enemy: kind });
+      this.scene.start("Battle", { enemy: kind, from: "World" });
     });
   }
 

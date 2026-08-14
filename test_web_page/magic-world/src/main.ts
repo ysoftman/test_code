@@ -5,6 +5,7 @@ import { TitleScene } from "./scenes/TitleScene";
 import { WorldScene } from "./scenes/WorldScene";
 import { DungeonScene } from "./scenes/DungeonScene";
 import { BattleScene } from "./scenes/BattleScene";
+import { GameState } from "./gameState";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -27,4 +28,13 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [BootScene, TitleScene, WorldScene, DungeonScene, BattleScene],
 };
 
-new Phaser.Game(config);
+// Canvas text bakes in whatever font is available at draw time; unlike DOM
+// text it won't repaint when the webfont finishes loading later. Wait for it
+// (bounded, so a slow/broken connection can't stall the game forever) before
+// booting Phaser, so the title screen never flashes the fallback font.
+const fontReady = document.fonts.load('16px "Press Start 2P"').catch(() => undefined);
+const timeout = new Promise((resolve) => setTimeout(resolve, 2000));
+Promise.race([fontReady, timeout]).finally(() => {
+  GameState.loadSettings();
+  new Phaser.Game(config);
+});

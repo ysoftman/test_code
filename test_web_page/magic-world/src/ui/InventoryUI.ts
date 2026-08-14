@@ -1,124 +1,118 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
-import { GameState } from "../gameState";
+import { GameState, EquipmentKey } from "../gameState";
 import { retroStyle } from "../pixelart";
 import { Sfx } from "../audio";
 
-interface ShopItem {
-  label: string;
-  price: number;
-  key?: "sword" | "shield" | "ironSword" | "ironShield" | "amulet";
-  buy(): string;
-}
+type ConsumableKey = "potion" | "mPotion" | "candy" | "hiPotion" | "ether" | "elixir" | "bomb";
 
-const SHOP_ITEMS: ShopItem[] = [
+interface BaseItem {
+  label: string;
+  key: ConsumableKey | EquipmentKey;
+}
+interface UseItem extends BaseItem {
+  kind: "use";
+  use(): string;
+}
+interface EquipItem extends BaseItem {
+  kind: "equip";
+}
+type InventoryItem = UseItem | EquipItem;
+
+const INVENTORY_COLS = 2;
+const INVENTORY_ROW_GAP = 20;
+
+const INVENTORY_ITEMS: InventoryItem[] = [
   {
-    label: "POTION      10G",
-    price: 10,
-    buy: () => {
-      GameState.inventory.potion += 1;
-      return "Potion acquired!";
+    label: "POTION",
+    key: "potion",
+    kind: "use",
+    use: () => {
+      const healed = Math.min(GameState.effMaxHp() - GameState.player.hp, 25);
+      GameState.player.hp += healed;
+      return healed > 0 ? `HP +${healed}!` : "HP is already full!";
     },
   },
   {
-    label: "MPOTION     15G",
-    price: 15,
-    buy: () => {
-      GameState.inventory.mPotion += 1;
-      return "MPotion acquired!";
+    label: "BOMB",
+    key: "bomb",
+    kind: "use",
+    use: () => "Bomb is for battle!",
+  },
+  {
+    label: "MPOTION",
+    key: "mPotion",
+    kind: "use",
+    use: () => {
+      const restored = Math.min(GameState.player.maxMp - GameState.player.mp, 8);
+      GameState.player.mp += restored;
+      return restored > 0 ? `MP +${restored}!` : "MP is already full!";
     },
   },
   {
-    label: "CANDY       20G",
-    price: 20,
-    buy: () => {
-      GameState.inventory.candy += 1;
-      return "Candy acquired!";
-    },
-  },
-  {
-    label: "HI-POTION   30G",
-    price: 30,
-    buy: () => {
-      GameState.inventory.hiPotion += 1;
-      return "Hi-Potion acquired!";
-    },
-  },
-  {
-    label: "ETHER       25G",
-    price: 25,
-    buy: () => {
-      GameState.inventory.ether += 1;
-      return "Ether acquired!";
-    },
-  },
-  {
-    label: "ELIXIR     100G",
-    price: 100,
-    buy: () => {
-      GameState.inventory.elixir += 1;
-      return "Elixir acquired!";
-    },
-  },
-  {
-    label: "BOMB        50G",
-    price: 50,
-    buy: () => {
-      GameState.inventory.bomb += 1;
-      return "Bomb acquired!";
-    },
-  },
-  {
-    label: "SWORD       80G",
-    price: 80,
+    label: "SWORD",
     key: "sword",
-    buy: () => {
-      GameState.inventory.sword += 1;
-      return "Sword acquired!";
-    },
+    kind: "equip",
   },
   {
-    label: "SHIELD      80G",
-    price: 80,
+    label: "CANDY",
+    key: "candy",
+    kind: "use",
+    use: () => "Candy is for battle!",
+  },
+  {
+    label: "SHIELD",
     key: "shield",
-    buy: () => {
-      GameState.inventory.shield += 1;
-      return "Shield acquired!";
+    kind: "equip",
+  },
+  {
+    label: "HI-POTION",
+    key: "hiPotion",
+    kind: "use",
+    use: () => {
+      const healed = Math.min(GameState.effMaxHp() - GameState.player.hp, 50);
+      GameState.player.hp += healed;
+      return healed > 0 ? `HP +${healed}!` : "HP is already full!";
     },
   },
   {
-    label: "IRON SWORD 180G",
-    price: 180,
+    label: "IRON SWORD",
     key: "ironSword",
-    buy: () => {
-      GameState.inventory.ironSword += 1;
-      return "Iron Sword acquired!";
+    kind: "equip",
+  },
+  {
+    label: "ETHER",
+    key: "ether",
+    kind: "use",
+    use: () => {
+      const restored = Math.min(GameState.player.maxMp - GameState.player.mp, 12);
+      GameState.player.mp += restored;
+      return restored > 0 ? `MP +${restored}!` : "MP is already full!";
     },
   },
   {
-    label: "IRON SHIELD 180G",
-    price: 180,
+    label: "IRON SHIELD",
     key: "ironShield",
-    buy: () => {
-      GameState.inventory.ironShield += 1;
-      return "Iron Shield acquired!";
+    kind: "equip",
+  },
+  {
+    label: "ELIXIR",
+    key: "elixir",
+    kind: "use",
+    use: () => {
+      GameState.player.hp = GameState.effMaxHp();
+      GameState.player.mp = GameState.player.maxMp;
+      return "HP and MP fully restored!";
     },
   },
   {
-    label: "AMULET     120G",
-    price: 120,
+    label: "AMULET",
     key: "amulet",
-    buy: () => {
-      GameState.inventory.amulet += 1;
-      return "Amulet acquired!";
-    },
+    kind: "equip",
   },
 ];
 
-const SHOP_COLS = 2;
-const SHOP_ROW_GAP = 20;
-
-export class ShopUI {
+export class InventoryUI {
   private scene: Phaser.Scene;
   private active = false;
   private index = 0;
@@ -128,7 +122,7 @@ export class ShopUI {
   private title: Phaser.GameObjects.Text;
   private items: Phaser.GameObjects.Text[] = [];
   private cursor: Phaser.GameObjects.Text;
-  private goldText: Phaser.GameObjects.Text;
+  private statusText: Phaser.GameObjects.Text;
   private msg: Phaser.GameObjects.Text;
   private msgTimer?: Phaser.Time.TimerEvent;
 
@@ -137,8 +131,8 @@ export class ShopUI {
   private keyLeft: Phaser.Input.Keyboard.Key;
   private keyRight: Phaser.Input.Keyboard.Key;
   private keyH: Phaser.Input.Keyboard.Key;
-  private keyJ: Phaser.Input.Keyboard.Key;
   private keyK: Phaser.Input.Keyboard.Key;
+  private keyJ: Phaser.Input.Keyboard.Key;
   private keyL: Phaser.Input.Keyboard.Key;
   private keyZ: Phaser.Input.Keyboard.Key;
   private keyEsc: Phaser.Input.Keyboard.Key;
@@ -159,13 +153,13 @@ export class ShopUI {
       .setDepth(150)
       .setVisible(false);
     this.panel = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 460, 200, 0x0b0b2b, 0.95)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 500, 200, 0x0b0b2b, 0.95)
       .setScrollFactor(0)
       .setDepth(151)
       .setStrokeStyle(2, 0xffffff)
       .setVisible(false);
     this.title = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 84, "SHOP", retroStyle(8, "#ffd166"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 68, "ITEMS", retroStyle(8, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -173,16 +167,21 @@ export class ShopUI {
 
     let col = 0;
     let row = 0;
-    for (const item of SHOP_ITEMS) {
+    for (const item of INVENTORY_ITEMS) {
       const t = scene.add
-        .text(GAME_WIDTH / 2 - 200 + col * 220, GAME_HEIGHT / 2 - 52 + row * SHOP_ROW_GAP, item.label, retroStyle(6, "#ffffff"))
+        .text(
+          GAME_WIDTH / 2 - 220 + col * 240,
+          GAME_HEIGHT / 2 - 36 + row * INVENTORY_ROW_GAP,
+          `${item.label} x0`,
+          retroStyle(6, "#ffffff")
+        )
         .setOrigin(0, 0.5)
         .setScrollFactor(0)
         .setDepth(152)
         .setVisible(false);
       this.items.push(t);
       col++;
-      if (col >= SHOP_COLS) {
+      if (col >= INVENTORY_COLS) {
         col = 0;
         row++;
       }
@@ -194,14 +193,14 @@ export class ShopUI {
       .setDepth(152)
       .setVisible(false);
 
-    this.goldText = scene.add
-      .text(GAME_WIDTH / 2 + 150, GAME_HEIGHT / 2 - 84, "G 0", retroStyle(6, "#8ecbff"))
+    this.statusText = scene.add
+      .text(GAME_WIDTH / 2 + 150, GAME_HEIGHT / 2 - 84, "", retroStyle(5, "#8ecbff"))
       .setOrigin(1, 0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
     this.msg = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 64, "", retroStyle(6, "#f5f5f5"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 52, "", retroStyle(6, "#f5f5f5"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -213,8 +212,8 @@ export class ShopUI {
     this.keyLeft = kb.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     this.keyRight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     this.keyH = kb.addKey(Phaser.Input.Keyboard.KeyCodes.H);
-    this.keyJ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     this.keyK = kb.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+    this.keyJ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     this.keyL = kb.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.keyZ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     this.keyEsc = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -251,7 +250,7 @@ export class ShopUI {
     this.dim.setVisible(true);
     this.panel.setVisible(true);
     this.title.setVisible(true);
-    this.goldText.setVisible(true);
+    this.statusText.setVisible(true);
     this.msg.setVisible(true);
     for (const t of this.items) t.setVisible(true);
     this.cursor.setVisible(true);
@@ -272,11 +271,11 @@ export class ShopUI {
     const prev = this.index;
     if (this.upQueued) {
       this.upQueued = false;
-      this.index = (this.index + SHOP_ITEMS.length - SHOP_COLS) % SHOP_ITEMS.length;
+      this.index = (this.index + INVENTORY_ITEMS.length - INVENTORY_COLS) % INVENTORY_ITEMS.length;
     }
     if (this.downQueued) {
       this.downQueued = false;
-      this.index = (this.index + SHOP_COLS) % SHOP_ITEMS.length;
+      this.index = (this.index + INVENTORY_COLS) % INVENTORY_ITEMS.length;
     }
     if (this.leftQueued) {
       this.leftQueued = false;
@@ -292,24 +291,63 @@ export class ShopUI {
     }
     if (this.zQueued) {
       this.zQueued = false;
-      this.buy();
+      this.useItem();
     }
   }
 
-  private buy(): void {
-    const item = SHOP_ITEMS[this.index];
-    if (item.key && GameState.inventory[item.key] > 0) {
+  private useItem(): void {
+    const item = INVENTORY_ITEMS[this.index];
+    if (GameState.inventory[item.key] <= 0) {
       Sfx.error();
-      this.showMsg("Already owned!");
+      this.showMsg("Not owned!");
       return;
     }
-    if (GameState.gold < item.price) {
-      Sfx.error();
-      this.showMsg("Not enough gold!");
+    if (item.kind === "equip") {
+      const result = GameState.equipToggle(item.key as EquipmentKey);
+      Sfx.buy();
+      GameState.save();
+      this.showMsg(result);
+      this.refresh();
       return;
     }
-    GameState.gold -= item.price;
-    const result = item.buy();
+    switch (item.key) {
+      case "candy":
+        Sfx.error();
+        this.showMsg("Candy is for battle!");
+        return;
+      case "bomb":
+        Sfx.error();
+        this.showMsg("Bomb is for battle!");
+        return;
+      case "potion":
+      case "hiPotion":
+        if (GameState.player.hp >= GameState.effMaxHp()) {
+          Sfx.error();
+          this.showMsg("HP is already full!");
+          return;
+        }
+        break;
+      case "mPotion":
+      case "ether":
+        if (GameState.player.mp >= GameState.player.maxMp) {
+          Sfx.error();
+          this.showMsg("MP is already full!");
+          return;
+        }
+        break;
+      case "elixir":
+        if (
+          GameState.player.hp >= GameState.effMaxHp() &&
+          GameState.player.mp >= GameState.player.maxMp
+        ) {
+          Sfx.error();
+          this.showMsg("HP and MP are already full!");
+          return;
+        }
+        break;
+    }
+    GameState.inventory[item.key] -= 1;
+    const result = item.use();
     Sfx.buy();
     GameState.save();
     this.showMsg(result);
@@ -326,12 +364,19 @@ export class ShopUI {
   }
 
   private refresh(): void {
-    this.goldText.setText("G " + GameState.gold);
-    for (let i = 0; i < SHOP_ITEMS.length; i++) {
-      const item = SHOP_ITEMS[i];
-      const owned = item.key ? GameState.inventory[item.key] > 0 : false;
-      this.items[i].setText(owned ? item.label.replace(/\d+G\s*$/, "SOLD") : item.label);
-      this.items[i].setColor(owned ? "#666666" : "#ffffff");
+    const p = GameState.player;
+    this.statusText.setText(`HP ${p.hp}/${GameState.effMaxHp()}\nMP ${p.mp}/${p.maxMp}`);
+    for (let i = 0; i < INVENTORY_ITEMS.length; i++) {
+      const item = INVENTORY_ITEMS[i];
+      const count = GameState.inventory[item.key];
+      if (item.kind === "equip") {
+        const equipped = GameState.isEquipped(item.key as EquipmentKey);
+        this.items[i].setText(`${item.label} x${count}` + (equipped ? " (E)" : ""));
+        this.items[i].setColor(equipped ? "#ffd166" : count > 0 ? "#ffffff" : "#666666");
+      } else {
+        this.items[i].setText(`${item.label} x${count}`);
+        this.items[i].setColor(count > 0 ? "#ffffff" : "#666666");
+      }
     }
     this.renderCursor();
   }
@@ -342,12 +387,12 @@ export class ShopUI {
     this.cursor.setY(target.y);
   }
 
-  private close(): void {
+  close(): void {
     this.active = false;
     this.dim.setVisible(false);
     this.panel.setVisible(false);
     this.title.setVisible(false);
-    this.goldText.setVisible(false);
+    this.statusText.setVisible(false);
     this.msg.setVisible(false);
     this.msg.setText("");
     this.msgTimer?.remove();
@@ -359,7 +404,7 @@ export class ShopUI {
     this.dim.destroy();
     this.panel.destroy();
     this.title.destroy();
-    this.goldText.destroy();
+    this.statusText.destroy();
     this.msg.destroy();
     this.msgTimer?.remove();
     for (const t of this.items) t.destroy();
@@ -369,8 +414,8 @@ export class ShopUI {
     this.keyLeft.destroy();
     this.keyRight.destroy();
     this.keyH.destroy();
-    this.keyJ.destroy();
     this.keyK.destroy();
+    this.keyJ.destroy();
     this.keyL.destroy();
     this.keyZ.destroy();
     this.keyEsc.destroy();

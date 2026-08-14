@@ -1,3 +1,5 @@
+import { GameState } from "./gameState";
+
 export class Sfx {
   private static ctx: AudioContext | null = null;
 
@@ -13,6 +15,12 @@ export class Sfx {
     }
   }
 
+  static toggleMuted(): boolean {
+    GameState.soundMuted = !GameState.soundMuted;
+    GameState.saveSettings();
+    return GameState.soundMuted;
+  }
+
   private static tone(
     freq: number,
     dur: number,
@@ -20,6 +28,7 @@ export class Sfx {
     vol = 0.08,
     when = 0
   ): void {
+    if (GameState.soundMuted) return;
     this.ensure();
     if (!this.ctx) return;
     const t = this.ctx.currentTime + when;
