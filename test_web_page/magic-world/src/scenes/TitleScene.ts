@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
 import { GameState } from "../gameState";
 import { retroStyle } from "../pixelart";
-import { Sfx } from "../audio";
+import { Sfx, TITLE_THEME } from "../audio";
 
 export class TitleScene extends Phaser.Scene {
   private started = false;
@@ -13,6 +13,7 @@ export class TitleScene extends Phaser.Scene {
 
   create(): void {
     this.started = false;
+    Sfx.playBgm(TITLE_THEME);
 
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "title-bg");
 
@@ -56,6 +57,10 @@ export class TitleScene extends Phaser.Scene {
       Sfx.buy();
       if (continueGame) {
         GameState.load();
+        // resume in the monster-free town center (PLAYER_SPAWN fallback)
+        // instead of wherever the save happened, which can be mid-grass
+        // next to a roamer and trigger an instant battle
+        GameState.pos = undefined;
         this.scene.start("World");
         return;
       }

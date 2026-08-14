@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
 import { GameState, isNight, clock, dayCount, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
-import { Sfx } from "../audio";
+import { Sfx, DUNGEON_THEME } from "../audio";
 import {
   buildDungeon,
   DUNGEON_W,
@@ -76,6 +76,7 @@ export class DungeonScene extends Phaser.Scene {
   }
 
   create(): void {
+    Sfx.playBgm(DUNGEON_THEME);
     this.roamers = [];
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";

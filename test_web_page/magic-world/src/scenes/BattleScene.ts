@@ -2,46 +2,12 @@ import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
 import { GameState, expToNext, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
-import { Sfx } from "../audio";
-
-interface EnemyDef {
-  name: string;
-  texture: string;
-  hp: number;
-  atk: number;
-  def: number;
-  exp: number;
-  gold: number;
-  boss?: boolean; // the KING SLIME story boss: quest flag, uncatchable, boss dialogue
-  giant?: boolean; // just a bigger sprite + boss fanfare, no quest/story hooks
-}
-
-const ENEMIES: Record<string, EnemyDef> = {
-  slime: { name: "SLIME", texture: "slime", hp: 16, atk: 5, def: 0, exp: 8, gold: 5 },
-  goblin: { name: "GOBLIN", texture: "goblin", hp: 22, atk: 7, def: 1, exp: 14, gold: 9 },
-  king: {
-    name: "KING SLIME",
-    texture: "king",
-    hp: 60,
-    atk: 9,
-    def: 2,
-    exp: 80,
-    gold: 120,
-    boss: true,
-  },
-  troll: {
-    name: "TROLL KING",
-    texture: "troll",
-    hp: 90,
-    atk: 13,
-    def: 3,
-    exp: 150,
-    gold: 200,
-    giant: true,
-  },
-};
+import { Sfx, BATTLE_THEME } from "../audio";
+import { ENEMIES, EnemyDef } from "../monsters";
 
 const MP_COST = 3;
+const CRIT_CHANCE = 0.1;
+const CRIT_MULT = 2;
 
 type MenuAction = "fight" | "magic" | "run" | "potion" | "mPotion" | "candy" | "hiPotion" | "ether" | "elixir" | "bomb";
 
@@ -101,9 +67,11 @@ export class BattleScene extends Phaser.Scene {
     const def = ENEMIES[data?.enemy ?? ""] ?? ENEMIES.slime;
     this.enemy = { ...def, curHp: def.hp };
     this.origin = data?.from === "Dungeon" ? "Dungeon" : "World";
+    if (!GameState.seenMonsters.includes(def.name)) GameState.seenMonsters.push(def.name);
   }
 
   create(): void {
+    Sfx.playBgm(BATTLE_THEME);
     this.menuTexts = [];
     this.itemTexts = [];
     this.inItems = false;
@@ -380,11 +348,12 @@ export class BattleScene extends Phaser.Scene {
   private async playerAttack(): Promise<void> {
     Sfx.attack();
     await this.lunge();
-    const dmg = this.calcDamage(GameState.effAtk(), this.enemy.def);
+    const { dmg, crit } = this.calcDamage(GameState.effAtk(), this.enemy.def);
+    if (crit) Sfx.critical();
     this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
     this.enemySprite.setTintFill(0xffffff);
-    this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg);
-    await this.say(`You strike for ${dmg}!`);
+    this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg, crit);
+    await this.say(crit ? `CRITICAL HIT! You strike for ${dmg}!` : `You strike for ${dmg}!`);
     this.enemySprite.clearTint();
     this.updateEnemyHp();
   }
@@ -511,11 +480,12 @@ export class BattleScene extends Phaser.Scene {
   private async enemyTurn(): Promise<void> {
     Sfx.hit();
     await this.enemyLunge();
-    const dmg = this.calcDamage(this.enemy.atk, GameState.effDef());
+    const { dmg, crit } = this.calcDamage(this.enemy.atk, GameState.effDef());
+    if (crit) Sfx.critical();
     GameState.player.hp = Math.max(0, GameState.player.hp - dmg);
     this.playerSprite.setTintFill(0xff6666);
-    this.flashDamage(this.playerSprite.x, this.playerSprite.y, dmg);
-    await this.say(`${this.enemy.name} attacks for ${dmg}!`);
+    this.flashDamage(this.playerSprite.x, this.playerSprite.y, dmg, crit);
+    await this.say(crit ? `CRITICAL! ${this.enemy.name} strikes for ${dmg}!` : `${this.enemy.name} attacks for ${dmg}!`);
     this.playerSprite.clearTint();
     this.updatePlayerStats();
   }
@@ -577,22 +547,26 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
-  private flashDamage(x: number, y: number, amount: number): void {
+  private flashDamage(x: number, y: number, amount: number, crit = false): void {
     const t = this.add
-      .text(x + 20, y - 40, String(amount), retroStyle(10, "#ffdd44"))
+      .text(x + 20, y - 40, crit ? `${amount}!` : String(amount), retroStyle(crit ? 14 : 10, crit ? "#ff5555" : "#ffdd44"))
       .setOrigin(0.5)
       .setStroke("#7c2d12", 2);
     this.tweens.add({
       targets: t,
-      y: y - 80,
+      y: y - (crit ? 100 : 80),
       alpha: 0,
       duration: 800,
       onComplete: () => t.destroy(),
     });
   }
 
-  private calcDamage(atk: number, def: number): number {
-    return Math.max(1, Math.floor(atk * (0.8 + Math.random() * 0.4)) - def);
+  private calcDamage(atk: number, def: number): { dmg: number; crit: boolean } {
+    const crit = Math.random() < CRIT_CHANCE;
+    // clamp to the 1-damage floor before applying the crit multiplier, so a
+    // crit against heavy defense still doubles instead of also flooring to 1
+    const hit = Math.max(1, Math.floor(atk * (0.8 + Math.random() * 0.4)) - def);
+    return { dmg: crit ? hit * CRIT_MULT : hit, crit };
   }
 
   private updateEnemyHp(): void {

@@ -6,6 +6,12 @@ import { WorldScene } from "./scenes/WorldScene";
 import { DungeonScene } from "./scenes/DungeonScene";
 import { BattleScene } from "./scenes/BattleScene";
 import { GameState } from "./gameState";
+import { Sfx } from "./audio";
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) Sfx.suspendBgmForHiddenTab();
+  else Sfx.resumeBgmFromHiddenTab();
+});
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,

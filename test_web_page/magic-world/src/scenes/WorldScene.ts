@@ -5,7 +5,8 @@ import { retroStyle, showToast } from "../pixelart";
 import { DialogueBox } from "../ui/DialogueBox";
 import { ShopUI } from "../ui/Shop";
 import { InventoryUI } from "../ui/InventoryUI";
-import { Sfx } from "../audio";
+import { BestiaryUI } from "../ui/BestiaryUI";
+import { Sfx, OVERWORLD_THEME } from "../audio";
 import {
   buildLevel,
   MAP_W,
@@ -58,6 +59,7 @@ export class WorldScene extends Phaser.Scene {
   private dialogue!: DialogueBox;
   private shop!: ShopUI;
   private inventory!: InventoryUI;
+  private bestiary!: BestiaryUI;
   private dust!: Phaser.GameObjects.Particles.ParticleEmitter;
   private roamerGroup!: Phaser.Physics.Arcade.Group;
   private roamers: Roamer[] = [];
@@ -77,6 +79,7 @@ export class WorldScene extends Phaser.Scene {
   private iQueued = false;
   private gCheatQueued = false;
   private mQueued = false;
+  private cQueued = false;
 
   private keyLeft!: Phaser.Input.Keyboard.Key;
   private keyRight!: Phaser.Input.Keyboard.Key;
@@ -93,6 +96,7 @@ export class WorldScene extends Phaser.Scene {
   private keyI!: Phaser.Input.Keyboard.Key;
   private keyG!: Phaser.Input.Keyboard.Key;
   private keyM!: Phaser.Input.Keyboard.Key;
+  private keyC!: Phaser.Input.Keyboard.Key;
 
   private statusText!: Phaser.GameObjects.Text;
   private statusPanel!: Phaser.GameObjects.Rectangle;
@@ -104,6 +108,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create(data?: { fromDungeon?: boolean }): void {
+    Sfx.playBgm(OVERWORLD_THEME);
     this.roamers = [];
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";
@@ -265,7 +270,7 @@ export class WorldScene extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.roamerGroup, (_p, roamer) => {
       if (this.encounterCooldown > 0) return;
-      if (this.dialogue.isActive() || this.shop.isActive() || this.inventory.isActive()) return;
+      if (this.uiBlocking()) return;
       // the monster zones are cramped enough that a slime can overlap the
       // player at the same moment as the troll; always let the rare one win
       // the tie instead of whichever roamer the physics engine happened to
@@ -284,7 +289,7 @@ export class WorldScene extends Phaser.Scene {
     this.physics.add.existing(cave);
     this.physics.add.overlap(this.player, cave, () => {
       if (this.enteringDungeon || this.encounterCooldown > 0) return;
-      if (this.dialogue.isActive() || this.shop.isActive() || this.inventory.isActive()) return;
+      if (this.uiBlocking()) return;
       this.enterDungeon();
     });
 
@@ -334,19 +339,25 @@ export class WorldScene extends Phaser.Scene {
     this.keyM.on(Phaser.Input.Keyboard.Events.DOWN, () => {
       this.mQueued = true;
     });
+    this.keyC = kb.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+    this.keyC.on(Phaser.Input.Keyboard.Events.DOWN, () => {
+      this.cQueued = true;
+    });
 
     this.dialogue = new DialogueBox(this, []);
     this.shop = new ShopUI(this);
     this.inventory = new InventoryUI(this);
+    this.bestiary = new BestiaryUI(this);
 
     const hint = this.add
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE Z:TALK/REST I:ITEMS S:HUD M:MUTE ESC:SKIP",
+        "HJKL:MOVE Z:TALK/REST I:ITEMS ESC:SKIP\nS:HUD M:MUTE C:BESTIARY",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
+      .setAlign("right")
       .setScrollFactor(0)
       .setDepth(100);
 
@@ -395,6 +406,7 @@ export class WorldScene extends Phaser.Scene {
       this.dialogue.destroy();
       this.shop.destroy();
       this.inventory.destroy();
+      this.bestiary.destroy();
       hint.destroy();
     });
   }
@@ -458,6 +470,19 @@ export class WorldScene extends Phaser.Scene {
     });
   }
 
+  // true while a modal panel owns input — every place that checks this must
+  // use this method instead of listing the panels itself, or a newly added
+  // panel silently stops blocking (this happened once already: overlap
+  // callbacks kept a stale copy of this check and missed BestiaryUI).
+  private uiBlocking(): boolean {
+    return (
+      this.dialogue.isActive() ||
+      this.shop.isActive() ||
+      this.inventory.isActive() ||
+      this.bestiary.isActive()
+    );
+  }
+
   update(_time: number, delta: number): void {
     GameState.minutes += delta / 1000;
     this.updateStatus();
@@ -482,12 +507,16 @@ export class WorldScene extends Phaser.Scene {
       showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
     }
 
-    if (this.dialogue.isActive() || this.shop.isActive() || this.inventory.isActive()) {
+    if (this.uiBlocking()) {
       this.zQueued = false;
       this.bQueued = false;
       if (this.iQueued) {
         this.iQueued = false;
         if (this.inventory.isActive()) this.inventory.close();
+      }
+      if (this.cQueued) {
+        this.cQueued = false;
+        if (this.bestiary.isActive()) this.bestiary.close();
       }
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
@@ -495,6 +524,7 @@ export class WorldScene extends Phaser.Scene {
       this.dialogue.update();
       this.shop.update();
       this.inventory.update();
+      this.bestiary.update();
       this.updateRoamers(delta);
       return;
     }
@@ -502,6 +532,12 @@ export class WorldScene extends Phaser.Scene {
     if (this.iQueued) {
       this.iQueued = false;
       this.inventory.open();
+      return;
+    }
+
+    if (this.cQueued) {
+      this.cQueued = false;
+      this.bestiary.open();
       return;
     }
 
