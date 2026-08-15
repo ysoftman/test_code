@@ -67,6 +67,7 @@ export class DungeonScene extends Phaser.Scene {
   private keyS!: Phaser.Input.Keyboard.Key;
   private keyM!: Phaser.Input.Keyboard.Key;
   private mQueued = false;
+  private qQueued = false;
 
   private statusText!: Phaser.GameObjects.Text;
   private statusPanel!: Phaser.GameObjects.Rectangle;
@@ -226,12 +227,18 @@ export class DungeonScene extends Phaser.Scene {
     this.keyM.on(Phaser.Input.Keyboard.Events.DOWN, () => {
       this.mQueued = true;
     });
+    kb.addKey(Phaser.Input.Keyboard.KeyCodes.Q).on(
+      Phaser.Input.Keyboard.Events.DOWN,
+      (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+        if (!e.repeat) this.qQueued = true;
+      }
+    );
 
     this.add
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE  S:HUD  M:MUTE  FIND THE KING!",
+        "HJKL:MOVE  S:HUD  M:MUTE  Q:QUIT  FIND THE KING!",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
@@ -279,6 +286,13 @@ export class DungeonScene extends Phaser.Scene {
       this.mQueued = false;
       const muted = Sfx.toggleMuted();
       showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
+    }
+
+    if (this.qQueued) {
+      this.qQueued = false;
+      // the SHUTDOWN handler saves, so this is save-and-quit
+      this.scene.start("Title");
+      return;
     }
 
     let vx = 0;
@@ -451,7 +465,7 @@ export class DungeonScene extends Phaser.Scene {
       GameState.inventory.candy += 1;
       loot = " CANDY!";
     }
-    Sfx.pickup();
+    if (loot) Sfx.pickup();
     const note = this.add
       .text(chest.x, chest.y - 26, `+${gold} GOLD${loot}`, retroStyle(6, "#ffd166"))
       .setOrigin(0.5)

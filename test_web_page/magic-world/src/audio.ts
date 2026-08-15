@@ -205,12 +205,6 @@ export class Sfx {
     step();
   }
 
-  static stopBgm(): void {
-    this.bgmTrack = null;
-    if (this.bgmTimer !== null) clearTimeout(this.bgmTimer);
-    this.bgmTimer = null;
-  }
-
   // A hidden tab clamps setTimeout to >=1000ms, which would otherwise turn
   // the loop into a slow, distorted dribble of single notes. Go silent
   // instead and pick the same track back up (from its first note) on
@@ -234,6 +228,10 @@ export class Sfx {
     if (GameState.soundMuted) return;
     this.ensure();
     if (!this.ctx) return;
+    // autoplay policy: a context created before any user gesture stays
+    // suspended with currentTime frozen, so every scheduled note would pile
+    // onto the same timestamp and fire at once on resume — skip them instead
+    if (this.ctx.state !== "running") return;
     const t = this.ctx.currentTime + when;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();

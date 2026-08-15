@@ -114,7 +114,8 @@ export class BestiaryUI {
     this.title.destroy();
     for (const s of this.icons) s.destroy();
     for (const t of this.rows) t.destroy();
-    this.keyEsc.destroy();
-    this.keyC.destroy();
+    // keys are shared instances from kb.addKey (same keycode → same object);
+    // destroying them would wipe other panels' listeners. Scene shutdown
+    // already tears every Key down via KeyboardPlugin.removeAllKeys(true).
   }
 }

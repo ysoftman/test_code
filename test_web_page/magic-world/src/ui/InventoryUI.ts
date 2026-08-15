@@ -409,15 +409,8 @@ export class InventoryUI {
     this.msgTimer?.remove();
     for (const t of this.items) t.destroy();
     this.cursor.destroy();
-    this.keyUp.destroy();
-    this.keyDown.destroy();
-    this.keyLeft.destroy();
-    this.keyRight.destroy();
-    this.keyH.destroy();
-    this.keyK.destroy();
-    this.keyJ.destroy();
-    this.keyL.destroy();
-    this.keyZ.destroy();
-    this.keyEsc.destroy();
+    // keys are shared instances from kb.addKey (same keycode → same object);
+    // destroying them would wipe other panels' listeners. Scene shutdown
+    // already tears every Key down via KeyboardPlugin.removeAllKeys(true).
   }
 }

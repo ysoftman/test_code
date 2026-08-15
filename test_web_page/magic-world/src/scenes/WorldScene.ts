@@ -80,6 +80,7 @@ export class WorldScene extends Phaser.Scene {
   private gCheatQueued = false;
   private mQueued = false;
   private cQueued = false;
+  private qQueued = false;
 
   private keyLeft!: Phaser.Input.Keyboard.Key;
   private keyRight!: Phaser.Input.Keyboard.Key;
@@ -320,13 +321,16 @@ export class WorldScene extends Phaser.Scene {
     this.keyJ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     this.keyK = kb.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.keyL = kb.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+    // ignore e.repeat on keys the title screen also uses (Z/SPACE/C): holding
+    // one through the scene switch delivers repeat keydowns to the fresh Keys
+    // here, instantly triggering talk/rest or the bestiary on entry
     this.keyZ = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-    this.keyZ.on(Phaser.Input.Keyboard.Events.DOWN, () => {
-      this.zQueued = true;
+    this.keyZ.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.zQueued = true;
     });
     this.keySpace = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.keySpace.on(Phaser.Input.Keyboard.Events.DOWN, () => {
-      this.zQueued = true;
+    this.keySpace.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.zQueued = true;
     });
     this.keyS = kb.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.keyS.on(Phaser.Input.Keyboard.Events.DOWN, () => {
@@ -345,9 +349,15 @@ export class WorldScene extends Phaser.Scene {
       this.mQueued = true;
     });
     this.keyC = kb.addKey(Phaser.Input.Keyboard.KeyCodes.C);
-    this.keyC.on(Phaser.Input.Keyboard.Events.DOWN, () => {
-      this.cQueued = true;
+    this.keyC.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.cQueued = true;
     });
+    kb.addKey(Phaser.Input.Keyboard.KeyCodes.Q).on(
+      Phaser.Input.Keyboard.Events.DOWN,
+      (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+        if (!e.repeat) this.qQueued = true;
+      }
+    );
 
     this.dialogue = new DialogueBox(this, []);
     this.shop = new ShopUI(this);
@@ -358,7 +368,7 @@ export class WorldScene extends Phaser.Scene {
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE Z:TALK/REST I:ITEMS ESC:SKIP\nS:HUD M:MUTE C:BESTIARY",
+        "HJKL:MOVE Z:TALK/REST I:ITEMS ESC:SKIP\nS:HUD M:MUTE C:BESTIARY Q:QUIT",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
@@ -510,6 +520,15 @@ export class WorldScene extends Phaser.Scene {
       this.mQueued = false;
       const muted = Sfx.toggleMuted();
       showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
+    }
+
+    if (this.qQueued) {
+      this.qQueued = false;
+      if (!this.uiBlocking() && !this.enteringDungeon) {
+        // the SHUTDOWN handler saves pos + state, so this is save-and-quit
+        this.scene.start("Title");
+        return;
+      }
     }
 
     if (this.uiBlocking()) {

@@ -73,6 +73,9 @@ export class TitleScene extends Phaser.Scene {
     };
 
     this.input.keyboard!.on("keydown", (e: KeyboardEvent) => {
+      // holding Q through the world's save-and-quit would land repeat Q
+      // events here and delete the save that was just written
+      if (e.repeat) return;
       Sfx.ensure();
       if (e.key === "Enter" || e.key === "z" || e.key === "Z" || e.key === " ") {
         start(GameState.hasSave());

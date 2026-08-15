@@ -73,7 +73,12 @@ export class BattleScene extends Phaser.Scene {
     const def = ENEMIES[data?.enemy ?? ""] ?? ENEMIES.slime;
     this.enemy = { ...def, curHp: def.hp };
     this.origin = data?.from === "Dungeon" ? "Dungeon" : "World";
-    if (!GameState.seenMonsters.includes(def.name)) GameState.seenMonsters.push(def.name);
+    if (!GameState.seenMonsters.includes(def.name)) {
+      GameState.seenMonsters.push(def.name);
+      // persist immediately: a battle ended by RUN never reaches the
+      // victory-path save, which would lose the bestiary entry on reload
+      GameState.save();
+    }
   }
 
   create(): void {
@@ -542,8 +547,8 @@ export class BattleScene extends Phaser.Scene {
     GameState.player.hp = Math.max(0, GameState.player.hp - dmg);
     this.playerSprite.setTintFill(0xff6666);
     this.hitBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
-    this.hitBurst.explode(8);
-    this.cameras.main.shake(80, 0.006);
+    this.hitBurst.explode(crit ? 16 : 8);
+    this.cameras.main.shake(crit ? 120 : 80, crit ? 0.012 : 0.006);
     this.flashDamage(this.playerSprite.x, this.playerSprite.y, dmg, crit);
     await this.say(crit ? `CRITICAL! ${this.enemy.name} strikes for ${dmg}!` : `${this.enemy.name} attacks for ${dmg}!`);
     this.playerSprite.clearTint();
@@ -718,8 +723,10 @@ export class BattleScene extends Phaser.Scene {
     }
     GameState.lockEncounters(4000);
     GameState.save();
-    this.coinBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
-    this.coinBurst.explode(10);
+    if (!caught) {
+      this.coinBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
+      this.coinBurst.explode(10);
+    }
     await this.say("Battle won!");
     this.end();
   }

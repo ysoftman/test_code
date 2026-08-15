@@ -148,9 +148,8 @@ export class DialogueBox {
     this.box.destroy();
     this.text.destroy();
     this.nameText.destroy();
-    this.z.destroy();
-    this.space.destroy();
-    this.enter.destroy();
-    this.esc.destroy();
+    // keys are shared instances from kb.addKey (same keycode → same object);
+    // destroying them would wipe other panels' listeners. Scene shutdown
+    // already tears every Key down via KeyboardPlugin.removeAllKeys(true).
   }
 }
