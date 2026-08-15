@@ -51,6 +51,19 @@ export class TitleScene extends Phaser.Scene {
       )
       .setOrigin(0.5);
 
+    let confirmDelete = false;
+
+    const showMenu = () => {
+      prompt.setColor("#ffffff");
+      if (GameState.hasSave()) {
+        prompt.setText("PRESS ENTER TO CONTINUE");
+        continueText.setText("C: CONTINUE  N: NEW GAME  Q: DELETE SAVE");
+      } else {
+        prompt.setText("PRESS ENTER");
+        continueText.setText("NO SAVE FOUND");
+      }
+    };
+
     const start = (continueGame: boolean) => {
       if (this.started) return;
       this.started = true;
@@ -77,20 +90,38 @@ export class TitleScene extends Phaser.Scene {
       // events here and delete the save that was just written
       if (e.repeat) return;
       Sfx.ensure();
+      if (confirmDelete) {
+        if (e.key === "y" || e.key === "Y") {
+          confirmDelete = false;
+          GameState.clearSave();
+          prompt.setText("PRESS ENTER").setColor("#ffffff");
+          continueText.setText("NO SAVE FOUND");
+        } else {
+          confirmDelete = false;
+          showMenu();
+        }
+        return;
+      }
       if (e.key === "Enter" || e.key === "z" || e.key === "Z" || e.key === " ") {
         start(GameState.hasSave());
       } else if (e.key === "n" || e.key === "N") {
         start(false);
       } else if ((e.key === "c" || e.key === "C") && GameState.hasSave()) {
         start(true);
-      } else if (e.key === "q" || e.key === "Q") {
-        GameState.clearSave();
-        continueText.setText("NO SAVE FOUND");
-        prompt.setText("PRESS ENTER");
+      } else if ((e.key === "q" || e.key === "Q") && GameState.hasSave()) {
+        confirmDelete = true;
+        Sfx.error();
+        prompt.setText("DELETE SAVE? Y/N").setColor("#ff5555");
+        continueText.setText("Y: DELETE  N: CANCEL");
       }
     });
     this.input.on("pointerdown", () => {
       Sfx.ensure();
+      if (confirmDelete) {
+        confirmDelete = false;
+        showMenu();
+        return;
+      }
       start(GameState.hasSave());
     });
   }
