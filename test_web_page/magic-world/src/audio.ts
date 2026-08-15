@@ -310,6 +310,22 @@ export class Sfx {
     this.tone(120, 0.35, "sawtooth", 0.09, 0.2);
   }
 
+  static pickup(): void {
+    this.tone(880, 0.07, "square", 0.06);
+    this.tone(1175, 0.12, "square", 0.06, 0.06);
+  }
+
+  static spark(): void {
+    this.tone(1400, 0.04, "square", 0.05);
+    this.tone(900, 0.06, "square", 0.04, 0.03);
+  }
+
+  static chest(): void {
+    this.tone(200, 0.12, "sawtooth", 0.08);
+    this.tone(150, 0.1, "sawtooth", 0.07, 0.08);
+    this.tone(660, 0.14, "square", 0.06, 0.14);
+  }
+
   static night(): void {
     this.tone(330, 0.1, "triangle", 0.05);
   }

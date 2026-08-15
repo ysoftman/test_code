@@ -59,6 +59,12 @@ export class BattleScene extends Phaser.Scene {
   private waitingAction: { resolve: (a: MenuAction) => void } | null = null;
   private origin: "World" | "Dungeon" = "World";
 
+  private hitBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private glowBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private healBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private levelBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private coinBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
+
   constructor() {
     super("Battle");
   }
@@ -170,6 +176,43 @@ export class BattleScene extends Phaser.Scene {
       .text(0, itemY, ">", retroStyle(6, "#ffd166"))
       .setOrigin(0, 0.5)
       .setVisible(false);
+
+    this.hitBurst = this.add.particles(0, 0, "spark", {
+      speed: { min: 40, max: 120 },
+      lifespan: 300,
+      scale: { start: 1, end: 0 },
+      alpha: { start: 1, end: 0 },
+      emitting: false,
+    });
+    this.glowBurst = this.add.particles(0, 0, "glow", {
+      speed: { min: 60, max: 160 },
+      lifespan: 400,
+      scale: { start: 1, end: 0 },
+      alpha: { start: 1, end: 0 },
+      emitting: false,
+    });
+    this.healBurst = this.add.particles(0, 0, "glow", {
+      speed: { min: 40, max: 100 },
+      lifespan: 500,
+      scale: { start: 1, end: 0 },
+      alpha: { start: 1, end: 0 },
+      tint: 0x4ade80,
+      emitting: false,
+    });
+    this.levelBurst = this.add.particles(0, 0, "spark", {
+      speed: 200,
+      lifespan: 500,
+      scale: { start: 1, end: 0 },
+      alpha: { start: 1, end: 0 },
+      emitting: false,
+    });
+    this.coinBurst = this.add.particles(0, 0, "coin", {
+      speed: { min: 60, max: 140 },
+      lifespan: 600,
+      scale: { start: 1, end: 0 },
+      alpha: { start: 1, end: 0 },
+      emitting: false,
+    });
 
     this.input.keyboard!.on("keydown", this.onKey, this);
     this.input.keyboard!.on("keydown-M", () => {
@@ -352,6 +395,9 @@ export class BattleScene extends Phaser.Scene {
     if (crit) Sfx.critical();
     this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
     this.enemySprite.setTintFill(0xffffff);
+    this.hitBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
+    this.hitBurst.explode(crit ? 16 : 8);
+    this.cameras.main.shake(crit ? 120 : 60, crit ? 0.012 : 0.004);
     this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg, crit);
     await this.say(crit ? `CRITICAL HIT! You strike for ${dmg}!` : `You strike for ${dmg}!`);
     this.enemySprite.clearTint();
@@ -383,6 +429,9 @@ export class BattleScene extends Phaser.Scene {
     const healed = Math.min(GameState.effMaxHp() - GameState.player.hp, 25);
     GameState.player.hp += healed;
     this.updatePlayerStats();
+    this.healBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
+    this.healBurst.explode(10);
+    this.flashHeal(this.playerSprite.x, this.playerSprite.y, healed);
     await this.say(`Potion heals ${healed} HP!`);
   }
 
@@ -411,6 +460,9 @@ export class BattleScene extends Phaser.Scene {
     const healed = Math.min(GameState.effMaxHp() - GameState.player.hp, 50);
     GameState.player.hp += healed;
     this.updatePlayerStats();
+    this.healBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
+    this.healBurst.explode(10);
+    this.flashHeal(this.playerSprite.x, this.playerSprite.y, healed);
     await this.say(`Hi-Potion heals ${healed} HP!`);
   }
 
@@ -439,9 +491,14 @@ export class BattleScene extends Phaser.Scene {
     }
     Sfx.buy();
     GameState.inventory.elixir -= 1;
+    const hpBefore = GameState.player.hp;
     GameState.player.hp = GameState.effMaxHp();
     GameState.player.mp = GameState.player.maxMp;
     this.updatePlayerStats();
+    this.healBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
+    this.healBurst.explode(12);
+    const healed = GameState.effMaxHp() - hpBefore;
+    if (healed > 0) this.flashHeal(this.playerSprite.x, this.playerSprite.y, healed);
     await this.say("Elixir fully restores HP and MP!");
   }
 
@@ -484,6 +541,9 @@ export class BattleScene extends Phaser.Scene {
     if (crit) Sfx.critical();
     GameState.player.hp = Math.max(0, GameState.player.hp - dmg);
     this.playerSprite.setTintFill(0xff6666);
+    this.hitBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
+    this.hitBurst.explode(8);
+    this.cameras.main.shake(80, 0.006);
     this.flashDamage(this.playerSprite.x, this.playerSprite.y, dmg, crit);
     await this.say(crit ? `CRITICAL! ${this.enemy.name} strikes for ${dmg}!` : `${this.enemy.name} attacks for ${dmg}!`);
     this.playerSprite.clearTint();
@@ -538,6 +598,9 @@ export class BattleScene extends Phaser.Scene {
     const boom = this.add
       .circle(this.enemySprite.x, this.enemySprite.y, 12, 0xff5500)
       .setDepth(20);
+    this.glowBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
+    this.glowBurst.explode(12);
+    this.cameras.main.shake(100, 0.008);
     this.tweens.add({
       targets: boom,
       scale: 3,
@@ -555,6 +618,20 @@ export class BattleScene extends Phaser.Scene {
     this.tweens.add({
       targets: t,
       y: y - (crit ? 100 : 80),
+      alpha: 0,
+      duration: 800,
+      onComplete: () => t.destroy(),
+    });
+  }
+
+  private flashHeal(x: number, y: number, amount: number): void {
+    const t = this.add
+      .text(x + 20, y - 40, `+${amount}`, retroStyle(10, "#4ade80"))
+      .setOrigin(0.5)
+      .setStroke("#14532d", 2);
+    this.tweens.add({
+      targets: t,
+      y: y - 80,
       alpha: 0,
       duration: 800,
       onComplete: () => t.destroy(),
@@ -590,8 +667,33 @@ export class BattleScene extends Phaser.Scene {
       GameState.player.hp = Math.min(GameState.effMaxHp(), GameState.player.hp + 5);
       GameState.player.mp = Math.min(GameState.player.maxMp, GameState.player.mp + 2);
       Sfx.victory();
+      this.tweenPromise(this.enemySprite, { scale: this.enemySprite.scale * 1.15, alpha: 0 }, 350);
       await this.say(`${this.enemy.name} is defeated!`);
       await this.say(`Gained ${this.enemy.gold} gold!`);
+      if (this.enemy.boss) {
+        GameState.inventory.hiPotion += 1;
+        Sfx.pickup();
+        await this.say("Found a HI-POTION!");
+      } else {
+        const roll = Math.random();
+        if (roll < 0.3) {
+          GameState.inventory.potion += 1;
+          Sfx.pickup();
+          await this.say("Found a POTION!");
+        } else if (roll < 0.45) {
+          GameState.inventory.candy += 1;
+          Sfx.pickup();
+          await this.say("Found some CANDY!");
+        } else if (roll < 0.55) {
+          GameState.inventory.mPotion += 1;
+          Sfx.pickup();
+          await this.say("Found an MPOTION!");
+        } else if (roll < 0.63) {
+          GameState.inventory.hiPotion += 1;
+          Sfx.pickup();
+          await this.say("Found a HI-POTION!");
+        }
+      }
       GameState.player.exp += this.enemy.exp;
       let msg = `EXP +${this.enemy.exp}`;
       while (GameState.player.exp >= expToNext(GameState.player.level)) {
@@ -604,6 +706,11 @@ export class BattleScene extends Phaser.Scene {
         GameState.player.hp = GameState.effMaxHp();
         GameState.player.mp = GameState.player.maxMp;
         Sfx.levelup();
+        this.levelBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
+        this.levelBurst.explode(24);
+        this.coinBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
+        this.coinBurst.explode(12);
+        this.cameras.main.shake(200, 0.01);
         msg = `LEVEL UP! LV ${GameState.player.level}`;
       }
       await this.say(msg);
@@ -611,6 +718,8 @@ export class BattleScene extends Phaser.Scene {
     }
     GameState.lockEncounters(4000);
     GameState.save();
+    this.coinBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
+    this.coinBurst.explode(10);
     await this.say("Battle won!");
     this.end();
   }

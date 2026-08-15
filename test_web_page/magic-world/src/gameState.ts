@@ -124,6 +124,7 @@ export const GameState = {
   equipped: { weapon: null, armor: null, accessory: null } as Record<EquipSlot, EquipmentKey | null>,
   caught: [] as string[],
   seenMonsters: [] as string[],
+  openedTreasures: [] as string[],
   quest: { slimes: 0, slimeReward: false, bossDefeated: false, finalReward: false } as QuestState,
   minutes: 360,
   pos: undefined as { x: number; y: number } | undefined,
@@ -214,6 +215,7 @@ export const GameState = {
     this.equipped = { weapon: null, armor: null, accessory: null };
     this.caught = [];
     this.seenMonsters = [];
+    this.openedTreasures = [];
     this.quest = { slimes: 0, slimeReward: false, bossDefeated: false, finalReward: false };
     this.minutes = 360;
     this.pos = undefined;
@@ -235,6 +237,7 @@ export const GameState = {
         equipped: this.equipped,
         caught: this.caught,
         seenMonsters: this.seenMonsters,
+        openedTreasures: this.openedTreasures,
         quest: this.quest,
         minutes: this.minutes,
         pos: this.pos,
@@ -263,6 +266,7 @@ export const GameState = {
       };
       this.caught = data.caught ?? [];
       this.seenMonsters = data.seenMonsters ?? [];
+      this.openedTreasures = data.openedTreasures ?? [];
       Object.assign(this.quest, data.quest);
       this.minutes = data.minutes ?? 360;
       this.pos = data.pos;

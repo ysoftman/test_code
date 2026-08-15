@@ -92,6 +92,11 @@ export const DUNGEON_ZONES: MonsterZone[] = [
   { cx: 10 * TILE, cy: 12 * TILE, w: 3 * TILE, h: 2 * TILE, count: 1 },
 ];
 
+export const TREASURE_POS: Array<{ id: string; x: number; y: number }> = [
+  { id: "dungeon-1", x: 7 * TILE + TILE / 2, y: 4 * TILE + TILE / 2 },
+  { id: "dungeon-2", x: 17 * TILE + TILE / 2, y: 10 * TILE + TILE / 2 },
+];
+
 export function buildDungeon(): number[][] {
   const map: number[][] = Array.from({ length: DUNGEON_H }, () =>
     Array<number>(DUNGEON_W).fill(T_PATH)

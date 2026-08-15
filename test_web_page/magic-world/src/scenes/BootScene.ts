@@ -346,6 +346,108 @@ const GOBLIN_TILE = [
   "................",
 ];
 
+const SPARK_PALETTE = { y: 0xffdd44 };
+const SPARK_TILE = [
+  "..y.....",
+  "..y.....",
+  "..y.....",
+  "yyyyyyyy",
+  "..y.....",
+  "..y.....",
+  "..y.....",
+  "........",
+];
+
+const GLOW_PALETTE = { g: 0x8ecbff, w: 0xffffff };
+const GLOW_TILE = [
+  "................",
+  "......gggg......",
+  "....ggwwwwgg....",
+  "...ggwwwwwwgg...",
+  "..ggwwwwwwwwgg..",
+  "..gwwwwwwwwwwg..",
+  ".gwwwwwwwwwwwwg.",
+  ".gwwwwwwwwwwwwg.",
+  ".gwwwwwwwwwwwwg.",
+  ".gwwwwwwwwwwwwg.",
+  "..gwwwwwwwwwwg..",
+  "..ggwwwwwwwwgg..",
+  "...ggwwwwwwgg...",
+  "....ggwwwwgg....",
+  "......gggg......",
+  "................",
+];
+
+const COIN_PALETTE = { y: 0x8a5a2b, Y: 0xffd166, W: 0xfff3c4 };
+const COIN_TILE = [
+  "................",
+  ".....yyyyyy.....",
+  "...yyyYYYYyyy...",
+  "..yyYYYYYYYYyy..",
+  ".yyYYYYYYYYYYyy.",
+  ".yYYYYYYYYYYYYy.",
+  "yYYYWWYYYYWWYYYy",
+  "yYYYWYYYYYYWYYYy",
+  "yYYYYYYYYYYYYYYy",
+  "yYYYYYYYYYYYYYYy",
+  ".yYYYYYYYYYYYYy.",
+  ".yyYYYYYYYYYYyy.",
+  "..yyYYYYYYYYyy..",
+  "...yyyYYYYyyy...",
+  ".....yyyyyy.....",
+  "................",
+];
+
+const FIREFLY_PALETTE = { w: 0xe9ff66 };
+const FIREFLY_TILE = [
+  "........",
+  "........",
+  "..ww....",
+  ".wwww...",
+  "..ww....",
+  "........",
+  "........",
+  "........",
+];
+
+const CHEST_PALETTE = { b: 0x4a2f1a, w: 0x8a5a2b, L: 0xd1a455, l: 0x3d2c18, Y: 0xffd166 };
+const CHEST_TILE = [
+  "................",
+  "................",
+  "...bbbbbbbbbb...",
+  "..bwwwwwwwwwwb..",
+  ".bwwwwwwwwwwwwb.",
+  ".bwLLLLLLLLLLwb.",
+  ".bwLllllllllLwb.",
+  ".bwLllllllllLwb.",
+  ".bwLllllllllLwb.",
+  ".bwLllllllllLwb.",
+  ".bwLLLLLLLLLLwb.",
+  ".bwwwwwwwwwwwwb.",
+  "..bbbbbbbbbbbb..",
+  "...bb......bb...",
+  "................",
+  "................",
+];
+const CHEST_OPEN_TILE = [
+  "................",
+  "..bbbbbbbbbbbb..",
+  ".bbwwwwwwwwwwbb.",
+  "................",
+  "................",
+  "...bwwwwwwwwwb..",
+  "..bwYYYYYYYYYwb.",
+  ".bwYYYYYYYYYYYwb",
+  ".bwYYYYYYYYYYYwb",
+  ".bwYYYYYYYYYYYwb",
+  ".bwYYYYYYYYYYYwb",
+  ".bwwwwwwwwwwwwb.",
+  "..bbbbbbbbbbbb..",
+  "...bb......bb...",
+  "................",
+  "................",
+];
+
 function makeCave(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(0x2a2a3a, 1);
@@ -605,6 +707,12 @@ export class BootScene extends Phaser.Scene {
     makeTexture(this, "troll", GOBLIN_TILE, TROLL_PALETTE);
 
     makeTexture(this, "dust", ["dd", "dd"], { d: 0xcbbfa8 });
+    makeTexture(this, "spark", SPARK_TILE, SPARK_PALETTE);
+    makeTexture(this, "glow", GLOW_TILE, GLOW_PALETTE);
+    makeTexture(this, "coin", COIN_TILE, COIN_PALETTE);
+    makeTexture(this, "firefly", FIREFLY_TILE, FIREFLY_PALETTE);
+    makeTexture(this, "chest", CHEST_TILE, CHEST_PALETTE);
+    makeTexture(this, "chest-open", CHEST_OPEN_TILE, CHEST_PALETTE);
 
     makeHouse(this);
     makeSign(this);

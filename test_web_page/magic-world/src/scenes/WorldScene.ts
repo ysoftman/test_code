@@ -61,6 +61,7 @@ export class WorldScene extends Phaser.Scene {
   private inventory!: InventoryUI;
   private bestiary!: BestiaryUI;
   private dust!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private fireflies!: Phaser.GameObjects.Particles.ParticleEmitter;
   private roamerGroup!: Phaser.Physics.Arcade.Group;
   private roamers: Roamer[] = [];
   private encounterCooldown = 0;
@@ -74,7 +75,6 @@ export class WorldScene extends Phaser.Scene {
   private resting = false;
   private enteringDungeon = false;
   private zQueued = false;
-  private bQueued = false;
   private sQueued = false;
   private iQueued = false;
   private gCheatQueued = false;
@@ -91,7 +91,6 @@ export class WorldScene extends Phaser.Scene {
   private keyL!: Phaser.Input.Keyboard.Key;
   private keyZ!: Phaser.Input.Keyboard.Key;
   private keySpace!: Phaser.Input.Keyboard.Key;
-  private keyB!: Phaser.Input.Keyboard.Key;
   private keyS!: Phaser.Input.Keyboard.Key;
   private keyI!: Phaser.Input.Keyboard.Key;
   private keyG!: Phaser.Input.Keyboard.Key;
@@ -266,6 +265,16 @@ export class WorldScene extends Phaser.Scene {
     });
     this.dust.startFollow(this.player, 0, 14);
 
+    this.fireflies = this.add.particles(0, 0, "firefly", {
+      speed: { min: 6, max: 20 },
+      lifespan: { min: 2500, max: 4500 },
+      scale: { start: 1, end: 0.4 },
+      alpha: { start: 0.7, end: 0 },
+      frequency: 700,
+      emitting: false,
+    });
+    this.fireflies.startFollow(this.player, 0, 0);
+
     this.spawnMonsters();
 
     this.physics.add.overlap(this.player, this.roamerGroup, (_p, roamer) => {
@@ -318,10 +327,6 @@ export class WorldScene extends Phaser.Scene {
     this.keySpace = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.keySpace.on(Phaser.Input.Keyboard.Events.DOWN, () => {
       this.zQueued = true;
-    });
-    this.keyB = kb.addKey(Phaser.Input.Keyboard.KeyCodes.B);
-    this.keyB.on(Phaser.Input.Keyboard.Events.DOWN, () => {
-      this.bQueued = true;
     });
     this.keyS = kb.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.keyS.on(Phaser.Input.Keyboard.Events.DOWN, () => {
@@ -509,7 +514,6 @@ export class WorldScene extends Phaser.Scene {
 
     if (this.uiBlocking()) {
       this.zQueued = false;
-      this.bQueued = false;
       if (this.iQueued) {
         this.iQueued = false;
         if (this.inventory.isActive()) this.inventory.close();
@@ -544,11 +548,6 @@ export class WorldScene extends Phaser.Scene {
     if (this.zQueued) {
       this.zQueued = false;
       if (this.tryTalk()) return;
-    }
-    if (this.bQueued) {
-      this.bQueued = false;
-      this.startBattle();
-      return;
     }
 
     let vx = 0;
@@ -628,6 +627,8 @@ export class WorldScene extends Phaser.Scene {
     this.stars.setVisible(factor > 0);
     this.moon.setAlpha(factor);
     this.stars.setAlpha(factor);
+    this.fireflies.emitting = factor > 0.05;
+    this.fireflies.setAlpha(factor);
   }
 
   private updateStatus(): void {

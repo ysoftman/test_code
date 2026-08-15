@@ -9,6 +9,7 @@ import {
   DUNGEON_H,
   DUNGEON_ENTRY,
   DUNGEON_ZONES,
+  TREASURE_POS,
   TILE,
   SOLID,
   T_WATER_A,
@@ -182,6 +183,8 @@ export class DungeonScene extends Phaser.Scene {
     this.dust.startFollow(this.player, 0, 14);
 
     this.spawnMonsters();
+
+    this.spawnTreasures();
 
     this.physics.add.overlap(this.player, this.roamerGroup, (_p, roamer) => {
       if (this.encounterCooldown > 0) return;
@@ -419,6 +422,48 @@ export class DungeonScene extends Phaser.Scene {
         });
       }
     }
+  }
+
+  private spawnTreasures(): void {
+    for (const t of TREASURE_POS) {
+      const opened = GameState.openedTreasures.includes(t.id);
+      const chest = this.add.image(t.x, t.y, opened ? "chest-open" : "chest").setDepth(9);
+      if (opened) continue;
+      const zone = this.add.zone(t.x, t.y, TILE, TILE);
+      this.physics.add.existing(zone);
+      this.physics.add.overlap(this.player, zone, () => this.openTreasure(t.id, chest));
+    }
+  }
+
+  private openTreasure(id: string, chest: Phaser.GameObjects.Image): void {
+    if (GameState.openedTreasures.includes(id)) return;
+    GameState.openedTreasures.push(id);
+    chest.setTexture("chest-open");
+    Sfx.chest();
+    const gold = 15 + Math.floor(Math.random() * 16);
+    GameState.gold += gold;
+    let loot = "";
+    const r = Math.random();
+    if (r < 0.4) {
+      GameState.inventory.potion += 1;
+      loot = " POTION!";
+    } else if (r < 0.6) {
+      GameState.inventory.candy += 1;
+      loot = " CANDY!";
+    }
+    Sfx.pickup();
+    const note = this.add
+      .text(chest.x, chest.y - 26, `+${gold} GOLD${loot}`, retroStyle(6, "#ffd166"))
+      .setOrigin(0.5)
+      .setDepth(120);
+    this.tweens.add({
+      targets: note,
+      y: note.y - 20,
+      alpha: 0,
+      duration: 900,
+      onComplete: () => note.destroy(),
+    });
+    GameState.save();
   }
 
   private updateRoamers(delta: number): void {
