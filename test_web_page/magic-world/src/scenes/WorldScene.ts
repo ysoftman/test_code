@@ -135,13 +135,13 @@ export class WorldScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, MAP_W * TILE, MAP_H * TILE);
 
     this.moon = this.add
-      .image(140, 72, "moon")
+      .image(280, 144, "moon")
       .setScrollFactor(0)
       .setDepth(2)
       .setVisible(false)
       .setAlpha(0);
     this.stars = this.add
-      .image(GAME_WIDTH / 2, 72, "stars")
+      .image(GAME_WIDTH / 2, 144, "stars")
       .setScrollFactor(0)
       .setDepth(1)
       .setVisible(false)
@@ -151,7 +151,7 @@ export class WorldScene extends Phaser.Scene {
       .image(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE, "house")
       .setOrigin(0.5, 0.5);
     this.homeLabel = this.add
-      .text(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE - 52, "HOME", retroStyle(5, "#9f9fd0"))
+      .text(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE - 104, "HOME", retroStyle(5, "#9f9fd0"))
       .setOrigin(0.5)
       .setDepth(11);
     this.homeBubble = this.buildHomeBubble();
@@ -160,25 +160,25 @@ export class WorldScene extends Phaser.Scene {
     this.add
       .sprite(NPC_POS.x, NPC_POS.y, "npc").setDepth(10);
     this.add
-      .ellipse(NPC_POS.x, NPC_POS.y + 14, 20, 8, 0x000000, 0.4)
+      .ellipse(NPC_POS.x, NPC_POS.y + 28, 40, 16, 0x000000, 0.4)
       .setDepth(5);
     this.add
-      .text(NPC_POS.x, NPC_POS.y - 34, "ELDER", retroStyle(5, "#9f9fd0"))
+      .text(NPC_POS.x, NPC_POS.y - 68, "ELDER", retroStyle(5, "#9f9fd0"))
       .setOrigin(0.5)
       .setDepth(11);
 
     this.add.sprite(SHOP_POS.x, SHOP_POS.y, "npc").setDepth(10).setTint(0xffd166);
     this.add
-      .ellipse(SHOP_POS.x, SHOP_POS.y + 14, 20, 8, 0x000000, 0.4)
+      .ellipse(SHOP_POS.x, SHOP_POS.y + 28, 40, 16, 0x000000, 0.4)
       .setDepth(5);
     this.add
-      .text(SHOP_POS.x, SHOP_POS.y - 34, "SHOP", retroStyle(5, "#ffd166"))
+      .text(SHOP_POS.x, SHOP_POS.y - 68, "SHOP", retroStyle(5, "#ffd166"))
       .setOrigin(0.5)
       .setDepth(11);
 
     this.add.image(CAVE_POS.x, CAVE_POS.y, "cave").setDepth(9);
     this.add
-      .text(CAVE_POS.x, CAVE_POS.y + 16, "CAVE", retroStyle(6, "#9f9fd0"))
+      .text(CAVE_POS.x, CAVE_POS.y + 32, "CAVE", retroStyle(6, "#9f9fd0"))
       .setOrigin(0.5)
       .setDepth(11);
 
@@ -204,11 +204,11 @@ export class WorldScene extends Phaser.Scene {
     );
     this.player.setCollideWorldBounds(true);
     this.player.setDepth(10);
-    this.player.body?.setSize(20, 16).setOffset(6, 16);
+    this.player.body?.setSize(40, 32).setOffset(12, 32);
     this.physics.add.collider(this.player, this.layer);
 
     this.playerShadow = this.add
-      .ellipse(this.player.x, this.player.y + 14, 20, 8, 0x000000, 0.4)
+      .ellipse(this.player.x, this.player.y + 28, 40, 16, 0x000000, 0.4)
       .setDepth(5);
 
     this.weaponOverlay = this.add
@@ -257,17 +257,17 @@ export class WorldScene extends Phaser.Scene {
     }
 
     this.dust = this.add.particles(0, 0, "dust", {
-      speed: { min: 8, max: 22 },
+      speed: { min: 16, max: 44 },
       lifespan: { min: 180, max: 320 },
       scale: { start: 1, end: 0 },
       alpha: { start: 0.45, end: 0 },
       frequency: 70,
       emitting: false,
     });
-    this.dust.startFollow(this.player, 0, 14);
+    this.dust.startFollow(this.player, 0, 28);
 
     this.fireflies = this.add.particles(0, 0, "firefly", {
-      speed: { min: 6, max: 20 },
+      speed: { min: 12, max: 40 },
       lifespan: { min: 2500, max: 4500 },
       scale: { start: 1, end: 0.4 },
       alpha: { start: 0.7, end: 0 },
@@ -394,22 +394,22 @@ export class WorldScene extends Phaser.Scene {
       "CAUGHT 0",
     ].join("\n");
     this.statusText = this.add
-      .text(16, 0, statusDummy, retroStyle(6, "#ffffff"))
+      .text(32, 0, statusDummy, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(101)
       .setVisible(GameState.hudVisible);
-    const statusH = this.statusText.height + 24;
-    this.statusText.setY(GAME_HEIGHT - 8 - statusH + 12);
+    const statusH = this.statusText.height + 48;
+    this.statusText.setY(GAME_HEIGHT - 16 - statusH + 24);
     this.statusPanel = this.add
-      .rectangle(8, GAME_HEIGHT - 8, 180, statusH, 0x0b0b2b, 0.88)
+      .rectangle(16, GAME_HEIGHT - 16, 360, statusH, 0x0b0b2b, 0.88)
       .setOrigin(0, 1)
       .setStrokeStyle(1, 0xffffff)
       .setScrollFactor(0)
       .setDepth(100)
       .setVisible(GameState.hudVisible);
     this.expBar = this.add
-      .rectangle(16, GAME_HEIGHT - 10, 164, 4, 0x22c55e)
+      .rectangle(32, GAME_HEIGHT - 20, 328, 8, 0x22c55e)
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(101)
@@ -433,19 +433,19 @@ export class WorldScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setAlign("center")
       .setLineSpacing(4);
-    const pad = 10;
+    const pad = 20;
     const w = text.width + pad * 2;
     const h = text.height + pad * 2;
-    const border = this.add.rectangle(0, 0, w + 4, h + 4, 0xffffff).setOrigin(0.5);
+    const border = this.add.rectangle(0, 0, w + 8, h + 8, 0xffffff).setOrigin(0.5);
     const box = this.add.rectangle(0, 0, w, h, 0x0b0b2b).setOrigin(0.5);
     const tail = this.add
-      .triangle(0, h / 2 + 2, -12, 0, 12, 0, 0, 14, 0x0b0b2b)
+      .triangle(0, h / 2 + 4, -24, 0, 24, 0, 0, 28, 0x0b0b2b)
       .setStrokeStyle(2, 0xffffff)
       .setOrigin(0.5);
     return this.add
       .container(
         HOUSE_POS.x + TILE,
-        HOUSE_POS.y + TILE - h / 2 - 16,
+        HOUSE_POS.y + TILE - h / 2 - 32,
         [border, box, text, tail]
       )
       .setDepth(12);
@@ -454,7 +454,7 @@ export class WorldScene extends Phaser.Scene {
   private nearHouse(): boolean {
     const dx = this.player.x - (HOUSE_POS.x + TILE);
     const dy = this.player.y - (HOUSE_POS.y + 2 * TILE);
-    return dx * dx + dy * dy <= 72 * 72;
+    return dx * dx + dy * dy <= 144 * 144;
   }
 
   private updateHomeBubble(): void {
@@ -571,10 +571,10 @@ export class WorldScene extends Phaser.Scene {
 
     let vx = 0;
     let vy = 0;
-    if (this.keyLeft.isDown || this.keyH.isDown) vx = -120;
-    else if (this.keyRight.isDown || this.keyL.isDown) vx = 120;
-    if (this.keyUp.isDown || this.keyK.isDown) vy = -120;
-    else if (this.keyDown.isDown || this.keyJ.isDown) vy = 120;
+    if (this.keyLeft.isDown || this.keyH.isDown) vx = -240;
+    else if (this.keyRight.isDown || this.keyL.isDown) vx = 240;
+    if (this.keyUp.isDown || this.keyK.isDown) vy = -240;
+    else if (this.keyDown.isDown || this.keyJ.isDown) vy = 240;
 
     this.player.setVelocity(vx, vy);
 
@@ -593,7 +593,7 @@ export class WorldScene extends Phaser.Scene {
       this.player.setTexture(IDLE_TEXTURE[this.lastMove]);
     }
 
-    this.playerShadow.setPosition(this.player.x, this.player.y + 14);
+    this.playerShadow.setPosition(this.player.x, this.player.y + 28);
     this.dust.emitting = moving;
     this.updateEquipOverlays();
     this.updateRoamers(delta);
@@ -602,12 +602,12 @@ export class WorldScene extends Phaser.Scene {
 
   private flashNote(text: string): void {
     const n = this.add
-      .text(this.player.x, this.player.y - 26, text, retroStyle(6, "#ffd166"))
+      .text(this.player.x, this.player.y - 52, text, retroStyle(6, "#ffd166"))
       .setOrigin(0.5)
       .setDepth(120);
     this.tweens.add({
       targets: n,
-      y: n.y - 20,
+      y: n.y - 40,
       alpha: 0,
       duration: 900,
       onComplete: () => n.destroy(),
@@ -626,8 +626,8 @@ export class WorldScene extends Phaser.Scene {
     const flip = this.lastMove === "left";
     this.weaponOverlay.setFlipX(flip);
     this.shieldOverlay.setFlipX(flip);
-    this.weaponOverlay.setPosition(this.player.x + 7, this.player.y + 2);
-    this.shieldOverlay.setPosition(this.player.x - 7, this.player.y + 4);
+    this.weaponOverlay.setPosition(this.player.x + 14, this.player.y + 4);
+    this.shieldOverlay.setPosition(this.player.x - 14, this.player.y + 8);
   }
 
   private toggleStatus(): void {
@@ -681,7 +681,7 @@ export class WorldScene extends Phaser.Scene {
     const near = (x: number, y: number): boolean => {
       const dx = this.player.x - x;
       const dy = this.player.y - y;
-      return dx * dx + dy * dy <= 60 * 60;
+      return dx * dx + dy * dy <= 120 * 120;
     };
 
     if (near(NPC_POS.x, NPC_POS.y)) {
@@ -721,7 +721,7 @@ export class WorldScene extends Phaser.Scene {
         .setDepth(120);
       this.tweens.add({
         targets: note,
-        y: GAME_HEIGHT / 2 - 30,
+        y: GAME_HEIGHT / 2 - 60,
         alpha: 0,
         delay: 800,
         duration: 600,
@@ -792,16 +792,16 @@ export class WorldScene extends Phaser.Scene {
   private spawnMonsters(): void {
     this.roamerGroup = this.physics.add.group();
     for (const zone of MONSTER_ZONES) {
-      const signX = zone.cx - zone.w / 2 - 16;
+      const signX = zone.cx - zone.w / 2 - 32;
       this.add.image(signX, zone.cy, "sign").setDepth(9);
       const bang = this.add
-        .text(signX, zone.cy - 32, "!", retroStyle(10, "#ffdd44"))
+        .text(signX, zone.cy - 64, "!", retroStyle(10, "#ffdd44"))
         .setOrigin(0.5)
         .setStroke("#7c2d12", 2)
         .setDepth(11);
       this.tweens.add({
         targets: bang,
-        y: zone.cy - 42,
+        y: zone.cy - 84,
         duration: 420,
         yoyo: true,
         repeat: -1,
@@ -817,17 +817,17 @@ export class WorldScene extends Phaser.Scene {
           "slime"
         ) as Phaser.Physics.Arcade.Sprite;
         sprite.setDepth(10);
-        sprite.body?.setSize(20, 12).setOffset(6, 16);
+        sprite.body?.setSize(40, 24).setOffset(12, 32);
         this.roamers.push({
           sprite,
-          minX: zone.cx - zone.w / 2 + 4,
-          maxX: zone.cx + zone.w / 2 - 4,
-          minY: zone.cy - zone.h / 2 + 4,
-          maxY: zone.cy + zone.h / 2 - 4,
+          minX: zone.cx - zone.w / 2 + 8,
+          maxX: zone.cx + zone.w / 2 - 8,
+          minY: zone.cy - zone.h / 2 + 8,
+          maxY: zone.cy + zone.h / 2 - 8,
           targetX: x,
           targetY: y,
           wait: 300 + Math.random() * 800,
-          speed: 28 + Math.random() * 20,
+          speed: 56 + Math.random() * 40,
           kind: "slime",
         });
         this.tweens.add({
@@ -848,17 +848,17 @@ export class WorldScene extends Phaser.Scene {
       const y = zone.cy + (Math.random() - 0.5) * zone.h * 0.6;
       const sprite = this.roamerGroup.create(x, y, "troll") as Phaser.Physics.Arcade.Sprite;
       sprite.setDepth(10).setScale(1.6);
-      sprite.body?.setSize(20, 12).setOffset(6, 16);
+      sprite.body?.setSize(40, 24).setOffset(12, 32);
       this.roamers.push({
         sprite,
-        minX: zone.cx - zone.w / 2 + 4,
-        maxX: zone.cx + zone.w / 2 - 4,
-        minY: zone.cy - zone.h / 2 + 4,
-        maxY: zone.cy + zone.h / 2 - 4,
+        minX: zone.cx - zone.w / 2 + 8,
+        maxX: zone.cx + zone.w / 2 - 8,
+        minY: zone.cy - zone.h / 2 + 8,
+        maxY: zone.cy + zone.h / 2 - 8,
         targetX: x,
         targetY: y,
         wait: 300 + Math.random() * 800,
-        speed: 22 + Math.random() * 12,
+        speed: 44 + Math.random() * 24,
         kind: "troll",
       });
       this.tweens.add({

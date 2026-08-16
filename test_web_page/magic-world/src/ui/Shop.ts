@@ -116,7 +116,7 @@ const SHOP_ITEMS: ShopItem[] = [
 ];
 
 const SHOP_COLS = 2;
-const SHOP_ROW_GAP = 20;
+const SHOP_ROW_GAP = 40;
 
 export class ShopUI {
   private scene: Phaser.Scene;
@@ -159,13 +159,13 @@ export class ShopUI {
       .setDepth(150)
       .setVisible(false);
     this.panel = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 460, 200, 0x0b0b2b, 0.95)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 920, 400, 0x0b0b2b, 0.95)
       .setScrollFactor(0)
       .setDepth(151)
       .setStrokeStyle(2, 0xffffff)
       .setVisible(false);
     this.title = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 84, "SHOP", retroStyle(8, "#ffd166"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 168, "SHOP", retroStyle(8, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -175,7 +175,7 @@ export class ShopUI {
     let row = 0;
     for (const item of SHOP_ITEMS) {
       const t = scene.add
-        .text(GAME_WIDTH / 2 - 200 + col * 220, GAME_HEIGHT / 2 - 52 + row * SHOP_ROW_GAP, item.label, retroStyle(6, "#ffffff"))
+        .text(GAME_WIDTH / 2 - 400 + col * 440, GAME_HEIGHT / 2 - 104 + row * SHOP_ROW_GAP, item.label, retroStyle(6, "#ffffff"))
         .setOrigin(0, 0.5)
         .setScrollFactor(0)
         .setDepth(152)
@@ -188,20 +188,20 @@ export class ShopUI {
       }
     }
     this.cursor = scene.add
-      .text(GAME_WIDTH / 2 - 100, 0, ">", retroStyle(6, "#ffd166"))
+      .text(GAME_WIDTH / 2 - 200, 0, ">", retroStyle(6, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
 
     this.goldText = scene.add
-      .text(GAME_WIDTH / 2 + 150, GAME_HEIGHT / 2 - 84, "G 0", retroStyle(6, "#8ecbff"))
+      .text(GAME_WIDTH / 2 + 300, GAME_HEIGHT / 2 - 168, "G 0", retroStyle(6, "#8ecbff"))
       .setOrigin(1, 0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
     this.msg = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 64, "", retroStyle(6, "#f5f5f5"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 128, "", retroStyle(6, "#f5f5f5"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -338,7 +338,7 @@ export class ShopUI {
 
   private renderCursor(): void {
     const target = this.items[this.index];
-    this.cursor.setX(target.x - 12);
+    this.cursor.setX(target.x - 24);
     this.cursor.setY(target.y);
   }
 

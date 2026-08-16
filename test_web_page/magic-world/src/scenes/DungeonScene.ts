@@ -105,7 +105,7 @@ export class DungeonScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, DUNGEON_W * TILE, DUNGEON_H * TILE);
 
     this.add
-      .text(DUNGEON_W * TILE / 2, 20, "THE CAVE", retroStyle(8, "#ffd166"))
+      .text(DUNGEON_W * TILE / 2, 40, "THE CAVE", retroStyle(8, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(95);
@@ -121,11 +121,11 @@ export class DungeonScene extends Phaser.Scene {
     );
     this.player.setCollideWorldBounds(true);
     this.player.setDepth(10);
-    this.player.body?.setSize(20, 16).setOffset(6, 16);
+    this.player.body?.setSize(40, 32).setOffset(12, 32);
     this.physics.add.collider(this.player, this.layer);
 
     this.playerShadow = this.add
-      .ellipse(this.player.x, this.player.y + 14, 20, 8, 0x000000, 0.4)
+      .ellipse(this.player.x, this.player.y + 28, 40, 16, 0x000000, 0.4)
       .setDepth(5);
 
     this.weaponOverlay = this.add
@@ -174,14 +174,14 @@ export class DungeonScene extends Phaser.Scene {
     }
 
     this.dust = this.add.particles(0, 0, "dust", {
-      speed: { min: 8, max: 22 },
+      speed: { min: 16, max: 44 },
       lifespan: { min: 180, max: 320 },
       scale: { start: 1, end: 0 },
       alpha: { start: 0.45, end: 0 },
       frequency: 70,
       emitting: false,
     });
-    this.dust.startFollow(this.player, 0, 14);
+    this.dust.startFollow(this.player, 0, 28);
 
     this.spawnMonsters();
 
@@ -252,15 +252,15 @@ export class DungeonScene extends Phaser.Scene {
 
     const statusDummy = ["HERO", "LV 1", "HP 30/30", "MP 10/10", "DAY 1 00:00"].join("\n");
     this.statusText = this.add
-      .text(16, 0, statusDummy, retroStyle(6, "#ffffff"))
+      .text(32, 0, statusDummy, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(101)
       .setVisible(GameState.hudVisible);
-    const statusH = this.statusText.height + 24;
-    this.statusText.setY(GAME_HEIGHT - 8 - statusH + 12);
+    const statusH = this.statusText.height + 48;
+    this.statusText.setY(GAME_HEIGHT - 16 - statusH + 24);
     this.statusPanel = this.add
-      .rectangle(8, GAME_HEIGHT - 8, 180, statusH, 0x0b0b2b, 0.88)
+      .rectangle(16, GAME_HEIGHT - 16, 360, statusH, 0x0b0b2b, 0.88)
       .setOrigin(0, 1)
       .setStrokeStyle(1, 0xffffff)
       .setScrollFactor(0)
@@ -297,10 +297,10 @@ export class DungeonScene extends Phaser.Scene {
 
     let vx = 0;
     let vy = 0;
-    if (this.keyLeft.isDown || this.keyH.isDown) vx = -120;
-    else if (this.keyRight.isDown || this.keyL.isDown) vx = 120;
-    if (this.keyUp.isDown || this.keyK.isDown) vy = -120;
-    else if (this.keyDown.isDown || this.keyJ.isDown) vy = 120;
+    if (this.keyLeft.isDown || this.keyH.isDown) vx = -240;
+    else if (this.keyRight.isDown || this.keyL.isDown) vx = 240;
+    if (this.keyUp.isDown || this.keyK.isDown) vy = -240;
+    else if (this.keyDown.isDown || this.keyJ.isDown) vy = 240;
 
     this.player.setVelocity(vx, vy);
 
@@ -319,7 +319,7 @@ export class DungeonScene extends Phaser.Scene {
       this.player.setTexture(IDLE_TEXTURE[this.lastMove]);
     }
 
-    this.playerShadow.setPosition(this.player.x, this.player.y + 14);
+    this.playerShadow.setPosition(this.player.x, this.player.y + 28);
     this.dust.emitting = moving;
     this.updateEquipOverlays();
     this.updateRoamers(delta);
@@ -338,8 +338,8 @@ export class DungeonScene extends Phaser.Scene {
     const flip = this.lastMove === "left";
     this.weaponOverlay.setFlipX(flip);
     this.shieldOverlay.setFlipX(flip);
-    this.weaponOverlay.setPosition(this.player.x + 7, this.player.y + 2);
-    this.shieldOverlay.setPosition(this.player.x - 7, this.player.y + 4);
+    this.weaponOverlay.setPosition(this.player.x + 14, this.player.y + 4);
+    this.shieldOverlay.setPosition(this.player.x - 14, this.player.y + 8);
   }
 
   private toggleStatus(): void {
@@ -409,20 +409,20 @@ export class DungeonScene extends Phaser.Scene {
           kind === "king" ? "king" : kind
         ) as Phaser.Physics.Arcade.Sprite;
         sprite.setDepth(10);
-        sprite.body?.setSize(20, 12).setOffset(6, 16);
+        sprite.body?.setSize(40, 24).setOffset(12, 32);
         if (kind === "king") {
           sprite.setScale(1.5);
         }
         this.roamers.push({
           sprite,
-          minX: zone.cx - zone.w / 2 + 4,
-          maxX: zone.cx + zone.w / 2 - 4,
-          minY: zone.cy - zone.h / 2 + 4,
-          maxY: zone.cy + zone.h / 2 - 4,
+          minX: zone.cx - zone.w / 2 + 8,
+          maxX: zone.cx + zone.w / 2 - 8,
+          minY: zone.cy - zone.h / 2 + 8,
+          maxY: zone.cy + zone.h / 2 - 8,
           targetX: x,
           targetY: y,
           wait: 300 + Math.random() * 800,
-          speed: (isBoss ? 20 : 28) + Math.random() * 20,
+          speed: (isBoss ? 40 : 56) + Math.random() * 40,
           kind,
         });
         this.tweens.add({
@@ -467,12 +467,12 @@ export class DungeonScene extends Phaser.Scene {
     }
     if (loot) Sfx.pickup();
     const note = this.add
-      .text(chest.x, chest.y - 26, `+${gold} GOLD${loot}`, retroStyle(6, "#ffd166"))
+      .text(chest.x, chest.y - 52, `+${gold} GOLD${loot}`, retroStyle(6, "#ffd166"))
       .setOrigin(0.5)
       .setDepth(120);
     this.tweens.add({
       targets: note,
-      y: note.y - 20,
+      y: note.y - 40,
       alpha: 0,
       duration: 900,
       onComplete: () => note.destroy(),

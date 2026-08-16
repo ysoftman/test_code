@@ -451,72 +451,72 @@ const CHEST_OPEN_TILE = [
 function makeCave(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(0x2a2a3a, 1);
-  g.fillRect(0, 0, 64, 64);
+  g.fillRect(0, 0, 128, 128);
   g.fillStyle(0x3d3650, 1);
-  g.fillRect(0, 0, 64, 6);
-  g.fillRect(0, 0, 6, 64);
-  g.fillRect(58, 0, 6, 64);
+  g.fillRect(0, 0, 128, 12);
+  g.fillRect(0, 0, 12, 128);
+  g.fillRect(116, 0, 12, 128);
   g.fillStyle(0x141418, 1);
-  g.fillTriangle(8, 6, 32, 40, 56, 6);
-  g.fillRect(10, 6, 44, 40);
+  g.fillTriangle(16, 12, 64, 80, 112, 12);
+  g.fillRect(20, 12, 88, 80);
   g.fillStyle(0x0b0b0e, 1);
-  g.fillRect(10, 30, 44, 34);
-  g.generateTexture("cave", 64, 64);
+  g.fillRect(20, 60, 88, 68);
+  g.generateTexture("cave", 128, 128);
   g.destroy();
 }
 
 function makeSign(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(0x4a2f1a, 1);
-  g.fillRect(12, 18, 8, 14);
+  g.fillRect(24, 36, 16, 28);
   g.fillStyle(0x8a5a2b, 1);
-  g.fillRect(2, 2, 28, 16);
+  g.fillRect(4, 4, 56, 32);
   g.fillStyle(0x6d4a1f, 1);
-  g.fillRect(2, 2, 28, 2);
+  g.fillRect(4, 4, 56, 4);
   g.fillStyle(0x2a1f2e, 1);
-  g.fillRect(14, 6, 4, 8);
-  g.fillRect(14, 16, 4, 2);
-  g.generateTexture("sign", 32, 32);
+  g.fillRect(28, 12, 8, 16);
+  g.fillRect(28, 32, 8, 4);
+  g.generateTexture("sign", 64, 64);
   g.destroy();
 }
 
 function makeHouse(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(0x8a2b3a, 1);
-  g.fillRect(0, 12, 64, 16);
+  g.fillRect(0, 24, 128, 32);
   g.fillStyle(0x6d2130, 1);
-  g.fillRect(0, 12, 64, 4);
+  g.fillRect(0, 24, 128, 8);
   g.fillStyle(0x453a52, 1);
-  g.fillRect(2, 28, 60, 36);
+  g.fillRect(4, 56, 120, 72);
   g.fillStyle(0x382e44, 1);
-  g.fillRect(2, 28, 60, 4);
+  g.fillRect(4, 56, 120, 8);
   g.fillStyle(0x2a1f2e, 1);
-  g.fillRect(24, 40, 16, 24);
+  g.fillRect(48, 80, 32, 48);
   g.fillStyle(0x171019, 1);
-  g.fillRect(30, 50, 4, 14);
+  g.fillRect(60, 100, 8, 28);
   g.fillStyle(0xffd672, 1);
-  g.fillRect(8, 30, 12, 12);
+  g.fillRect(16, 60, 24, 24);
   g.fillStyle(0xffd672, 0.3);
-  g.fillRect(6, 28, 16, 16);
+  g.fillRect(12, 56, 32, 32);
   g.fillStyle(0xffd672, 1);
-  g.fillRect(44, 30, 12, 12);
+  g.fillRect(88, 60, 24, 24);
   g.fillStyle(0xffd672, 0.3);
-  g.fillRect(42, 28, 16, 16);
-  g.generateTexture("house", 64, 64);
+  g.fillRect(84, 56, 32, 32);
+  g.generateTexture("house", 128, 128);
   g.destroy();
 }
 
 function makeMoon(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(0xe8eaf8, 0.25);
-  g.fillCircle(48, 48, 34);
+  g.fillCircle(96, 96, 68);
   g.fillStyle(0xe8eaf8, 0.5);
-  g.fillCircle(48, 48, 26);
+  g.fillCircle(96, 96, 52);
   g.fillStyle(0xf6f6ff, 1);
-  g.fillCircle(48, 48, 18);
+  g.fillCircle(96, 96, 36);
   g.fillStyle(0xffffff, 1);
-  g.fillCircle(48, 48, 12);
-  g.generateTexture("moon", 96, 96);
+  g.fillCircle(96, 96, 24);
+  g.generateTexture("moon", 192, 192);
   g.destroy();
 }
 
@@ -524,38 +524,38 @@ function makeStars(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   for (let i = 0; i < 90; i++) {
     g.fillStyle(0xffffff, Math.random() * 0.8 + 0.2);
-    g.fillRect(Math.floor(Math.random() * 640), Math.floor(Math.random() * 160), 2, 2);
+    g.fillRect(Math.floor(Math.random() * 1280), Math.floor(Math.random() * 320), 4, 4);
   }
-  g.generateTexture("stars", 640, 160);
+  g.generateTexture("stars", 1280, 320);
   g.destroy();
 }
 
 function makeBattleBg(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(0x0133a9, 1);
-  g.fillRect(0, 0, GAME_WIDTH, 120);
+  g.fillRect(0, 0, GAME_WIDTH, 240);
   g.fillStyle(0x0a38b8, 1);
-  g.fillRect(0, 120, GAME_WIDTH, 80);
+  g.fillRect(0, 240, GAME_WIDTH, 160);
   g.fillStyle(0xe8eaf8, 0.18);
-  g.fillCircle(120, 88, 80);
+  g.fillCircle(240, 176, 160);
   g.fillStyle(0xf6f6ff, 0.4);
-  g.fillCircle(120, 88, 36);
+  g.fillCircle(240, 176, 72);
   g.fillStyle(0xffffff, 1);
-  g.fillCircle(120, 88, 16);
+  g.fillCircle(240, 176, 32);
   for (let i = 0; i < 30; i++) {
     g.fillStyle(0xffffff, Math.random() * 0.7 + 0.2);
-    g.fillRect(Math.floor(Math.random() * GAME_WIDTH), Math.floor(Math.random() * 100), 2, 2);
+    g.fillRect(Math.floor(Math.random() * GAME_WIDTH), Math.floor(Math.random() * 200), 4, 4);
   }
   g.fillStyle(0x261973, 1);
-  g.fillTriangle(0, 220, 120, 120, 240, 220);
-  g.fillTriangle(140, 220, 320, 80, 500, 220);
-  g.fillTriangle(400, 220, 580, 130, 640, 220);
+  g.fillTriangle(0, 440, 240, 240, 480, 440);
+  g.fillTriangle(280, 440, 640, 160, 1000, 440);
+  g.fillTriangle(800, 440, 1160, 260, 1280, 440);
   g.fillStyle(0x1a1240, 1);
-  g.fillRect(0, 220, GAME_WIDTH, GAME_HEIGHT - 220);
+  g.fillRect(0, 440, GAME_WIDTH, GAME_HEIGHT - 440);
   g.fillStyle(0x372a52, 1);
-  g.fillRect(0, 220, GAME_WIDTH, 8);
+  g.fillRect(0, 440, GAME_WIDTH, 16);
   g.fillStyle(0x1f5c42, 1);
-  g.fillRect(0, 228, GAME_WIDTH, 12);
+  g.fillRect(0, 456, GAME_WIDTH, 24);
   g.generateTexture("battle-bg", GAME_WIDTH, GAME_HEIGHT);
   g.destroy();
 }
@@ -566,68 +566,68 @@ function makeTitleBg(scene: Phaser.Scene): void {
   g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
   g.fillStyle(0xe8eaf8, 0.15);
-  g.fillCircle(160, 92, 112);
+  g.fillCircle(320, 184, 224);
   g.fillStyle(0xf6f6ff, 0.28);
-  g.fillCircle(160, 92, 76);
+  g.fillCircle(320, 184, 152);
   g.fillStyle(0xf6f6ff, 1);
-  g.fillCircle(160, 92, 32);
+  g.fillCircle(320, 184, 64);
   g.fillStyle(0xffffff, 1);
-  g.fillCircle(160, 92, 22);
+  g.fillCircle(320, 184, 44);
   g.fillStyle(0xd9ddf2, 1);
-  g.fillCircle(150, 82, 6);
-  g.fillCircle(170, 100, 4);
-  g.fillCircle(156, 104, 3);
+  g.fillCircle(300, 164, 12);
+  g.fillCircle(340, 200, 8);
+  g.fillCircle(312, 208, 6);
 
   for (let i = 0; i < 45; i++) {
     g.fillStyle(0xffffff, Math.random() * 0.8 + 0.2);
-    g.fillRect(Math.floor(Math.random() * GAME_WIDTH), Math.floor(Math.random() * 200), 2, 2);
+    g.fillRect(Math.floor(Math.random() * GAME_WIDTH), Math.floor(Math.random() * 400), 4, 4);
   }
 
   g.fillStyle(0x261973, 1);
-  g.fillTriangle(-40, 240, 120, 120, 300, 240);
-  g.fillTriangle(180, 240, 400, 140, 640, 240);
+  g.fillTriangle(-80, 480, 240, 240, 600, 480);
+  g.fillTriangle(360, 480, 800, 280, 1280, 480);
   g.fillStyle(0x17235a, 1);
-  g.fillTriangle(40, 280, 220, 180, 380, 280);
-  g.fillTriangle(300, 280, 500, 190, 680, 280);
+  g.fillTriangle(80, 560, 440, 360, 760, 560);
+  g.fillTriangle(600, 560, 1000, 380, 1360, 560);
 
   g.fillStyle(0x1a1240, 1);
-  g.fillRect(280, 236, 52, 44);
-  g.fillRect(344, 244, 68, 36);
+  g.fillRect(560, 472, 104, 88);
+  g.fillRect(688, 488, 136, 72);
   g.fillStyle(0x8a2b3a, 1);
-  g.fillTriangle(276, 236, 306, 208, 336, 236);
-  g.fillTriangle(340, 244, 378, 216, 416, 244);
+  g.fillTriangle(552, 472, 612, 416, 672, 472);
+  g.fillTriangle(680, 488, 756, 432, 832, 488);
   g.fillStyle(0xffd672, 1);
-  g.fillRect(292, 248, 12, 14);
-  g.fillRect(356, 256, 12, 14);
-  g.fillRect(384, 252, 12, 14);
+  g.fillRect(584, 496, 24, 28);
+  g.fillRect(712, 512, 24, 28);
+  g.fillRect(768, 504, 24, 28);
 
   g.fillStyle(0x1a1240, 1);
-  g.fillRect(536, 192, 28, 48);
+  g.fillRect(1072, 384, 56, 96);
   g.fillStyle(0x8a2b3a, 1);
-  g.fillTriangle(524, 192, 550, 164, 576, 192);
+  g.fillTriangle(1048, 384, 1100, 328, 1152, 384);
   g.fillStyle(0xffd672, 1);
-  g.fillRect(542, 200, 8, 10);
-  g.fillRect(542, 218, 8, 10);
+  g.fillRect(1084, 400, 16, 20);
+  g.fillRect(1084, 436, 16, 20);
   g.fillStyle(0xff8a3d, 1);
-  g.fillCircle(550, 156, 8);
+  g.fillCircle(1100, 312, 16);
   g.fillStyle(0xffd672, 0.6);
-  g.fillCircle(550, 156, 14);
+  g.fillCircle(1100, 312, 28);
   g.fillStyle(0xff5555, 0.4);
-  g.fillCircle(550, 156, 20);
+  g.fillCircle(1100, 312, 40);
 
   g.fillStyle(0x0e5226, 1);
-  g.fillCircle(40, 332, 32);
-  g.fillCircle(96, 340, 40);
-  g.fillCircle(160, 316, 26);
-  g.fillCircle(240, 336, 36);
-  g.fillCircle(480, 328, 30);
-  g.fillCircle(600, 340, 44);
+  g.fillCircle(80, 664, 64);
+  g.fillCircle(192, 680, 80);
+  g.fillCircle(320, 632, 52);
+  g.fillCircle(480, 672, 72);
+  g.fillCircle(960, 656, 60);
+  g.fillCircle(1200, 680, 88);
   g.fillStyle(0x0f6a2a, 1);
-  g.fillCircle(108, 324, 18);
-  g.fillCircle(252, 320, 14);
-  g.fillCircle(612, 324, 18);
+  g.fillCircle(216, 648, 36);
+  g.fillCircle(504, 640, 28);
+  g.fillCircle(1224, 648, 36);
   g.fillStyle(0x081b12, 1);
-  g.fillRect(0, 336, GAME_WIDTH, 24);
+  g.fillRect(0, 672, GAME_WIDTH, 48);
   g.generateTexture("title-bg", GAME_WIDTH, GAME_HEIGHT);
   g.destroy();
 }

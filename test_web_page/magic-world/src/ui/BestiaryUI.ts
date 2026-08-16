@@ -5,8 +5,8 @@ import { retroStyle } from "../pixelart";
 import { ENEMIES } from "../monsters";
 
 const SPECIES = Object.values(ENEMIES);
-const ROW_GAP = 36;
-const PANEL_H = 40 + SPECIES.length * ROW_GAP;
+const ROW_GAP = 72;
+const PANEL_H = 80 + SPECIES.length * ROW_GAP;
 
 export class BestiaryUI {
   private active = false;
@@ -28,30 +28,30 @@ export class BestiaryUI {
       .setDepth(150)
       .setVisible(false);
     this.panel = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 360, PANEL_H, 0x0b0b2b, 0.95)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 720, PANEL_H, 0x0b0b2b, 0.95)
       .setScrollFactor(0)
       .setDepth(151)
       .setStrokeStyle(2, 0xffffff)
       .setVisible(false);
     this.title = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - PANEL_H / 2 + 18, "BESTIARY", retroStyle(8, "#ffd166"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - PANEL_H / 2 + 36, "BESTIARY", retroStyle(8, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
 
-    const startY = GAME_HEIGHT / 2 - PANEL_H / 2 + 48;
+    const startY = GAME_HEIGHT / 2 - PANEL_H / 2 + 96;
     SPECIES.forEach((def, i) => {
       const y = startY + i * ROW_GAP;
       const icon = scene.add
-        .sprite(GAME_WIDTH / 2 - 130, y, def.texture)
+        .sprite(GAME_WIDTH / 2 - 260, y, def.texture)
         .setScale(1.4)
         .setScrollFactor(0)
         .setDepth(152)
         .setVisible(false);
       this.icons.push(icon);
       const row = scene.add
-        .text(GAME_WIDTH / 2 - 90, y, "???", retroStyle(7, "#666666"))
+        .text(GAME_WIDTH / 2 - 180, y, "???", retroStyle(7, "#666666"))
         .setOrigin(0, 0.5)
         .setScrollFactor(0)
         .setDepth(152)

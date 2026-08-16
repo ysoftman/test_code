@@ -20,7 +20,7 @@ interface EquipItem extends BaseItem {
 type InventoryItem = UseItem | EquipItem;
 
 const INVENTORY_COLS = 2;
-const INVENTORY_ROW_GAP = 20;
+const INVENTORY_ROW_GAP = 40;
 
 const INVENTORY_ITEMS: InventoryItem[] = [
   {
@@ -153,13 +153,13 @@ export class InventoryUI {
       .setDepth(150)
       .setVisible(false);
     this.panel = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 500, 200, 0x0b0b2b, 0.95)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 1000, 400, 0x0b0b2b, 0.95)
       .setScrollFactor(0)
       .setDepth(151)
       .setStrokeStyle(2, 0xffffff)
       .setVisible(false);
     this.title = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 68, "ITEMS", retroStyle(8, "#ffd166"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 136, "ITEMS", retroStyle(8, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -170,8 +170,8 @@ export class InventoryUI {
     for (const item of INVENTORY_ITEMS) {
       const t = scene.add
         .text(
-          GAME_WIDTH / 2 - 220 + col * 240,
-          GAME_HEIGHT / 2 - 36 + row * INVENTORY_ROW_GAP,
+          GAME_WIDTH / 2 - 440 + col * 480,
+          GAME_HEIGHT / 2 - 72 + row * INVENTORY_ROW_GAP,
           `${item.label} x0`,
           retroStyle(6, "#ffffff")
         )
@@ -187,20 +187,20 @@ export class InventoryUI {
       }
     }
     this.cursor = scene.add
-      .text(GAME_WIDTH / 2 - 100, 0, ">", retroStyle(6, "#ffd166"))
+      .text(GAME_WIDTH / 2 - 200, 0, ">", retroStyle(6, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
 
     this.statusText = scene.add
-      .text(GAME_WIDTH / 2 + 150, GAME_HEIGHT / 2 - 84, "", retroStyle(5, "#8ecbff"))
+      .text(GAME_WIDTH / 2 + 300, GAME_HEIGHT / 2 - 168, "", retroStyle(5, "#8ecbff"))
       .setOrigin(1, 0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
     this.msg = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 52, "", retroStyle(6, "#f5f5f5"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 104, "", retroStyle(6, "#f5f5f5"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -383,7 +383,7 @@ export class InventoryUI {
 
   private renderCursor(): void {
     const target = this.items[this.index];
-    this.cursor.setX(target.x - 12);
+    this.cursor.setX(target.x - 24);
     this.cursor.setY(target.y);
   }
 

@@ -28,9 +28,9 @@ const ITEM_SLOTS: ItemSlot[] = [
 ];
 
 const ITEMS_PER_ROW = 4;
-const ITEM_COL_X = 24;
-const ITEM_COL_WIDTH = 140;
-const ITEM_TEXT_OFFSET = 16;
+const ITEM_COL_X = 48;
+const ITEM_COL_WIDTH = 280;
+const ITEM_TEXT_OFFSET = 32;
 
 export class BattleScene extends Phaser.Scene {
   private enemy!: EnemyDef & { curHp: number };
@@ -95,81 +95,81 @@ export class BattleScene extends Phaser.Scene {
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "battle-bg");
 
     this.enemySprite = this.add
-      .sprite(GAME_WIDTH - 160, 140, this.enemy.texture)
+      .sprite(GAME_WIDTH - 320, 280, this.enemy.texture)
       .setScale(this.enemy.boss || this.enemy.giant ? 3 : 2);
-    this.playerSprite = this.add.sprite(160, 184, "hero-down-0").setScale(2);
+    this.playerSprite = this.add.sprite(320, 368, "hero-down-0").setScale(2);
     this.playerSprite.setFlipX(true);
     this.weaponOverlay = this.add
-      .sprite(174, 184, GameState.equipped.weapon === "ironSword" ? "equip-iron-sword" : "equip-sword")
+      .sprite(348, 368, GameState.equipped.weapon === "ironSword" ? "equip-iron-sword" : "equip-sword")
       .setScale(2);
     this.shieldOverlay = this.add
-      .sprite(146, 184, GameState.equipped.armor === "ironShield" ? "equip-iron-shield" : "equip-shield")
+      .sprite(292, 368, GameState.equipped.armor === "ironShield" ? "equip-iron-shield" : "equip-shield")
       .setScale(2);
     this.weaponOverlay.setVisible(!!GameState.equipped.weapon);
     this.shieldOverlay.setVisible(!!GameState.equipped.armor);
 
-    this.window(16, 12, 232, 88);
-    this.window(GAME_WIDTH - 248, 12, 232, 88);
+    this.window(32, 24, 464, 176);
+    this.window(GAME_WIDTH - 496, 24, 464, 176);
 
     this.add
-      .text(32, 20, GameState.player.name, retroStyle(7, "#ffd166"))
+      .text(64, 40, GameState.player.name, retroStyle(7, "#ffd166"))
       .setOrigin(0, 0);
     this.playerHpText = this.add
-      .text(32, 44, "HP " + GameState.player.hp + "/" + GameState.effMaxHp(), retroStyle(6, "#ffffff"))
+      .text(64, 88, "HP " + GameState.player.hp + "/" + GameState.effMaxHp(), retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
     this.playerMpText = this.add
-      .text(32, 68, "MP " + GameState.player.mp + "/" + GameState.player.maxMp, retroStyle(6, "#8ecbff"))
+      .text(64, 136, "MP " + GameState.player.mp + "/" + GameState.player.maxMp, retroStyle(6, "#8ecbff"))
       .setOrigin(0, 0);
 
-    this.playerHpBar = this.add.rectangle(32, 62, 88, 8, 0x22c55e).setOrigin(0, 0.5);
+    this.playerHpBar = this.add.rectangle(64, 124, 176, 16, 0x22c55e).setOrigin(0, 0.5);
 
     this.add
-      .text(GAME_WIDTH - 232, 20, this.enemy.name, retroStyle(7, "#ff5555"))
+      .text(GAME_WIDTH - 464, 40, this.enemy.name, retroStyle(7, "#ff5555"))
       .setOrigin(0, 0);
     this.enemyHpText = this.add
-      .text(GAME_WIDTH - 232, 44, "HP " + this.enemy.curHp + "/" + this.enemy.hp, retroStyle(6, "#ffffff"))
+      .text(GAME_WIDTH - 464, 88, "HP " + this.enemy.curHp + "/" + this.enemy.hp, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
     this.enemyHpBar = this.add
-      .rectangle(GAME_WIDTH - 232, 62, 88, 8, 0xef4444)
+      .rectangle(GAME_WIDTH - 464, 124, 176, 16, 0xef4444)
       .setOrigin(0, 0.5);
 
     this.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 30, GAME_WIDTH - 32, 56, 0x0b0b2b, 0.92)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 60, GAME_WIDTH - 64, 112, 0x0b0b2b, 0.92)
       .setStrokeStyle(1, 0xffffff);
     this.msgText = this.add
-      .text(32, GAME_HEIGHT - 52, "", retroStyle(8, "#f5f5f5"))
-      .setWordWrapWidth(GAME_WIDTH - 64);
+      .text(64, GAME_HEIGHT - 104, "", retroStyle(8, "#f5f5f5"))
+      .setWordWrapWidth(GAME_WIDTH - 128);
 
-    const menuY = GAME_HEIGHT - 92;
+    const menuY = GAME_HEIGHT - 184;
     const labels: Record<string, string> = {
       fight: "A:FIGHT",
       magic: "F:MAGIC",
       item: "I:ITEM",
       run: "ESC:RUN",
     };
-    let x = 64;
+    let x = 128;
     for (const item of this.menuItems) {
       const t = this.add
         .text(x, menuY, labels[item], retroStyle(8, "#ffffff"))
         .setOrigin(0.5);
       this.menuTexts.push(t);
-      x += 128;
+      x += 256;
     }
     this.hideMenu();
 
     this.hintText = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT - 72, "", retroStyle(4, "#9f9fd0"))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT - 144, "", retroStyle(4, "#9f9fd0"))
       .setOrigin(0.5)
       .setDepth(30);
 
-    const itemY = GAME_HEIGHT - 116;
+    const itemY = GAME_HEIGHT - 232;
     for (let i = 0; i < ITEM_SLOTS.length; i++) {
       const slot = ITEM_SLOTS[i];
       const colX = ITEM_COL_X + (i % ITEMS_PER_ROW) * ITEM_COL_WIDTH;
       const t = this.add
         .text(
           colX + ITEM_TEXT_OFFSET,
-          itemY + Math.floor(i / ITEMS_PER_ROW) * 20,
+          itemY + Math.floor(i / ITEMS_PER_ROW) * 40,
           `${slot.label} x${GameState.inventory[slot.key]}`,
           retroStyle(6, "#ffffff")
         )
@@ -557,18 +557,18 @@ export class BattleScene extends Phaser.Scene {
 
   private async enemyLunge(): Promise<void> {
     const startX = this.enemySprite.x;
-    const targetX = this.playerSprite.x + 40;
+    const targetX = this.playerSprite.x + 80;
     await this.tweenPromise(this.enemySprite, { x: targetX }, 140);
     await this.tweenPromise(this.enemySprite, { x: startX }, 160);
   }
 
   private async lunge(): Promise<void> {
     const startX = this.playerSprite.x;
-    const targetX = this.enemySprite.x - 40;
+    const targetX = this.enemySprite.x - 80;
     const hasWeapon = !!GameState.equipped.weapon;
     const syncOverlays = () => {
-      this.weaponOverlay.x = this.playerSprite.x + 14;
-      this.shieldOverlay.x = this.playerSprite.x - 14;
+      this.weaponOverlay.x = this.playerSprite.x + 28;
+      this.shieldOverlay.x = this.playerSprite.x - 28;
     };
     this.playerSprite.x = startX;
     syncOverlays();
@@ -588,7 +588,7 @@ export class BattleScene extends Phaser.Scene {
 
   private async fireball(): Promise<void> {
     const fb = this.add
-      .circle(this.playerSprite.x + 20, this.playerSprite.y - 10, 8, 0xffa500)
+      .circle(this.playerSprite.x + 40, this.playerSprite.y - 20, 16, 0xffa500)
       .setDepth(20);
     this.tweens.add({
       targets: fb,
@@ -601,7 +601,7 @@ export class BattleScene extends Phaser.Scene {
     this.tweens.killTweensOf(fb); // the repeat:-1 pulse tween outlives destroy() otherwise
     fb.destroy();
     const boom = this.add
-      .circle(this.enemySprite.x, this.enemySprite.y, 12, 0xff5500)
+      .circle(this.enemySprite.x, this.enemySprite.y, 24, 0xff5500)
       .setDepth(20);
     this.glowBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
     this.glowBurst.explode(12);
@@ -617,12 +617,12 @@ export class BattleScene extends Phaser.Scene {
 
   private flashDamage(x: number, y: number, amount: number, crit = false): void {
     const t = this.add
-      .text(x + 20, y - 40, crit ? `${amount}!` : String(amount), retroStyle(crit ? 14 : 10, crit ? "#ff5555" : "#ffdd44"))
+      .text(x + 40, y - 80, crit ? `${amount}!` : String(amount), retroStyle(crit ? 14 : 10, crit ? "#ff5555" : "#ffdd44"))
       .setOrigin(0.5)
       .setStroke("#7c2d12", 2);
     this.tweens.add({
       targets: t,
-      y: y - (crit ? 100 : 80),
+      y: y - (crit ? 200 : 160),
       alpha: 0,
       duration: 800,
       onComplete: () => t.destroy(),
@@ -631,12 +631,12 @@ export class BattleScene extends Phaser.Scene {
 
   private flashHeal(x: number, y: number, amount: number): void {
     const t = this.add
-      .text(x + 20, y - 40, `+${amount}`, retroStyle(10, "#4ade80"))
+      .text(x + 40, y - 80, `+${amount}`, retroStyle(10, "#4ade80"))
       .setOrigin(0.5)
       .setStroke("#14532d", 2);
     this.tweens.add({
       targets: t,
-      y: y - 80,
+      y: y - 160,
       alpha: 0,
       duration: 800,
       onComplete: () => t.destroy(),
