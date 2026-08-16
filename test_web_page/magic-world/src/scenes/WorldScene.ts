@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
-import { GameState, expToNext, isNight, nightFactor, timeLabel, clock, dayCount, onSaved } from "../gameState";
+import { GameState, isNight, nightFactor, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
+import { StatusHud, STATUS_HUD_TOAST_Y } from "../ui/StatusHud";
 import { DialogueBox } from "../ui/DialogueBox";
 import { ShopUI } from "../ui/Shop";
 import { InventoryUI } from "../ui/InventoryUI";
@@ -40,7 +41,7 @@ interface Roamer {
   targetY: number;
   wait: number;
   speed: number;
-  kind: "slime" | "troll";
+  kind: "slime" | "troll" | "wolf";
 }
 
 const IDLE_TEXTURE: Record<LastMove, string> = {
@@ -67,8 +68,6 @@ export class WorldScene extends Phaser.Scene {
   private encounterCooldown = 0;
   private lastMove: LastMove = "down";
   private nightOverlay!: Phaser.GameObjects.Rectangle;
-  private moon!: Phaser.GameObjects.Image;
-  private stars!: Phaser.GameObjects.Image;
   private homeLabel!: Phaser.GameObjects.Text;
   private homeBubble!: Phaser.GameObjects.Container;
   private bubbleVisible = false;
@@ -76,11 +75,17 @@ export class WorldScene extends Phaser.Scene {
   private enteringDungeon = false;
   private zQueued = false;
   private sQueued = false;
+  private ctrlSQueued = false;
   private iQueued = false;
   private gCheatQueued = false;
   private mQueued = false;
-  private cQueued = false;
+  private bQueued = false;
   private qQueued = false;
+  private quitConfirm = false;
+  private yQueued = false;
+  private nQueued = false;
+  private escQueued = false;
+  private quitConfirmText!: Phaser.GameObjects.Text;
 
   private keyLeft!: Phaser.Input.Keyboard.Key;
   private keyRight!: Phaser.Input.Keyboard.Key;
@@ -96,12 +101,12 @@ export class WorldScene extends Phaser.Scene {
   private keyI!: Phaser.Input.Keyboard.Key;
   private keyG!: Phaser.Input.Keyboard.Key;
   private keyM!: Phaser.Input.Keyboard.Key;
-  private keyC!: Phaser.Input.Keyboard.Key;
+  private keyB!: Phaser.Input.Keyboard.Key;
+  private keyY!: Phaser.Input.Keyboard.Key;
+  private keyN!: Phaser.Input.Keyboard.Key;
+  private keyEsc!: Phaser.Input.Keyboard.Key;
 
-  private statusText!: Phaser.GameObjects.Text;
-  private statusPanel!: Phaser.GameObjects.Rectangle;
-  private expBar!: Phaser.GameObjects.Rectangle;
-  private statusLast = "";
+  private hud!: StatusHud;
 
   constructor() {
     super("World");
@@ -119,7 +124,7 @@ export class WorldScene extends Phaser.Scene {
     // — SHUTDOWN listeners fire in registration order, so this unsubscribes
     // before that save happens and no toast gets created on a scene that's
     // already tearing down. Keep this the first SHUTDOWN listener.
-    const unsubSaved = onSaved(() => showToast(this, "SAVED"));
+    const unsubSaved = onSaved(() => showToast(this, "SAVED", STATUS_HUD_TOAST_Y));
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubSaved);
 
     const level = buildLevel();
@@ -129,29 +134,16 @@ export class WorldScene extends Phaser.Scene {
       tileHeight: TILE,
     });
     const tileset = map.addTilesetImage("tiles16", "tiles16", TILE, TILE);
-    this.layer = map.createLayer(0, tileset!, 0, 0)!;
+    this.layer = map.createLayer(0, tileset!, 0, 0)! as Phaser.Tilemaps.TilemapLayer;
     this.layer.setCollision(Array.from(SOLID));
 
     this.physics.world.setBounds(0, 0, MAP_W * TILE, MAP_H * TILE);
-
-    this.moon = this.add
-      .image(280, 144, "moon")
-      .setScrollFactor(0)
-      .setDepth(2)
-      .setVisible(false)
-      .setAlpha(0);
-    this.stars = this.add
-      .image(GAME_WIDTH / 2, 144, "stars")
-      .setScrollFactor(0)
-      .setDepth(1)
-      .setVisible(false)
-      .setAlpha(0);
 
     this.add
       .image(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE, "house")
       .setOrigin(0.5, 0.5);
     this.homeLabel = this.add
-      .text(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE - 104, "HOME", retroStyle(5, "#9f9fd0"))
+      .text(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE - 80, "HOME", retroStyle(5, "#9f9fd0"))
       .setOrigin(0.5)
       .setDepth(11);
     this.homeBubble = this.buildHomeBubble();
@@ -163,7 +155,7 @@ export class WorldScene extends Phaser.Scene {
       .ellipse(NPC_POS.x, NPC_POS.y + 28, 40, 16, 0x000000, 0.4)
       .setDepth(5);
     this.add
-      .text(NPC_POS.x, NPC_POS.y - 68, "ELDER", retroStyle(5, "#9f9fd0"))
+      .text(NPC_POS.x, NPC_POS.y - 48, "ELDER", retroStyle(5, "#9f9fd0"))
       .setOrigin(0.5)
       .setDepth(11);
 
@@ -172,7 +164,7 @@ export class WorldScene extends Phaser.Scene {
       .ellipse(SHOP_POS.x, SHOP_POS.y + 28, 40, 16, 0x000000, 0.4)
       .setDepth(5);
     this.add
-      .text(SHOP_POS.x, SHOP_POS.y - 68, "SHOP", retroStyle(5, "#ffd166"))
+      .text(SHOP_POS.x, SHOP_POS.y - 48, "SHOP", retroStyle(5, "#ffd166"))
       .setOrigin(0.5)
       .setDepth(11);
 
@@ -333,8 +325,9 @@ export class WorldScene extends Phaser.Scene {
       if (!e.repeat) this.zQueued = true;
     });
     this.keyS = kb.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.keyS.on(Phaser.Input.Keyboard.Events.DOWN, () => {
-      this.sQueued = true;
+    this.keyS.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (e.ctrlKey) this.ctrlSQueued = true;
+      else this.sQueued = true;
     });
     this.keyI = kb.addKey(Phaser.Input.Keyboard.KeyCodes.I);
     this.keyI.on(Phaser.Input.Keyboard.Events.DOWN, () => {
@@ -348,9 +341,9 @@ export class WorldScene extends Phaser.Scene {
     this.keyM.on(Phaser.Input.Keyboard.Events.DOWN, () => {
       this.mQueued = true;
     });
-    this.keyC = kb.addKey(Phaser.Input.Keyboard.KeyCodes.C);
-    this.keyC.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
-      if (!e.repeat) this.cQueued = true;
+    this.keyB = kb.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+    this.keyB.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.bQueued = true;
     });
     kb.addKey(Phaser.Input.Keyboard.KeyCodes.Q).on(
       Phaser.Input.Keyboard.Events.DOWN,
@@ -358,6 +351,18 @@ export class WorldScene extends Phaser.Scene {
         if (!e.repeat) this.qQueued = true;
       }
     );
+    this.keyY = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Y);
+    this.keyY.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.yQueued = true;
+    });
+    this.keyN = kb.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+    this.keyN.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.nQueued = true;
+    });
+    this.keyEsc = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+    this.keyEsc.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (this.quitConfirm && !e.repeat) this.escQueued = true;
+    });
 
     this.dialogue = new DialogueBox(this, []);
     this.shop = new ShopUI(this);
@@ -368,7 +373,7 @@ export class WorldScene extends Phaser.Scene {
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE Z:TALK/REST I:ITEMS ESC:SKIP\nS:HUD M:MUTE C:BESTIARY Q:QUIT",
+        "HJKL:MOVE Z:TALK/OK I:ITEMS ESC:SKIP\nS:HUD M:MUTE B:BESTIARY Q:QUIT CTRL+S:SAVE",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
@@ -382,38 +387,14 @@ export class WorldScene extends Phaser.Scene {
       .setDepth(90)
       .setAlpha(0);
 
-    const statusDummy = [
-      "HERO",
-      "LV 1",
-      "HP 30/30",
-      "MP 10/10",
-      "G 0",
-      "DAY 1",
-      "00:00 DAY",
-      "SLIMES 0/5",
-      "CAUGHT 0",
-    ].join("\n");
-    this.statusText = this.add
-      .text(32, 0, statusDummy, retroStyle(6, "#ffffff"))
-      .setOrigin(0, 0)
+    this.hud = new StatusHud(this);
+
+    this.quitConfirmText = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "", retroStyle(8, "#ff5555"))
+      .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(101)
-      .setVisible(GameState.hudVisible);
-    const statusH = this.statusText.height + 48;
-    this.statusText.setY(GAME_HEIGHT - 16 - statusH + 24);
-    this.statusPanel = this.add
-      .rectangle(16, GAME_HEIGHT - 16, 360, statusH, 0x0b0b2b, 0.88)
-      .setOrigin(0, 1)
-      .setStrokeStyle(1, 0xffffff)
-      .setScrollFactor(0)
-      .setDepth(100)
-      .setVisible(GameState.hudVisible);
-    this.expBar = this.add
-      .rectangle(32, GAME_HEIGHT - 20, 328, 8, 0x22c55e)
-      .setOrigin(0, 0.5)
-      .setScrollFactor(0)
-      .setDepth(101)
-      .setVisible(GameState.hudVisible);
+      .setDepth(300)
+      .setVisible(false);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       GameState.pos = { x: this.player.x, y: this.player.y };
@@ -423,6 +404,7 @@ export class WorldScene extends Phaser.Scene {
       this.inventory.destroy();
       this.bestiary.destroy();
       hint.destroy();
+      this.quitConfirmText.destroy();
     });
   }
 
@@ -516,19 +498,46 @@ export class WorldScene extends Phaser.Scene {
       this.toggleStatus();
     }
 
+    if (this.ctrlSQueued) {
+      this.ctrlSQueued = false;
+      GameState.save();
+    }
+
     if (this.mQueued) {
       this.mQueued = false;
       const muted = Sfx.toggleMuted();
-      showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
+      showToast(this, muted ? "SOUND: OFF" : "SOUND: ON", STATUS_HUD_TOAST_Y);
     }
 
     if (this.qQueued) {
       this.qQueued = false;
       if (!this.uiBlocking() && !this.enteringDungeon) {
+        this.quitConfirm = true;
+        this.quitConfirmText.setText("QUIT TO TITLE? Y/N").setVisible(true);
+        Sfx.error();
+      }
+    }
+
+    if (this.quitConfirm) {
+      this.player.setVelocity(0, 0);
+      this.player.anims.stop();
+      this.dust.emitting = false;
+      this.zQueued = this.ctrlSQueued = this.iQueued = this.gCheatQueued = this.mQueued = this.bQueued = false;
+      if (this.yQueued) {
+        this.yQueued = false;
+        this.quitConfirm = false;
+        this.quitConfirmText.setVisible(false);
         // the SHUTDOWN handler saves pos + state, so this is save-and-quit
         this.scene.start("Title");
         return;
       }
+      if (this.nQueued || this.escQueued) {
+        this.nQueued = false;
+        this.escQueued = false;
+        this.quitConfirm = false;
+        this.quitConfirmText.setVisible(false);
+      }
+      return;
     }
 
     if (this.uiBlocking()) {
@@ -537,8 +546,8 @@ export class WorldScene extends Phaser.Scene {
         this.iQueued = false;
         if (this.inventory.isActive()) this.inventory.close();
       }
-      if (this.cQueued) {
-        this.cQueued = false;
+      if (this.bQueued) {
+        this.bQueued = false;
         if (this.bestiary.isActive()) this.bestiary.close();
       }
       this.player.setVelocity(0, 0);
@@ -558,8 +567,8 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
 
-    if (this.cQueued) {
-      this.cQueued = false;
+    if (this.bQueued) {
+      this.bQueued = false;
       this.bestiary.open();
       return;
     }
@@ -631,10 +640,8 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private toggleStatus(): void {
-    const visible = !this.statusPanel.visible;
-    this.statusPanel.setVisible(visible);
-    this.statusText.setVisible(visible);
-    this.expBar.setVisible(visible);
+    const visible = !this.hud.isVisible();
+    this.hud.setVisible(visible);
     GameState.hudVisible = visible;
     GameState.saveSettings();
   }
@@ -642,39 +649,12 @@ export class WorldScene extends Phaser.Scene {
   private updateDayNight(): void {
     const factor = nightFactor();
     this.nightOverlay.setAlpha(factor * 0.45);
-    this.moon.setVisible(factor > 0);
-    this.stars.setVisible(factor > 0);
-    this.moon.setAlpha(factor);
-    this.stars.setAlpha(factor);
     this.fireflies.emitting = factor > 0.05;
     this.fireflies.setAlpha(factor);
   }
 
   private updateStatus(): void {
-    const p = GameState.player;
-    const q = GameState.quest;
-    const questLine = q.bossDefeated
-      ? "QUEST DONE"
-      : `SLIMES ${q.slimes}/5`;
-    const text = [
-      p.name,
-      `LV ${p.level}`,
-      `HP ${p.hp}/${GameState.effMaxHp()}`,
-      `MP ${p.mp}/${p.maxMp}`,
-      `G ${GameState.gold}`,
-      `DAY ${dayCount()}`,
-      `${clock()} ${timeLabel()}`,
-      questLine,
-      `CAUGHT ${GameState.caught.length}`,
-    ].join("\n");
-    if (text !== this.statusLast) {
-      this.statusLast = text;
-      this.statusText.setText(text);
-    }
-    this.expBar.setScale(
-      Math.max(0, p.exp / expToNext(p.level)),
-      1
-    );
+    this.hud.update();
   }
 
   private tryTalk(): boolean {
@@ -711,7 +691,7 @@ export class WorldScene extends Phaser.Scene {
       GameState.player.mp = GameState.player.maxMp;
       GameState.minutes = (Math.floor(GameState.minutes / 1440) + 1) * 1440 + 360;
       GameState.save();
-      this.statusLast = "";
+      this.hud.forceRefresh();
       this.cameras.main.fadeIn(400, 0, 0, 0);
       this.resting = false;
       const note = this.add
@@ -808,13 +788,14 @@ export class WorldScene extends Phaser.Scene {
         ease: "Sine.easeInOut",
       });
 
+      const kind: "slime" | "wolf" = zone.kind === "wolf" ? "wolf" : "slime";
       for (let i = 0; i < zone.count; i++) {
         const x = zone.cx + (Math.random() - 0.5) * zone.w * 0.6;
         const y = zone.cy + (Math.random() - 0.5) * zone.h * 0.6;
         const sprite = this.roamerGroup.create(
           x,
           y,
-          "slime"
+          kind
         ) as Phaser.Physics.Arcade.Sprite;
         sprite.setDepth(10);
         sprite.body?.setSize(40, 24).setOffset(12, 32);
@@ -828,7 +809,7 @@ export class WorldScene extends Phaser.Scene {
           targetY: y,
           wait: 300 + Math.random() * 800,
           speed: 56 + Math.random() * 40,
-          kind: "slime",
+          kind,
         });
         this.tweens.add({
           targets: sprite,
@@ -900,13 +881,14 @@ export class WorldScene extends Phaser.Scene {
     r.targetY = r.minY + Math.random() * (r.maxY - r.minY);
   }
 
-  private startBattle(enemy?: "slime" | "goblin" | "troll"): void {
+  private startBattle(enemy?: "slime" | "goblin" | "troll" | "wolf"): void {
     if (this.encounterCooldown > 0) return; // already fading into a battle
     this.player.setVelocity(0, 0);
     this.encounterCooldown = ENCOUNTER_COOLDOWN;
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      const kind = enemy ?? (Math.random() < 0.5 ? "slime" : "goblin");
+      const roll = Math.random();
+      const kind = enemy ?? (roll < 0.4 ? "slime" : roll < 0.75 ? "goblin" : "wolf");
       this.scene.start("Battle", { enemy: kind, from: "World" });
     });
   }

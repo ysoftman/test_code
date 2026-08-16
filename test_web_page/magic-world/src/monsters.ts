@@ -13,6 +13,8 @@ export interface EnemyDef {
 export const ENEMIES: Record<string, EnemyDef> = {
   slime: { name: "SLIME", texture: "slime", hp: 16, atk: 5, def: 0, exp: 8, gold: 5 },
   goblin: { name: "GOBLIN", texture: "goblin", hp: 22, atk: 7, def: 1, exp: 14, gold: 9 },
+  bat: { name: "BAT", texture: "bat", hp: 18, atk: 6, def: 0, exp: 12, gold: 8 },
+  wolf: { name: "WOLF", texture: "wolf", hp: 30, atk: 9, def: 1, exp: 25, gold: 15 },
   king: {
     name: "KING SLIME",
     texture: "king",

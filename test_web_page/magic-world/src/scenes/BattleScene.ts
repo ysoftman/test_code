@@ -247,6 +247,18 @@ export class BattleScene extends Phaser.Scene {
         this.renderItems();
         return;
       }
+      if (e.code === "ArrowUp" || e.code === "KeyK") {
+        this.itemIndex = (this.itemIndex + ITEM_SLOTS.length - ITEMS_PER_ROW) % ITEM_SLOTS.length;
+        Sfx.move();
+        this.renderItems();
+        return;
+      }
+      if (e.code === "ArrowDown" || e.code === "KeyJ") {
+        this.itemIndex = (this.itemIndex + ITEMS_PER_ROW) % ITEM_SLOTS.length;
+        Sfx.move();
+        this.renderItems();
+        return;
+      }
       if (e.code === "Escape") {
         this.inItems = false;
         this.hideItems();
@@ -324,7 +336,7 @@ export class BattleScene extends Phaser.Scene {
     const target = this.itemTexts[this.itemIndex];
     this.itemCursor.setX(target.x - ITEM_TEXT_OFFSET);
     this.itemCursor.setY(target.y);
-    this.hintText.setText("H/L:NAV  Z:OK  ESC:BACK");
+    this.hintText.setText("H/L/J/K:NAV  Z:OK  ESC:BACK");
   }
 
   private async runBattle(): Promise<void> {
@@ -399,7 +411,7 @@ export class BattleScene extends Phaser.Scene {
     const { dmg, crit } = this.calcDamage(GameState.effAtk(), this.enemy.def);
     if (crit) Sfx.critical();
     this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
-    this.enemySprite.setTintFill(0xffffff);
+    this.enemySprite.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
     this.hitBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
     this.hitBurst.explode(crit ? 16 : 8);
     this.cameras.main.shake(crit ? 120 : 60, crit ? 0.012 : 0.004);
@@ -416,7 +428,7 @@ export class BattleScene extends Phaser.Scene {
     const dmg = 10 + Math.floor(Math.random() * 5);
     await this.fireball();
     this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
-    this.enemySprite.setTintFill(0xffa500);
+    this.enemySprite.setTint(0xffa500).setTintMode(Phaser.TintModes.FILL);
     this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg);
     await this.say(`FIRE! ${dmg} damage!`);
     this.enemySprite.clearTint();
@@ -512,7 +524,7 @@ export class BattleScene extends Phaser.Scene {
     GameState.inventory.bomb -= 1;
     const dmg = 12;
     this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
-    this.enemySprite.setTintFill(0xffa500);
+    this.enemySprite.setTint(0xffa500).setTintMode(Phaser.TintModes.FILL);
     this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg);
     await this.say(`BOOM! ${dmg} damage!`);
     this.enemySprite.clearTint();
@@ -545,7 +557,7 @@ export class BattleScene extends Phaser.Scene {
     const { dmg, crit } = this.calcDamage(this.enemy.atk, GameState.effDef());
     if (crit) Sfx.critical();
     GameState.player.hp = Math.max(0, GameState.player.hp - dmg);
-    this.playerSprite.setTintFill(0xff6666);
+    this.playerSprite.setTint(0xff6666).setTintMode(Phaser.TintModes.FILL);
     this.hitBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
     this.hitBurst.explode(crit ? 16 : 8);
     this.cameras.main.shake(crit ? 120 : 80, crit ? 0.012 : 0.006);
@@ -773,10 +785,11 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private awaitAdvance(resolve: () => void): void {
-    this.hintText.setText("Z/A/F/ESC:CONTINUE");
+    this.hintText.setText("Z/A/I/F/ESC:CONTINUE");
     const done = () => {
       this.input.keyboard?.removeListener("keydown-Z", done);
       this.input.keyboard?.removeListener("keydown-A", done);
+      this.input.keyboard?.removeListener("keydown-I", done);
       this.input.keyboard?.removeListener("keydown-F", done);
       this.input.keyboard?.removeListener("keydown-ESC", done);
       this.input.keyboard?.removeListener("keydown-SPACE", done);
@@ -785,6 +798,7 @@ export class BattleScene extends Phaser.Scene {
     };
     this.input.keyboard?.once("keydown-Z", done);
     this.input.keyboard?.once("keydown-A", done);
+    this.input.keyboard?.once("keydown-I", done);
     this.input.keyboard?.once("keydown-F", done);
     this.input.keyboard?.once("keydown-ESC", done);
     this.input.keyboard?.once("keydown-SPACE", done);

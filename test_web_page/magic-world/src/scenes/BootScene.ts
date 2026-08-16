@@ -346,6 +346,46 @@ const GOBLIN_TILE = [
   "................",
 ];
 
+const WOLF_PALETTE = { g: 0x94a3b8, G: 0x64748b, d: 0x475569, e: 0xef4444, n: 0x334155 };
+const WOLF_TILE = [
+  "................",
+  "..gg.......gg...",
+  "..ggg.....ggg...",
+  "..gggggggggggg..",
+  "..ggGGGGGGGGgg..",
+  ".ggGddddddddGgg.",
+  ".ggGddddddddGgg.",
+  ".ggGddeeeddGgg..",
+  ".ggGddeeeddGgg..",
+  "..ggGddddddGgg..",
+  "..ggGGGGGGGGgg..",
+  "..gggggggggggg..",
+  "..gg..gggg..gg..",
+  "..gg..gggg..gg..",
+  "................",
+  "................",
+];
+
+const BAT_PALETTE = { b: 0x7c3aed, B: 0x5b21b6, d: 0x3b0764, w: 0xffffff, e: 0xf87171 };
+const BAT_TILE = [
+  "bb............bb",
+  "bbbb........bbbb",
+  "bbbbbbbbbbbbbbbb",
+  "bBBBBBBBBBBBBBBb",
+  "bBdddddddddddBb.",
+  ".bBdwwwwwwwdBbb..",
+  ".bBdweeeeewdBbb..",
+  ".bBdwwwwwwwdBbb..",
+  "..bBddddddBb....",
+  "..bbbbbbbbbb....",
+  "................",
+  "................",
+  "................",
+  "................",
+  "................",
+  "................",
+];
+
 const SPARK_PALETTE = { y: 0xffdd44 };
 const SPARK_TILE = [
   "..y.....",
@@ -503,30 +543,6 @@ function makeHouse(scene: Phaser.Scene): void {
   g.fillStyle(0xffd672, 0.3);
   g.fillRect(84, 56, 32, 32);
   g.generateTexture("house", 128, 128);
-  g.destroy();
-}
-
-function makeMoon(scene: Phaser.Scene): void {
-  const g = scene.add.graphics();
-  g.fillStyle(0xe8eaf8, 0.25);
-  g.fillCircle(96, 96, 68);
-  g.fillStyle(0xe8eaf8, 0.5);
-  g.fillCircle(96, 96, 52);
-  g.fillStyle(0xf6f6ff, 1);
-  g.fillCircle(96, 96, 36);
-  g.fillStyle(0xffffff, 1);
-  g.fillCircle(96, 96, 24);
-  g.generateTexture("moon", 192, 192);
-  g.destroy();
-}
-
-function makeStars(scene: Phaser.Scene): void {
-  const g = scene.add.graphics();
-  for (let i = 0; i < 90; i++) {
-    g.fillStyle(0xffffff, Math.random() * 0.8 + 0.2);
-    g.fillRect(Math.floor(Math.random() * 1280), Math.floor(Math.random() * 320), 4, 4);
-  }
-  g.generateTexture("stars", 1280, 320);
   g.destroy();
 }
 
@@ -705,6 +721,8 @@ export class BootScene extends Phaser.Scene {
     makeTexture(this, "king", SLIME_TILE, KING_SLIME_PALETTE);
     makeTexture(this, "goblin", GOBLIN_TILE, GOBLIN_PALETTE);
     makeTexture(this, "troll", GOBLIN_TILE, TROLL_PALETTE);
+    makeTexture(this, "wolf", WOLF_TILE, WOLF_PALETTE);
+    makeTexture(this, "bat", BAT_TILE, BAT_PALETTE);
 
     makeTexture(this, "dust", ["dd", "dd"], { d: 0xcbbfa8 });
     makeTexture(this, "spark", SPARK_TILE, SPARK_PALETTE);
@@ -716,8 +734,6 @@ export class BootScene extends Phaser.Scene {
 
     makeHouse(this);
     makeSign(this);
-    makeMoon(this);
-    makeStars(this);
     makeCave(this);
     makeBattleBg(this);
     makeTitleBg(this);

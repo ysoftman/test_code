@@ -8,8 +8,8 @@ export const T_PATH = 4;
 export const T_TALL = 5;
 export const T_HOUSE = 6;
 
-export const MAP_W = 24;
-export const MAP_H = 18;
+export const MAP_W = 32;
+export const MAP_H = 24;
 
 export const SOLID = new Set<number>([T_WATER_A, T_WATER_B, T_TREE, T_HOUSE]);
 export const TALL_GRASS = T_TALL;
@@ -20,11 +20,16 @@ export interface MonsterZone {
   w: number;
   h: number;
   count: number;
+  kind?: "slime" | "goblin" | "wolf" | "bat";
 }
 
 export const MONSTER_ZONES: MonsterZone[] = [
   { cx: 4 * TILE, cy: 14 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
   { cx: 18 * TILE, cy: 13 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
+  { cx: 10 * TILE, cy: 20 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
+  { cx: 26 * TILE, cy: 8 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
+  { cx: 27 * TILE, cy: 17.5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
+  { cx: 21.5 * TILE, cy: 3.5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2 },
 ];
 
 const CHARS: Record<string, number> = {
@@ -63,7 +68,7 @@ export function buildLevel(): number[][] {
   }
 
   stamp(map, 3, 2, ["HH", "HH"]);
-  stamp(map, 1, 7, ["PPPPPPPPPPPPPPPPPPPP"]);
+  stamp(map, 1, 7, ["PPPPPPPPPPPPPPPPPPPPPPPP"]);
   stamp(map, 7, 3, ["P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "P"]);
   stamp(map, 5, 7, ["P", "P"]);
   stamp(map, 3, 13, ["hh", "hh"]);
@@ -72,6 +77,28 @@ export function buildLevel(): number[][] {
   stamp(map, 15, 5, [".T.", "TTT"]);
   stamp(map, 18, 9, ["T.T", ".T."]);
   stamp(map, 12, 2, ["T"]);
+
+  stamp(map, 25, 4, ["WWWW", "WWWW", "WWWW"]);
+  stamp(map, 25, 7, ["hhh", "hhh", "hhh"]);
+  stamp(map, 21, 3, ["hh", "hh"]);
+  stamp(map, 24, 8, ["P", "P", "P", "P"]);
+  stamp(map, 27, 2, [".T.", "TTT"]);
+  stamp(map, 29, 6, ["T"]);
+  stamp(map, 22, 12, ["T.T", ".T."]);
+  stamp(map, 29, 12, ["T.T", ".T."]);
+  stamp(map, 26, 14, ["T"]);
+  stamp(map, 30, 15, [".T.", "TTT"]);
+
+  stamp(map, 7, 14, ["P", "P", "P", "P", "P", "P", "P", "P"]);
+  stamp(map, 9, 19, ["hhhh", "hhhh"]);
+  stamp(map, 26, 17, ["hhh", "hhh"]);
+  stamp(map, 2, 17, ["T"]);
+  stamp(map, 6, 16, [".T.", "TTT"]);
+  stamp(map, 14, 21, ["TTT", ".T."]);
+  stamp(map, 20, 20, [".T.", "TTT"]);
+  stamp(map, 5, 22, ["TT", ".."]);
+  stamp(map, 16, 17, ["T"]);
+  stamp(map, 11, 15, ["T"]);
 
   return map;
 }
@@ -82,19 +109,23 @@ export const HOUSE_POS = { x: 3 * TILE, y: 2 * TILE };
 export const SHOP_POS = { x: 5 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
 export const CAVE_POS = { x: 19 * TILE + TILE / 2, y: 2 * TILE + TILE / 2 };
 
-export const DUNGEON_W = 20;
-export const DUNGEON_H = 14;
+export const DUNGEON_W = 24;
+export const DUNGEON_H = 16;
 export const DUNGEON_ENTRY = { x: 10 * TILE + TILE / 2, y: 1 * TILE + TILE / 2 };
 
 export const DUNGEON_ZONES: MonsterZone[] = [
   { cx: 4 * TILE, cy: 5 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3 },
   { cx: 15 * TILE, cy: 6 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3 },
   { cx: 10 * TILE, cy: 12 * TILE, w: 3 * TILE, h: 2 * TILE, count: 1 },
+  { cx: 11 * TILE, cy: 3 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3, kind: "bat" },
+  { cx: 21 * TILE, cy: 10 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "bat" },
+  { cx: 4 * TILE, cy: 12 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2, kind: "bat" },
 ];
 
 export const TREASURE_POS: Array<{ id: string; x: number; y: number }> = [
   { id: "dungeon-1", x: 7 * TILE + TILE / 2, y: 4 * TILE + TILE / 2 },
   { id: "dungeon-2", x: 17 * TILE + TILE / 2, y: 10 * TILE + TILE / 2 },
+  { id: "dungeon-3", x: 22 * TILE + TILE / 2, y: 12 * TILE + TILE / 2 },
 ];
 
 export function buildDungeon(): number[][] {
@@ -127,6 +158,15 @@ export function buildDungeon(): number[][] {
   map[12][6] = T_TREE;
   map[11][13] = T_TREE;
   map[12][13] = T_TREE;
+
+  stamp(map, 21, 4, ["WW", "WW", "WW"]);
+  stamp(map, 19, 5, [".T", "TT"]);
+  stamp(map, 19, 13, ["TT"]);
+  stamp(map, 21, 12, ["T"]);
+  stamp(map, 3, 14, ["T.", ".T"]);
+  stamp(map, 17, 14, ["TT"]);
+  stamp(map, 20, 2, ["T"]);
+  stamp(map, 23, 12, ["T", "T"]);
 
   return map;
 }

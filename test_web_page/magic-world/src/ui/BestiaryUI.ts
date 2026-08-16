@@ -18,7 +18,7 @@ export class BestiaryUI {
   private rows: Phaser.GameObjects.Text[] = [];
 
   private keyEsc: Phaser.Input.Keyboard.Key;
-  private keyC: Phaser.Input.Keyboard.Key;
+  private keyB: Phaser.Input.Keyboard.Key;
   private closeQueued = false;
 
   constructor(scene: Phaser.Scene) {
@@ -61,12 +61,12 @@ export class BestiaryUI {
 
     const kb = scene.input.keyboard!;
     this.keyEsc = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-    this.keyC = kb.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+    this.keyB = kb.addKey(Phaser.Input.Keyboard.KeyCodes.B);
     const queueClose = () => {
       this.closeQueued = true;
     };
     this.keyEsc.on(Phaser.Input.Keyboard.Events.DOWN, queueClose);
-    this.keyC.on(Phaser.Input.Keyboard.Events.DOWN, queueClose);
+    this.keyB.on(Phaser.Input.Keyboard.Events.DOWN, queueClose);
   }
 
   open(): void {

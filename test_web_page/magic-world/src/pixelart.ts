@@ -20,14 +20,14 @@ export function retroStyle(
 
 const TOAST_NAME = "__toast";
 
-export function showToast(scene: Phaser.Scene, text: string): void {
+export function showToast(scene: Phaser.Scene, text: string, y = 8): void {
   // Reuse one toast per scene instead of stacking a new Text on every call —
   // otherwise mashing the key that triggers it (e.g. mute) overlaps garbled
   // text from multiple in-flight instances.
   let t = scene.children.getByName(TOAST_NAME) as Phaser.GameObjects.Text | null;
   if (!t) {
     t = scene.add
-      .text(GAME_WIDTH / 2, 8, "", retroStyle(5, "#8ecbff"))
+      .text(GAME_WIDTH / 2, y, "", retroStyle(5, "#8ecbff"))
       .setName(TOAST_NAME)
       .setOrigin(0.5, 0)
       .setScrollFactor(0)

@@ -46,7 +46,7 @@ export class TitleScene extends Phaser.Scene {
       .text(
         GAME_WIDTH / 2,
         660,
-        hasSave ? "C: CONTINUE  N: NEW GAME  Q: DELETE SAVE" : "NO SAVE FOUND",
+        hasSave ? "C: CONTINUE  N: NEW GAME  D: DELETE SAVE" : "NO SAVE FOUND",
         retroStyle(6, "#8ecbff")
       )
       .setOrigin(0.5);
@@ -57,7 +57,7 @@ export class TitleScene extends Phaser.Scene {
       prompt.setColor("#ffffff");
       if (GameState.hasSave()) {
         prompt.setText("PRESS ENTER TO CONTINUE");
-        continueText.setText("C: CONTINUE  N: NEW GAME  Q: DELETE SAVE");
+        continueText.setText("C: CONTINUE  N: NEW GAME  D: DELETE SAVE");
       } else {
         prompt.setText("PRESS ENTER");
         continueText.setText("NO SAVE FOUND");
@@ -108,7 +108,7 @@ export class TitleScene extends Phaser.Scene {
         start(false);
       } else if ((e.key === "c" || e.key === "C") && GameState.hasSave()) {
         start(true);
-      } else if ((e.key === "q" || e.key === "Q") && GameState.hasSave()) {
+      } else if ((e.key === "d" || e.key === "D") && GameState.hasSave()) {
         confirmDelete = true;
         Sfx.error();
         prompt.setText("DELETE SAVE? Y/N").setColor("#ff5555");
