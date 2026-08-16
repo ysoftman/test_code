@@ -5,11 +5,11 @@
     "": {
       "name": "magic-world",
       "dependencies": {
-        "phaser": "latest",
+        "phaser": "^4.2.1",
       },
       "devDependencies": {
-        "typescript": "latest",
-        "vite": "latest",
+        "typescript": "^7.0.2",
+        "vite": "^8.2.1",
       },
     },
   },
