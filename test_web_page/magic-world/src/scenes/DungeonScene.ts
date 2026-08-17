@@ -22,6 +22,8 @@ import {
 type LastMove = "down" | "up" | "right" | "left";
 
 const ENCOUNTER_COOLDOWN = 600;
+// long enough for the SAVED confirmation to be readable before the title
+const QUIT_SAVE_DELAY = 700;
 const EXIT_SAFE_RADIUS_X = TILE * 2;
 const EXIT_SAFE_RADIUS_Y = TILE * 2.5;
 
@@ -74,6 +76,8 @@ export class DungeonScene extends Phaser.Scene {
   private tQueued = false;
   private qQueued = false;
   private quitConfirm = false;
+  private quitting = false;
+  private unsubSaved: () => void = () => {};
   private yQueued = false;
   private nQueued = false;
   private escQueued = false;
@@ -95,13 +99,15 @@ export class DungeonScene extends Phaser.Scene {
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";
     this.exitingDungeon = false;
+    this.quitConfirm = false;
+    this.quitting = false;
 
     // Registered before the SHUTDOWN handler below that calls GameState.save()
     // — SHUTDOWN listeners fire in registration order, so this unsubscribes
     // before that save happens and no toast gets created on a scene that's
     // already tearing down. Keep this the first SHUTDOWN listener.
-    const unsubSaved = onSaved(() => showToast(this, "SAVED", STATUS_HUD_TOAST_Y));
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubSaved);
+    this.unsubSaved = onSaved(() => showToast(this, "SAVED", STATUS_HUD_TOAST_Y));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.unsubSaved());
 
     const level = buildDungeon();
     const map = this.make.tilemap({
@@ -346,16 +352,23 @@ export class DungeonScene extends Phaser.Scene {
     }
 
     if (this.quitConfirm) {
+      if (this.quitting) return;
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
       this.dust.emitting = false;
       this.ctrlSQueued = this.mQueued = false;
       if (this.yQueued) {
         this.yQueued = false;
-        this.quitConfirm = false;
-        this.quitConfirmText.setVisible(false);
-        // the SHUTDOWN handler saves, so this is save-and-quit
-        this.scene.start("Title");
+        // Save here rather than leaning on the SHUTDOWN handler: that one runs
+        // after the toast subscription is torn down, so the player never sees
+        // the confirmation. The SHUTDOWN save then just repeats this one.
+        this.quitting = true;
+        // the quit prompt itself reports the save, so drop the toast that
+        // GameState.save() would otherwise stack on top of it
+        this.unsubSaved();
+        GameState.save();
+        this.quitConfirmText.setText("SAVED").setColor("#4ade80");
+        this.time.delayedCall(QUIT_SAVE_DELAY, () => this.scene.start("Title"));
         return;
       }
       if (this.nQueued || this.escQueued) {

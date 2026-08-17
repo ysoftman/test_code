@@ -95,14 +95,8 @@ export function buildLevel(): number[][] {
     Array<number>(MAP_W).fill(T_GRASS)
   );
 
-  for (let x = 0; x < MAP_W; x++) {
-    map[0][x] = T_WATER_A;
-    map[MAP_H - 1][x] = T_WATER_A;
-  }
-  for (let y = 0; y < MAP_H; y++) {
-    map[y][0] = T_WATER_A;
-    map[y][MAP_W - 1] = T_WATER_A;
-  }
+  // No water border: the map edge is plain grass and the camera/physics world
+  // bounds already stop the hero from walking off.
 
   stamp(map, 3, 2, ["HH", "HH"]);
   stamp(map, 1, 7, ["PPPPPPPPPPPPPPPPPPPPPPPP"]);
