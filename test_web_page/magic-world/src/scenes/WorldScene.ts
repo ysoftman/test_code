@@ -19,6 +19,7 @@ import {
   HOUSE_POS,
   CAVE_POS,
   MONSTER_ZONES,
+  escapeFromZones,
   SOLID,
   T_WATER_A,
   T_WATER_B,
@@ -112,7 +113,7 @@ export class WorldScene extends Phaser.Scene {
     super("World");
   }
 
-  create(data?: { fromDungeon?: boolean }): void {
+  create(data?: { fromDungeon?: boolean; fromBattle?: boolean }): void {
     Sfx.playBgm(OVERWORLD_THEME);
     this.roamers = [];
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
@@ -198,6 +199,11 @@ export class WorldScene extends Phaser.Scene {
     this.player.setDepth(10);
     this.player.body?.setSize(40, 32).setOffset(12, 32);
     this.physics.add.collider(this.player, this.layer);
+
+    // A battle just ended on this spot, which is inside a monster zone —
+    // step out to the nearest walkable tile outside it so the encounter
+    // lock expiring here doesn't trigger another fight immediately.
+    if (data?.fromBattle) this.escapeMonsterZone();
 
     this.playerShadow = this.add
       .ellipse(this.player.x, this.player.y + 28, 40, 16, 0x000000, 0.4)
@@ -488,7 +494,7 @@ export class WorldScene extends Phaser.Scene {
 
     if (this.gCheatQueued) {
       this.gCheatQueued = false;
-      GameState.gold += 100;
+      GameState.gainGold(100);
       GameState.save();
       this.flashNote("+100G (CHEAT)");
     }
@@ -714,7 +720,7 @@ export class WorldScene extends Phaser.Scene {
     const q = GameState.quest;
     if (!q.slimeReward && q.slimes >= 5) {
       q.slimeReward = true;
-      GameState.gold += 30;
+      GameState.gainGold(30);
       Sfx.buy();
       this.dialogue.start(
         [
@@ -741,7 +747,7 @@ export class WorldScene extends Phaser.Scene {
     }
     if (!q.finalReward) {
       q.finalReward = true;
-      GameState.gold += 100;
+      GameState.gainGold(100);
       Sfx.buy();
       this.dialogue.start(
         [
@@ -767,6 +773,19 @@ export class WorldScene extends Phaser.Scene {
     if (Math.random() < rate) {
       this.startBattle();
     }
+  }
+
+  private escapeMonsterZone(): void {
+    const spot = escapeFromZones(
+      MONSTER_ZONES,
+      this.player.x,
+      this.player.y,
+      (tx, ty) => {
+        const tile = this.layer.getTileAt(tx, ty);
+        return !!tile && !SOLID.has(tile.index);
+      }
+    );
+    if (spot) this.player.setPosition(spot.x, spot.y);
   }
 
   private spawnMonsters(): void {

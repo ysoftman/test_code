@@ -32,6 +32,43 @@ export const MONSTER_ZONES: MonsterZone[] = [
   { cx: 21.5 * TILE, cy: 3.5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2 },
 ];
 
+// Battle ends leave the hero standing where the fight started — inside the
+// monster zone, so the post-battle encounter lock expiring right there pulls
+// them straight into another fight. This finds the nearest walkable tile
+// outside every zone (within `maxTiles` tiles) for the scene to teleport to.
+export function escapeFromZones(
+  zones: MonsterZone[],
+  x: number,
+  y: number,
+  walkable: (tx: number, ty: number) => boolean,
+  maxTiles = 6
+): { x: number; y: number } | null {
+  // Clearance from the zone edge: half a tile, so the hero's 40x32 body
+  // never reaches back into the zone (or into the dungeon exit trigger).
+  const pad = TILE * 0.5;
+  const inZone = (px: number, py: number, p: number): boolean =>
+    zones.some(
+      (z) =>
+        Math.abs(px - z.cx) <= z.w / 2 + p &&
+        Math.abs(py - z.cy) <= z.h / 2 + p
+    );
+  if (!inZone(x, y, TILE * 0.25)) return null;
+  let best: { x: number; y: number; d: number } | null = null;
+  const cx = Math.floor(x / TILE);
+  const cy = Math.floor(y / TILE);
+  for (let ty = cy - maxTiles; ty <= cy + maxTiles; ty++) {
+    for (let tx = cx - maxTiles; tx <= cx + maxTiles; tx++) {
+      const wx = tx * TILE + TILE / 2;
+      const wy = ty * TILE + TILE / 2;
+      if (inZone(wx, wy, pad)) continue;
+      if (!walkable(tx, ty)) continue;
+      const d = Math.hypot(wx - x, wy - y);
+      if (!best || d < best.d) best = { x: wx, y: wy, d };
+    }
+  }
+  return best ? { x: best.x, y: best.y } : null;
+}
+
 const CHARS: Record<string, number> = {
   G: T_GRASS,
   W: T_WATER_A,

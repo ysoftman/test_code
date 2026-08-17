@@ -1,3 +1,5 @@
+import { MAX_GOLD, MAX_HP, MAX_LEVEL, MAX_MP } from "./config";
+
 export interface PlayerState {
   name: string;
   level: number;
@@ -140,7 +142,12 @@ export const GameState = {
   },
 
   effMaxHp(): number {
-    return this.player.maxHp + (this.equipped.accessory === "amulet" ? 10 : 0);
+    return Math.min(MAX_HP, this.player.maxHp + (this.equipped.accessory === "amulet" ? 10 : 0));
+  },
+  gainGold(n: number): number {
+    const added = Math.min(MAX_GOLD, this.gold + n) - this.gold;
+    this.gold += added;
+    return added;
   },
   effAtk(): number {
     return (
@@ -253,7 +260,10 @@ export const GameState = {
     try {
       const data = JSON.parse(raw);
       Object.assign(this.player, data.player);
-      this.gold = data.gold ?? 0;
+      this.player.level = Math.min(MAX_LEVEL, this.player.level);
+      this.player.maxHp = Math.min(MAX_HP, this.player.maxHp);
+      this.player.maxMp = Math.min(MAX_MP, this.player.maxMp);
+      this.gold = Math.min(MAX_GOLD, data.gold ?? 0);
       this.battles = data.battles ?? 0;
       Object.assign(this.inventory, data.inventory);
       // migrate old boolean equipment flags -> inventory counts + equipped

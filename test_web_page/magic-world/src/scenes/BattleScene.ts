@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GAME_WIDTH, GAME_HEIGHT } from "../config";
+import { GAME_WIDTH, GAME_HEIGHT, MAX_HP, MAX_LEVEL, MAX_MP } from "../config";
 import { GameState, expToNext, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
 import { Sfx, BATTLE_THEME } from "../audio";
@@ -677,7 +677,7 @@ export class BattleScene extends Phaser.Scene {
   private async victory(caught = false): Promise<void> {
     this.running = false;
     if (!caught) {
-      GameState.gold += this.enemy.gold;
+      const goldGained = GameState.gainGold(this.enemy.gold);
       GameState.battles += 1;
       if (this.enemy.name === "SLIME") GameState.quest.slimes += 1;
       if (this.enemy.boss) GameState.quest.bossDefeated = true;
@@ -686,7 +686,7 @@ export class BattleScene extends Phaser.Scene {
       Sfx.victory();
       this.tweenPromise(this.enemySprite, { scale: this.enemySprite.scale * 1.15, alpha: 0 }, 350);
       await this.say(`${this.enemy.name} is defeated!`);
-      await this.say(`Gained ${this.enemy.gold} gold!`);
+      await this.say(`Gained ${goldGained} gold!`);
       if (this.enemy.boss) {
         GameState.inventory.hiPotion += 1;
         Sfx.pickup();
@@ -713,11 +713,14 @@ export class BattleScene extends Phaser.Scene {
       }
       GameState.player.exp += this.enemy.exp;
       let msg = `EXP +${this.enemy.exp}`;
-      while (GameState.player.exp >= expToNext(GameState.player.level)) {
+      while (
+        GameState.player.level < MAX_LEVEL &&
+        GameState.player.exp >= expToNext(GameState.player.level)
+      ) {
         GameState.player.exp -= expToNext(GameState.player.level);
         GameState.player.level += 1;
-        GameState.player.maxHp += 5;
-        GameState.player.maxMp += 2;
+        GameState.player.maxHp = Math.min(MAX_HP, GameState.player.maxHp + 5);
+        GameState.player.maxMp = Math.min(MAX_MP, GameState.player.maxMp + 2);
         GameState.player.atk += 1;
         GameState.player.def += 1;
         GameState.player.hp = GameState.effMaxHp();
@@ -761,7 +764,9 @@ export class BattleScene extends Phaser.Scene {
     GameState.lockEncounters(4000);
     this.cameras.main.fadeOut(400, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start(this.origin === "Dungeon" ? "Dungeon" : "World");
+      this.scene.start(this.origin === "Dungeon" ? "Dungeon" : "World", {
+        fromBattle: true,
+      });
     });
   }
 

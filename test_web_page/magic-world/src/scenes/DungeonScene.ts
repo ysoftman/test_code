@@ -15,6 +15,7 @@ import {
   SOLID,
   T_WATER_A,
   T_WATER_B,
+  escapeFromZones,
 } from "../levels";
 
 type LastMove = "down" | "up" | "right" | "left";
@@ -85,7 +86,7 @@ export class DungeonScene extends Phaser.Scene {
     super("Dungeon");
   }
 
-  create(): void {
+  create(data?: { fromBattle?: boolean }): void {
     Sfx.playBgm(DUNGEON_THEME);
     this.roamers = [];
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
@@ -131,6 +132,10 @@ export class DungeonScene extends Phaser.Scene {
     this.player.setDepth(10);
     this.player.body?.setSize(40, 32).setOffset(12, 32);
     this.physics.add.collider(this.player, this.layer);
+
+    // The entry respawn after a battle sits inside the bat zone — step out
+    // to the nearest walkable tile outside it.
+    if (data?.fromBattle) this.escapeMonsterZone();
 
     this.playerShadow = this.add
       .ellipse(this.player.x, this.player.y + 28, 40, 16, 0x000000, 0.4)
@@ -421,6 +426,19 @@ export class DungeonScene extends Phaser.Scene {
     }
   }
 
+  private escapeMonsterZone(): void {
+    const spot = escapeFromZones(
+      DUNGEON_ZONES,
+      this.player.x,
+      this.player.y,
+      (tx, ty) => {
+        const tile = this.layer.getTileAt(tx, ty);
+        return !!tile && !SOLID.has(tile.index);
+      }
+    );
+    if (spot) this.player.setPosition(spot.x, spot.y);
+  }
+
   private spawnMonsters(): void {
     this.roamerGroup = this.physics.add.group();
     for (const zone of DUNGEON_ZONES) {
@@ -487,7 +505,7 @@ export class DungeonScene extends Phaser.Scene {
     chest.setTexture("chest-open");
     Sfx.chest();
     const gold = 15 + Math.floor(Math.random() * 16);
-    GameState.gold += gold;
+    GameState.gainGold(gold);
     let loot = "";
     const r = Math.random();
     if (r < 0.4) {
