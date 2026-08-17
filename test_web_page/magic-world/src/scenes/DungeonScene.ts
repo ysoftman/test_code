@@ -4,6 +4,8 @@ import { GameState, isNight, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
 import { StatusHud, STATUS_HUD_HEIGHT, STATUS_HUD_TOAST_Y } from "../ui/StatusHud";
 import { Minimap } from "../ui/Minimap";
+import { InventoryUI } from "../ui/InventoryUI";
+import { BestiaryUI } from "../ui/BestiaryUI";
 import { NightOverlay, NIGHT_ENCOUNTER_MULT } from "../ui/NightOverlay";
 import { Sfx, DUNGEON_THEME } from "../audio";
 import {
@@ -77,6 +79,8 @@ export class DungeonScene extends Phaser.Scene {
   private keyM!: Phaser.Input.Keyboard.Key;
   private mQueued = false;
   private tQueued = false;
+  private iQueued = false;
+  private bQueued = false;
   private qQueued = false;
   private quitConfirm = false;
   private quitting = false;
@@ -91,6 +95,8 @@ export class DungeonScene extends Phaser.Scene {
 
   private hud!: StatusHud;
   private minimap!: Minimap;
+  private inventory!: InventoryUI;
+  private bestiary!: BestiaryUI;
   private night!: NightOverlay;
 
   constructor() {
@@ -264,6 +270,18 @@ export class DungeonScene extends Phaser.Scene {
         if (!e.repeat) this.tQueued = true;
       }
     );
+    kb.addKey(Phaser.Input.Keyboard.KeyCodes.I).on(
+      Phaser.Input.Keyboard.Events.DOWN,
+      (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+        if (!e.repeat) this.iQueued = true;
+      }
+    );
+    kb.addKey(Phaser.Input.Keyboard.KeyCodes.B).on(
+      Phaser.Input.Keyboard.Events.DOWN,
+      (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+        if (!e.repeat) this.bQueued = true;
+      }
+    );
     kb.addKey(Phaser.Input.Keyboard.KeyCodes.Q).on(
       Phaser.Input.Keyboard.Events.DOWN,
       (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
@@ -287,7 +305,7 @@ export class DungeonScene extends Phaser.Scene {
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE  S:HUD  M:MUTE  T:MAP  Q:QUIT  CTRL+S:SAVE\nFIND THE KING!",
+        "HJKL:MOVE  I:ITEMS  B:BESTIARY  T:MAP\nS:HUD  M:MUTE  Q:QUIT  CTRL+S:SAVE  FIND THE KING!",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
@@ -308,6 +326,9 @@ export class DungeonScene extends Phaser.Scene {
     // the cave is dim whatever the hour; night just deepens it
     this.night = new NightOverlay(this, 0.35, 0.25);
 
+    this.inventory = new InventoryUI(this);
+    this.bestiary = new BestiaryUI(this);
+
     this.hud = new StatusHud(this);
 
     this.quitConfirmText = this.add
@@ -320,6 +341,8 @@ export class DungeonScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       GameState.save();
       this.minimap.destroy();
+      this.inventory.destroy();
+      this.bestiary.destroy();
       this.night.destroy();
       this.quitConfirmText.destroy();
     });
@@ -347,7 +370,7 @@ export class DungeonScene extends Phaser.Scene {
 
     if (this.tQueued) {
       this.tQueued = false;
-      this.minimap.toggle();
+      if (!this.uiBlocking()) this.minimap.toggle();
     }
 
     if (this.qQueued) {
@@ -383,6 +406,39 @@ export class DungeonScene extends Phaser.Scene {
         this.quitConfirm = false;
         this.quitConfirmText.setVisible(false);
       }
+      return;
+    }
+
+    // Items and the bestiary are reachable here too now; without them a low-HP
+    // run through the cave or forest had no way to drink a potion outside of a
+    // battle.
+    if (this.uiBlocking()) {
+      if (this.iQueued) {
+        this.iQueued = false;
+        if (this.inventory.isActive()) this.inventory.close();
+      }
+      if (this.bQueued) {
+        this.bQueued = false;
+        if (this.bestiary.isActive()) this.bestiary.close();
+      }
+      this.player.setVelocity(0, 0);
+      this.player.anims.stop();
+      this.dust.emitting = false;
+      this.inventory.update();
+      this.bestiary.update();
+      this.updateRoamers(delta);
+      return;
+    }
+
+    if (this.iQueued) {
+      this.iQueued = false;
+      this.inventory.open();
+      return;
+    }
+
+    if (this.bQueued) {
+      this.bQueued = false;
+      this.bestiary.open();
       return;
     }
 
@@ -429,6 +485,10 @@ export class DungeonScene extends Phaser.Scene {
     this.shieldOverlay.setFlipX(flip);
     this.weaponOverlay.setPosition(this.player.x + 14, this.player.y + 4);
     this.shieldOverlay.setPosition(this.player.x - 14, this.player.y + 8);
+  }
+
+  private uiBlocking(): boolean {
+    return this.inventory.isActive() || this.bestiary.isActive();
   }
 
   private toggleStatus(): void {

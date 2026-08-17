@@ -12,6 +12,11 @@ const CRIT_MULT = 2;
 const NIGHT_STAT_MULT = 1.25;
 const NIGHT_LOOT_MULT = 1.5;
 const STREAK_MIN = 3;
+// a hit always lands for at least this share of its own roll, whatever the
+// target's defense
+const MIN_DAMAGE_SHARE = 0.2;
+// how much gold a defeat costs
+const DEATH_GOLD_LOSS = 0.5;
 const STREAK_CAP = 8;
 
 type MenuAction = "fight" | "magic" | "run" | "potion" | "mPotion" | "candy" | "hiPotion" | "ether" | "elixir" | "bomb";
@@ -734,9 +739,12 @@ export class BattleScene extends Phaser.Scene {
 
   private calcDamage(atk: number, def: number): { dmg: number; crit: boolean } {
     const crit = Math.random() < CRIT_CHANCE;
-    // clamp to the 1-damage floor before applying the crit multiplier, so a
-    // crit against heavy defense still doubles instead of also flooring to 1
-    const hit = Math.max(1, Math.floor(atk * (0.8 + Math.random() * 0.4)) - def);
+    const raw = Math.floor(atk * (0.8 + Math.random() * 0.4));
+    // Defense subtracts, but never past a floor proportional to the blow. A
+    // flat 1-damage floor meant that once def outgrew the strongest attack in
+    // the game — level 10 in mythril — nothing could hurt the hero again.
+    // The floor is applied before the crit multiplier so a crit still doubles.
+    const hit = Math.max(Math.ceil(raw * MIN_DAMAGE_SHARE), raw - def);
     return { dmg: crit ? hit * CRIT_MULT : hit, crit };
   }
 
@@ -839,16 +847,27 @@ export class BattleScene extends Phaser.Scene {
     this.end();
   }
 
+  // Losing used to wipe the save outright, so a death at level 30 meant
+  // starting the whole game again. You now wake up in town, down half your
+  // gold and your win streak, with everything else intact.
   private async defeat(): Promise<void> {
     this.running = false;
     Sfx.gameover();
     await this.say("You have fallen...");
-    await this.say("The world grows darker.");
+    const lost = Math.floor(GameState.gold * DEATH_GOLD_LOSS);
+    GameState.gold -= lost;
+    GameState.streak = 0;
+    GameState.player.hp = Math.max(1, Math.floor(GameState.effMaxHp() / 2));
+    GameState.player.mp = Math.max(0, Math.floor(GameState.player.maxMp / 2));
+    // undefined sends WorldScene back to PLAYER_SPAWN, the town centre
+    GameState.pos = undefined;
+    GameState.lockEncounters(4000);
+    GameState.save();
+    await this.say("A villager drags you home.");
+    await this.say(lost > 0 ? `You lost ${lost} gold.` : "You had no gold to lose.");
     this.cameras.main.fadeOut(800, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      GameState.reset();
-      GameState.clearSave();
-      this.scene.start("Title");
+      this.scene.start("World");
     });
   }
 

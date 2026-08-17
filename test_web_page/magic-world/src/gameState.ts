@@ -110,10 +110,6 @@ export function clock(): string {
   return `${String(hour()).padStart(2, "0")}:${String(minute()).padStart(2, "0")}`;
 }
 
-export function dayCount(): number {
-  return Math.floor(GameState.minutes / 1440) + 1;
-}
-
 export function isNight(): boolean {
   const h = hour();
   return h < 6 || h >= 20;
@@ -125,10 +121,6 @@ export function nightFactor(): number {
   if (h >= 20.0 || h < 5.5) return 1;
   if (h < 6.0) return 1 - (h - 5.5) / 0.5;
   return (h - 19.5) / 0.5;
-}
-
-export function timeLabel(): string {
-  return isNight() ? "NIGHT" : "DAY";
 }
 
 export const GameState = {
