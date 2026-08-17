@@ -415,20 +415,23 @@ def run_interactive(
             if not prompt or prompt.lower() in ("exit", "quit", "q"):
                 break
             warn_prompt(prompt)
-            for i in range(args.count):
-                seed = resolve_seed(args.seed, counter * args.count + i)
-                print(f"[info] seed={seed}")
-                expanded_prompt = expand_prompt(prompt)
-                image, gen_time = generate_image(pipe, expanded_prompt, args, seed)
-                base = args.output or DEFAULT_OUTPUT
-                output = base.parent / (
-                    f"{model_short_name(args.model)}_{timestamp()}_{counter:03d}"
-                    f"{base.suffix}"
-                )
-                metadata = build_metadata(
-                    args, prompt, expanded_prompt, seed, gen_time, device, dtype
-                )
-                save_image(image, output, gen_time, args.count, i, metadata)
+            try:
+                for i in range(args.count):
+                    seed = resolve_seed(args.seed, counter * args.count + i)
+                    print(f"[info] seed={seed}")
+                    expanded_prompt = expand_prompt(prompt)
+                    image, gen_time = generate_image(pipe, expanded_prompt, args, seed)
+                    base = args.output or DEFAULT_OUTPUT
+                    output = base.parent / (
+                        f"{model_short_name(args.model)}_{timestamp()}_{counter:03d}"
+                        f"{base.suffix}"
+                    )
+                    metadata = build_metadata(
+                        args, prompt, expanded_prompt, seed, gen_time, device, dtype
+                    )
+                    save_image(image, output, gen_time, args.count, i, metadata)
+            except KeyboardInterrupt:
+                print(c("\n[info] generation cancelled", C_YELLOW))
             counter += 1
     except KeyboardInterrupt:
         print("\n[info] interrupted")
