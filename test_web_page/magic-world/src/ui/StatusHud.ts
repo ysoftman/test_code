@@ -92,26 +92,27 @@ export class StatusHud {
       .setDepth(111);
 
     // Row 1 is laid out on even 40px-gap slots between 24px side margins,
-    // using each segment's max span so the gaps stay uniform at max values:
-    // name(96) | LV(120, right-anchored) | HP(240) | MP(240) | G(144) |
-    // clock(120, right-anchored) | icon(32).
-    this.addSegment(24, 14, 6, COLORS.name);
-    this.addSegment(280, 14, 6, COLORS.lv, 1);
-    this.addSegment(320, 14, 6, COLORS.hp);
-    this.addSegment(600, 14, 6, COLORS.mp);
-    this.addSegment(880, 14, 6, COLORS.gold);
-    this.addSegment(1184, 14, 6, COLORS.time, 1);
+    // using each segment's max span so the gaps stay uniform at max values
+    // (size-5 font = 20px/char, name reserves 12 chars):
+    // name(240) | LV(100, right-anchored) | HP(200) | MP(200) | G(120) |
+    // clock(100, right-anchored) | icon(32).
+    this.addSegment(24, 14, 5, COLORS.name);
+    this.addSegment(404, 14, 5, COLORS.lv, 1);
+    this.addSegment(444, 14, 5, COLORS.hp);
+    this.addSegment(684, 14, 5, COLORS.mp);
+    this.addSegment(924, 14, 5, COLORS.gold);
+    this.addSegment(1184, 14, 5, COLORS.time, 1);
     this.addSegment(24, 58, 5, COLORS.quest);
     this.addSegment(248, 58, 5, COLORS.caught);
     this.addSegment(452, 58, 5, COLORS.exp);
 
     this.hpBar = scene.add
-      .rectangle(320, 46, 192, 5, 0x4ade80, 1)
+      .rectangle(444, 46, 192, 5, 0x4ade80, 1)
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(110);
     this.mpBar = scene.add
-      .rectangle(600, 46, 192, 5, 0x60a5fa, 1)
+      .rectangle(684, 46, 192, 5, 0x60a5fa, 1)
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(110);

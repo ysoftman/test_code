@@ -78,6 +78,8 @@ export class TitleScene extends Phaser.Scene {
         return;
       }
       GameState.reset();
+      GameState.player.name =
+        (window.prompt("YOUR NAME? (MAX 12)", "HERO") ?? "").trim().toUpperCase().slice(0, 12) || "HERO";
       GameState.clearSave();
       this.cameras.main.fadeOut(400, 0, 0, 0);
       this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
