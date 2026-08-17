@@ -7,7 +7,10 @@ import { Sfx } from "../audio";
 interface ShopItem {
   label: string;
   price: number;
-  key?: "sword" | "shield" | "ironSword" | "ironShield" | "amulet";
+  key?: "sword" | "shield" | "ironSword" | "ironShield" | "amulet" | "mythrilSword" | "mythrilShield";
+  // Gated stock: shown as LOCKED until the quest opens it, so late-game gear
+  // can't be bought at level 1 and flatten the difficulty curve.
+  unlocked?: () => boolean;
   buy(): string;
 }
 
@@ -111,6 +114,26 @@ const SHOP_ITEMS: ShopItem[] = [
     buy: () => {
       GameState.inventory.amulet += 1;
       return "Amulet acquired!";
+    },
+  },
+  {
+    label: "MYTHRIL SWORD 320G",
+    price: 320,
+    key: "mythrilSword",
+    unlocked: () => GameState.quest.bossDefeated,
+    buy: () => {
+      GameState.inventory.mythrilSword += 1;
+      return "Mythril Sword acquired!";
+    },
+  },
+  {
+    label: "MYTHRIL SHIELD 320G",
+    price: 320,
+    key: "mythrilShield",
+    unlocked: () => GameState.quest.bossDefeated,
+    buy: () => {
+      GameState.inventory.mythrilShield += 1;
+      return "Mythril Shield acquired!";
     },
   },
 ];
@@ -298,6 +321,11 @@ export class ShopUI {
 
   private buy(): void {
     const item = SHOP_ITEMS[this.index];
+    if (item.unlocked && !item.unlocked()) {
+      Sfx.error();
+      this.showMsg("Defeat the KING SLIME first!");
+      return;
+    }
     if (item.key && GameState.inventory[item.key] > 0) {
       Sfx.error();
       this.showMsg("Already owned!");
@@ -329,9 +357,15 @@ export class ShopUI {
     this.goldText.setText("G " + GameState.gold);
     for (let i = 0; i < SHOP_ITEMS.length; i++) {
       const item = SHOP_ITEMS[i];
+      const locked = item.unlocked ? !item.unlocked() : false;
       const owned = item.key ? GameState.inventory[item.key] > 0 : false;
-      this.items[i].setText(owned ? item.label.replace(/\d+G\s*$/, "SOLD") : item.label);
-      this.items[i].setColor(owned ? "#666666" : "#ffffff");
+      const label = locked
+        ? item.label.replace(/\d+G\s*$/, "LOCKED")
+        : owned
+          ? item.label.replace(/\d+G\s*$/, "SOLD")
+          : item.label;
+      this.items[i].setText(label);
+      this.items[i].setColor(locked ? "#8b5cf6" : owned ? "#666666" : "#ffffff");
     }
     this.renderCursor();
   }

@@ -264,6 +264,8 @@ const EQUIP_SHIELD_TILE = [
 
 const EQUIP_IRON_SWORD_PALETTE = { w: 0xe2e8f0, d: 0x334155, g: 0x60a5fa, b: 0x1e3a8a };
 const EQUIP_IRON_SHIELD_PALETTE = { s: 0x60a5fa, S: 0x3b82f6, d: 0x1e3a8a };
+const EQUIP_MYTHRIL_SWORD_PALETTE = { w: 0xe0f2fe, d: 0x38bdf8, g: 0xa5f3fc, b: 0x1e3a8a };
+const EQUIP_MYTHRIL_SHIELD_PALETTE = { s: 0x7dd3fc, S: 0x38bdf8, d: 0x0ea5e9 };
 
 const NPC_PALETTE = {
   h: 0xf59e0b,
@@ -385,6 +387,81 @@ const BAT_TILE = [
   "................",
   "................",
 ];
+
+const WASP_PALETTE = { y: 0xffdd44, Y: 0xe8a20c, k: 0x141414, e: 0x141414, w: 0xc7d4ee };
+const WASP_TILE = [
+  "................",
+  "................",
+  "................",
+  ".....yyyyyy.....",
+  "....yyyyyyyy....",
+  "....yekkyeky....",
+  "....yyyyyyyy....",
+  "....yyyyyyyy....",
+  ".ww.yyyyyyyy.ww.",
+  ".ww.yyyyyyyy.ww.",
+  "...ykkkkkkkky...",
+  "...ykYYYYYYky...",
+  "...ykkkkkkkky...",
+  "....yYYYYYYy....",
+  ".....y....y.....",
+  "................",
+];
+
+const SPIDER_PALETTE = { b: 0x7c3aed, B: 0x5b21b6, d: 0x3b0764, e: 0xef4444, E: 0xb91c1c };
+const SPIDER_TILE = [
+  "................",
+  "...bb......bb...",
+  "..bbbb....bbbb..",
+  "..bbbB....Bbbb..",
+  "..bbBBbbbbBBbb..",
+  "..bBBBBBBBBBBb..",
+  "..bBBeBBBBBeBb..",
+  "..bBBBddddBBBb..",
+  "...BBBBBBBBBB...",
+  "...bBBBBBBBBb...",
+  "....BBBBBBBB....",
+  "....bBBBBBBb....",
+  ".....BBBBBB.....",
+  "......BBBB......",
+  ".......BB.......",
+  "................",
+];
+
+const ORC_PALETTE = {
+  s: 0x4ade80,
+  S: 0x2d9d5c,
+  e: 0xff5555,
+  h: 0x3b7d4a,
+  r: 0x8b5a2b,
+  t: 0xd1d5db,
+};
+const ORC_TILE = [
+  "................",
+  "................",
+  ".....hhhhhh.....",
+  "....hhhhhhhh....",
+  "...hhhhhhhhhh...",
+  "...hhsssssssh...",
+  "...hsssessesh...",
+  "....hssssssh....",
+  "....hssssssh....",
+  "...hsssssssssh..",
+  "...hstssssstsh..",
+  "...hsssssssssh..",
+  "...hhssrrssshh..",
+  "....ssrrrrss....",
+  "....ss....ss....",
+  "................",
+];
+
+const MOSS_GOLEM_PALETTE = {
+  s: 0x7d8f7d,
+  S: 0x5c6f5c,
+  e: 0x8ce99a,
+  h: 0x4a5a4a,
+  r: 0x2f3a2f,
+};
 
 const SPARK_PALETTE = { y: 0xffdd44 };
 const SPARK_TILE = [
@@ -715,14 +792,20 @@ export class BootScene extends Phaser.Scene {
     makeTexture(this, "equip-shield", EQUIP_SHIELD_TILE, EQUIP_SHIELD_PALETTE);
     makeTexture(this, "equip-iron-sword", EQUIP_SWORD_TILE, EQUIP_IRON_SWORD_PALETTE);
     makeTexture(this, "equip-iron-shield", EQUIP_SHIELD_TILE, EQUIP_IRON_SHIELD_PALETTE);
+    makeTexture(this, "equip-mythril-sword", EQUIP_SWORD_TILE, EQUIP_MYTHRIL_SWORD_PALETTE);
+    makeTexture(this, "equip-mythril-shield", EQUIP_SHIELD_TILE, EQUIP_MYTHRIL_SHIELD_PALETTE);
 
     makeTexture(this, "npc", NPC_TILE, NPC_PALETTE);
     makeTexture(this, "slime", SLIME_TILE, SLIME_PALETTE);
     makeTexture(this, "king", SLIME_TILE, KING_SLIME_PALETTE);
     makeTexture(this, "goblin", GOBLIN_TILE, GOBLIN_PALETTE);
     makeTexture(this, "troll", GOBLIN_TILE, TROLL_PALETTE);
+    makeTexture(this, "mossGolem", GOBLIN_TILE, MOSS_GOLEM_PALETTE);
     makeTexture(this, "wolf", WOLF_TILE, WOLF_PALETTE);
     makeTexture(this, "bat", BAT_TILE, BAT_PALETTE);
+    makeTexture(this, "wasp", WASP_TILE, WASP_PALETTE);
+    makeTexture(this, "spider", SPIDER_TILE, SPIDER_PALETTE);
+    makeTexture(this, "orc", ORC_TILE, ORC_PALETTE);
 
     makeTexture(this, "dust", ["dd", "dd"], { d: 0xcbbfa8 });
     makeTexture(this, "spark", SPARK_TILE, SPARK_PALETTE);

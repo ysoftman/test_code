@@ -4,6 +4,7 @@ import { BootScene } from "./scenes/BootScene";
 import { TitleScene } from "./scenes/TitleScene";
 import { WorldScene } from "./scenes/WorldScene";
 import { DungeonScene } from "./scenes/DungeonScene";
+import { ForestScene } from "./scenes/ForestScene";
 import { BattleScene } from "./scenes/BattleScene";
 import { GameState } from "./gameState";
 import { Sfx } from "./audio";
@@ -31,7 +32,7 @@ const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [BootScene, TitleScene, WorldScene, DungeonScene, BattleScene],
+  scene: [BootScene, TitleScene, WorldScene, DungeonScene, ForestScene, BattleScene],
 };
 
 // Canvas text bakes in whatever font is available at draw time; unlike DOM

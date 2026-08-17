@@ -5,13 +5,14 @@ import { retroStyle, showToast } from "../pixelart";
 import { StatusHud, STATUS_HUD_HEIGHT, STATUS_HUD_TOAST_Y } from "../ui/StatusHud";
 import { Minimap } from "../ui/Minimap";
 import { Sfx, DUNGEON_THEME } from "../audio";
+import { ENEMIES } from "../monsters";
 import {
-  buildDungeon,
-  DUNGEON_W,
-  DUNGEON_H,
-  DUNGEON_ENTRY,
-  DUNGEON_ZONES,
-  TREASURE_POS,
+  buildForest,
+  FOREST_W,
+  FOREST_H,
+  FOREST_ENTRY,
+  FOREST_ZONES,
+  FOREST_TREASURE_POS,
   TILE,
   SOLID,
   T_WATER_A,
@@ -35,7 +36,7 @@ interface Roamer {
   targetY: number;
   wait: number;
   speed: number;
-  kind: "slime" | "goblin" | "king" | "bat";
+  kind: "wasp" | "spider" | "orc" | "mossGolem";
 }
 
 const IDLE_TEXTURE: Record<LastMove, string> = {
@@ -45,7 +46,7 @@ const IDLE_TEXTURE: Record<LastMove, string> = {
   left: "hero-idle-left",
 };
 
-export class DungeonScene extends Phaser.Scene {
+export class ForestScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
   private playerShadow!: Phaser.GameObjects.Ellipse;
   private weaponOverlay!: Phaser.GameObjects.Sprite;
@@ -55,7 +56,7 @@ export class DungeonScene extends Phaser.Scene {
   private roamerGroup!: Phaser.Physics.Arcade.Group;
   private roamers: Roamer[] = [];
   private encounterCooldown = 0;
-  private exitingDungeon = false;
+  private exitingForest = false;
   private sQueued = false;
   private ctrlSQueued = false;
   private lastMove: LastMove = "down";
@@ -86,7 +87,7 @@ export class DungeonScene extends Phaser.Scene {
   private minimap!: Minimap;
 
   constructor() {
-    super("Dungeon");
+    super("Forest");
   }
 
   create(data?: { fromBattle?: boolean }): void {
@@ -94,7 +95,7 @@ export class DungeonScene extends Phaser.Scene {
     this.roamers = [];
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";
-    this.exitingDungeon = false;
+    this.exitingForest = false;
 
     // Registered before the SHUTDOWN handler below that calls GameState.save()
     // — SHUTDOWN listeners fire in registration order, so this unsubscribes
@@ -103,7 +104,7 @@ export class DungeonScene extends Phaser.Scene {
     const unsubSaved = onSaved(() => showToast(this, "SAVED", STATUS_HUD_TOAST_Y));
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubSaved);
 
-    const level = buildDungeon();
+    const level = buildForest();
     const map = this.make.tilemap({
       data: level,
       tileWidth: TILE,
@@ -112,23 +113,19 @@ export class DungeonScene extends Phaser.Scene {
     const tileset = map.addTilesetImage("tiles16", "tiles16", TILE, TILE);
     this.layer = map.createLayer(0, tileset!, 0, 0)! as Phaser.Tilemaps.TilemapLayer;
     this.layer.setCollision(Array.from(SOLID));
-    this.layer.setTint(0x8899bb);
+    this.layer.setTint(0x88cc99);
 
-    this.physics.world.setBounds(0, 0, DUNGEON_W * TILE, DUNGEON_H * TILE);
+    this.physics.world.setBounds(0, 0, FOREST_W * TILE, FOREST_H * TILE);
 
     this.add
-      .text(DUNGEON_W * TILE / 2, STATUS_HUD_HEIGHT + 24, "THE CAVE", retroStyle(8, "#ffd166"))
+      .text(FOREST_W * TILE / 2, STATUS_HUD_HEIGHT + 24, "THE FOREST", retroStyle(8, "#4ade80"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(95);
 
-    this.add
-      .image(DUNGEON_ENTRY.x, DUNGEON_ENTRY.y, "cave")
-      .setDepth(9);
-
     this.player = this.physics.add.sprite(
-      DUNGEON_ENTRY.x,
-      DUNGEON_ENTRY.y + TILE * 2,
+      FOREST_ENTRY.x,
+      FOREST_ENTRY.y + TILE * 2,
       "hero-idle-down"
     );
     this.player.setCollideWorldBounds(true);
@@ -136,8 +133,8 @@ export class DungeonScene extends Phaser.Scene {
     this.player.body?.setSize(40, 32).setOffset(12, 32);
     this.physics.add.collider(this.player, this.layer);
 
-    // The entry respawn after a battle sits inside the bat zone — step out
-    // to the nearest walkable tile outside it.
+    // The entry respawn after a battle sits inside a monster zone — step out
+    // to the nearest walkable tile outside every zone.
     if (data?.fromBattle) this.escapeMonsterZone();
 
     this.playerShadow = this.add
@@ -208,13 +205,13 @@ export class DungeonScene extends Phaser.Scene {
       const r = this.roamers.find((r) => r.sprite === roamer);
       // BattleScene.runBattle() already plays the boss fanfare for the boss
       // enemy; playing it here too would sound it twice.
-      this.startBattle(r?.kind ?? "slime");
+      this.startBattle(r?.kind ?? "wasp");
     });
 
-    const exit = this.add.zone(DUNGEON_ENTRY.x, DUNGEON_ENTRY.y, TILE * 2, TILE * 2);
+    const exit = this.add.zone(FOREST_ENTRY.x, FOREST_ENTRY.y, TILE * 2, TILE * 2);
     this.physics.add.existing(exit);
     this.physics.add.overlap(this.player, exit, () => {
-      if (!this.exitingDungeon) this.exitDungeon();
+      if (!this.exitingForest) this.exitForest();
     });
 
     this.time.addEvent({
@@ -224,7 +221,7 @@ export class DungeonScene extends Phaser.Scene {
     });
 
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
-    this.cameras.main.setBounds(0, 0, DUNGEON_W * TILE, DUNGEON_H * TILE);
+    this.cameras.main.setBounds(0, 0, FOREST_W * TILE, FOREST_H * TILE);
 
     const kb = this.input.keyboard!;
     this.keyLeft = kb.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -273,18 +270,18 @@ export class DungeonScene extends Phaser.Scene {
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE  S:HUD  M:MUTE  T:MAP  Q:QUIT  CTRL+S:SAVE\nFIND THE KING!",
-        retroStyle(6, "#9f9fd0")
+        "HJKL:MOVE  S:HUD  M:MUTE  T:MAP  Q:QUIT  CTRL+S:SAVE\nFIND THE MOSS GOLEM!",
+        retroStyle(6, "#7fbf7f")
       )
       .setOrigin(1, 1)
       .setAlign("right")
       .setScrollFactor(0)
       .setDepth(100);
 
-    // exit + unopened chests; the king's lair is deliberately not marked
+    // exit + unopened chests; the golem's clearing is deliberately not marked
     this.minimap = new Minimap(this, level, this.player, [
-      { x: DUNGEON_ENTRY.x, y: DUNGEON_ENTRY.y, color: 0xffd166 },
-      ...TREASURE_POS.filter((t) => !GameState.openedTreasures.includes(t.id)).map((t) => ({
+      { x: FOREST_ENTRY.x, y: FOREST_ENTRY.y, color: 0xffd166 },
+      ...FOREST_TREASURE_POS.filter((t) => !GameState.openedTreasures.includes(t.id)).map((t) => ({
         x: t.x,
         y: t.y,
         color: 0xfde047,
@@ -422,14 +419,14 @@ export class DungeonScene extends Phaser.Scene {
     this.hud.update();
   }
 
-  private exitDungeon(): void {
-    if (this.exitingDungeon) return;
-    this.exitingDungeon = true;
+  private exitForest(): void {
+    if (this.exitingForest) return;
+    this.exitingForest = true;
     Sfx.night();
     this.player.setVelocity(0, 0);
     this.cameras.main.fadeOut(200, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start("World", { fromDungeon: true });
+      this.scene.start("World", { fromForest: true });
     });
   }
 
@@ -439,8 +436,8 @@ export class DungeonScene extends Phaser.Scene {
       return;
     }
     const nearExit =
-      Math.abs(this.player.x - DUNGEON_ENTRY.x) < EXIT_SAFE_RADIUS_X &&
-      Math.abs(this.player.y - DUNGEON_ENTRY.y) < EXIT_SAFE_RADIUS_Y;
+      Math.abs(this.player.x - FOREST_ENTRY.x) < EXIT_SAFE_RADIUS_X &&
+      Math.abs(this.player.y - FOREST_ENTRY.y) < EXIT_SAFE_RADIUS_Y;
     if (nearExit) return;
     const rate = (isNight() ? 0.1 : 0.06) * (delta / 1000);
     if (Math.random() < rate) {
@@ -450,7 +447,7 @@ export class DungeonScene extends Phaser.Scene {
 
   private escapeMonsterZone(): void {
     const spot = escapeFromZones(
-      DUNGEON_ZONES,
+      FOREST_ZONES,
       this.player.x,
       this.player.y,
       (tx, ty) => {
@@ -463,26 +460,20 @@ export class DungeonScene extends Phaser.Scene {
 
   private spawnMonsters(): void {
     this.roamerGroup = this.physics.add.group();
-    for (const zone of DUNGEON_ZONES) {
+    for (const zone of FOREST_ZONES) {
       const isBoss = zone.count === 1;
       for (let i = 0; i < zone.count; i++) {
         const x = zone.cx + (Math.random() - 0.5) * zone.w * 0.6;
         const y = zone.cy + (Math.random() - 0.5) * zone.h * 0.6;
-        const kind: Roamer["kind"] = isBoss
-          ? "king"
-          : zone.kind === "bat"
-            ? "bat"
-            : Math.random() < 0.5
-              ? "slime"
-              : "goblin";
+        const kind: Roamer["kind"] = isBoss ? "mossGolem" : (zone.kind ?? "wasp");
         const sprite = this.roamerGroup.create(
           x,
           y,
-          kind
+          ENEMIES[kind].texture
         ) as Phaser.Physics.Arcade.Sprite;
         sprite.setDepth(10);
         sprite.body?.setSize(40, 24).setOffset(12, 32);
-        if (kind === "king") {
+        if (kind === "mossGolem") {
           sprite.setScale(1.5);
         }
         this.roamers.push({
@@ -499,8 +490,8 @@ export class DungeonScene extends Phaser.Scene {
         });
         this.tweens.add({
           targets: sprite,
-          scaleX: kind === "king" ? 1.68 : 1.12,
-          scaleY: kind === "king" ? 1.32 : 0.88,
+          scaleX: kind === "mossGolem" ? 1.68 : 1.12,
+          scaleY: kind === "mossGolem" ? 1.32 : 0.88,
           duration: 280,
           yoyo: true,
           repeat: -1,
@@ -511,7 +502,7 @@ export class DungeonScene extends Phaser.Scene {
   }
 
   private spawnTreasures(): void {
-    for (const t of TREASURE_POS) {
+    for (const t of FOREST_TREASURE_POS) {
       const opened = GameState.openedTreasures.includes(t.id);
       const chest = this.add.image(t.x, t.y, opened ? "chest-open" : "chest").setDepth(9);
       if (opened) continue;
@@ -539,7 +530,7 @@ export class DungeonScene extends Phaser.Scene {
     }
     if (loot) Sfx.pickup();
     const note = this.add
-      .text(chest.x, chest.y - 52, `+${gold} GOLD${loot}`, retroStyle(6, "#ffd166"))
+      .text(chest.x, chest.y - 52, `+${gold} GOLD${loot}`, retroStyle(6, "#4ade80"))
       .setOrigin(0.5)
       .setDepth(120);
     this.tweens.add({
@@ -579,15 +570,15 @@ export class DungeonScene extends Phaser.Scene {
     r.targetY = r.minY + Math.random() * (r.maxY - r.minY);
   }
 
-  private startBattle(enemy?: "slime" | "goblin" | "king" | "bat"): void {
+  private startBattle(enemy?: "wasp" | "spider" | "orc" | "mossGolem"): void {
     if (this.encounterCooldown > 0) return; // already fading into a battle
     this.player.setVelocity(0, 0);
     this.encounterCooldown = ENCOUNTER_COOLDOWN;
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
       const roll = Math.random();
-      const kind = enemy ?? (roll < 0.35 ? "slime" : roll < 0.7 ? "goblin" : "bat");
-      this.scene.start("Battle", { enemy: kind, from: "Dungeon" });
+      const kind = enemy ?? (roll < 0.35 ? "wasp" : roll < 0.7 ? "spider" : "orc");
+      this.scene.start("Battle", { enemy: kind, from: "Forest" });
     });
   }
 

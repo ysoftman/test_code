@@ -7,7 +7,9 @@ import { DialogueBox } from "../ui/DialogueBox";
 import { ShopUI } from "../ui/Shop";
 import { InventoryUI } from "../ui/InventoryUI";
 import { BestiaryUI } from "../ui/BestiaryUI";
+import { Minimap } from "../ui/Minimap";
 import { Sfx, OVERWORLD_THEME } from "../audio";
+import { CATCHABLE, allSpeciesCaught } from "../monsters";
 import {
   buildLevel,
   MAP_W,
@@ -18,6 +20,7 @@ import {
   SHOP_POS,
   HOUSE_POS,
   CAVE_POS,
+  FOREST_POS,
   MONSTER_ZONES,
   escapeFromZones,
   SOLID,
@@ -74,12 +77,17 @@ export class WorldScene extends Phaser.Scene {
   private bubbleVisible = false;
   private resting = false;
   private enteringDungeon = false;
+  private enteringForest = false;
+  // true while overlapping the forest zone; reset a full tile away so the
+  // sealed-entrance dialogue doesn't restart every overlap frame
+  private forestOverlapActive = false;
   private zQueued = false;
   private sQueued = false;
   private ctrlSQueued = false;
   private iQueued = false;
   private gCheatQueued = false;
   private mQueued = false;
+  private tQueued = false;
   private bQueued = false;
   private qQueued = false;
   private quitConfirm = false;
@@ -102,24 +110,29 @@ export class WorldScene extends Phaser.Scene {
   private keyI!: Phaser.Input.Keyboard.Key;
   private keyG!: Phaser.Input.Keyboard.Key;
   private keyM!: Phaser.Input.Keyboard.Key;
+  private keyT!: Phaser.Input.Keyboard.Key;
   private keyB!: Phaser.Input.Keyboard.Key;
   private keyY!: Phaser.Input.Keyboard.Key;
   private keyN!: Phaser.Input.Keyboard.Key;
   private keyEsc!: Phaser.Input.Keyboard.Key;
 
   private hud!: StatusHud;
+  private minimap!: Minimap;
+  private guardPos = { x: 0, y: 0 };
 
   constructor() {
     super("World");
   }
 
-  create(data?: { fromDungeon?: boolean; fromBattle?: boolean }): void {
+  create(data?: { fromDungeon?: boolean; fromBattle?: boolean; fromForest?: boolean }): void {
     Sfx.playBgm(OVERWORLD_THEME);
     this.roamers = [];
     this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
     this.lastMove = "down";
     this.resting = false;
     this.enteringDungeon = false;
+    this.enteringForest = false;
+    this.forestOverlapActive = false;
 
     // Registered before the SHUTDOWN handler below that calls GameState.save()
     // — SHUTDOWN listeners fire in registration order, so this unsubscribes
@@ -175,6 +188,31 @@ export class WorldScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(11);
 
+    // eastern woods entrance: the zone itself is created further down, this is
+    // just its ground dressing — sign beside the opening, name above it
+    const signX = Phaser.Math.Clamp(FOREST_POS.x + TILE, TILE, (MAP_W - 1) * TILE);
+    this.add.image(signX, FOREST_POS.y, "sign").setDepth(9);
+    this.add
+      .text(FOREST_POS.x, FOREST_POS.y - 40, "FOREST", retroStyle(6, "#9f9fd0"))
+      .setOrigin(0.5)
+      .setDepth(11);
+
+    // gatekeeper who lets nobody through until the KING SLIME falls; stands a
+    // tile west of the entrance (clamped so a map-edge FOREST_POS keeps him
+    // on the tileset)
+    this.guardPos = {
+      x: Phaser.Math.Clamp(FOREST_POS.x - TILE, TILE, (MAP_W - 1) * TILE),
+      y: Phaser.Math.Clamp(FOREST_POS.y, TILE * 1.5, (MAP_H - 1) * TILE - TILE * 0.5),
+    };
+    this.add.sprite(this.guardPos.x, this.guardPos.y, "npc").setDepth(10).setTint(0x67e8f9);
+    this.add
+      .ellipse(this.guardPos.x, this.guardPos.y + 28, 40, 16, 0x000000, 0.4)
+      .setDepth(5);
+    this.add
+      .text(this.guardPos.x, this.guardPos.y - 48, "GUARD", retroStyle(5, "#67e8f9"))
+      .setOrigin(0.5)
+      .setDepth(11);
+
     const respawn = GameState.pos ?? PLAYER_SPAWN;
     // Position-based fallback for old saves / any other path that lands here
     // without the explicit flag. The real signal is `data.fromDungeon`, set
@@ -186,10 +224,16 @@ export class WorldScene extends Phaser.Scene {
       Math.abs(respawn.x - CAVE_POS.x) <= TILE / 2 &&
       Math.abs(respawn.y - CAVE_POS.y) <= TILE / 2;
     const fromDungeon = !!data?.fromDungeon || nearCave;
-    const spawn = fromDungeon ? { x: CAVE_POS.x, y: CAVE_POS.y + TILE * 2 } : respawn;
-    // just walked out of the cave: hold off re-triggering it in case the
-    // player is still holding the "up" key from walking in
-    if (fromDungeon) this.encounterCooldown = Math.max(this.encounterCooldown, ENCOUNTER_COOLDOWN);
+    const fromForest = !!data?.fromForest;
+    const spawn = fromDungeon
+      ? { x: CAVE_POS.x, y: CAVE_POS.y + TILE * 2 }
+      : fromForest
+        ? { x: FOREST_POS.x, y: FOREST_POS.y + TILE * 2 }
+        : respawn;
+    // just walked out of the cave/forest: hold off re-triggering it in case
+    // the player is still holding the walk-in key
+    if (fromDungeon || fromForest)
+      this.encounterCooldown = Math.max(this.encounterCooldown, ENCOUNTER_COOLDOWN);
     this.player = this.physics.add.sprite(
       spawn.x,
       spawn.y,
@@ -301,6 +345,22 @@ export class WorldScene extends Phaser.Scene {
       this.enterDungeon();
     });
 
+    const forest = this.add.zone(FOREST_POS.x, FOREST_POS.y, TILE, TILE).setDepth(1);
+    this.physics.add.existing(forest);
+    this.physics.add.overlap(this.player, forest, () => {
+      if (this.enteringForest || this.enteringDungeon || this.encounterCooldown > 0) return;
+      if (this.uiBlocking()) return;
+      // overlap fires every frame while the body stays in the zone, so only
+      // act on the entry edge and reset on exit (see updateForestGate)
+      if (this.forestOverlapActive) return;
+      this.forestOverlapActive = true;
+      if (!GameState.quest.bossDefeated) {
+        this.dialogue.start(["The forest is sealed.", "Defeat the KING SLIME", "first!"], "GUARD");
+        return;
+      }
+      this.enterForest();
+    });
+
     this.time.addEvent({
       delay: 400,
       loop: true,
@@ -347,6 +407,10 @@ export class WorldScene extends Phaser.Scene {
     this.keyM.on(Phaser.Input.Keyboard.Events.DOWN, () => {
       this.mQueued = true;
     });
+    this.keyT = kb.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+    this.keyT.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.tQueued = true;
+    });
     this.keyB = kb.addKey(Phaser.Input.Keyboard.KeyCodes.B);
     this.keyB.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
       if (!e.repeat) this.bQueued = true;
@@ -379,13 +443,22 @@ export class WorldScene extends Phaser.Scene {
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE Z:TALK/OK I:ITEMS ESC:SKIP\nS:HUD M:MUTE B:BESTIARY Q:QUIT CTRL+S:SAVE",
+        "HJKL:MOVE Z:TALK/OK I:ITEMS ESC:SKIP\nS:HUD M:MUTE B:BESTIARY T:MAP Q:QUIT CTRL+S:SAVE",
         retroStyle(6, "#9f9fd0")
       )
       .setOrigin(1, 1)
       .setAlign("right")
       .setScrollFactor(0)
       .setDepth(100);
+
+    // key landmarks in world px, drawn as colored dots over the tile map
+    this.minimap = new Minimap(this, level, this.player, [
+      { x: HOUSE_POS.x + TILE, y: HOUSE_POS.y + TILE, color: 0xffd166 },
+      { x: SHOP_POS.x, y: SHOP_POS.y, color: 0xfde047 },
+      { x: NPC_POS.x, y: NPC_POS.y, color: 0x8ecbff },
+      { x: CAVE_POS.x, y: CAVE_POS.y, color: 0xff5555 },
+      { x: FOREST_POS.x, y: FOREST_POS.y, color: 0x4ade80 },
+    ]);
 
     this.nightOverlay = this.add
       .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x1a1a4a, 1)
@@ -409,6 +482,7 @@ export class WorldScene extends Phaser.Scene {
       this.shop.destroy();
       this.inventory.destroy();
       this.bestiary.destroy();
+      this.minimap.destroy();
       hint.destroy();
       this.quitConfirmText.destroy();
     });
@@ -473,6 +547,29 @@ export class WorldScene extends Phaser.Scene {
     });
   }
 
+  private enterForest(): void {
+    if (this.enteringForest) return;
+    this.enteringForest = true;
+    Sfx.night();
+    this.player.setVelocity(0, 0);
+    this.cameras.main.fadeOut(200, 0, 0, 0);
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+      this.scene.start("Forest");
+    });
+  }
+
+  // resets forestOverlapActive once the player is a full tile clear of the
+  // entrance, so stepping back in re-triggers the forest zone
+  private updateForestGate(): void {
+    if (!this.forestOverlapActive) return;
+    if (
+      Math.abs(this.player.x - FOREST_POS.x) > TILE ||
+      Math.abs(this.player.y - FOREST_POS.y) > TILE
+    ) {
+      this.forestOverlapActive = false;
+    }
+  }
+
   // true while a modal panel owns input — every place that checks this must
   // use this method instead of listing the panels itself, or a newly added
   // panel silently stops blocking (this happened once already: overlap
@@ -491,6 +588,8 @@ export class WorldScene extends Phaser.Scene {
     this.updateStatus();
     this.updateDayNight();
     this.updateHomeBubble();
+    this.updateForestGate();
+    this.minimap.update();
 
     if (this.gCheatQueued) {
       this.gCheatQueued = false;
@@ -528,7 +627,7 @@ export class WorldScene extends Phaser.Scene {
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
       this.dust.emitting = false;
-      this.zQueued = this.ctrlSQueued = this.iQueued = this.gCheatQueued = this.mQueued = this.bQueued = false;
+      this.zQueued = this.ctrlSQueued = this.iQueued = this.gCheatQueued = this.mQueued = this.bQueued = this.tQueued = false;
       if (this.yQueued) {
         this.yQueued = false;
         this.quitConfirm = false;
@@ -544,6 +643,11 @@ export class WorldScene extends Phaser.Scene {
         this.quitConfirmText.setVisible(false);
       }
       return;
+    }
+
+    if (this.tQueued) {
+      this.tQueued = false;
+      if (!this.uiBlocking()) this.minimap.toggle();
     }
 
     if (this.uiBlocking()) {
@@ -632,12 +736,8 @@ export class WorldScene extends Phaser.Scene {
   private updateEquipOverlays(): void {
     this.weaponOverlay.setVisible(!!GameState.equipped.weapon);
     this.shieldOverlay.setVisible(!!GameState.equipped.armor);
-    this.weaponOverlay.setTexture(
-      GameState.equipped.weapon === "ironSword" ? "equip-iron-sword" : "equip-sword"
-    );
-    this.shieldOverlay.setTexture(
-      GameState.equipped.armor === "ironShield" ? "equip-iron-shield" : "equip-shield"
-    );
+    this.weaponOverlay.setTexture(GameState.weaponTexture());
+    this.shieldOverlay.setTexture(GameState.armorTexture());
     const flip = this.lastMove === "left";
     this.weaponOverlay.setFlipX(flip);
     this.shieldOverlay.setFlipX(flip);
@@ -677,6 +777,16 @@ export class WorldScene extends Phaser.Scene {
     if (near(SHOP_POS.x, SHOP_POS.y)) {
       Sfx.buy();
       this.shop.open();
+      return true;
+    }
+    if (near(this.guardPos.x, this.guardPos.y)) {
+      const q = GameState.quest;
+      this.dialogue.start(
+        q.bossDefeated
+          ? ["The path to the forest", "is open. Be wary of", "the MOSS GOLEM!"]
+          : ["The forest is sealed.", "Defeat the KING SLIME", "first!"],
+        "GUARD"
+      );
       return true;
     }
     if (near(HOUSE_POS.x + TILE, HOUSE_POS.y + 2 * TILE)) {
@@ -759,7 +869,65 @@ export class WorldScene extends Phaser.Scene {
       );
       return;
     }
-    this.dialogue.start(["The village is at peace."], "ELDER");
+    if (!q.forestBoss) {
+      this.dialogue.start(
+        [
+          "The eastern woods hold",
+          "a deeper threat now.",
+          "The GUARD by the woods",
+          "knows more.",
+        ],
+        "ELDER"
+      );
+      return;
+    }
+    if (!q.forestReward) {
+      q.forestReward = true;
+      GameState.gainGold(200);
+      GameState.inventory.mythrilSword += 1;
+      Sfx.buy();
+      this.dialogue.start(
+        [
+          "The forest is at peace!",
+          "Take this 200 gold and",
+          "a MYTHRIL SWORD!",
+        ],
+        "ELDER"
+      );
+      return;
+    }
+    if (!q.bestiaryReward && allSpeciesCaught(GameState.caught)) {
+      q.bestiaryReward = true;
+      GameState.gainGold(500);
+      GameState.inventory.elixir += 3;
+      GameState.inventory.mythrilShield += 1;
+      Sfx.buy();
+      this.dialogue.start(
+        [
+          "You caught every beast",
+          "in the realm! A feat no",
+          "hero has matched.",
+          "500 gold, 3 ELIXIRS and",
+          "a MYTHRIL SHIELD!",
+        ],
+        "ELDER"
+      );
+      return;
+    }
+    if (!q.bestiaryReward) {
+      const caught = CATCHABLE.filter((e) => GameState.caught.includes(e.name)).length;
+      this.dialogue.start(
+        [
+          "The forest is at peace.",
+          `You have caught ${caught} of`,
+          `${CATCHABLE.length} beasts. Catch them`,
+          "all and I will reward you!",
+        ],
+        "ELDER"
+      );
+      return;
+    }
+    this.dialogue.start(["The realm owes you", "everything, hero."], "ELDER");
   }
 
   private checkEncounter(delta: number): void {

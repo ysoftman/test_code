@@ -1,10 +1,18 @@
 import Phaser from "phaser";
 import { GAME_WIDTH } from "../config";
-import { GameState, clock, expToNext, isNight } from "../gameState";
+import { GameState, QuestState, clock, expToNext, isNight } from "../gameState";
 import { PixelMap, makeTexture, retroStyle } from "../pixelart";
 
 export const STATUS_HUD_HEIGHT = 88;
 export const STATUS_HUD_TOAST_Y = STATUS_HUD_HEIGHT + 12;
+
+// The single quest slot shows whichever chapter is currently open.
+function questLabel(q: QuestState): string {
+  if (!q.bossDefeated) return `SLIMES ${q.slimes}/5`;
+  if (!q.forestBoss) return "FIND GOLEM";
+  if (!q.forestReward) return "SEE ELDER";
+  return "QUEST DONE";
+}
 
 const COLORS = {
   name: "#ffffff",
@@ -172,7 +180,7 @@ export class StatusHud {
     this.setSegment(3, `MP ${p.mp}/${p.maxMp}`, COLORS.mp);
     this.setSegment(4, `G ${GameState.gold}`, COLORS.gold);
     this.setSegment(5, clock(), COLORS.time);
-    this.setSegment(6, q.bossDefeated ? "QUEST DONE" : `SLIMES ${q.slimes}/5`, COLORS.quest);
+    this.setSegment(6, questLabel(q), COLORS.quest);
     this.setSegment(7, `CAUGHT ${GameState.caught.length}`, COLORS.caught);
     this.setSegment(8, "EXP", COLORS.exp);
 

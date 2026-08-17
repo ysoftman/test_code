@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT, MAX_HP, MAX_LEVEL, MAX_MP } from "../config";
-import { GameState, expToNext, onSaved } from "../gameState";
+import { GameState, expToNext, isNight, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
 import { Sfx, BATTLE_THEME } from "../audio";
 import { ENEMIES, EnemyDef } from "../monsters";
@@ -8,6 +8,10 @@ import { ENEMIES, EnemyDef } from "../monsters";
 const MP_COST = 3;
 const CRIT_CHANCE = 0.1;
 const CRIT_MULT = 2;
+const NIGHT_STAT_MULT = 1.25;
+const NIGHT_LOOT_MULT = 1.5;
+const STREAK_MIN = 3;
+const STREAK_CAP = 8;
 
 type MenuAction = "fight" | "magic" | "run" | "potion" | "mPotion" | "candy" | "hiPotion" | "ether" | "elixir" | "bomb";
 
@@ -56,8 +60,9 @@ export class BattleScene extends Phaser.Scene {
   private enemyHpText!: Phaser.GameObjects.Text;
 
   private running = false;
+  private night = false;
   private waitingAction: { resolve: (a: MenuAction) => void } | null = null;
-  private origin: "World" | "Dungeon" = "World";
+  private origin: "World" | "Dungeon" | "Forest" = "World";
 
   private hitBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
   private glowBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -69,10 +74,21 @@ export class BattleScene extends Phaser.Scene {
     super("Battle");
   }
 
-  init(data: { enemy: string; from?: "World" | "Dungeon" }): void {
+  init(data: { enemy: string; from?: "World" | "Dungeon" | "Forest" }): void {
     const def = ENEMIES[data?.enemy ?? ""] ?? ENEMIES.slime;
     this.enemy = { ...def, curHp: def.hp };
-    this.origin = data?.from === "Dungeon" ? "Dungeon" : "World";
+    // Night is the risk/reward shift: tougher enemies, richer payout. Applied
+    // to the copy, so ENEMIES stays the daytime baseline.
+    this.night = isNight();
+    if (this.night) {
+      this.enemy.hp = Math.round(def.hp * NIGHT_STAT_MULT);
+      this.enemy.curHp = this.enemy.hp;
+      this.enemy.atk = Math.round(def.atk * NIGHT_STAT_MULT);
+      this.enemy.gold = Math.round(def.gold * NIGHT_LOOT_MULT);
+      this.enemy.exp = Math.round(def.exp * NIGHT_LOOT_MULT);
+    }
+    const from = data?.from;
+    this.origin = from === "Dungeon" || from === "Forest" ? from : "World";
     if (!GameState.seenMonsters.includes(def.name)) {
       GameState.seenMonsters.push(def.name);
       // persist immediately: a battle ended by RUN never reaches the
@@ -94,16 +110,32 @@ export class BattleScene extends Phaser.Scene {
 
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "battle-bg");
 
+    if (GameState.streak >= STREAK_MIN) {
+      this.add
+        .text(16, 24, `STREAK ${GameState.streak}`, retroStyle(6, "#fbbf24"))
+        .setDepth(120);
+    }
+
+    if (this.night) {
+      this.add
+        .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x1a1a4a, 0.45)
+        .setDepth(1);
+      this.add
+        .text(GAME_WIDTH / 2, 24, "NIGHT: STRONGER FOES, RICHER SPOILS", retroStyle(6, "#a5b4fc"))
+        .setOrigin(0.5, 0)
+        .setDepth(120);
+    }
+
     this.enemySprite = this.add
       .sprite(GAME_WIDTH - 320, 280, this.enemy.texture)
       .setScale(this.enemy.boss || this.enemy.giant ? 3 : 2);
     this.playerSprite = this.add.sprite(320, 368, "hero-down-0").setScale(2);
     this.playerSprite.setFlipX(true);
     this.weaponOverlay = this.add
-      .sprite(348, 368, GameState.equipped.weapon === "ironSword" ? "equip-iron-sword" : "equip-sword")
+      .sprite(348, 368, GameState.weaponTexture())
       .setScale(2);
     this.shieldOverlay = this.add
-      .sprite(292, 368, GameState.equipped.armor === "ironShield" ? "equip-iron-shield" : "equip-shield")
+      .sprite(292, 368, GameState.armorTexture())
       .setScale(2);
     this.weaponOverlay.setVisible(!!GameState.equipped.weapon);
     this.shieldOverlay.setVisible(!!GameState.equipped.armor);
@@ -224,6 +256,7 @@ export class BattleScene extends Phaser.Scene {
       const muted = Sfx.toggleMuted();
       showToast(this, muted ? "SOUND: OFF" : "SOUND: ON");
     });
+    this.input.on("pointerdown", this.onPointerDown, this);
 
     this.running = true;
     this.runBattle();
@@ -304,6 +337,44 @@ export class BattleScene extends Phaser.Scene {
     waiter.resolve(action);
   }
 
+  // Mouse support for the action menu and item list: a global pointerdown
+  // hit-tests the visible entries' bounds (like awaitAdvance) rather than
+  // setInteractive() per item, so the keyboard flow stays untouched.
+  private onPointerDown(pointer: Phaser.Input.Pointer): void {
+    if (!this.waitingAction) return;
+
+    if (this.inItems) {
+      for (let i = 0; i < this.itemTexts.length; i++) {
+        const t = this.itemTexts[i];
+        if (!t.visible || !t.getBounds().contains(pointer.x, pointer.y)) continue;
+        const slot = ITEM_SLOTS[i];
+        if (GameState.inventory[slot.key] <= 0) {
+          Sfx.error();
+          return;
+        }
+        this.inItems = false;
+        this.hideItems();
+        this.resolveAction(slot.action);
+        return;
+      }
+      return;
+    }
+
+    for (let i = 0; i < this.menuItems.length; i++) {
+      const t = this.menuTexts[i];
+      if (!t.visible || !t.getBounds().contains(pointer.x, pointer.y)) continue;
+      const action = this.menuItems[i];
+      if (action === "item") {
+        this.hideMenu();
+        this.renderItems();
+        this.inItems = true;
+      } else {
+        this.resolveAction(action);
+      }
+      return;
+    }
+  }
+
   private window(x: number, y: number, w: number, h: number): void {
     this.add
       .rectangle(x, y, w, h, 0x0b0b2b, 0.85)
@@ -357,6 +428,10 @@ export class BattleScene extends Phaser.Scene {
           if (Math.random() < 0.5) {
             Sfx.run();
             await this.say("You escaped!");
+            if (GameState.streak >= STREAK_MIN) {
+              await this.say(`Win streak of ${GameState.streak} lost!`);
+            }
+            GameState.streak = 0;
             return this.end();
           }
           await this.say("Can't escape!");
@@ -534,7 +609,7 @@ export class BattleScene extends Phaser.Scene {
   private async throwCandy(): Promise<void> {
     if (this.enemy.boss) {
       Sfx.error();
-      await this.say("The KING SLIME is too strong!");
+      await this.say(`The ${this.enemy.name} is too strong!`);
       return;
     }
     Sfx.capture();
@@ -677,16 +752,32 @@ export class BattleScene extends Phaser.Scene {
   private async victory(caught = false): Promise<void> {
     this.running = false;
     if (!caught) {
-      const goldGained = GameState.gainGold(this.enemy.gold);
+      GameState.streak += 1;
+      // streak bonus rewards pushing on without fleeing; capped so a long run
+      // can't outpace the boss/chest economy
+      const streakPct =
+        GameState.streak >= STREAK_MIN ? Math.min(GameState.streak, STREAK_CAP) * 0.1 : 0;
+      const streakBonus = Math.floor(this.enemy.gold * streakPct);
+      const goldGained = GameState.gainGold(this.enemy.gold + streakBonus);
       GameState.battles += 1;
       if (this.enemy.name === "SLIME") GameState.quest.slimes += 1;
-      if (this.enemy.boss) GameState.quest.bossDefeated = true;
+      // two story bosses share the `boss` flag; each sets its own quest gate
+      if (this.enemy.boss) {
+        if (this.enemy.name === ENEMIES.mossGolem.name) GameState.quest.forestBoss = true;
+        else GameState.quest.bossDefeated = true;
+      }
       GameState.player.hp = Math.min(GameState.effMaxHp(), GameState.player.hp + 5);
       GameState.player.mp = Math.min(GameState.player.maxMp, GameState.player.mp + 2);
       Sfx.victory();
       this.tweenPromise(this.enemySprite, { scale: this.enemySprite.scale * 1.15, alpha: 0 }, 350);
       await this.say(`${this.enemy.name} is defeated!`);
       await this.say(`Gained ${goldGained} gold!`);
+      if (streakBonus > 0) {
+        Sfx.pickup();
+        this.coinBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
+        this.coinBurst.explode(10);
+        await this.say(`${GameState.streak} WIN STREAK! +${streakBonus} bonus gold!`);
+      }
       if (this.enemy.boss) {
         GameState.inventory.hiPotion += 1;
         Sfx.pickup();
@@ -734,7 +825,7 @@ export class BattleScene extends Phaser.Scene {
         msg = `LEVEL UP! LV ${GameState.player.level}`;
       }
       await this.say(msg);
-      if (this.enemy.boss) await this.say("The KING SLIME is no more!");
+      if (this.enemy.boss) await this.say(`The ${this.enemy.name} is no more!`);
     }
     GameState.lockEncounters(4000);
     GameState.save();
@@ -764,7 +855,9 @@ export class BattleScene extends Phaser.Scene {
     GameState.lockEncounters(4000);
     this.cameras.main.fadeOut(400, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start(this.origin === "Dungeon" ? "Dungeon" : "World", {
+      const target =
+        this.origin === "Dungeon" ? "Dungeon" : this.origin === "Forest" ? "Forest" : "World";
+      this.scene.start(target, {
         fromBattle: true,
       });
     });

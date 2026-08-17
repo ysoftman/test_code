@@ -25,17 +25,50 @@ export interface InventoryState {
   ironSword: number;
   ironShield: number;
   amulet: number;
+  mythrilSword: number;
+  mythrilShield: number;
 }
 
 export type EquipSlot = "weapon" | "armor" | "accessory";
-export type EquipmentKey = "sword" | "shield" | "ironSword" | "ironShield" | "amulet";
+export type EquipmentKey =
+  | "sword"
+  | "shield"
+  | "ironSword"
+  | "ironShield"
+  | "amulet"
+  | "mythrilSword"
+  | "mythrilShield";
 
 export const EQUIP_SLOT: Record<EquipmentKey, EquipSlot> = {
   sword: "weapon",
   ironSword: "weapon",
+  mythrilSword: "weapon",
   shield: "armor",
   ironShield: "armor",
+  mythrilShield: "armor",
   amulet: "accessory",
+};
+
+// One table per equipment property, so adding a tier is one line each instead
+// of a new branch in effAtk/effDef and in every scene's overlay code.
+export const EQUIP_BONUS: Record<EquipmentKey, number> = {
+  sword: 2,
+  ironSword: 4,
+  mythrilSword: 6,
+  shield: 2,
+  ironShield: 4,
+  mythrilShield: 6,
+  amulet: 0,
+};
+
+export const EQUIP_TEXTURE: Record<EquipmentKey, string> = {
+  sword: "equip-sword",
+  ironSword: "equip-iron-sword",
+  mythrilSword: "equip-mythril-sword",
+  shield: "equip-shield",
+  ironShield: "equip-iron-shield",
+  mythrilShield: "equip-mythril-shield",
+  amulet: "equip-sword", // accessory: never drawn as an overlay
 };
 
 export interface QuestState {
@@ -43,6 +76,9 @@ export interface QuestState {
   slimeReward: boolean;
   bossDefeated: boolean;
   finalReward: boolean;
+  forestBoss: boolean;
+  forestReward: boolean;
+  bestiaryReward: boolean;
 }
 
 const SAVE_KEY = "magic-world-save";
@@ -109,6 +145,7 @@ export const GameState = {
   } as PlayerState,
   gold: 0,
   battles: 0,
+  streak: 0,
   inventory: {
     potion: 2,
     mPotion: 1,
@@ -122,12 +159,22 @@ export const GameState = {
     ironSword: 0,
     ironShield: 0,
     amulet: 0,
+    mythrilSword: 0,
+    mythrilShield: 0,
   } as InventoryState,
   equipped: { weapon: null, armor: null, accessory: null } as Record<EquipSlot, EquipmentKey | null>,
   caught: [] as string[],
   seenMonsters: [] as string[],
   openedTreasures: [] as string[],
-  quest: { slimes: 0, slimeReward: false, bossDefeated: false, finalReward: false } as QuestState,
+  quest: {
+    slimes: 0,
+    slimeReward: false,
+    bossDefeated: false,
+    finalReward: false,
+    forestBoss: false,
+    forestReward: false,
+    bestiaryReward: false,
+  } as QuestState,
   minutes: 360,
   pos: undefined as { x: number; y: number } | undefined,
   encounterLockUntil: 0,
@@ -150,18 +197,16 @@ export const GameState = {
     return added;
   },
   effAtk(): number {
-    return (
-      this.player.atk +
-      (this.equipped.weapon === "sword" ? 2 : 0) +
-      (this.equipped.weapon === "ironSword" ? 4 : 0)
-    );
+    return this.player.atk + (this.equipped.weapon ? EQUIP_BONUS[this.equipped.weapon] : 0);
   },
   effDef(): number {
-    return (
-      this.player.def +
-      (this.equipped.armor === "shield" ? 2 : 0) +
-      (this.equipped.armor === "ironShield" ? 4 : 0)
-    );
+    return this.player.def + (this.equipped.armor ? EQUIP_BONUS[this.equipped.armor] : 0);
+  },
+  weaponTexture(): string {
+    return this.equipped.weapon ? EQUIP_TEXTURE[this.equipped.weapon] : "equip-sword";
+  },
+  armorTexture(): string {
+    return this.equipped.armor ? EQUIP_TEXTURE[this.equipped.armor] : "equip-shield";
   },
   isEquipped(key: EquipmentKey): boolean {
     return this.equipped[EQUIP_SLOT[key]] === key;
@@ -205,6 +250,7 @@ export const GameState = {
     };
     this.gold = 0;
     this.battles = 0;
+    this.streak = 0;
     this.inventory = {
       potion: 2,
       mPotion: 1,
@@ -218,12 +264,22 @@ export const GameState = {
       ironSword: 0,
       ironShield: 0,
       amulet: 0,
+      mythrilSword: 0,
+      mythrilShield: 0,
     };
     this.equipped = { weapon: null, armor: null, accessory: null };
     this.caught = [];
     this.seenMonsters = [];
     this.openedTreasures = [];
-    this.quest = { slimes: 0, slimeReward: false, bossDefeated: false, finalReward: false };
+    this.quest = {
+      slimes: 0,
+      slimeReward: false,
+      bossDefeated: false,
+      finalReward: false,
+      forestBoss: false,
+      forestReward: false,
+      bestiaryReward: false,
+    };
     this.minutes = 360;
     this.pos = undefined;
     this.encounterLockUntil = 0;
@@ -240,6 +296,7 @@ export const GameState = {
         player: this.player,
         gold: this.gold,
         battles: this.battles,
+        streak: this.streak,
         inventory: this.inventory,
         equipped: this.equipped,
         caught: this.caught,
@@ -265,6 +322,7 @@ export const GameState = {
       this.player.maxMp = Math.min(MAX_MP, this.player.maxMp);
       this.gold = Math.min(MAX_GOLD, data.gold ?? 0);
       this.battles = data.battles ?? 0;
+      this.streak = data.streak ?? 0;
       Object.assign(this.inventory, data.inventory);
       // migrate old boolean equipment flags -> inventory counts + equipped
       if (data.sword && this.inventory.sword === 0) this.inventory.sword = 1;

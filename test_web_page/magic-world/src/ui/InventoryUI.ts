@@ -110,6 +110,16 @@ const INVENTORY_ITEMS: InventoryItem[] = [
     key: "amulet",
     kind: "equip",
   },
+  {
+    label: "MYTHRIL SWORD",
+    key: "mythrilSword",
+    kind: "equip",
+  },
+  {
+    label: "MYTHRIL SHIELD",
+    key: "mythrilShield",
+    kind: "equip",
+  },
 ];
 
 export class InventoryUI {

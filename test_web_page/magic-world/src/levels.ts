@@ -20,7 +20,7 @@ export interface MonsterZone {
   w: number;
   h: number;
   count: number;
-  kind?: "slime" | "goblin" | "wolf" | "bat";
+  kind?: "slime" | "goblin" | "wolf" | "bat" | "wasp" | "spider" | "orc";
 }
 
 export const MONSTER_ZONES: MonsterZone[] = [
@@ -204,6 +204,78 @@ export function buildDungeon(): number[][] {
   stamp(map, 17, 14, ["TT"]);
   stamp(map, 20, 2, ["T"]);
   stamp(map, 23, 12, ["T", "T"]);
+
+  return map;
+}
+
+// Forest: 26x18 wall of trees around a grassy glade, path from entrance to boss clearing
+export const FOREST_W = 26;
+export const FOREST_H = 18;
+export const FOREST_ENTRY = { x: 12 * TILE + TILE / 2, y: 1 * TILE + TILE / 2 };
+
+// World-map position of the forest entrance (east side, far from CAVE/HOUSE)
+export const FOREST_POS = { x: 29 * TILE + TILE / 2, y: 10 * TILE + TILE / 2 };
+
+export const FOREST_ZONES: Array<MonsterZone & { kind?: "wasp" | "spider" | "orc" }> = [
+  { cx: 4 * TILE, cy: 3 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wasp" },
+  { cx: 21 * TILE, cy: 3 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3, kind: "wasp" },
+  { cx: 5 * TILE, cy: 10 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "spider" },
+  { cx: 21 * TILE, cy: 9 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "spider" },
+  { cx: 6 * TILE, cy: 14 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "orc" },
+  { cx: 14 * TILE, cy: 13 * TILE, w: 3 * TILE, h: 2 * TILE, count: 1 }, // moss golem boss
+];
+
+export const FOREST_TREASURE_POS: Array<{ id: string; x: number; y: number }> = [
+  { id: "forest-1", x: 4 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 },
+  { id: "forest-2", x: 19 * TILE + TILE / 2, y: 8 * TILE + TILE / 2 },
+  { id: "forest-3", x: 9 * TILE + TILE / 2, y: 4 * TILE + TILE / 2 },
+  { id: "forest-4", x: 16 * TILE + TILE / 2, y: 13 * TILE + TILE / 2 },
+];
+
+export function buildForest(): number[][] {
+  const map: number[][] = Array.from({ length: FOREST_H }, () =>
+    Array<number>(FOREST_W).fill(T_GRASS)
+  );
+
+  for (let x = 0; x < FOREST_W; x++) {
+    map[0][x] = T_TREE;
+    map[FOREST_H - 1][x] = T_TREE;
+  }
+  for (let y = 0; y < FOREST_H; y++) {
+    map[y][0] = T_TREE;
+    map[y][FOREST_W - 1] = T_TREE;
+  }
+
+  // winding path: entrance (top-center) down, across, down into the clearing
+  stamp(map, 11, 1, ["PP", "PP", "PP"]);
+  stamp(map, 13, 3, ["PPPPPP"]);
+  stamp(map, 18, 4, ["P", "P", "P", "P"]);
+  stamp(map, 13, 7, ["PPPPPP"]);
+  stamp(map, 13, 8, ["P", "P", "P"]);
+  stamp(map, 14, 10, ["PPPP"]);
+
+  // small ponds
+  stamp(map, 1, 6, ["WW", "WW", "WW"]);
+  stamp(map, 23, 12, ["WW", "WW", "WW"]);
+
+  // tree clusters
+  stamp(map, 2, 2, ["T"]);
+  stamp(map, 8, 5, [".T.", "TTT"]);
+  stamp(map, 22, 6, ["T.T", ".T."]);
+  stamp(map, 2, 10, ["T"]);
+  stamp(map, 18, 11, [".T.", "TTT"]);
+  stamp(map, 12, 11, ["T.T"]);
+  stamp(map, 15, 15, ["T"]);
+  stamp(map, 9, 14, ["T"]);
+  stamp(map, 18, 15, [".T", "TT"]);
+  stamp(map, 24, 5, ["T"]);
+  stamp(map, 2, 14, ["TTT", ".T."]);
+
+  // tall grass
+  stamp(map, 8, 2, ["hh", "hh"]);
+  stamp(map, 15, 4, ["hh", "hh"]);
+  stamp(map, 9, 10, ["hh", "hh"]);
+  stamp(map, 20, 13, ["hh", "hh"]);
 
   return map;
 }

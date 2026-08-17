@@ -1,19 +1,22 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
 import { GameState } from "../gameState";
-import { retroStyle } from "../pixelart";
-import { ENEMIES } from "../monsters";
+import { retroStyle, showToast } from "../pixelart";
+import { CATCHABLE, ENEMIES } from "../monsters";
 
 const SPECIES = Object.values(ENEMIES);
 const ROW_GAP = 72;
 const PANEL_H = 80 + SPECIES.length * ROW_GAP;
 
 export class BestiaryUI {
+  private scene: Phaser.Scene;
   private active = false;
+  private allCaughtToastShown = false;
 
   private dim: Phaser.GameObjects.Rectangle;
   private panel: Phaser.GameObjects.Rectangle;
   private title: Phaser.GameObjects.Text;
+  private counter: Phaser.GameObjects.Text;
   private icons: Phaser.GameObjects.Sprite[] = [];
   private rows: Phaser.GameObjects.Text[] = [];
 
@@ -22,6 +25,7 @@ export class BestiaryUI {
   private closeQueued = false;
 
   constructor(scene: Phaser.Scene) {
+    this.scene = scene;
     this.dim = scene.add
       .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.5)
       .setScrollFactor(0)
@@ -35,6 +39,12 @@ export class BestiaryUI {
       .setVisible(false);
     this.title = scene.add
       .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - PANEL_H / 2 + 36, "BESTIARY", retroStyle(8, "#ffd166"))
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(152)
+      .setVisible(false);
+    this.counter = scene.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + PANEL_H / 2 - 28, "", retroStyle(5, "#8ecbff"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -75,6 +85,7 @@ export class BestiaryUI {
     this.dim.setVisible(true);
     this.panel.setVisible(true);
     this.title.setVisible(true);
+    this.counter.setVisible(true);
     for (const t of this.rows) t.setVisible(true);
     this.refresh();
   }
@@ -84,6 +95,7 @@ export class BestiaryUI {
     this.dim.setVisible(false);
     this.panel.setVisible(false);
     this.title.setVisible(false);
+    this.counter.setVisible(false);
     for (const s of this.icons) s.setVisible(false);
     for (const t of this.rows) t.setVisible(false);
   }
@@ -99,12 +111,21 @@ export class BestiaryUI {
   }
 
   private refresh(): void {
+    // CAUGHT is scored against CATCHABLE — bosses appear in the list but can
+    // never be caught, so counting them would make 100% unreachable.
+    const seen = SPECIES.filter((def) => GameState.seenMonsters.includes(def.name)).length;
+    const caught = CATCHABLE.filter((def) => GameState.caught.includes(def.name)).length;
+    this.counter.setText(`SEEN ${seen}/${SPECIES.length}  CAUGHT ${caught}/${CATCHABLE.length}`);
+    if (caught === CATCHABLE.length && !this.allCaughtToastShown) {
+      this.allCaughtToastShown = true;
+      showToast(this.scene, "ALL CAUGHT! SEE THE ELDER");
+    }
     SPECIES.forEach((def, i) => {
-      const seen = GameState.seenMonsters.includes(def.name);
-      const caught = GameState.caught.filter((n) => n === def.name).length;
-      this.icons[i].setVisible(seen);
-      this.rows[i].setText(seen ? `${def.name}${caught > 0 ? ` (x${caught})` : ""}` : "???");
-      this.rows[i].setColor(seen ? "#ffffff" : "#666666");
+      const rowSeen = GameState.seenMonsters.includes(def.name);
+      const rowCaught = GameState.caught.filter((n) => n === def.name).length;
+      this.icons[i].setVisible(rowSeen);
+      this.rows[i].setText(rowSeen ? `${def.name}${rowCaught > 0 ? ` (x${rowCaught})` : ""}` : "???");
+      this.rows[i].setColor(rowSeen ? "#ffffff" : "#666666");
     });
   }
 
@@ -112,6 +133,7 @@ export class BestiaryUI {
     this.dim.destroy();
     this.panel.destroy();
     this.title.destroy();
+    this.counter.destroy();
     for (const s of this.icons) s.destroy();
     for (const t of this.rows) t.destroy();
     // keys are shared instances from kb.addKey (same keycode → same object);
