@@ -40,6 +40,7 @@ Lumina-Image-2.0 문서 참고: [arXiv](https://arxiv.org/abs/2503.21758),
 ```text
 diffuers/
 ├── generate_image.py   # 모델 로딩 + 이미지 생성 예시 스크립트
+├── png_info.py         # 생성된 PNG 의 메타데이터(프롬프트, 시드 등) 조회
 ├── outputs/            # 생성된 이미지 저장 위치
 └── README.md
 ```
@@ -225,9 +226,18 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
   해상도, device, dtype 등이 이미지 파일에 함께 저장됩니다. `--seed` 를 다시
   지정하면 동일한 이미지를 재현할 수 있습니다.
 
+  `png_info.py` 로 확인합니다. 초기 생성분 등 메타데이터가 없는 파일은
+  크기/모드만 출력됩니다.
+
   ```bash
-  # 확인 방법 (PIL)
-  .venv/bin/python -c "from PIL import Image; print(Image.open('outputs/xxx.png').info)"
+  # 크기/모드 + 전체 메타데이터 출력
+  .venv/bin/python png_info.py outputs/*.png
+
+  # -k 로 특정 키만 (반복 가능)
+  .venv/bin/python png_info.py -k seed -k prompt outputs/xxx.png
+
+  # --json 으로 JSON 배열 출력 (jq 파이프 가능)
+  .venv/bin/python png_info.py --json outputs/*.png | jq '.[].text.seed'
   ```
 
 - **dtype**: 자동으로 `cuda -> bfloat16`, `mps(Mac)-> float16`, `cpu -> float32` 로 설정합니다.
