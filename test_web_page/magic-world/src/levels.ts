@@ -8,8 +8,8 @@ export const T_PATH = 4;
 export const T_TALL = 5;
 export const T_HOUSE = 6;
 
-export const MAP_W = 32;
-export const MAP_H = 24;
+export const MAP_W = 28;
+export const MAP_H = 20;
 
 export const SOLID = new Set<number>([T_WATER_A, T_WATER_B, T_TREE, T_HOUSE]);
 export const TALL_GRASS = T_TALL;
@@ -24,12 +24,12 @@ export interface MonsterZone {
 }
 
 export const MONSTER_ZONES: MonsterZone[] = [
-  { cx: 4 * TILE, cy: 14 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
-  { cx: 18 * TILE, cy: 13 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
-  { cx: 10 * TILE, cy: 20 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
-  { cx: 26 * TILE, cy: 8 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
-  { cx: 27 * TILE, cy: 17.5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
-  { cx: 21.5 * TILE, cy: 3.5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2 },
+  { cx: 4 * TILE, cy: 12 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
+  { cx: 17 * TILE, cy: 13 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
+  { cx: 10 * TILE, cy: 17 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
+  { cx: 24 * TILE, cy: 7 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
+  { cx: 23 * TILE, cy: 16 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
+  { cx: 21 * TILE, cy: 3.5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2 },
 ];
 
 // Battle ends leave the hero standing where the fight started — inside the
@@ -98,38 +98,38 @@ export function buildLevel(): number[][] {
   // No water border: the map edge is plain grass and the camera/physics world
   // bounds already stop the hero from walking off.
 
+  // town: the east-west road at y=7 and the north-south road at x=7 cross by
+  // the ELDER; everything else is dressing placed clear of those lanes
   stamp(map, 3, 2, ["HH", "HH"]);
-  stamp(map, 1, 7, ["PPPPPPPPPPPPPPPPPPPPPPPP"]);
+  stamp(map, 1, 7, ["PPPPPPPPPPPPPPPPPPPPPPPPPP"]);
   stamp(map, 7, 3, ["P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "P"]);
   stamp(map, 5, 7, ["P", "P"]);
-  stamp(map, 3, 13, ["hh", "hh"]);
-  stamp(map, 17, 12, ["hh", "hh"]);
+  stamp(map, 3, 12, ["hh", "hh"]);
+  stamp(map, 16, 12, ["hh", "hh"]);
   stamp(map, 6, 4, [".T.", "TTT"]);
   stamp(map, 15, 5, [".T.", "TTT"]);
   stamp(map, 18, 9, ["T.T", ".T."]);
   stamp(map, 12, 2, ["T"]);
 
-  stamp(map, 25, 4, ["WWWW", "WWWW", "WWWW"]);
-  stamp(map, 25, 7, ["hhh", "hhh", "hhh"]);
-  stamp(map, 21, 3, ["hh", "hh"]);
-  stamp(map, 24, 8, ["P", "P", "P", "P"]);
-  stamp(map, 27, 2, [".T.", "TTT"]);
-  stamp(map, 29, 6, ["T"]);
+  // east: pond, wolf grass, and the lane down to the forest gate at (25, 10)
+  stamp(map, 23, 3, ["WWW", "WWW"]);
+  stamp(map, 23, 6, ["hhh", "hhh"]);
+  stamp(map, 20, 3, ["hh", "hh"]);
+  stamp(map, 21, 10, ["PPPP"]);
+  stamp(map, 25, 2, [".T.", "TTT"]);
   stamp(map, 22, 12, ["T.T", ".T."]);
-  stamp(map, 29, 12, ["T.T", ".T."]);
-  stamp(map, 26, 14, ["T"]);
-  stamp(map, 30, 15, [".T.", "TTT"]);
+  stamp(map, 26, 13, ["T"]);
+  stamp(map, 25, 16, [".T.", "TTT"]);
 
-  stamp(map, 7, 14, ["P", "P", "P", "P", "P", "P", "P", "P"]);
-  stamp(map, 9, 19, ["hhhh", "hhhh"]);
-  stamp(map, 26, 17, ["hhh", "hhh"]);
-  stamp(map, 2, 17, ["T"]);
-  stamp(map, 6, 16, [".T.", "TTT"]);
-  stamp(map, 14, 21, ["TTT", ".T."]);
-  stamp(map, 20, 20, [".T.", "TTT"]);
-  stamp(map, 5, 22, ["TT", ".."]);
-  stamp(map, 16, 17, ["T"]);
-  stamp(map, 11, 15, ["T"]);
+  // south
+  stamp(map, 7, 14, ["P", "P", "P", "P", "P"]);
+  stamp(map, 9, 15, ["hhhh", "hhhh"]);
+  stamp(map, 2, 16, ["T"]);
+  stamp(map, 5, 17, [".T.", "TTT"]);
+  stamp(map, 13, 17, ["TTT", ".T."]);
+  stamp(map, 19, 16, [".T.", "TTT"]);
+  stamp(map, 16, 15, ["T"]);
+  stamp(map, 11, 13, ["T"]);
 
   return map;
 }
@@ -208,7 +208,7 @@ export const FOREST_H = 18;
 export const FOREST_ENTRY = { x: 12 * TILE + TILE / 2, y: 1 * TILE + TILE / 2 };
 
 // World-map position of the forest entrance (east side, far from CAVE/HOUSE)
-export const FOREST_POS = { x: 29 * TILE + TILE / 2, y: 10 * TILE + TILE / 2 };
+export const FOREST_POS = { x: 25 * TILE + TILE / 2, y: 10 * TILE + TILE / 2 };
 
 export const FOREST_ZONES: Array<MonsterZone & { kind?: "wasp" | "spider" | "orc" }> = [
   { cx: 4 * TILE, cy: 3 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wasp" },

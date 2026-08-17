@@ -36,6 +36,23 @@ export const TITLE_THEME: Note[] = [
   { freq: 440, dur: 0.3 },
   { freq: 392, dur: 0.3 },
   { freq: null, dur: 0.3 },
+  // C — a quieter, wider phrase before the last time through
+  { freq: 220, dur: 0.45 },
+  { freq: 330, dur: 0.3 },
+  { freq: 440, dur: 0.3 },
+  { freq: 392, dur: 0.45 },
+  { freq: 330, dur: 0.3 },
+  { freq: 294, dur: 0.3 },
+  { freq: 247, dur: 0.6 },
+  { freq: null, dur: 0.3 },
+  { freq: 294, dur: 0.3 },
+  { freq: 392, dur: 0.3 },
+  { freq: 494, dur: 0.3 },
+  { freq: 587, dur: 0.45 },
+  { freq: 494, dur: 0.3 },
+  { freq: 440, dur: 0.3 },
+  { freq: 392, dur: 0.6 },
+  { freq: null, dur: 0.3 },
   // A — cadence home
   { freq: 262, dur: 0.3 },
   { freq: 330, dur: 0.3 },
@@ -80,7 +97,42 @@ export const OVERWORLD_THEME: Note[] = [
   { freq: 659, dur: 0.18 },
   { freq: 587, dur: 0.18 },
   { freq: 523, dur: 0.36 },
-  { freq: null, dur: 0.3 },
+  { freq: null, dur: 0.24 },
+  // B — leans on the relative minor in longer strides, so the loop stops
+  // sounding like the same eight bars over and over
+  { freq: 440, dur: 0.24 },
+  { freq: 523, dur: 0.24 },
+  { freq: 659, dur: 0.24 },
+  { freq: 523, dur: 0.24 },
+  { freq: 494, dur: 0.24 },
+  { freq: 587, dur: 0.24 },
+  { freq: 494, dur: 0.36 },
+  { freq: null, dur: 0.18 },
+  { freq: 392, dur: 0.24 },
+  { freq: 494, dur: 0.24 },
+  { freq: 587, dur: 0.24 },
+  { freq: 494, dur: 0.24 },
+  { freq: 440, dur: 0.24 },
+  { freq: 523, dur: 0.24 },
+  { freq: 440, dur: 0.36 },
+  { freq: null, dur: 0.18 },
+  // C — climbs back up and hands the loop to the opening phrase
+  { freq: 349, dur: 0.18 },
+  { freq: 440, dur: 0.18 },
+  { freq: 523, dur: 0.18 },
+  { freq: 659, dur: 0.18 },
+  { freq: 587, dur: 0.18 },
+  { freq: 523, dur: 0.18 },
+  { freq: 494, dur: 0.3 },
+  { freq: null, dur: 0.12 },
+  { freq: 523, dur: 0.18 },
+  { freq: 659, dur: 0.18 },
+  { freq: 784, dur: 0.18 },
+  { freq: 880, dur: 0.24 },
+  { freq: 784, dur: 0.18 },
+  { freq: 659, dur: 0.18 },
+  { freq: 523, dur: 0.42 },
+  { freq: null, dur: 0.36 },
 ];
 
 // Sparse minor phrases drifting lower each time, ~13s per loop
@@ -116,7 +168,24 @@ export const DUNGEON_THEME: Note[] = [
   { freq: 311, dur: 0.4 },
   { freq: null, dur: 0.3 },
   { freq: 262, dur: 0.6 },
-  { freq: null, dur: 0.5 },
+  { freq: null, dur: 0.4 },
+  // a higher, thinner answer before sinking back to the opening
+  { freq: 466, dur: 0.3 },
+  { freq: null, dur: 0.2 },
+  { freq: 440, dur: 0.3 },
+  { freq: null, dur: 0.2 },
+  { freq: 392, dur: 0.45 },
+  { freq: null, dur: 0.35 },
+  { freq: 311, dur: 0.5 },
+  { freq: null, dur: 0.4 },
+  { freq: 349, dur: 0.3 },
+  { freq: null, dur: 0.2 },
+  { freq: 311, dur: 0.3 },
+  { freq: null, dur: 0.2 },
+  { freq: 294, dur: 0.45 },
+  { freq: null, dur: 0.35 },
+  { freq: 196, dur: 0.7 },
+  { freq: null, dur: 0.6 },
 ];
 
 // Driving riff with two variations and a run back home, ~4s per loop
@@ -153,10 +222,85 @@ export const BATTLE_THEME: Note[] = [
   { freq: 494, dur: 0.12 },
   { freq: 523, dur: 0.24 },
   { freq: null, dur: 0.12 },
+  // B — half-time swell that breaks up the riff before it snaps back
+  { freq: 415, dur: 0.24 },
+  { freq: 494, dur: 0.24 },
+  { freq: 523, dur: 0.24 },
+  { freq: 622, dur: 0.24 },
+  { freq: 587, dur: 0.24 },
+  { freq: 523, dur: 0.24 },
+  { freq: 494, dur: 0.36 },
+  { freq: null, dur: 0.12 },
+  // C — the riff again a step darker, then a run home
+  { freq: 392, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 392, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 622, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 587, dur: 0.12 },
+  { freq: 494, dur: 0.12 },
+  { freq: 440, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 659, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 698, dur: 0.12 },
+  { freq: 659, dur: 0.12 },
+  { freq: 587, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 494, dur: 0.12 },
+  { freq: 587, dur: 0.12 },
+  { freq: 698, dur: 0.12 },
+  { freq: 880, dur: 0.24 },
+  { freq: 784, dur: 0.12 },
+  { freq: 659, dur: 0.12 },
+  { freq: 523, dur: 0.36 },
+  { freq: null, dur: 0.12 },
+  // D — pedal-tone chase, the tensest stretch, then a scramble back to the top
+  { freq: 330, dur: 0.12 },
+  { freq: 494, dur: 0.12 },
+  { freq: 330, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 330, dur: 0.12 },
+  { freq: 587, dur: 0.12 },
+  { freq: 330, dur: 0.12 },
+  { freq: 659, dur: 0.12 },
+  { freq: 349, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 349, dur: 0.12 },
+  { freq: 587, dur: 0.12 },
+  { freq: 349, dur: 0.12 },
+  { freq: 659, dur: 0.12 },
+  { freq: 349, dur: 0.12 },
+  { freq: 698, dur: 0.12 },
+  { freq: 392, dur: 0.18 },
+  { freq: 494, dur: 0.18 },
+  { freq: 587, dur: 0.18 },
+  { freq: 698, dur: 0.18 },
+  { freq: 784, dur: 0.18 },
+  { freq: 880, dur: 0.18 },
+  { freq: 1047, dur: 0.36 },
+  { freq: null, dur: 0.18 },
+  { freq: 784, dur: 0.12 },
+  { freq: 659, dur: 0.12 },
+  { freq: 587, dur: 0.12 },
+  { freq: 523, dur: 0.12 },
+  { freq: 494, dur: 0.12 },
+  { freq: 440, dur: 0.12 },
+  { freq: 392, dur: 0.42 },
+  { freq: null, dur: 0.24 },
 ];
+
+// Every note's own `vol` stays relative; this is the single knob for how loud
+// the game is overall. Above 1 because the per-note levels were mixed very
+// conservatively — the limiter below absorbs the peaks when notes stack.
+const MASTER_VOLUME = 2.8;
+// BGM sits under the effects on purpose, but not as far under as it did
+const BGM_VOLUME = 0.055;
 
 export class Sfx {
   private static ctx: AudioContext | null = null;
+  private static master: GainNode | null = null;
   private static bgmTimer: ReturnType<typeof setTimeout> | null = null;
   private static bgmTrack: Note[] | null = null;
 
@@ -173,8 +317,19 @@ export class Sfx {
         window.AudioContext ||
         (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       this.ctx = new AC();
+      // notes -> master gain -> limiter -> speakers, so boosting the master
+      // can't clip when a BGM note and a hit land on the same frame
+      const limiter = this.ctx.createDynamicsCompressor();
+      limiter.threshold.value = -8;
+      limiter.ratio.value = 12;
+      limiter.attack.value = 0.003;
+      limiter.release.value = 0.1;
+      this.master = this.ctx.createGain();
+      this.master.gain.value = MASTER_VOLUME;
+      this.master.connect(limiter).connect(this.ctx.destination);
     } catch {
       this.ctx = null;
+      this.master = null;
     }
   }
 
@@ -198,7 +353,7 @@ export class Sfx {
     let i = 0;
     const step = (): void => {
       const note = track[i % track.length];
-      if (note.freq) this.tone(note.freq, note.dur * 0.9, "triangle", 0.035);
+      if (note.freq) this.tone(note.freq, note.dur * 0.9, "triangle", BGM_VOLUME);
       i++;
       this.bgmTimer = setTimeout(step, note.dur * 1000);
     };
@@ -239,7 +394,7 @@ export class Sfx {
     osc.frequency.setValueAtTime(freq, t);
     gain.gain.setValueAtTime(vol, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    osc.connect(gain).connect(this.ctx.destination);
+    osc.connect(gain).connect(this.master ?? this.ctx.destination);
     osc.start(t);
     osc.stop(t + dur);
   }
