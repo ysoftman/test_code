@@ -142,18 +142,38 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 기록을 불러올 수** 있으며, 히스토리는 `outputs/.prompt_history` 에 저장되어
 다음 실행에서도 유지됩니다 (gitignore 대상).
 
-실행 시 사용 가능한 프롬프트 마커(`{realism}` 등)와 종료 방법 안내가
-컬러로 표시되며, `help` 를 입력하면 언제든 다시 볼 수 있습니다.
-(파이프/리다이렉트 사용 시에는 색상이 제거됩니다)
+실행 시 사용 가능한 프롬프트 마커(`{realism}` 등), 프롬프트 작성 요령, 나쁜/좋은
+프롬프트 예시, 종료 방법이 컬러로 표시되며 `help` 를 입력하면 언제든 다시 볼 수
+있습니다. (파이프/리다이렉트 사용 시에는 색상이 제거됩니다)
 
 ```bash
 .venv/bin/python generate_image.py --offline -i
 
 # [info] prompt markers (type 'help' to show this again):
-#   {realism} -> Shot as a raw, unretouched photograph on an 85mm lens at f/1.8. ...
+#   {realism}
+#       Shot as a raw, unretouched photograph on an 85mm lens at f/1.8. The skin
+#       shows visible pores, fine lines and the soft translucency of subsurface
+#       scattering under gentle natural light, with small imperfections left in.
+#   ... ({portrait} {cinematic} {landscape} {product} {anime} {macro})
 #   exit or quit to stop
-# prompt> a cute cat on a sofa, {realism}
-# prompt> help  -> 마커/종료 안내 다시 표시
+#
+# [info] how to write a prompt:
+#   - Write in English. UniCap captioned the training data in English and
+#     Chinese only, so Korean conditions the model far more weakly.
+#   - Describe the whole scene in sentences, not comma-separated tags. ...
+#   - Say where the light comes from and what it does. ...
+#   - Name specific imperfections - uneven skin, freckles, stray hair, stubble. ...
+#   - Skip {product} for people. ...
+#
+# [info] bad - comma-separated tags, Korean:
+#     한국 20대 여성, 단발머리, 화장없이, 자연스러운, raw photo, 8k, {realism}{product}
+# [info] good - English, whole scene described:
+#     A quiet photograph of a Korean woman in her mid-twenties, shoulder-length
+#     dark hair cut in a soft bob and tucked behind one ear, ... Cool overcast
+#     light from a large window on her right wraps softly around her face and
+#     leaves the left side in gentle shadow. ... {realism}
+#
+# prompt> help  -> 안내 다시 표시
 # prompt> exit  -> 종료
 ```
 

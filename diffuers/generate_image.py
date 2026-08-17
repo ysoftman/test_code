@@ -7,6 +7,7 @@ import io
 import random
 import re
 import sys
+import textwrap
 import time
 from datetime import datetime
 from pathlib import Path
@@ -72,6 +73,33 @@ PROMPT_MARKERS = {
         "filling the frame."
     ),
 }
+
+PROMPT_TIPS = (
+    "Write in English. UniCap captioned the training data in English and Chinese "
+    "only, so Korean conditions the model far more weakly.",
+    "Describe the whole scene in sentences, not comma-separated tags. Lumina-2 was "
+    "trained on long captions and effectively gains capacity from longer ones.",
+    "Say where the light comes from and what it does. Directional light is most of "
+    "what separates a photograph from an AI-looking render.",
+    "Name specific imperfections - uneven skin, freckles, stray hair, stubble. "
+    "Flawless faces are what read as artificial.",
+    "Skip {product} for people: its clean advertising look fights the skin texture "
+    "{realism} and {portrait} ask for.",
+)
+
+BAD_EXAMPLE = (
+    "한국 20대 여성, 단발머리, 화장없이, 자연스러운, raw photo, 8k, {realism}{product}"
+)
+
+GOOD_EXAMPLE = (
+    "A quiet photograph of a Korean woman in her mid-twenties, shoulder-length dark "
+    "hair cut in a soft bob and tucked behind one ear, a few strands loose across "
+    "her forehead. Her face is bare, no makeup at all, and her skin is slightly "
+    "uneven across the cheeks. She looks straight into the lens with a calm, "
+    "closed-mouth expression. Cool overcast light from a large window on her right "
+    "wraps softly around her face and leaves the left side in gentle shadow. Plain "
+    "pale wall behind her, slightly out of focus. {realism}"
+)
 
 # Prompt templates from the Lumina-Image-2.0 paper; the pipeline's own default is
 # "superior". Pass a preset name or any free-form string to --system-prompt.
@@ -330,16 +358,36 @@ def save_image(
     print(f"[info] generation took {gen_time:.1f}s -> saved to {output}")
 
 
+def wrap(text: str, indent: int = 4) -> str:
+    pad = " " * indent
+    return textwrap.fill(
+        text,
+        width=78,
+        initial_indent=pad,
+        subsequent_indent=pad,
+        break_on_hyphens=False,
+    )
+
+
 def marker_guide() -> str:
     lines = [
         c("[info] prompt markers (type 'help' to show this again):", C_BOLD, C_CYAN)
     ]
-    for name, keywords in PROMPT_MARKERS.items():
-        marker = c(f"{{{name}}}", C_BOLD, C_YELLOW)
-        lines.append(f"  {marker} -> {c(keywords, C_GREEN)}")
+    for name, sentences in PROMPT_MARKERS.items():
+        lines.append(f"  {c(f'{{{name}}}', C_BOLD, C_YELLOW)}")
+        lines.append(c(wrap(sentences, indent=6), C_GREEN))
     lines.append(
         f"  {c('exit', C_BOLD, C_YELLOW)} or {c('quit', C_BOLD, C_YELLOW)} to stop"
     )
+    lines.append("")
+    lines.append(c("[info] how to write a prompt:", C_BOLD, C_CYAN))
+    for tip in PROMPT_TIPS:
+        lines.append(f"  - {wrap(tip, indent=4).lstrip()}")
+    lines.append("")
+    lines.append(c("[info] bad - comma-separated tags, Korean:", C_BOLD, C_CYAN))
+    lines.append(c(wrap(BAD_EXAMPLE), C_YELLOW))
+    lines.append(c("[info] good - English, whole scene described:", C_BOLD, C_CYAN))
+    lines.append(c(wrap(GOOD_EXAMPLE), C_GREEN))
     return "\n".join(lines)
 
 
