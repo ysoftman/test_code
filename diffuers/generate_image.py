@@ -34,37 +34,60 @@ def c(text: str, *codes: str) -> str:
     return "".join(codes) + text + C_RESET
 
 
+# Lumina-2 was trained on UniCap's long descriptive captions, so the markers are
+# written as sentences rather than comma-separated tags.
 PROMPT_MARKERS = {
     "realism": (
-        "raw photo, realistic skin pores, fine wrinkles, subsurface scattering, "
-        "natural soft lighting, shot on 85mm lens, f/1.8, subtle imperfections, "
-        "8k resolution"
+        "Shot as a raw, unretouched photograph on an 85mm lens at f/1.8. The skin "
+        "shows visible pores, fine lines and the soft translucency of subsurface "
+        "scattering under gentle natural light, with small imperfections left in."
     ),
     "portrait": (
-        "professional portrait photography, 85mm lens, f/1.8, shallow depth of "
-        "field, soft bokeh background, sharp focus on eyes, natural skin tones, "
-        "studio lighting"
+        "A portrait photograph taken on an 85mm lens at f/1.8, the background "
+        "falling away into soft bokeh while the eyes stay sharp. Skin tones are "
+        "natural and the light is soft and directional."
     ),
     "cinematic": (
-        "cinematic still, film grain, anamorphic lens, dramatic lighting, "
-        "cinematic color grading, moody atmosphere, shallow depth of field, "
-        "35mm film"
+        "A cinematic still shot on 35mm film through an anamorphic lens, with "
+        "dramatic directional lighting, muted colour grading, a shallow plane of "
+        "focus and fine grain."
     ),
     "landscape": (
-        "wide angle landscape photography, golden hour, dramatic sky, rich "
-        "detail, natural colors, high dynamic range, professional photography"
+        "A wide-angle landscape photograph taken in golden hour light, with a "
+        "dramatic sky, rich fine detail across the frame and natural colour held "
+        "in both the highlights and the shadows."
     ),
     "product": (
-        "commercial product photography, studio lighting, softbox, high detail, "
-        "clean background, professional advertising shot, sharp focus"
+        "A commercial product photograph lit by a large softbox against a clean, "
+        "seamless background, every surface detail sharp and evenly exposed."
     ),
     "anime": (
-        "anime illustration style, clean line art, vibrant colors, detailed "
-        "eyes, studio quality animation, high quality anime artwork"
+        "An anime illustration with clean line art, vibrant flat colours and "
+        "carefully detailed eyes, in the style of a high-quality studio "
+        "animation frame."
     ),
     "macro": (
-        "macro photography, extreme close-up, shallow depth of field, fine "
-        "detail, natural light, sharp focus on subject"
+        "A macro photograph taken extremely close to the subject, with a "
+        "razor-thin plane of focus, natural light and fine surface texture "
+        "filling the frame."
+    ),
+}
+
+# Prompt templates from the Lumina-Image-2.0 paper; the pipeline's own default is
+# "superior". Pass a preset name or any free-form string to --system-prompt.
+SYSTEM_PROMPTS = {
+    "aesthetics": (
+        "You are an assistant designed to generate high-quality images with "
+        "highest degree of aesthetics based on user prompts."
+    ),
+    "alignment": (
+        "You are an assistant designed to generate high-quality images with the "
+        "highest degree of image-text alignment based on textual prompts."
+    ),
+    "superior": (
+        "You are an assistant designed to generate superior images with the "
+        "superior degree of image-text alignment based on textual prompts or "
+        "user prompts."
     ),
 }
 
@@ -125,6 +148,11 @@ def parse_args() -> argparse.Namespace:
         "--negative-prompt",
         default=None,
         help="Negative prompt (default: empty string, the official recommendation for Lumina-Image-2.0)",
+    )
+    parser.add_argument(
+        "--system-prompt",
+        default="aesthetics",
+        help=f"Preset name ({', '.join(SYSTEM_PROMPTS)}) or a free-form system prompt",
     )
     parser.add_argument("--width", type=int, default=1024)
     parser.add_argument("--height", type=int, default=1024)
@@ -187,15 +215,39 @@ def model_short_name(model: str) -> str:
 
 
 def expand_prompt(prompt: str) -> str:
-    for name, keywords in PROMPT_MARKERS.items():
-        prompt = prompt.replace(f"{{{name}}}", keywords)
-    return prompt
+    for name, sentences in PROMPT_MARKERS.items():
+        prompt = prompt.replace(f"{{{name}}}", f" {sentences} ")
+    return re.sub(r"\s+", " ", prompt).strip()
+
+
+def warn_prompt(prompt: str) -> None:
+    if re.search(r"[가-힣]", prompt):
+        print(
+            c(
+                "[warn] Korean text in prompt. Lumina-2 was captioned in English and "
+                "Chinese only, so Korean conditions the model far more weakly - "
+                "an English prompt gives noticeably better results.",
+                C_YELLOW,
+            )
+        )
+    if "{product}" in prompt and ("{realism}" in prompt or "{portrait}" in prompt):
+        print(
+            c(
+                "[warn] {product} asks for a clean advertising shot, which fights the "
+                "skin texture {realism}/{portrait} ask for. Drop {product} for people.",
+                C_YELLOW,
+            )
+        )
 
 
 def resolve_negative_prompt(args: argparse.Namespace) -> str:
     if args.negative_prompt is not None:
         return args.negative_prompt
     return DEFAULT_NEGATIVE_PROMPT
+
+
+def resolve_system_prompt(args: argparse.Namespace) -> str:
+    return SYSTEM_PROMPTS.get(args.system_prompt, args.system_prompt)
 
 
 def resolve_seed(base_seed: int | None, offset: int) -> int:
@@ -218,6 +270,7 @@ def build_metadata(
         "prompt": expanded_prompt,
         "prompt_raw": raw_prompt,
         "negative_prompt": resolve_negative_prompt(args),
+        "system_prompt": resolve_system_prompt(args),
         "seed": str(seed),
         "steps": str(args.steps),
         "guidance": str(args.guidance),
@@ -243,6 +296,7 @@ def generate_image(
         image = pipe(
             prompt=prompt,
             negative_prompt=resolve_negative_prompt(args),
+            system_prompt=resolve_system_prompt(args),
             height=args.height,
             width=args.width,
             guidance_scale=args.guidance,
@@ -312,6 +366,7 @@ def run_interactive(
                 continue
             if not prompt or prompt.lower() in ("exit", "quit", "q"):
                 break
+            warn_prompt(prompt)
             for i in range(args.count):
                 seed = resolve_seed(args.seed, counter * args.count + i)
                 print(f"[info] seed={seed}")
@@ -369,6 +424,7 @@ def main() -> None:
         run_interactive(pipe, args, device, dtype)
         return
 
+    warn_prompt(args.prompt)
     total_gen = 0.0
     for i in range(args.count):
         seed = resolve_seed(args.seed, i)

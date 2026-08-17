@@ -150,7 +150,7 @@ hf download Alpha-VLLM/Lumina-Image-2.0
 .venv/bin/python generate_image.py --offline -i
 
 # [info] prompt markers (type 'help' to show this again):
-#   {realism} -> raw photo, realistic skin pores, ...
+#   {realism} -> Shot as a raw, unretouched photograph on an 85mm lens at f/1.8. ...
 #   exit or quit to stop
 # prompt> a cute cat on a sofa, {realism}
 # prompt> help  -> 마커/종료 안내 다시 표시
@@ -185,6 +185,7 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 | `--model` | `Alpha-VLLM/Lumina-Image-2.0` | Hub repo id 또는 로컬 모델 경로 |
 | `--prompt` | 샘플 프롬프트 | 생성할 이미지 설명 (영어 권장) |
 | `--negative-prompt` | 없음 | 이미지에 포함하지 않을 내용 (미지정 시 빈 문자열 — Lumina-2.0 공식 권장, 부정 프롬프트는 효과가 제한적) |
+| `--system-prompt` | `aesthetics` | 논문 프롬프트 템플릿 (`aesthetics` / `alignment` / `superior`) 또는 임의 문장 |
 | `--width` / `--height` | `1024` / `1024` | 생성 이미지 크기 (**8의 배수 필수**, VAE 다운샘플 배수) |
 | `--steps` | `50` | 노이즈 제거 스텝 수 (클수록 품질↑, 시간↑) |
 | `--guidance` | `4.0` | 가이던스 스케일 (클수록 프롬프트 충실도↑) |
@@ -242,97 +243,127 @@ printf 'cat\nsunset\nquit\n' | .venv/bin/python generate_image.py --offline -i -
 - CUDA GPU 대비 M1 Max 는 느리므로, 그 외 추가 최적화 여지(flash-attention,
   `torch.compile`)는 MPS 에서 지원되지 않음
 
-## 실사 품질 개선 가이드 (클라우드 vs 로컬)
+## 실사 품질 개선 가이드 (인물이 "AI 티" 날 때)
 
-Lumina 공식 클라우드 서비스 대비 로컬(M1 Max) 실행 결과가 인물 묘사 품질이
-떨어지거나 인공적(AI 느낌)으로 보이는 이유는 크게 네 가지입니다.
+인물 생성 결과가 인공적으로 보이는 원인은 **거의 전부 프롬프트**입니다. 모델
+차이나 정밀도 문제가 아닙니다. 같은 체크포인트·같은 시드(592831894)·같은
+파라미터(1024x1024, 30스텝, guidance 4.0, cfg_trunc 0.25, MPS float16)로
+프롬프트만 바꿔 확인한 결과입니다.
 
-1. 클라우드는 입력 프롬프트를 내부 LLM/캡셔너(예: UniCap)가 이미지 생성에
-   최적화된 상세 프롬프트로 자동 확장(Expansion)합니다.
-2. 클라우드는 H100/A100 수준 GPU에서 원본 정밀도(BF16/FP16)로 추론합니다.
-   로컬에서 8-bit/4-bit 양자화 웨이트를 쓰면 디테일이 손실됩니다.
-3. 샘플링 파라미터(스텝 수, CFG, shift) 차이에 따라 질감 감도가 달라집니다.
-4. 클라우드는 생성 후 자동으로 얼굴 보정(Face Restoration)과
-   업스케일(Hi-Res) 후처리를 수행합니다.
-
-### 1. 프롬프트 상세 묘사 (가장 큰 차이)
-
-로컬은 입력한 텍스트가 그대로 디퓨전 모델에 전달되므로 피부 질감, 미세한 조명,
-눈동자 디테일이 생략됩니다. 이 프로젝트는 프롬프트에 마커(`{realism}` 등)를
-넣으면 아래 프리셋 키워드로 자동 확장합니다 (직접 명시도 가능).
-
-| 마커 | 확장 키워드 (요약) |
+| 프롬프트 | 결과 |
 | --- | --- |
-| `{realism}` | raw photo, realistic skin pores, subsurface scattering, 85mm, f/1.8, 8k |
-| `{portrait}` | professional portrait, 85mm f/1.8, shallow depth of field, studio lighting |
-| `{cinematic}` | cinematic still, film grain, anamorphic lens, color grading, 35mm film |
-| `{landscape}` | wide angle, golden hour, dramatic sky, HDR, professional photography |
-| `{product}` | commercial product photo, studio lighting, softbox, clean background |
-| `{anime}` | anime illustration, clean line art, vibrant colors, detailed eyes |
-| `{macro}` | macro photography, extreme close-up, shallow depth of field |
+| 한국어 + 쉼표 태그 나열 | 매끈한 플라스틱 피부, 회색 무배경, 어색한 표정 |
+| 영어 번역 + 쉼표 태그 나열 | 머릿결/표정이 개선되나 여전히 스톡사진 느낌 |
+| 영어 **서술형 캡션** | 방향성 있는 광선, 실제 그림자, 필름 톤 — 사진처럼 보임 |
 
-여러 마커를 함께 쓸 수도 있으며, 같은 키워드 세트를 직접 붙여 넣어도 됩니다.
+### 1. 영어로 쓴다 (가장 큰 차이)
+
+[Lumina-Image 2.0 논문](https://arxiv.org/abs/2503.21758)에 따르면 학습 캡션
+(UniCap)은 **영어와 중국어로만** 생성됐고, 그 외 언어는 Gemma2 텍스트 인코더의
+다국어 능력에서 파생된 것(emergent)입니다. 논문이 예로 든 언어는 독일어·일본어·
+러시아어이며 **한국어는 없습니다**.
+
+게다가 Gemma 토크나이저는 한국어를 음절 단위로 쪼갭니다.
 
 ```text
-# {realism} 마커가 확장하는 실제 키워드
-raw photo, realistic skin pores, fine wrinkles, subsurface scattering,
-natural soft lighting, shot on 85mm lens, f/1.8, subtle imperfections, 8k resolution
+'백','인','▁모델',',','▁','푸','른','▁눈','동','자',',','▁갈','색','▁머','리' ...  → 49 토큰
+동일 의미의 영어 문장                                                            → 26 토큰
 ```
 
-사용 예시:
+토큰 수는 두 배인데 의미 신호는 더 약합니다. 한국어가 섞이면 스크립트가 경고를
+출력합니다.
 
-```bash
-# 마커 없이 간단한 프롬프트
-.venv/bin/python generate_image.py --prompt "portrait of a young woman, natural light" --offline
+### 2. 태그 나열 대신 서술형 문장으로 쓴다
 
-# {realism} 마커로 실사 키워드 자동 확장
-.venv/bin/python generate_image.py \
-  --prompt "portrait of a young woman, natural light, {realism}" \
-  --offline
+논문은 캡션이 정밀하고 상세할수록 수렴이 빨라지며, text-image attention 이
+dynamic FFN 처럼 동작해 **캡션 길이가 곧 모델 capacity** 라고 설명합니다.
+Lumina-2 는 UniCap 의 긴 서술형 캡션으로 학습됐으므로, Stable Diffusion 1.5
+시절의 `raw photo, skin pores, 85mm, f/1.8, 8k` 같은 쉼표 태그 나열은 학습
+분포 밖입니다.
+
+나쁨:
+
+```text
+백인 모델, 푸른 눈동자, 갈색 머리, 화장하지 않은, 웃는, 20대, raw photo, skin pores, 8k
 ```
 
-인터랙티브 모드에서도 동일하게 마커를 사용할 수 있습니다:
+좋음:
 
-LLM 확장 대체 방법: Ollama/MLX 등 로컬 LLM에 "다음 문장을 실사 인물 생성을 위한
-세부 디퓨전 프롬프트로 확장해줘" 시스템 프롬프트를 거친 결과를 입력해도 효과적입니다.
+```text
+A candid photograph of a woman in her mid-twenties with fair skin, blue-grey eyes
+and loosely curled chestnut hair falling over one shoulder. She wears no makeup;
+a few freckles cross her nose. She glances just off camera with a small, unforced
+smile. Late afternoon window light rakes across her face from the left, leaving
+soft shadow under the jaw. Shot on 85mm at f/1.8, visible skin texture and fine
+hair strands, muted colours, slight film grain.
+```
 
-### 2. 정밀도(Precision) 확인
+### 3. 마커(`{realism}` 등)로 서술형 문장을 붙인다
 
-- 클라우드는 BF16/FP16 원본 정밀도로 추론하며, 양자화 웨이트는 피부의 부드러운
-  음영이나 눈동자 반사 디테일을 잃어 "플라스틱 같은" AI 느낌을 강화합니다.
-- 이 프로젝트는 MPS에서 자동으로 **float16**을 사용하므로 이미 권장 수준입니다
-  (M1 Max 는 통합 메모리 32GB + 400 GB/s 대역폭으로 fp16 로딩에 충분).
-- ComfyUI 사용 시 `--highvram` 옵션과 MPS(Metal) 설정에서 정밀도 다운스케일링이
-  적용되어 있지 않은지 확인하세요.
+프롬프트에 마커를 넣으면 아래 문장으로 자동 확장됩니다 (직접 써도 됩니다).
+마커 앞뒤 공백은 자동으로 정리되므로 `귀여운{realism}` 처럼 붙여 써도 됩니다.
 
-### 3. 샘플링 파라미터 최적화
+| 마커 | 확장되는 내용 |
+| --- | --- |
+| `{realism}` | 85mm f/1.8 무보정 사진, 모공·잔주름·subsurface scattering 이 보이는 피부 |
+| `{portrait}` | 85mm f/1.8 인물사진, 배경은 보케로 흐려지고 눈은 선명 |
+| `{cinematic}` | 아나모픽 렌즈 35mm 필름 스틸, 드라마틱한 방향광, 절제된 컬러 그레이딩 |
+| `{landscape}` | 골든아워 광각 풍경, 드라마틱한 하늘, 하이라이트/섀도 디테일 유지 |
+| `{product}` | 대형 소프트박스 + 심리스 배경의 광고용 제품컷 |
+| `{anime}` | 깔끔한 선화, 선명한 플랫 컬러, 정교한 눈동자의 애니 일러스트 |
+| `{macro}` | 극단적 접사, 매우 얇은 초점면, 자연광, 세밀한 표면 질감 |
 
-| 파라미터 | 권장값 | 설명 |
-| --- | --- | --- |
-| Steps | 30~50 | 기본 20스텝보다 높여 디테일 형성 (이 프로젝트 기본값 50) |
-| CFG Scale | 4.0 ~ 6.0 | 너무 높으면 피부가 매끄럽고 인공적 색감 (기본값 4.0) |
-| Sampler / Scheduler | Euler / DPM++ 2M 계열 | 디테일과 자연스러움 균형 |
+**`{product}` 를 인물에 쓰지 마세요.** "clean background, evenly exposed
+advertising shot" 은 `{realism}`/`{portrait}` 이 요청하는 피부 질감과 정면으로
+충돌해, 회색 배경 광고컷 + 플라스틱 피부를 만듭니다. 이 조합을 쓰면 경고가
+출력됩니다.
 
-### 4. 얼굴 보정 + 업스케일 파이프라인 (ComfyUI)
+### 4. system prompt (부차적)
 
-클라우드는 생성 후 자동으로 후처리하므로, 로컬(ComfyUI)에서는 다음을 추가하세요.
+논문의 프롬프트 템플릿을 `--system-prompt` 로 고를 수 있습니다.
+기본값은 인물에 약간 유리한 `aesthetics` 입니다.
 
-- **Face Detailer** (Impact Pack / ReActor): 파이프라인 후단에 연결해 얼굴 영역만
-  고해상도로 재합성(Inpaint) — 눈동자, 속눈썹, 입술 질감이 크게 개선됩니다.
-- **Hi-Res Fix / Tile Upscale**: 1차 생성 이미지(예: 1024x1024)에 Denoise 0.3~0.4 로
-  1.5x~2x 업스케일 — 피부 솜털이나 모공 디테일이 추가됩니다.
+| 값 | 내용 |
+| --- | --- |
+| `aesthetics` (기본) | 심미성 우선 |
+| `alignment` | 프롬프트 충실도 우선 |
+| `superior` | diffusers 파이프라인 자체 기본값 |
+
+임의 문장을 직접 넘겨도 됩니다. 효과는 1~3번보다 작습니다.
+
+### 사실이 아닌 통설
+
+- **"클라우드는 LLM 으로 프롬프트를 자동 확장한다"** — 공식 `demo.py` 와
+  Hugging Face Space `app.py` 모두 프롬프트를 그대로 전달합니다. UniCap 은
+  **학습 데이터 캡셔닝**에 쓰인 것이고 추론 시 확장기가 아닙니다.
+- **"클라우드는 얼굴 보정/업스케일 후처리를 한다"** — 두 데모 모두 후처리가
+  없습니다.
+- **"fp16 정밀도 때문에 플라스틱 피부가 된다"** — 측정으로 기각했습니다.
+  Gemma2 텍스트 인코더를 fp32(CPU) 와 fp16(MPS) 로 같은 프롬프트를 인코딩해
+  비교하면 토큰별 cosine 유사도 **1.0000**, 상대 L2 오차 **0.12%**, NaN/Inf
+  **0개** 입니다.
+- **"파라미터 세팅이 다르다"** — 공식 `demo.py` 기본값은 cfg 4.0,
+  cfg_trunc 0.25, t_shift 6, 18스텝입니다. 이 프로젝트와 같은 계열이고 스텝은
+  오히려 더 많습니다.
+
+> 참고: Lumina-Image-2.0 은 2B 모델입니다. 프롬프트를 고쳐도 FLUX.1-dev(12B) 급
+> 이나 상용 서비스의 인물 실사 품질에는 미치지 못합니다. 비교 대상이 Lumina
+> 공식 데모가 아니라면 "같은 모델" 이라는 전제부터 확인하세요.
 
 ### 요약 (M1 Max 실사 품질 추천 세팅)
 
 ```bash
-# 프롬프트의 {realism} 마커가 실사 키워드로 자동 확장됨
 .venv/bin/python generate_image.py \
-  --prompt "portrait of a young woman, natural light, {realism}" \
+  --prompt "A candid photograph of a woman in her mid-twenties with fair skin and
+loosely curled chestnut hair. She wears no makeup and glances just off camera with
+a small, unforced smile. Late afternoon window light rakes across her face from the
+left. {realism}" \
   --steps 50 --guidance 4.0 \
   --device mps --offline
 ```
 
-- 프롬프트에 `{realism}` 마커로 실사 텍스처 키워드(raw photo, skin pores, natural lighting, 85mm) 자동 추가
-- Steps 35 이상, CFG 5.0 이하로 설정
-- M1 Max 메모리가 허용하는 한 BF16/FP16 원본 정밀도 (MPS 는 float16, 이미 적용됨)
-- ComfyUI 로 Face Detailer + Upscale 파이프라인 구축
+- 영어로, 태그 나열이 아니라 서술형 문장으로
+- 인물에는 `{realism}` 또는 `{portrait}`, `{product}` 는 제외
+- Steps 30 이상, guidance 4.0~5.0
+- 얼굴 디테일을 더 올리려면 ComfyUI 에서 Face Detailer + Hi-Res Fix
+  (Denoise 0.3~0.4, 1.5x~2x) 를 후단에 추가 — 이 스크립트 범위 밖입니다
