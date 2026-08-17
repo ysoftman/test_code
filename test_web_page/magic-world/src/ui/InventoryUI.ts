@@ -31,6 +31,9 @@ const PANEL_TOP = GAME_HEIGHT / 2 - PANEL_H / 2;
 const COL_W = 560;
 const NAME_X = GAME_WIDTH / 2 - PANEL_W / 2 + 60;
 const COUNT_DX = 370;
+const STATUS_RIGHT_X = GAME_WIDTH / 2 + PANEL_W / 2 - 40;
+// room for the widest value ("110/110") plus the label beside it
+const STATUS_VALUE_W = 240;
 
 const RAW_ITEMS: InventoryItem[] = [
   {
@@ -151,7 +154,8 @@ export class InventoryUI {
   private counts: Phaser.GameObjects.Text[] = [];
   private headers: Phaser.GameObjects.Text[] = [];
   private cursor: Phaser.GameObjects.Text;
-  private statusText: Phaser.GameObjects.Text;
+  private statusLabels: Phaser.GameObjects.Text;
+  private statusValues: Phaser.GameObjects.Text;
   private msg: Phaser.GameObjects.Text;
   private msgTimer?: Phaser.Time.TimerEvent;
 
@@ -234,8 +238,17 @@ export class InventoryUI {
       .setDepth(152)
       .setVisible(false);
 
-    this.statusText = scene.add
-      .text(GAME_WIDTH / 2 + PANEL_W / 2 - 40, PANEL_TOP + 40, "", retroStyle(6, "#8ecbff"))
+    // HP/MP is justified: the labels share a left edge, the values a right
+    // one. A single right-aligned "HP n/n\nMP n/n" text left the shorter MP
+    // label hanging inward.
+    this.statusLabels = scene.add
+      .text(STATUS_RIGHT_X - STATUS_VALUE_W, PANEL_TOP + 40, "HP\nMP", retroStyle(6, "#8ecbff"))
+      .setOrigin(0, 0.5)
+      .setScrollFactor(0)
+      .setDepth(152)
+      .setVisible(false);
+    this.statusValues = scene.add
+      .text(STATUS_RIGHT_X, PANEL_TOP + 40, "", retroStyle(6, "#8ecbff"))
       .setOrigin(1, 0.5)
       .setAlign("right")
       .setScrollFactor(0)
@@ -292,7 +305,8 @@ export class InventoryUI {
     this.dim.setVisible(true);
     this.panel.setVisible(true);
     this.title.setVisible(true);
-    this.statusText.setVisible(true);
+    this.statusLabels.setVisible(true);
+    this.statusValues.setVisible(true);
     this.msg.setVisible(true);
     for (const t of this.items) t.setVisible(true);
     for (const t of this.counts) t.setVisible(true);
@@ -406,7 +420,7 @@ export class InventoryUI {
 
   private refresh(): void {
     const p = GameState.player;
-    this.statusText.setText(`HP ${p.hp}/${GameState.effMaxHp()}\nMP ${p.mp}/${p.maxMp}`);
+    this.statusValues.setText(`${p.hp}/${GameState.effMaxHp()}\n${p.mp}/${p.maxMp}`);
     for (let i = 0; i < INVENTORY_ITEMS.length; i++) {
       const item = INVENTORY_ITEMS[i];
       const count = GameState.inventory[item.key];
@@ -429,7 +443,8 @@ export class InventoryUI {
     this.dim.setVisible(false);
     this.panel.setVisible(false);
     this.title.setVisible(false);
-    this.statusText.setVisible(false);
+    this.statusLabels.setVisible(false);
+    this.statusValues.setVisible(false);
     this.msg.setVisible(false);
     this.msg.setText("");
     this.msgTimer?.remove();
@@ -443,7 +458,8 @@ export class InventoryUI {
     this.dim.destroy();
     this.panel.destroy();
     this.title.destroy();
-    this.statusText.destroy();
+    this.statusLabels.destroy();
+    this.statusValues.destroy();
     this.msg.destroy();
     this.msgTimer?.remove();
     for (const t of this.items) t.destroy();
