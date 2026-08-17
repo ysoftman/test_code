@@ -4,6 +4,7 @@ import { GameState, isNight, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
 import { StatusHud, STATUS_HUD_HEIGHT, STATUS_HUD_TOAST_Y } from "../ui/StatusHud";
 import { Minimap } from "../ui/Minimap";
+import { NightOverlay, NIGHT_ENCOUNTER_MULT } from "../ui/NightOverlay";
 import { Sfx, DUNGEON_THEME } from "../audio";
 import {
   buildDungeon,
@@ -22,6 +23,8 @@ import {
 type LastMove = "down" | "up" | "right" | "left";
 
 const ENCOUNTER_COOLDOWN = 600;
+const ENTRY_GRACE = 1200;
+const MAX_COOLDOWN_STEP = 50;
 // long enough for the SAVED confirmation to be readable before the title
 const QUIT_SAVE_DELAY = 700;
 const EXIT_SAFE_RADIUS_X = TILE * 2;
@@ -88,15 +91,19 @@ export class DungeonScene extends Phaser.Scene {
 
   private hud!: StatusHud;
   private minimap!: Minimap;
+  private night!: NightOverlay;
 
   constructor() {
     super("Dungeon");
   }
 
-  create(data?: { fromBattle?: boolean }): void {
+  create(): void {
     Sfx.playBgm(DUNGEON_THEME);
     this.roamers = [];
-    this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
+    // Every entry gets a grace period, not just a return from battle: nothing
+    // locked encounters when walking into the cave or forest, and their entry
+    // tiles sit near a monster zone, so at night a fight fired immediately.
+    this.encounterCooldown = ENTRY_GRACE;
     this.lastMove = "down";
     this.exitingDungeon = false;
     this.quitConfirm = false;
@@ -142,9 +149,10 @@ export class DungeonScene extends Phaser.Scene {
     this.player.body?.setSize(40, 32).setOffset(12, 32);
     this.physics.add.collider(this.player, this.layer);
 
-    // The entry respawn after a battle sits inside the bat zone — step out
-    // to the nearest walkable tile outside it.
-    if (data?.fromBattle) this.escapeMonsterZone();
+    // The entry spawn sits inside the bat zone, so step clear of every zone
+    // on any entry — not just when coming back from a battle, which is what
+    // made walking into the cave start a fight straight away.
+    this.escapeMonsterZone();
 
     this.playerShadow = this.add
       .ellipse(this.player.x, this.player.y + 28, 40, 16, 0x000000, 0.4)
@@ -297,10 +305,8 @@ export class DungeonScene extends Phaser.Scene {
       })),
     ]);
 
-    const dark = this.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x0a0a2a, 0.35)
-      .setScrollFactor(0)
-      .setDepth(90);
+    // the cave is dim whatever the hour; night just deepens it
+    this.night = new NightOverlay(this, 0.35, 0.25);
 
     this.hud = new StatusHud(this);
 
@@ -314,7 +320,7 @@ export class DungeonScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       GameState.save();
       this.minimap.destroy();
-      dark.destroy();
+      this.night.destroy();
       this.quitConfirmText.destroy();
     });
   }
@@ -408,6 +414,7 @@ export class DungeonScene extends Phaser.Scene {
     this.dust.emitting = moving;
     this.updateEquipOverlays();
     this.updateRoamers(delta);
+    this.night.update();
     this.minimap.update();
     this.checkEncounter(delta);
   }
@@ -448,14 +455,17 @@ export class DungeonScene extends Phaser.Scene {
 
   private checkEncounter(delta: number): void {
     if (this.encounterCooldown > 0) {
-      this.encounterCooldown -= delta;
+      // A scene transition hands the first frame a delta as large as the whole
+      // load (~1.2s), which drained the entry grace in a single tick and
+      // dropped the player straight into a fight. Clamp it to one frame.
+      this.encounterCooldown -= Math.min(delta, MAX_COOLDOWN_STEP);
       return;
     }
     const nearExit =
       Math.abs(this.player.x - DUNGEON_ENTRY.x) < EXIT_SAFE_RADIUS_X &&
       Math.abs(this.player.y - DUNGEON_ENTRY.y) < EXIT_SAFE_RADIUS_Y;
     if (nearExit) return;
-    const rate = (isNight() ? 0.1 : 0.06) * (delta / 1000);
+    const rate = 0.06 * (isNight() ? NIGHT_ENCOUNTER_MULT : 1) * (delta / 1000);
     if (Math.random() < rate) {
       this.startBattle();
     }

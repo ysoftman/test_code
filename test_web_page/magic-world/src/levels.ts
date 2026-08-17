@@ -29,7 +29,7 @@ export const MONSTER_ZONES: MonsterZone[] = [
   { cx: 10 * TILE, cy: 17 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3 },
   { cx: 24 * TILE, cy: 7 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
   { cx: 23 * TILE, cy: 16 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wolf" },
-  { cx: 21 * TILE, cy: 3.5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2 },
+  { cx: 21 * TILE, cy: 3 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2 },
 ];
 
 // Battle ends leave the hero standing where the fight started — inside the
@@ -78,6 +78,23 @@ const CHARS: Record<string, number> = {
   H: T_HOUSE,
 };
 
+// Tall grass is how the map shows where monsters roam, so it is stamped from
+// MONSTER_ZONES rather than positioned by hand — the two drifted apart when the
+// map was resized and zones ended up marked in the wrong place, or not at all.
+function markZones(map: number[][], zones: MonsterZone[]): void {
+  for (const z of zones) {
+    const x0 = Math.round((z.cx - z.w / 2) / TILE);
+    const y0 = Math.round((z.cy - z.h / 2) / TILE);
+    const x1 = Math.round((z.cx + z.w / 2) / TILE);
+    const y1 = Math.round((z.cy + z.h / 2) / TILE);
+    for (let ty = y0; ty < y1; ty++) {
+      for (let tx = x0; tx < x1; tx++) {
+        if (tx >= 0 && tx < map[0].length && ty >= 0 && ty < map.length) map[ty][tx] = T_TALL;
+      }
+    }
+  }
+}
+
 function stamp(map: number[][], x0: number, y0: number, rows: string[]): void {
   for (let y = 0; y < rows.length; y++) {
     for (let x = 0; x < rows[y].length; x++) {
@@ -104,17 +121,13 @@ export function buildLevel(): number[][] {
   stamp(map, 1, 7, ["PPPPPPPPPPPPPPPPPPPPPPPPPP"]);
   stamp(map, 7, 3, ["P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "P"]);
   stamp(map, 5, 7, ["P", "P"]);
-  stamp(map, 3, 12, ["hh", "hh"]);
-  stamp(map, 16, 12, ["hh", "hh"]);
   stamp(map, 6, 4, [".T.", "TTT"]);
   stamp(map, 15, 5, [".T.", "TTT"]);
   stamp(map, 18, 9, ["T.T", ".T."]);
   stamp(map, 12, 2, ["T"]);
 
-  // east: pond, wolf grass, and the lane down to the forest gate at (25, 10)
+  // east: pond and the lane down to the forest gate at (25, 10)
   stamp(map, 23, 3, ["WWW", "WWW"]);
-  stamp(map, 23, 6, ["hhh", "hhh"]);
-  stamp(map, 20, 3, ["hh", "hh"]);
   stamp(map, 21, 10, ["PPPP"]);
   stamp(map, 25, 2, [".T.", "TTT"]);
   stamp(map, 22, 12, ["T.T", ".T."]);
@@ -123,13 +136,15 @@ export function buildLevel(): number[][] {
 
   // south
   stamp(map, 7, 14, ["P", "P", "P", "P", "P"]);
-  stamp(map, 9, 15, ["hhhh", "hhhh"]);
   stamp(map, 2, 16, ["T"]);
   stamp(map, 5, 17, [".T.", "TTT"]);
   stamp(map, 13, 17, ["TTT", ".T."]);
   stamp(map, 19, 16, [".T.", "TTT"]);
   stamp(map, 16, 15, ["T"]);
   stamp(map, 11, 13, ["T"]);
+
+  // last, so a zone is never left partly under a tree the hero can't enter
+  markZones(map, MONSTER_ZONES);
 
   return map;
 }
@@ -148,7 +163,9 @@ export const DUNGEON_ZONES: MonsterZone[] = [
   { cx: 4 * TILE, cy: 5 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3 },
   { cx: 15 * TILE, cy: 6 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3 },
   { cx: 10 * TILE, cy: 12 * TILE, w: 3 * TILE, h: 2 * TILE, count: 1 },
-  { cx: 11 * TILE, cy: 3 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3, kind: "bat" },
+  // clear of the entry spawn at (10.5, 3.5) — this zone used to cover it, so
+  // walking into the cave dropped the player straight onto a bat
+  { cx: 11 * TILE, cy: 5 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "bat" },
   { cx: 21 * TILE, cy: 10 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "bat" },
   { cx: 4 * TILE, cy: 12 * TILE, w: 2 * TILE, h: 2 * TILE, count: 2, kind: "bat" },
 ];
@@ -212,7 +229,7 @@ export const FOREST_POS = { x: 25 * TILE + TILE / 2, y: 10 * TILE + TILE / 2 };
 
 export const FOREST_ZONES: Array<MonsterZone & { kind?: "wasp" | "spider" | "orc" }> = [
   { cx: 4 * TILE, cy: 3 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wasp" },
-  { cx: 21 * TILE, cy: 3 * TILE, w: 3 * TILE, h: 2 * TILE, count: 3, kind: "wasp" },
+  { cx: 21 * TILE, cy: 3 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "wasp" },
   { cx: 5 * TILE, cy: 10 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "spider" },
   { cx: 21 * TILE, cy: 9 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "spider" },
   { cx: 6 * TILE, cy: 14 * TILE, w: 2 * TILE, h: 2 * TILE, count: 3, kind: "orc" },
@@ -265,11 +282,9 @@ export function buildForest(): number[][] {
   stamp(map, 24, 5, ["T"]);
   stamp(map, 2, 14, ["TTT", ".T."]);
 
-  // tall grass
-  stamp(map, 8, 2, ["hh", "hh"]);
-  stamp(map, 15, 4, ["hh", "hh"]);
-  stamp(map, 9, 10, ["hh", "hh"]);
-  stamp(map, 20, 13, ["hh", "hh"]);
+  // same marking rule as the overworld; the boss clearing stays unmarked so
+  // the MOSS GOLEM is still a surprise
+  markZones(map, FOREST_ZONES.filter((z) => z.count > 1));
 
   return map;
 }

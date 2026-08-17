@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
-import { GameState, isNight, nightFactor, onSaved } from "../gameState";
+import { GameState, isNight, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
 import { StatusHud, STATUS_HUD_TOAST_Y } from "../ui/StatusHud";
 import { DialogueBox } from "../ui/DialogueBox";
@@ -8,6 +8,7 @@ import { ShopUI } from "../ui/Shop";
 import { InventoryUI } from "../ui/InventoryUI";
 import { BestiaryUI } from "../ui/BestiaryUI";
 import { Minimap } from "../ui/Minimap";
+import { NightOverlay, NIGHT_ENCOUNTER_MULT } from "../ui/NightOverlay";
 import { Sfx, OVERWORLD_THEME } from "../audio";
 import { CATCHABLE, allSpeciesCaught } from "../monsters";
 import {
@@ -31,6 +32,8 @@ import {
 
 const ENCOUNTER_RATE = 0.18;
 const ENCOUNTER_COOLDOWN = 600;
+const ENTRY_GRACE = 1200;
+const MAX_COOLDOWN_STEP = 50;
 // long enough for the SAVED confirmation to be readable before the title
 const QUIT_SAVE_DELAY = 700;
 const TROLL_KING_SPAWN_CHANCE = 0.35;
@@ -73,7 +76,7 @@ export class WorldScene extends Phaser.Scene {
   private roamers: Roamer[] = [];
   private encounterCooldown = 0;
   private lastMove: LastMove = "down";
-  private nightOverlay!: Phaser.GameObjects.Rectangle;
+  private night!: NightOverlay;
   private homeLabel!: Phaser.GameObjects.Text;
   private homeBubble!: Phaser.GameObjects.Container;
   private bubbleVisible = false;
@@ -131,7 +134,10 @@ export class WorldScene extends Phaser.Scene {
   create(data?: { fromDungeon?: boolean; fromBattle?: boolean; fromForest?: boolean }): void {
     Sfx.playBgm(OVERWORLD_THEME);
     this.roamers = [];
-    this.encounterCooldown = GameState.encountersLocked() ? ENCOUNTER_COOLDOWN : 0;
+    // Every entry gets a grace period, not just a return from battle: nothing
+    // locked encounters when walking into the cave or forest, and their entry
+    // tiles sit near a monster zone, so at night a fight fired immediately.
+    this.encounterCooldown = ENTRY_GRACE;
     this.lastMove = "down";
     this.resting = false;
     this.enteringDungeon = false;
@@ -466,11 +472,8 @@ export class WorldScene extends Phaser.Scene {
       { x: FOREST_POS.x, y: FOREST_POS.y, color: 0x4ade80 },
     ]);
 
-    this.nightOverlay = this.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x1a1a4a, 1)
-      .setScrollFactor(0)
-      .setDepth(90)
-      .setAlpha(0);
+    // open ground: no ambient shade, full night range
+    this.night = new NightOverlay(this);
 
     this.hud = new StatusHud(this);
 
@@ -489,6 +492,7 @@ export class WorldScene extends Phaser.Scene {
       this.inventory.destroy();
       this.bestiary.destroy();
       this.minimap.destroy();
+      this.night.destroy();
       hint.destroy();
       this.quitConfirmText.destroy();
     });
@@ -769,8 +773,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private updateDayNight(): void {
-    const factor = nightFactor();
-    this.nightOverlay.setAlpha(factor * 0.45);
+    const factor = this.night.update();
     this.fireflies.emitting = factor > 0.05;
     this.fireflies.setAlpha(factor);
   }
@@ -948,12 +951,15 @@ export class WorldScene extends Phaser.Scene {
 
   private checkEncounter(delta: number): void {
     if (this.encounterCooldown > 0) {
-      this.encounterCooldown -= delta;
+      // A scene transition hands the first frame a delta as large as the whole
+      // load (~1.2s), which drained the entry grace in a single tick and
+      // dropped the player straight into a fight. Clamp it to one frame.
+      this.encounterCooldown -= Math.min(delta, MAX_COOLDOWN_STEP);
       return;
     }
     const tile = this.layer.getTileAtWorldXY(this.player.x, this.player.y);
     if (!tile || tile.index !== TALL_GRASS) return;
-    const rate = ENCOUNTER_RATE * (isNight() ? 1.8 : 1) * (delta / 1000);
+    const rate = ENCOUNTER_RATE * (isNight() ? NIGHT_ENCOUNTER_MULT : 1) * (delta / 1000);
     if (Math.random() < rate) {
       this.startBattle();
     }

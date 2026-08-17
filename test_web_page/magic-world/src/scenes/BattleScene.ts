@@ -4,6 +4,7 @@ import { GameState, expToNext, isNight, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
 import { Sfx, BATTLE_THEME } from "../audio";
 import { ENEMIES, EnemyDef } from "../monsters";
+import { NIGHT_TINT, NIGHT_RANGE } from "../ui/NightOverlay";
 
 const MP_COST = 3;
 const CRIT_CHANCE = 0.1;
@@ -118,7 +119,8 @@ export class BattleScene extends Phaser.Scene {
 
     if (this.night) {
       this.add
-        .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x1a1a4a, 0.45)
+        // static: the clock doesn't advance during a battle
+        .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, NIGHT_TINT, NIGHT_RANGE)
         .setDepth(1);
       this.add
         .text(GAME_WIDTH / 2, 24, "NIGHT: STRONGER FOES, RICHER SPOILS", retroStyle(6, "#a5b4fc"))
