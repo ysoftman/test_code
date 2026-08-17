@@ -19,10 +19,20 @@ interface EquipItem extends BaseItem {
 }
 type InventoryItem = UseItem | EquipItem;
 
-const INVENTORY_COLS = 2;
-const INVENTORY_ROW_GAP = 40;
+const INVENTORY_ROW_GAP = 44;
+const INVENTORY_ROWS = 7;
 
-const INVENTORY_ITEMS: InventoryItem[] = [
+// Name and count are separate texts on fixed columns, so a long label like
+// MYTHRIL SHIELD can't push its count into the next column the way one
+// combined "LABEL xN" string did.
+const PANEL_W = 1140;
+const PANEL_H = 510;
+const PANEL_TOP = GAME_HEIGHT / 2 - PANEL_H / 2;
+const COL_W = 560;
+const NAME_X = GAME_WIDTH / 2 - PANEL_W / 2 + 60;
+const COUNT_DX = 370;
+
+const RAW_ITEMS: InventoryItem[] = [
   {
     label: "POTION",
     key: "potion",
@@ -122,6 +132,13 @@ const INVENTORY_ITEMS: InventoryItem[] = [
   },
 ];
 
+// Consumables fill the left column, equipment the right. Interleaved kinds
+// made the two columns read as one jumbled list.
+const INVENTORY_ITEMS: InventoryItem[] = [
+  ...RAW_ITEMS.filter((i) => i.kind === "use"),
+  ...RAW_ITEMS.filter((i) => i.kind === "equip"),
+];
+
 export class InventoryUI {
   private scene: Phaser.Scene;
   private active = false;
@@ -131,6 +148,8 @@ export class InventoryUI {
   private panel: Phaser.GameObjects.Rectangle;
   private title: Phaser.GameObjects.Text;
   private items: Phaser.GameObjects.Text[] = [];
+  private counts: Phaser.GameObjects.Text[] = [];
+  private headers: Phaser.GameObjects.Text[] = [];
   private cursor: Phaser.GameObjects.Text;
   private statusText: Phaser.GameObjects.Text;
   private msg: Phaser.GameObjects.Text;
@@ -163,54 +182,67 @@ export class InventoryUI {
       .setDepth(150)
       .setVisible(false);
     this.panel = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 1000, 400, 0x0b0b2b, 0.95)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, PANEL_W, PANEL_H, 0x0b0b2b, 0.95)
       .setScrollFactor(0)
       .setDepth(151)
       .setStrokeStyle(2, 0xffffff)
       .setVisible(false);
     this.title = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 136, "ITEMS", retroStyle(8, "#ffd166"))
+      .text(GAME_WIDTH / 2, PANEL_TOP + 40, "ITEMS", retroStyle(8, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
 
-    let col = 0;
-    let row = 0;
-    for (const item of INVENTORY_ITEMS) {
-      const t = scene.add
-        .text(
-          GAME_WIDTH / 2 - 440 + col * 480,
-          GAME_HEIGHT / 2 - 72 + row * INVENTORY_ROW_GAP,
-          `${item.label} x0`,
-          retroStyle(6, "#ffffff")
-        )
-        .setOrigin(0, 0.5)
-        .setScrollFactor(0)
-        .setDepth(152)
-        .setVisible(false);
-      this.items.push(t);
-      col++;
-      if (col >= INVENTORY_COLS) {
-        col = 0;
-        row++;
-      }
-    }
+    ["CONSUMABLES", "EQUIPMENT"].forEach((label, col) => {
+      this.headers.push(
+        scene.add
+          .text(NAME_X + col * COL_W, PANEL_TOP + 84, label, retroStyle(5, "#8ecbff"))
+          .setOrigin(0, 0.5)
+          .setScrollFactor(0)
+          .setDepth(152)
+          .setVisible(false)
+      );
+    });
+
+    const startY = PANEL_TOP + 130;
+    INVENTORY_ITEMS.forEach((item, i) => {
+      const col = Math.floor(i / INVENTORY_ROWS);
+      const x = NAME_X + col * COL_W;
+      const y = startY + (i % INVENTORY_ROWS) * INVENTORY_ROW_GAP;
+      this.items.push(
+        scene.add
+          .text(x, y, item.label, retroStyle(6, "#ffffff"))
+          .setOrigin(0, 0.5)
+          .setScrollFactor(0)
+          .setDepth(152)
+          .setVisible(false)
+      );
+      this.counts.push(
+        scene.add
+          .text(x + COUNT_DX, y, "x0", retroStyle(6, "#ffffff"))
+          .setOrigin(0, 0.5)
+          .setScrollFactor(0)
+          .setDepth(152)
+          .setVisible(false)
+      );
+    });
     this.cursor = scene.add
-      .text(GAME_WIDTH / 2 - 200, 0, ">", retroStyle(6, "#ffd166"))
+      .text(0, 0, ">", retroStyle(6, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
 
     this.statusText = scene.add
-      .text(GAME_WIDTH / 2 + 300, GAME_HEIGHT / 2 - 168, "", retroStyle(5, "#8ecbff"))
+      .text(GAME_WIDTH / 2 + PANEL_W / 2 - 40, PANEL_TOP + 40, "", retroStyle(6, "#8ecbff"))
       .setOrigin(1, 0.5)
+      .setAlign("right")
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
     this.msg = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 104, "", retroStyle(6, "#f5f5f5"))
+      .text(GAME_WIDTH / 2, PANEL_TOP + PANEL_H - 34, "", retroStyle(6, "#f5f5f5"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -263,6 +295,8 @@ export class InventoryUI {
     this.statusText.setVisible(true);
     this.msg.setVisible(true);
     for (const t of this.items) t.setVisible(true);
+    for (const t of this.counts) t.setVisible(true);
+    for (const t of this.headers) t.setVisible(true);
     this.cursor.setVisible(true);
     this.refresh();
   }
@@ -281,19 +315,16 @@ export class InventoryUI {
     const prev = this.index;
     if (this.upQueued) {
       this.upQueued = false;
-      this.index = (this.index + INVENTORY_ITEMS.length - INVENTORY_COLS) % INVENTORY_ITEMS.length;
+      this.index = (this.index + INVENTORY_ITEMS.length - 1) % INVENTORY_ITEMS.length;
     }
     if (this.downQueued) {
       this.downQueued = false;
-      this.index = (this.index + INVENTORY_COLS) % INVENTORY_ITEMS.length;
+      this.index = (this.index + 1) % INVENTORY_ITEMS.length;
     }
-    if (this.leftQueued) {
+    if (this.leftQueued || this.rightQueued) {
       this.leftQueued = false;
-      this.index ^= 1;
-    }
-    if (this.rightQueued) {
       this.rightQueued = false;
-      this.index ^= 1;
+      this.index = (this.index + INVENTORY_ROWS) % INVENTORY_ITEMS.length;
     }
     if (this.index !== prev) {
       Sfx.move();
@@ -379,22 +410,18 @@ export class InventoryUI {
     for (let i = 0; i < INVENTORY_ITEMS.length; i++) {
       const item = INVENTORY_ITEMS[i];
       const count = GameState.inventory[item.key];
-      if (item.kind === "equip") {
-        const equipped = GameState.isEquipped(item.key as EquipmentKey);
-        this.items[i].setText(`${item.label} x${count}` + (equipped ? " (E)" : ""));
-        this.items[i].setColor(equipped ? "#ffd166" : count > 0 ? "#ffffff" : "#666666");
-      } else {
-        this.items[i].setText(`${item.label} x${count}`);
-        this.items[i].setColor(count > 0 ? "#ffffff" : "#666666");
-      }
+      const equipped =
+        item.kind === "equip" && GameState.isEquipped(item.key as EquipmentKey);
+      const color = equipped ? "#ffd166" : count > 0 ? "#ffffff" : "#666666";
+      this.items[i].setColor(color);
+      this.counts[i].setText(`x${count}` + (equipped ? " (E)" : "")).setColor(color);
     }
     this.renderCursor();
   }
 
   private renderCursor(): void {
     const target = this.items[this.index];
-    this.cursor.setX(target.x - 24);
-    this.cursor.setY(target.y);
+    this.cursor.setPosition(target.x - 26, target.y);
   }
 
   close(): void {
@@ -407,6 +434,8 @@ export class InventoryUI {
     this.msg.setText("");
     this.msgTimer?.remove();
     for (const t of this.items) t.setVisible(false);
+    for (const t of this.counts) t.setVisible(false);
+    for (const t of this.headers) t.setVisible(false);
     this.cursor.setVisible(false);
   }
 
@@ -418,6 +447,8 @@ export class InventoryUI {
     this.msg.destroy();
     this.msgTimer?.remove();
     for (const t of this.items) t.destroy();
+    for (const t of this.counts) t.destroy();
+    for (const t of this.headers) t.destroy();
     this.cursor.destroy();
     // keys are shared instances from kb.addKey (same keycode → same object);
     // destroying them would wipe other panels' listeners. Scene shutdown

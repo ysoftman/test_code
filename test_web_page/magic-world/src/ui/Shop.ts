@@ -5,7 +5,7 @@ import { retroStyle } from "../pixelart";
 import { Sfx } from "../audio";
 
 interface ShopItem {
-  label: string;
+  name: string;
   price: number;
   key?: "sword" | "shield" | "ironSword" | "ironShield" | "amulet" | "mythrilSword" | "mythrilShield";
   // Gated stock: shown as LOCKED until the quest opens it, so late-game gear
@@ -16,7 +16,7 @@ interface ShopItem {
 
 const SHOP_ITEMS: ShopItem[] = [
   {
-    label: "POTION      10G",
+    name: "POTION",
     price: 10,
     buy: () => {
       GameState.inventory.potion += 1;
@@ -24,7 +24,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "MPOTION     15G",
+    name: "MPOTION",
     price: 15,
     buy: () => {
       GameState.inventory.mPotion += 1;
@@ -32,7 +32,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "CANDY       20G",
+    name: "CANDY",
     price: 20,
     buy: () => {
       GameState.inventory.candy += 1;
@@ -40,7 +40,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "HI-POTION   30G",
+    name: "HI-POTION",
     price: 30,
     buy: () => {
       GameState.inventory.hiPotion += 1;
@@ -48,7 +48,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "ETHER       25G",
+    name: "ETHER",
     price: 25,
     buy: () => {
       GameState.inventory.ether += 1;
@@ -56,7 +56,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "ELIXIR     100G",
+    name: "ELIXIR",
     price: 100,
     buy: () => {
       GameState.inventory.elixir += 1;
@@ -64,7 +64,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "BOMB        50G",
+    name: "BOMB",
     price: 50,
     buy: () => {
       GameState.inventory.bomb += 1;
@@ -72,7 +72,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "SWORD       80G",
+    name: "SWORD",
     price: 80,
     key: "sword",
     buy: () => {
@@ -81,7 +81,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "SHIELD      80G",
+    name: "SHIELD",
     price: 80,
     key: "shield",
     buy: () => {
@@ -90,7 +90,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "IRON SWORD 180G",
+    name: "IRON SWORD",
     price: 180,
     key: "ironSword",
     buy: () => {
@@ -99,7 +99,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "IRON SHIELD 180G",
+    name: "IRON SHIELD",
     price: 180,
     key: "ironShield",
     buy: () => {
@@ -108,7 +108,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "AMULET     120G",
+    name: "AMULET",
     price: 120,
     key: "amulet",
     buy: () => {
@@ -117,7 +117,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "MYTHRIL SWORD 320G",
+    name: "MYTHRIL SWORD",
     price: 320,
     key: "mythrilSword",
     unlocked: () => GameState.quest.bossDefeated,
@@ -127,7 +127,7 @@ const SHOP_ITEMS: ShopItem[] = [
     },
   },
   {
-    label: "MYTHRIL SHIELD 320G",
+    name: "MYTHRIL SHIELD",
     price: 320,
     key: "mythrilShield",
     unlocked: () => GameState.quest.bossDefeated,
@@ -138,8 +138,17 @@ const SHOP_ITEMS: ShopItem[] = [
   },
 ];
 
-const SHOP_COLS = 2;
-const SHOP_ROW_GAP = 40;
+const SHOP_ROWS = Math.ceil(SHOP_ITEMS.length / 2);
+const SHOP_ROW_GAP = 44;
+
+// Name and price live on separate columns so prices line up in a readable
+// money column and a long name can't shove the next column sideways.
+const PANEL_W = 1100;
+const PANEL_H = 510;
+const PANEL_TOP = GAME_HEIGHT / 2 - PANEL_H / 2;
+const COL_W = 520;
+const NAME_X = GAME_WIDTH / 2 - PANEL_W / 2 + 60;
+const PRICE_DX = 370;
 
 export class ShopUI {
   private scene: Phaser.Scene;
@@ -150,6 +159,8 @@ export class ShopUI {
   private panel: Phaser.GameObjects.Rectangle;
   private title: Phaser.GameObjects.Text;
   private items: Phaser.GameObjects.Text[] = [];
+  private prices: Phaser.GameObjects.Text[] = [];
+  private headers: Phaser.GameObjects.Text[] = [];
   private cursor: Phaser.GameObjects.Text;
   private goldText: Phaser.GameObjects.Text;
   private msg: Phaser.GameObjects.Text;
@@ -182,49 +193,66 @@ export class ShopUI {
       .setDepth(150)
       .setVisible(false);
     this.panel = scene.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 920, 400, 0x0b0b2b, 0.95)
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, PANEL_W, PANEL_H, 0x0b0b2b, 0.95)
       .setScrollFactor(0)
       .setDepth(151)
       .setStrokeStyle(2, 0xffffff)
       .setVisible(false);
     this.title = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 168, "SHOP", retroStyle(8, "#ffd166"))
+      .text(GAME_WIDTH / 2, PANEL_TOP + 40, "SHOP", retroStyle(8, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
 
-    let col = 0;
-    let row = 0;
-    for (const item of SHOP_ITEMS) {
-      const t = scene.add
-        .text(GAME_WIDTH / 2 - 400 + col * 440, GAME_HEIGHT / 2 - 104 + row * SHOP_ROW_GAP, item.label, retroStyle(6, "#ffffff"))
-        .setOrigin(0, 0.5)
-        .setScrollFactor(0)
-        .setDepth(152)
-        .setVisible(false);
-      this.items.push(t);
-      col++;
-      if (col >= SHOP_COLS) {
-        col = 0;
-        row++;
-      }
-    }
+    ["SUPPLIES", "EQUIPMENT"].forEach((label, col) => {
+      this.headers.push(
+        scene.add
+          .text(NAME_X + col * COL_W, PANEL_TOP + 84, label, retroStyle(5, "#8ecbff"))
+          .setOrigin(0, 0.5)
+          .setScrollFactor(0)
+          .setDepth(152)
+          .setVisible(false)
+      );
+    });
+
+    const startY = PANEL_TOP + 130;
+    SHOP_ITEMS.forEach((item, i) => {
+      const col = Math.floor(i / SHOP_ROWS);
+      const x = NAME_X + col * COL_W;
+      const y = startY + (i % SHOP_ROWS) * SHOP_ROW_GAP;
+      this.items.push(
+        scene.add
+          .text(x, y, item.name, retroStyle(6, "#ffffff"))
+          .setOrigin(0, 0.5)
+          .setScrollFactor(0)
+          .setDepth(152)
+          .setVisible(false)
+      );
+      this.prices.push(
+        scene.add
+          .text(x + PRICE_DX, y, "", retroStyle(6, "#ffffff"))
+          .setOrigin(0, 0.5)
+          .setScrollFactor(0)
+          .setDepth(152)
+          .setVisible(false)
+      );
+    });
     this.cursor = scene.add
-      .text(GAME_WIDTH / 2 - 200, 0, ">", retroStyle(6, "#ffd166"))
+      .text(0, 0, ">", retroStyle(6, "#ffd166"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
 
     this.goldText = scene.add
-      .text(GAME_WIDTH / 2 + 300, GAME_HEIGHT / 2 - 168, "G 0", retroStyle(6, "#8ecbff"))
+      .text(GAME_WIDTH / 2 + PANEL_W / 2 - 40, PANEL_TOP + 40, "G 0", retroStyle(6, "#8ecbff"))
       .setOrigin(1, 0.5)
       .setScrollFactor(0)
       .setDepth(152)
       .setVisible(false);
     this.msg = scene.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 128, "", retroStyle(6, "#f5f5f5"))
+      .text(GAME_WIDTH / 2, PANEL_TOP + PANEL_H - 34, "", retroStyle(6, "#f5f5f5"))
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(152)
@@ -277,6 +305,8 @@ export class ShopUI {
     this.goldText.setVisible(true);
     this.msg.setVisible(true);
     for (const t of this.items) t.setVisible(true);
+    for (const t of this.prices) t.setVisible(true);
+    for (const t of this.headers) t.setVisible(true);
     this.cursor.setVisible(true);
     this.refresh();
   }
@@ -295,19 +325,16 @@ export class ShopUI {
     const prev = this.index;
     if (this.upQueued) {
       this.upQueued = false;
-      this.index = (this.index + SHOP_ITEMS.length - SHOP_COLS) % SHOP_ITEMS.length;
+      this.index = (this.index + SHOP_ITEMS.length - 1) % SHOP_ITEMS.length;
     }
     if (this.downQueued) {
       this.downQueued = false;
-      this.index = (this.index + SHOP_COLS) % SHOP_ITEMS.length;
+      this.index = (this.index + 1) % SHOP_ITEMS.length;
     }
-    if (this.leftQueued) {
+    if (this.leftQueued || this.rightQueued) {
       this.leftQueued = false;
-      this.index ^= 1;
-    }
-    if (this.rightQueued) {
       this.rightQueued = false;
-      this.index ^= 1;
+      this.index = (this.index + SHOP_ROWS) % SHOP_ITEMS.length;
     }
     if (this.index !== prev) {
       Sfx.move();
@@ -359,21 +386,18 @@ export class ShopUI {
       const item = SHOP_ITEMS[i];
       const locked = item.unlocked ? !item.unlocked() : false;
       const owned = item.key ? GameState.inventory[item.key] > 0 : false;
-      const label = locked
-        ? item.label.replace(/\d+G\s*$/, "LOCKED")
-        : owned
-          ? item.label.replace(/\d+G\s*$/, "SOLD")
-          : item.label;
-      this.items[i].setText(label);
-      this.items[i].setColor(locked ? "#8b5cf6" : owned ? "#666666" : "#ffffff");
+      const color = locked ? "#8b5cf6" : owned ? "#666666" : "#ffffff";
+      this.items[i].setColor(color);
+      this.prices[i]
+        .setText(locked ? "LOCKED" : owned ? "SOLD" : `${item.price}G`)
+        .setColor(color);
     }
     this.renderCursor();
   }
 
   private renderCursor(): void {
     const target = this.items[this.index];
-    this.cursor.setX(target.x - 24);
-    this.cursor.setY(target.y);
+    this.cursor.setPosition(target.x - 26, target.y);
   }
 
   private close(): void {
@@ -386,6 +410,8 @@ export class ShopUI {
     this.msg.setText("");
     this.msgTimer?.remove();
     for (const t of this.items) t.setVisible(false);
+    for (const t of this.prices) t.setVisible(false);
+    for (const t of this.headers) t.setVisible(false);
     this.cursor.setVisible(false);
   }
 
@@ -397,6 +423,8 @@ export class ShopUI {
     this.msg.destroy();
     this.msgTimer?.remove();
     for (const t of this.items) t.destroy();
+    for (const t of this.prices) t.destroy();
+    for (const t of this.headers) t.destroy();
     this.cursor.destroy();
     // keys are shared instances from kb.addKey (same keycode → same object);
     // destroying them would wipe other panels' listeners. Scene shutdown
