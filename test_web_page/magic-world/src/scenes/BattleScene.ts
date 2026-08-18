@@ -4,6 +4,7 @@ import { GameState, expToNext, isNight, onSaved } from "../gameState";
 import { retroStyle, showToast } from "../pixelart";
 import { Sfx, BATTLE_THEME } from "../audio";
 import { ENEMIES, EnemyDef } from "../monsters";
+import { recordRank } from "../ranking";
 import { NIGHT_TINT, NIGHT_RANGE } from "../ui/NightOverlay";
 
 const MP_COST = 3;
@@ -814,6 +815,7 @@ export class BattleScene extends Phaser.Scene {
       }
       GameState.player.exp += this.enemy.exp;
       let msg = `EXP +${this.enemy.exp}`;
+      let newRank = 0;
       while (
         GameState.player.level < MAX_LEVEL &&
         GameState.player.exp >= expToNext(GameState.player.level)
@@ -826,6 +828,8 @@ export class BattleScene extends Phaser.Scene {
         GameState.player.def += 1;
         GameState.player.hp = GameState.effMaxHp();
         GameState.player.mp = GameState.player.maxMp;
+        const rank = recordRank(GameState.player.name, GameState.player.level);
+        if (rank > 0) newRank = rank;
         Sfx.levelup();
         this.levelBurst.setPosition(this.playerSprite.x, this.playerSprite.y);
         this.levelBurst.explode(24);
@@ -834,6 +838,7 @@ export class BattleScene extends Phaser.Scene {
         this.cameras.main.shake(200, 0.01);
         msg = `LEVEL UP! LV ${GameState.player.level}`;
       }
+      if (newRank > 0) msg += `  RANK #${newRank}!`;
       await this.say(msg);
       if (this.enemy.boss) await this.say(`The ${this.enemy.name} is no more!`);
     }

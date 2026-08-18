@@ -7,6 +7,7 @@ import { DialogueBox } from "../ui/DialogueBox";
 import { ShopUI } from "../ui/Shop";
 import { InventoryUI } from "../ui/InventoryUI";
 import { BestiaryUI } from "../ui/BestiaryUI";
+import { RankingUI } from "../ui/RankingUI";
 import { Minimap } from "../ui/Minimap";
 import { NightOverlay, NIGHT_ENCOUNTER_MULT } from "../ui/NightOverlay";
 import { Sfx, OVERWORLD_THEME } from "../audio";
@@ -21,6 +22,7 @@ import {
   SHOP_POS,
   HOUSE_POS,
   CAVE_POS,
+  RANK_BOARD_POS,
   FOREST_POS,
   MONSTER_ZONES,
   escapeFromZones,
@@ -70,6 +72,7 @@ export class WorldScene extends Phaser.Scene {
   private shop!: ShopUI;
   private inventory!: InventoryUI;
   private bestiary!: BestiaryUI;
+  private rankBoard!: RankingUI;
   private dust!: Phaser.GameObjects.Particles.ParticleEmitter;
   private fireflies!: Phaser.GameObjects.Particles.ParticleEmitter;
   private roamerGroup!: Phaser.Physics.Arcade.Group;
@@ -197,6 +200,12 @@ export class WorldScene extends Phaser.Scene {
     this.add.image(CAVE_POS.x, CAVE_POS.y, "cave").setDepth(9);
     this.add
       .text(CAVE_POS.x, CAVE_POS.y + 32, "CAVE", retroStyle(6, "#9f9fd0"))
+      .setOrigin(0.5)
+      .setDepth(11);
+
+    this.add.image(RANK_BOARD_POS.x, RANK_BOARD_POS.y, "sign").setDepth(9);
+    this.add
+      .text(RANK_BOARD_POS.x, RANK_BOARD_POS.y - 48, "RANK BOARD", retroStyle(5, "#c084fc"))
       .setOrigin(0.5)
       .setDepth(11);
 
@@ -450,6 +459,7 @@ export class WorldScene extends Phaser.Scene {
     this.shop = new ShopUI(this);
     this.inventory = new InventoryUI(this);
     this.bestiary = new BestiaryUI(this);
+    this.rankBoard = new RankingUI(this);
 
     const hint = this.add
       .text(
@@ -469,6 +479,7 @@ export class WorldScene extends Phaser.Scene {
       { x: SHOP_POS.x, y: SHOP_POS.y, color: 0xfde047 },
       { x: NPC_POS.x, y: NPC_POS.y, color: 0x8ecbff },
       { x: CAVE_POS.x, y: CAVE_POS.y, color: 0xff5555 },
+      { x: RANK_BOARD_POS.x, y: RANK_BOARD_POS.y, color: 0xc084fc },
       { x: FOREST_POS.x, y: FOREST_POS.y, color: 0x4ade80 },
     ]);
 
@@ -491,6 +502,7 @@ export class WorldScene extends Phaser.Scene {
       this.shop.destroy();
       this.inventory.destroy();
       this.bestiary.destroy();
+      this.rankBoard.destroy();
       this.minimap.destroy();
       this.night.destroy();
       hint.destroy();
@@ -589,7 +601,8 @@ export class WorldScene extends Phaser.Scene {
       this.dialogue.isActive() ||
       this.shop.isActive() ||
       this.inventory.isActive() ||
-      this.bestiary.isActive()
+      this.bestiary.isActive() ||
+      this.rankBoard.isActive()
     );
   }
 
@@ -687,6 +700,7 @@ export class WorldScene extends Phaser.Scene {
       this.shop.update();
       this.inventory.update();
       this.bestiary.update();
+      this.rankBoard.update();
       this.updateRoamers(delta);
       return;
     }
@@ -810,6 +824,11 @@ export class WorldScene extends Phaser.Scene {
     }
     if (near(HOUSE_POS.x + TILE, HOUSE_POS.y + 2 * TILE)) {
       this.rest();
+      return true;
+    }
+    if (near(RANK_BOARD_POS.x, RANK_BOARD_POS.y)) {
+      Sfx.buy();
+      this.rankBoard.open();
       return true;
     }
     return false;

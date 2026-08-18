@@ -154,6 +154,9 @@ export const NPC_POS = { x: 11 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
 export const HOUSE_POS = { x: 3 * TILE, y: 2 * TILE };
 export const SHOP_POS = { x: 5 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
 export const CAVE_POS = { x: 19 * TILE + TILE / 2, y: 2 * TILE + TILE / 2 };
+// hero record board, three tiles east of the ELDER on the main road — clear of
+// both his 120px talk radius and the ELDER name label, so nothing overlaps
+export const RANK_BOARD_POS = { x: 14 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
 
 export const DUNGEON_W = 24;
 export const DUNGEON_H = 16;
