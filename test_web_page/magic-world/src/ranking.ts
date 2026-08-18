@@ -49,9 +49,14 @@ export function getRanks(): RankEntry[] {
   return ranks.slice();
 }
 
-// Records a level-up on the board. Returns the 1-based rank the entry earned
-// (0 when the level didn't crack the top 10).
+// Records a level-up on the board. Same name + level entries collapse into a
+// single row, so every save (and repeated saves at the same level) can safely
+// call this without spamming the top 10 with copies of the current hero.
+// Returns the 1-based rank the entry earned (0 when the level didn't crack the
+// top 10).
 export function recordRank(name: string, level: number): number {
+  const existing = ranks.find((e) => e.name === name && e.level === level);
+  if (existing) return ranks.indexOf(existing) + 1;
   const entry: RankEntry = { name, level, date: today() };
   ranks.push(entry);
   ranks.sort(byLevel);

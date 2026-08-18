@@ -1,4 +1,5 @@
 import { MAX_GOLD, MAX_HP, MAX_LEVEL, MAX_MP } from "./config";
+import { recordRank } from "./ranking";
 
 export interface PlayerState {
   name: string;
@@ -300,6 +301,8 @@ export const GameState = {
         encounterLockUntil: this.encounterLockUntil,
       })
     );
+    // every saved hero shows up on the village rank board
+    recordRank(this.player.name, this.player.level);
     saveListeners.forEach((cb) => cb());
   },
 
