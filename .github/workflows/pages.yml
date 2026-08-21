@@ -71,14 +71,6 @@ jobs:
         working-directory: test_web_page/tsparticles
         run: bun run build
 
-      - name: Install magic-world dependencies
-        working-directory: test_web_page/magic-world
-        run: bun install
-
-      - name: Build magic-world
-        working-directory: test_web_page/magic-world
-        run: bun run build
-
       - name: Assemble _site
         run: |
           set -euo pipefail
@@ -100,7 +92,6 @@ jobs:
             fi
           done
 
-          # 2b) vue-sample (Vue + Vuetify SPA)
           if [ -d "$SRC/vue-sample/dist" ]; then
             echo "include built app: vue-sample"
             mkdir -p "$OUT/vue-sample"
@@ -109,39 +100,23 @@ jobs:
             cp "$OUT/vue-sample/index.html" "$OUT/vue-sample/404.html"
           fi
 
-          # 2c) react-sample (Vite, dist/ 출력)
           if [ -d "$SRC/react-sample/dist" ]; then
             echo "include built app: react-sample"
             mkdir -p "$OUT/react-sample"
             cp -r "$SRC/react-sample/dist/." "$OUT/react-sample/"
           fi
 
-          # 2d) particle (PixiJS + Matter.js 게임)
           if [ -d "$SRC/particle/dist" ]; then
             echo "include built app: particle"
             mkdir -p "$OUT/particle"
             cp -r "$SRC/particle/dist/." "$OUT/particle/"
           fi
 
-          # 2e) tsparticles (tsParticles 프리셋 예시)
           if [ -d "$SRC/tsparticles/dist" ]; then
             echo "include built app: tsparticles"
             mkdir -p "$OUT/tsparticles"
             cp -r "$SRC/tsparticles/dist/." "$OUT/tsparticles/"
           fi
-
-          # 2f) magic-world (Phaser 3 게임)
-          if [ -d "$SRC/magic-world/dist" ]; then
-            echo "include built app: magic-world"
-            mkdir -p "$OUT/magic-world"
-            cp -r "$SRC/magic-world/dist/." "$OUT/magic-world/"
-          fi
-
-          # 3) build info (배포 날짜 / 커밋 버전) — 랜딩 우측 상단에 표시
-          DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
-          SHA=$(echo "${GITHUB_SHA:-local}" | cut -c1-7)
-          printf 'window.__BUILD_INFO__ = { date: "%s", version: "%s" };\n' \
-            "$DATE" "$SHA" >"$OUT/css-framework-comparison/build-info.js"
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
