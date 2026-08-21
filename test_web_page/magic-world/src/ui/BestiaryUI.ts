@@ -1,8 +1,8 @@
 import Phaser from "phaser";
-import { GAME_WIDTH, GAME_HEIGHT } from "../config";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { GameState } from "../gameState";
-import { retroStyle, showToast } from "../pixelart";
 import { CATCHABLE, ENEMIES } from "../monsters";
+import { retroStyle, showToast } from "../pixelart";
 
 const SPECIES = Object.values(ENEMIES);
 
@@ -75,6 +75,7 @@ export class BestiaryUI {
         .setScrollFactor(0)
         .setDepth(152)
         .setVisible(false);
+      if (def.tint) icon.setTint(def.tint);
       this.icons.push(icon);
       const row = scene.add
         .text(x + NAME_DX, y, "???", retroStyle(6, "#666666"))

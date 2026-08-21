@@ -31,14 +31,7 @@ export interface InventoryState {
 }
 
 export type EquipSlot = "weapon" | "armor" | "accessory";
-export type EquipmentKey =
-  | "sword"
-  | "shield"
-  | "ironSword"
-  | "ironShield"
-  | "amulet"
-  | "mythrilSword"
-  | "mythrilShield";
+export type EquipmentKey = "sword" | "shield" | "ironSword" | "ironShield" | "amulet" | "mythrilSword" | "mythrilShield";
 
 export const EQUIP_SLOT: Record<EquipmentKey, EquipSlot> = {
   sword: "weapon",
@@ -74,6 +67,7 @@ export const EQUIP_TEXTURE: Record<EquipmentKey, string> = {
 
 export interface QuestState {
   slimes: number;
+  goldenSlimes: number;
   slimeReward: boolean;
   bossDefeated: boolean;
   finalReward: boolean;
@@ -139,6 +133,8 @@ export const GameState = {
   gold: 0,
   battles: 0,
   streak: 0,
+  fishCaught: 0,
+  achievements: [] as string[],
   inventory: {
     potion: 2,
     mPotion: 1,
@@ -161,6 +157,7 @@ export const GameState = {
   openedTreasures: [] as string[],
   quest: {
     slimes: 0,
+    goldenSlimes: 0,
     slimeReward: false,
     bossDefeated: false,
     finalReward: false,
@@ -244,6 +241,8 @@ export const GameState = {
     this.gold = 0;
     this.battles = 0;
     this.streak = 0;
+    this.fishCaught = 0;
+    this.achievements = [];
     this.inventory = {
       potion: 2,
       mPotion: 1,
@@ -266,6 +265,7 @@ export const GameState = {
     this.openedTreasures = [];
     this.quest = {
       slimes: 0,
+      goldenSlimes: 0,
       slimeReward: false,
       bossDefeated: false,
       finalReward: false,
@@ -290,6 +290,8 @@ export const GameState = {
         gold: this.gold,
         battles: this.battles,
         streak: this.streak,
+        fishCaught: this.fishCaught,
+        achievements: this.achievements,
         inventory: this.inventory,
         equipped: this.equipped,
         caught: this.caught,
@@ -299,11 +301,13 @@ export const GameState = {
         minutes: this.minutes,
         pos: this.pos,
         encounterLockUntil: this.encounterLockUntil,
-      })
+      }),
     );
     // every saved hero shows up on the village rank board
     recordRank(this.player.name, this.player.level);
-    saveListeners.forEach((cb) => cb());
+    saveListeners.forEach((cb) => {
+      cb();
+    });
   },
 
   load(): void {
@@ -318,6 +322,8 @@ export const GameState = {
       this.gold = Math.min(MAX_GOLD, data.gold ?? 0);
       this.battles = data.battles ?? 0;
       this.streak = data.streak ?? 0;
+      this.fishCaught = data.fishCaught ?? 0;
+      this.achievements = data.achievements ?? [];
       Object.assign(this.inventory, data.inventory);
       // migrate old boolean equipment flags -> inventory counts + equipped
       if (data.sword && this.inventory.sword === 0) this.inventory.sword = 1;
@@ -354,10 +360,7 @@ export const GameState = {
     }
   },
   saveSettings(): void {
-    localStorage.setItem(
-      SETTINGS_KEY,
-      JSON.stringify({ hudVisible: this.hudVisible, soundMuted: this.soundMuted })
-    );
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ hudVisible: this.hudVisible, soundMuted: this.soundMuted }));
   },
 
   clearSave(): void {

@@ -1,8 +1,8 @@
 import Phaser from "phaser";
-import { GAME_WIDTH, GAME_HEIGHT } from "../config";
+import { Sfx, TITLE_THEME } from "../audio";
+import { GAME_HEIGHT, GAME_VERSION, GAME_WIDTH } from "../config";
 import { GameState } from "../gameState";
 import { retroStyle } from "../pixelart";
-import { Sfx, TITLE_THEME } from "../audio";
 
 export class TitleScene extends Phaser.Scene {
   private started = false;
@@ -17,19 +17,15 @@ export class TitleScene extends Phaser.Scene {
 
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "title-bg");
 
-    const title = this.add
-      .text(GAME_WIDTH / 2, 216, "MAGIC WORLD", retroStyle(24, "#ffd166"))
-      .setOrigin(0.5);
+    const title = this.add.text(GAME_WIDTH / 2, 216, "MAGIC WORLD", retroStyle(24, "#ffd166")).setOrigin(0.5);
     title.setShadow(8, 8, "#7c2d12", 1, true, true);
 
-    this.add
-      .text(GAME_WIDTH / 2, 368, "A TALE OF MAGIC", retroStyle(8, "#c4b5fd"))
-      .setOrigin(0.5);
-    this.add
-      .text(GAME_WIDTH / 2, 416, "AND ADVENTURE", retroStyle(8, "#c4b5fd"))
-      .setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, 368, "A TALE OF MAGIC", retroStyle(8, "#c4b5fd")).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, 416, "AND ADVENTURE", retroStyle(8, "#c4b5fd")).setOrigin(0.5);
 
     const hasSave = GameState.hasSave();
+
+    this.add.text(GAME_WIDTH - 16, GAME_HEIGHT - 12, `v${GAME_VERSION}`, retroStyle(4, "#666688")).setOrigin(1, 1);
 
     const prompt = this.add
       .text(GAME_WIDTH / 2, 592, hasSave ? "PRESS ENTER TO CONTINUE" : "PRESS ENTER", retroStyle(8, "#ffffff"))
@@ -43,12 +39,7 @@ export class TitleScene extends Phaser.Scene {
     });
 
     const continueText = this.add
-      .text(
-        GAME_WIDTH / 2,
-        660,
-        hasSave ? "C: CONTINUE  N: NEW GAME  D: DELETE SAVE" : "NO SAVE FOUND",
-        retroStyle(6, "#8ecbff")
-      )
+      .text(GAME_WIDTH / 2, 660, hasSave ? "C: CONTINUE  N: NEW GAME  D: DELETE SAVE" : "NO SAVE FOUND", retroStyle(6, "#8ecbff"))
       .setOrigin(0.5);
 
     let confirmDelete = false;
@@ -78,8 +69,7 @@ export class TitleScene extends Phaser.Scene {
         return;
       }
       GameState.reset();
-      GameState.player.name =
-        (window.prompt("YOUR NAME? (MAX 12)", "HERO") ?? "").trim().toUpperCase().slice(0, 12) || "HERO";
+      GameState.player.name = (window.prompt("YOUR NAME? (MAX 12)", "HERO") ?? "").trim().toUpperCase().slice(0, 12) || "HERO";
       GameState.clearSave();
       this.cameras.main.fadeOut(400, 0, 0, 0);
       this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {

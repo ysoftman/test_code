@@ -41,17 +41,13 @@ export function escapeFromZones(
   x: number,
   y: number,
   walkable: (tx: number, ty: number) => boolean,
-  maxTiles = 6
+  maxTiles = 6,
 ): { x: number; y: number } | null {
   // Clearance from the zone edge: half a tile, so the hero's 40x32 body
   // never reaches back into the zone (or into the dungeon exit trigger).
   const pad = TILE * 0.5;
   const inZone = (px: number, py: number, p: number): boolean =>
-    zones.some(
-      (z) =>
-        Math.abs(px - z.cx) <= z.w / 2 + p &&
-        Math.abs(py - z.cy) <= z.h / 2 + p
-    );
+    zones.some((z) => Math.abs(px - z.cx) <= z.w / 2 + p && Math.abs(py - z.cy) <= z.h / 2 + p);
   if (!inZone(x, y, TILE * 0.25)) return null;
   let best: { x: number; y: number; d: number } | null = null;
   const cx = Math.floor(x / TILE);
@@ -108,9 +104,7 @@ function stamp(map: number[][], x0: number, y0: number, rows: string[]): void {
 }
 
 export function buildLevel(): number[][] {
-  const map: number[][] = Array.from({ length: MAP_H }, () =>
-    Array<number>(MAP_W).fill(T_GRASS)
-  );
+  const map: number[][] = Array.from({ length: MAP_H }, () => Array<number>(MAP_W).fill(T_GRASS));
 
   // No water border: the map edge is plain grass and the camera/physics world
   // bounds already stop the hero from walking off.
@@ -158,6 +152,12 @@ export const CAVE_POS = { x: 19 * TILE + TILE / 2, y: 2 * TILE + TILE / 2 };
 // both his 120px talk radius and the ELDER name label, so nothing overlaps
 export const RANK_BOARD_POS = { x: 14 * TILE + TILE / 2, y: 7 * TILE + TILE / 2 };
 
+// Fishing spot on the pond's south-west bank at (23,5). The pond's other
+// banks sit inside monster zones (slime west, wolf south-east, trees east),
+// but this corner is reached from the road at (22,7) via two grass tiles,
+// so the hero can walk there without crossing tall grass.
+export const FISH_POS = { x: 23 * TILE + TILE / 2, y: 5 * TILE + TILE / 2 };
+
 export const DUNGEON_W = 24;
 export const DUNGEON_H = 16;
 export const DUNGEON_ENTRY = { x: 10 * TILE + TILE / 2, y: 1 * TILE + TILE / 2 };
@@ -180,9 +180,7 @@ export const TREASURE_POS: Array<{ id: string; x: number; y: number }> = [
 ];
 
 export function buildDungeon(): number[][] {
-  const map: number[][] = Array.from({ length: DUNGEON_H }, () =>
-    Array<number>(DUNGEON_W).fill(T_PATH)
-  );
+  const map: number[][] = Array.from({ length: DUNGEON_H }, () => Array<number>(DUNGEON_W).fill(T_PATH));
 
   for (let x = 0; x < DUNGEON_W; x++) {
     map[0][x] = T_TREE;
@@ -247,9 +245,7 @@ export const FOREST_TREASURE_POS: Array<{ id: string; x: number; y: number }> = 
 ];
 
 export function buildForest(): number[][] {
-  const map: number[][] = Array.from({ length: FOREST_H }, () =>
-    Array<number>(FOREST_W).fill(T_GRASS)
-  );
+  const map: number[][] = Array.from({ length: FOREST_H }, () => Array<number>(FOREST_W).fill(T_GRASS));
 
   for (let x = 0; x < FOREST_W; x++) {
     map[0][x] = T_TREE;
@@ -287,7 +283,10 @@ export function buildForest(): number[][] {
 
   // same marking rule as the overworld; the boss clearing stays unmarked so
   // the MOSS GOLEM is still a surprise
-  markZones(map, FOREST_ZONES.filter((z) => z.count > 1));
+  markZones(
+    map,
+    FOREST_ZONES.filter((z) => z.count > 1),
+  );
 
   return map;
 }

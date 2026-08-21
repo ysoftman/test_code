@@ -1,36 +1,40 @@
 import Phaser from "phaser";
-import { GAME_WIDTH, GAME_HEIGHT } from "../config";
+import { ACHIEVEMENTS, claimAchievements } from "../achievements";
+import { OVERWORLD_THEME, Sfx } from "../audio";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { GameState, isNight, onSaved } from "../gameState";
-import { retroStyle, showToast } from "../pixelart";
-import { StatusHud, STATUS_HUD_TOAST_Y } from "../ui/StatusHud";
-import { DialogueBox } from "../ui/DialogueBox";
-import { ShopUI } from "../ui/Shop";
-import { InventoryUI } from "../ui/InventoryUI";
-import { BestiaryUI } from "../ui/BestiaryUI";
-import { RankingUI } from "../ui/RankingUI";
-import { Minimap } from "../ui/Minimap";
-import { NightOverlay, NIGHT_ENCOUNTER_MULT } from "../ui/NightOverlay";
-import { Sfx, OVERWORLD_THEME } from "../audio";
-import { CATCHABLE, allSpeciesCaught } from "../monsters";
 import {
   buildLevel,
-  MAP_W,
-  MAP_H,
-  TILE,
-  PLAYER_SPAWN,
-  NPC_POS,
-  SHOP_POS,
-  HOUSE_POS,
   CAVE_POS,
-  RANK_BOARD_POS,
-  FOREST_POS,
-  MONSTER_ZONES,
   escapeFromZones,
+  FISH_POS,
+  FOREST_POS,
+  HOUSE_POS,
+  MAP_H,
+  MAP_W,
+  MONSTER_ZONES,
+  NPC_POS,
+  PLAYER_SPAWN,
+  RANK_BOARD_POS,
+  SHOP_POS,
   SOLID,
   T_WATER_A,
   T_WATER_B,
   TALL_GRASS,
+  TILE,
 } from "../levels";
+import { allSpeciesCaught, CATCHABLE } from "../monsters";
+import { retroStyle, showToast } from "../pixelart";
+import { AchievementsUI } from "../ui/AchievementsUI";
+import { BestiaryUI } from "../ui/BestiaryUI";
+import { DialogueBox } from "../ui/DialogueBox";
+import { FishingUI } from "../ui/Fishing";
+import { InventoryUI } from "../ui/InventoryUI";
+import { Minimap } from "../ui/Minimap";
+import { NIGHT_ENCOUNTER_MULT, NightOverlay } from "../ui/NightOverlay";
+import { RankingUI } from "../ui/RankingUI";
+import { ShopUI } from "../ui/Shop";
+import { STATUS_HUD_TOAST_Y, StatusHud } from "../ui/StatusHud";
 
 const ENCOUNTER_RATE = 0.18;
 const ENCOUNTER_COOLDOWN = 600;
@@ -39,6 +43,7 @@ const MAX_COOLDOWN_STEP = 50;
 // long enough for the SAVED confirmation to be readable before the title
 const QUIT_SAVE_DELAY = 700;
 const TROLL_KING_SPAWN_CHANCE = 0.35;
+const GOLDEN_SLIME_CHANCE = 0.08;
 
 type LastMove = "down" | "up" | "right" | "left";
 
@@ -52,7 +57,7 @@ interface Roamer {
   targetY: number;
   wait: number;
   speed: number;
-  kind: "slime" | "troll" | "wolf";
+  kind: "slime" | "troll" | "wolf" | "goldSlime";
 }
 
 const IDLE_TEXTURE: Record<LastMove, string> = {
@@ -73,6 +78,8 @@ export class WorldScene extends Phaser.Scene {
   private inventory!: InventoryUI;
   private bestiary!: BestiaryUI;
   private rankBoard!: RankingUI;
+  private fishing!: FishingUI;
+  private achievementsUI!: AchievementsUI;
   private dust!: Phaser.GameObjects.Particles.ParticleEmitter;
   private fireflies!: Phaser.GameObjects.Particles.ParticleEmitter;
   private roamerGroup!: Phaser.Physics.Arcade.Group;
@@ -97,10 +104,19 @@ export class WorldScene extends Phaser.Scene {
   private mQueued = false;
   private tQueued = false;
   private bQueued = false;
+  private aQueued = false;
   private qQueued = false;
+  // claims achievements at most once per second; the checks read live
+  // GameState, so battle/fishing/treasure mutations made while a modal or
+  // another scene owns input are caught on the next tick after returning here
+  private achievementCheckAccum = 0;
   private quitConfirm = false;
   private quitting = false;
   private unsubSaved: () => void = () => {};
+  // true while an achievement save is in flight; the onSaved "SAVED" toast is
+  // skipped so it doesn't clobber the "ACHIEVEMENT: ...!" toast on the same
+  // shared __toast text object (showToast reuses one per scene)
+  private suppressSavedToast = false;
   private yQueued = false;
   private nQueued = false;
   private escQueued = false;
@@ -122,6 +138,7 @@ export class WorldScene extends Phaser.Scene {
   private keyM!: Phaser.Input.Keyboard.Key;
   private keyT!: Phaser.Input.Keyboard.Key;
   private keyB!: Phaser.Input.Keyboard.Key;
+  private keyA!: Phaser.Input.Keyboard.Key;
   private keyY!: Phaser.Input.Keyboard.Key;
   private keyN!: Phaser.Input.Keyboard.Key;
   private keyEsc!: Phaser.Input.Keyboard.Key;
@@ -153,7 +170,9 @@ export class WorldScene extends Phaser.Scene {
     // — SHUTDOWN listeners fire in registration order, so this unsubscribes
     // before that save happens and no toast gets created on a scene that's
     // already tearing down. Keep this the first SHUTDOWN listener.
-    this.unsubSaved = onSaved(() => showToast(this, "SAVED", STATUS_HUD_TOAST_Y));
+    this.unsubSaved = onSaved(() => {
+      if (!this.suppressSavedToast) showToast(this, "SAVED", STATUS_HUD_TOAST_Y);
+    });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.unsubSaved());
 
     const level = buildLevel();
@@ -168,9 +187,7 @@ export class WorldScene extends Phaser.Scene {
 
     this.physics.world.setBounds(0, 0, MAP_W * TILE, MAP_H * TILE);
 
-    this.add
-      .image(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE, "house")
-      .setOrigin(0.5, 0.5);
+    this.add.image(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE, "house").setOrigin(0.5, 0.5);
     this.homeLabel = this.add
       .text(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE - 80, "HOME", retroStyle(5, "#9f9fd0"))
       .setOrigin(0.5)
@@ -178,20 +195,15 @@ export class WorldScene extends Phaser.Scene {
     this.homeBubble = this.buildHomeBubble();
     this.homeBubble.setVisible(false);
 
-    this.add
-      .sprite(NPC_POS.x, NPC_POS.y, "npc").setDepth(10);
-    this.add
-      .ellipse(NPC_POS.x, NPC_POS.y + 28, 40, 16, 0x000000, 0.4)
-      .setDepth(5);
+    this.add.sprite(NPC_POS.x, NPC_POS.y, "npc").setDepth(10);
+    this.add.ellipse(NPC_POS.x, NPC_POS.y + 28, 40, 16, 0x000000, 0.4).setDepth(5);
     this.add
       .text(NPC_POS.x, NPC_POS.y - 48, "ELDER", retroStyle(5, "#9f9fd0"))
       .setOrigin(0.5)
       .setDepth(11);
 
     this.add.sprite(SHOP_POS.x, SHOP_POS.y, "npc").setDepth(10).setTint(0xffd166);
-    this.add
-      .ellipse(SHOP_POS.x, SHOP_POS.y + 28, 40, 16, 0x000000, 0.4)
-      .setDepth(5);
+    this.add.ellipse(SHOP_POS.x, SHOP_POS.y + 28, 40, 16, 0x000000, 0.4).setDepth(5);
     this.add
       .text(SHOP_POS.x, SHOP_POS.y - 48, "SHOP", retroStyle(5, "#ffd166"))
       .setOrigin(0.5)
@@ -206,6 +218,13 @@ export class WorldScene extends Phaser.Scene {
     this.add.image(RANK_BOARD_POS.x, RANK_BOARD_POS.y, "sign").setDepth(9);
     this.add
       .text(RANK_BOARD_POS.x, RANK_BOARD_POS.y - 48, "RANK BOARD", retroStyle(5, "#c084fc"))
+      .setOrigin(0.5)
+      .setDepth(11);
+
+    // fishing dock on the pond's south bank: sign just west of the cast spot
+    this.add.image(FISH_POS.x - TILE, FISH_POS.y, "sign").setDepth(9);
+    this.add
+      .text(FISH_POS.x - TILE, FISH_POS.y - 48, "FISHING", retroStyle(5, "#38bdf8"))
       .setOrigin(0.5)
       .setDepth(11);
 
@@ -226,9 +245,7 @@ export class WorldScene extends Phaser.Scene {
       y: Phaser.Math.Clamp(FOREST_POS.y, TILE * 1.5, (MAP_H - 1) * TILE - TILE * 0.5),
     };
     this.add.sprite(this.guardPos.x, this.guardPos.y, "npc").setDepth(10).setTint(0x67e8f9);
-    this.add
-      .ellipse(this.guardPos.x, this.guardPos.y + 28, 40, 16, 0x000000, 0.4)
-      .setDepth(5);
+    this.add.ellipse(this.guardPos.x, this.guardPos.y + 28, 40, 16, 0x000000, 0.4).setDepth(5);
     this.add
       .text(this.guardPos.x, this.guardPos.y - 48, "GUARD", retroStyle(5, "#67e8f9"))
       .setOrigin(0.5)
@@ -241,9 +258,7 @@ export class WorldScene extends Phaser.Scene {
     // coordinates undercounts the actual overlap-trigger radius (player body
     // half-width extends it further than this box), so it can't be trusted
     // alone.
-    const nearCave =
-      Math.abs(respawn.x - CAVE_POS.x) <= TILE / 2 &&
-      Math.abs(respawn.y - CAVE_POS.y) <= TILE / 2;
+    const nearCave = Math.abs(respawn.x - CAVE_POS.x) <= TILE / 2 && Math.abs(respawn.y - CAVE_POS.y) <= TILE / 2;
     const fromDungeon = !!data?.fromDungeon || nearCave;
     const fromForest = !!data?.fromForest;
     const spawn = fromDungeon
@@ -253,13 +268,8 @@ export class WorldScene extends Phaser.Scene {
         : respawn;
     // just walked out of the cave/forest: hold off re-triggering it in case
     // the player is still holding the walk-in key
-    if (fromDungeon || fromForest)
-      this.encounterCooldown = Math.max(this.encounterCooldown, ENCOUNTER_COOLDOWN);
-    this.player = this.physics.add.sprite(
-      spawn.x,
-      spawn.y,
-      "hero-idle-down"
-    );
+    if (fromDungeon || fromForest) this.encounterCooldown = Math.max(this.encounterCooldown, ENCOUNTER_COOLDOWN);
+    this.player = this.physics.add.sprite(spawn.x, spawn.y, "hero-idle-down");
     this.player.setCollideWorldBounds(true);
     this.player.setDepth(10);
     this.player.body?.setSize(40, 32).setOffset(12, 32);
@@ -270,21 +280,12 @@ export class WorldScene extends Phaser.Scene {
     // lock expiring here doesn't trigger another fight immediately.
     if (data?.fromBattle) this.escapeMonsterZone();
 
-    this.playerShadow = this.add
-      .ellipse(this.player.x, this.player.y + 28, 40, 16, 0x000000, 0.4)
-      .setDepth(5);
+    this.playerShadow = this.add.ellipse(this.player.x, this.player.y + 28, 40, 16, 0x000000, 0.4).setDepth(5);
 
-    this.weaponOverlay = this.add
-      .sprite(this.player.x, this.player.y, "equip-sword")
-      .setDepth(11)
-      .setVisible(false);
-    this.shieldOverlay = this.add
-      .sprite(this.player.x, this.player.y, "equip-shield")
-      .setDepth(11)
-      .setVisible(false);
+    this.weaponOverlay = this.add.sprite(this.player.x, this.player.y, "equip-sword").setDepth(11).setVisible(false);
+    this.shieldOverlay = this.add.sprite(this.player.x, this.player.y, "equip-shield").setDepth(11).setVisible(false);
 
-    const walkFrames = (dir: string): Phaser.Types.Animations.AnimationFrame[] =>
-      [0, 1, 2, 3].map((i) => ({ key: `hero-${dir}-${i}` }));
+    const walkFrames = (dir: string): Phaser.Types.Animations.AnimationFrame[] => [0, 1, 2, 3].map((i) => ({ key: `hero-${dir}-${i}` }));
 
     if (!this.anims.exists("walk-down")) {
       this.anims.create({
@@ -349,10 +350,13 @@ export class WorldScene extends Phaser.Scene {
       // the tie instead of whichever roamer the physics engine happened to
       // report first
       const troll = this.roamers.find((r) => r.kind === "troll");
+      const golden = this.roamers.find((r) => r.kind === "goldSlime");
       const r =
         troll && this.physics.overlap(this.player, troll.sprite)
           ? troll
-          : this.roamers.find((r) => r.sprite === roamer);
+          : golden && this.physics.overlap(this.player, golden.sprite)
+            ? golden
+            : this.roamers.find((r) => r.sprite === roamer);
       // BattleScene.runBattle() already plays the boss fanfare for boss/giant
       // enemies; playing it here too would sound it twice.
       this.startBattle(r?.kind ?? "slime");
@@ -436,12 +440,13 @@ export class WorldScene extends Phaser.Scene {
     this.keyB.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
       if (!e.repeat) this.bQueued = true;
     });
-    kb.addKey(Phaser.Input.Keyboard.KeyCodes.Q).on(
-      Phaser.Input.Keyboard.Events.DOWN,
-      (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
-        if (!e.repeat) this.qQueued = true;
-      }
-    );
+    this.keyA = kb.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.keyA.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.aQueued = true;
+    });
+    kb.addKey(Phaser.Input.Keyboard.KeyCodes.Q).on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
+      if (!e.repeat) this.qQueued = true;
+    });
     this.keyY = kb.addKey(Phaser.Input.Keyboard.KeyCodes.Y);
     this.keyY.on(Phaser.Input.Keyboard.Events.DOWN, (_k: Phaser.Input.Keyboard.Key, e: KeyboardEvent) => {
       if (!e.repeat) this.yQueued = true;
@@ -460,13 +465,15 @@ export class WorldScene extends Phaser.Scene {
     this.inventory = new InventoryUI(this);
     this.bestiary = new BestiaryUI(this);
     this.rankBoard = new RankingUI(this);
+    this.fishing = new FishingUI(this);
+    this.achievementsUI = new AchievementsUI(this);
 
     const hint = this.add
       .text(
         GAME_WIDTH - 8,
         GAME_HEIGHT - 6,
-        "HJKL:MOVE Z:TALK/OK I:ITEMS ESC:SKIP\nS:HUD M:MUTE B:BESTIARY T:MAP Q:QUIT CTRL+S:SAVE",
-        retroStyle(6, "#9f9fd0")
+        "HJKL:MOVE Z:TALK/OK I:ITEMS ESC:SKIP\nS:HUD M:MUTE B:BESTIARY A:ACHIEVE T:MAP Q:QUIT CTRL+S:SAVE",
+        retroStyle(6, "#9f9fd0"),
       )
       .setOrigin(1, 1)
       .setAlign("right")
@@ -481,6 +488,7 @@ export class WorldScene extends Phaser.Scene {
       { x: CAVE_POS.x, y: CAVE_POS.y, color: 0xff5555 },
       { x: RANK_BOARD_POS.x, y: RANK_BOARD_POS.y, color: 0xc084fc },
       { x: FOREST_POS.x, y: FOREST_POS.y, color: 0x4ade80 },
+      { x: FISH_POS.x, y: FISH_POS.y, color: 0x38bdf8 },
     ]);
 
     // open ground: no ambient shade, full night range
@@ -503,6 +511,8 @@ export class WorldScene extends Phaser.Scene {
       this.inventory.destroy();
       this.bestiary.destroy();
       this.rankBoard.destroy();
+      this.fishing.destroy();
+      this.achievementsUI.destroy();
       this.minimap.destroy();
       this.night.destroy();
       hint.destroy();
@@ -512,11 +522,7 @@ export class WorldScene extends Phaser.Scene {
 
   private buildHomeBubble(): Phaser.GameObjects.Container {
     const lines = ["HOME", "Z: REST - FULL HP/MP", "SLEEP UNTIL MORNING"];
-    const text = this.add
-      .text(0, 0, lines.join("\n"), retroStyle(5, "#f5f5f5"))
-      .setOrigin(0.5)
-      .setAlign("center")
-      .setLineSpacing(4);
+    const text = this.add.text(0, 0, lines.join("\n"), retroStyle(5, "#f5f5f5")).setOrigin(0.5).setAlign("center").setLineSpacing(4);
     const pad = 20;
     const w = text.width + pad * 2;
     const h = text.height + pad * 2;
@@ -526,13 +532,7 @@ export class WorldScene extends Phaser.Scene {
       .triangle(0, h / 2 + 4, -24, 0, 24, 0, 0, 28, 0x0b0b2b)
       .setStrokeStyle(2, 0xffffff)
       .setOrigin(0.5);
-    return this.add
-      .container(
-        HOUSE_POS.x + TILE,
-        HOUSE_POS.y + TILE - h / 2 - 32,
-        [border, box, text, tail]
-      )
-      .setDepth(12);
+    return this.add.container(HOUSE_POS.x + TILE, HOUSE_POS.y + TILE - h / 2 - 32, [border, box, text, tail]).setDepth(12);
   }
 
   private nearHouse(): boolean {
@@ -584,10 +584,7 @@ export class WorldScene extends Phaser.Scene {
   // entrance, so stepping back in re-triggers the forest zone
   private updateForestGate(): void {
     if (!this.forestOverlapActive) return;
-    if (
-      Math.abs(this.player.x - FOREST_POS.x) > TILE ||
-      Math.abs(this.player.y - FOREST_POS.y) > TILE
-    ) {
+    if (Math.abs(this.player.x - FOREST_POS.x) > TILE || Math.abs(this.player.y - FOREST_POS.y) > TILE) {
       this.forestOverlapActive = false;
     }
   }
@@ -602,7 +599,9 @@ export class WorldScene extends Phaser.Scene {
       this.shop.isActive() ||
       this.inventory.isActive() ||
       this.bestiary.isActive() ||
-      this.rankBoard.isActive()
+      this.rankBoard.isActive() ||
+      this.fishing.isActive() ||
+      this.achievementsUI.isActive()
     );
   }
 
@@ -619,6 +618,21 @@ export class WorldScene extends Phaser.Scene {
       GameState.gainGold(100);
       GameState.save();
       this.flashNote("+100G (CHEAT)");
+    }
+
+    this.achievementCheckAccum += delta;
+    if (this.achievementCheckAccum >= 1000) {
+      this.achievementCheckAccum = 0;
+      const earned = claimAchievements();
+      if (earned.length > 0) {
+        this.suppressSavedToast = true;
+        GameState.save();
+        this.suppressSavedToast = false;
+      }
+      for (const id of earned) {
+        const def = ACHIEVEMENTS.find((a) => a.id === id);
+        if (def) showToast(this, `ACHIEVEMENT: ${def.name}!`);
+      }
     }
 
     if (this.sQueued) {
@@ -651,7 +665,15 @@ export class WorldScene extends Phaser.Scene {
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
       this.dust.emitting = false;
-      this.zQueued = this.ctrlSQueued = this.iQueued = this.gCheatQueued = this.mQueued = this.bQueued = this.tQueued = false;
+      this.zQueued =
+        this.ctrlSQueued =
+        this.iQueued =
+        this.gCheatQueued =
+        this.mQueued =
+        this.bQueued =
+        this.tQueued =
+        this.aQueued =
+          false;
       if (this.yQueued) {
         this.yQueued = false;
         // Save here rather than leaning on the SHUTDOWN handler: that one runs
@@ -693,6 +715,10 @@ export class WorldScene extends Phaser.Scene {
         this.bQueued = false;
         if (this.bestiary.isActive()) this.bestiary.close();
       }
+      if (this.aQueued) {
+        this.aQueued = false;
+        if (this.achievementsUI.isActive()) this.achievementsUI.close();
+      }
       this.player.setVelocity(0, 0);
       this.player.anims.stop();
       this.dust.emitting = false;
@@ -701,6 +727,8 @@ export class WorldScene extends Phaser.Scene {
       this.inventory.update();
       this.bestiary.update();
       this.rankBoard.update();
+      this.fishing.update();
+      this.achievementsUI.update();
       this.updateRoamers(delta);
       return;
     }
@@ -714,6 +742,12 @@ export class WorldScene extends Phaser.Scene {
     if (this.bQueued) {
       this.bQueued = false;
       this.bestiary.open();
+      return;
+    }
+
+    if (this.aQueued) {
+      this.aQueued = false;
+      this.achievementsUI.open();
       return;
     }
 
@@ -818,7 +852,7 @@ export class WorldScene extends Phaser.Scene {
         q.bossDefeated
           ? ["The path to the forest", "is open. Be wary of", "the MOSS GOLEM!"]
           : ["The forest is sealed.", "Defeat the KING SLIME", "first!"],
-        "GUARD"
+        "GUARD",
       );
       return true;
     }
@@ -829,6 +863,11 @@ export class WorldScene extends Phaser.Scene {
     if (near(RANK_BOARD_POS.x, RANK_BOARD_POS.y)) {
       Sfx.buy();
       this.rankBoard.open();
+      return true;
+    }
+    if (near(FISH_POS.x, FISH_POS.y)) {
+      Sfx.buy();
+      this.fishing.open();
       return true;
     }
     return false;
@@ -870,26 +909,13 @@ export class WorldScene extends Phaser.Scene {
       q.slimeReward = true;
       GameState.gainGold(30);
       Sfx.buy();
-      this.dialogue.start(
-        [
-          "Well done, hero!",
-          "You hunted 5 slimes.",
-          "Take these 30 gold!",
-        ],
-        "ELDER"
-      );
+      this.dialogue.start(["Well done, hero!", "You hunted 5 slimes.", "Take these 30 gold!"], "ELDER");
       return;
     }
     if (!q.bossDefeated) {
       this.dialogue.start(
-        [
-          "Welcome back!",
-          "Slimes lurk in the grass.",
-          "Hunt 5 slimes first.",
-          "Then face the KING SLIME",
-          "in the cave up north!",
-        ],
-        "ELDER"
+        ["Welcome back!", "Slimes lurk in the grass.", "Hunt 5 slimes first.", "Then face the KING SLIME", "in the cave up north!"],
+        "ELDER",
       );
       return;
     }
@@ -897,26 +923,11 @@ export class WorldScene extends Phaser.Scene {
       q.finalReward = true;
       GameState.gainGold(100);
       Sfx.buy();
-      this.dialogue.start(
-        [
-          "You are our hero!",
-          "The KING SLIME is gone.",
-          "Take this 100 gold!",
-        ],
-        "ELDER"
-      );
+      this.dialogue.start(["You are our hero!", "The KING SLIME is gone.", "Take this 100 gold!"], "ELDER");
       return;
     }
     if (!q.forestBoss) {
-      this.dialogue.start(
-        [
-          "The eastern woods hold",
-          "a deeper threat now.",
-          "The GUARD by the woods",
-          "knows more.",
-        ],
-        "ELDER"
-      );
+      this.dialogue.start(["The eastern woods hold", "a deeper threat now.", "The GUARD by the woods", "knows more."], "ELDER");
       return;
     }
     if (!q.forestReward) {
@@ -924,14 +935,7 @@ export class WorldScene extends Phaser.Scene {
       GameState.gainGold(200);
       GameState.inventory.mythrilSword += 1;
       Sfx.buy();
-      this.dialogue.start(
-        [
-          "The forest is at peace!",
-          "Take this 200 gold and",
-          "a MYTHRIL SWORD!",
-        ],
-        "ELDER"
-      );
+      this.dialogue.start(["The forest is at peace!", "Take this 200 gold and", "a MYTHRIL SWORD!"], "ELDER");
       return;
     }
     if (!q.bestiaryReward && allSpeciesCaught(GameState.caught)) {
@@ -941,27 +945,16 @@ export class WorldScene extends Phaser.Scene {
       GameState.inventory.mythrilShield += 1;
       Sfx.buy();
       this.dialogue.start(
-        [
-          "You caught every beast",
-          "in the realm! A feat no",
-          "hero has matched.",
-          "500 gold, 3 ELIXIRS and",
-          "a MYTHRIL SHIELD!",
-        ],
-        "ELDER"
+        ["You caught every beast", "in the realm! A feat no", "hero has matched.", "500 gold, 3 ELIXIRS and", "a MYTHRIL SHIELD!"],
+        "ELDER",
       );
       return;
     }
     if (!q.bestiaryReward) {
       const caught = CATCHABLE.filter((e) => GameState.caught.includes(e.name)).length;
       this.dialogue.start(
-        [
-          "The forest is at peace.",
-          `You have caught ${caught} of`,
-          `${CATCHABLE.length} beasts. Catch them`,
-          "all and I will reward you!",
-        ],
-        "ELDER"
+        ["The forest is at peace.", `You have caught ${caught} of`, `${CATCHABLE.length} beasts. Catch them`, "all and I will reward you!"],
+        "ELDER",
       );
       return;
     }
@@ -985,15 +978,10 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private escapeMonsterZone(): void {
-    const spot = escapeFromZones(
-      MONSTER_ZONES,
-      this.player.x,
-      this.player.y,
-      (tx, ty) => {
-        const tile = this.layer.getTileAt(tx, ty);
-        return !!tile && !SOLID.has(tile.index);
-      }
-    );
+    const spot = escapeFromZones(MONSTER_ZONES, this.player.x, this.player.y, (tx, ty) => {
+      const tile = this.layer.getTileAt(tx, ty);
+      return !!tile && !SOLID.has(tile.index);
+    });
     if (spot) this.player.setPosition(spot.x, spot.y);
   }
 
@@ -1020,11 +1008,10 @@ export class WorldScene extends Phaser.Scene {
       for (let i = 0; i < zone.count; i++) {
         const x = zone.cx + (Math.random() - 0.5) * zone.w * 0.6;
         const y = zone.cy + (Math.random() - 0.5) * zone.h * 0.6;
-        const sprite = this.roamerGroup.create(
-          x,
-          y,
-          kind
-        ) as Phaser.Physics.Arcade.Sprite;
+        const golden = kind === "slime" && Math.random() < GOLDEN_SLIME_CHANCE;
+        const roamerKind: Roamer["kind"] = golden ? "goldSlime" : kind;
+        const sprite = this.roamerGroup.create(x, y, kind) as Phaser.Physics.Arcade.Sprite;
+        if (golden) sprite.setTint(0xffd700);
         sprite.setDepth(10);
         sprite.body?.setSize(40, 24).setOffset(12, 32);
         this.roamers.push({
@@ -1037,7 +1024,7 @@ export class WorldScene extends Phaser.Scene {
           targetY: y,
           wait: 300 + Math.random() * 800,
           speed: 56 + Math.random() * 40,
-          kind,
+          kind: roamerKind,
         });
         this.tweens.add({
           targets: sprite,
@@ -1109,7 +1096,7 @@ export class WorldScene extends Phaser.Scene {
     r.targetY = r.minY + Math.random() * (r.maxY - r.minY);
   }
 
-  private startBattle(enemy?: "slime" | "goblin" | "troll" | "wolf"): void {
+  private startBattle(enemy?: "slime" | "goblin" | "troll" | "wolf" | "goldSlime"): void {
     if (this.encounterCooldown > 0) return; // already fading into a battle
     this.player.setVelocity(0, 0);
     this.encounterCooldown = ENCOUNTER_COOLDOWN;

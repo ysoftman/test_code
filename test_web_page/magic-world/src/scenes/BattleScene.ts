@@ -1,11 +1,11 @@
 import Phaser from "phaser";
-import { GAME_WIDTH, GAME_HEIGHT, MAX_HP, MAX_LEVEL, MAX_MP } from "../config";
-import { GameState, expToNext, isNight, onSaved } from "../gameState";
+import { BATTLE_THEME, Sfx } from "../audio";
+import { GAME_HEIGHT, GAME_WIDTH, MAX_HP, MAX_LEVEL, MAX_MP } from "../config";
+import { expToNext, GameState, isNight, onSaved } from "../gameState";
+import { ENEMIES, type EnemyDef } from "../monsters";
 import { retroStyle, showToast } from "../pixelart";
-import { Sfx, BATTLE_THEME } from "../audio";
-import { ENEMIES, EnemyDef } from "../monsters";
 import { recordRank } from "../ranking";
-import { NIGHT_TINT, NIGHT_RANGE } from "../ui/NightOverlay";
+import { NIGHT_RANGE, NIGHT_TINT } from "../ui/NightOverlay";
 
 const MP_COST = 3;
 const CRIT_CHANCE = 0.1;
@@ -19,6 +19,10 @@ const MIN_DAMAGE_SHARE = 0.2;
 // how much gold a defeat costs
 const DEATH_GOLD_LOSS = 0.5;
 const STREAK_CAP = 8;
+// each consecutive FIGHT adds this much extra damage, so a pure-fight run
+// outpaces pausing to heal; items/magic/flee reset it
+const COMBO_PCT = 0.1;
+const COMBO_CAP = 8;
 
 type MenuAction = "fight" | "magic" | "run" | "potion" | "mPotion" | "candy" | "hiPotion" | "ether" | "elixir" | "bomb";
 
@@ -70,6 +74,8 @@ export class BattleScene extends Phaser.Scene {
   private night = false;
   private waitingAction: { resolve: (a: MenuAction) => void } | null = null;
   private origin: "World" | "Dungeon" | "Forest" = "World";
+  private combo = 0;
+  private comboText!: Phaser.GameObjects.Text;
 
   private hitBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
   private glowBurst!: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -82,6 +88,9 @@ export class BattleScene extends Phaser.Scene {
   }
 
   init(data: { enemy: string; from?: "World" | "Dungeon" | "Forest" }): void {
+    // Phaser reuses the scene instance across scene.start(), so per-battle
+    // counters must reset here rather than in the field initializer
+    this.combo = 0;
     const def = ENEMIES[data?.enemy ?? ""] ?? ENEMIES.slime;
     this.enemy = { ...def, curHp: def.hp };
     // Night is the risk/reward shift: tougher enemies, richer payout. Applied
@@ -118,10 +127,14 @@ export class BattleScene extends Phaser.Scene {
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "battle-bg");
 
     if (GameState.streak >= STREAK_MIN) {
-      this.add
-        .text(16, 24, `STREAK ${GameState.streak}`, retroStyle(6, "#fbbf24"))
-        .setDepth(120);
+      this.add.text(16, 24, `STREAK ${GameState.streak}`, retroStyle(6, "#fbbf24")).setDepth(120);
     }
+
+    // live combo counter, filled in by updateCombo() on every fight/heal turn
+    this.comboText = this.add
+      .text(GAME_WIDTH - 16, 24, "", retroStyle(6, "#fbbf24"))
+      .setOrigin(1, 0)
+      .setDepth(120);
 
     if (this.night) {
       this.add
@@ -134,26 +147,19 @@ export class BattleScene extends Phaser.Scene {
         .setDepth(120);
     }
 
-    this.enemySprite = this.add
-      .sprite(GAME_WIDTH - 320, 280, this.enemy.texture)
-      .setScale(this.enemy.boss || this.enemy.giant ? 3 : 2);
+    this.enemySprite = this.add.sprite(GAME_WIDTH - 320, 280, this.enemy.texture).setScale(this.enemy.boss || this.enemy.giant ? 3 : 2);
+    if (this.enemy.tint) this.enemySprite.setTint(this.enemy.tint);
     this.playerSprite = this.add.sprite(320, 368, "hero-down-0").setScale(2);
     this.playerSprite.setFlipX(true);
-    this.weaponOverlay = this.add
-      .sprite(348, 368, GameState.weaponTexture())
-      .setScale(2);
-    this.shieldOverlay = this.add
-      .sprite(292, 368, GameState.armorTexture())
-      .setScale(2);
+    this.weaponOverlay = this.add.sprite(348, 368, GameState.weaponTexture()).setScale(2);
+    this.shieldOverlay = this.add.sprite(292, 368, GameState.armorTexture()).setScale(2);
     this.weaponOverlay.setVisible(!!GameState.equipped.weapon);
     this.shieldOverlay.setVisible(!!GameState.equipped.armor);
 
     this.window(32, 24, 464, 176);
     this.window(GAME_WIDTH - 496, 24, 464, 176);
 
-    this.add
-      .text(64, 40, GameState.player.name, retroStyle(7, "#ffd166"))
-      .setOrigin(0, 0);
+    this.add.text(64, 40, GameState.player.name, retroStyle(7, "#ffd166")).setOrigin(0, 0);
     this.playerHpText = this.add
       .text(64, 88, "HP " + GameState.player.hp + "/" + GameState.effMaxHp(), retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
@@ -163,22 +169,14 @@ export class BattleScene extends Phaser.Scene {
 
     this.playerHpBar = this.add.rectangle(64, 124, 176, 16, 0x22c55e).setOrigin(0, 0.5);
 
-    this.add
-      .text(GAME_WIDTH - 464, 40, this.enemy.name, retroStyle(7, "#ff5555"))
-      .setOrigin(0, 0);
+    this.add.text(GAME_WIDTH - 464, 40, this.enemy.name, retroStyle(7, "#ff5555")).setOrigin(0, 0);
     this.enemyHpText = this.add
       .text(GAME_WIDTH - 464, 88, "HP " + this.enemy.curHp + "/" + this.enemy.hp, retroStyle(6, "#ffffff"))
       .setOrigin(0, 0);
-    this.enemyHpBar = this.add
-      .rectangle(GAME_WIDTH - 464, 124, 176, 16, 0xef4444)
-      .setOrigin(0, 0.5);
+    this.enemyHpBar = this.add.rectangle(GAME_WIDTH - 464, 124, 176, 16, 0xef4444).setOrigin(0, 0.5);
 
-    this.add
-      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 60, GAME_WIDTH - 64, 112, 0x0b0b2b, 0.92)
-      .setStrokeStyle(1, 0xffffff);
-    this.msgText = this.add
-      .text(64, GAME_HEIGHT - 104, "", retroStyle(8, "#f5f5f5"))
-      .setWordWrapWidth(GAME_WIDTH - 128);
+    this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 60, GAME_WIDTH - 64, 112, 0x0b0b2b, 0.92).setStrokeStyle(1, 0xffffff);
+    this.msgText = this.add.text(64, GAME_HEIGHT - 104, "", retroStyle(8, "#f5f5f5")).setWordWrapWidth(GAME_WIDTH - 128);
 
     const menuY = GAME_HEIGHT - 184;
     const labels: Record<string, string> = {
@@ -189,9 +187,7 @@ export class BattleScene extends Phaser.Scene {
     };
     let x = 128;
     for (const item of this.menuItems) {
-      const t = this.add
-        .text(x, menuY, labels[item], retroStyle(8, "#ffffff"))
-        .setOrigin(0.5);
+      const t = this.add.text(x, menuY, labels[item], retroStyle(8, "#ffffff")).setOrigin(0.5);
       this.menuTexts.push(t);
       x += 256;
     }
@@ -211,16 +207,13 @@ export class BattleScene extends Phaser.Scene {
           colX + ITEM_TEXT_OFFSET,
           itemY + Math.floor(i / ITEMS_PER_ROW) * 40,
           `${slot.label} x${GameState.inventory[slot.key]}`,
-          retroStyle(6, "#ffffff")
+          retroStyle(6, "#ffffff"),
         )
         .setOrigin(0, 0.5)
         .setVisible(false);
       this.itemTexts.push(t);
     }
-    this.itemCursor = this.add
-      .text(0, itemY, ">", retroStyle(6, "#ffd166"))
-      .setOrigin(0, 0.5)
-      .setVisible(false);
+    this.itemCursor = this.add.text(0, itemY, ">", retroStyle(6, "#ffd166")).setOrigin(0, 0.5).setVisible(false);
 
     this.hitBurst = this.add.particles(0, 0, "spark", {
       speed: { min: 40, max: 120 },
@@ -384,10 +377,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private window(x: number, y: number, w: number, h: number): void {
-    this.add
-      .rectangle(x, y, w, h, 0x0b0b2b, 0.85)
-      .setOrigin(0, 0)
-      .setStrokeStyle(1, 0xffffff);
+    this.add.rectangle(x, y, w, h, 0x0b0b2b, 0.85).setOrigin(0, 0).setStrokeStyle(1, 0xffffff);
   }
 
   private hideMenu(): void {
@@ -433,6 +423,7 @@ export class BattleScene extends Phaser.Scene {
 
       switch (action) {
         case "run": {
+          this.resetCombo();
           if (Math.random() < 0.5) {
             Sfx.run();
             await this.say("You escaped!");
@@ -491,20 +482,26 @@ export class BattleScene extends Phaser.Scene {
   private async playerAttack(): Promise<void> {
     Sfx.attack();
     await this.lunge();
+    this.combo += 1;
+    this.updateCombo();
+    const comboBonus = this.comboBonus();
     const { dmg, crit } = this.calcDamage(GameState.effAtk(), this.enemy.def);
+    const total = Math.max(1, Math.floor(dmg * (1 + comboBonus)));
     if (crit) Sfx.critical();
-    this.enemy.curHp = Math.max(0, this.enemy.curHp - dmg);
+    this.enemy.curHp = Math.max(0, this.enemy.curHp - total);
     this.enemySprite.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
     this.hitBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
     this.hitBurst.explode(crit ? 16 : 8);
     this.cameras.main.shake(crit ? 120 : 60, crit ? 0.012 : 0.004);
-    this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg, crit);
-    await this.say(crit ? `CRITICAL HIT! You strike for ${dmg}!` : `You strike for ${dmg}!`);
-    this.enemySprite.clearTint();
+    this.flashDamage(this.enemySprite.x, this.enemySprite.y, total, crit);
+    const comboNote = comboBonus > 0 ? ` COMBO x${this.combo}!` : "";
+    await this.say(crit ? `CRITICAL HIT! You strike for ${total}!${comboNote}` : `You strike for ${total}!${comboNote}`);
+    this.restoreEnemyTint();
     this.updateEnemyHp();
   }
 
   private async playerMagic(): Promise<void> {
+    this.resetCombo();
     Sfx.magic();
     GameState.player.mp -= MP_COST;
     this.updatePlayerStats();
@@ -514,11 +511,12 @@ export class BattleScene extends Phaser.Scene {
     this.enemySprite.setTint(0xffa500).setTintMode(Phaser.TintModes.FILL);
     this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg);
     await this.say(`FIRE! ${dmg} damage!`);
-    this.enemySprite.clearTint();
+    this.restoreEnemyTint();
     this.updateEnemyHp();
   }
 
   private async usePotion(): Promise<void> {
+    this.resetCombo();
     if (GameState.player.hp >= GameState.effMaxHp()) {
       Sfx.error();
       await this.say("HP is already full!");
@@ -536,6 +534,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async useMPotion(): Promise<void> {
+    this.resetCombo();
     if (GameState.player.mp >= GameState.player.maxMp) {
       Sfx.error();
       await this.say("MP is already full!");
@@ -550,6 +549,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async useHiPotion(): Promise<void> {
+    this.resetCombo();
     if (GameState.player.hp >= GameState.effMaxHp()) {
       Sfx.error();
       await this.say("HP is already full!");
@@ -567,6 +567,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async useEther(): Promise<void> {
+    this.resetCombo();
     if (GameState.player.mp >= GameState.player.maxMp) {
       Sfx.error();
       await this.say("MP is already full!");
@@ -581,10 +582,8 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async useElixir(): Promise<void> {
-    if (
-      GameState.player.hp >= GameState.effMaxHp() &&
-      GameState.player.mp >= GameState.player.maxMp
-    ) {
+    this.resetCombo();
+    if (GameState.player.hp >= GameState.effMaxHp() && GameState.player.mp >= GameState.player.maxMp) {
       Sfx.error();
       await this.say("HP and MP are already full!");
       return;
@@ -603,6 +602,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async throwBomb(): Promise<void> {
+    this.resetCombo();
     Sfx.hit();
     GameState.inventory.bomb -= 1;
     const dmg = 12;
@@ -610,11 +610,12 @@ export class BattleScene extends Phaser.Scene {
     this.enemySprite.setTint(0xffa500).setTintMode(Phaser.TintModes.FILL);
     this.flashDamage(this.enemySprite.x, this.enemySprite.y, dmg);
     await this.say(`BOOM! ${dmg} damage!`);
-    this.enemySprite.clearTint();
+    this.restoreEnemyTint();
     this.updateEnemyHp();
   }
 
   private async throwCandy(): Promise<void> {
+    this.resetCombo();
     if (this.enemy.boss) {
       Sfx.error();
       await this.say(`The ${this.enemy.name} is too strong!`);
@@ -682,9 +683,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async fireball(): Promise<void> {
-    const fb = this.add
-      .circle(this.playerSprite.x + 40, this.playerSprite.y - 20, 16, 0xffa500)
-      .setDepth(20);
+    const fb = this.add.circle(this.playerSprite.x + 40, this.playerSprite.y - 20, 16, 0xffa500).setDepth(20);
     this.tweens.add({
       targets: fb,
       alpha: { from: 1, to: 0.5 },
@@ -695,9 +694,7 @@ export class BattleScene extends Phaser.Scene {
     await this.tweenPromise(fb, { x: this.enemySprite.x, y: this.enemySprite.y }, 240);
     this.tweens.killTweensOf(fb); // the repeat:-1 pulse tween outlives destroy() otherwise
     fb.destroy();
-    const boom = this.add
-      .circle(this.enemySprite.x, this.enemySprite.y, 24, 0xff5500)
-      .setDepth(20);
+    const boom = this.add.circle(this.enemySprite.x, this.enemySprite.y, 24, 0xff5500).setDepth(20);
     this.glowBurst.setPosition(this.enemySprite.x, this.enemySprite.y);
     this.glowBurst.explode(12);
     this.cameras.main.shake(100, 0.008);
@@ -754,6 +751,32 @@ export class BattleScene extends Phaser.Scene {
     this.enemyHpBar.setScale(Math.max(0, this.enemy.curHp / this.enemy.hp), 1);
   }
 
+  // hit flashes clearTint the enemy sprite, which would also strip the gold
+  // tint of a rare enemy (GOLDEN SLIME); re-apply the def tint afterwards
+  private restoreEnemyTint(): void {
+    this.enemySprite.clearTint();
+    if (this.enemy.tint) this.enemySprite.setTint(this.enemy.tint);
+  }
+
+  private comboBonus(): number {
+    return Math.min(this.combo - 1, COMBO_CAP) * COMBO_PCT;
+  }
+
+  private updateCombo(): void {
+    const bonus = this.comboBonus();
+    if (this.combo < 2) {
+      this.comboText.setText("");
+      return;
+    }
+    this.comboText.setText(`COMBO x${this.combo}  +${Math.round(bonus * 100)}%`);
+    this.comboText.setColor(this.combo >= COMBO_CAP ? "#ff5555" : "#fbbf24");
+  }
+
+  private resetCombo(): void {
+    this.combo = 0;
+    this.updateCombo();
+  }
+
   private updatePlayerStats(): void {
     this.playerHpText.setText(`HP ${GameState.player.hp}/${GameState.effMaxHp()}`);
     this.playerMpText.setText(`MP ${GameState.player.mp}/${GameState.player.maxMp}`);
@@ -766,12 +789,12 @@ export class BattleScene extends Phaser.Scene {
       GameState.streak += 1;
       // streak bonus rewards pushing on without fleeing; capped so a long run
       // can't outpace the boss/chest economy
-      const streakPct =
-        GameState.streak >= STREAK_MIN ? Math.min(GameState.streak, STREAK_CAP) * 0.1 : 0;
+      const streakPct = GameState.streak >= STREAK_MIN ? Math.min(GameState.streak, STREAK_CAP) * 0.1 : 0;
       const streakBonus = Math.floor(this.enemy.gold * streakPct);
       const goldGained = GameState.gainGold(this.enemy.gold + streakBonus);
       GameState.battles += 1;
       if (this.enemy.name === "SLIME") GameState.quest.slimes += 1;
+      if (this.enemy.name === "GOLDEN SLIME") GameState.quest.goldenSlimes += 1;
       // two story bosses share the `boss` flag; each sets its own quest gate
       if (this.enemy.boss) {
         if (this.enemy.name === ENEMIES.mossGolem.name) GameState.quest.forestBoss = true;
@@ -816,10 +839,7 @@ export class BattleScene extends Phaser.Scene {
       GameState.player.exp += this.enemy.exp;
       let msg = `EXP +${this.enemy.exp}`;
       let newRank = 0;
-      while (
-        GameState.player.level < MAX_LEVEL &&
-        GameState.player.exp >= expToNext(GameState.player.level)
-      ) {
+      while (GameState.player.level < MAX_LEVEL && GameState.player.exp >= expToNext(GameState.player.level)) {
         GameState.player.exp -= expToNext(GameState.player.level);
         GameState.player.level += 1;
         GameState.player.maxHp = Math.min(MAX_HP, GameState.player.maxHp + 5);
@@ -881,8 +901,7 @@ export class BattleScene extends Phaser.Scene {
     GameState.lockEncounters(4000);
     this.cameras.main.fadeOut(400, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      const target =
-        this.origin === "Dungeon" ? "Dungeon" : this.origin === "Forest" ? "Forest" : "World";
+      const target = this.origin === "Dungeon" ? "Dungeon" : this.origin === "Forest" ? "Forest" : "World";
       this.scene.start(target, {
         fromBattle: true,
       });
@@ -929,12 +948,7 @@ export class BattleScene extends Phaser.Scene {
     this.input.once("pointerdown", done);
   }
 
-  private tweenPromise(
-    target: Phaser.GameObjects.GameObject,
-    props: object,
-    duration: number,
-    onUpdate?: () => void
-  ): Promise<void> {
+  private tweenPromise(target: Phaser.GameObjects.GameObject, props: object, duration: number, onUpdate?: () => void): Promise<void> {
     return new Promise((resolve) => {
       this.tweens.add({
         targets: target,
