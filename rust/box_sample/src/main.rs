@@ -14,7 +14,7 @@ fn main() {
     println!("{list:?}");
 }
 
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 #[derive(Debug)]
 enum List {

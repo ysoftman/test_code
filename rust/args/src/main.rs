@@ -11,7 +11,7 @@ use std::path::PathBuf;
 use clap::{ArgAction, Parser};
 use std::env;
 
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 fn main() {
     // 기본 env args 사용

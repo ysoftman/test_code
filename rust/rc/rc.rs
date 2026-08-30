@@ -1,14 +1,14 @@
 // ysoftman
 // reference counting(rc) test
 
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 enum List {
     Node(i32, Box<List>),
     Nil,
 }
 
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 enum RcList {
     RcNode(i32, Rc<RcList>),

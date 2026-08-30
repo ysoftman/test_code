@@ -3,7 +3,7 @@
 // struct 이름은 carmal case 여야 한다.
 // derive 는 strcut, enum 에서만 사용가능하다.
 // Area 를 {:?} 또는 {:#?} 로 디버깅 출력할 수 있도록 해주는 어노테이션
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 #[derive(Debug)]
 struct User {

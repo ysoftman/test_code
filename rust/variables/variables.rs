@@ -1,7 +1,7 @@
 // static 으로 global 변수
 static GLOBAL_STRING: &str = "ysoftman";
 
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 static GLOBAL_INT: i32 = 123123;
 

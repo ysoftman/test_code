@@ -6,7 +6,7 @@ use std::rc::Rc;
 use std::rc::Weak;
 use List::{Nil, Node};
 use NewList::{NewNil, NewNode};
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 #[derive(Debug)]
 enum List {
@@ -21,7 +21,7 @@ impl List {
         }
     }
 }
-//  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
+// 사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 #[derive(Debug)]
 enum NewList {
