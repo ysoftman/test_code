@@ -10,7 +10,7 @@ struct Fruit {
 //  사용하지 않는 코드 warning 발생하지 않게 하는 attribute
 #[allow(dead_code)]
 #[derive(Debug)]
-// enum(열거형) 이름과 값들(variants)들 모두 carmel case 를 쓰도록 한다. 아니면 경고 발생
+// enum(열거형) 이름과 값들(variants)들 모두 UppserCamelCase(PascalCase) 를 쓰도록 한다. 아니면 경고 발생
 enum YsoftmanEnum {
     // variant 의 데이터 타입은()로 지정
     V4(String),
