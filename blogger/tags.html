@@ -175,26 +175,23 @@
       .then(function (json) {
         var totalPosts = parseInt(json.feed.openSearch$totalResults.$t, 10);
         processEntries(json.feed.entry);
-        renderTagCloud(tagMap);
 
-        if (totalPosts <= batchSize) {
-          setCache(tagMap);
-          return;
-        }
-
-        var totalBatches = Math.ceil((totalPosts - batchSize) / batchSize);
         var promises = [];
-        for (var i = 1; i <= totalBatches; i++) {
-          promises.push(fetchJSON(1 + i * batchSize));
+        for (
+          var start = 1 + batchSize;
+          start <= totalPosts;
+          start += batchSize
+        ) {
+          promises.push(fetchJSON(start));
         }
-
-        return Promise.all(promises).then(function (results) {
-          for (var i = 0; i < results.length; i++) {
-            processEntries(results[i].feed.entry);
-          }
-          renderTagCloud(tagMap);
-          setCache(tagMap);
-        });
+        return Promise.all(promises);
+      })
+      .then(function (results) {
+        for (var i = 0; i < results.length; i++) {
+          processEntries(results[i].feed.entry);
+        }
+        renderTagCloud(tagMap);
+        setCache(tagMap);
       })
       .catch(function () {
         if (!hasCachedData) {

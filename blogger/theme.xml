@@ -5,9 +5,7 @@
     <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
     <b:include data='blog' name='all-head-content'/>
     <!-- SEO: post title first for better keyword visibility -->
-    <b:if cond='data:blog.pageType == &quot;item&quot;'>
-      <title><data:blog.pageName/> | <data:blog.title/></title>
-    <b:elseif cond='data:blog.pageType == &quot;static_page&quot;'/>
+    <b:if cond='data:blog.pageType in {&quot;item&quot;,&quot;static_page&quot;}'>
       <title><data:blog.pageName/> | <data:blog.title/></title>
     <b:else/>
       <title><data:blog.pageTitle/></title>
@@ -120,70 +118,6 @@ a:hover {
     background-color: var(--black);
 }
 
-/* Header ----------------------------------------------- */
-.header-outer {
-    background: var(--blue) url(//www.blogblog.com/1kt/simple/gradients_light.png) repeat-x scroll 0 -400px;
-}
-.Header h1 {
-    font: 2.5em;
-    color: var(--green);
-    text-shadow: 1px 2px 3px rgba(0, 0, 0, .2);
-    padding: 0px 0px 0px 0px;
-    margin: 0px 0px 0px 0px;
-}
-.Header h1 a {
-    color: var(--blue);
-}
-.Header .description {
-    font-size: 120%;
-    color: var(--purple);
-    padding: 0px 0px 0px 0px;
-    margin: 0px 0px 0px 0px;
-}
-
-.header-inner .Header .titlewrapper {
-    padding: 0px 0px 0px 10px;
-    margin: 0px 0px 0px 0px;
-}
-
-.header-inner .Header .descriptionwrapper {
-    padding: 0px 0px 0px 10px;
-    margin: 0px 0px 10px 0px;
-}
-
-
-/* Tabs ----------------------------------------------- */
-.tabs-inner .section:first-child {
-    border-top: 0 solid #eeeeee;
-}
-.tabs-inner .section:first-child ul {
-    margin-top: -0;
-    border-top: 0 solid #eeeeee;
-    border-left: 0 solid #eeeeee;
-    border-right: 0 solid #eeeeee;
-}
-.tabs-inner .widget ul {
-    margin-top: 0;
-    margin-left: -30px;
-    margin-right: -30px;
-}
-.tabs-inner .widget li a {
-    display: inline-block;
-    padding: .6em 1em;
-    font: 1.5em;
-    color: #fff;
-    border-left: 1px solid #ffffff;
-    border-right: 1px solid #eeeeee;
-}
-.tabs-inner .widget li:first-child a {
-    border-left: none;
-}
-.tabs-inner .widget li.selected a, .tabs-inner .widget li a:hover {
-    color: #fff;
-    background-color: var(--black);
-    text-decoration: none;
-}
-
 /* Columns ----------------------------------------------- */
 .main-outer {
     border-top: 0 solid #eeeeee;
@@ -209,10 +143,6 @@ h1.ysoftman-home {
         0 0 80px #0072ff,
         0 0 100px #0072ff,
         0 0 140px #0072ff;
-      /*
-      animation-delay: 0.1s;
-      animation: animate 10s linear infinite;
-      */
 }
 .ysoftman-github-io {
     padding: 0px 0px 0px 0px;
@@ -245,22 +175,11 @@ h1.ysoftman-home {
     color: var(--black);
 }
 
-
-/*
-@keyframes animate {
-    from {
-        filter: hue-rotate(0deg);
-    }
-    to {
-        filter: hue-rotate(360deg);
-    }
-}
-*/
-
 /* Headings ----------------------------------------------- */
 h2 {
-    margin: 0 0 0 0;
-    font: bold 1.7em;
+    margin: 0;
+    font-size: 1.7em;
+    font-weight: bold;
     color: var(--purple);
 }
 
@@ -323,6 +242,9 @@ h3.post-title {
     border-radius: 5px;
     padding: 10px;
     margin: 0px 0px 10px 0px;
+    /* lazy render off-screen posts */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
 }
 
 .post-body {
@@ -345,25 +267,13 @@ h3.post-title {
     padding: 0 !important;
     border: none !important;
     background: none !important;
-    -moz-box-shadow: 0px 0px 0px transparent !important;
-    -webkit-box-shadow: 0px 0px 0px transparent !important;
-    box-shadow: 0px 0px 0px transparent !important;
-    box-shadow: none;
-    border: none;
-    margin: 0 0 0 0;
+    box-shadow: none !important;
+    margin: 0;
     max-width: 100%;
     height: auto;
 }
 .post-body .tr-caption-container {
     color: var(--black);
-}
-.post-body .tr-caption-container img {
-    padding: 0;
-    background: transparent;
-    border: none;
-    -moz-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
-    box-shadow: 0 0 0 rgba(0, 0, 0, .1);
 }
 .post-header {
     margin: 0 0 1.5em;
@@ -401,37 +311,12 @@ h3.post-title {
   color: var(--black);
 }
 
-/*
-.label-size-1, .label-size-1 a {
-    color: var(--teal);
-}
-.label-size-2, .label-size-2 a {
-    color: var(--cyan);
-}
-.label-size-3, .label-size-3 a {
-    color: var(--yellow);
-}
-.label-size-4, .label-size-4 a {
-    color: var(--orange);
-}
-.label-size-5, .label-size-5 a {
-    color: var(--red);
-}
-.label-size-1 a:hover,
-.label-size-2 a:hover,
-.label-size-3 a:hover,
-.label-size-4 a:hover,
-.label-size-5 a:hover {
-    color: var(--purple);
-}
-*/
-
 /* Comments ----------------------------------------------- */
 #comments {
     font-size: 130%;
 }
 #comments .comment-author {
-    font: 1.5em;
+    font-size: 1.5em;
     border-top: 1px solid #eeeeee;
     background-position: 0 1.5em;
 }
@@ -504,6 +389,12 @@ h3.post-title {
     color: var(--dark-gray);
     font-size: 1.2em;
 }
+/* pager link with href removed by JS at boundaries */
+.blog-pager a:not([href]) {
+    color: var(--dark-gray);
+    border-color: var(--dark-gray);
+    pointer-events: none;
+}
 #pager-info,
 #mobile-pager-info {
     display: inline-block;
@@ -573,12 +464,6 @@ input.ysoftman-input {
     color: var(--yellow);
 }
 
-/* Performance: lazy render off-screen posts ----------- */
-.post-outer {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 500px;
-}
-
 /* Post title: h1 on item pages ----------------------- */
 h1.post-title {
     color: var(--purple);
@@ -592,10 +477,6 @@ h1.post-title {
 @media screen and (max-width: 1024px) {
     body, .body-fauxcolumn-outer {
         font-size: 1.1em;
-    }
-    .column-left-outer,
-    .column-right-outer {
-        display: none;
     }
     .column-center-outer {
         width: 100% !important;
@@ -699,8 +580,9 @@ h1.post-title {
         padding: 5px 10px;
         font-size: 0.8em;
     }
-    .blog-pager-prev div,
-    .blog-pager-next div {
+    .blog-pager-disabled,
+    #pager-info,
+    #mobile-pager-info {
         padding: 5px 10px;
         font-size: 0.8em;
     }
@@ -751,7 +633,7 @@ h1.post-title {
                           <span class='ysoftman-github-io'><a href='https://ysoftman.github.io' target='_blank'>| ysoftman</a></span>
                         </div>
                         <div class='ysoftman-nav-actions'>
-                          <span class='ysoftman-tags'><a href='https://yoonbh2714.blogspot.com/p/tags.html'>tags</a></span>
+                          <span class='ysoftman-tags'><a href='/p/tags.html'>tags</a></span>
                           <form class='ysoftman-search-box' expr:action='data:blog.searchUrl' role='search'>
                             <input autocomplete='off' class='ysoftman-input' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' placeholder='search' title='search' type='text'/>
                           </form>
@@ -804,7 +686,6 @@ h1.post-title {
                                     </div>
                                   </b:if>
                                 </b:loop>
-                                <b:if cond='data:numPosts != 0'> &lt;/div&gt;&lt;/div&gt; </b:if>
                               </div>
                               <!-- navigation -->
                               <b:include name='nextprev'/>
@@ -893,7 +774,6 @@ h1.post-title {
                                 </span>
                                 <b:else/>
                                 <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
-                                  <!-- <data:post.commentLabelFull/>: -->
                                   <data:post.numComments/> comments
                                 </a>
                               </b:if>
@@ -911,7 +791,6 @@ h1.post-title {
                               <div class='comments' id='comments'>
                                 <a name='comments'/>
                                 <b:if cond='data:post.allowComments'>
-                                  <!--<h4><data:post.commentLabelFull/> : </h4>-->
                                   <h4>comments: </h4>
                                   <b:if cond='data:post.commentPagingRequired'>
                                     <span class='paging-control-container'>
@@ -1601,7 +1480,6 @@ h1.post-title {
                             <b:includable id='threaded_comments' var='post'>
                               <div class='comments' id='comments'>
                                 <a name='comments'/>
-                                <!--<h4><data:post.commentLabelFull/> : </h4>-->
                                 <h4>comments: </h4>
                                 <div class='comments-content'>
                                   <b:include cond='data:post.embedCommentForm' data='post' name='threaded_comment_js'/>
@@ -1634,32 +1512,6 @@ h1.post-title {
                             </b:includable>
                           </b:widget>
                         </b:section>
-                      </div>
-                    </div>
-
-                    <div class='column-left-outer'>
-                      <div class='column-left-inner'>
-                        <aside>
-                          <macro:include id='main-column-left-sections' name='sections'>
-                            <macro:param default='0' name='num' value='0'/>
-                            <macro:param default='sidebar-left' name='idPrefix'/>
-                            <macro:param default='sidebar' name='class'/>
-                            <macro:param default='true' name='includeBottom'/>
-                          </macro:include>
-                        </aside>
-                      </div>
-                    </div>
-
-                    <div class='column-right-outer'>
-                      <div class='column-right-inner'>
-                        <aside>
-                          <macro:include id='main-column-right-sections' name='sections'>
-                            <macro:param default='2' name='num' value='0'/>
-                            <macro:param default='sidebar-right' name='idPrefix'/>
-                            <macro:param default='sidebar' name='class'/>
-                            <macro:param default='true' name='includeBottom'/>
-                          </macro:include>
-                        </aside>
                       </div>
                     </div>
 
@@ -1808,9 +1660,6 @@ h1.post-title {
             var links = document.querySelectorAll(selector);
             for (var i = 0; i < links.length; i++) {
               links[i].removeAttribute('href');
-              links[i].style.color = 'var(--dark-gray)';
-              links[i].style.borderColor = 'var(--dark-gray)';
-              links[i].style.pointerEvents = 'none';
             }
           }
           if (endIndex >= totalPosts) disableLinks('.blog-pager-next a');
@@ -1855,20 +1704,18 @@ h1.post-title {
             }
           } catch (e) {}
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', getFeedUrl(), true);
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              try {
-                var data = JSON.parse(xhr.responseText);
-                var total = parseInt(data.feed.openSearch$totalResults.$t, 10);
-                localStorage.setItem(cacheKey, JSON.stringify({ total: total, time: Date.now() }));
-                updatePagerInfo(total);
-                attachPagerListeners();
-              } catch (e) {}
-            }
-          };
-          xhr.send();
+          fetch(getFeedUrl())
+            .then(function (response) {
+              if (!response.ok) throw new Error('HTTP ' + response.status);
+              return response.json();
+            })
+            .then(function (data) {
+              var total = parseInt(data.feed.openSearch$totalResults.$t, 10);
+              localStorage.setItem(cacheKey, JSON.stringify({ total: total, time: Date.now() }));
+              updatePagerInfo(total);
+              attachPagerListeners();
+            })
+            .catch(function () {});
         }
 
         fetchTotalPosts();

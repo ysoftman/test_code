@@ -13,7 +13,7 @@ xmllint --format feed.atom > blog.xml
 rg -N '<title.+</title>' blog.xml
 
 # line-height 적용된 포스트의 타이틀 파악
-rg -N '<title.+</title>|<content type="html">.*</content>' blog.xml | rg -N " line-heightyle" -B1
+rg -N '<title.+</title>|<content type="html">.*</content>' blog.xml | rg -N " line-height" -B1
 
 # style 적용된 포스트의 타이틀 파악
 rg -N '<title.+</title>|<content type="html">.*</content>' blog.xml | rg -N " style=" -B1
