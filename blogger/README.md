@@ -49,5 +49,5 @@ curl -s "https://www.googleapis.com/blogger/v3/blogs/${bloggerid}/posts?key=${ap
 
 ## tags 페이지 만들기
 
-- tag 가젯 사용지 전체 태그를 표시하면 포스트 내용보타 커져 스팸으로 취급될 수 있어 tags 이름의 페이지를 만든다.
+- tag 가젯 사용시 전체 태그를 표시하면 포스트 내용보다 커져 스팸으로 취급될 수 있어 tags 이름의 페이지를 만든다.
 - blogger 설정 > 페이지 > tags 이름으로 페이지 생성, 내용은 tags.html 참고
