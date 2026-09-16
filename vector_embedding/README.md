@@ -46,9 +46,13 @@ uv sync
 ```bash
 # 1. 업그레이드 가능한(outdated) 패키지 목록 확인
 uv pip list --outdated
+# 또는
+uv tree --outdated --depth 1
 
 # 2. pyproject.toml 제약 범위 내에서 모든 패키지를 최신으로 lock 갱신
-uv lock --upgrade
+# uv lock -U 는 uv.lock 만 갱신합니다. pyproject.toml 의 `>=x.y` 하한은 uv 가
+# 자동으로 올려주지 않으므로 필요할 때만 `uv add` 로 직접 올립니다.
+uv lock -U
 
 # 3. 갱신된 lock 대로 .venv 동기화
 uv sync
