@@ -58,6 +58,17 @@ uv sync
 #   torch diffusers transformers accelerate sentencepiece)
 ```
 
+## 의존성 업데이트
+
+`uv lock -U` 는 uv.lock 만 갱신합니다. pyproject.toml 의 `>=x.y` 하한은 uv 가
+자동으로 올려주지 않으므로 필요할 때만 `uv add` 로 직접 올립니다.
+
+```bash
+uv tree --outdated --depth 1   # 최신 버전 확인 (새 버전은 "(latest: vX.Y)" 표시)
+uv lock -U && uv sync          # uv.lock 최신화 + .venv 반영
+uv add "torch>=2.14"           # pyproject.toml 하한 올리기 (버전 명시 필수)
+```
+
 ## 모델 다운로드 (선택)
 
 모델을 미리 내려받으려면 Hugging Face CLI(`hf`)를 사용합니다.

@@ -5,11 +5,11 @@ description = "Load and generate images with Alpha-VLLM/Lumina-Image-2.0 using H
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "torch>=2.13",
-    "diffusers>=0.39",
-    "transformers>=5.15",
-    "accelerate>=1.14",
-    "sentencepiece>=0.2",
+  "accelerate>=1.15",
+  "diffusers>=0.40",
+  "sentencepiece>=0.2",
+  "torch>=2.14",
+  "transformers>=5.17",
 ]
 
 [dependency-groups]
