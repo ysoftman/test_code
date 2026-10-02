@@ -16,99 +16,109 @@ is_zsh() {
 }
 
 # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+
+echo "-----"
 # aaa 가 값이 있으면 확장된 bbb 도 aaa 값이 된다.
 # aaa 가 빈값(unset/null) 이면 aaa 자체가 변경되지는 않고, 확장된 bbb 는 디폴트값으로 변경된다.
 aaa=""
 bbb=${aaa:-default_lemon}
-echo 'bbb=${aaa:-default_lemon}'
-echo '$aaa' $aaa
-echo '$bbb' $bbb
+echo "bbb=\${aaa:-default_lemon}"
+echo "\$aaa  $aaa"
+echo "\$bbb  $bbb"
 
+echo "-----"
+# aaa 값이 있으면 확장된 bbb 는 디폴트값으로 변경된다.
+# aaa 빈값(unset/null) 이면 aaa 자체가 변경되지 않고 확장된 bbb 는 빈값이 된다.
+aaa=""
+bbb=${aaa:+default_banana}
+echo "bbb=\${aaa:+default_banana}"
+echo "\$aaa  $aaa"
+echo "\$bbb  $bbb"
+
+echo "-----"
 # aaa 가 값이 있으면 확장된 bbb 도 aaa 값이 된다.
 # aaa 가 null 이면 확장된 bbb 는 디폴트값으로 변경된다.
 aaa=""
 bbb=${aaa-default_lemon}
-echo 'bbb=${aaa-default_lemon}'
-echo '$aaa' $aaa
-echo '$bbb' $bbb
+echo "bbb=\${aaa-default_lemon}"
+echo "\$aaa  $aaa"
+echo "\$bbb  $bbb"
 unset aaa
 echo "unset aaa"
 bbb=${aaa-default_lemon}
-echo 'bbb=${aaa-default_lemon}'
-echo '$aaa' $aaa
-echo '$bbb' $bbb
+echo "bb=\${aaa-default_lemon}"
+echo "\$aaa  $aaa"
+echo "\$bbb  $bbb"
 
+echo "-----"
 # aaa 빈값(unset/null) 이면 디폴트 값 사용, aaa 자체도 디폴트값으로 변경되고 확장된 bbb 도 디폴트값으로 변경된다.
 aaa=""
 bbb=${aaa:=default_apple}
-echo 'bbb=${aaa:=default_apple}'
-echo '$aaa' $aaa
-echo '$bbb' $bbb
+echo "bbb=\${aaa:=default_apple}"
+echo "\$aaa  $aaa"
+echo "\$bbb  $bbb"
 
+echo "-----"
 # aaa 빈값(unset/null) 이면 stderr 에 에러가 발생한다.
 # unset aaa
 # aaa=""
 bbb=${aaa:?default_orange}
-echo 'bbb=${aaa:?default_orange}'
-echo '$aaa' $aaa
-echo '$bbb' $bbb
+echo "bbb=\${aaa:?default_orange}"
+echo "\$aaa  $aaa"
+echo "\$bbb  $bbb"
 
-# aaa 빈값(unset/null) 이면 aaa 자체가 변경되지 않고 확장된 bbb 는 빈값이 된다.
-aaa=""
-bbb=${aaa:+default_banana}
-echo 'bbb=${aaa:+default_banana}'
-echo '$aaa' $aaa
-echo '$bbb' $bbb
-
+echo "-----"
 aaa="01234567890abcdefg"
 # 0번째 부터 3개
-echo '${aaa:0:3}' ${aaa:0:3}
+echo "\${aaa:0:3} ${aaa:0:3}"
 # 3번째 부터 끝까지
-echo '${aaa:3}' ${aaa:3}
+echo "\${aaa:3} ${aaa:3}"
 
 # 9번째 부터 끝에 -1 위치까지
-echo '${aaa:9:-1}' ${aaa:9:-1}
+echo "\${aaa:9:-1} ${aaa:9:-1}"
 # 9번째 부터 끝에 -1 위치까지
-echo '${aaa:9:-2}' ${aaa:9:-2}
+echo "\${aaa:9:-2} ${aaa:9:-2}"
 
 # 끝에 -3 위치 부터 끝까지 (:- 가되지 않도록 : - 로 공백이 있어야 한다.)
-echo '${aaa: -3}' ${aaa: -3}
+echo "\${aaa: -3} ${aaa: -3}"
 # 끝에 -3 위치 부터 2개
-echo '${aaa: -3:2}' ${aaa: -3:2}
+echo "\${aaa: -3:2} ${aaa: -3:2}"
 
+echo "-----"
 aaa="lemon_apple_banana"
 # 첫번째 항목만 _ 를 - 로 replace
-echo '${aaa/_/-/}' ${aaa/_/-}
+echo "\${aaa/_/-/}' ${aaa/_/-}"
 # _ 를 - 로 replace
 # 모든 항목을 _ 를 - 로 replace
-echo '${aaa//_/-/}' ${aaa//_/-}
+echo "\${aaa//_/-/}' ${aaa//_/-}"
 
+echo "-----"
 aaa="cherry_ORANGE"
 # 첫문자 대문자로
 if is_zsh; then
     # 첫문자 대문자로
-    echo '${(C)aaa}' ${(C)aaa}
+    echo "\${(C)aaa} ${(C)aaa}"
     # 모두 대문자로
-    echo '${(U)aaa}' ${(U)aaa}
+    echo "\${(U)aaa} ${(U)aaa}"
     # 모두 소문자로
-    echo '${(L)aaa}' ${(L)aaa}
+    echo "\${(L)aaa} ${(L)aaa}"
 else
     # 첫문자 대문자로
-    echo '${aaa^}' ${aaa^}
+    echo "\${aaa^} ${aaa^}"
     # 모두 대문자로
-    echo '${aaa^^}' ${aaa^^}
+    echo "\${aaa^^} ${aaa^^}"
     # 첫문자 소문자로
-    echo '${aaa,}' ${aaa,}
+    echo "\${aaa,} ${aaa,}"
     # 모두 소문자로
-    echo '${aaa,,}' ${aaa,,}
+    echo "\${aaa,,} ${aaa,,}"
 fi
 
+echo "-----"
 # {} 내에 , 로 구분하면 구분된 개수 만큰 확장(치환)된다.
 # mkdir {a,b}zzz ==> azzz 와 bzzz 생성 으로 많이 사용한다.
-echo LEMON_{aaa,bbb,ccc}_ORANGE
-
 # ,외 공백이 들어가면 확장되지 않는다.
-echo LEMON_{aaa, bbb, ccc}_ORANGE
+# echo LEMON_{aaa, bbb, ccc}_ORANGE
+echo LEMON_{aaa,bbb,ccc}_ORANGE
 
 # 요소에 공백을 포함하는 경우 quote, double-quote 로 감싸준다.
 echo LEMON_{aaa,"b b b",ccc}_ORANGE
@@ -123,6 +133,7 @@ echo ${arr[1]}
 # all element
 echo "${arr[@]}"
 
+echo "-----"
 # 0~10 까지 : 0 1 2 3 4 5 6 7 8 9 10
 echo {0..10}
 # 10~0 까지: 10 9 8 7 6 5 4 3 2 1 0
@@ -130,6 +141,7 @@ echo {10..0}
 # a~z 까지: a b c d e f g h i j k l m n o p q r s t u v w x y z
 echo {a..z}
 
+echo "-----"
 # 0~10까지 2씩 건너뛰기: 0 2 4 6 8 10
 echo {0..10..2}
 # a~z 까지 3씩 건너뛰기: a d g j m p s v y
