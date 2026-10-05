@@ -111,9 +111,13 @@ second:${bb}
 third:${cc}
 EOF
 
-echo "remove trailing whitespace"
+# sub(대체) 사용
+# 세번째 인자가 없으면 전체$0 대상이다.
+r=$(echo "info: aaa@v0.1.0" | awk '{sub(/@.*/, "@latest", $2); print}')
+echo ${r}
+# remove trailing whitespace
 r=$(printf "hello   " | awk '{sub(/[[:space:]]+$/, ""); print}')
-echo "...${r}..."
+echo "${r}"
 
 # 외부 변수 전달
 apple_msg="oh~apple"
