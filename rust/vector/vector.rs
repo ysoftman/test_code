@@ -27,34 +27,43 @@ fn vec_data() {
     println!("{v3:?}");
 }
 
+// 벡터인자 받을때
+// &[타입]을 사용하면 참조로 받지만 capacity()등을 사용할 수 없다.
+// Vec<타입>을 하면 소유권이 이전된다. &를 붙여 참조로 받자.
+fn print_vec(v: &Vec<i32>) {
+    println!("capacity:{}, {:?}", v.capacity(), v);
+}
+
 // vector, string, hash map 등은 표준 라이브러리에 포함된 컬렉션이고 가변적인 데이터를 힙에 저장한다.
 fn main() {
     // 벡터 생성
-    // let mut v: Vec<i32> = Vec::new();
+    // vec![] 와 Vec::new() 는 둘다 벡터  Vec<T>  를 생성한다. 내부 동작이나 성능차이가 없다.
+    // vec![1,2,3] 로 매크로는 초기값을 설정할 수 있다.
     // mutable 이면 push 되는 값으로 타입추론이 가능해 타입을 명시하지 않아도 된다.
     let mut v = Vec::new();
     // capacity 는 0,4,8씩 늘어난다.
-    println!("capacity:{}", v.capacity());
     v.push(-3);
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.push(-2);
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.push(-1);
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.push(0);
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
+    v.insert(1, 1000);
+    print_vec(&v);
     v.push(1);
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.push(2);
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.push(3);
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.pop();
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.pop();
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     v.pop();
-    println!("capacity:{}", v.capacity());
+    print_vec(&v);
     println!("v {v:?}");
     // 또는 벡터 매크로를 사용할 수도 있다.
     let v2 = vec![-3, -2, -1, 0, 1, 2, 3];

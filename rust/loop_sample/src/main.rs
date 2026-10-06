@@ -53,8 +53,11 @@ fn main() {
     }
 
     // a(포함)..b(미포함) 으로 1-10 반복
-    for n in 1..11 {
-        println!("n:{n}");
+    println!("gugudan");
+    for m in 1..10 {
+        for n in 1..10 {
+            println!("{} x {} = {:>2}", m, n, m * n);
+        }
     }
 
     // a(포함)..=b(포함) 으로 1-10 반복

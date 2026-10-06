@@ -30,6 +30,23 @@ fn main() {
     println!("{b} {b} {b:p} {b:b} {b:e} {b:E} {b:x} {b:X}");
 
     let title = "lemon apple";
+    // 자리수 지정해서 출력하기
+    // 숫자 기본 우측 정렬
+    println!("{:20}", a);
+
+    // 숫자 기본 우측 정렬(빈공간 0으로 패딩)
+    println!("{:020}", a);
+
+    // 숫자 기본 좌측 정렬(빈공간 0으로 패딩)
+    println!("{:0<20}", a);
+
+    // 문자 기본 좌측 정렬
+    println!("{:20}", title);
+
+    // 우측 정렬(빈공간_ 패딩)
+    println!("{:_>20}", title);
+
+    // ^ 가운데 정렬
     println!("{title:-^20}"); // ----lemon apple----
     let bar = "|";
     println!("{bar:_<10}{bar: >10}"); // |_________         |
