@@ -3,6 +3,14 @@
 
 # 참고 https://linuxcommand.org/lc3_man_pages/seth.html
 
+# -a 옵션(same as set -o allexport) 이후 변수설정들은 모두 export 되도록 한다.
+# +a 로 다시 export 비활성화
+not_export_var=123
+set -a
+export_var=123
+set +a
+export | grep -i export_var
+
 # set -x 옵션을 사용하면 현재 스크립트 명령 자체도 stderr 로 확인 할 수 있다.
 # set +x 를 하면 다시 비활성화
 set -x
