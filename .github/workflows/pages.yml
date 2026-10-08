@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "test_web_page/**"
+      - "MachineLearning/*.md"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -71,6 +72,14 @@ jobs:
         working-directory: test_web_page/tsparticles
         run: bun run build
 
+      - name: Install ml-docs dependencies
+        working-directory: test_web_page/ml-docs
+        run: bun install
+
+      - name: Build ml-docs
+        working-directory: test_web_page/ml-docs
+        run: bun run build
+
       - name: Assemble _site
         run: |
           set -euo pipefail
@@ -116,6 +125,12 @@ jobs:
             echo "include built app: tsparticles"
             mkdir -p "$OUT/tsparticles"
             cp -r "$SRC/tsparticles/dist/." "$OUT/tsparticles/"
+          fi
+
+          if [ -d "$SRC/ml-docs/.vitepress/dist" ]; then
+            echo "include built app: ml-docs"
+            mkdir -p "$OUT/ml-docs"
+            cp -r "$SRC/ml-docs/.vitepress/dist/." "$OUT/ml-docs/"
           fi
 
       - name: Setup Pages
