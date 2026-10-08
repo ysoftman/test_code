@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : raise 테스트
@@ -32,7 +31,6 @@ def check_something(string):
         print(err)
         # pass 아무것도 하지 않고 그냥 넘어간다.
         # 아무것도 없다면 에러가 발생하기 때문에 pass 로 존재만 유지
-        pass
     # 무조건 수행
     finally:
         print("finally")

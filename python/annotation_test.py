@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.5 이상
 # desc : annotation(type hint) 테스트
@@ -11,7 +10,7 @@ b: str = "ysoftman"
 
 # 리턴 타입을 힌트로 명시할때는 -> 사용
 def func1(param1: int, param2: float, param3: str) -> bool:
-    print("{}-{}-{}".format(param1, param2, param3))
+    print(f"{param1}-{param2}-{param3}")
     return True
 
 

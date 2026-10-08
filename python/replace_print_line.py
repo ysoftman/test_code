@@ -1,9 +1,8 @@
-import time
-import sys
-import signal
-
 # https://docs.python.org/3/howto/curses.html
 import curses
+import signal
+import sys
+import time
 
 for i in range(2):
     # print(f"\rtesting...{i}")

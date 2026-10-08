@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x
 # desc : 파일 다운로드

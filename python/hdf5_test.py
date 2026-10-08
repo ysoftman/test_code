@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x, 3.x
 # desc : HDF5(Hierarchical Data Format, 대용량 데이터 저장을 위한 파일 포맷)

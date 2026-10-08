@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.x
 # desc : numpy 테스트
@@ -62,7 +61,7 @@ def calculate_array():
     print()
     # 램덤 출력
     print("np.random.randint(100) test")
-    for _ in range(0, 10):
+    for _ in range(10):
         r = np.random.randint(100)
         print(r, end=" ")
     print()

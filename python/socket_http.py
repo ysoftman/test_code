@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : socket 으로 http 요청
@@ -29,7 +28,6 @@ try:
 except ValueError as err:
     print(err)
     host = url
-    pass
 port = 80
 try:
     portindex = url.index(":")
@@ -41,14 +39,11 @@ try:
     host = url[:portindex]
 except ValueError as err:
     print(err)
-    pass
 
 headers = """User-Agent: python-socket-http\r\n\
 Accept-Language: ko,en-US;q=0.9,en;q=0.8\r\n"""
 
-req = """{} {} HTTP/1.0\r\nHost: {}:{}\r\n{}\r\n\r\n""".format(
-    method, uri, host, port, headers
-)
+req = f"""{method} {uri} HTTP/1.0\r\nHost: {host}:{port}\r\n{headers}\r\n\r\n"""
 print("[http request]")
 print(req)
 

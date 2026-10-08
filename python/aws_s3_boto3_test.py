@@ -1,9 +1,9 @@
 # boto3 test
 # pip install boto3, tqdm
 import os
-from tqdm import tqdm
-import boto3
 
+import boto3
+from tqdm import tqdm
 
 AWS_URL = "https://s3.amazonaws.com"
 AWS_REGION = "ap-northeast-2"

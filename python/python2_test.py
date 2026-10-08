@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # python2 테스트
 __author__ = "ysoftman"
 

@@ -1,5 +1,5 @@
 a = 10
-if 5 <= a and a <= 2:
+if 5 <= a <= 2:
     print("T")
 else:
     print("F")

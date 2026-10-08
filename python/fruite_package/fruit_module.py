@@ -1,9 +1,9 @@
 class fruit:
     def lemon(price):
-        print("lemon({})".format(price))
+        print(f"lemon({price})")
 
     def apple(price):
-        print("apple({})".format(price))
+        print(f"apple({price})")
 
     def orange(price):
-        print("orange({})".format(price))
+        print(f"orange({price})")

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : tuple test
@@ -23,7 +22,7 @@ def tuple_test():
 
     # 인덱스로 iterate 하려면 range 사용
     for i in range(len(tp)):
-        print("iterate tp(tuple)[{}]:{}".format(i, tp[i]))
+        print(f"iterate tp(tuple)[{i}]:{tp[i]}")
 
     # 튜플이 리스트와 다른점 2
     # 튜플은 데이터 수정을 할 수 없지만 리스트보다 조회 속도가 빠른다.

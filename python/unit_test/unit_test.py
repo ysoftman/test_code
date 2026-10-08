@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author : ysoftman
 # title : unit test
 # import sys

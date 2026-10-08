@@ -10,7 +10,6 @@ def write_file():
         strMsg = str(idx) + "_test" + "\n"
         myfile.write(strMsg)
     myfile.close()
-    return None
 
 
 def read_chunk(chunk_size):

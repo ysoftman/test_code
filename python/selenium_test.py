@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : 셀레니움 테스트
@@ -8,6 +7,7 @@
 # 문서
 # http://selenium-python.readthedocs.io/
 import time
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 

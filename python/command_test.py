@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : 쉘 명령어르 실행하고 결과 받아오기 테스트

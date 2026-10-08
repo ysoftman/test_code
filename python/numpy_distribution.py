@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy.stats as stats
+from scipy import stats
 
 # 이항분포 : p 확률로 성공하는 n 번의 독립적인 시행에서 확률변수 x의 분포
 # 50% 확률로 성공(앞면을 성공으로 가정)한는 동전던지기를 1번 수행했을때 성공 횟수가 리턴된다.
@@ -41,7 +41,7 @@ for j in range(1, len(tornado_events) - 1):
         # 이틀 연속으로 토네이도가 발생한것
         two_days_in_a_row += 1
 # 2739.72602739726년 마다 토네이도가 x 번 발생한다.
-print("{} tornadoes back to back in {} years".format(two_days_in_a_row, 1000000 / 365))
+print(f"{two_days_in_a_row} tornadoes back to back in {1000000 / 365} years")
 
 
 # 균등 분포

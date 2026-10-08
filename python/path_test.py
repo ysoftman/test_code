@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : path test
-import os
 import glob
+import os
 
 print("__file__:", __file__)
 

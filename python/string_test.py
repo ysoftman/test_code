@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author : ysoftman
 # title : string test
 # python version : 2.x 3.x
@@ -90,10 +89,10 @@ hoon"""
     print("str.endswith", str1.endswith(("apple", "lemon", "hoon")))
 
     str1 = "윤\n병\n훈"
-    print("str = {}".format(str1))
+    print(f"str = {str1}")
     # raw 문자: escape 문자의 기능이 적용되지 않고 문자 그대로 출력
     str1 = r"윤\n병\n훈"
-    print("str = {}".format(str1))
+    print(f"str = {str1}")
 
     # 멀티라인에서 포맷팅
     str1 = """

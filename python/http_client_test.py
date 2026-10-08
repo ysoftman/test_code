@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.x
 # desc : http client library test
@@ -9,7 +8,7 @@ import http.client
 
 def http_test(url):
     if url == "":
-        return None
+        return
 
     # HTTP 연결
     hCon = http.client.HTTPConnection(url)

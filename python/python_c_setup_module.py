@@ -2,7 +2,7 @@
 # author : ysoftman
 # desc : C 모듈 빌드
 
-from distutils.core import setup, Extension
+from distutils.core import Extension, setup
 
 module1 = Extension("MyModule", sources=["python_c_test.cpp"])
 

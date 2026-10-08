@@ -1,6 +1,5 @@
 def noneFunc():
     print("noneFunc()")
-    return None
 
 
 def trueFunc():
@@ -13,10 +12,10 @@ def falseFunc():
     return False
 
 
-print(bool(True))
+print(True)
 # false values
 print(bool(None))
-print(bool(False))
+print(False)
 print(bool(0))
 print(bool(""))
 print(bool(()))

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.6
 # desc : asyncio test
-import time
 import asyncio
+import time
 
 
 # native 코루틴

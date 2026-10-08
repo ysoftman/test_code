@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : 파이썬 기본 테스트
@@ -26,7 +25,6 @@ def write_file(val):
         # 2.x
         myfile.write(strMsg)
     myfile.close()
-    return None
 
 
 def read_file_by_line():
@@ -49,11 +47,10 @@ def read_file_at_once():
             # print(temp, end='')
             # 2.x
             print(temp)
-    except IOError as err:
+    except OSError as err:
         print("can't open file...." + str(err))
         # pass 아무것도 하지 않고 그냥 넘어간다.
         # 위 print 없다면 에러가 발생하기 때문에 pass 로 존재만 유지
-        pass
     except Exception as err:
         print("알수 없는 에러 발생!" + str(err))
     finally:

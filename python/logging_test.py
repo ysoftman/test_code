@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : logging 테스트
@@ -33,7 +32,7 @@ def DoLogging():
     # NOTSET = 0
     mylogger.fatal("치명적인 에러 로그")
     mylogger.error("에러 로그")
-    mylogger.warn("경고 로그")
+    mylogger.warning("경고 로그")
     mylogger.info("정보 로그")
     mylogger.debug("디버그 로그")
 

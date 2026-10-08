@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.6
 # desc : collection(컨테이너) 중 counter 테스트

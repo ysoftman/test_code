@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : odd even
@@ -51,8 +50,8 @@ for i in slotall:
     else:
         odd_list.append(i)
 
-print("even list = {}".format(even_list))
+print(f"even list = {even_list}")
 print("even cnt = ", len(even_list))
-print("odd list = {}".format(odd_list))
+print(f"odd list = {odd_list}")
 print("odd cnt = ", len(odd_list))
 print("total cnt = ", len(slotall))

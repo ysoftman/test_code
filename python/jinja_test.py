@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : jinja test
 # install : pip install jinja2
 
 import os
-from jinja2 import Template
-from jinja2 import Environment, FileSystemLoader
+
+from jinja2 import Environment, FileSystemLoader, Template
 
 
 def jinja_test():

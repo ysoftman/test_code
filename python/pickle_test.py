@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : 피클 라이브러리 테스트
@@ -19,7 +18,7 @@ def test_pickle_load(filename):
         with open(filename, "rb") as dumpfile:
             data = pickle.load(dumpfile)
             return data
-    except IOError as err:
+    except OSError as err:
         print(str(err))
 
 

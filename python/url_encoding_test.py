@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.x
 # desc : urlencoding test
-from urllib.parse import urlencode, parse_qsl, quote
-
+from urllib.parse import parse_qsl, quote, urlencode
 
 # python version : 2.x 일때
 # import urllib

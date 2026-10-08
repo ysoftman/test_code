@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.x
 # desc : time test
 
-import time
 import datetime
+import time
 
 if __name__ == "__main__":
     # epoch time

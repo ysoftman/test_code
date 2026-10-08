@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author : ysoftman
 # title : beautifulsoup test
 # python version : 2.x

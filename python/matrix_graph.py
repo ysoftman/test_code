@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x 3.x
 # desc : 매트릭스 그래프 표시
-import seaborn as sn
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sn
 
 if __name__ == "__main__":
     # mat = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

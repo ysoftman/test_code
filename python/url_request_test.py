@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 2.x
 # desc : url request test
@@ -27,7 +26,7 @@
 
 # python 2.x
 import requests
-from urlparse import urlparse, parse_qs
+from urlparse import parse_qs, urlparse
 
 # 참고 http://docs.python-requests.org/en/master/
 
@@ -79,8 +78,8 @@ def url_parse_param(url):
 
 # url 요청
 url_request("http://www.google.com")
-print("")
+print()
 url_post_request("http://httpbin.org/post")
-print("")
+print()
 url_parse_param("http://www.google.com/search?a=1&b=aaa")
-print("")
+print()

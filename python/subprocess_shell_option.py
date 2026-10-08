@@ -32,7 +32,6 @@ try:
     os.remove(f"{escaped_filename1}")
 except FileNotFoundError as err:
     print("err:", err)
-    pass
 
 # shell=True 로 쉘로 실행할때는
 # 이스케이프되면 이스케이프 자체가 문자열로 취급되어
@@ -52,7 +51,7 @@ exec_Command(f"touch '{filename2}'", True)
 
 # ' " 동시에 있는경우 이스케이스 \ 자체도 이스케이프 필요
 # bash -c "touch zzz\'s\ \\\"a.txt"
-exec_Command("touch zzz\\'s\ \\\"a.txt", True)
+exec_Command("touch zzz\\'s\\ \\\"a.txt", True)
 
 """
 # 실행 결과 확인

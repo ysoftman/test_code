@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # python version : 3.x
 # author: ysoftman
 # desc : json 파싱
@@ -60,12 +59,12 @@ def parse_json():
         # json object -> python dict 타입
         print(type(jsonData[obj]))
         for key, value in jsonData[obj].items():
-            print("key: {}  value: {}".format(key, value))
+            print(f"key: {key}  value: {value}")
             # json array -> python list 타입
             # if type(value) == 'list':
             # 또는
             if isinstance(value, list):
-                print("array{} value:{}".format(type(value), value))
+                print(f"array{type(value)} value:{value}")
                 for length in value:
                     print(length)
 

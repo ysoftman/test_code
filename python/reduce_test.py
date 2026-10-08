@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.x
 # desc : reduce
 
 
 from functools import reduce
-
 
 data = [1, 2, 3, 4, 5]
 print(f"data:{data}")

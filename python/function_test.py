@@ -4,7 +4,7 @@ def func1(a, b, *c):
     print("c=", end=" ")
     for i in c:
         print(i, end=" ")
-    print("")
+    print()
     print("---")
 
 
