@@ -1,18 +1,19 @@
-# -*- coding: utf-8 -*-
-'''
+"""
 author: ysoftman
 python version : 3.x
-desc : 손실(오차) 함수 
-'''
+desc : 손실(오차) 함수
+"""
+
 # pip3 install numpy matplotlib
 import numpy as np
-from mnist import load_mnist
+
+from mnist import load_mnist  # isort: skip
 
 
 # 평균 제곱 오차(MSE)
 # y(신경망 출력, 추정치) 과 t(정답) 과의 차이를 구한다.
 def mean_squared_error(y, t):
-    return 0.5 * np.sum((y - t)**2)
+    return 0.5 * np.sum((y - t) ** 2)
 
 
 # 교차 엔트로피 오차(CE)
@@ -40,6 +41,7 @@ def cross_entropy_error_batch(y, t):
     batch_size = y.shape[0]
     return -np.sum(np.log(y[np.arange(batch_size), t] + delta)) / batch_size
 
+
 # 입력 x 값들에 대해서 활성화(출력 0이상)화 판단
 if __name__ == "__main__":
     """
@@ -64,7 +66,8 @@ if __name__ == "__main__":
     one_hot_label 옵션으로 정답값을 1 나머지는 0으로 만든값을 취한다.(오차 계산을 위해선 1, 0으로 된 정답 배열과의 차이 계산이 필요하기 때문)
     """
     (train_img, train_label), (_, _) = load_mnist(
-        flatten=True, normalize=True, one_hot_label=True)
+        flatten=True, normalize=True, one_hot_label=True
+    )
     # 미니배치 학습(배치크기 : 10)
     # 훈련 데이터를 모두(60000개) 사용하면 계산 시간이 너무 크기 때문에 훈련 데이터중 10개만 무작위로 뽑아 사용한다.
     print(train_img.shape[0])

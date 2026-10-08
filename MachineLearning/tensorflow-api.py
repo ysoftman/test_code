@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# coding: utf-8
 # ysoftman
 # python version : 3.x
 
-import numpy as np
 import tensorflow as tf
 
 # 텐서플로우를 실행하기 위한 세션 선언

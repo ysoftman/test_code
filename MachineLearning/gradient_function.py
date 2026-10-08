@@ -1,15 +1,12 @@
-# -*- coding: utf-8 -*-
-'''
+"""
 author: ysoftman
 python version : 3.x
 desc : 미분, 기울기(gradient) 함수
-'''
+"""
+
 # pip3 install numpy matplotlib
-import numpy as np
 import matplotlib.pylab as plt
-# for 3d graph
-from mpl_toolkits.mplot3d import axes3d
-from activation_function import graph
+import numpy as np
 
 
 # 수치 미분
@@ -25,7 +22,7 @@ def function_1(x):
 
 
 def function_2(x):
-    return x[0]**2 + x[1]**2
+    return x[0] ** 2 + x[1] ** 2
 
 
 def function_3(x):
@@ -109,7 +106,7 @@ def graph_wire3d(x, y, z):
     # fig 제목 설정
     fig.canvas.set_window_title(graph_wire3d.__name__)
     # 1 개의 행, 1 개의 열로 구성된 그래프 중 1번째 그래프 추가, 3d 스타일
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(111, projection="3d")
 
     # X, Y,	Data values as 2D arrays
     # Z
@@ -125,11 +122,11 @@ def graph_wire3d(x, y, z):
 def graph_quiver(X, Y, grad):
     plt.figure()
     # ,headwidth=10,scale=40,color="#444444")
-    plt.quiver(X, Y, -grad[0], -grad[1],  angles="xy", color="#666666")
+    plt.quiver(X, Y, -grad[0], -grad[1], angles="xy", color="#666666")
     plt.xlim([-2, 2])
     plt.ylim([-2, 2])
-    plt.xlabel('x0')
-    plt.ylabel('x1')
+    plt.xlabel("x0")
+    plt.ylabel("x1")
     plt.grid()
     plt.legend()
     plt.draw()
@@ -138,7 +135,6 @@ def graph_quiver(X, Y, grad):
 
 # 입력 x 값들에 대해서 활성화(출력 0이상)화 판단
 if __name__ == "__main__":
-
     """
     수치미분(두점의 변화량을 이용해서 미분을 계산)
     """

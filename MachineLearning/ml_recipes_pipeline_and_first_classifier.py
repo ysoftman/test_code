@@ -1,4 +1,3 @@
-# coding: utf-8
 # ysoftman
 # 참고
 # tensorflow vs scikit-learn
@@ -9,7 +8,6 @@
 # pipeline -> https://www.youtube.com/watch?v=84gqSbLcBFE
 # first classifier -> https://www.youtube.com/watch?v=AoeEHqVSNOw
 # sudo pip install sklearn scikit-learn numpy graphviz
-import random
 from scipy.spatial import distance
 
 
@@ -21,8 +19,7 @@ def euc(a, b):
 # KNN classifier 을 만들어보자.
 # KNN : 테스트 데이터와 (이웃하는) 가장 가까운 특징 데이터(거리가 같다면 가까운 점들의 개수K가 많은쪽을 선택)을
 # 레이블(정답)으로 선택하는 알고리즘
-class ScrappyKNN():
-
+class ScrappyKNN:
     # training 을 위한 함수로, training data 파라미터를 받는다.
     def fit(self, x_train, y_train):
         # training 데이터를 멤버변수로 기억해 둔다.
@@ -60,12 +57,11 @@ class ScrappyKNN():
         # 가장 가까운 거리의 데이터의 레이블 리턴
         return self.y_train[best_index]
 
-import numpy as np
-import graphviz
-from sklearn import tree
+
 # 아이리스 꽃 샘플 데이터가 scikit-learn 에 포함되어 있으니 임포트하자
 # http://scikit-learn.org/stable/datasets/index.html#iris-dataset
-from sklearn import datasets
+from sklearn import datasets, tree
+
 iris = datasets.load_iris()
 
 # 다음과 같은 과정(pipeline)을 실습
@@ -81,10 +77,10 @@ y = iris.target
 # 총 150개의 아이리스 데이터가 있고 train 75, test 75 개로 나뉜다.
 # from sklearn.cross_validation import train_test_split # scikit-learn v0.16
 from sklearn.model_selection import train_test_split  # scikit-learn v0.20
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.5)
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5)
 
 # decisiontree classifier 생성
-from sklearn import tree
 dt_clf = tree.DecisionTreeClassifier()
 # classifier 를 training
 dt_clf.fit(x_train, y_train)
@@ -92,28 +88,30 @@ dt_clf.fit(x_train, y_train)
 # test 데이터로 예측해보자
 # 75 개의 예측결과(아이리스 이름(0 or 1 or 2) 가 출력된다.
 predictions = dt_clf.predict(x_test)
-print "using decisiontree classifier - tests : ", len(predictions)
-print predictions
+print("using decisiontree classifier - tests : ", len(predictions))
+print(predictions)
 
 # classifier 가 얼마나 정확한지 test 데이터(아이리스 이름:정답) 과 예측결과를 점수로 계산해보자.
 from sklearn.metrics import accuracy_score
-print "accuracy : ", accuracy_score(y_test, predictions)
+
+print("accuracy : ", accuracy_score(y_test, predictions))
 
 
 # 이번에는 KNeighbors 분류자를 사용해서 pipeline 를 처리해보자.
 from sklearn.neighbors import KNeighborsClassifier
+
 kn_clf = KNeighborsClassifier()
 kn_clf.fit(x_train, y_train)
 predictions = kn_clf.predict(x_test)
-print "using KNeighbors classifier - tests : ", len(predictions)
-print predictions
-print "accuracy : ", accuracy_score(y_test, predictions)
+print("using KNeighbors classifier - tests : ", len(predictions))
+print(predictions)
+print("accuracy : ", accuracy_score(y_test, predictions))
 
 
 # 이번에는 직접 만든 classifier 분류자를 사용해서 pipeline 를 처리해보자.
 scknn_clf = ScrappyKNN()
 scknn_clf.fit(x_train, y_train)
 predictions = scknn_clf.predict(x_test)
-print "using ScrappyKNN classifier - tests : ", len(predictions)
-print predictions
-print "accuracy : ", accuracy_score(y_test, predictions)
+print("using ScrappyKNN classifier - tests : ", len(predictions))
+print(predictions)
+print("accuracy : ", accuracy_score(y_test, predictions))

@@ -1,20 +1,21 @@
-# coding: utf-8
 # ysoftman
 # Machine Learning Recipes with Josh Gordon
 # https://www.youtube.com/watch?v=tNa99PG8hR8
 # sudo pip install sklearn scikit-learn numpy graphviz
-import numpy as np
 import graphviz
+import numpy as np
 from sklearn import tree
+
 # 아이리스 꽃 샘플 데이터가 scikit-learn 에 포함되어 있으니 임포트하자
 # http://scikit-learn.org/stable/datasets/index.html#iris-dataset
 from sklearn.datasets import load_iris
+
 iris = load_iris()
 
 # 아이리스 특징들
-print iris.feature_names
+print(iris.feature_names)
 # 아이리스 종류(이름)
-print iris.target_names
+print(iris.target_names)
 
 # 특징에 대한 값들을 배열로 가지고 있다.
 # print iris.data[0]
@@ -51,17 +52,21 @@ clf = tree.DecisionTreeClassifier()
 clf = clf.fit(train_data, train_target)
 
 # test data 의 3개의 아이리스 이름
-print test_target, iris.target_names[test_target]
+print(test_target, iris.target_names[test_target])
 # 결정트리 분류기로 test data 를 예측해보면 테스트 데이터의 이름(아이리스 이름, 정답)과 같다.
-print clf.predict(test_data)
+print(clf.predict(test_data))
 
 
 # decision tree 시각화해서 pdf 파일로 출력
 # graph.render("iris")
-dot_data = tree.export_graphviz(clf, out_file=None,
-                                feature_names=iris.feature_names,
-                                class_names=iris.target_names,
-                                filled=True, rounded=True,
-                                special_characters=True)
+dot_data = tree.export_graphviz(
+    clf,
+    out_file=None,
+    feature_names=iris.feature_names,
+    class_names=iris.target_names,
+    filled=True,
+    rounded=True,
+    special_characters=True,
+)
 graph = graphviz.Source(dot_data)
 graph.render("iris")

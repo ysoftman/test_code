@@ -1,8 +1,6 @@
-# coding: utf-8
 # ysoftman
 # python version : 3.x
 
-import numpy as np
 import tensorflow as tf
 
 # tensorflow 는 graph 를 구성하고 이를 실행(session)하는 구조다.

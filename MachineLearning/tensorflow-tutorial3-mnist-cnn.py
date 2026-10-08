@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# coding: utf-8
 # ysoftman
 # python version : 3.x
 
-import numpy as np
 import tensorflow as tf
 
 # mkdir MNIST_DATA
@@ -13,6 +11,7 @@ import tensorflow as tf
 # wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
 # wget http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
 from tensorflow.examples.tutorials.mnist import input_data
+
 # read_data_sets 에서 mnist data 를 자동으로 다운로드된다.
 mnist = input_data.read_data_sets("./MNIST-data/", one_hot=True)
 
@@ -34,6 +33,7 @@ y_ = tf.placeholder(tf.float32, [None, 10])
 
 #####
 # CNN(Convolutional Neural Network) 만들기
+
 
 # 가중치에 약간의 잡음(초기화)을 준다.
 def weight_variable(shape):
@@ -127,8 +127,9 @@ y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 #####
 # training
 # 손실 최소화 방법으로 크로스엔트로피 사용
-cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ *
-                                              tf.log(y_conv), reduction_indices=[1]))
+cross_entropy = tf.reduce_mean(
+    -tf.reduce_sum(y_ * tf.log(y_conv), reduction_indices=[1])
+)
 # 경사하강법 대신 ADAM 최적화 알고리즘으로 크로스엔트로피를 최소화 하는 구간을 찾는다.
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 # 입력(y_conv)과 정답(y_의 최대값) 같으면 맞춘것
@@ -147,14 +148,17 @@ for i in range(1000):
     # 이전 nn 로 인식한것보다 (0.91%정도)보다 훈련 10번만에 0.99%(거의 100%)로 정확도가 높다.
     if i % 100 == 0:
         # 사용할 session을 명시해야만 에러가 발생하지 않는다.
-        train_accuracy = accuracy.eval(session=sess,
-                                       feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
-        # %g : Same as "e" if exponent is greater than -4 or less than precision, "f" otherwise.
-        print("[%d/%d], training accuracy %g" %
-              (i, 1000, train_accuracy))
+        train_accuracy = accuracy.eval(
+            session=sess, feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}
+        )
+        # :g : Same as "e" if exponent is greater than -4 or less than precision, "f" otherwise.
+        print(f"[{i}/1000], training accuracy {train_accuracy:g}")
     sess.run(train_step, feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
 # 훈련 종료 후 실제 mnist 테스트 이미지로 인식하여 정확도 산출
-print("test accuracy %g" % accuracy.eval(session=sess,
-                                         feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
+test_accuracy = accuracy.eval(
+    session=sess,
+    feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0},
+)
+print(f"test accuracy {test_accuracy:g}")
 sess.close()

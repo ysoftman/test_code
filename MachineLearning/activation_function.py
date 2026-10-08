@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
-'''
+"""
 author: ysoftman
 python version : 3.x
 desc : 활성화 함수 테스트
-'''
+"""
+
 # pip3 install numpy matplotlib
-import numpy as np
 import matplotlib.pylab as plt
+import numpy as np
 
 
 # step(스텝)
@@ -53,23 +53,23 @@ def graph(x, y, title):
     # show graph
     plt.show()
 
+
 # 입력 x 값들에 대해서 활성화(출력 0이상)화 판단
 if __name__ == "__main__":
     x = np.arange(-5, 5, 0.1)
     y = step(x)
-    print (x)
-    print (y)
+    print(x)
+    print(y)
     graph(x, y, "step function")
 
     y = sigmoid(x)
-    print (y)
+    print(y)
     graph(x, y, "sigmoid function")
 
     y = relu(x)
-    print (y)
+    print(y)
     graph(x, y, "relu function")
 
-
     y = softmax(x)
-    print (y)
+    print(y)
     graph(x, y, "softmax function")

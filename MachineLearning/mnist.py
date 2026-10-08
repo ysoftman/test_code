@@ -1,24 +1,23 @@
-# coding: utf-8
 # ysoftman
 # python version : 3.x
 
 try:
     import urllib.request
 except ImportError:
-    raise ImportError('You should use Python 3.x')
-import os.path
+    raise ImportError("You should use Python 3.x")
 import gzip
-import pickle
 import os
+import os.path
+import pickle
+
 import numpy as np
 
-
-url_base = 'http://yann.lecun.com/exdb/mnist/'
+url_base = "http://yann.lecun.com/exdb/mnist/"
 key_file = {
-    'train_img': 'train-images-idx3-ubyte.gz',
-    'train_label': 'train-labels-idx1-ubyte.gz',
-    'test_img': 't10k-images-idx3-ubyte.gz',
-    'test_label': 't10k-labels-idx1-ubyte.gz'
+    "train_img": "train-images-idx3-ubyte.gz",
+    "train_label": "train-labels-idx1-ubyte.gz",
+    "test_img": "t10k-images-idx3-ubyte.gz",
+    "test_label": "t10k-labels-idx1-ubyte.gz",
 }
 
 dataset_dir = os.path.dirname(os.path.abspath(__file__))
@@ -54,7 +53,7 @@ def load_label(file_name):
     file_path = os.path.join(dataset_dir, file_name)
 
     print("Converting " + file_name + " to NumPy Array ...")
-    with gzip.open(file_path, 'rb') as f:
+    with gzip.open(file_path, "rb") as f:
         labels = np.frombuffer(f.read(), np.uint8, offset=8)
     print("Done")
 
@@ -65,7 +64,7 @@ def load_img(file_name):
     file_path = os.path.join(dataset_dir, file_name)
 
     print("Converting " + file_name + " to NumPy Array ...")
-    with gzip.open(file_path, 'rb') as f:
+    with gzip.open(file_path, "rb") as f:
         data = np.frombuffer(f.read(), np.uint8, offset=16)
     data = data.reshape(-1, img_size)
     print("Done")
@@ -75,10 +74,10 @@ def load_img(file_name):
 
 def convert_numpy():
     dataset = {}
-    dataset['train_img'] = load_img(key_file['train_img'])
-    dataset['train_label'] = load_label(key_file['train_label'])
-    dataset['test_img'] = load_img(key_file['test_img'])
-    dataset['test_label'] = load_label(key_file['test_label'])
+    dataset["train_img"] = load_img(key_file["train_img"])
+    dataset["train_label"] = load_label(key_file["train_label"])
+    dataset["test_img"] = load_img(key_file["test_img"])
+    dataset["test_label"] = load_label(key_file["test_label"])
 
     return dataset
 
@@ -87,7 +86,7 @@ def init_mnist():
     download_mnist()
     dataset = convert_numpy()
     print("Creating pickle file ...")
-    with open(save_file, 'wb') as f:
+    with open(save_file, "wb") as f:
         pickle.dump(dataset, f, -1)
     print("Done!")
 
@@ -106,10 +105,10 @@ def load_mnist(normalize=True, flatten=True, one_hot_label=False):
     Parameters
     ----------
     normalize : 이미지의 픽셀 값을 0.0~1.0 사이의 값으로 정규화할지 정한다.
-    one_hot_label : 
+    one_hot_label :
         one_hot_label이 True면、레이블을 원-핫(one-hot) 배열로 돌려준다.
         one-hot 배열은 예를 들어 [0,0,1,0,0,0,0,0,0,0]처럼 한 원소만 1인 배열이다.
-    flatten : 입력 이미지를 1차원 배열로 만들지를 정한다. 
+    flatten : 입력 이미지를 1차원 배열로 만들지를 정한다.
 
     Returns
     -------
@@ -118,24 +117,27 @@ def load_mnist(normalize=True, flatten=True, one_hot_label=False):
     if not os.path.exists(save_file):
         init_mnist()
 
-    with open(save_file, 'rb') as f:
+    with open(save_file, "rb") as f:
         dataset = pickle.load(f)
 
     if normalize:
-        for key in ('train_img', 'test_img'):
+        for key in ("train_img", "test_img"):
             dataset[key] = dataset[key].astype(np.float32)
             dataset[key] /= 255.0
 
     if one_hot_label:
-        dataset['train_label'] = change_one_hot_label(dataset['train_label'])
-        dataset['test_label'] = change_one_hot_label(dataset['test_label'])
+        dataset["train_label"] = change_one_hot_label(dataset["train_label"])
+        dataset["test_label"] = change_one_hot_label(dataset["test_label"])
 
     if not flatten:
-        for key in ('train_img', 'test_img'):
+        for key in ("train_img", "test_img"):
             dataset[key] = dataset[key].reshape(-1, 1, 28, 28)
 
-    return (dataset['train_img'], dataset['train_label']), (dataset['test_img'], dataset['test_label'])
+    return (dataset["train_img"], dataset["train_label"]), (
+        dataset["test_img"],
+        dataset["test_label"],
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     init_mnist()

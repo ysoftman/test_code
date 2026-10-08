@@ -1,4 +1,3 @@
-# coding: utf-8
 # ysoftman
 # Machine Learning Recipes with Josh Gordon
 # pipeline -> https://www.youtube.com/watch?v=84gqSbLcBFE

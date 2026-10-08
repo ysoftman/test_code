@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # author: ysoftman
 # python version : 3.x
 # desc : neural nets 로 mnist(엠니스트, 숫자 데이터) 인식하기
@@ -7,12 +6,15 @@ mnist 데이터 다운로드 및 넘파이 배열로 리턴하는 소스를 사�
 https://github.com/WegraLee/deep-learning-from-scratch/tree/master/ch03/sample_weight.pkl 가중치 값 저장
 https://github.com/WegraLee/deep-learning-from-scratch/blob/master/dataset/mnist.py 내용을 mnist.py 로 저장
 """
+
 # pip3 install numpy matplotlib image
-import numpy as np
 import pickle
-from mnist import load_mnist
+
+import numpy as np
 from PIL import Image
-from activation_function import sigmoid, softmax
+
+from activation_function import sigmoid, softmax  # isort: skip
+from mnist import load_mnist  # isort: skip
 
 
 # mnist 데이터를 배열로 읽어온다
@@ -42,7 +44,6 @@ def show_mnist_one():
     pil_img.show()
 
 
-#
 def init_network():
     with open("sample_weight.pkl", "rb") as f:
         network = pickle.load(f)

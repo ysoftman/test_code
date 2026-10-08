@@ -1,4 +1,3 @@
-# coding: utf-8
 # ysoftman
 # python version : 3.x
 
@@ -9,7 +8,7 @@ word2vec : 구글에서 자연어 처리를 위해 만든 단어들을 벡터에
 
 프로젝트 : https://code.google.com/archive/p/word2vec/
 
-tensorflow 한글번역 책 : https://legacy.gitbook.com/book/tensorflowkorea/tensorflow-kr/details 
+tensorflow 한글번역 책 : https://legacy.gitbook.com/book/tensorflowkorea/tensorflow-kr/details
 
 튜토리얼 : https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/word2vec/word2vec_basic.py
 
@@ -18,17 +17,17 @@ CBOW(Continuous Bag-of-Words) : 연속되는(문장에서 빈곳) 단어를 예�
 Skip-Gram : 주어진 단어와 가장 가까운 거리(유사도가 높은) 단어를 선택해서 문장(단어 주위를)을 채워 나가는 모델, 큰 데이터셋에 적합
 """
 
-import os
-import urllib.request
-import math
-import zipfile
-import random
 import collections
+import math
+import os
+import random
+import urllib.request
+import zipfile
+
 import numpy as np
 import tensorflow as tf
 from six.moves import xrange
 from tensorflow.contrib.tensorboard.plugins import projector
-
 
 dataset_dir = os.path.dirname(os.path.abspath(__file__))
 dataset_dir = os.path.join(dataset_dir, "words-data")
@@ -86,10 +85,10 @@ vocabulary_size = 50000
 def build_dataset(words, n_words):
     count = [["UNK", -1]]
     count.extend(collections.Counter(words).most_common(n_words - 1))
-    dictionary = dict()
+    dictionary = {}
     for word, _ in count:
         dictionary[word] = len(dictionary)
-    data = list()
+    data = []
     unk_count = 0
     for word in words:
         index = dictionary.get(word, 0)
@@ -183,7 +182,6 @@ valid_examples = np.random.choice(valid_window, valid_size, replace=False)
 graph = tf.Graph()
 
 with graph.as_default():
-
     # Input data.
     with tf.name_scope("inputs"):
         train_inputs = tf.placeholder(tf.int32, shape=[batch_size])
@@ -286,7 +284,7 @@ with tf.Session(graph=graph) as session:
         writer.add_summary(summary, step)
         # Add metadata to visualize the graph for the last run.
         if step == (num_steps - 1):
-            writer.add_run_metadata(run_metadata, "step%d" % step)
+            writer.add_run_metadata(run_metadata, f"step{step}")
 
         if step % 2000 == 0:
             if step > 0:
@@ -304,10 +302,10 @@ with tf.Session(graph=graph) as session:
                 valid_word = reverse_dictionary[valid_examples[i]]
                 top_k = 8  # number of nearest neighbors
                 nearest = (-sim[i, :]).argsort()[1 : top_k + 1]
-                log_str = "Nearest to %s:" % valid_word
+                log_str = f"Nearest to {valid_word}:"
                 for k in xrange(top_k):
                     close_word = reverse_dictionary[nearest[k]]
-                    log_str = "%s %s," % (log_str, close_word)
+                    log_str = f"{log_str} {close_word},"
                 print(log_str)
     final_embeddings = normalized_embeddings.eval()
 
@@ -354,8 +352,8 @@ def plot_with_labels(low_dim_embs, labels, filename):
     plt.savefig(filename)
 
 
-from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
 
 tsne = TSNE(perplexity=30, n_components=2, init="pca", n_iter=5000, method="exact")
 plot_only = 500
