@@ -78,11 +78,11 @@ def numerical_gradient_batch(f, X):
 
 
 # 경사법(경사하강법) 기울기를 이용하여 (손실)함수의 최소값을 찾기
-# 신경망에서 매겨변수(가중치(weight), 편향(bias))을 찾기 위해서 사용
+# 신경망에서 매개변수(가중치(weight), 편향(bias))을 찾기 위해서 사용
 # f: 최적화 대상 함수
 # init_x: 초기값
 # lr: learning rate(학습률), 값이 너무 크거나 작으면 좋은 장소(최소값)을 찾아 갈 수 없다.
-# step: 반복회수
+# step: 반복횟수
 def gradient_descent(f, init_x, lr=0.01, step=100):
     x = init_x
     for i in range(step):
@@ -145,10 +145,10 @@ if __name__ == "__main__":
     x = np.arange(0.0, 20.0, 0.1)
     y = function_1(x)
     graph(x, y, "2차 함수 - 첫번째")
-    # 2차 함수에서 5일대의 수치미분 계산
+    # 2차 함수에서 5일 때의 수치미분 계산
     # 0.1999999999990898 (실제 해석적 미분값은 0.2 으로 거의 같다)
     print(numerical_differentiation(function_1, 5))
-    # 2차 함수에서 10일대의 수치미분 계산
+    # 2차 함수에서 10일 때의 수치미분 계산
     # 0.2999999999986347 (실제 해석적 미분값은 0.3 으로 거의 같다)
     print(numerical_differentiation(function_1, 10))
 
@@ -187,7 +187,7 @@ if __name__ == "__main__":
     print(numerical_gradient(function_2, np.array([3.0, 0.0])))
 
     """
-    각 지접에서의 기울기를 화살표 모양으로 그리기
+    각 지점에서의 기울기를 화살표 모양으로 그리기
     """
     x0 = np.arange(-2, 2.5, 0.25)
     x1 = np.arange(-2, 2.5, 0.25)
@@ -200,7 +200,7 @@ if __name__ == "__main__":
     """
     경사법(경사하강법)으로 function_2 함수에서의 최소값 구하기
     lr: learning rate(학습률), 값이 너무 크거나 작으면 좋은 장소(최소값)을 찾아 갈 수 없다.
-    lr 과 같이 실험으로 통해 사람이 적절한 값으로 설정해야 줘야하는 것 하이퍼파라미터라(hyper parameter)고 부른다.
+    lr 과 같이 실험을 통해 사람이 적절한 값으로 설정해 줘야 하는 것을 하이퍼파라미터(hyper parameter)라고 부른다.
     """
     init_x = np.array([-3.0, 4.0])
     print(gradient_descent(function_2, init_x, lr=0.1, step=100))

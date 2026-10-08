@@ -18,22 +18,22 @@ matrix1 = tf.constant([[1, 2]])
 # 2x1 텐서를 가진 노드 생성
 matrix2 = tf.constant([[1], [2]])
 
-# 위의 2개의 노드를 행렬곱(production) 연산을 노드 생성
-matproduction = tf.matmul(matrix1, matrix2)
+# 위의 2개의 노드를 행렬곱(product) 연산 노드 생성
+matproduct = tf.matmul(matrix1, matrix2)
 
 
 # 2. graph 실행
 # 위의 노드들은 default graph 에 속해있다.
 # default graph 를 실행하기
-# 실행은 위한 session 생성
+# 실행을 위한 session 생성
 sess = tf.Session()
 
 # cpu 첫번째 코어에서 실행
 tf.device("cpu:0")
 
 # session 의 run() 으로 default graph 실행
-# matproduction 노드는 matrix1, matrix2 노드를 연산하기 때문에 총 3개의 노드모두가 실행된다고 볼 수 있다.
-result = sess.run(matproduction)
+# matproduct 노드는 matrix1, matrix2 노드를 연산하기 때문에 총 3개의 노드모두가 실행된다고 볼 수 있다.
+result = sess.run(matproduct)
 
 print(result)
 
@@ -43,7 +43,7 @@ sess.close()
 
 ##########
 
-# 그래프를 한번 작용 시킨 후 전역 변수들을 초기화해 한다.
+# 그래프를 한번 작용 시킨 후 전역 변수들을 초기화해야 한다.
 initglobalvariable = tf.global_variables_initializer()
 
 # 위 과정을 다음과 같이 할 수 있다.
@@ -54,8 +54,8 @@ with tf.Session() as sess:
     with tf.device("cpu:0"):
         matrix1 = tf.constant([[1, 2]])
         matrix2 = tf.constant([[1], [2]])
-        matproduction = tf.matmul(matrix1, matrix2)
-        result = sess.run(matproduction)
+        matproduct = tf.matmul(matrix1, matrix2)
+        result = sess.run(matproduct)
         print(result)
 
 
@@ -74,7 +74,7 @@ const1 = tf.constant([3.0, 3.0])
 # var1 변수노드에서 const 값을 빼는 노드 생성
 sub = tf.subtract(var1, const1)
 
-# 그래프를 한번 작용 시킨 후 전역 변수들을 초기화해 한다.
+# 그래프를 한번 작용 시킨 후 전역 변수들을 초기화해야 한다.
 initglobalvariable = tf.global_variables_initializer()
 
 
@@ -101,7 +101,7 @@ addresult = tf.add(var1, const1)
 update = tf.assign(var1, addresult)
 
 
-# 그래프를 한번 작용 시킨 후 전역 변수들을 초기화해 한다.
+# 그래프를 한번 작용 시킨 후 전역 변수들을 초기화해야 한다.
 # (var1, const1 노드를 만들것을 전역 변수로 셋팅하는 과정)
 initglobalvariable = tf.global_variables_initializer()
 
@@ -131,7 +131,7 @@ initglobalvariable = tf.global_variables_initializer()
 
 with tf.Session() as sess:
     sess.run(initglobalvariable)
-    # 그래피 실행
+    # 그래프 실행
     print(mulresult.eval())
     # 2개 이상의 노드를 실행하여 각 노드의 결과(tensor)을 파악할 수 있다.
     print(sess.run([mulresult, intermediate]))
@@ -139,11 +139,11 @@ with tf.Session() as sess:
 
 ##########
 
-# 노드는 const, variable 로 값을 직점 명시하는 대신 placeholder 로 표할 수 있다.(feed 메커니즘)
+# 노드는 const, variable 로 값을 직접 명시하는 대신 placeholder 로 표현할 수 있다.(feed 메커니즘)
 var1 = tf.placeholder(tf.float32)
 var2 = tf.placeholder(tf.float32)
 # var3 = tf.multiply(var1, var2)
-# 사칙연산은 다음과 사용할 수 도 있다.
+# 사칙연산은 다음과 같이 사용할 수도 있다.
 var3 = var1 * var2
 # var3 = var1 / var2
 # var3 = var1 + var2

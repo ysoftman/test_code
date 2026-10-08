@@ -30,7 +30,7 @@ print iris.target_names
 
 
 # train data 생성(147개)
-# 150 개의 데이터 중 0, 50, 100번째 데이터는 테스트 데이로 사용하기 위해서 뺀다
+# 150 개의 데이터 중 0, 50, 100번째 데이터는 테스트 데이터로 사용하기 위해서 뺀다
 test_idx = [0, 50, 100]
 train_target = np.delete(iris.target, test_idx)
 train_data = np.delete(iris.data, test_idx, axis=0)
@@ -52,7 +52,7 @@ clf = clf.fit(train_data, train_target)
 
 # test data 의 3개의 아이리스 이름
 print test_target, iris.target_names[test_target]
-# 결정트리 분류기로 test data 를 예층해보면 테스트 데이터의 이름(아이리스 이름, 정답)과 같다.
+# 결정트리 분류기로 test data 를 예측해보면 테스트 데이터의 이름(아이리스 이름, 정답)과 같다.
 print clf.predict(test_data)
 
 

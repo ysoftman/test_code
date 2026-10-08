@@ -3,7 +3,7 @@
 # python version : 3.x
 
 """
-word2vec : 구글에서 자연어 처리를 위해 만든 단어들을 벡터에 (수치)표한해 다음에 올 단어를 예측한다.
+word2vec : 구글에서 자연어 처리를 위해 만든 단어들을 벡터에 (수치)표현해 다음에 올 단어를 예측한다.
 
 2013년 발표 논문 : https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf
 
@@ -79,7 +79,7 @@ print("vocabulary size :", len(vocabulary))
 #####
 
 
-# 2. 데이터를 기반으로 사전 만들기, 드문 단언들은 UNK(unknown?) 토큰으로 변경
+# 2. 데이터를 기반으로 사전 만들기, 드문 단어들은 UNK(unknown?) 토큰으로 변경
 vocabulary_size = 50000
 
 

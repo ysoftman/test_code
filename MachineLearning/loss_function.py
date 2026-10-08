@@ -18,7 +18,7 @@ def mean_squared_error(y, t):
 # 교차 엔트로피 오차(CE)
 # y(신경망 출력, 추정치) 과 t(정답) 과의 차이를 구한다.
 def cross_entropy_error(y, t):
-    #  log (0) = -inf 마이너스 무한대로 계산이 불가능하여 아자 작은 값 delta 를 더한다.
+    #  log (0) = -inf 마이너스 무한대로 계산이 불가능하여 아주 작은 값 delta 를 더한다.
     delta = 1e-7
     return -np.sum(t * np.log(y + delta))
 
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     (train_img, train_label), (_, _) = load_mnist(
         flatten=True, normalize=True, one_hot_label=True)
     # 미니배치 학습(배치크기 : 10)
-    # 훈련 데이터를 모두(60000개) 사용하면 계산 시간이 너무 크기 때무에 훈련 데이터중 10개만 무작위로 뽑아 사용한다.
+    # 훈련 데이터를 모두(60000개) 사용하면 계산 시간이 너무 크기 때문에 훈련 데이터중 10개만 무작위로 뽑아 사용한다.
     print(train_img.shape[0])
     random_index = np.random.choice(train_img.shape[0], 10)
     print("random_index :", random_index)

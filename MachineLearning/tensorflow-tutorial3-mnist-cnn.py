@@ -21,12 +21,12 @@ tf.convert_to_tensor(mnist.train.images).get_shape()
 # 가중치Weight, 편향bias는 학습할 값으로 계속 변하기 때문에 변수 텐서(노드)로 선언
 #  0~9 10개의 종류가 있고 각 이미지는 28x28=784 크기를 가지는 벡터
 W = tf.Variable(tf.zeros([784, 10]))
-# 0~9 10개의 각 숮에 대한 편향값
+# 0~9 10개의 각 숫자에 대한 편향값
 b = tf.Variable(tf.zeros([10]))
 # x 는 이미지(784차원 벡터) 입력값
 x = tf.placeholder(tf.float32, [None, 784])
-# x, w, b 로 0~9 중 하나를 선택할 수 있도록 해주는 확률 계산으로 softman 함수 적용
-# softman 로 예측가능한 확률 y 를 구할 수 있다.
+# x, w, b 로 0~9 중 하나를 선택할 수 있도록 해주는 확률 계산으로 softmax 함수 적용
+# softmax 로 예측가능한 확률 y 를 구할 수 있다.
 y = tf.nn.softmax(tf.matmul(x, W) + b)
 # y' 는 원핫(인코딩)벡터로 실제 정답 데이터
 y_ = tf.placeholder(tf.float32, [None, 10])
@@ -50,8 +50,8 @@ def bias_variable(shape):
 
 # convolution(합성곱) 설정
 # x 는 4차원 [batch, in_height, in_width, in_channels] [batch,28,28,1] 손글씨 이미지를 가진 텐서
-# filter(슬라이팅되면서 적용할 필터 윈도우) = [filter_height, filter_width, in_channels, out_channels] [3,3,1,32], 32개츼 출력 채널을 만든다.
-# stride(d(차원)에서 슬라이딩,건너뛰는 정도,거리),[0],[3] 은 1여야 한다. [1],[2] 는 같은 값으로 1칸씩 슬라이딩
+# filter(슬라이딩되면서 적용할 필터 윈도우) = [filter_height, filter_width, in_channels, out_channels] [3,3,1,32], 32개의 출력 채널을 만든다.
+# stride(d(차원)에서 슬라이딩,건너뛰는 정도,거리),[0],[3] 은 1이어야 한다. [1],[2] 는 같은 값으로 1칸씩 슬라이딩
 # padding(2d가장자리 채우는것)=SAME : 윈도우 왼쪽과 오른쪽 똑같이 0값 패딩(삽입)한다.
 # 만약 열이 홀수면 오른쪽에 추가한다.
 # 출력의 크기를 입력과 같게하는 효과가 있다.
@@ -100,19 +100,19 @@ h_pool2 = max_pool_2x2(h_conv2)
 
 #####
 # 완전 연결 계층(Fully Connected Layer)
-# 위 2계층을 거쳐 7x7 로 줄어든 이미지에 1024개의 뉴런(노드)으로 완결 연결 계층을 구성
+# 위 2계층을 거쳐 7x7 로 줄어든 이미지에 1024개의 뉴런(노드)으로 완전 연결 계층을 구성
 # 7*7*64 는 7x7 필터 64 를 1차원으로 시리얼하게 표현
 W_fc1 = weight_variable([7 * 7 * 64, 1024])
 b_fc1 = bias_variable([1024])
 
 # 두번째 계층에서 풀링된 h_pool2 에 대해서 나머지x(7*7*64)차원으로 변환
 h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
-# 완전 연결 계층에 마지막으로 행렬곱(production)결과에 ReLU함수 적용
+# 완전 연결 계층에 마지막으로 행렬곱(product)결과에 ReLU함수 적용
 h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
 
 # overfitting 방지를 위한  dropout
-# dropouput 되지 않을 확률을 placeholder 로 만들어 둔다.
+# dropout 되지 않을 확률을 placeholder 로 만들어 둔다.
 # placeholder 로 만들어두면 훈련시에만 dropout 을 사용하고 테스트할때는 뺄 수 있다.
 keep_prob = tf.placeholder(tf.float32)
 # dropout 은 뉴런의 출력을 자동으로  scaling 해준다.
@@ -133,7 +133,7 @@ cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ *
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 # 입력(y_conv)과 정답(y_의 최대값) 같으면 맞춘것
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
-# correct_prediction 평균을 구한면 정확도를 알 수 있다.
+# correct_prediction 평균을 구하면 정확도를 알 수 있다.
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 # 실행을 위한 세션 선언

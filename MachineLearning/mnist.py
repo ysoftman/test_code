@@ -92,7 +92,7 @@ def init_mnist():
     print("Done!")
 
 
-def change_ont_hot_label(X):
+def change_one_hot_label(X):
     T = np.zeros((X.size, 10))
     for idx, row in enumerate(T):
         row[X[idx]] = 1
@@ -127,8 +127,8 @@ def load_mnist(normalize=True, flatten=True, one_hot_label=False):
             dataset[key] /= 255.0
 
     if one_hot_label:
-        dataset['train_label'] = change_ont_hot_label(dataset['train_label'])
-        dataset['test_label'] = change_ont_hot_label(dataset['test_label'])
+        dataset['train_label'] = change_one_hot_label(dataset['train_label'])
+        dataset['test_label'] = change_one_hot_label(dataset['test_label'])
 
     if not flatten:
         for key in ('train_img', 'test_img'):

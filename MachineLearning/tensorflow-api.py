@@ -13,7 +13,7 @@ sess = tf.Session()
 #####
 # 상수
 # shape(차원)=2x2 상수 텐서, sess.run 중에 값이 변경되지 않음
-# 내부적으로 사용하는 이름을 x 로 지정, 디폴트 이름 Const 가된다.
+# 내부적으로 사용하는 이름을 x 로 지정, 디폴트 이름 Const 가 된다.
 # x = tf.constant([[1.0, 2.0], [3.0, 4.0]], name="x")
 x = tf.constant([[1.0, 2.0], [3.0, 4.0]])
 
@@ -35,7 +35,7 @@ print(sess.run(x))
 #####
 # 변수
 # 1x2 텐서 변수 생성, sess.run 중에 값이 변경될 수 있음
-# 디폴트 이름 Variable 가된다.
+# 디폴트 이름 Variable 가 된다.
 y = tf.Variable([[5, 6]])
 print(y)
 # 변수는 실행전 반드시 초기화를 해줘야 한다.

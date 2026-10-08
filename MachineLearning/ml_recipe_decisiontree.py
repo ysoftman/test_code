@@ -5,17 +5,17 @@
 # sudo pip install sklearn scikit-learn
 from sklearn import tree
 
-fruites = ["apple", "orange"]
+fruits = ["apple", "orange"]
 
 
-def toFruiteName(n):
-    if n >= len(fruites):
+def toFruitName(n):
+    if n >= len(fruits):
         return "error"
-    return fruites[n]
+    return fruits[n]
 
 
 # data
-# [weight(g), texture(bumpy=0, smooth=1)
+# [weight(g), texture(bumpy=0, smooth=1)]
 features = [
     [140, 1],
     [130, 1],
@@ -32,7 +32,7 @@ clf = tree.DecisionTreeClassifier()
 clf = clf.fit(features, labels)
 
 # make predictions
-# 151g, smooth(1), 175g smooth(1) 인 경우는 사과일수도 오렌지 일수도 있어 결과가 매번 다를 수 있다.
+# 151g, smooth(1), 175g smooth(1) 인 경우는 사과일 수도 오렌지일 수도 있어 결과가 매번 다를 수 있다.
 result = clf.predict([[180, 0], [123, 1], [151, 1], [175, 1]])
 for i in result:
-    print(toFruiteName(i))
+    print(toFruitName(i))

@@ -43,7 +43,7 @@ python -m scripts.retrain \
 # 재훈련된 결과 파일이 생성된것을 알 수 있다.
 ls -ahl tf_files/retrained_graph.pb tf_files/retrained_labels.txt
 
-# 분류를 스크립트 다운 받는다.
+# 분류 스크립트를 다운 받는다.
 wget https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/label_image/label_image.py
 
 # 데이지 꽃 이미지 하나를 분류해 보자. 데이지 꽃으로 가장 높은 점수가 계산되는것을 알 수 있다.
