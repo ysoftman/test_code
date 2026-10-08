@@ -25,8 +25,8 @@
 
 - 약인공지능(weak AI)
   - applied AI 또는 narrow AI 라고 불리며, 특정 도메인 또는 주어진 환경에만 적용 가능한 좁은 영역의 인공지능
-- 강인공지능(string AI)
-  - 사람을 모방하지지 않고, 자유의지, 자각을 가지고 스스로 행동하는 인공지능, SF 영화에서 등장하고 아직 현실세계에 없음.
+- 강인공지능(strong AI)
+  - 사람을 모방하지 않고, 자유의지, 자각을 가지고 스스로 행동하는 인공지능, SF 영화에서 등장하고 아직 현실세계에 없음.
   - 쉽게 도래하지 않을것 같음.
 
 - 특이점(technological singularity)
@@ -38,15 +38,15 @@
   - 1770년 mechanical turk (사람이 기계안에 들어가서 체스를 두는 장치)로 사기(fake)를 쳤다.
   - 1950년 imitation game 이름이 후에 turing test 바뀜
   - 1952년 audrey 전화를 통해 전화번호를 얘기할 전화번호를 자동인식하는 시스템
-  - 1956년 dartmonth AI 학문의 처음으로 시작된 학회
+  - 1956년 Dartmouth AI 학문의 처음으로 시작된 학회
   - 1959년 alpha-beta pruning 체스 알고리즘 개발
   - 1997년 IBM deepblue 체스 프로그램 개발
-    - CMU 학생들이 depp thought 를 만들었고 졸업후 IBM 에서 deepblue 개발
+    - CMU 학생들이 deep thought 를 만들었고 졸업후 IBM 에서 deepblue 개발
   - 1966-1972년 shakey 최초의 인공지능 이동 로봇
   - 2004년 asimo 휴머노이드 개발
   - 2007년 DARPA urban challenge 도시에서 자율주행 자동차가 얼마나 잘 갈 수 있는지 경쟁
   - 2016년 deep mind alphago 가 이세돌 4:1로 이김
-  - 2017년 deep mind alphago 갖 커제 3:0로 이김
+  - 2017년 deep mind alphago 가 커제 3:0로 이김
 
 ## 2주차 - 문제 해결 및 탐색 전략
 
@@ -65,11 +65,11 @@
   - 탐색시 다음 4가지 정보를 제외하고 정보가 없는것을 uninformed search 전략이라고 한다.
     - completeness : 완전성, 해를 찾을 수 있느냐
     - time complexity : 시간 복잡도
-    - space complexity : 공백 복잡도
+    - space complexity : 공간 복잡도
     - optimality : 최적의 솔루션을 찾을 수 있느냐
 
 - uninformed search 전략
-  - breadth first state(BFS, 너비우선탐색)
+  - breadth first search(BFS, 너비우선탐색)
     - FIFO(first in first out) queue 에 탐색 중인 노드를 기록하면서 탐색
     - fringe(주변,가장자리): FIFO queue, 아직 펼쳐지지 않은 노드
     - completeness : yes(해를 찾을 수 있다.)
@@ -79,7 +79,7 @@
     - space complexity : O(b^d+1)
     - optimality : yes
     - DFS 에 비해 답을 찾는것을 보장하지만 시간,메모리를 많이 차지 한다.
-  - depth first state(DFS, 깊이우선탐색)
+  - depth first search(DFS, 깊이우선탐색)
     - LIFO(last in first out) queue 에 탐색 중인 노드를 기록하면서 탐색
     - completeness : no(깊이 탐색중 무한 루프에 빠져서 해를 찾을 수 없는 경우도 있다.)
     - time complexity : O(b^m)
@@ -91,7 +91,7 @@
 
 ```text
 다음 설명이 가리키고 있는 것이 무엇인지 고르시오.
-- 1950년데 만들어진 기계가 인간과 얼마나 비슷하게 대화할 수 있는지를 기준으로 기계에 지능이 있는지를 판별하고자 하는 테스트이다.
+- 1950년대 만들어진 기계가 인간과 얼마나 비슷하게 대화할 수 있는지를 기준으로 기계에 지능이 있는지를 판별하고자 하는 테스트이다.
 - Imitation game 으로도 불린다.
 정답 : Turing test
 
@@ -133,11 +133,11 @@ a
 ## 3주차 - 휴리스틱(heuristic) 탐색
 
 - uninformed 반대로 추가적인 정보가 있을 경우를 휴리스틱이라고 한다.
-- 탐색시 노느를 평가하는 함수를 만들어 문제를 푸는데 있어 적합한 노드인지 판단한다.
+- 탐색시 노드를 평가하는 함수를 만들어 문제를 푸는데 있어 적합한 노드인지 판단한다.
 - greedy best-first search
   - 휴리스틱함수 : 휴리스틱한정보(bucharest까지 가는 직선거리를 알고 있는 경우)를 보고 평가하는 함수
 - A\*(star) search
-  - best-fist search 기반(greedy best-first search 아님)
+  - best-first search 기반(greedy best-first search 아님)
   - Breadth-first search 의 한 종류
   - f(n) = g(n) + h(n)
   - f(n) : 평가함수
@@ -148,19 +148,19 @@ a
   - greedy best-first search 보다 최적의 솔루션을 찾을 수 있다.
 
 - admissible(허용될 수 있는) heuristic
-  - h(n) <= h\*(n) 일때 admissble heuristic 이라고 한다.
+  - h(n) <= h\*(n) 일때 admissible heuristic 이라고 한다.
   - h(n) : 우리가 사용하는 휴리스틱
   - h\*(n) : 실제 골까지의 비용
   - 휴리스틱 함수가 admissible 하면 A\* 알고리즘으로 최적의 솔루션을 찾을 수 있다.
 
 - local search(지역 검색) algorithms
   - 최단경로 찾기의 경우의 global search
-  - 목적(goal)까지의 path 는 중요하지 않고 목정을 달성하는것만 중요한 경우에 사용
+  - 목적(goal)까지의 path 는 중요하지 않고 목적을 달성하는것만 중요한 경우에 사용
   - 매 상태 에서 좀더 나은 상태로만 가보자. 시간, 메모리 절약
   - hill-climbing(언덕 오르기) search 방법
-    - 예) 에베레스트 산을 올라 가는데 주변에 안개가 있어 시야확보가 되지 않는다, 기억상실에걸려있다.
+    - 예) 에베레스트 산을 올라 가는데 주변에 안개가 있어 시야확보가 되지 않는다, 기억상실에 걸려 있다.
     - steepest(가파른) ascent(오르기) : 주변 상태중에 가장 경사가 급한 곳(목적함수가 가장 높은) 곳으로 가는 방법
-    - greedy local search : 지금 내가 취할 수 있는 행동줄 가장 좋은 행동을 취하는 방법
+    - greedy local search : 지금 내가 취할 수 있는 행동 중 가장 좋은 행동을 취하는 방법
     - initial point 을 어디로 잡느냐에 따라 결과가 매우 달라진다.
     - shoulder : 경사가 없는 평평한 영역이지만 이웃하는 곳에 더 높은 곳으로 갈 수 있다.
     - flat : 경사가 없는 평평한 영역이지만 이웃하는 곳에 더 높은 곳으로 갈 수 없다.
@@ -177,8 +177,8 @@ a
 - reward function : 보상을 주는 함수
 - fills in the details : AI(agent) 가 스스로 채워(배워)야 한다.
 - 기본 RL model
-  - agent 가 최대의 보상을 받을 수 잇는 제어 정책을 찾는것
-  - reward 를 어떻게 정의하느갸 중요
+  - agent 가 최대의 보상을 받을 수 있는 제어 정책을 찾는것
+  - reward 를 어떻게 정의하느냐가 중요
   - agent 3가지 요소
     - policy : agent 행동을 정의
       - deterministic policy : 어떤 state 에서 어떤 action 을 할지 하나하나 정해놓은것
@@ -205,10 +205,10 @@ a
   - V\* : optimal value function
   - pi\* : optimal policy(수많은 policy 중 reward 를 maximizing)
 
-- markove decision process(MDP,마르코프 결정 과정)
+- markov decision process(MDP,마르코프 결정 과정)
   - S : state 집합
   - P : transition function 상태 전이 확률, NxN 행렬로 표현, 확률 분포의 합은 1이다
-  - episode(에피소드) : 초기 state 주어진 transition function 을 이용해 하나의 경험를 샘플링해보는 것(하나의 경우를 따져보는것)
+  - episode(에피소드) : 초기 state 주어진 transition function 을 이용해 하나의 경험을 샘플링해보는 것(하나의 경우를 따져보는것)
 
 - markov reward processes(MRP,마르코프 과정)
   - MDP에서 한단계 더 나간 모델
@@ -218,7 +218,7 @@ a
     - R : 각 state 마다 reward 할당
     - gamma : discount factor
       - 0 값을 주면 근시안적인 모델(지금 당장의 reward 만 따라가도록)
-      - 1 값을 주면 아주 멀리보는 모델(지금 당장의 rewad 와 먼 미래의 reward랑 똑같이 고려하겠다.)
+      - 1 값을 주면 아주 멀리보는 모델(지금 당장의 reward 와 먼 미래의 reward랑 똑같이 고려하겠다.)
   - discount factor(gamma) 왜 필요한가?
     - 수학적으로 안정화된다.(무한대 방지)
       - gamma 가 없으면 계속 자신의 상태로 움직이는 무한 루프에 빠질 수 있다.
@@ -232,10 +232,10 @@ RL agent의 구성 요소로 옳지 않은 것을 고르시오.
 
 다음 graph의 노드 A에서 노드 J로 가는 최단 경로를 찾는 경우, A* Search를 실행하였을 때 도출되는 최단 경로를 순서대로 기입한 것을 고르시오.
 (그래프 생략)
-정답 : afgij  (A 근접 노드 중 가장 비용이 적는 노드를 선택해간다.)
+정답 : afgij  (A 근접 노드 중 가장 비용이 적은 노드를 선택해간다.)
 
 Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고르시오.
-[예시] Discounter factor가 사용되는 이유는 ...
+[예시] Discount factor가 사용되는 이유는 ...
 정답 : Discount factor는 loop 등과 같은 graph에서 value가 무한하게 커지는 것을 방지하기 위한 value function의 장치이다.
 
 
@@ -260,17 +260,17 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
 - Bellman Equation(MDP 에서 가장 중요한 식)
   - Bellman Optimality Equation(이 강의에서 제외)
   - Bellman Expectation Equation : 현재 state 의 value function 과 다음 state 의 value function 의 상관관계를 정의
-    - state 에서 actcion 을 취해 다른 state 로 가는 과정을 V, Q 의 2 step으로 구분
+    - state 에서 action 을 취해 다른 state 로 가는 과정을 V, Q 의 2 step으로 구분
     - V value function : state 에서 취할 모든 action 에 대해서 확률분포(weighted sum) 에 Q 를 곱한것
     - Q value function : state(S)에서 action(A)를 취했을때 reward + gamma(discount) \* (Pss'(action 에서 여러개의 state 로 갈 수 있는, state 확률분포)의 weighted sum 에) = expectation(기대값)
     - V 는 Q 로 정의가 되고, Q는 다음 step 의 state 의 V 값으로 정의 된다.
     - state 마다 value 가 주어지지 않았을때
       - n 개의 state, V = Nx1, P = nxn matrix 로 표현할 수 있다.
       - 구하는 방법1: MDP 에선 P, R 이 주어지고 random initialization 한 V 로 새로운 V 를 구하고, V 를 matrix 식에 맞게 계속 반복해 나가는 방법을 수렴된 V 를 구한다.
-      - 구하는 방법2: identity matrix(단위행렬) matrix 식을 역행렬고 변환해서 구한다.(nxn 역행렬의 복작도는 n^3 으로 추천하는 방법은 아니다.)
+      - 구하는 방법2: identity matrix(단위행렬) matrix 식을 역행렬로 변환해서 구한다.(nxn 역행렬의 복잡도는 n^3 으로 추천하는 방법은 아니다.)
       - 구하는 방법3: 위 두 방법보다 효율적인 dynamic programming 로 구한다.
 - optimal value functions
-  - 주어진 문제에선 모든 policy 를 다 고려했을대 가장 최대가 되는 value function
+  - 주어진 문제에선 모든 policy 를 다 고려했을 때 가장 최대가 되는 value function
   - MDP 에선 optimal policy 는 항상 존재한다.
   - optimal policy 를 따랐을때 value function = optimal value function
     - optimal value function 을 찾고 그에 대한 optimal policy 를 구해도 되고
@@ -278,38 +278,38 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
   - optimal policy 를 찾는 과정 => optimal value 를 찾으면 된다.
 
 - dynamic programming(DP) 을 통한 MDP
-  - 주어진 문제를 sub-problem 날 수 있고, sub-problem 을 구하면 전에 문제를 풀수 있을대 dynamic programming 을 사용한다.
+  - 주어진 문제를 sub-problem 으로 나눌 수 있고, sub-problem 을 구하면 전에 문제를 풀 수 있을 때 dynamic programming 을 사용한다.
   - MDP 가 이와 같은 조건을 만족하기 때문에 DP 로 Bellman Expectation Equation 을 풀 수 있다.
   - prediction : policy 가 주어졌을때 value function 를 구하는 과정
     - MDP 의 S, A, P, R, r 과 policy pi 가 주어졌을때 알 수 있다.
   - control : optimal policy를 구하는것 (=optimal value function 구하면 쉽게 알 수 있다.)
     - MDP 의 S, A, P, R, r 이 주어졌을때 알 수 있다.
   - iterative policy evaluation
-    - policy 가 주어졌을대 이걸 evaluation 하는것(V pi 를 구하는 과정이다.)
-    - v 초기화후 matrix multiplication 으로 주어진 수식대로 반복하면 V 가 수렴한다. 수렴된 결과가 policy 에 대한 evaluation 이 끝났것
+    - policy 가 주어졌을 때 이걸 evaluation 하는것(V pi 를 구하는 과정이다.)
+    - v 초기화후 matrix multiplication 으로 주어진 수식대로 반복하면 V 가 수렴한다. 수렴된 결과가 policy 에 대한 evaluation 이 끝난 것
     - 예제 4x4 grid world
       - 조건1 MDP r = 1
       - 조건2 terminal state(종료 state) : 맨왼쪽 맨위, 맨오른쪽 맨아래 2개가 있음
-      - 조건3 girid 끝을 벗어나라는 action 있다면 그자리에 머무른다.
+      - 조건3 grid 끝을 벗어나라는 action 있다면 그자리에 머무른다.
       - 조건4 reward 는 move 할때마다 -1
       - 조건5 random policy(현재 상태에서 취할 수 있는 액션을 같게)로 동,서,남,북 가는 확률을 0.25로 동일하게 했다.
       - next step value function = reward + gamma + state transition probability P + V
         - 처음에는 iteration 0 에서는 V k(policy) 를 모두 0 으로 초기화
-        - 다음 ```text stop value function(V) = R +  (P _ gamma _ V)```
+        - 다음 ```text step value function(V) = R +  (P _ gamma _ V)```
         - K(policy) = 1,2,... 까지 위 과정을 반복 => greedy policy 를 구하는것
         - 계속 V 를 구해가면서 각 state 에서 value function 이 최대가 되는 방향으로 화살표(이동방향)을 표시하면, greedy policy 를 구할 수 있다.
-        - greedy policy 경우 step 3정도까지만 V 를 구해가면 optimal policy 에 수렴된 greepy policy 를 구할 수 있다.
+        - greedy policy 경우 step 3정도까지만 V 를 구해가면 optimal policy 에 수렴된 greedy policy 를 구할 수 있다.
         - policy 만 구하는 경우 적은 iteration 으로 구할 수 있다.
-        - evaluation 을 한다면 충붛나 iteration 으로 V 가 바뀌지 않을때 까지 수행해야 한다.
-        - policy improvement : pi(policy) 가 주어졌을대, V pi 를 가지고 policy 를 improve 하는것
-          - 않좋은 policy -> 좋은 policy 를 구하는 힌트
+        - evaluation 을 한다면 충분한 iteration 으로 V 가 바뀌지 않을때 까지 수행해야 한다.
+        - policy improvement : pi(policy) 가 주어졌을 때, V pi 를 가지고 policy 를 improve 하는것
+          - 안 좋은 policy -> 좋은 policy 를 구하는 힌트
           - 특별한 아이디어 없다면 random policy(보통 0으로)로 시작
           - 현재 policy 에 대한 value function을 구한다음 greedy(각 state 의 action 에서 value function 이 최대가 되는것을 취하는것)으로 policy 로 바꾼다.
     - prediction 문제 푸는 방법
       - bellman expectation equation 과 iterative policy evaluation(algorithm)을 사용
     - control 문제 푸는 방법
       - bellman expectation equation + greedy policy improvement) 와 policy iteration(algorithm = iterative policy evaluation 과 greedy policy improvement를 반복하는 과정)
-      - V 에 대헛 설명했지만 Q 에 대해서도 적용할 수 있다.
+      - V 에 대해서 설명했지만 Q 에 대해서도 적용할 수 있다.
         - V (action=m x state=n 의 제곱 복잡도)를 주로 다루는 이유는 복잡도가 Q (m제곱 x n제곱)보다 적다.
 
 ## 6주차 - 게임이론(game theory)
@@ -317,13 +317,13 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
 - game theory 가정
   - 최소 2명의 플레이어가 있어야 한다.
   - player 들은 모두 이성적이다. 각자의 utility(효용함수)을 극대화하기를 원한다.
-  - 각 플레이어들은 utility 를 최대화하 하기 위한 목적으로 선택한다.
+  - 각 플레이어들은 utility 를 최대화하기 위한 목적으로 선택한다.
   - 모든 player 은 다른 player 들이 rational(이성적)이라는것을 모두 알고 있다.
-  - 예) 체스, 부르마블, 나라들끼리 경재하는 모습(정치학, 경제학에서도 활용), 투표
+  - 예) 체스, 부르마블, 나라들끼리 경쟁하는 모습(정치학, 경제학에서도 활용), 투표
 - 죄수의 딜레마(prisoner's dilemma)
   - non zero-sum game 의 일종
   - 2명의 죄수가 있고, 각각 조사를 받는다.
-  - 조용이 있거간 상대방을 밀고(implicate)하거나 조용히 있거나(silent) 액션을 취할 수 있다.
+  - 조용히 있거나 상대방을 밀고(implicate)하거나 조용히 있거나(silent) 액션을 취할 수 있다.
   - -1 : 1년 징역,... -n : n년 징역
     죄수2
     silent implicate
@@ -337,7 +337,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
 - 게임을 정규 형태로 표현을 위한 3가지 component
   - N : 참여자(player) 개수, indexed by i
   - A : A1... An 로 action 집합
-  - U : utility function(효용함수), ui(a) : player i 가 action a 를 취했을대의 효용성
+  - U : utility function(효용함수), ui(a) : player i 가 action a 를 취했을 때의 효용성
   - 죄수의 딜레마에 적용해보면
     - N : 2
     - A : {Silent, Implicate} x {Silent, Implicate}
@@ -355,14 +355,14 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
       ```
 
 - 제로썸게임(zero sum)
-  - 부가 새로 생기지도 않고 사라지지 않는다. 누가가가 1을 얻으면 누군가는 1을 잃는다.
+  - 부가 새로 생기지도 않고 사라지지 않는다. 누군가가 1을 얻으면 누군가는 1을 잃는다.
   - 둘을 합치면 0(효용의 합은 0이다.)
   - player2 utility 를 최대하는것은 player1 utility 를 최소하는것과 같다.
   - 예) 가위바위보
 - pure and mixed strategies
   - player i 의 strategy(전략) si : ai(action 에 대한 확률분포) 로 표현
-    - 각각의 액션에 대한 전략의 값의 항상 0보다 크거나 같다
-    - action 집합에 대한 확률 분표
+    - 각각의 액션에 대한 전략의 값은 항상 0보다 크거나 같다
+    - action 집합에 대한 확률 분포
     - support : 확률분포가 있을때 확률의 값이 0보다 큰영역
       - 전략에 적용해보면 action 들 중에 그 확률이 0이 아닌 action 들을 support 한다라고 말한다.
     - pure strategy : 모든 player 에서 si((어떤 action 을 취하는 확률분포상)가 시간에 따라 변하지 않고 고정
@@ -391,7 +391,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
 
   - pure maxmin(minmax) strategies
     - 상대방은 자신에게 가장 유리한 action 을 취할것이다. 이걸 모든 플레이어가 알고 있다.
-    - player1 입장에선 매트릭트에서의 각 행(액션)의 최솟(min)값들 선택하고 그 중에 최대(max)가 되는것을 택하는것을 maxmin 전략이라고 한다.(이것이 player1 의 utility 를 최선으로 하는 방법이다)
+    - player1 입장에선 매트릭스에서의 각 행(액션)의 최솟(min)값들 선택하고 그 중에 최대(max)가 되는것을 택하는것을 maxmin 전략이라고 한다.(이것이 player1 의 utility 를 최선으로 하는 방법이다)
     - player2 는 player1 의 값에 -값을 곱하고, 각 열의 최대(max)값들 선택하고 그중 최솟(min)값이 되는것을 택하는것 minmax 전략이라고 한다.
     - player 입장에 따라 maxmin, minmax 가 된다.
     - player1 과 player2 가 maxmin 전략을 통해 얻을 수 있는 것을 이 게임의 가치(value)라고 정의 한다.
@@ -432,7 +432,7 @@ Markov Reward Process의 discount factor에 대해 옳게 서술한 것을 고�
 
     - game of chicken(치킨게임)
       - 갈등이 증폭되는 과정을 표현하는 모델로 많이 사용된다.
-      - 사거리에서 두마의 (닭)사람이 있는 경우 둘다 직진하면 서로 나고, 둘다 양보하면 둘다 못가지만 사고는 막을 수 있다.
+      - 사거리에서 두 명의 (닭)사람이 있는 경우 둘다 직진하면 서로 사고가 나고, 둘다 양보하면 둘다 못가지만 사고는 막을 수 있다.
 
       ```text
                                 straight    chicken
@@ -451,9 +451,9 @@ gamma(𝛾=1)
 V(state value function)
 붉은색 노드에서 갈 수 있는 상태는 2개로 각각 0.5 확률로 7 또는 3 의 reward 를 받는다.
 7 reward 의 경우 진행할 action 없어 끝
-3 reward 의 경우 0.3 의 확률로 4.1 노드로 간다.(이전 3으로 왔을떄의 0.5 확률을 곱해해야 한다.)
-3 reward 의 경우 0.4 의 확률로 -2.1 노드로 간다.(이전 3으로 왔을떄의 0.5 확률을 곱해해야 한다.)
-3 reward 의 경우 0.3 의 확률로 3.1 노드로 간다.(이전 3으로 왔을떄의 0.5 확률을 곱해해야 한다.)
+3 reward 의 경우 0.3 의 확률로 4.1 노드로 간다.(이전 3으로 왔을 때의 0.5 확률을 곱해야 한다.)
+3 reward 의 경우 0.4 의 확률로 -2.1 노드로 간다.(이전 3으로 왔을 때의 0.5 확률을 곱해야 한다.)
+3 reward 의 경우 0.3 의 확률로 3.2 노드로 간다.(이전 3으로 왔을 때의 0.5 확률을 곱해야 한다.)
 정답 : (7*0.5)+(3*0.5)+((0.5*0.3*4.1)+(0.5*0.4*-2.1)+(0.5*0.3*3.2)) = 5.675
 
 
@@ -472,7 +472,7 @@ a) (Stag, Stag) b) (Stag, Hare) c) (Hare, Stag) d) (Hare, Hare)
                 Stag(수사슴)    Hare(산토끼)
 Stag(수사슴)         3,3           0,2
 Hare(산토끼)         2,0           1,1
-두명의 플레이어가 서로 평행을 이루는 경우를 선택하면 된다.
+두명의 플레이어가 서로 평형을 이루는 경우를 선택하면 된다.
 정답 : a, d
 
 
@@ -491,30 +491,30 @@ iteration 해도 변화가 없으면 멈춰야 된다.
 - 자연어 처리는 사람이 사용하는 언어를 기계도 이해하고 활용할 수 있도록 하는 학문
 - mostly solved(많이 풀린 문제)
   - spam detection
-  - part-of-speech(POS) 단어어 품사 알아내기
-  - named entity recogntion(NER) 사람 이름, 단체 이름등의 고유 명사 찾아내기
+  - part-of-speech(POS) 단어의 품사 알아내기
+  - named entity recognition(NER) 사람 이름, 단체 이름등의 고유 명사 찾아내기
 - making good progress(어느정도 진척된 문제)
   - sentiment analysis 문장에서 감정 알아내기
   - coreference resolution 지시 대명사 그, 그것, 등이 뭐를 의미하는지 찾기
   - word sense disambiguation 어떤 단어가 어떻게 쓰였는지
-    - ex) mouse 가 컴퓨터 마우스인지, 쥐를 뜻하는것지 찾기
+    - ex) mouse 가 컴퓨터 마우스인지, 쥐를 뜻하는 것인지 찾기
   - parsing 문장 구조 알아내기
   - machine translation(MT) 기계 번역
-  - information extraction(IE) 문장으로 보고 정보를 뽑아 내는 일
+  - information extraction(IE) 문장을 보고 정보를 뽑아 내는 일
 - still really hard(아직 어려운 문제)
   - question answering(QA) 질의 응답
   - paraphrase 문장을 써놓기 그 문장과 같은 뜻이지만 다른 형태로 표현하는 과정
   - summarization task 문서 요약
-  - dialog 기계와 대화화기
+  - dialog 기계와 대화하기
     - ex) 인공지능 스피커
 - challenges : 자연어 처리가 어려운 이유
-  - 모호성(ambiguity) : 사람은 완벽하지 문장을 대충 말해도 알아 듣지만 기계는 그렇지 못한다.
+  - 모호성(ambiguity) : 사람은 완벽하지 않은 문장을 대충 말해도 알아 듣지만 기계는 그렇지 못한다.
     - ex) Teacher Strikes Idle Kids
       - 첫번째 Strikes 를 동사로 보면, "선생님이 놀고(idle) 있는 아이들 때렸다(strike)"
       - 두번째 Idle 을 동사로 보면, "선생님이 파업(strike)을 해서 아이들이 놀고(idle) 있다."
   - 비문(non-standard english)
   - segmentation issue (분절을 어떻게 해야 하는지)
-    - ex) the new york-new haven railroad, 어디를 끊어서 읽어야 하는지, 어디를 합여하는지 알기 쉽지 않다.
+    - ex) the new york-new haven railroad, 어디를 끊어서 읽어야 하는지, 어디를 합쳐야 하는지 알기 쉽지 않다.
   - idioms(관용어구)
     - ex) dark horse, 검은말이라고 해석하면 의미를 제대로 전달 할 수 없다.
   - neologisms(신조어)
@@ -524,7 +524,7 @@ iteration 해도 변화가 없으면 멈춰야 된다.
   - tricky entity names (요소를 얘기할 때 어려운 경우)
     - ex) Bug's life , 3개의 단어가 영화제목을 나타내는 명사다.
     - ex) let it be, 3개의 단어가 팝송 제목의 명사다.
-- Question Answering(QA) : IBM's Waston
+- Question Answering(QA) : IBM's Watson
   - 문제가 어렵다. 하나의 지식을 알면 안되고, 여러개의 지식을 알아야한다.
   - ex) william wilkinson 이 '왈라키아와 몰도비아 공국에 대한 설명'의 어떤 유명한 작가의 영감을 받고 책을 썼는가?
     - william wilkinson 누구인가? 영국의 외교관
@@ -536,14 +536,14 @@ iteration 해도 변화가 없으면 멈춰야 된다.
   - complex (narrative) question, 어려운 문제
     - ex) xx 를 설명해보시오.
 - Information Extraction
-  - ex) 미팅에 대한 메일을 주고받는다고 했을대 장소와 시간에 대한 정보를 자동으로 뽑아서 개인의 달력에 entry 로 자동으로 등록해주는 시스템
+  - ex) 미팅에 대한 메일을 주고받는다고 했을 때 장소와 시간에 대한 정보를 자동으로 뽑아서 개인의 달력에 entry 로 자동으로 등록해주는 시스템
 - Relation Extraction from Text
-  - information 중 특히 관곅를 뽑아 내는것
+  - information 중 특히 관계를 뽑아 내는것
   - ex) 회사의 보고서에서 회사와 위치의 관계(회사는 어디에 있는지), 회사의 설립일의 관계 (회사의 설립일은 언제인지)
   - ex) 위키피디아 페이지의 수많은 관계
 - Information Extraction & Sentiment Analysis
   - 자연어에서 정보를 뽑아내고 감정을 분석하는 일
-  - ex) 쇼핑 사이트에서 어떤 카메러에 리뷰가 있을때, "값은 싸지만 기능은 별로다" 로 부터 카마레가 좋다 나쁘다도 판단, 기능이 어떻다는 정보도 파악
+  - ex) 쇼핑 사이트에서 어떤 카메라에 리뷰가 있을때, "값은 싸지만 기능은 별로다" 로 부터 카메라가 좋다 나쁘다도 판단, 기능이 어떻다는 정보도 파악
 - Sentiment Analysis(감정 분석)
   - ex) 단순히 영화 리뷰가 positive 한지 negative 한지 파악
   - ex) 어떤 제품에 대한 설문 대신 트위터 상의 사람들의 감정을 분석해 파악
@@ -555,31 +555,31 @@ iteration 해도 변화가 없으면 멈춰야 된다.
   - 감정분석이 어려운 이유
     - ex) "그녀의 감정 표현이 A부터 B까지 되게 화려했다."
       - 언뜻 들으면 좋은 뜻같지만 A부터 B까지를 봤을때 비꼬는 내용이다.
-      - 단순희 좋은 단어를 보고 판단하면 positive 같지만 사실은 아니다.
+      - 단순히 좋은 단어를 보고 판단하면 positive 같지만 사실은 아니다.
 - Named Entity Recognition(NER)
   - 고유명사를 찾아내는 일
-  - ex) labor 라고 하면 '노동' 의 뜻도 이씨만 context(문맥)으로 보면 '정당' 의 뜻
+  - ex) labor 라고 하면 '노동' 의 뜻도 있지만 context(문맥)으로 보면 '정당' 의 뜻
 - Part-of-Speech Tagging
   - 단어의 품사를 찾아 내는 일
   - 자연어 처리에서 가장 기본적인 task 중의 하나
 - Structure Parsing(구조 파싱)
   - 문장에서 문법적인 구조를 알아내는 과정
   - ex) I saw a girl with a telescope.
-    - saw 가 with a telescope 와 연결되면, 난 저소녀를 망원경으로 봤다.
-    - girl 과 telescope 가 연결되면, 난 망원경으로 가지고 있는 소녀를 봤다.
+    - saw 가 with a telescope 와 연결되면, 난 저 소녀를 망원경으로 봤다.
+    - girl 과 telescope 가 연결되면, 난 망원경을 가지고 있는 소녀를 봤다.
     - 문장 구조를 파싱해보면 saw 가 with, girl에 종속될 수 있어 위와 두경우 모두 해석될 수 있다.
   - constituency(phrase structure) : 어떤 구가 어떤 구성으로 되어 있냐 봐야 한다.
-  - dependency struct : 단어가 어떤 따른 단어에 의존되어 있느냐를 파악해야 한다.
+  - dependency struct : 단어가 어떤 다른 단어에 의존되어 있느냐를 파악해야 한다.
 - Word Meaning and Similarity
   - 단어의 의미파악, 영어의 경우 한단어가 하나의 뜻을 가지는 경우는 거의 없다.
   - homonymy(동음의) : 형태는 같고 뜻은 다른
     - ex) bank : 은행, 강둑
     - 은행, 강둑 은 원래 이런 근원이 다른데 어쩌다 보니 두개가 알파벳이 같다.
-  - polysymy(다의성) : 단어 1개가 여러뜻 가진
+  - polysemy(다의성) : 단어 1개가 여러뜻 가진
     - ex) Jane Austen : 저자일 수 있고, 저작의 작품일 수도 있다.
   - synonymy(동의어) : 같은 뜻을 가진 다른 말
     - ex) couch , sofa : 둘다 같은 소파
-    - ex) how bigt 또는 how large is that plane?
+    - ex) how big 또는 how large is that plane?
       - big 이랑 large 랑 똑같다.
     - ex) big Sister(나이많은 언니), large sister(뚱뚱한 자매)
       - 상황에 따라 뉘앙스가 달라진다.
@@ -600,36 +600,36 @@ iteration 해도 변화가 없으면 멈춰야 된다.
 
 ## 8주차 - 컴퓨터 비전
 
-- 사람의 시각지능을 기계도 할 수 있도로 가르치는게 목적 및 정의다.
+- 사람의 시각지능을 기계도 할 수 있도록 가르치는게 목적 및 정의다.
 - 사람 시각의 단점
   - 착시현상이 있다.
   - 세부디테일 및 기억하는 것은 떨어진다.
-  - 개인적은 감정이 작용된다.
-  - 주변환경을 정확하게 측정하지 목한다. ex) 방의 크기가 몇 미터인지등..
+  - 개인적인 감정이 작용된다.
+  - 주변환경을 정확하게 측정하지 못한다. ex) 방의 크기가 몇 미터인지등..
 - 대뇌에서 시각연결을 담당하는 visual cortex 를 인공적으로만들어 보자.
-- inverse optics : 이미지가 주어졌을대 빛이 어디에 있는지 판단하는 것
+- inverse optics : 이미지가 주어졌을 때 빛이 어디에 있는지 판단하는 것
 - low level : input/output 둘다 이미지인 경우
   - deblurring : 흐릿한 이미지를 선명한 이미지로 만드는것
   - edge detection : 밝기 변화(가장자리)를 나타내는 이미지를 만드는
   - super resolution : 저해상도->고해상도 이미지로 만드는것
-  - colorization : 흑백이지를 컬러이미지로 만드는것
+  - colorization : 흑백이미지를 컬러이미지로 만드는것
 - mid level : image 가 주어졌을때 features 를 추출하는것
-  - boundary detection : 경계부분은 찾아내는것
-  - segmentation : 문체를 구분해주는것
+  - boundary detection : 경계부분을 찾아내는것
+  - segmentation : 물체를 구분해주는것
   - shape from shading : 그림자만 있는 이미지에서 모양을 찾아내는것
   - alignment : 같은 부분은 매칭시키는것, ex) 2장의 나비 사진에서 날개을 찾아서매칭
 - high level : image 가 주어졌을때 semantics 을 유추하는것
   - image classification : 이미지 구분
   - object detection : 영역을 위치를 찾아내고 무엇인지 판단
-  - image captioning : 이미지를 문잔으로 번역한다.
-  - pose detection : 어떤 자세로 있는디 구분하는것
+  - image captioning : 이미지를 문장으로 번역한다.
+  - pose detection : 어떤 자세로 있는지 구분하는것
 - image processing : image -> image 변환하는 과정을 주로 다룬다.
 - computer vision : image processing 기술을 많이 사용하지만 인식을 하는 high level 까지 적용하는 학문이다.
 - challenges : 컴퓨터 비전이 어려운 이유
   - view point variation : 어디서 어떻게 찍었냐에 따라 사진이 달라진다.(3d -> 2d, projection from 3d to 2d)
-  - illumination : 조명(광원)이 어디에 있느냐에 따라 사진이 달라진다. ex) shadow, relections, Fog, rain
-  - occlusion(폐쇄, 가림) : 물체거 가려져 있는 사진. ex) 사람, 자동차가 가려져 있을때 몇명, 몇대가 있나?
-  - scale : 같은 물체라도 사진에 따라 크거나 작게 보인다. ex) 길거리 사신에서 걸어 가는 물체가 사람인지 안다. 사람 부분만 떼어본다면 너무 작아서 사람인지 알 수 없지만, 주변 정보들(길거리 사진에 건물, 거리, 가로수등)의 context 를 보고 사람인지 안다.
+  - illumination : 조명(광원)이 어디에 있느냐에 따라 사진이 달라진다. ex) shadow, reflections, Fog, rain
+  - occlusion(폐쇄, 가림) : 물체가 가려져 있는 사진. ex) 사람, 자동차가 가려져 있을때 몇명, 몇대가 있나?
+  - scale : 같은 물체라도 사진에 따라 크거나 작게 보인다. ex) 길거리 사진에서 걸어 가는 물체가 사람인지 안다. 사람 부분만 떼어본다면 너무 작아서 사람인지 알 수 없지만, 주변 정보들(길거리 사진에 건물, 거리, 가로수등)의 context 를 보고 사람인지 안다.
   - deformation (변형,기형) : 같은 물체라도 모양이 정해져 있다. ex) 사람, 말등 모양이 바뀌는 경우
   - background clutter(혼란) : 배경이미지가 너무 혼란스럽다. ex) 수많은 빨간색 간판이 있는 거리 사진은 신호등과 간판등을 헷갈린다.
   - object intra-class variation : 물체 내부의 변화가 너무 큰 경우 ex) 다양한 종류의 의자가 있는 경우, 겉모습(겉모습은 모두 다르다)보다 의자의 앉는 기능으로 의자로 인식하게 된다.
@@ -669,7 +669,7 @@ Segmentation (mid level, image -> features)
 다음 중 Natural Language Processing의 challenge로 적절하지 않은 것은 무엇인지 선택하시오.
 Segmentation issues (분절문제는 NLP의 도전 분야다.)
 Idioms (관용어구 NLP의 도전 분야다.)
-Illuminations (광원 무제는 컴퓨터 비전의 도전 분야다.)
+Illuminations (광원 문제는 컴퓨터 비전의 도전 분야다.)
 Neologisms (신조어 NLP의 도전 분야다.)
 정답 : Illuminations
 
@@ -711,12 +711,12 @@ Object Intra-Class Variation
 2. Strong AI는 인간을 모방할 뿐만 아니라 스스로 지능을 갖추고 사고하는 AI다.
 3. Breadth-First search는 탐색할 때 FIFO queue를 사용한다.
 4. Depth-First search는 complete한 알고리즘이다.
-정답 : 4, DFS 는 completene 하지 않다.(깊이 탐색중 무한 루프에 빠져서 해를 찾을 수 없는 경우도 있다.)
+정답 : 4, DFS 는 complete 하지 않다.(깊이 탐색중 무한 루프에 빠져서 해를 찾을 수 없는 경우도 있다.)
 
 문제 4번.
 1점 획득가능 (성적반영)
 다음 그래프의 노드 A에서 Breadth-First search를 실행하였을 때 탐색 과정에서 방문하는 노드를 순서대로 기입한 것을 고르시오
-정답 : A-E-H-B-F-G-C-D-I (같은 depth 에 노드들을 순찬적으로 탐색)
+정답 : A-E-H-B-F-G-C-D-I (같은 depth 에 노드들을 순차적으로 탐색)
 
 문제 5번.
 1점 획득가능 (성적반영)
@@ -741,7 +741,7 @@ State space는 무엇을 의미하는지 다음 중 고르시오.
 2. Local search algorithms은 아주 많은 양의 메모리를 사용한다.
 3. Simulated Annealing search 탐색할 때 항상 최적의 경로를 선택하여 이동한다.
 4. Hill-Climbing search는 초기 상태와 관계 없이 항상 global maxima를 잘 찾아낸다.
-정답 : 1 (A* 는 best-fist search 기반(greedy best-first search 아님)
+정답 : 1 (A* 는 best-first search 기반(greedy best-first search 아님)
 A* search는 best-first search의 장점을 가지고 온 알고리즘입니다.
 Local search algorithm은 적은 양의 메모리를 사용하며, Simulated Annealing search는 항상 임의의 경로를 선택하여 이동합니다. Hill-Climbing search는 초기 상태에 따라 local maxima에 빠질 수 있습니다.
 
@@ -787,7 +787,7 @@ C1 – C2 – C3 – Pub – C3 – Pass – Sleep
 1. Markov Decision Process는 Markov Reward Process에 action을 추가한 것이다. (O)
 2. Markov Decision Process의 policy는 과거 상태에 의존한다. (X)
 3. 모든 Markov Decision Process에 대해 optimal policy는 항상 존재한다. (O)
-3. Policy iteration을 통해 optimal policy를 구할 수 있다. (O)
+4. Policy iteration을 통해 optimal policy를 구할 수 있다. (O)
 정답 : Markov Decision Process의 policy는 과거 상태에 의존한다.(-> 현재 상태에만 의존)
 
 문제 12번.
@@ -796,8 +796,8 @@ C1 – C2 – C3 – Pub – C3 – Pass – Sleep
 1. Game은 한 명 이상의 플레이어가 있어야 한다.
 2. Prisoner’s Dilemma는 Zero-Sum game의 한 종류이다.
 3. 플레이어가 매 번 동일한 전략을 사용한다면, strategy가 mixed라 할 수 있다.
-4. xGame에는 하나 이상의 Nash equilibria가 존재할 수 있다.
-정답 : xGame에는 하나 이상의 Nash equilibria가 존재할 수 있다.
+4. Game에는 하나 이상의 Nash equilibria가 존재할 수 있다.
+정답 : Game에는 하나 이상의 Nash equilibria가 존재할 수 있다.
 
 문제 13번.
 1점 획득가능 (성적반영)
@@ -821,7 +821,7 @@ Player 1의 maxmin strategy로부터 a3가 선택되고, player 2의 minmax stra
 (B, B)
 (C, C)
 (C, B)
-정답 : (A,A) 두명의 플레이어가 가장 큰값으로 평행을 이루는것이 Nash Equilibrium(가장 최선의 선택)
+정답 : (A,A) 두명의 플레이어가 가장 큰값으로 평형을 이루는것이 Nash Equilibrium(가장 최선의 선택)
 
 문제 15번.
 1점 획득가능 (성적반영)
