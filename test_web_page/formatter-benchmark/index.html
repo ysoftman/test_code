@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formatter Benchmark</title>
+    <script>
+      // 첫 페인트 전에 테마 결정: 저장된 선택 > OS 설정
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <style>
+      /* 도구별 고정 색: dataviz 기본 팔레트 1~3번, 모드별 step (light/dark 각각 검증 통과) */
+      :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --panel: #eceef2;
+        --border: #d6dae1;
+        --fg: #1b1f24;
+        --muted: #59606b;
+        --accent: #0b62d6;
+        --error: #b24a00;
+        --toolbar-bg: rgba(246, 247, 249, 0.92);
+        --zebra: rgba(0, 0, 0, 0.035);
+        --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+        --prettier: #2a78d6;
+        --biome: #eb6834;
+        --bun: #1baf7a;
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0f1115;
+        --panel: #1a1d23;
+        --border: #2a2e36;
+        --fg: #e6e6e6;
+        --muted: #9aa0aa;
+        --accent: #6ea8fe;
+        --error: #f0883e;
+        --toolbar-bg: rgba(15, 17, 21, 0.95);
+        --zebra: rgba(255, 255, 255, 0.025);
+        --prettier: #3987e5;
+        --biome: #d95926;
+        --bun: #199e70;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.6;
+      }
+      a {
+        color: var(--accent);
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 0.85em;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        padding: 0 5px;
+        border-radius: 4px;
+      }
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 16px;
+        background: var(--toolbar-bg);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--border);
+        font-size: 0.85rem;
+      }
+      .toolbar a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .toolbar a:hover {
+        color: var(--accent);
+      }
+      .toolbar span {
+        font-weight: 600;
+      }
+      /* 테마 스위치: 대화형 스위치만 pill 모양 */
+      .theme {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: 0;
+        padding: 4px 0;
+        color: var(--muted);
+        font: inherit;
+        cursor: pointer;
+      }
+      .theme:hover {
+        color: var(--fg);
+      }
+      .theme .knob {
+        position: relative;
+        width: 30px;
+        height: 18px;
+        border-radius: 999px;
+        background: var(--border);
+        transition: background-color 0.15s;
+      }
+      .theme .knob::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--bg);
+        transition: transform 0.15s;
+      }
+      .theme[aria-checked="true"] .knob {
+        background: var(--accent);
+      }
+      .theme[aria-checked="true"] .knob::after {
+        transform: translateX(12px);
+      }
+      .theme:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 4px;
+        border-radius: 4px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .theme .knob,
+        .theme .knob::after {
+          transition: none;
+        }
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 16px 72px;
+      }
+
+      /* hero: 결론 한 줄 + 세 도구 */
+      .hero {
+        padding: 48px 0 8px;
+      }
+      .hero h1 {
+        font-size: clamp(1.9rem, 1.2rem + 3vw, 2.75rem);
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        margin: 0 0 12px;
+      }
+      .hero .sub {
+        font-size: 1.05rem;
+        color: var(--muted);
+        max-width: 60ch;
+        margin: 0;
+      }
+      .contenders {
+        list-style: none;
+        padding: 0;
+        margin: 32px 0 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      .contenders li {
+        border-top: 3px solid var(--c);
+        padding-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: baseline;
+        row-gap: 2px;
+      }
+      .contenders .tool {
+        font-weight: 600;
+      }
+      .contenders .ver {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .contenders .time {
+        grid-column: 1 / -1;
+        font-family: var(--mono);
+        font-size: 1.75rem;
+        letter-spacing: -0.02em;
+        margin-top: 6px;
+      }
+      .contenders .rel {
+        grid-row: 1;
+        grid-column: 2;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      /* 섹션: 카드 대신 간격 + hairline */
+      .block {
+        margin-top: 56px;
+        padding-top: 28px;
+        border-top: 1px solid var(--border);
+      }
+      .block h2 {
+        font-size: 1.125rem;
+        margin: 0;
+      }
+      .block-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 20px;
+      }
+      .block-head h2 {
+        flex: 1 1 auto;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 0.875rem;
+        margin: 6px 0 20px;
+        max-width: 65ch;
+      }
+      .legend {
+        display: flex;
+        gap: 14px;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 6px;
+        vertical-align: -1px;
+      }
+      .toggle {
+        font-size: 0.85rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+      .toggle input {
+        accent-color: var(--accent);
+        margin: 0;
+      }
+
+      /* 차트: 코퍼스별 그룹, 그룹마다 최댓값 기준 가로 막대 */
+      .group + .group {
+        margin-top: 22px;
+      }
+      .glabel {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .glabel span {
+        color: var(--muted);
+        font-weight: 400;
+        margin-left: 8px;
+        font-size: 0.8rem;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 2px 0;
+      }
+      .row .name {
+        font-size: 0.8rem;
+        color: var(--muted);
+        text-align: right;
+      }
+      .track {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 22px;
+        border-left: 1px solid var(--border);
+      }
+      .bar {
+        flex: none;
+        height: 16px;
+        width: max(2px, calc((100% - 8.5rem) * var(--w)));
+        border-radius: 0 4px 4px 0;
+        background: var(--c);
+      }
+      .row:hover .bar {
+        filter: brightness(1.2);
+      }
+      .val {
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
+      .val small {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: var(--muted);
+        font-size: inherit;
+        margin-left: 6px;
+      }
+      #tip {
+        position: fixed;
+        z-index: 20;
+        pointer-events: none;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 6px 9px;
+        font-size: 0.8rem;
+        white-space: pre;
+        display: none;
+      }
+
+      /* 표: 행마다 선 대신 줄무늬 */
+      .table-scroll {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+      }
+      th,
+      td {
+        padding: 7px 10px;
+        text-align: right;
+      }
+      td {
+        font-family: var(--mono);
+        font-size: 0.8rem;
+      }
+      th:first-child,
+      td:first-child {
+        text-align: left;
+        font-family: inherit;
+        font-size: 0.875rem;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        border-bottom: 1px solid var(--border);
+      }
+      tbody tr:nth-child(even) {
+        background: var(--zebra);
+      }
+      td.full {
+        color: var(--muted);
+      }
+      td.miss {
+        font-weight: 700;
+      }
+      #parity {
+        max-width: 520px;
+      }
+
+      /* 메모: 두 묶음 */
+      .notes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+      .notes ul {
+        margin: 12px 0 0;
+        padding-left: 18px;
+        font-size: 0.9rem;
+      }
+      .notes li + li {
+        margin-top: 8px;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      details[open] summary {
+        margin-bottom: 14px;
+      }
+      .error {
+        color: var(--error);
+      }
+
+      @media (max-width: 640px) {
+        .hero {
+          padding-top: 32px;
+        }
+        .contenders {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .contenders .time {
+          font-size: 1.4rem;
+        }
+        .notes {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="toolbar">
+      <a href="../">← test_web_page</a>
+      <span>Formatter Benchmark</span>
+      <button class="theme" id="theme" type="button" role="switch">
+        <i class="knob"></i>다크 모드
+      </button>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <h1 id="headline">포맷터 벤치마크</h1>
+        <p class="sub" id="summary">결과를 불러오는 중</p>
+        <ol class="contenders" id="contenders"></ol>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>포맷 시간</h2>
+          <div class="legend" id="legend"></div>
+          <label class="toggle">
+            <input type="checkbox" id="hide-prettier" />
+            Prettier 빼고 보기
+          </label>
+        </div>
+        <p class="hint">
+          짧을수록 빠르다. 막대 길이는 코퍼스마다 가장 느린 도구 기준이고, ×N 은
+          가장 빠른 도구 대비 배수. 막대에 마우스를 올리면 편차와 최소, 최대가
+          나온다.
+        </p>
+        <div id="chart"></div>
+      </section>
+
+      <section class="block">
+        <h2>Prettier 와 같은 출력</h2>
+        <p class="hint">
+          프로젝트 원본 1벌을 각 도구로 포맷한 뒤 Prettier 결과와 파일 단위로
+          바이트 비교.
+        </p>
+        <div class="table-scroll"><table id="parity"></table></div>
+      </section>
+
+      <section class="block notes">
+        <div>
+          <h2>측정 방법</h2>
+          <ul>
+            <li>
+              <code>hyperfine</code> 쓰기 모드(<code>--write</code>), 워밍업
+              1회. 실행마다 코퍼스를 원복하고 원복 시간은 측정에서 뺀다.
+            </li>
+            <li id="corpus-note">
+              코퍼스: <code>test_web_page</code> 의 git 추적 소스.
+            </li>
+            <li id="env-note">환경: 불러오는 중</li>
+            <li>
+              Biome 은 HTML 포맷터를 켜고 Prettier 에 맞춘 설정으로 실행했다:
+              <code>indentStyle: space</code>,
+              <code>indentScriptAndStyle</code>(.vue 는 끔),
+              <code>selfCloseVoidElements: always</code>.
+            </li>
+            <li>
+              재현: 이 디렉토리에서 <code>bun run bench</code> 를 실행하면
+              <code>results.json</code> 이 갱신된다.
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>해석할 때</h2>
+          <ul>
+            <li>
+              Prettier 는 Node 에서 단일 스레드로 돌고, Biome 과 bun 은 네이티브
+              바이너리로 모든 코어를 쓴다. 차이의 상당 부분이 여기서 나온다.
+            </li>
+            <li>
+              1벌 코퍼스는 파일이 적어 시작 시간이 대부분이다. 처리량 차이는 큰
+              코퍼스에서 봐야 한다.
+            </li>
+            <li>
+              ×N 코퍼스는 같은 파일을 복제한 것이라 실제 대형 저장소와 파일
+              분포가 다를 수 있다.
+            </li>
+            <li>
+              <code>bun fmt</code> 은
+              <a href="https://github.com/oven-sh/bun/pull/44805">PR #44805</a>
+              로 main 에 들어왔고 아직 태그 릴리스가 없다. main 최신 빌드인
+              canary 를 썼다.
+            </li>
+            <li>
+              Biome 의 HTML 포맷터는 아직 실험적이다.
+              <code>html.formatter.enabled</code> 기본값이 <code>false</code>
+              이고, Vue, Svelte, Astro 마크업은
+              <code>html.experimentalFullSupportEnabled</code> 도 켜야 한다 (<a
+                href="https://biomejs.dev/internals/language-support/"
+                >language support</a
+              >).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="block">
+        <details>
+          <summary>전체 수치 표</summary>
+          <div class="table-scroll"><table id="table"></table></div>
+        </details>
+      </section>
+    </main>
+
+    <div id="tip" role="tooltip"></div>
+
+    <script>
+      const TOOLS = ["prettier", "biome", "bun"];
+      const NAME = { prettier: "Prettier", biome: "Biome", bun: "bun fmt" };
+      const ORDER = ["large", "html", "css", "js", "small"];
+      const CORPUS = {
+        large: "프로젝트 전체",
+        html: "HTML",
+        css: "CSS",
+        js: "JS/TS",
+        small: "프로젝트 전체",
+      };
+      const PARITY_GROUPS = [
+        ["HTML", ["html"]],
+        ["Vue", ["vue"]],
+        ["CSS", ["css"]],
+        ["JS/TS", ["js", "jsx", "ts", "tsx"]],
+        ["JSON", ["json"]],
+      ];
+
+      const $ = (id) => document.getElementById(id);
+      const fmtTime = (s) =>
+        s >= 1
+          ? `${s.toFixed(2)} s`
+          : `${(s * 1000).toFixed(s < 0.01 ? 1 : 0)} ms`;
+      const fmtBytes = (b) =>
+        b >= 1e6 ? `${(b / 1e6).toFixed(1)} MB` : `${Math.round(b / 1e3)} KB`;
+      const label = (c, copies) =>
+        c.name === "small"
+          ? `${CORPUS.small} 1벌`
+          : `${CORPUS[c.name]} ×${copies}`;
+      const result = (c, tool) => c.results.find((r) => r.tool === tool);
+      const fastest = (c) =>
+        c.results.reduce((a, b) => (b.mean < a.mean ? b : a));
+      const sameAsPrettier = (parity, tool) =>
+        parity
+          .filter((p) => p.tool === tool)
+          .reduce((n, p) => [n[0] + p.same, n[1] + p.total], [0, 0]);
+
+      function renderHero({ meta, corpora, parity }) {
+        const large = corpora.find((c) => c.name === "large");
+        const win = fastest(large);
+        const others = TOOLS.filter((t) => t !== win.tool).map(
+          (t) =>
+            `${NAME[t]} 대비 ${(result(large, t).mean / win.mean).toFixed(1)}배`,
+        );
+        $("headline").textContent = `가장 빠른 포맷터는 ${NAME[win.tool]}`;
+        let summary = `${label(large, meta.copies)} (${large.files.toLocaleString()} 파일, ${fmtBytes(large.bytes)}) 기준 ${others.join(", ")} 빠르다.`;
+        if (win.tool !== "prettier") {
+          const [same, total] = sameAsPrettier(parity, win.tool);
+          summary +=
+            same === total
+              ? ` 출력은 ${total}개 파일 모두 Prettier 와 같다.`
+              : ` 출력은 ${total}개 중 ${same}개 파일이 Prettier 와 같다.`;
+        }
+        $("summary").textContent = summary;
+
+        $("contenders").innerHTML = TOOLS.map((t) => {
+          const r = result(large, t);
+          const [ver, sha] = meta.versions[t].split("+");
+          const shaLink = sha
+            ? ` <a href="https://github.com/oven-sh/bun/commit/${sha}">${sha}</a>`
+            : "";
+          const rel =
+            r === win ? "가장 빠름" : `×${(r.mean / win.mean).toFixed(1)}`;
+          return `<li style="--c: var(--${t})">
+            <span class="tool">${NAME[t]}</span>
+            <span class="rel">${rel}</span>
+            <span class="ver">${ver}${shaLink}</span>
+            <span class="time">${fmtTime(r.mean)}</span>
+          </li>`;
+        }).join("");
+      }
+
+      function renderChart({ meta, corpora }) {
+        const tools = $("hide-prettier").checked
+          ? TOOLS.filter((t) => t !== "prettier")
+          : TOOLS;
+        $("legend").innerHTML = tools
+          .map(
+            (t) =>
+              `<span><i class="swatch" style="background: var(--${t})"></i>${NAME[t]}</span>`,
+          )
+          .join("");
+        $("chart").innerHTML = ORDER.map((name) => {
+          const c = corpora.find((x) => x.name === name);
+          const rs = tools.map((t) => result(c, t));
+          const max = Math.max(...rs.map((r) => r.mean));
+          const min = Math.min(...rs.map((r) => r.mean));
+          const rows = rs
+            .map((r) => {
+              const rel =
+                r.mean === min
+                  ? "<small>가장 빠름</small>"
+                  : `<small>×${(r.mean / min).toFixed(1)}</small>`;
+              const tip = [
+                `${NAME[r.tool]}, ${label(c, meta.copies)}`,
+                `평균 ${fmtTime(r.mean)} ± ${fmtTime(r.stddev)}`,
+                `최소 ${fmtTime(r.min)}, 최대 ${fmtTime(r.max)}`,
+                `${c.runs}회 실행`,
+              ].join("\n");
+              return `<div class="row" data-tip="${tip}">
+                <span class="name">${NAME[r.tool]}</span>
+                <div class="track">
+                  <div class="bar" style="--w: ${r.mean / max}; --c: var(--${r.tool})"></div>
+                  <span class="val">${fmtTime(r.mean)}${rel}</span>
+                </div>
+              </div>`;
+            })
+            .join("");
+          return `<div class="group">
+            <div class="glabel">${label(c, meta.copies)}<span>${c.files.toLocaleString()} 파일, ${fmtBytes(c.bytes)}</span></div>
+            ${rows}
+          </div>`;
+        }).join("");
+      }
+
+      function renderParity({ parity }) {
+        const sum = (exts, tool, key) =>
+          parity
+            .filter((p) => p.tool === tool && exts.includes(p.ext))
+            .reduce((n, p) => n + p[key], 0);
+        const cell = (exts, tool, total) => {
+          const same = sum(exts, tool, "same");
+          return `<td class="${same === total ? "full" : "miss"}">${same} / ${total}</td>`;
+        };
+        const rows = PARITY_GROUPS.map(([lang, exts]) => {
+          const total = sum(exts, "bun", "total");
+          return total
+            ? `<tr><td>${lang}</td>${cell(exts, "bun", total)}${cell(exts, "biome", total)}</tr>`
+            : "";
+        }).join("");
+        $("parity").innerHTML =
+          `<thead><tr><th>언어</th><th>bun fmt</th><th>Biome</th></tr></thead><tbody>${rows}</tbody>`;
+      }
+
+      function renderNotes({ meta, corpora }) {
+        const small = corpora.find((c) => c.name === "small");
+        $("corpus-note").innerHTML =
+          `코퍼스: <a href="https://github.com/ysoftman/test_code/tree/${meta.commit}/test_web_page">test_web_page@${meta.commit}</a> 의 git 추적 소스 ${small.files}개 파일. ×${meta.copies} 코퍼스는 이것을 ${meta.copies}벌 복제했다.`;
+        $("env-note").textContent =
+          `환경: ${meta.cpu} ${meta.cores}코어, ${meta.os}, Node ${meta.node}. ${new Date(meta.date).toLocaleDateString("ko-KR")} 측정.`;
+      }
+
+      function renderTable({ meta, corpora }) {
+        const rows = ORDER.flatMap((name) => {
+          const c = corpora.find((x) => x.name === name);
+          const min = fastest(c).mean;
+          return TOOLS.map((t) => {
+            const r = result(c, t);
+            return (
+              `<tr><td>${label(c, meta.copies)}, ${NAME[t]}</td>` +
+              `<td>${fmtTime(r.mean)} ± ${fmtTime(r.stddev)}</td><td>${fmtTime(r.min)}</td><td>${fmtTime(r.max)}</td>` +
+              `<td>${(r.mean / min).toFixed(2)}</td></tr>`
+            );
+          });
+        }).join("");
+        $("table").innerHTML =
+          `<thead><tr><th>코퍼스, 도구</th><th>평균 ± 편차</th><th>최소</th><th>최대</th><th>배수</th></tr></thead><tbody>${rows}</tbody>`;
+      }
+
+      // 테마 스위치: 누르면 저장, 저장 전에는 OS 설정 변화를 따른다
+      const root = document.documentElement;
+      const themeBtn = $("theme");
+      const setTheme = (t) => {
+        root.dataset.theme = t;
+        themeBtn.setAttribute("aria-checked", t === "dark");
+      };
+      setTheme(root.dataset.theme);
+      themeBtn.addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        setTheme(next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
+      matchMedia("(prefers-color-scheme: dark)").addEventListener(
+        "change",
+        (e) => {
+          let saved = null;
+          try {
+            saved = localStorage.getItem("theme");
+          } catch {}
+          if (!saved) setTheme(e.matches ? "dark" : "light");
+        },
+      );
+
+      // 막대 hover 툴팁
+      const tip = $("tip");
+      $("chart").addEventListener("pointermove", (e) => {
+        const row = e.target.closest(".row");
+        if (!row) return (tip.style.display = "none");
+        tip.textContent = row.dataset.tip;
+        tip.style.display = "block";
+        const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8);
+        tip.style.left = `${x}px`;
+        tip.style.top = `${e.clientY + 14}px`;
+      });
+      $("chart").addEventListener(
+        "pointerleave",
+        () => (tip.style.display = "none"),
+      );
+
+      fetch("./results.json")
+        .then((r) => r.json())
+        .then((data) => {
+          renderHero(data);
+          renderChart(data);
+          renderParity(data);
+          renderNotes(data);
+          renderTable(data);
+          $("hide-prettier").addEventListener("change", () =>
+            renderChart(data),
+          );
+        })
+        .catch((err) => {
+          $("summary").innerHTML =
+            `<span class="error">results.json 을 읽지 못했다 (${err.message}). 로컬에서는 <code>bun run serve</code> 로 열어야 한다.</span>`;
+        });
+    </script>
+  </body>
+</html>

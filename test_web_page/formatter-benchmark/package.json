@@ -1,0 +1,13 @@
+{
+  "name": "formatter-benchmark",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "bench": "bash ./bench.sh",
+    "serve": "bunx serve ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "prettier": "3.9.10"
+  }
+}

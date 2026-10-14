@@ -133,6 +133,10 @@ jobs:
             cp -r "$SRC/ml-docs/.vitepress/dist/." "$OUT/ml-docs/"
           fi
 
+          # formatter-benchmark: 로컬에서 측정해 커밋한 results.json 을 정적 페이지로 서빙
+          mkdir -p "$OUT/formatter-benchmark"
+          cp "$SRC/formatter-benchmark/index.html" "$SRC/formatter-benchmark/results.json" "$OUT/formatter-benchmark/"
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
