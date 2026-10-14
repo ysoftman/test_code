@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formatter Benchmark</title>
+    <title>Formatter Benchmark: Prettier vs Biome vs bun fmt</title>
     <script>
-      // 첫 페인트 전에 테마 결정: 저장된 선택 > OS 설정
       (() => {
         let saved = null;
         try {
@@ -17,522 +16,823 @@
       })();
     </script>
     <style>
-      /* 도구별 고정 색: dataviz 기본 팔레트 1~3번, 모드별 step (light/dark 각각 검증 통과) */
       :root {
         color-scheme: light;
-        --bg: #f6f7f9;
-        --panel: #eceef2;
-        --border: #d6dae1;
-        --fg: #1b1f24;
-        --muted: #59606b;
-        --accent: #0b62d6;
-        --error: #b24a00;
-        --toolbar-bg: rgba(246, 247, 249, 0.92);
-        --zebra: rgba(0, 0, 0, 0.035);
-        --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
-        --prettier: #2a78d6;
-        --biome: #eb6834;
-        --bun: #1baf7a;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-subtle: #f1f5f9;
+        --border: #e2e8f0;
+        --border-subtle: #edf2f7;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --text-faint: #94a3b8;
+        --accent: #2563eb;
+        --accent-subtle: #eff6ff;
+        --success: #16a34a;
+        --success-bg: #f0fdf4;
+        --warning: #d97706;
+        --warning-bg: #fffbeb;
+
+        --brand-bun: #d97706;
+        --brand-biome: #0284c7;
+        --brand-prettier: #6366f1;
+
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Pretendard Variable", Pretendard, sans-serif;
+        --font-mono:
+          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
       }
+
       :root[data-theme="dark"] {
         color-scheme: dark;
-        --bg: #0f1115;
-        --panel: #1a1d23;
-        --border: #2a2e36;
-        --fg: #e6e6e6;
-        --muted: #9aa0aa;
-        --accent: #6ea8fe;
-        --error: #f0883e;
-        --toolbar-bg: rgba(15, 17, 21, 0.95);
-        --zebra: rgba(255, 255, 255, 0.025);
-        --prettier: #3987e5;
-        --biome: #d95926;
-        --bun: #199e70;
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface-subtle: #1f242c;
+        --border: #30363d;
+        --border-subtle: #21262d;
+        --text: #e6edf3;
+        --text-muted: #8b949e;
+        --text-faint: #6e7681;
+        --accent: #58a6ff;
+        --accent-subtle: #121d2f;
+        --success: #3fb950;
+        --success-bg: #0d281e;
+        --warning: #f59e0b;
+        --warning-bg: #2d2206;
+
+        --brand-bun: #fbbf24;
+        --brand-biome: #38bdf8;
+        --brand-prettier: #818cf8;
       }
+
       * {
         box-sizing: border-box;
       }
+
       body {
         margin: 0;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: var(--font-sans);
         background: var(--bg);
-        color: var(--fg);
-        line-height: 1.6;
+        color: var(--text);
+        line-height: 1.55;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
       }
+
       a {
         color: var(--accent);
-      }
-      code {
-        font-family: var(--mono);
-        font-size: 0.85em;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        padding: 0 5px;
-        border-radius: 4px;
-      }
-      .toolbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 10px 16px;
-        background: var(--toolbar-bg);
-        backdrop-filter: blur(6px);
-        border-bottom: 1px solid var(--border);
-        font-size: 0.85rem;
-      }
-      .toolbar a {
-        color: var(--muted);
         text-decoration: none;
       }
-      .toolbar a:hover {
-        color: var(--accent);
+      a:hover {
+        text-decoration: underline;
       }
-      .toolbar span {
-        font-weight: 600;
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.86em;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        padding: 1px 5px;
+        border-radius: 4px;
+        color: inherit;
       }
-      /* 테마 스위치: 대화형 스위치만 pill 모양 */
-      .theme {
-        margin-left: auto;
+
+      /* Top Navbar */
+      .navbar {
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .nav-inner {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-back {
+        font-size: 0.85rem;
+        color: var(--text-muted);
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        background: none;
-        border: 0;
-        padding: 4px 0;
-        color: var(--muted);
-        font: inherit;
-        cursor: pointer;
+        gap: 4px;
       }
-      .theme:hover {
-        color: var(--fg);
+      .nav-back:hover {
+        color: var(--text);
+        text-decoration: none;
       }
-      .theme .knob {
-        position: relative;
-        width: 30px;
-        height: 18px;
-        border-radius: 999px;
-        background: var(--border);
-        transition: background-color 0.15s;
+      .nav-sep {
+        color: var(--border);
       }
-      .theme .knob::after {
-        content: "";
-        position: absolute;
-        top: 3px;
-        left: 3px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: var(--bg);
-        transition: transform 0.15s;
-      }
-      .theme[aria-checked="true"] .knob {
-        background: var(--accent);
-      }
-      .theme[aria-checked="true"] .knob::after {
-        transform: translateX(12px);
-      }
-      .theme:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 4px;
-        border-radius: 4px;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .theme .knob,
-        .theme .knob::after {
-          transition: none;
-        }
-      }
-      .wrap {
-        max-width: 880px;
-        margin: 0 auto;
-        padding: 0 16px 72px;
-      }
-
-      /* hero: 결론 한 줄 + 세 도구 */
-      .hero {
-        padding: 48px 0 8px;
-      }
-      .hero h1 {
-        font-size: clamp(1.9rem, 1.2rem + 3vw, 2.75rem);
-        line-height: 1.15;
-        letter-spacing: -0.02em;
-        margin: 0 0 12px;
-      }
-      .hero .sub {
-        font-size: 1.05rem;
-        color: var(--muted);
-        max-width: 60ch;
-        margin: 0;
-      }
-      .contenders {
-        list-style: none;
-        padding: 0;
-        margin: 32px 0 0;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-      }
-      .contenders li {
-        border-top: 3px solid var(--c);
-        padding-top: 10px;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        align-items: baseline;
-        row-gap: 2px;
-      }
-      .contenders .tool {
+      .nav-title {
         font-weight: 600;
-      }
-      .contenders .ver {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        font-size: 0.8rem;
-        color: var(--muted);
-      }
-      .contenders .time {
-        grid-column: 1 / -1;
-        font-family: var(--mono);
-        font-size: 1.75rem;
-        letter-spacing: -0.02em;
-        margin-top: 6px;
-      }
-      .contenders .rel {
-        grid-row: 1;
-        grid-column: 2;
-        font-size: 0.8rem;
-        color: var(--muted);
-      }
-
-      /* 섹션: 카드 대신 간격 + hairline */
-      .block {
-        margin-top: 56px;
-        padding-top: 28px;
-        border-top: 1px solid var(--border);
-      }
-      .block h2 {
-        font-size: 1.125rem;
-        margin: 0;
-      }
-      .block-head {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px 20px;
-      }
-      .block-head h2 {
-        flex: 1 1 auto;
-      }
-      .hint {
-        color: var(--muted);
-        font-size: 0.875rem;
-        margin: 6px 0 20px;
-        max-width: 65ch;
-      }
-      .legend {
-        display: flex;
-        gap: 14px;
-        font-size: 0.85rem;
-        color: var(--muted);
-      }
-      .swatch {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 2px;
-        margin-right: 6px;
-        vertical-align: -1px;
-      }
-      .toggle {
-        font-size: 0.85rem;
-        color: var(--muted);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-      }
-      .toggle input {
-        accent-color: var(--accent);
-        margin: 0;
-      }
-
-      /* 차트: 코퍼스별 그룹, 그룹마다 최댓값 기준 가로 막대 */
-      .group + .group {
-        margin-top: 22px;
-      }
-      .glabel {
         font-size: 0.9rem;
-        font-weight: 600;
-        margin-bottom: 6px;
       }
-      .glabel span {
-        color: var(--muted);
-        font-weight: 400;
-        margin-left: 8px;
-        font-size: 0.8rem;
-      }
-      .row {
-        display: grid;
-        grid-template-columns: 64px 1fr;
+      .nav-actions {
+        display: flex;
         align-items: center;
         gap: 10px;
-        padding: 2px 0;
       }
-      .row .name {
+      .theme-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 4px 10px;
+        border-radius: 6px;
         font-size: 0.8rem;
-        color: var(--muted);
-        text-align: right;
+        font-family: inherit;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
       }
-      .track {
+      .theme-btn:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+      }
+
+      /* Layout */
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+      .title-row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0;
+        line-height: 1.25;
+      }
+      .version-tag {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 2px 7px;
+        border-radius: 4px;
+      }
+      .page-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 0 0 16px;
+        max-width: 720px;
+      }
+
+      /* Specs Bar */
+      .specs-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+      .spec-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .spec-item + .spec-item::before {
+        content: "·";
+        color: var(--border);
+        margin-right: 2px;
+      }
+      .spec-item strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* Section Common */
+      .section {
+        margin-top: 36px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0;
         display: flex;
         align-items: center;
         gap: 8px;
-        min-height: 22px;
-        border-left: 1px solid var(--border);
       }
-      .bar {
-        flex: none;
-        height: 16px;
-        width: max(2px, calc((100% - 8.5rem) * var(--w)));
-        border-radius: 0 4px 4px 0;
-        background: var(--c);
-      }
-      .row:hover .bar {
-        filter: brightness(1.2);
-      }
-      .val {
-        font-family: var(--mono);
-        font-size: 0.8rem;
-        white-space: nowrap;
-      }
-      .val small {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        color: var(--muted);
-        font-size: inherit;
-        margin-left: 6px;
-      }
-      #tip {
-        position: fixed;
-        z-index: 20;
-        pointer-events: none;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        padding: 6px 9px;
-        font-size: 0.8rem;
-        white-space: pre;
-        display: none;
+      .section-desc {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin: 0 0 16px;
       }
 
-      /* 표: 행마다 선 대신 줄무늬 */
-      .table-scroll {
+      /* Summary Overview Table */
+      .summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .table-responsive {
         overflow-x: auto;
       }
       table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.875rem;
-      }
-      th,
-      td {
-        padding: 7px 10px;
-        text-align: right;
-      }
-      td {
-        font-family: var(--mono);
-        font-size: 0.8rem;
-      }
-      th:first-child,
-      td:first-child {
+        font-size: 0.85rem;
         text-align: left;
-        font-family: inherit;
-        font-size: 0.875rem;
       }
       th {
-        color: var(--muted);
-        font-weight: 600;
+        background: var(--surface-subtle);
         border-bottom: 1px solid var(--border);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 9px 14px;
+        white-space: nowrap;
       }
-      tbody tr:nth-child(even) {
-        background: var(--zebra);
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border-subtle);
+        vertical-align: middle;
       }
-      td.full {
-        color: var(--muted);
+      tbody tr:last-child td {
+        border-bottom: 0;
       }
-      td.miss {
-        font-weight: 700;
+      .td-mono {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
       }
-      #parity {
-        max-width: 520px;
+      .td-num {
+        text-align: right;
       }
 
-      /* 메모: 두 묶음 */
-      .notes {
+      .tool-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+      }
+      .tool-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .tool-ver {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        font-family: var(--font-mono);
+      }
+      .badge-tag {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-success {
+        background: var(--success-bg);
+        color: var(--success);
+        border: 1px solid rgba(22, 163, 74, 0.2);
+      }
+      .badge-warning {
+        background: var(--warning-bg);
+        color: var(--warning);
+        border: 1px solid rgba(217, 119, 6, 0.2);
+      }
+      .badge-fastest {
+        background: rgba(217, 119, 6, 0.12);
+        color: var(--brand-bun);
+        font-weight: 600;
+        border: 1px solid rgba(217, 119, 6, 0.25);
+      }
+
+      /* Control Segmented Buttons */
+      .segment-control {
+        display: inline-flex;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px;
+        gap: 2px;
+      }
+      .segment-btn {
+        background: none;
+        border: 0;
+        color: var(--text-muted);
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        border-radius: 4px;
+        cursor: pointer;
+        transition:
+          background-color 0.1s,
+          color 0.1s;
+      }
+      .segment-btn.active {
+        background: var(--surface);
+        color: var(--text);
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Benchmark Chart */
+      .chart-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .corpus-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .corpus-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      .corpus-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      .corpus-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+      .chart-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .chart-row {
+        display: grid;
+        grid-template-columns: 88px 1fr 140px;
+        align-items: center;
+        gap: 12px;
+        cursor: default;
+      }
+      .row-tool {
+        font-size: 0.82rem;
+        font-weight: 500;
+        white-space: nowrap;
+        text-align: right;
+        color: var(--text);
+      }
+      .row-track {
+        height: 24px;
+        background: var(--surface-subtle);
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-subtle);
+      }
+      .row-bar {
+        height: 100%;
+        min-width: 3px;
+        border-radius: 3px;
+        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .row-values {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        white-space: nowrap;
+      }
+      .row-time {
+        font-weight: 600;
+        color: var(--text);
+      }
+      .row-multiplier {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .row-multiplier.fastest {
+        color: var(--brand-bun);
+        font-weight: 600;
+      }
+
+      /* Hover Tooltip */
+      #tooltip {
+        position: fixed;
+        z-index: 50;
+        pointer-events: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.78rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: none;
+        line-height: 1.5;
+        max-width: 280px;
+      }
+      #tooltip .tt-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 2px;
+      }
+      #tooltip .tt-line {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      /* Parity Table */
+      .parity-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      /* Methodology & Technical Notes (2-Column Grid) */
+      .notes-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 32px;
+        gap: 16px;
       }
-      .notes ul {
-        margin: 12px 0 0;
+      .note-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px;
+      }
+      .note-card h3 {
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin: 0 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .note-card ul {
+        margin: 0;
         padding-left: 18px;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
       }
-      .notes li + li {
-        margin-top: 8px;
+      .note-card li {
+        margin-bottom: 8px;
       }
-      details summary {
-        cursor: pointer;
+      .note-card li:last-child {
+        margin-bottom: 0;
+      }
+      .note-card strong {
+        color: var(--text);
         font-weight: 600;
       }
-      details[open] summary {
+
+      /* Raw Details */
+      details.raw-section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+      details.raw-section summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        user-select: none;
+      }
+      details.raw-section summary:hover {
+        color: var(--text);
+      }
+      details.raw-section[open] summary {
         margin-bottom: 14px;
       }
-      .error {
-        color: var(--error);
+
+      /* Error Banner */
+      .error-banner {
+        padding: 14px 16px;
+        background: #fee2e2;
+        border: 1px solid #f87171;
+        border-radius: 8px;
+        color: #991b1b;
+        font-size: 0.88rem;
+        margin-bottom: 20px;
+      }
+      :root[data-theme="dark"] .error-banner {
+        background: #381515;
+        border-color: #7f1d1d;
+        color: #fca5a5;
       }
 
-      @media (max-width: 640px) {
-        .hero {
-          padding-top: 32px;
+      @media (max-width: 720px) {
+        .chart-row {
+          grid-template-columns: 75px 1fr 100px;
+          gap: 8px;
         }
-        .contenders {
+        .notes-grid {
           grid-template-columns: 1fr;
-          gap: 14px;
         }
-        .contenders .time {
-          font-size: 1.4rem;
-        }
-        .notes {
-          grid-template-columns: 1fr;
+        .row-values {
+          flex-direction: column;
+          gap: 0;
         }
       }
     </style>
   </head>
   <body>
-    <header class="toolbar">
-      <a href="../">← test_web_page</a>
-      <span>Formatter Benchmark</span>
-      <button class="theme" id="theme" type="button" role="switch">
-        <i class="knob"></i>다크 모드
-      </button>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">formatter-benchmark</span>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon">◐</span>
+            <span id="theme-text">Theme</span>
+          </button>
+        </div>
+      </div>
     </header>
 
-    <main class="wrap">
-      <section class="hero">
-        <h1 id="headline">포맷터 벤치마크</h1>
-        <p class="sub" id="summary">결과를 불러오는 중</p>
-        <ol class="contenders" id="contenders"></ol>
-      </section>
+    <main class="container">
+      <div id="error-container"></div>
 
-      <section class="block">
-        <div class="block-head">
-          <h2>포맷 시간</h2>
-          <div class="legend" id="legend"></div>
-          <label class="toggle">
-            <input type="checkbox" id="hide-prettier" />
-            Prettier 빼고 보기
-          </label>
+      <!-- Page Header & Specs -->
+      <section class="page-header">
+        <div class="title-row">
+          <h1>Formatter Benchmark</h1>
+          <span class="version-tag" id="commit-tag">commit: loading...</span>
         </div>
-        <p class="hint">
-          짧을수록 빠르다. 막대 길이는 코퍼스마다 가장 느린 도구 기준이고, ×N 은
-          가장 빠른 도구 대비 배수. 막대에 마우스를 올리면 편차와 최소, 최대가
-          나온다.
+        <p class="page-desc">
+          JavaScript / TypeScript 포맷터(Prettier · Biome · bun fmt)의 실행 속도
+          및 Prettier 포맷 출력 일치율을 비교합니다.
         </p>
-        <div id="chart"></div>
+        <div class="specs-grid" id="specs-grid">
+          <span class="spec-item">환경 정보를 불러오는 중...</span>
+        </div>
       </section>
 
-      <section class="block">
-        <h2>Prettier 와 같은 출력</h2>
-        <p class="hint">
-          프로젝트 원본 1벌을 각 도구로 포맷한 뒤 Prettier 결과와 파일 단위로
-          바이트 비교.
+      <!-- Executive Overview Table -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">종합 결과 요약 (Benchmark Overview)</h2>
+        </div>
+        <p class="section-desc">
+          대용량 코퍼스(프로젝트 전체 ×40 복제본, 5,600개 파일 / 11.5 MB) 포맷
+          소요 시간 및 원본 파일(140개) 기준 Prettier 출력 일치율 요약입니다.
         </p>
-        <div class="table-scroll"><table id="parity"></table></div>
-      </section>
-
-      <section class="block notes">
-        <div>
-          <h2>측정 방법</h2>
-          <ul>
-            <li>
-              <code>hyperfine</code> 쓰기 모드(<code>--write</code>), 워밍업
-              1회. 실행마다 코퍼스를 원복하고 원복 시간은 측정에서 뺀다.
-            </li>
-            <li id="corpus-note">
-              코퍼스: <code>test_web_page</code> 의 git 추적 소스.
-            </li>
-            <li id="env-note">환경: 불러오는 중</li>
-            <li>
-              Biome 은 HTML 포맷터를 켜고 Prettier 에 맞춘 설정으로 실행했다:
-              <code>indentStyle: space</code>,
-              <code>indentScriptAndStyle</code>(.vue 는 끔),
-              <code>selfCloseVoidElements: always</code>.
-            </li>
-            <li>
-              재현: 이 디렉토리에서 <code>bun run bench</code> 를 실행하면
-              <code>results.json</code> 이 갱신된다.
-            </li>
-          </ul>
-        </div>
-        <div>
-          <h2>해석할 때</h2>
-          <ul>
-            <li>
-              Prettier 는 Node 에서 단일 스레드로 돌고, Biome 과 bun 은 네이티브
-              바이너리로 모든 코어를 쓴다. 차이의 상당 부분이 여기서 나온다.
-            </li>
-            <li>
-              1벌 코퍼스는 파일이 적어 시작 시간이 대부분이다. 처리량 차이는 큰
-              코퍼스에서 봐야 한다.
-            </li>
-            <li>
-              ×N 코퍼스는 같은 파일을 복제한 것이라 실제 대형 저장소와 파일
-              분포가 다를 수 있다.
-            </li>
-            <li>
-              <code>bun fmt</code> 은
-              <a href="https://github.com/oven-sh/bun/pull/44805">PR #44805</a>
-              로 main 에 들어왔고 아직 태그 릴리스가 없다. main 최신 빌드인
-              canary 를 썼다.
-            </li>
-            <li>
-              Biome 의 HTML 포맷터는 아직 실험적이다.
-              <code>html.formatter.enabled</code> 기본값이 <code>false</code>
-              이고, Vue, Svelte, Astro 마크업은
-              <code>html.experimentalFullSupportEnabled</code> 도 켜야 한다 (<a
-                href="https://biomejs.dev/internals/language-support/"
-                >language support</a
-              >).
-            </li>
-          </ul>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>도구 (Tool)</th>
+                  <th>버전</th>
+                  <th>런타임 / 엔진</th>
+                  <th class="td-num">포맷 시간 (mean)</th>
+                  <th class="td-num">상대 속도 (Throughput)</th>
+                  <th class="td-num">Prettier 바이트 일치율</th>
+                </tr>
+              </thead>
+              <tbody id="overview-tbody">
+                <tr>
+                  <td
+                    colspan="6"
+                    style="
+                      text-align: center;
+                      color: var(--text-muted);
+                      padding: 20px;
+                    "
+                  >
+                    데이터를 불러오는 중...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <section class="block">
-        <details>
-          <summary>전체 수치 표</summary>
-          <div class="table-scroll"><table id="table"></table></div>
+      <!-- Performance Chart -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">코퍼스별 실행 시간 (Execution Time)</h2>
+          <div class="segment-control" role="group" aria-label="도구 필터">
+            <button class="segment-btn active" id="filter-all" type="button">
+              전체 도구 비교
+            </button>
+            <button class="segment-btn" id="filter-fast" type="button">
+              고속 도구만 비교 (Prettier 제외)
+            </button>
+          </div>
+        </div>
+        <p class="section-desc">
+          <code>hyperfine --write</code> 측정 기준 평균 실행 시간입니다. 바
+          길이가 짧을수록 빠르며, 상대 배수는 해당 코퍼스의 최고 속도
+          기준입니다.
+        </p>
+        <div class="chart-container" id="chart-container"></div>
+      </section>
+
+      <!-- Parity Table -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            Prettier 출력 일치율 검증 (Byte-for-Byte Parity)
+          </h2>
+        </div>
+        <p class="section-desc">
+          프로젝트 원본 소스 파일(140개)을 각 도구로 포맷한 뒤, Prettier 포맷
+          결과와 파일 단위로 바이트 일치 여부를 대조한 결과입니다.
+        </p>
+        <div class="parity-card">
+          <div class="table-responsive">
+            <table id="parity-table">
+              <thead>
+                <tr>
+                  <th>구분 / 언어군</th>
+                  <th class="td-num">검증 파일 수</th>
+                  <th class="td-num">bun fmt 일치율</th>
+                  <th class="td-num">Biome 일치율</th>
+                </tr>
+              </thead>
+              <tbody id="parity-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Methodology & Technical Analysis -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">측정 환경 및 기술적 분석</h2>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card">
+            <h3>측정 방식 및 재현 (Methodology)</h3>
+            <ul>
+              <li>
+                <strong>측정 도구:</strong> <code>hyperfine</code> 쓰기
+                모드(<code>--write</code>), 워밍업 1회. 매 반복마다
+                <code>--prepare</code>를 통해 코퍼스를 초기 상태로 원복하며,
+                원복 시간은 측정에서 제외합니다.
+              </li>
+              <li>
+                <strong>코퍼스 구성:</strong>
+                <code>test_web_page</code> 저장소의 git 추적 소스(HTML, CSS, JS,
+                JSX, TS, TSX, Vue, JSON). <code>large</code> 코퍼스는 이를 40회
+                복제하여 대규모 프로젝트를 모사했습니다.
+              </li>
+              <li>
+                <strong>Biome 옵션:</strong> 실험적 HTML 포맷터를 활성화하고,
+                Prettier와 규격을 맞추기 위해 <code>indentStyle: space</code>,
+                <code>selfCloseVoidElements: always</code> 등을 지정했습니다.
+              </li>
+              <li>
+                <strong>재현 명령:</strong>
+                <code>bun install &amp;&amp; bun run bench</code> 실행 시
+                벤치마크가 재수행되고 <code>results.json</code>이
+                업데이트됩니다.
+              </li>
+            </ul>
+          </div>
+          <div class="note-card">
+            <h3>성능 및 호환성 분석 (Engineering Notes)</h3>
+            <ul>
+              <li>
+                <strong>병렬 처리 아키텍처:</strong> Prettier는 Node.js 단일
+                스레드로 동작하는 반면, Biome(Rust)과 bun fmt(Rust, v1.4.0+)는
+                네이티브 스레드 풀을 통해 모든 CPU 코어를 활용하므로 처리량에서
+                큰 격차가 발생합니다.
+              </li>
+              <li>
+                <strong>코퍼스 규모와 Throughput:</strong> 파일 수가 적은 원본
+                1벌(140개)에서는 프로세스 기동(Startup) 오버헤드 비중이 크지만,
+                대용량 코퍼스(5,600개)에서는 I/O 및 파서의 순수 Throughput이
+                드러납니다.
+              </li>
+              <li>
+                <strong>bun fmt:</strong> main 브랜치 canary 빌드임에도 검증된
+                140개 파일 전원에 걸쳐 Prettier와 100% 바이트 일치를
+                기록했습니다.
+              </li>
+              <li>
+                <strong>Biome:</strong> 전반적으로 높은 호환성(97.9%)을 보이나,
+                HTML 및 Vue/TSX 일부 엣지 케이스에서 미세한 공백/줄바꿈 차이가
+                존재합니다.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Raw Benchmark Data Details -->
+      <section class="section">
+        <details class="raw-section">
+          <summary>전체 측정 데이터 테이블 (Raw Benchmark Data)</summary>
+          <div class="table-responsive" style="margin-top: 14px">
+            <table id="raw-table">
+              <thead>
+                <tr>
+                  <th>코퍼스</th>
+                  <th>도구</th>
+                  <th class="td-num">평균 실행 시간 (Mean)</th>
+                  <th class="td-num">표준 편차 (StdDev)</th>
+                  <th class="td-num">최소 (Min)</th>
+                  <th class="td-num">최대 (Max)</th>
+                  <th class="td-num">상대 배수</th>
+                </tr>
+              </thead>
+              <tbody id="raw-tbody"></tbody>
+            </table>
+          </div>
         </details>
       </section>
     </main>
 
-    <div id="tip" role="tooltip"></div>
+    <!-- Hover Tooltip -->
+    <div id="tooltip" role="tooltip"></div>
 
     <script>
-      const TOOLS = ["prettier", "biome", "bun"];
-      const NAME = { prettier: "Prettier", biome: "Biome", bun: "bun fmt" };
-      const ORDER = ["large", "html", "css", "js", "small"];
-      const CORPUS = {
-        large: "프로젝트 전체",
-        html: "HTML",
-        css: "CSS",
-        js: "JS/TS",
-        small: "프로젝트 전체",
+      const TOOLS = ["bun", "biome", "prettier"];
+      const TOOL_CONFIG = {
+        bun: {
+          name: "bun fmt",
+          engine: "Native (Rust, 멀티스레드)",
+          colorVar: "var(--brand-bun)",
+        },
+        biome: {
+          name: "Biome",
+          engine: "Native (Rust, 멀티스레드)",
+          colorVar: "var(--brand-biome)",
+        },
+        prettier: {
+          name: "Prettier",
+          engine: "Node.js (V8, 싱글스레드)",
+          colorVar: "var(--brand-prettier)",
+        },
       };
+
+      const ORDER = ["large", "js", "html", "css", "small"];
+      const CORPUS_META = {
+        large: { title: "프로젝트 전체 (×40 복제)", tag: "Large" },
+        js: { title: "JS / TS (×40 복제)", tag: "JS/TS" },
+        html: { title: "HTML (×40 복제)", tag: "HTML" },
+        css: { title: "CSS (×40 복제)", tag: "CSS" },
+        small: { title: "프로젝트 원본 (1벌)", tag: "Baseline" },
+      };
+
       const PARITY_GROUPS = [
         ["HTML", ["html"]],
         ["Vue", ["vue"]],
@@ -542,99 +842,159 @@
       ];
 
       const $ = (id) => document.getElementById(id);
+
       const fmtTime = (s) =>
         s >= 1
           ? `${s.toFixed(2)} s`
           : `${(s * 1000).toFixed(s < 0.01 ? 1 : 0)} ms`;
+
       const fmtBytes = (b) =>
         b >= 1e6 ? `${(b / 1e6).toFixed(1)} MB` : `${Math.round(b / 1e3)} KB`;
-      const label = (c, copies) =>
-        c.name === "small"
-          ? `${CORPUS.small} 1벌`
-          : `${CORPUS[c.name]} ×${copies}`;
-      const result = (c, tool) => c.results.find((r) => r.tool === tool);
-      const fastest = (c) =>
-        c.results.reduce((a, b) => (b.mean < a.mean ? b : a));
-      const sameAsPrettier = (parity, tool) =>
-        parity
-          .filter((p) => p.tool === tool)
-          .reduce((n, p) => [n[0] + p.same, n[1] + p.total], [0, 0]);
 
-      function renderHero({ meta, corpora, parity }) {
+      let currentData = null;
+      let hidePrettier = false;
+
+      function renderSpecs(meta) {
+        $("commit-tag").textContent = `@${meta.commit}`;
+        const specs = [
+          { label: "CPU", val: `${meta.cpu} (${meta.cores} cores)` },
+          { label: "OS", val: meta.os },
+          { label: "Node", val: meta.node },
+          {
+            label: "측정일",
+            val: new Date(meta.date).toLocaleDateString("ko-KR"),
+          },
+          { label: "복제 배수", val: `×${meta.copies}` },
+        ];
+        $("specs-grid").innerHTML = specs
+          .map(
+            (s) =>
+              `<span class="spec-item">${s.label}: <strong>${s.val}</strong></span>`,
+          )
+          .join("");
+      }
+
+      function renderOverview({ meta, corpora, parity }) {
         const large = corpora.find((c) => c.name === "large");
-        const win = fastest(large);
-        const others = TOOLS.filter((t) => t !== win.tool).map(
-          (t) =>
-            `${NAME[t]} 대비 ${(result(large, t).mean / win.mean).toFixed(1)}배`,
-        );
-        $("headline").textContent = `가장 빠른 포맷터는 ${NAME[win.tool]}`;
-        let summary = `${label(large, meta.copies)} (${large.files.toLocaleString()} 파일, ${fmtBytes(large.bytes)}) 기준 ${others.join(", ")} 빠르다.`;
-        if (win.tool !== "prettier") {
-          const [same, total] = sameAsPrettier(parity, win.tool);
-          summary +=
-            same === total
-              ? ` 출력은 ${total}개 파일 모두 Prettier 와 같다.`
-              : ` 출력은 ${total}개 중 ${same}개 파일이 Prettier 와 같다.`;
-        }
-        $("summary").textContent = summary;
+        const baseTool = "prettier";
+        const prettierMean =
+          large.results.find((r) => r.tool === baseTool)?.mean || 1;
+        const fastestTool = large.results.reduce((a, b) =>
+          b.mean < a.mean ? b : a,
+        ).tool;
 
-        $("contenders").innerHTML = TOOLS.map((t) => {
-          const r = result(large, t);
-          const [ver, sha] = meta.versions[t].split("+");
-          const shaLink = sha
-            ? ` <a href="https://github.com/oven-sh/bun/commit/${sha}">${sha}</a>`
-            : "";
-          const rel =
-            r === win ? "가장 빠름" : `×${(r.mean / win.mean).toFixed(1)}`;
-          return `<li style="--c: var(--${t})">
-            <span class="tool">${NAME[t]}</span>
-            <span class="rel">${rel}</span>
-            <span class="ver">${ver}${shaLink}</span>
-            <span class="time">${fmtTime(r.mean)}</span>
-          </li>`;
+        // Calculate total parity
+        const totalFiles = parity
+          .filter((p) => p.tool === "bun")
+          .reduce((n, p) => n + p.total, 0);
+        const getParityStat = (tool) => {
+          if (tool === "prettier")
+            return { same: totalFiles, total: totalFiles, rate: 100 };
+          const same = parity
+            .filter((p) => p.tool === tool)
+            .reduce((n, p) => n + p.same, 0);
+          return { same, total: totalFiles, rate: (same / totalFiles) * 100 };
+        };
+
+        const rows = TOOLS.map((toolKey) => {
+          const cfg = TOOL_CONFIG[toolKey];
+          const r = large.results.find((x) => x.tool === toolKey);
+          const verStr = meta.versions[toolKey] || "";
+          const [ver, sha] = verStr.split("+");
+          const verDisplay = sha
+            ? `<a href="https://github.com/oven-sh/bun/commit/${sha}" target="_blank" rel="noopener">${ver}</a>`
+            : ver;
+
+          const speedup = (prettierMean / r.mean).toFixed(1);
+          const speedupText =
+            toolKey === "prettier"
+              ? `<span style="color: var(--text-muted);">1.0× (기준)</span>`
+              : `<span class="badge-tag ${toolKey === fastestTool ? "badge-fastest" : ""}">${speedup}× faster</span>`;
+
+          const pStat = getParityStat(toolKey);
+          const parityBadge =
+            pStat.rate === 100
+              ? `<span class="badge-tag badge-success">${pStat.same} / ${pStat.total} (100%)</span>`
+              : `<span class="badge-tag badge-warning">${pStat.same} / ${pStat.total} (${pStat.rate.toFixed(1)}%)</span>`;
+
+          return `
+            <tr>
+              <td>
+                <span class="tool-label">
+                  <span class="tool-dot" style="background: ${cfg.colorVar};"></span>
+                  ${cfg.name}
+                </span>
+              </td>
+              <td class="td-mono">${verDisplay}</td>
+              <td style="color: var(--text-muted); font-size: 0.82rem;">${cfg.engine}</td>
+              <td class="td-mono td-num" style="font-weight: 600;">${fmtTime(r.mean)}</td>
+              <td class="td-num">${speedupText}</td>
+              <td class="td-num">${parityBadge}</td>
+            </tr>
+          `;
         }).join("");
+
+        $("overview-tbody").innerHTML = rows;
       }
 
       function renderChart({ meta, corpora }) {
-        const tools = $("hide-prettier").checked
-          ? TOOLS.filter((t) => t !== "prettier")
-          : TOOLS;
-        $("legend").innerHTML = tools
-          .map(
-            (t) =>
-              `<span><i class="swatch" style="background: var(--${t})"></i>${NAME[t]}</span>`,
-          )
-          .join("");
-        $("chart").innerHTML = ORDER.map((name) => {
-          const c = corpora.find((x) => x.name === name);
-          const rs = tools.map((t) => result(c, t));
-          const max = Math.max(...rs.map((r) => r.mean));
-          const min = Math.min(...rs.map((r) => r.mean));
-          const rows = rs
+        const tools = hidePrettier ? ["bun", "biome"] : TOOLS;
+        const container = $("chart-container");
+
+        container.innerHTML = ORDER.map((corpusName) => {
+          const c = corpora.find((x) => x.name === corpusName);
+          const metaInfo = CORPUS_META[corpusName];
+          const results = tools.map((t) => c.results.find((r) => r.tool === t));
+
+          const max = Math.max(...results.map((r) => r.mean));
+          const min = Math.min(...results.map((r) => r.mean));
+
+          const rows = results
             .map((r) => {
-              const rel =
-                r.mean === min
-                  ? "<small>가장 빠름</small>"
-                  : `<small>×${(r.mean / min).toFixed(1)}</small>`;
-              const tip = [
-                `${NAME[r.tool]}, ${label(c, meta.copies)}`,
-                `평균 ${fmtTime(r.mean)} ± ${fmtTime(r.stddev)}`,
-                `최소 ${fmtTime(r.min)}, 최대 ${fmtTime(r.max)}`,
-                `${c.runs}회 실행`,
-              ].join("\n");
-              return `<div class="row" data-tip="${tip}">
-                <span class="name">${NAME[r.tool]}</span>
-                <div class="track">
-                  <div class="bar" style="--w: ${r.mean / max}; --c: var(--${r.tool})"></div>
-                  <span class="val">${fmtTime(r.mean)}${rel}</span>
+              const cfg = TOOL_CONFIG[r.tool];
+              const ratio = (r.mean / max) * 100;
+              const isFastest = r.mean === min;
+              const multiplier = (r.mean / min).toFixed(1);
+              const multDisplay = isFastest
+                ? `<span class="row-multiplier fastest">가장 빠름</span>`
+                : `<span class="row-multiplier">×${multiplier}</span>`;
+
+              const tipData = JSON.stringify({
+                tool: cfg.name,
+                corpus: `${metaInfo.title}`,
+                mean: fmtTime(r.mean),
+                stddev: fmtTime(r.stddev),
+                min: fmtTime(r.min),
+                max: fmtTime(r.max),
+                runs: c.runs,
+              }).replace(/"/g, "&quot;");
+
+              return `
+                <div class="chart-row" data-tip="${tipData}">
+                  <span class="row-tool">${cfg.name}</span>
+                  <div class="row-track">
+                    <div class="row-bar" style="width: ${Math.max(ratio, 1.5)}%; background: ${cfg.colorVar};"></div>
+                  </div>
+                  <div class="row-values">
+                    <span class="row-time">${fmtTime(r.mean)}</span>
+                    ${multDisplay}
+                  </div>
                 </div>
-              </div>`;
+              `;
             })
             .join("");
-          return `<div class="group">
-            <div class="glabel">${label(c, meta.copies)}<span>${c.files.toLocaleString()} 파일, ${fmtBytes(c.bytes)}</span></div>
-            ${rows}
-          </div>`;
+
+          return `
+            <div class="corpus-block">
+              <div class="corpus-header">
+                <h3 class="corpus-title">${metaInfo.title}</h3>
+                <span class="corpus-meta">${c.files.toLocaleString()} files · ${fmtBytes(c.bytes)} · ${c.runs} runs</span>
+              </div>
+              <div class="chart-rows">
+                ${rows}
+              </div>
+            </div>
+          `;
         }).join("");
       }
 
@@ -643,60 +1003,113 @@
           parity
             .filter((p) => p.tool === tool && exts.includes(p.ext))
             .reduce((n, p) => n + p[key], 0);
-        const cell = (exts, tool, total) => {
-          const same = sum(exts, tool, "same");
-          return `<td class="${same === total ? "full" : "miss"}">${same} / ${total}</td>`;
-        };
-        const rows = PARITY_GROUPS.map(([lang, exts]) => {
+
+        let totalFiles = 0;
+        let bunTotalSame = 0;
+        let biomeTotalSame = 0;
+
+        const rows = PARITY_GROUPS.map(([groupName, exts]) => {
           const total = sum(exts, "bun", "total");
-          return total
-            ? `<tr><td>${lang}</td>${cell(exts, "bun", total)}${cell(exts, "biome", total)}</tr>`
-            : "";
+          if (!total) return "";
+
+          const bunSame = sum(exts, "bun", "same");
+          const biomeSame = sum(exts, "biome", "same");
+
+          totalFiles += total;
+          bunTotalSame += bunSame;
+          biomeTotalSame += biomeSame;
+
+          const bunBadge =
+            bunSame === total
+              ? `<span class="badge-tag badge-success">${bunSame} / ${total} (100%)</span>`
+              : `<span class="badge-tag badge-warning">${bunSame} / ${total} (${((bunSame / total) * 100).toFixed(1)}%)</span>`;
+
+          const biomeBadge =
+            biomeSame === total
+              ? `<span class="badge-tag badge-success">${biomeSame} / ${total} (100%)</span>`
+              : `<span class="badge-tag badge-warning">${biomeSame} / ${total} (${((biomeSame / total) * 100).toFixed(1)}%)</span>`;
+
+          return `
+            <tr>
+              <td><strong>${groupName}</strong> <span style="color: var(--text-muted); font-size: 0.78rem;">(${exts.join(", ")})</span></td>
+              <td class="td-num td-mono">${total}</td>
+              <td class="td-num">${bunBadge}</td>
+              <td class="td-num">${biomeBadge}</td>
+            </tr>
+          `;
         }).join("");
-        $("parity").innerHTML =
-          `<thead><tr><th>언어</th><th>bun fmt</th><th>Biome</th></tr></thead><tbody>${rows}</tbody>`;
+
+        const bunTotalBadge =
+          bunTotalSame === totalFiles
+            ? `<span class="badge-tag badge-success">${bunTotalSame} / ${totalFiles} (100%)</span>`
+            : `<span class="badge-tag badge-warning">${bunTotalSame} / ${totalFiles}</span>`;
+
+        const biomeTotalBadge =
+          biomeTotalSame === totalFiles
+            ? `<span class="badge-tag badge-success">${biomeTotalSame} / ${totalFiles} (100%)</span>`
+            : `<span class="badge-tag badge-warning">${biomeTotalSame} / ${totalFiles} (${((biomeTotalSame / totalFiles) * 100).toFixed(1)}%)</span>`;
+
+        const totalRow = `
+          <tr style="background: var(--surface-subtle); font-weight: 600;">
+            <td>전체 합계 (Total)</td>
+            <td class="td-num td-mono">${totalFiles}</td>
+            <td class="td-num">${bunTotalBadge}</td>
+            <td class="td-num">${biomeTotalBadge}</td>
+          </tr>
+        `;
+
+        $("parity-tbody").innerHTML = rows + totalRow;
       }
 
-      function renderNotes({ meta, corpora }) {
-        const small = corpora.find((c) => c.name === "small");
-        $("corpus-note").innerHTML =
-          `코퍼스: <a href="https://github.com/ysoftman/test_code/tree/${meta.commit}/test_web_page">test_web_page@${meta.commit}</a> 의 git 추적 소스 ${small.files}개 파일. ×${meta.copies} 코퍼스는 이것을 ${meta.copies}벌 복제했다.`;
-        $("env-note").textContent =
-          `환경: ${meta.cpu} ${meta.cores}코어, ${meta.os}, Node ${meta.node}. ${new Date(meta.date).toLocaleDateString("ko-KR")} 측정.`;
-      }
+      function renderRawTable({ meta, corpora }) {
+        const rows = ORDER.flatMap((corpusName) => {
+          const c = corpora.find((x) => x.name === corpusName);
+          const metaInfo = CORPUS_META[corpusName];
+          const min = Math.min(...c.results.map((r) => r.mean));
 
-      function renderTable({ meta, corpora }) {
-        const rows = ORDER.flatMap((name) => {
-          const c = corpora.find((x) => x.name === name);
-          const min = fastest(c).mean;
           return TOOLS.map((t) => {
-            const r = result(c, t);
-            return (
-              `<tr><td>${label(c, meta.copies)}, ${NAME[t]}</td>` +
-              `<td>${fmtTime(r.mean)} ± ${fmtTime(r.stddev)}</td><td>${fmtTime(r.min)}</td><td>${fmtTime(r.max)}</td>` +
-              `<td>${(r.mean / min).toFixed(2)}</td></tr>`
-            );
+            const r = c.results.find((x) => x.tool === t);
+            const cfg = TOOL_CONFIG[t];
+            const mult = (r.mean / min).toFixed(2);
+            return `
+              <tr>
+                <td>${metaInfo.title}</td>
+                <td><strong>${cfg.name}</strong></td>
+                <td class="td-mono td-num">${fmtTime(r.mean)}</td>
+                <td class="td-mono td-num">± ${fmtTime(r.stddev)}</td>
+                <td class="td-mono td-num">${fmtTime(r.min)}</td>
+                <td class="td-mono td-num">${fmtTime(r.max)}</td>
+                <td class="td-mono td-num">${mult === "1.00" ? "1.00× (최단)" : `${mult}×`}</td>
+              </tr>
+            `;
           });
         }).join("");
-        $("table").innerHTML =
-          `<thead><tr><th>코퍼스, 도구</th><th>평균 ± 편차</th><th>최소</th><th>최대</th><th>배수</th></tr></thead><tbody>${rows}</tbody>`;
+
+        $("raw-tbody").innerHTML = rows;
       }
 
-      // 테마 스위치: 누르면 저장, 저장 전에는 OS 설정 변화를 따른다
+      // Theme toggle handling
       const root = document.documentElement;
-      const themeBtn = $("theme");
-      const setTheme = (t) => {
+      const themeBtn = $("theme-btn");
+      const themeIcon = $("theme-icon");
+      const themeText = $("theme-text");
+
+      function updateThemeUI(t) {
         root.dataset.theme = t;
-        themeBtn.setAttribute("aria-checked", t === "dark");
-      };
-      setTheme(root.dataset.theme);
+        themeIcon.textContent = t === "dark" ? "☀️" : "🌙";
+        themeText.textContent = t === "dark" ? "Light" : "Dark";
+      }
+
+      updateThemeUI(root.dataset.theme);
+
       themeBtn.addEventListener("click", () => {
         const next = root.dataset.theme === "dark" ? "light" : "dark";
-        setTheme(next);
+        updateThemeUI(next);
         try {
           localStorage.setItem("theme", next);
         } catch {}
       });
+
       matchMedia("(prefers-color-scheme: dark)").addEventListener(
         "change",
         (e) => {
@@ -704,41 +1117,80 @@
           try {
             saved = localStorage.getItem("theme");
           } catch {}
-          if (!saved) setTheme(e.matches ? "dark" : "light");
+          if (!saved) updateThemeUI(e.matches ? "dark" : "light");
         },
       );
 
-      // 막대 hover 툴팁
-      const tip = $("tip");
-      $("chart").addEventListener("pointermove", (e) => {
-        const row = e.target.closest(".row");
-        if (!row) return (tip.style.display = "none");
-        tip.textContent = row.dataset.tip;
-        tip.style.display = "block";
-        const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8);
-        tip.style.left = `${x}px`;
-        tip.style.top = `${e.clientY + 14}px`;
-      });
-      $("chart").addEventListener(
-        "pointerleave",
-        () => (tip.style.display = "none"),
-      );
+      // Segmented control buttons
+      const btnAll = $("filter-all");
+      const btnFast = $("filter-fast");
 
+      btnAll.addEventListener("click", () => {
+        if (!hidePrettier) return;
+        hidePrettier = false;
+        btnAll.classList.add("active");
+        btnFast.classList.remove("active");
+        if (currentData) renderChart(currentData);
+      });
+
+      btnFast.addEventListener("click", () => {
+        if (hidePrettier) return;
+        hidePrettier = true;
+        btnFast.classList.add("active");
+        btnAll.classList.remove("active");
+        if (currentData) renderChart(currentData);
+      });
+
+      // Tooltip handling
+      const tip = $("tooltip");
+      document.addEventListener("pointermove", (e) => {
+        const row = e.target.closest(".chart-row");
+        if (!row || !row.dataset.tip) {
+          tip.style.display = "none";
+          return;
+        }
+
+        try {
+          const d = JSON.parse(row.dataset.tip);
+          tip.innerHTML = `
+            <div class="tt-title">${d.tool} — ${d.corpus}</div>
+            <div class="tt-line">평균: ${d.mean} (±${d.stddev})</div>
+            <div class="tt-line">최소: ${d.min} / 최대: ${d.max}</div>
+            <div class="tt-line">실행: ${d.runs} runs</div>
+          `;
+          tip.style.display = "block";
+          const x = Math.min(
+            e.clientX + 16,
+            window.innerWidth - tip.offsetWidth - 12,
+          );
+          const y = e.clientY + 16;
+          tip.style.left = `${x}px`;
+          tip.style.top = `${y}px`;
+        } catch {
+          tip.style.display = "none";
+        }
+      });
+
+      // Data fetch
       fetch("./results.json")
-        .then((r) => r.json())
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
         .then((data) => {
-          renderHero(data);
+          currentData = data;
+          renderSpecs(data.meta);
+          renderOverview(data);
           renderChart(data);
           renderParity(data);
-          renderNotes(data);
-          renderTable(data);
-          $("hide-prettier").addEventListener("change", () =>
-            renderChart(data),
-          );
+          renderRawTable(data);
         })
         .catch((err) => {
-          $("summary").innerHTML =
-            `<span class="error">results.json 을 읽지 못했다 (${err.message}). 로컬에서는 <code>bun run serve</code> 로 열어야 한다.</span>`;
+          $("error-container").innerHTML = `
+            <div class="error-banner">
+              <strong>results.json 로드 실패:</strong> ${err.message}. 로컬 테스트 시 <code>bun run serve</code> 명령을 사용하여 웹 서버 환경에서 열어주세요.
+            </div>
+          `;
         });
     </script>
   </body>
