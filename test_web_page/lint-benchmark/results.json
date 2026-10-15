@@ -1,0 +1,478 @@
+{
+  "meta": {
+    "date": "2026-10-15T15:04:36Z",
+    "os": "macOS 26.6.2 (arm64)",
+    "cpu": "Apple M1 Max",
+    "cores": 10,
+    "node": "v26.10.0",
+    "commit": "2d3304ff",
+    "copies": 40,
+    "versions": {
+      "eslint": "10.12.0",
+      "typescript-eslint": "8.71.2",
+      "oxlint": "1.88.0",
+      "biome": "2.5.15",
+      "bun": "1.4.4-canary.1+5f5799ed1"
+    }
+  },
+  "rules": [
+    {
+      "eslint": "constructor-super",
+      "biome": "correctness/noInvalidConstructorSuper"
+    },
+    {
+      "eslint": "for-direction",
+      "biome": "correctness/useValidForDirection"
+    },
+    {
+      "eslint": "getter-return",
+      "biome": "suspicious/useGetterReturn"
+    },
+    {
+      "eslint": "no-async-promise-executor",
+      "biome": "suspicious/noAsyncPromiseExecutor"
+    },
+    {
+      "eslint": "no-case-declarations",
+      "biome": "correctness/noSwitchDeclarations"
+    },
+    {
+      "eslint": "no-class-assign",
+      "biome": "suspicious/noClassAssign"
+    },
+    {
+      "eslint": "no-compare-neg-zero",
+      "biome": "suspicious/noCompareNegZero"
+    },
+    {
+      "eslint": "no-const-assign",
+      "biome": "correctness/noConstAssign"
+    },
+    {
+      "eslint": "no-constant-binary-expression",
+      "biome": "suspicious/noConstantBinaryExpressions"
+    },
+    {
+      "eslint": "no-constant-condition",
+      "biome": "correctness/noConstantCondition"
+    },
+    {
+      "eslint": "no-control-regex",
+      "biome": "suspicious/noControlCharactersInRegex"
+    },
+    {
+      "eslint": "no-debugger",
+      "biome": "suspicious/noDebugger"
+    },
+    {
+      "eslint": "no-dupe-class-members",
+      "biome": "suspicious/noDuplicateClassMembers"
+    },
+    {
+      "eslint": "no-dupe-else-if",
+      "biome": "suspicious/noDuplicateElseIf"
+    },
+    {
+      "eslint": "no-dupe-keys",
+      "biome": "suspicious/noDuplicateObjectKeys"
+    },
+    {
+      "eslint": "no-duplicate-case",
+      "biome": "suspicious/noDuplicateCase"
+    },
+    {
+      "eslint": "no-empty",
+      "biome": "suspicious/noEmptyBlockStatements"
+    },
+    {
+      "eslint": "no-empty-character-class",
+      "biome": "correctness/noEmptyCharacterClassInRegex"
+    },
+    {
+      "eslint": "no-empty-pattern",
+      "biome": "correctness/noEmptyPattern"
+    },
+    {
+      "eslint": "no-ex-assign",
+      "biome": "suspicious/noCatchAssign"
+    },
+    {
+      "eslint": "no-extra-boolean-cast",
+      "biome": "complexity/noExtraBooleanCast"
+    },
+    {
+      "eslint": "no-fallthrough",
+      "biome": "suspicious/noFallthroughSwitchClause"
+    },
+    {
+      "eslint": "no-func-assign",
+      "biome": "suspicious/noFunctionAssign"
+    },
+    {
+      "eslint": "no-global-assign",
+      "biome": "suspicious/noGlobalAssign"
+    },
+    {
+      "eslint": "no-import-assign",
+      "biome": "suspicious/noImportAssign"
+    },
+    {
+      "eslint": "no-irregular-whitespace",
+      "biome": "suspicious/noIrregularWhitespace"
+    },
+    {
+      "eslint": "no-loss-of-precision",
+      "biome": "correctness/noPrecisionLoss"
+    },
+    {
+      "eslint": "no-misleading-character-class",
+      "biome": "suspicious/noMisleadingCharacterClass"
+    },
+    {
+      "eslint": "no-new-native-nonconstructor",
+      "biome": "correctness/noInvalidBuiltinInstantiation"
+    },
+    {
+      "eslint": "no-nonoctal-decimal-escape",
+      "biome": "correctness/noNonoctalDecimalEscape"
+    },
+    {
+      "eslint": "no-obj-calls",
+      "biome": "correctness/noGlobalObjectCalls"
+    },
+    {
+      "eslint": "no-prototype-builtins",
+      "biome": "suspicious/noPrototypeBuiltins"
+    },
+    {
+      "eslint": "no-redeclare",
+      "biome": "suspicious/noRedeclare"
+    },
+    {
+      "eslint": "no-regex-spaces",
+      "biome": "complexity/noAdjacentSpacesInRegex"
+    },
+    {
+      "eslint": "no-self-assign",
+      "biome": "correctness/noSelfAssign"
+    },
+    {
+      "eslint": "no-setter-return",
+      "biome": "correctness/noSetterReturn"
+    },
+    {
+      "eslint": "no-shadow-restricted-names",
+      "biome": "suspicious/noShadowRestrictedNames"
+    },
+    {
+      "eslint": "no-sparse-arrays",
+      "biome": "suspicious/noSparseArray"
+    },
+    {
+      "eslint": "no-this-before-super",
+      "biome": "correctness/noUnreachableSuper"
+    },
+    {
+      "eslint": "no-unassigned-vars",
+      "biome": "suspicious/noUnassignedVariables"
+    },
+    {
+      "eslint": "no-undef",
+      "biome": "correctness/noUndeclaredVariables"
+    },
+    {
+      "eslint": "no-unreachable",
+      "biome": "correctness/noUnreachable"
+    },
+    {
+      "eslint": "no-unsafe-finally",
+      "biome": "correctness/noUnsafeFinally"
+    },
+    {
+      "eslint": "no-unsafe-negation",
+      "biome": "suspicious/noUnsafeNegation"
+    },
+    {
+      "eslint": "no-unsafe-optional-chaining",
+      "biome": "correctness/noUnsafeOptionalChaining"
+    },
+    {
+      "eslint": "no-unused-labels",
+      "biome": "correctness/noUnusedLabels"
+    },
+    {
+      "eslint": "no-unused-vars",
+      "biome": "correctness/noUnusedVariables"
+    },
+    {
+      "eslint": "no-useless-backreference",
+      "biome": "suspicious/noUselessRegexBackrefs"
+    },
+    {
+      "eslint": "no-useless-catch",
+      "biome": "complexity/noUselessCatch"
+    },
+    {
+      "eslint": "no-useless-escape",
+      "biome": "complexity/noUselessEscapeInRegex"
+    },
+    {
+      "eslint": "no-with",
+      "biome": "suspicious/noWith"
+    },
+    {
+      "eslint": "preserve-caught-error",
+      "biome": "style/useErrorCause"
+    },
+    {
+      "eslint": "require-yield",
+      "biome": "correctness/useYield"
+    },
+    {
+      "eslint": "use-isnan",
+      "biome": "correctness/useIsNan"
+    },
+    {
+      "eslint": "valid-typeof",
+      "biome": "correctness/useValidTypeof"
+    }
+  ],
+  "excluded": [
+    {
+      "rule": "no-cond-assign",
+      "reason": "biome 대응 규칙 없음"
+    },
+    {
+      "rule": "no-delete-var",
+      "reason": "biome 대응 규칙 없음"
+    },
+    {
+      "rule": "no-dupe-args",
+      "reason": "oxlint 미지원"
+    },
+    {
+      "rule": "no-empty-static-block",
+      "reason": "biome 에서 no-empty 와 같은 규칙"
+    },
+    {
+      "rule": "no-invalid-regexp",
+      "reason": "biome 대응 규칙 없음"
+    },
+    {
+      "rule": "no-octal",
+      "reason": "oxlint 미지원"
+    },
+    {
+      "rule": "no-unexpected-multiline",
+      "reason": "biome 대응 규칙 없음"
+    },
+    {
+      "rule": "no-unused-private-class-members",
+      "reason": "biome 대응 규칙 없음"
+    },
+    {
+      "rule": "no-useless-assignment",
+      "reason": "biome 대응 규칙 없음"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "small",
+      "files": 79,
+      "bytes": 201862,
+      "runs": 10,
+      "results": [
+        {
+          "tool": "eslint",
+          "mean": 0.7563206667000001,
+          "stddev": 0.031148689661100973,
+          "min": 0.7105471670000001,
+          "max": 0.791314042
+        },
+        {
+          "tool": "eslint-mt",
+          "mean": 1.107602575,
+          "stddev": 0.051572247899944475,
+          "min": 1.053636833,
+          "max": 1.220286208
+        },
+        {
+          "tool": "oxlint",
+          "mean": 0.06188870820000001,
+          "stddev": 0.007589037826996279,
+          "min": 0.054190917000000005,
+          "max": 0.079068041
+        },
+        {
+          "tool": "biome",
+          "mean": 0.0299076292,
+          "stddev": 0.003699783935283032,
+          "min": 0.025267875000000002,
+          "max": 0.037181708
+        },
+        {
+          "tool": "bun",
+          "mean": 0.07244634600000001,
+          "stddev": 0.022533022597723773,
+          "min": 0.057515459000000005,
+          "max": 0.11920620900000001
+        }
+      ]
+    },
+    {
+      "name": "js",
+      "files": 920,
+      "bytes": 873840,
+      "runs": 5,
+      "results": [
+        {
+          "tool": "eslint",
+          "mean": 1.7349672000000003,
+          "stddev": 0.038747975246621325,
+          "min": 1.6902890830000001,
+          "max": 1.7928832090000002
+        },
+        {
+          "tool": "eslint-mt",
+          "mean": 1.8734893415999998,
+          "stddev": 0.16682531294475683,
+          "min": 1.740649875,
+          "max": 2.153237041
+        },
+        {
+          "tool": "oxlint",
+          "mean": 0.07438927520000001,
+          "stddev": 0.0014653267983940317,
+          "min": 0.072144125,
+          "max": 0.07609816700000001
+        },
+        {
+          "tool": "biome",
+          "mean": 0.13617500040000002,
+          "stddev": 0.04909150483457299,
+          "min": 0.09644158400000001,
+          "max": 0.21424029200000003
+        },
+        {
+          "tool": "bun",
+          "mean": 0.0810047582,
+          "stddev": 0.007745617323224547,
+          "min": 0.075562875,
+          "max": 0.094384458
+        }
+      ]
+    },
+    {
+      "name": "ts",
+      "files": 2240,
+      "bytes": 7200640,
+      "runs": 5,
+      "results": [
+        {
+          "tool": "eslint",
+          "mean": 6.7688376998,
+          "stddev": 0.12505829952230815,
+          "min": 6.6694615420000005,
+          "max": 6.980727541
+        },
+        {
+          "tool": "eslint-mt",
+          "mean": 4.3649747584,
+          "stddev": 0.23985371673629707,
+          "min": 4.146419042,
+          "max": 4.703408666
+        },
+        {
+          "tool": "oxlint",
+          "mean": 0.1321810666,
+          "stddev": 0.034854624167934084,
+          "min": 0.10816025000000001,
+          "max": 0.191488458
+        },
+        {
+          "tool": "biome",
+          "mean": 0.4609387002,
+          "stddev": 0.12497410499413232,
+          "min": 0.3671015,
+          "max": 0.6789163330000001
+        },
+        {
+          "tool": "bun",
+          "mean": 0.12740853340000002,
+          "stddev": 0.024848646678137874,
+          "min": 0.11444375000000001,
+          "max": 0.171790709
+        }
+      ]
+    },
+    {
+      "name": "large",
+      "files": 3160,
+      "bytes": 8074480,
+      "runs": 5,
+      "results": [
+        {
+          "tool": "eslint",
+          "mean": 8.4178571252,
+          "stddev": 0.6773177968702632,
+          "min": 8.006576542,
+          "max": 9.615866167
+        },
+        {
+          "tool": "eslint-mt",
+          "mean": 4.9463058336,
+          "stddev": 0.11141847396194308,
+          "min": 4.845808167,
+          "max": 5.119743667
+        },
+        {
+          "tool": "oxlint",
+          "mean": 0.15253261640000002,
+          "stddev": 0.033268886977405744,
+          "min": 0.127529458,
+          "max": 0.209342875
+        },
+        {
+          "tool": "biome",
+          "mean": 0.5750044916000001,
+          "stddev": 0.12304490688796052,
+          "min": 0.43711095800000005,
+          "max": 0.7237475830000001
+        },
+        {
+          "tool": "bun",
+          "mean": 0.1556212502,
+          "stddev": 0.02475512226352693,
+          "min": 0.135606375,
+          "max": 0.184318792
+        }
+      ]
+    }
+  ],
+  "parity": [
+    {
+      "count": 1,
+      "matched": 1,
+      "tool": "bun",
+      "rule": "no-undef"
+    },
+    {
+      "count": 28,
+      "matched": 28,
+      "tool": "bun",
+      "rule": "no-unused-vars"
+    },
+    {
+      "count": 1,
+      "matched": 1,
+      "tool": "eslint",
+      "rule": "no-undef"
+    },
+    {
+      "count": 28,
+      "matched": 28,
+      "tool": "eslint",
+      "rule": "no-unused-vars"
+    }
+  ]
+}
