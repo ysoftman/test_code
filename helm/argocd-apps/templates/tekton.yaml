@@ -1,0 +1,37 @@
+{{- if eq (index .Values "tekton" "enabled") true }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ index .Values "tekton" "name" }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ .Values.common.server }}
+    namespace: {{ index .Values "tekton" "namespace" }}
+  project: {{ .Values.common.project }}
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  # multi-source: 차트와 values 를 서로 다른 저장소에서 가져온다.
+  sources:
+    # 1) 차트: upstream helm repo 에서 버전 고정으로 받음
+    - repoURL: {{ index .Values "tekton" "source" "repoURL" }}
+      chart: {{ index .Values "tekton" "source" "chart" }}
+      targetRevision: {{ index .Values "tekton" "source" "targetRevision" }}
+      helm:
+        releaseName: {{ index .Values "tekton" "name" }}
+        # ↓ 2) 의 git 저장소에 있는 values 파일을 $values 로 참조
+        valueFiles: {{ index .Values "tekton" "valueFiles" }}
+        values: |
+          {{ toYaml (index .Values "tekton" "values") | nindent 10 }}
+    # 2) values: 내 git 저장소. ref 이름(values)으로 위에서 $values 로 가리킴
+    #    ref 소스는 manifest 를 만들지 않고 파일 참조용으로만 쓰인다.
+    - repoURL: {{ .Values.common.valuesRepo.repoURL }}
+      targetRevision: {{ index .Values "tekton" "valuesRevision" }}
+      ref: values
+{{- end }}
+

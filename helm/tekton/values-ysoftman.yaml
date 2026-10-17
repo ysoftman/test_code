@@ -1,0 +1,3 @@
+# cdf/tekton-pipeline chart 용 커스텀 values
+# chart 는 argocd multi-source 로 upstream(https://cdfoundation.github.io/tekton-helm-chart) 에서 받는다.
+# 현재는 chart 기본값을 그대로 쓰고, 바꿀 값만 여기에 추가한다.

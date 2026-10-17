@@ -55,3 +55,22 @@ vector:
   valuesRevision: HEAD
   values:
     test1: test1
+
+tekton:
+  enabled: true
+  name: tekton
+  # chart 가 리소스를 tekton-pipelines namespace 에 고정으로 설치하므로 destination 도 맞춘다.
+  namespace: tekton-pipelines
+  # git 에는 vendored chart 원본이 없으므로 chart 는 upstream helm repo 에서 받고,
+  # values 파일만 git(common.valuesRepo) 에서 $values ref 로 읽는다.
+  source:
+    repoURL: https://cdfoundation.github.io/tekton-helm-chart
+    chart: tekton-pipeline
+    targetRevision: 1.15.3
+  valueFiles:
+    - $values/helm/tekton/values-ysoftman.yaml
+  # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # tekton.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
+  values:
+    test1: test1
