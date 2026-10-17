@@ -8,9 +8,9 @@
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
-helm fetch argo/argo-cd --version 10.1.2
-tar zxvf argo-cd-10.1.2.tgz
-rm argo-cd-10.1.2.tgz
+helm fetch argo/argo-cd --version 10.10.5
+tar zxvf argo-cd-10.10.5.tgz
+rm argo-cd-10.10.5.tgz
 ```
 
 - ⚠️ helm 명령은 반드시 중첩된 `argo-cd/` (chart 루트) 에서 실행한다.

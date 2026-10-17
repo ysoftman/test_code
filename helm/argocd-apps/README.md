@@ -40,3 +40,4 @@ argocd app create argocd-apps \
 > ```bash
 > cd charts/argocd-apps
 > helm template . -f values-ysoftman.yaml
+> ```
