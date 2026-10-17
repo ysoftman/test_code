@@ -74,3 +74,16 @@ tekton:
   valuesRevision: HEAD
   values:
     test1: test1
+
+tekton-dashboard:
+  enabled: true
+  name: tekton-dashboard
+  # release yaml 이 리소스를 tekton-pipelines namespace 에 고정으로 설치하므로 destination 도 맞춘다.
+  namespace: tekton-pipelines
+  # 공식 helm chart 가 없어 git(common.valuesRepo) 의 kustomization 을 배포한다.
+  # dashboard 버전은 helm/tekton-dashboard/kustomization.yaml 의 release url 에서 관리한다.
+  source:
+    path: helm/tekton-dashboard
+    # 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+    # tekton-dashboard.source.targetRevision 을 바꾼다.
+    targetRevision: HEAD

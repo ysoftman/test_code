@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # tekton dashboard 는 공식 helm chart 가 없어 upstream release yaml 을 버전 고정 url 로 받는다.
+  # release.yaml 은 read-only 설치이고, 쓰기(실행/삭제 등) 기능이 필요하면 release-full.yaml 로 바꾼다.
+  - https://github.com/tektoncd/dashboard/releases/download/v0.73.0/release.yaml
+  - ingress.yaml

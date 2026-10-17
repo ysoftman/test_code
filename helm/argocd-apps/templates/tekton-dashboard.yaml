@@ -1,0 +1,30 @@
+{{- if eq (index .Values "tekton-dashboard" "enabled") true }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ index .Values "tekton-dashboard" "name" }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ .Values.common.server }}
+    namespace: {{ index .Values "tekton-dashboard" "namespace" }}
+  project: {{ .Values.common.project }}
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  # release yaml 의 dashboard CRD 에도 preserveUnknownFields: false 가 있어 tekton 앱과 같은 이유로 무시한다.
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jsonPointers:
+        - /spec/preserveUnknownFields
+  # 공식 helm chart 가 없어 이 git 저장소의 kustomization(upstream release yaml 원격 참조)을 배포한다.
+  source:
+    repoURL: {{ .Values.common.valuesRepo.repoURL }}
+    path: {{ index .Values "tekton-dashboard" "source" "path" }}
+    targetRevision: {{ index .Values "tekton-dashboard" "source" "targetRevision" }}
+{{- end }}
