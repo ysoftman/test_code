@@ -39,7 +39,6 @@ customConfig:
   api:
     enabled: true
     address: 0.0.0.0:8686
-    playground: true
   sources:
     # Pod의 File Log를 읽어옵니다.
     # 참고: https://vector.dev/docs/reference/configuration/sources/kubernetes_logs/
