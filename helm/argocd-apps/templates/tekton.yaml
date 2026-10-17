@@ -16,6 +16,13 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+  # chart 의 tekton CRD 에는 preserveUnknownFields: false 가 있는데, api 서버는 기본값(false)인 이 필드를 저장하지 않아
+  # live 에는 없으므로 항상 OutOfSync 가 된다.
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jsonPointers:
+        - /spec/preserveUnknownFields
   # multi-source: 차트와 values 를 서로 다른 저장소에서 가져온다.
   sources:
     # 1) 차트: upstream helm repo 에서 버전 고정으로 받음
