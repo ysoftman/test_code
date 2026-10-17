@@ -34,7 +34,6 @@ kubectl get pods -n kube-system -l app.kubernetes.io/name=traefik
 kubectl get ingressclass
 ```
 
-- ./argo-cd : argocd-cd 설치
-- ./argocd-apps : argocd applications(app)들을 관리하는 app
-- ./harbor : harbor app
-- ./nginx : nginx app
+- 프로비저닝
+  - ./argo-cd 에서 argocd-cd 설치
+  - ./argocd-apps 에서 argocd applications(app)들을 관리하는 app 설치
