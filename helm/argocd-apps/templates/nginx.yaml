@@ -31,6 +31,6 @@ spec:
     # 2) values: 내 git 저장소. ref 이름(values)으로 위에서 $values 로 가리킴
     #    ref 소스는 manifest 를 만들지 않고 파일 참조용으로만 쓰인다.
     - repoURL: {{ .Values.common.valuesRepo.repoURL }}
-      targetRevision: {{ .Values.common.valuesRepo.targetRevision }}
+      targetRevision: {{ index .Values "nginx" "valuesRevision" }}
       ref: values
 {{- end }}

@@ -1,10 +1,9 @@
 common:
   project: default
   server: https://kubernetes.default.svc
-  # multi-source app 의 values 파일 위치 ($values)
+  # multi-source app 의 values 파일 저장소 ($values). 브랜치는 앱별 valuesRevision 으로 지정한다.
   valuesRepo:
     repoURL: https://github.com/ysoftman/test_code
-    targetRevision: HEAD
 
 nginx:
   enabled: true
@@ -17,6 +16,9 @@ nginx:
     targetRevision: 25.2.5
   valueFiles:
     - $values/helm/nginx/values-ysoftman.yaml
+  # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # nginx.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
   values:
     test1: test1
 
@@ -31,6 +33,9 @@ harbor:
     targetRevision: 1.18.1
   valueFiles:
     - $values/helm/harbor/values-ysoftman.yaml
+  # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # harbor.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
   values:
     test1: test1
 
@@ -45,5 +50,8 @@ vector:
     targetRevision: 0.59.0
   valueFiles:
     - $values/helm/vector/values-ysoftman.yaml
+  # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # vector.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
   values:
     test1: test1
