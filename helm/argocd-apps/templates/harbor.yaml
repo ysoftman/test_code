@@ -16,14 +16,22 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  source:
-    repoURL: {{ index .Values "harbor" "source" "repoURL" }}
-    path: {{ index .Values "harbor" "source" "path" }}
-    targetRevision: {{ index .Values "harbor" "source" "targetRevision" }}
-    helm:
-      releaseName: {{ index .Values "harbor" "name" }}
-      valueFiles: {{ index .Values "harbor" "valueFiles" }}
-      values: |
-        {{ toYaml (index .Values "harbor" "values") | nindent 8 }}
+  # multi-source: 차트와 values 를 서로 다른 저장소에서 가져온다.
+  sources:
+    # 1) 차트: upstream helm repo 에서 버전 고정으로 받음
+    - repoURL: {{ index .Values "harbor" "source" "repoURL" }}
+      chart: {{ index .Values "harbor" "source" "chart" }}
+      targetRevision: {{ index .Values "harbor" "source" "targetRevision" }}
+      helm:
+        releaseName: {{ index .Values "harbor" "name" }}
+        # ↓ 2) 의 git 저장소에 있는 values 파일을 $values 로 참조
+        valueFiles: {{ index .Values "harbor" "valueFiles" }}
+        values: |
+          {{ toYaml (index .Values "harbor" "values") | nindent 10 }}
+    # 2) values: 내 git 저장소. ref 이름(values)으로 위에서 $values 로 가리킴
+    #    ref 소스는 manifest 를 만들지 않고 파일 참조용으로만 쓰인다.
+    - repoURL: {{ .Values.common.valuesRepo.repoURL }}
+      targetRevision: {{ .Values.common.valuesRepo.targetRevision }}
+      ref: values
 {{- end }}
 

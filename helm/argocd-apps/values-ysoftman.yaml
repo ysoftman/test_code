@@ -1,39 +1,49 @@
 common:
   project: default
   server: https://kubernetes.default.svc
+  # multi-source app 의 values 파일 위치 ($values)
+  valuesRepo:
+    repoURL: https://github.com/ysoftman/test_code
+    targetRevision: HEAD
 
 nginx:
   enabled: true
   name: nginx
+  # chart 는 upstream(bitnami OCI registry) 에서 받고, values 파일만 git 에서 $values ref 로 읽는다.
+  # OCI 라도 repoURL 에 oci:// 를 붙이지 않는다(붙이면 argocd 가 manifest 조회시 401 로 실패).
   source:
-    repoURL: https://github.com/ysoftman/test_code
-    path: helm/nginx
-    targetRevision: HEAD
+    repoURL: registry-1.docker.io/bitnamicharts
+    chart: nginx
+    targetRevision: 25.2.5
   valueFiles:
-    - values-ysoftman.yaml
+    - $values/helm/nginx/values-ysoftman.yaml
   values:
     test1: test1
 
 harbor:
   enabled: true
   name: harbor
+  # git 에는 vendored chart 원본이 없으므로 chart 는 upstream helm repo 에서 받고,
+  # values 파일만 git(common.valuesRepo) 에서 $values ref 로 읽는다.
   source:
-    repoURL: https://github.com/ysoftman/test_code
-    path: helm/harbor
-    targetRevision: HEAD
+    repoURL: https://helm.goharbor.io
+    chart: harbor
+    targetRevision: 1.18.1
   valueFiles:
-    - values-ysoftman.yaml
+    - $values/helm/harbor/values-ysoftman.yaml
   values:
     test1: test1
 
 vector:
   enabled: true
   name: vector
+  # git 에는 vendored chart 원본이 없으므로 chart 는 upstream helm repo 에서 받고,
+  # values 파일만 git(common.valuesRepo) 에서 $values ref 로 읽는다.
   source:
-    repoURL: https://github.com/ysoftman/test_code
-    path: helm/vector
-    targetRevision: HEAD
+    repoURL: https://helm.vector.dev
+    chart: vector
+    targetRevision: 0.59.0
   valueFiles:
-    - values-ysoftman.yaml
+    - $values/helm/vector/values-ysoftman.yaml
   values:
     test1: test1

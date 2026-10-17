@@ -1,7 +1,10 @@
 expose:
   type: ingress
   tls:
-    enabled: true
+    # certSource: auto 는 렌더링마다 인증서를 새로 만들어 argocd 에서 항상 OutOfSync 가 되고,
+    # none 은 chart 1.18.1 에서 harbor-core 의 ca-download 볼륨 secretName 이 비어 pod 스펙이 깨진다.
+    # 그래서 harbor 의 tls 는 끄고, 아래 traefik annotation(websecure + router.tls)으로 traefik 기본 인증서를 써서 https 를 처리한다.
+    enabled: false
     certSource: auto
     auto:
       commonName: ""
@@ -88,3 +91,25 @@ harborAdminPassword: "Harbor12345"
 # Run the migration job via helm hook
 enableMigrateHelmHook: false
 
+# argocd 는 helm template 으로 렌더링해서 chart 의 lookup(기존 secret 재사용)이 동작하지 않는다.
+# chart 가 secret 을 만들게 두면 렌더링마다 랜덤 값이 생성돼 항상 OutOfSync 가 되고,
+# selfHeal 이 secret 을 계속 바꾸면서 core/jobservice/registry pod 가 재시작된다.
+# 그래서 랜덤 생성되는 값은 git 에 두지 않고, 클러스터에 수동으로 만든 harbor-secrets 하나를 참조한다(README-ysoftman.md 참고).
+core:
+  # key: secret
+  existingSecret: harbor-secrets
+  # key: CSRF_KEY
+  existingXsrfSecret: harbor-secrets
+  # key: tls.key, tls.crt (token 서명용)
+  secretName: harbor-secrets
+
+jobservice:
+  # key: JOBSERVICE_SECRET
+  existingSecret: harbor-secrets
+
+registry:
+  # key: REGISTRY_HTTP_SECRET
+  existingSecret: harbor-secrets
+  credentials:
+    # key: REGISTRY_PASSWD, REGISTRY_HTPASSWD (htpasswd 사용자는 기본값 harbor_registry_user)
+    existingSecret: harbor-secrets

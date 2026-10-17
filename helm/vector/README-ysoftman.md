@@ -3,14 +3,16 @@
 - chart 원본 파일(Chart.yaml, templates/, values.yaml 등 tgz 압축 해제 결과물)은
   `.gitignore` 로 커밋 대상에서 제외되어 있다.
   git 으로 관리하는 파일은 `values-ysoftman.yaml`, `README-ysoftman.md`, `.gitignore` 뿐이다.
-- 클론 직후에는 chart 원본이 없으므로 아래 절차로 받아서 압축을 풀어야 한다.
+- argocd 배포는 upstream helm repo 의 chart 를 직접 쓴다(버전은 `argocd-apps/values-ysoftman.yaml` 의 `vector.source.targetRevision`).
+  버전 올릴 때는 그 값만 바꾸면 된다.
+- 수동 배포할 때는 chart 원본이 없으므로 아래 절차로 받아서 압축을 풀어야 한다.
 - vector 차트 새로 받을때(버전 업데이트시)
 
 ```bash
 helm repo add vector https://helm.vector.dev
 helm repo update
 helm pull vector/vector
-tar zxvf vector-0.48.0.tgz -C ../
+tar zxvf vector-{최신버전}.tgz -C ../
 ```
 
 - 수동 배포시
