@@ -14,5 +14,12 @@ kubectl apply -k .
 
 ```bash
 kubectl get pods -n tekton-pipelines -l app.kubernetes.io/part-of=tekton-dashboard
-# 브라우저: http://tekton-dashboard.ysoftman
+```
+
+- 로컬에 ingress 도메인 접근을 위해
+
+```bash
+# sudo vim /etc/hosts 수정
+# 127.0.0.1  tekton-dashboard.ysoftman
+http://tekton-dashboard.ysoftman
 ```
