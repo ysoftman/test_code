@@ -638,19 +638,6 @@ footer {
   color: var(--tag-rt);
   border: 1px solid color-mix(in srgb, var(--tag-rt) 45%, transparent);
 }
-.card-link {
-  color: inherit;
-}
-.card-link:hover {
-  text-decoration: none;
-  border-color: var(--accent);
-}
-.card-link b {
-  color: var(--accent);
-}
-.stat.soon {
-  opacity: 0.55;
-}
 
 /* Local cleanup table: reason chips */
 .how.dep {
