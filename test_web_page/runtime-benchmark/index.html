@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Runtime Benchmark: Node.js vs Deno vs Bun</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-subtle: #f1f5f9;
+        --border: #e2e8f0;
+        --border-subtle: #edf2f7;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --text-faint: #94a3b8;
+        --accent: #2563eb;
+        --accent-subtle: #eff6ff;
+
+        --brand-node: #3c873a;
+        --brand-deno: #475569;
+        --brand-bun: #d97706;
+
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Pretendard Variable", Pretendard, sans-serif;
+        --font-mono:
+          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+      }
+
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface-subtle: #1f242c;
+        --border: #30363d;
+        --border-subtle: #21262d;
+        --text: #e6edf3;
+        --text-muted: #8b949e;
+        --text-faint: #6e7681;
+        --accent: #58a6ff;
+        --accent-subtle: #121d2f;
+
+        --brand-node: #6cc24a;
+        --brand-deno: #cbd5e1;
+        --brand-bun: #fbbf24;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.86em;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        padding: 1px 5px;
+        border-radius: 4px;
+        color: inherit;
+      }
+
+      /* Top Navbar */
+      .navbar {
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .nav-inner {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-back {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-back:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-sep {
+        color: var(--border);
+      }
+      .nav-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .theme-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
+      }
+      .theme-btn:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+      }
+
+      /* Layout */
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+      .title-row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0;
+        line-height: 1.25;
+      }
+      .version-tag {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 2px 7px;
+        border-radius: 4px;
+      }
+      .page-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 0 0 16px;
+        max-width: 720px;
+      }
+
+      /* Specs Bar */
+      .specs-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+      .spec-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .spec-item + .spec-item::before {
+        content: "·";
+        color: var(--border);
+        margin-right: 2px;
+      }
+      .spec-item strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* Section Common */
+      .section {
+        margin-top: 36px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-desc {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin: 0 0 16px;
+      }
+
+      /* Summary Overview Table */
+      .summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .table-responsive {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        text-align: left;
+      }
+      th {
+        background: var(--surface-subtle);
+        border-bottom: 1px solid var(--border);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 9px 14px;
+        white-space: nowrap;
+      }
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border-subtle);
+        vertical-align: middle;
+      }
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .td-mono {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+      }
+      .td-num {
+        text-align: right;
+      }
+
+      .tool-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+      }
+      .tool-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .tool-ver {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        font-family: var(--font-mono);
+      }
+      .badge-tag {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-fastest {
+        background: var(--accent-subtle);
+        color: var(--accent);
+        font-weight: 600;
+        border: 1px solid var(--border);
+      }
+
+      /* Control Segmented Buttons */
+      .segment-control {
+        display: inline-flex;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px;
+        gap: 2px;
+      }
+      .segment-btn {
+        background: none;
+        border: 0;
+        color: var(--text-muted);
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        border-radius: 4px;
+        cursor: pointer;
+        transition:
+          background-color 0.1s,
+          color 0.1s;
+      }
+      .segment-btn.active {
+        background: var(--surface);
+        color: var(--text);
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Benchmark Chart */
+      .chart-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .corpus-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .corpus-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      .corpus-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      .corpus-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+      .chart-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .chart-row {
+        display: grid;
+        grid-template-columns: 100px 1fr 140px;
+        align-items: center;
+        gap: 12px;
+        cursor: default;
+      }
+      .row-tool {
+        font-size: 0.82rem;
+        font-weight: 500;
+        white-space: nowrap;
+        text-align: right;
+        color: var(--text);
+      }
+      .row-track {
+        height: 24px;
+        background: var(--surface-subtle);
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-subtle);
+      }
+      .row-bar {
+        height: 100%;
+        min-width: 3px;
+        border-radius: 3px;
+        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .row-values {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        white-space: nowrap;
+      }
+      .row-time {
+        font-weight: 600;
+        color: var(--text);
+      }
+      .row-multiplier {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .row-multiplier.fastest {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* Hover Tooltip */
+      #tooltip {
+        position: fixed;
+        z-index: 50;
+        pointer-events: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.78rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: none;
+        line-height: 1.5;
+        max-width: 280px;
+      }
+      #tooltip .tt-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 2px;
+      }
+      #tooltip .tt-line {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      /* Methodology & Technical Notes (2-Column Grid) */
+      .notes-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .note-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px;
+      }
+      .note-card h3 {
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin: 0 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .note-card ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+      .note-card li {
+        margin-bottom: 8px;
+      }
+      .note-card li:last-child {
+        margin-bottom: 0;
+      }
+      .note-card strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* Raw Details */
+      details.raw-section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+      details.raw-section summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        user-select: none;
+      }
+      details.raw-section summary:hover {
+        color: var(--text);
+      }
+      details.raw-section[open] summary {
+        margin-bottom: 14px;
+      }
+
+      /* Error Banner */
+      .error-banner {
+        padding: 14px 16px;
+        background: #fee2e2;
+        border: 1px solid #f87171;
+        border-radius: 8px;
+        color: #991b1b;
+        font-size: 0.88rem;
+        margin-bottom: 20px;
+      }
+      :root[data-theme="dark"] .error-banner {
+        background: #381515;
+        border-color: #7f1d1d;
+        color: #fca5a5;
+      }
+
+      @media (max-width: 720px) {
+        .chart-row {
+          grid-template-columns: 84px 1fr 100px;
+          gap: 8px;
+        }
+        .notes-grid {
+          grid-template-columns: 1fr;
+        }
+        .row-values {
+          flex-direction: column;
+          gap: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">runtime-benchmark</span>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon">◐</span>
+            <span id="theme-text">Theme</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div id="error-container"></div>
+
+      <!-- Page Header & Specs -->
+      <section class="page-header">
+        <div class="title-row">
+          <h1>Runtime Benchmark</h1>
+          <span class="version-tag" id="commit-tag">commit: loading...</span>
+        </div>
+        <p class="page-desc">
+          JavaScript 런타임(Node.js · Deno · Bun)에서 같은 스크립트를 실행했을
+          때의 시작 시간, 연산 · I/O 처리 시간, 피크 메모리, HTTP 처리량을
+          비교합니다.
+        </p>
+        <div class="specs-grid" id="specs-grid">
+          <span class="spec-item">환경 정보를 불러오는 중...</span>
+        </div>
+      </section>
+
+      <!-- Executive Overview Table -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">종합 결과 요약 (Benchmark Overview)</h2>
+        </div>
+        <p class="section-desc" id="overview-desc"></p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>런타임</th>
+                  <th>버전</th>
+                  <th>엔진</th>
+                  <th class="td-num">시작 시간</th>
+                  <th class="td-num">Node 대비 (연산 · I/O)</th>
+                  <th class="td-num">HTTP (기본 API)</th>
+                </tr>
+              </thead>
+              <tbody id="overview-tbody">
+                <tr>
+                  <td
+                    colspan="6"
+                    style="
+                      text-align: center;
+                      color: var(--text-muted);
+                      padding: 20px;
+                    "
+                  >
+                    데이터를 불러오는 중...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Workload Chart -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">워크로드별 결과 (Workloads)</h2>
+          <div class="segment-control" role="group" aria-label="지표 선택">
+            <button class="segment-btn active" id="metric-time" type="button">
+              실행 시간
+            </button>
+            <button class="segment-btn" id="metric-memory" type="button">
+              피크 메모리 (RSS)
+            </button>
+          </div>
+        </div>
+        <p class="section-desc">
+          <code>hyperfine -N</code> 으로 프로세스 시작부터 종료까지(시작 시간
+          포함) 잰 값입니다. 실행 시간은 평균, 메모리는 실행 중 피크 RSS 의
+          최댓값입니다. 바 길이가 짧을수록 좋으며, 상대 배수는 해당 워크로드의
+          최솟값 기준입니다.
+        </p>
+        <div class="chart-container" id="chart-container"></div>
+      </section>
+
+      <!-- HTTP Chart -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">HTTP 처리량 (Requests / sec)</h2>
+        </div>
+        <p class="section-desc" id="http-desc"></p>
+        <div class="chart-container" id="http-container"></div>
+      </section>
+
+      <!-- Methodology & Technical Analysis -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">측정 환경 및 기술적 분석</h2>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card">
+            <h3>측정 방식 및 재현 (Methodology)</h3>
+            <ul>
+              <li>
+                <strong>측정 도구:</strong> 워크로드는
+                <code>hyperfine -N</code>(시작 시간 워밍업 3회 · 30회, 나머지
+                워밍업 1회 · 10회), HTTP 는 <code>oha</code>(워밍업 2초 후
+                측정)를 씁니다. 메모리는 hyperfine 이 잰 피크 RSS 의
+                최댓값(워밍업 포함), HTTP 는 부하 직후 서버 프로세스 RSS 입니다.
+              </li>
+              <li>
+                <strong>같은 코드:</strong> HTTP 서버를 뺀 모든 워크로드는 표준
+                JS 와 <code>node:</code> 모듈만 쓰는 하나의 파일을 세 런타임에서
+                그대로 실행하고, 측정 전에 세 런타임의 출력이 같은지 먼저
+                확인합니다. HTTP 는 응답이 모두 200 일 때만 기록합니다.
+              </li>
+              <li>
+                <strong>실행 방식:</strong> <code>node 파일</code> ·
+                <code>deno run -A 파일</code> · <code>bun 파일</code>. 별도
+                플래그나 캐시 조작은 하지 않습니다.
+              </li>
+              <li>
+                <strong>재현 명령:</strong> <code>bun run bench</code> 실행 시
+                벤치마크가 재수행되고 <code>results.json</code>이
+                업데이트됩니다.
+              </li>
+            </ul>
+          </div>
+          <div class="note-card">
+            <h3>결과 해석 (Engineering Notes)</h3>
+            <ul>
+              <li>
+                <strong>엔진:</strong> Node.js · Deno 는 V8(버전은 서로 다름),
+                Bun 은 JavaScriptCore 입니다. V8 기반인 Node.js 와 Deno 는 순수
+                연산(재귀 · JSON · 정렬)에서 차이가 작고, Bun 과의 차이는 대부분
+                엔진 차이입니다.
+              </li>
+              <li>
+                <strong>TS 실행:</strong> 세 런타임 모두 <code>.ts</code> 를
+                바로 실행하지만, Node.js 는 실행할 때마다 타입을 지우는 단계가
+                시작 시간에 더해집니다. Deno 는 변환 결과를
+                <code>DENO_DIR</code> 에 캐시해 워밍업 이후 <code>.js</code> 와
+                차이가 거의 없습니다.
+              </li>
+              <li>
+                <strong>네이티브 비중이 큰 작업:</strong> 해시는 세 런타임 모두
+                네이티브 코드로 처리하고, 파일 I/O 는 시간 대부분이 시스템
+                콜(sys)이라 런타임 간 차이가 작습니다. 남는 차이는 대부분 시작
+                시간 차이입니다.
+              </li>
+              <li>
+                <strong>HTTP:</strong> <code>Deno.serve</code>(Rust hyper) ·
+                <code>Bun.serve</code>(uWebSockets) 는
+                <code>node:http</code> 보다 처리량이 높습니다.
+                <code>node:http</code> 호환 레이어는 런타임마다 구현이 달라,
+                같은 코드라도 결과가 기본 API 와 크게 다를 수 있습니다.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Raw Benchmark Data Details -->
+      <section class="section">
+        <details class="raw-section">
+          <summary>전체 측정 데이터 테이블 (Raw Benchmark Data)</summary>
+          <div class="table-responsive" style="margin-top: 14px">
+            <table>
+              <thead>
+                <tr>
+                  <th>워크로드</th>
+                  <th>런타임</th>
+                  <th class="td-num">평균 (Mean)</th>
+                  <th class="td-num">표준 편차</th>
+                  <th class="td-num">최소</th>
+                  <th class="td-num">최대</th>
+                  <th class="td-num">user / sys</th>
+                  <th class="td-num">피크 RSS</th>
+                  <th class="td-num">상대 배수</th>
+                </tr>
+              </thead>
+              <tbody id="raw-tbody"></tbody>
+            </table>
+          </div>
+          <div class="table-responsive" style="margin-top: 14px">
+            <table>
+              <thead>
+                <tr>
+                  <th>HTTP API</th>
+                  <th>런타임</th>
+                  <th class="td-num">처리량</th>
+                  <th class="td-num">지연 p50</th>
+                  <th class="td-num">지연 p99</th>
+                  <th class="td-num">성공률</th>
+                  <th class="td-num">서버 RSS</th>
+                </tr>
+              </thead>
+              <tbody id="http-raw-tbody"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <!-- Hover Tooltip -->
+    <div id="tooltip" role="tooltip"></div>
+
+    <script>
+      const TOOLS = ["node", "deno", "bun"];
+      const TOOL_CONFIG = {
+        node: { name: "Node.js", colorVar: "var(--brand-node)" },
+        deno: { name: "Deno", colorVar: "var(--brand-deno)" },
+        bun: { name: "Bun", colorVar: "var(--brand-bun)" },
+      };
+
+      const WORKLOADS = {
+        startup: ["시작 시간", "console.log 한 줄 — 기동 + 종료"],
+        "startup-ts": ["TS 시작 시간", "타입 주석이 있는 .ts 를 바로 실행"],
+        fib: ["재귀 호출", "fib(38) — JIT 함수 호출 성능"],
+        json: ["JSON", "10만 객체 stringify → parse × 10"],
+        sort: ["정렬", "100만 객체 비교 정렬 + 30만 문자열 정렬"],
+        crypto: ["해시", "node:crypto sha256 512 MB"],
+        fs: ["파일 I/O", "node:fs 동기 API — 4 KB × 5000 쓰기 · 읽기 · 삭제"],
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      const fmtTime = (s) =>
+        s >= 1
+          ? `${s.toFixed(2)} s`
+          : `${(s * 1000).toFixed(s < 0.01 ? 1 : 0)} ms`;
+      const fmtMem = (b) => `${Math.round(b / 2 ** 20)} MB`;
+      const fmtRps = (n) => `${Math.round(n).toLocaleString()} req/s`;
+      const fmtMs = (s) => `${(s * 1000).toFixed(2)} ms`;
+      const geomean = (xs) =>
+        Math.exp(xs.reduce((a, x) => a + Math.log(x), 0) / xs.length);
+
+      let currentData = null;
+      let metric = "mean";
+
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      const tipAttr = (title, lines) => esc(JSON.stringify({ title, lines }));
+
+      // rows: [{tool, value, label, tip}], lowerIsBetter 면 최솟값, 아니면 최댓값이 기준
+      function barRows(rows, lowerIsBetter) {
+        const max = Math.max(...rows.map((r) => r.value));
+        const best = lowerIsBetter
+          ? Math.min(...rows.map((r) => r.value))
+          : max;
+        return rows
+          .map((r) => {
+            const cfg = TOOL_CONFIG[r.tool];
+            const rel = lowerIsBetter
+              ? `×${(r.value / best).toFixed(1)}`
+              : `${Math.round((r.value / best) * 100)}%`;
+            const mult =
+              r.value === best
+                ? `<span class="row-multiplier fastest">${lowerIsBetter ? "최소" : "최대"}</span>`
+                : `<span class="row-multiplier">${rel}</span>`;
+            return `
+              <div class="chart-row" data-tip="${r.tip}">
+                <span class="row-tool">${cfg.name}</span>
+                <div class="row-track">
+                  <div class="row-bar" style="width: ${Math.max((r.value / max) * 100, 1.5)}%; background: ${cfg.colorVar};"></div>
+                </div>
+                <div class="row-values">
+                  <span class="row-time">${r.label}</span>
+                  ${mult}
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      const block = (title, meta, rows) => `
+        <div class="corpus-block">
+          <div class="corpus-header">
+            <h3 class="corpus-title">${title}</h3>
+            <span class="corpus-meta">${meta}</span>
+          </div>
+          <div class="chart-rows">${rows}</div>
+        </div>
+      `;
+
+      const httpOf = (http, tool, api) =>
+        http.results.find((r) => r.tool === tool && r.api === api);
+      const nativeApi = {
+        node: "node:http",
+        deno: "Deno.serve",
+        bun: "Bun.serve",
+      };
+
+      function renderSpecs({ meta, http }) {
+        $("commit-tag").textContent = `@${meta.commit}`;
+        const specs = [
+          { label: "CPU", val: `${meta.cpu} (${meta.cores} cores)` },
+          { label: "OS", val: meta.os },
+          {
+            label: "측정일",
+            val: new Date(meta.date).toLocaleDateString("ko-KR"),
+          },
+          { label: "HTTP 부하", val: `${http.conns} conns · ${http.secs}s` },
+        ];
+        $("specs-grid").innerHTML = specs
+          .map(
+            (s) =>
+              `<span class="spec-item">${s.label}: <strong>${s.val}</strong></span>`,
+          )
+          .join("");
+      }
+
+      // 시작 시간 워크로드는 별도 열이 있고 다른 워크로드 시간에도 이미 들어 있으므로 뺀다
+      const computeOf = (workloads) =>
+        workloads.filter((w) => !w.name.startsWith("startup"));
+
+      // 각 워크로드에서 node 평균 / 런타임 평균 의 기하평균 (1 보다 크면 node 보다 빠름)
+      const speedVsNode = (workloads, tool) =>
+        geomean(
+          computeOf(workloads).map((w) => {
+            const get = (t) => w.results.find((r) => r.tool === t).mean;
+            return get("node") / get(tool);
+          }),
+        );
+
+      const fmtSpeed = (x) =>
+        x >= 1 ? `${x.toFixed(2)}× faster` : `${(1 / x).toFixed(2)}× slower`;
+
+      function renderOverview({ meta, workloads, http }) {
+        $("overview-desc").textContent =
+          `시작 시간은 console.log 한 줄 스크립트, Node 대비는 시작 시간 워크로드를 뺀 ${computeOf(workloads).length}개 워크로드 실행 시간 비율의 기하평균(각 시간에 시작 시간 포함), HTTP 는 각 런타임 기본 서버 API 의 초당 요청 수입니다.`;
+        const startup = workloads.find((w) => w.name === "startup");
+        const fastestStart = startup.results.reduce((a, b) =>
+          b.mean < a.mean ? b : a,
+        ).tool;
+        const bestRps = Math.max(
+          ...TOOLS.map((t) => httpOf(http, t, nativeApi[t]).rps),
+        );
+
+        $("overview-tbody").innerHTML = TOOLS.map((tool) => {
+          const cfg = TOOL_CONFIG[tool];
+          const start = startup.results.find((r) => r.tool === tool).mean;
+          const speed = speedVsNode(workloads, tool);
+          const rps = httpOf(http, tool, nativeApi[tool]).rps;
+          const speedCell =
+            tool === "node"
+              ? `<span style="color: var(--text-muted);">1.0× (기준)</span>`
+              : `<span class="badge-tag">${fmtSpeed(speed)}</span>`;
+          return `
+            <tr>
+              <td>
+                <span class="tool-label">
+                  <span class="tool-dot" style="background: ${cfg.colorVar};"></span>
+                  ${cfg.name}
+                </span>
+              </td>
+              <td class="td-mono">${meta.versions[tool]}</td>
+              <td style="color: var(--text-muted); font-size: 0.82rem;">${meta.engines[tool]}</td>
+              <td class="td-mono td-num"><span class="${tool === fastestStart ? "badge-tag badge-fastest" : ""}">${fmtTime(start)}</span></td>
+              <td class="td-num">${speedCell}</td>
+              <td class="td-mono td-num"><span class="${rps === bestRps ? "badge-tag badge-fastest" : ""}">${fmtRps(rps)}</span>
+                <div style="color: var(--text-muted); font-size: 0.75rem;">${nativeApi[tool]}</div></td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function renderChart({ workloads }) {
+        $("chart-container").innerHTML = workloads
+          .map((w) => {
+            const [title, desc] = WORKLOADS[w.name] ?? [w.name, ""];
+            const rows = TOOLS.map((tool) => {
+              const r = w.results.find((x) => x.tool === tool);
+              return {
+                tool,
+                value: r[metric],
+                label: metric === "mean" ? fmtTime(r.mean) : fmtMem(r.memory),
+                tip: tipAttr(`${TOOL_CONFIG[tool].name} — ${title}`, [
+                  `평균: ${fmtTime(r.mean)} (±${fmtTime(r.stddev)})`,
+                  `최소: ${fmtTime(r.min)} / 최대: ${fmtTime(r.max)}`,
+                  `user ${fmtTime(r.user)} · sys ${fmtTime(r.system)}`,
+                  `피크 RSS: ${fmtMem(r.memory)}`,
+                  `실행: ${w.runs} runs`,
+                ]),
+              };
+            });
+            return block(
+              `${title} <span class="tool-ver">${w.name}</span>`,
+              `${desc} · ${w.runs} runs`,
+              barRows(rows, true),
+            );
+          })
+          .join("");
+      }
+
+      function renderHttp({ http }) {
+        $("http-desc").innerHTML =
+          `<code>oha -c ${http.conns} -z ${http.secs}s</code> 로 <code>GET /</code>(응답 <code>hello</code>)를 보낸 초당 요청 수입니다. 바가 길수록 빠르며, 퍼센트는 최댓값 기준입니다. 부하 생성기와 서버가 같은 머신에서 CPU 를 나눠 씁니다.`;
+        const groups = [
+          [
+            "런타임 기본 API",
+            "Bun.serve · Deno.serve · node:http",
+            TOOLS.map((t) => httpOf(http, t, nativeApi[t])),
+          ],
+          [
+            "node:http 호환 레이어",
+            "세 런타임 모두 같은 node:http 코드",
+            TOOLS.map((t) => httpOf(http, t, "node:http")),
+          ],
+        ];
+        $("http-container").innerHTML = groups
+          .map(([title, meta, results]) =>
+            block(
+              title,
+              meta,
+              barRows(
+                results.map((r) => ({
+                  tool: r.tool,
+                  value: r.rps,
+                  label: fmtRps(r.rps),
+                  tip: tipAttr(`${TOOL_CONFIG[r.tool].name} — ${r.api}`, [
+                    `처리량: ${fmtRps(r.rps)}`,
+                    `지연 p50: ${fmtMs(r.p50)} / p99: ${fmtMs(r.p99)}`,
+                    `성공률: ${(r.successRate * 100).toFixed(1)}%`,
+                    `서버 RSS: ${fmtMem(r.memory)}`,
+                  ]),
+                })),
+                false,
+              ),
+            ),
+          )
+          .join("");
+      }
+
+      function renderRawTable({ workloads, http }) {
+        $("raw-tbody").innerHTML = workloads
+          .flatMap((w) => {
+            const min = Math.min(...w.results.map((r) => r.mean));
+            return TOOLS.map((t) => {
+              const r = w.results.find((x) => x.tool === t);
+              const mult = (r.mean / min).toFixed(2);
+              return `
+                <tr>
+                  <td>${WORKLOADS[w.name]?.[0] ?? w.name}</td>
+                  <td><strong>${TOOL_CONFIG[t].name}</strong></td>
+                  <td class="td-mono td-num">${fmtTime(r.mean)}</td>
+                  <td class="td-mono td-num">± ${fmtTime(r.stddev)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.min)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.max)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.user)} / ${fmtTime(r.system)}</td>
+                  <td class="td-mono td-num">${fmtMem(r.memory)}</td>
+                  <td class="td-mono td-num">${mult === "1.00" ? "1.00× (최단)" : `${mult}×`}</td>
+                </tr>
+              `;
+            });
+          })
+          .join("");
+        $("http-raw-tbody").innerHTML = http.results
+          .map(
+            (r) => `
+              <tr>
+                <td class="td-mono">${r.api}</td>
+                <td><strong>${TOOL_CONFIG[r.tool].name}</strong></td>
+                <td class="td-mono td-num">${fmtRps(r.rps)}</td>
+                <td class="td-mono td-num">${fmtMs(r.p50)}</td>
+                <td class="td-mono td-num">${fmtMs(r.p99)}</td>
+                <td class="td-mono td-num">${(r.successRate * 100).toFixed(1)}%</td>
+                <td class="td-mono td-num">${fmtMem(r.memory)}</td>
+              </tr>
+            `,
+          )
+          .join("");
+      }
+
+      // Theme toggle handling
+      const root = document.documentElement;
+      const themeIcon = $("theme-icon");
+      const themeText = $("theme-text");
+
+      function updateThemeUI(t) {
+        root.dataset.theme = t;
+        themeIcon.textContent = t === "dark" ? "☀️" : "🌙";
+        themeText.textContent = t === "dark" ? "Light" : "Dark";
+      }
+
+      updateThemeUI(root.dataset.theme);
+
+      $("theme-btn").addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        updateThemeUI(next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
+
+      matchMedia("(prefers-color-scheme: dark)").addEventListener(
+        "change",
+        (e) => {
+          let saved = null;
+          try {
+            saved = localStorage.getItem("theme");
+          } catch {}
+          if (!saved) updateThemeUI(e.matches ? "dark" : "light");
+        },
+      );
+
+      // Segmented control buttons
+      const btnTime = $("metric-time");
+      const btnMem = $("metric-memory");
+      const setMetric = (m) => {
+        if (metric === m) return;
+        metric = m;
+        btnTime.classList.toggle("active", m === "mean");
+        btnMem.classList.toggle("active", m === "memory");
+        if (currentData) renderChart(currentData);
+      };
+      btnTime.addEventListener("click", () => setMetric("mean"));
+      btnMem.addEventListener("click", () => setMetric("memory"));
+
+      // Tooltip handling
+      const tip = $("tooltip");
+      document.addEventListener("pointermove", (e) => {
+        const row = e.target.closest(".chart-row");
+        if (!row || !row.dataset.tip) {
+          tip.style.display = "none";
+          return;
+        }
+        const d = JSON.parse(row.dataset.tip);
+        tip.replaceChildren(
+          ...[d.title, ...d.lines].map((text, i) => {
+            const div = document.createElement("div");
+            div.className = i ? "tt-line" : "tt-title";
+            div.textContent = text;
+            return div;
+          }),
+        );
+        tip.style.display = "block";
+        tip.style.left = `${Math.min(e.clientX + 16, window.innerWidth - tip.offsetWidth - 12)}px`;
+        tip.style.top = `${e.clientY + 16}px`;
+      });
+
+      const showError = (title, err, hint) => {
+        $("error-container").innerHTML = `
+          <div class="error-banner">
+            <strong>${title}:</strong> ${esc(err.message)}. ${hint}
+          </div>
+        `;
+      };
+
+      // Data fetch: 로드 실패와 렌더링 실패(results.json 형식 문제)를 구분해 안내한다
+      fetch("./results.json")
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
+        .then(
+          (data) => {
+            currentData = data;
+            renderSpecs(data);
+            renderOverview(data);
+            renderChart(data);
+            renderHttp(data);
+            renderRawTable(data);
+          },
+          (err) =>
+            showError(
+              "results.json 로드 실패",
+              err,
+              "로컬 테스트 시 <code>bun run serve</code> 명령을 사용하여 웹 서버 환경에서 열어주세요.",
+            ),
+        )
+        .catch((err) =>
+          showError(
+            "results.json 렌더링 실패",
+            err,
+            "항목이 빠졌거나 형식이 다릅니다. <code>bun run bench</code> 로 다시 생성해 주세요.",
+          ),
+        );
+    </script>
+  </body>
+</html>
