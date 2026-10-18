@@ -133,8 +133,8 @@ jobs:
             cp -r "$SRC/ml-docs/.vitepress/dist/." "$OUT/ml-docs/"
           fi
 
-          # formatter-benchmark, lint-benchmark: 로컬에서 측정해 커밋한 results.json 을 정적 페이지로 서빙
-          for d in formatter-benchmark lint-benchmark; do
+          # formatter-benchmark, lint-benchmark, runtime-benchmark: 로컬에서 측정해 커밋한 results.json 을 정적 페이지로 서빙
+          for d in formatter-benchmark lint-benchmark runtime-benchmark; do
             mkdir -p "$OUT/$d"
             cp "$SRC/$d/index.html" "$SRC/$d/results.json" "$OUT/$d/"
           done
