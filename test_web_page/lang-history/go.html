@@ -1060,6 +1060,239 @@
             ></button>
           </div>
         </div>
+
+        <h4>에디터 지원 (완성 · 정의 이동 · 리네임)</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 8"
+              popovertarget="go-gopls"
+            >
+              <span class="name">gocode</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 2; grid-column: 8 / 9"
+              popovertarget="go-gopls"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 9 / 10"
+              popovertarget="go-gopls"
+            >
+              <span class="name">gopls (LSP)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 10 / 17"
+              popovertarget="go-gopls"
+            ></button>
+            <button
+              class="bar common end"
+              style="--lane: 3; grid-column: 1 / 9"
+              popovertarget="go-gopls"
+            >
+              <span class="name">godef</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 4; grid-column: 3 / 9"
+              popovertarget="go-gopls"
+            >
+              <span class="name">guru (oracle)</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 5; grid-column: 3 / 9"
+              popovertarget="go-gopls"
+            >
+              <span class="name">gorename</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 6; grid-column: 5 / 9"
+              popovertarget="go-gopls"
+            >
+              <span class="name">go-outline · go-symbols · gopkgs</span>
+            </button>
+          </div>
+        </div>
+
+        <h3>로컬 설치 툴 정리 — 2026-10-18</h3>
+        <p class="lead">
+          위 흐름이 실제 내 환경에서도 그대로 일어났어요.
+          <code>installgolangtools.sh</code> 의 <code>go install</code> 목록
+          111개 중 <strong>53개 제거</strong>, 58개 유지. 제거 사유는 모두 "더
+          나은 하나로 흡수됨" 아니면 "관리 중단" 이에요.
+          <a
+            href="https://github.com/ysoftman/myenv/commit/77db78d"
+            target="_blank"
+            rel="noopener"
+            >커밋 보기</a
+          >
+        </p>
+        <div class="table-wrap">
+          <table class="summary cleanup">
+            <thead>
+              <tr>
+                <th>제거</th>
+                <th>사유</th>
+                <th>대체</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th colspan="3">
+                  gopls 로 수렴 — 에디터 툴 9종이 LSP 서버 하나로
+                </th>
+              </tr>
+              <tr>
+                <td><code>gocode</code> (stamblerre fork)</td>
+                <td><span class="how arch">archived</span></td>
+                <td>
+                  <button class="link" popovertarget="go-gopls">
+                    gopls 자동 완성
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td><code>godef</code></td>
+                <td><span class="how rep">replaced</span></td>
+                <td>gopls 정의 이동</td>
+              </tr>
+              <tr>
+                <td><code>guru</code></td>
+                <td><span class="how dep">deprecated</span></td>
+                <td>gopls 참조 · 구현 찾기</td>
+              </tr>
+              <tr>
+                <td><code>gorename</code></td>
+                <td><span class="how dep">deprecated</span></td>
+                <td>gopls 리네임</td>
+              </tr>
+              <tr>
+                <td><code>gomvpkg</code></td>
+                <td><span class="how dep">x/tools 에서 삭제</span></td>
+                <td>gopls 리네임 (패키지 이동)</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>go-outline</code> · <code>go-symbols</code> ·
+                  <code>gopkgs</code>
+                </td>
+                <td><span class="how rep">replaced</span></td>
+                <td>gopls 심볼 · 아웃라인 (vscode-go 구형 백엔드)</td>
+              </tr>
+              <tr>
+                <td><code>gotype</code> · <code>fiximports</code></td>
+                <td><span class="how dep">x/tools 에서 삭제</span></td>
+                <td>gopls 진단 · <code>goimports</code></td>
+              </tr>
+
+              <tr>
+                <th colspan="3">공식 툴체인에 흡수</th>
+              </tr>
+              <tr>
+                <td><code>godoc</code></td>
+                <td><span class="how dep">deprecated</span></td>
+                <td><code>go doc</code> (1.5) · pkg.go.dev</td>
+              </tr>
+              <tr>
+                <td><code>golang.org/dl/go1.22.11</code> 래퍼</td>
+                <td><span class="how rep">replaced</span></td>
+                <td>
+                  <button class="link" popovertarget="go-toolchain">
+                    <code>go.mod toolchain</code> (1.21)
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td><code>modernize</code> (gopls 내부 cmd)</td>
+                <td><span class="how rep">replaced</span></td>
+                <td>
+                  <button class="link" popovertarget="go-gofix">
+                    <code>go fix</code> modernizers (1.26)
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  개별 analyzer cmd ×11<br /><small
+                    >shadow · nilness · lostcancel · fieldalignment ·
+                    unusedresult · ifaceassert · stringintconv · unmarshal ·
+                    defers · findcall · httpmux</small
+                  >
+                </td>
+                <td><span class="how rep">replaced</span></td>
+                <td>
+                  <code>go vet</code> · gopls ·
+                  <button class="link" popovertarget="go-golangci">
+                    golangci-lint
+                  </button>
+                  (govet 설정)
+                </td>
+              </tr>
+              <tr>
+                <td><code>benchcmp</code></td>
+                <td><span class="how dep">deprecated</span></td>
+                <td><code>benchstat</code> (x/perf)</td>
+              </tr>
+              <tr>
+                <td><code>gocov-html</code></td>
+                <td><span class="how rep">replaced</span></td>
+                <td><code>go tool cover -html</code></td>
+              </tr>
+
+              <tr>
+                <th colspan="3">관리 중단 · 미사용</th>
+              </tr>
+              <tr>
+                <td><code>misspell</code></td>
+                <td><span class="how arch">archived</span></td>
+                <td>golangci-lint <code>misspell</code> 린터</td>
+              </tr>
+              <tr>
+                <td><code>golines</code></td>
+                <td><span class="how arch">archived</span></td>
+                <td>— (gofmt 는 줄 길이를 안 건드림)</td>
+              </tr>
+              <tr>
+                <td><code>fresh</code></td>
+                <td><span class="how rep">replaced</span></td>
+                <td><code>air</code> (라이브 리로드)</td>
+              </tr>
+              <tr>
+                <td>
+                  x/tools 부속 cmd<br /><small
+                    >bundle · toolstash · splitdwarf · html2article · present ·
+                    present2md · go-contrib-init · compilebench · godex · auth/*
+                    · signature-fuzzer · internal/*</small
+                  >
+                </td>
+                <td><span class="how dep">삭제 · 내부용</span></td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>imgcat</code> · <code>gomvp</code> ·
+                  <code>fillswitch</code> · <code>goplay</code> ·
+                  <code>termshark</code>
+                </td>
+                <td><span class="how">unused</span></td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================ Go bottom sheets -->
@@ -1924,6 +2157,133 @@
                 target="_blank"
                 rel="noopener"
                 >Go 1.27 release notes</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+      <aside id="go-gopls" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              gopls <small>2019-06 첫 릴리스 → 2020–2021 에디터 기본값</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-gopls">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Go 팀 공식 Language Server. 완성 · 정의 이동 · 참조 · 리네임 ·
+              진단 · 포맷을 LSP 하나로 제공.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2012–2018 에디터 기능은 툴 하나당 바이너리 하나 — gocode(완성)
+                  · godef(정의) · guru(참조) · gorename(이름 변경) ·
+                  go-outline(심볼). 각자 캐시 · 빌드 방식이 달라 모듈 전환(1.11)
+                  때 전부 깨짐
+                </li>
+                <li>
+                  gocode 는 모듈 지원을 위해 포크(stamblerre) 에 포크가 이어지다
+                  2020 아카이브. 이 시점이 "툴 난립의 한계"
+                </li>
+                <li>
+                  Microsoft 의 LSP(2016) 가 에디터 공통 프로토콜이 되자 Go 팀이
+                  2018 gopls 착수. vim-go · vscode-go 가 2020–2021 기본값으로
+                  바꾸며 수렴 완료. 2026 년 <code>modernize</code> 같은 신규
+                  분석기도 gopls 안에서 태어나 <code>go fix</code> 로 승격
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">gocode</span><span class="chip">godef</span
+              ><span class="chip">guru</span><span class="chip">gorename</span
+              ><span class="chip">gomvpkg</span
+              ><span class="chip">go-outline</span
+              ><span class="chip">go-symbols</span
+              ><span class="chip">gopkgs</span><span class="chip">gotype</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>내 로컬: 에디터 툴 9개 제거 → gopls 1개</dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/blog/gopls-vscode-go"
+                target="_blank"
+                rel="noopener"
+                >Gopls on by default in VS Code</a
+              >
+              ·
+              <a
+                href="https://pkg.go.dev/golang.org/x/tools/cmd/guru"
+                target="_blank"
+                rel="noopener"
+                >guru (deprecated)</a
+              >
+              ·
+              <a
+                href="https://github.com/stamblerre/gocode"
+                target="_blank"
+                rel="noopener"
+                >gocode (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-gofix" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>go fix modernizers <small>1.26 (2026-02)</small></h3>
+            <button class="theme-btn" popovertarget="go-gofix">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>go fix ./...</code> 가
+              <code>for i := 0; i &lt; n; i++</code> → <code>range n</code>,
+              <code>interface{}</code> → <code>any</code>,
+              <code>sort.Slice</code> → <code>slices.Sort</code> 같은 신식
+              관용구로 코드를 자동 수정. <code>go vet</code> 과 같은 analysis
+              프레임워크.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  제네릭(1.18) · 이터레이터(1.23) 이후 "옛 코드 현대화" 수요
+                  폭증. 2025 년 gopls 내부 <code>modernize</code> analyzer 로
+                  시작해 단독
+                  바이너리(<code>gopls/internal/analysis/modernize/cmd/modernize</code>)
+                  로 설치해 쓰는 사람이 늘어남
+                </li>
+                <li>
+                  1.0 때부터 있던 <code>go fix</code> 는 쓸 일이 없어진 구식
+                  fixer 만 남아 있었음 — 그 자리를 modernizer 가 차지하며 재탄생
+                </li>
+                <li>
+                  1.27 에서 <code>atomictypes</code> ·
+                  <code>slicesbackward</code> 등 추가. "gopls 에서 검증 → 공식
+                  툴로 승격" 경로가 정착
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">modernize 단독 cmd</span
+              ><span class="chip">구 go fix fixer</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/doc/go1.26#go-command"
+                target="_blank"
+                rel="noopener"
+                >Go 1.26 release notes</a
               >
             </dd>
           </dl>

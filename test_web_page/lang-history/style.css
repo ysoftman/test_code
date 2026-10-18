@@ -649,3 +649,22 @@ footer {
 .stat.soon {
   opacity: 0.55;
 }
+
+/* Local cleanup table: reason chips */
+.how.dep {
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent);
+}
+.how.arch {
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.how.rep {
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.cleanup tbody th[colspan] {
+  background: var(--surface-subtle);
+  color: var(--text);
+  white-space: normal;
+}
