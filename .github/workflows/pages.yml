@@ -133,6 +133,10 @@ jobs:
             cp -r "$SRC/ml-docs/.vitepress/dist/." "$OUT/ml-docs/"
           fi
 
+          # lang-history: 정적 페이지 묶음 (index + 언어별 html + 공통 css/js)
+          mkdir -p "$OUT/lang-history"
+          cp -r "$SRC/lang-history/." "$OUT/lang-history/"
+
           # formatter-benchmark, lint-benchmark, runtime-benchmark: 로컬에서 측정해 커밋한 results.json 을 정적 페이지로 서빙
           for d in formatter-benchmark lint-benchmark runtime-benchmark; do
             mkdir -p "$OUT/$d"

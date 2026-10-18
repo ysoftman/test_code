@@ -1,0 +1,1944 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go History: 버전별 큰 변화와 툴 교체 흐름</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <a class="nav-back" href="./">lang-history</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">go</span>
+        </div>
+        <button
+          class="theme-btn"
+          id="theme-btn"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <span id="theme-icon">◐</span>
+          <span id="theme-text">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-header">
+        <h1>Language History</h1>
+        <p class="page-desc">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
+        </p>
+        <nav class="lang-nav" aria-label="언어 선택">
+          <a href="./">개요</a>
+          <a href="go.html" aria-current="page">Go</a>
+          <a href="rust.html" class="soon">Rust (준비 중)</a>
+          <a href="python.html" class="soon">Python (준비 중)</a>
+          <a href="javascript.html" class="soon">JavaScript (준비 중)</a>
+        </nav>
+      </section>
+
+      <!-- ===================================================== Go -->
+      <section class="lang" id="go">
+        <h2>Go</h2>
+        <p class="lead">
+          2012 년 1.0 부터 6 개월 주기. 서드파티 툴이 경쟁하다가 공식 툴체인에
+          <strong>흡수되는</strong> 패턴이 반복됩니다.
+        </p>
+
+        <div class="stat-row">
+          <div class="stat">
+            <b>4</b>
+            <span
+              >2016 · 공식 툴체인 외 필수 툴 (glide/godep · gometalinter ·
+              pkg/errors · gvm)</span
+            >
+          </div>
+          <div class="stat">
+            <b>2</b>
+            <span>2020 · golangci-lint · (dep 잔존)</span>
+          </div>
+          <div class="stat">
+            <b>1</b>
+            <span>2025 · golangci-lint 만 남음</span>
+          </div>
+          <div class="stat">
+            <b>6<small>회 흡수</small></b>
+            <span
+              >modules 1.11 · errors 1.13 · embed 1.16 · fuzz 1.18 · toolchain
+              1.21 · tool 1.24</span
+            >
+          </div>
+        </div>
+
+        <h3>Releases — 굵직한 변화</h3>
+        <ul class="timeline">
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.27</span><span class="date">2026-08</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="go-generic-methods">
+                  제네릭 메서드 — 메서드가 자체 타입 파라미터를 가짐
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>encoding/json</code> 이 v2 구현으로 전환 (Unmarshal
+                  대폭 빠름) · <code>uuid</code> ·
+                  <code>crypto/mldsa</code> (포스트 양자 서명)</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >goroutine leak profile GA · 80 바이트 이하 소형 할당 최대 30%
+                  빠름</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>go fix</code> modernizer 추가 ·
+                  <code>go mod tidy</code> require 블록 2 개로 통합</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.26</span><span class="date">2026-02</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><button class="link" popovertarget="go-greentea">
+                  Green Tea GC 기본 활성 — GC 오버헤드 10–40% 감소
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>new(expr)</code> 허용 · 자기참조 타입 제약
+                  <code>type Adder[A Adder[A]]</code></span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>go fix</code> 재작성 (modernizers 의 집) ·
+                  <code>go tool doc</code> 제거</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>crypto/hpke</code> · <code>errors.AsType</code> (제네릭
+                  As) · <code>simd/archsimd</code> 실험 · cgo 호출 30%
+                  빠름</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.25</span><span class="date">2025-08</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >컨테이너 인식 <code>GOMAXPROCS</code> (cgroup CPU limit 반영,
+                  uber-go/automaxprocs 대체) · Green Tea GC 실험
+                  (<code>GOEXPERIMENT=greenteagc</code>) · flight recorder</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>testing/synctest</code> GA ·
+                  <code>encoding/json/v2</code> 실험 시작</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>go.mod</code> <code>ignore</code> 디렉티브 · vet
+                  <code>waitgroup</code>/<code>hostport</code></span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.24</span><span class="date">2025-02</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="go-tool-directive">
+                  <code>go.mod</code> <code>tool</code> 디렉티브 —
+                  <code>tools.go</code> 관용구 대체
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >Swiss Table 기반 map 구현 (CPU 2–3% 절감) ·
+                  <code>weak</code> 패키지 ·
+                  <code>runtime.AddCleanup</code></span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span>제네릭 타입 별칭 정식</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>os.Root</code> (디렉토리 탈출 방지 FS) ·
+                  <code>testing.B.Loop</code> · FIPS 140-3 모듈</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.23</span><span class="date">2024-08</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="go-iterators">
+                  range-over-func 이터레이터 (<code>iter.Seq</code>)
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>slices</code>/<code>maps</code> 이터레이터 함수 ·
+                  <code>unique</code> (인터닝)</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >opt-in 텔레메트리 · 타이머가 GC 대상이 됨 (<code
+                    >time.After</code
+                  >
+                  누수 걱정 종료)</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.22</span><span class="date">2024-02</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="go-loopvar">
+                  for 루프 변수가 반복마다 새로 생성 — 10 년 된 함정 제거
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span><code>for i := range 10</code> (정수 range)</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="go-servemux">
+                  <code>net/http.ServeMux</code> 메서드 · 와일드카드 패턴 —
+                  gorilla/mux · chi 의 핵심 기능 흡수
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span><code>math/rand/v2</code> — 첫 stdlib v2 패키지</span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.21</span><span class="date">2023-08</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="go-toolchain">
+                  <code>go.mod</code> <code>toolchain</code> 디렉티브 +
+                  <code>GOTOOLCHAIN</code> — gvm · goenv 대체
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>log/slog</code> (zap · logrus 의 구조화 로깅 흡수) ·
+                  <code>slices</code> · <code>maps</code> ·
+                  <code>cmp</code></span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>min</code> · <code>max</code> · <code>clear</code> 내장
+                  함수</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span>PGO 정식 · WASI 포트 · 하위/상위 호환 규칙 공식화</span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.20</span><span class="date">2023-02</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >PGO (profile-guided optimization) 프리뷰 · 통합 테스트
+                  커버리지</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>errors.Join</code> · 다중 <code>%w</code> · 슬라이스 →
+                  배열 변환</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.19</span><span class="date">2022-08</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  ><code>GOMEMLIMIT</code> 소프트 메모리 한도 — 컨테이너 OOM
+                  대응</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>atomic.Int64</code> 등 타입 API · doc comment 문법
+                  정식화</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.18</span><span class="date">2022-03</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="go-generics">
+                  제네릭 (type parameters) — 12 년 만의 최대 언어 변화
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >퍼징 내장 (<code>go test -fuzz</code>, dvyukov/go-fuzz
+                  흡수)</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span><code>go work</code> 워크스페이스 (다중 모듈 개발)</span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.17</span><span class="date">2021-08</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span>레지스터 기반 호출 규약 — 전반 ~5% 성능 향상</span>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>//go:build</code> 제약 문법 · 슬라이스 → 배열 포인터
+                  변환</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span>모듈 그래프 pruning · lazy loading</span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.16</span><span class="date">2021-02</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="go-modules">
+                  <code>GO111MODULE=on</code> 기본 — GOPATH 모드 사실상 종료
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="go-embed">
+                  <code>//go:embed</code> — go-bindata · packr · statik 대체
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>io/fs</code> 파일시스템 추상화 ·
+                  <code>io/ioutil</code> deprecated</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>go install pkg@version</code> · darwin/arm64 (Apple
+                  Silicon)</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.15 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.15</span>2020-08 · 링커 재작성 (빌드 20%
+                빠름) · <code>time/tzdata</code> 임베드
+              </li>
+            </ul>
+          </details>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.14</span><span class="date">2020-02</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >Go modules "프로덕션 준비 완료" 공식 선언 — dep 프로젝트
+                  종료</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >비동기 선점 — tight loop 도 선점 가능 ·
+                  <code>defer</code> 거의 무비용</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span><code>t.Cleanup</code> · <code>hash/maphash</code></span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.13</span><span class="date">2019-09</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="go-errors13">
+                  <code>errors.Is</code> / <code>As</code> /
+                  <code>Unwrap</code> + <code>%w</code> — pkg/errors 대체
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>proxy.golang.org</code> ·
+                  <code>sum.golang.org</code> 기본 — 모듈 생태계 인프라
+                  완성</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>0b1010</code> · <code>1_000_000</code> 숫자 리터럴 ·
+                  부호 있는 시프트 카운트</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span>TLS 1.3 기본 활성</span>
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.12 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.12</span>2019-02 · 모듈 지원 개선 · TLS 1.3
+                opt-in · <code>go vet</code> 가 <code>go test</code> 에 통합
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.11</span><span class="date">2018-08</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="go-modules">
+                  Go modules 실험 도입 (vgo) — GOPATH · dep · glide 를 대체하기
+                  시작
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >WebAssembly 포트 (<code>GOOS=js GOARCH=wasm</code>)</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.10 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.10</span>2018-02 · 빌드 캐시 · 테스트 결과
+                캐시 · <code>go vet</code> 자동 실행
+              </li>
+            </ul>
+          </details>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.9</span><span class="date">2017-08</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >타입 별칭 <code>type A = B</code> (대규모 리팩토링
+                  지원)</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>sync.Map</code> · 단조 시계 (<code>time</code> 윤초
+                  안전)</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span>패키지 내 병렬 컴파일</span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.8</span><span class="date">2017-02</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >GC STW 보통 100µs 이하 (1.5 의 10ms 목표에서 두 자릿수
+                  개선)</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>sort.Slice</code> · HTTP graceful shutdown · HTTP/2
+                  push</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >SSA 백엔드 전 아키텍처 적용 · <code>GOPATH</code> 기본값
+                  <code>~/go</code></span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.7</span><span class="date">2016-08</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>context</code> 패키지 —
+                  <code>golang.org/x/net/context</code> 흡수, 취소 · 타임아웃
+                  표준화</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span>SSA 컴파일러 백엔드 (amd64) — 5–35% 빠른 코드</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >서브테스트 <code>t.Run</code> · <code>vendor</code> 디렉토리
+                  정식</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.6 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.6</span>2016-02 · HTTP/2 자동 지원 · vendor
+                기본 활성 · cgo 포인터 규칙
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.5</span><span class="date">2015-08</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><button class="link" popovertarget="go-gc15">
+                  동시 GC — STW 10ms 이하 목표, "Go 는 GC 가 느리다" 의 전환점
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span>컴파일러 · 런타임 C → Go 자체 호스팅 완료</span>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span><code>GOMAXPROCS</code> 기본값 = CPU 수 (이전 1)</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>vendor</code> 실험 · <code>go tool trace</code></span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.4</span><span class="date">2014-12</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >런타임 대부분을 Go 로 재작성 시작 · 정밀 GC 준비 (write
+                  barrier)</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>go generate</code> · <code>internal</code> 패키지 규칙
+                  · Android 지원</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.3 · 1.2 · 1.1 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.3</span>2014-06 · 연속 스택 (segmented stack
+                폐기 — "hot split" 문제 해결)
+              </li>
+              <li>
+                <span class="ver">1.2</span>2013-12 · 3-index 슬라이스 · 함수
+                호출 지점 선점
+              </li>
+              <li>
+                <span class="ver">1.1</span>2013-05 · 성능 30–40% 향상 · 메서드
+                값
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.0</span><span class="date">2012-03</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >Go 1 호환성 약속 — 이후 모든 1.x 가 1.0 코드를 컴파일</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>gofmt</code> · <code>go vet</code> ·
+                  <code>go test</code> · <code>GOPATH</code> — 포맷터는 첫날부터
+                  하나뿐</span
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
+        <p class="lead">
+          막대 굵기 = 사용량(설문·스타·언급 기준 근사치). 사라진 툴의 레인은
+          다음 툴이 재사용합니다. 막대를 클릭하면 교체 배경을 볼 수 있어요.
+        </p>
+        <div class="legend">
+          <span><i class="d"></i>dominant</span>
+          <span><i class="c"></i>common</span>
+          <span><i class="n"></i>niche</span>
+          <span><i class="e"></i>discontinued</span>
+        </div>
+
+        <h4>의존성 관리</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 7"
+              popovertarget="go-modules"
+            >
+              <span class="name">GOPATH</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 2; grid-column: 7 / 10"
+              popovertarget="go-modules"
+            ></button>
+            <button
+              class="bar common end"
+              style="--lane: 3; grid-column: 2 / 6"
+              popovertarget="go-dep"
+            >
+              <span class="name">godep</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 3; grid-column: 6 / 9"
+              popovertarget="go-dep"
+            >
+              <span class="name">dep</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 4; grid-column: 4 / 7"
+              popovertarget="go-dep"
+            >
+              <span class="name">glide</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 7 / 8"
+              popovertarget="go-modules"
+            >
+              <span class="name">go modules</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 8 / 10"
+              popovertarget="go-modules"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 10 / 17"
+              popovertarget="go-modules"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 5; grid-column: 4 / 8"
+              popovertarget="go-dep"
+            >
+              <span class="name">govendor · gb · gom</span>
+            </button>
+          </div>
+        </div>
+
+        <h4>린트 · 정적 분석</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <span class="bar common" style="--lane: 2; grid-column: 1 / 17"
+              ><span class="name">go vet (built-in)</span></span
+            >
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 2 / 8"
+              popovertarget="go-golint"
+            >
+              <span class="name">golint</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 3; grid-column: 8 / 11"
+              popovertarget="go-golint"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 5 / 7"
+              popovertarget="go-golangci"
+            >
+              <span class="name">gometalinter</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 7 / 8"
+              popovertarget="go-golangci"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 7 / 8"
+              popovertarget="go-golangci"
+            >
+              <span class="name">golangci-lint</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 5; grid-column: 8 / 17"
+              popovertarget="go-golangci"
+            ></button>
+            <span class="bar common" style="--lane: 6; grid-column: 5 / 17"
+              ><span class="name">staticcheck</span></span
+            >
+          </div>
+        </div>
+
+        <h4>포맷</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 17"
+              popovertarget="go-gofmt"
+            >
+              <span class="name">gofmt (built-in)</span>
+            </button>
+            <span class="bar common" style="--lane: 3; grid-column: 2 / 17"
+              ><span class="name">goimports</span></span
+            >
+            <span class="bar niche" style="--lane: 4; grid-column: 8 / 17"
+              ><span class="name">gofumpt</span></span
+            >
+          </div>
+        </div>
+
+        <h4>에러 처리</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 5 / 6"
+              popovertarget="go-errors13"
+            >
+              <span class="name">pkg/errors</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 6 / 9"
+              popovertarget="go-errors13"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 2; grid-column: 9 / 10"
+              popovertarget="go-errors13"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 8 / 10"
+              popovertarget="go-errors13"
+            >
+              <span class="name">errors.Is / As (1.13)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 3; grid-column: 10 / 17"
+              popovertarget="go-errors13"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 8 / 10"
+              popovertarget="go-errors13"
+            >
+              <span class="name">xerrors</span>
+            </button>
+          </div>
+        </div>
+
+        <h4>Go 버전 관리</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(2, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 1 / 9"
+              popovertarget="go-toolchain"
+            >
+              <span class="name">gvm</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 2; grid-column: 9 / 12"
+              popovertarget="go-toolchain"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 12 / 17"
+              popovertarget="go-toolchain"
+            >
+              <span class="name">go.mod toolchain (1.21)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 5 / 12"
+              popovertarget="go-toolchain"
+            >
+              <span class="name">goenv</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 12 / 17"
+              popovertarget="go-toolchain"
+            ></button>
+          </div>
+        </div>
+
+        <h4>HTTP 라우터</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 9"
+              popovertarget="go-servemux"
+            >
+              <span class="name">gorilla/mux</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 9 / 12"
+              popovertarget="go-servemux"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 12 / 17"
+              popovertarget="go-servemux"
+            ></button>
+            <span class="bar common" style="--lane: 3; grid-column: 3 / 5"
+              ><span class="name">gin</span></span
+            >
+            <span
+              class="bar dominant"
+              style="--lane: 3; grid-column: 5 / 17"
+            ></span>
+            <span class="bar common" style="--lane: 4; grid-column: 4 / 17"
+              ><span class="name">chi</span></span
+            >
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 1 / 13"
+              popovertarget="go-servemux"
+            >
+              <span class="name">net/http ServeMux</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 13 / 17"
+              popovertarget="go-servemux"
+            ></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ Go bottom sheets -->
+      <aside id="go-modules" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              Go modules
+              <small>1.11 (2018-08) 실험 → 1.14 정식 → 1.16 기본</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-modules">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              버전 지정 · 재현 가능한 빌드 · GOPATH 밖 개발을
+              <code>go</code> 명령이 직접 지원. <code>go.mod</code> +
+              <code>go.sum</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  GOPATH 는 "버전" 개념이 없어 2013 년부터 godep → glide →
+                  govendor → dep 이 번갈아 생김. 5 년간 사실상 표준이 없었음
+                </li>
+                <li>
+                  dep (2017) 이 "공식 실험" 으로 채택될 뻔했으나 Russ Cox 가 SAT
+                  솔버 대신 <strong>Minimal Version Selection</strong>(vgo,
+                  2018-02) 을 제안 — 결정적 · 단순 · 빠름
+                </li>
+                <li>
+                  1.13 proxy.golang.org / sum.golang.org 로 배포 인프라까지
+                  갖추자 서드파티가 설 자리가 없어짐
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">GOPATH</span><span class="chip">godep</span
+              ><span class="chip">glide</span><span class="chip">govendor</span
+              ><span class="chip">gb</span><span class="chip">dep</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              Go Developer Survey 2019: 응답자 89% 가 모듈 사용 (도입 1 년 만)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://research.swtch.com/vgo"
+                target="_blank"
+                rel="noopener"
+                >vgo 제안 시리즈</a
+              >
+              ·
+              <a
+                href="https://go.dev/blog/using-go-modules"
+                target="_blank"
+                rel="noopener"
+                >Using Go Modules</a
+              >
+              ·
+              <a
+                href="https://go.dev/blog/survey2019-results"
+                target="_blank"
+                rel="noopener"
+                >Survey 2019</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-dep" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>godep · glide · dep <small>2013 – 2020</small></h3>
+            <button class="theme-btn" popovertarget="go-dep">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              GOPATH 위에 얹은 서드파티 의존성 고정 도구들. 각자 다른 lock 파일
+              형식 (Godeps.json / glide.lock / Gopkg.lock).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  godep (2013): GOPATH 스냅샷을 통째로 복사. vendor 디렉토리가
+                  없던 시절의 임시방편
+                </li>
+                <li>
+                  glide (2015): 1.5 vendor 실험에 맞춰 등장, semver 범위
+                  지원으로 한때 가장 인기
+                </li>
+                <li>
+                  dep (2017): Go 팀 후원 "공식 실험". 그러나 SAT 기반 해석이
+                  복잡·느리다는 판단으로 vgo 에 밀려 2020 년 아카이브
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd><span class="chip win">go modules (1.11)</span></dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/golang/dep"
+                target="_blank"
+                rel="noopener"
+                >golang/dep (archived)</a
+              >
+              ·
+              <a
+                href="https://github.com/Masterminds/glide"
+                target="_blank"
+                rel="noopener"
+                >glide</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-golangci" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>golangci-lint <small>2018-05 →</small></h3>
+            <button class="theme-btn" popovertarget="go-golangci">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              수십 개 린터를 하나의 프로세스에서 실행하는 집계기. AST · 타입
+              정보를 린터 간에 공유.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  gometalinter (2016) 가 같은 역할을 했지만 린터마다 별도
+                  프로세스를 띄워 대형 레포에서 수 분 소요
+                </li>
+                <li>
+                  golangci-lint 는 파싱 결과를 공유해
+                  <strong>5 배 이상 빠르고</strong> 메모리도 적게 사용 —
+                  전형적인 "더 빠른 하나로 수렴"
+                </li>
+                <li>
+                  gometalinter 는 2019-04 공식 deprecate 하며 golangci-lint 를
+                  후계로 지목
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">gometalinter</span
+              ><span class="chip">개별 린터 직접 실행</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              GitHub 17k+ stars · Go Developer Survey 2024: 가장 많이 쓰는 린터
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://golangci-lint.run/"
+                target="_blank"
+                rel="noopener"
+                >golangci-lint</a
+              >
+              ·
+              <a
+                href="https://github.com/alecthomas/gometalinter"
+                target="_blank"
+                rel="noopener"
+                >gometalinter (deprecated)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-golint" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>golint <small>2013 – 2021 (frozen) · 2022 archived</small></h3>
+            <button class="theme-btn" popovertarget="go-golint">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Go 팀이 만든 스타일 린터. 주석 형식 · 네이밍 등 Effective Go 규칙
+              검사.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>오탐이 많고 설정이 불가능해 CI 에서 끄는 팀이 늘어남</li>
+                <li>
+                  staticcheck 가 더 정확한 버그 탐지를, golangci-lint 의
+                  <code>revive</code> 가 설정 가능한 대체재를 제공
+                </li>
+                <li>
+                  2020 년 Go 팀이 "더 이상 유지보수하지 않음" 선언 → 2022
+                  아카이브
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <span class="chip win">staticcheck</span
+              ><span class="chip win">revive (golangci-lint)</span
+              ><span class="chip">go vet</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/golang/lint"
+                target="_blank"
+                rel="noopener"
+                >golang/lint (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-gofmt" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>gofmt <small>2012 (1.0) → · 사실상 2009 부터</small></h3>
+            <button class="theme-btn" popovertarget="go-gofmt">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>설정 옵션이 없는 공식 포맷터. 스타일 논쟁 자체를 없앤 설계.</dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  언어 출시와 동시에 포함돼 서드파티 포맷터가 생길 틈이 없었음 —
+                  Python 의 black/autopep8/yapf, JS 의 prettier/standard 경쟁과
+                  대비
+                </li>
+                <li>
+                  "gofmt 스타일은 누구의 취향도 아니지만 모두의 취향" — 옵션이
+                  없다는 점이 수렴의 이유
+                </li>
+                <li>
+                  goimports (import 정리) · gofumpt (더 엄격) 는 gofmt 를
+                  <em>대체</em>가 아니라 <em>확장</em>
+                </li>
+              </ul>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://go.dev/blog/gofmt" target="_blank" rel="noopener"
+                >go fmt your code</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-errors13" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>errors.Is / As / Unwrap + %w <small>1.13 (2019-09)</small></h3>
+            <button class="theme-btn" popovertarget="go-errors13">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              에러 래핑과 체인 검사를 표준 라이브러리로.
+              <code>fmt.Errorf("...: %w", err)</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 의 <code>error</code> 는 문자열 하나. 원인 보존이 안 돼
+                  2016 년 Dave Cheney 의 <code>pkg/errors</code> (Wrap/Cause) 가
+                  사실상 표준이 됨
+                </li>
+                <li>
+                  Go 2 에러 처리 설계 논의 (2018) 의 결과물 중 "작고 호환되는
+                  부분" 만 먼저 1.13 에 반영. 스택 트레이스는 제외
+                </li>
+                <li>
+                  <code>xerrors</code> 는 1.13 이전 백포트 용도라 1 년 만에 역할
+                  종료
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">pkg/errors</span
+              ><span class="chip">xerrors</span
+              ><span class="chip">errors.Cause 패턴</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              pkg/errors 는 2021-12 아카이브 ("1.13 이후 더 이상 필요 없음")
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/blog/go1.13-errors"
+                target="_blank"
+                rel="noopener"
+                >Working with Errors in Go 1.13</a
+              >
+              ·
+              <a
+                href="https://github.com/pkg/errors"
+                target="_blank"
+                rel="noopener"
+                >pkg/errors (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-embed" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>//go:embed <small>1.16 (2021-02)</small></h3>
+            <button class="theme-btn" popovertarget="go-embed">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              정적 파일을 바이너리에 포함. <code>embed.FS</code> +
+              <code>io/fs</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  단일 바이너리 배포가 Go 의 셀링 포인트인데 템플릿·에셋 포함은
+                  go-bindata (2013) 같은 코드 생성기에 의존. 생성 파일이 수 MB
+                  로 diff 를 오염
+                </li>
+                <li>
+                  go-bindata 원저자 이탈 · 포크 난립 (go-bindata/go-bindata,
+                  jteeuwen 계정 삭제 사건 2018) 으로 공급망 불안
+                </li>
+                <li>
+                  packr · statik · vfsgen · esc 등 대안도 각자 API 가 달라 io/fs
+                  표준화와 함께 흡수
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">go-bindata</span><span class="chip">packr</span
+              ><span class="chip">statik</span><span class="chip">vfsgen</span
+              ><span class="chip">esc</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://pkg.go.dev/embed" target="_blank" rel="noopener"
+                >embed 패키지</a
+              >
+              ·
+              <a
+                href="https://go.googlesource.com/proposal/+/master/design/draft-embed.md"
+                target="_blank"
+                rel="noopener"
+                >설계 초안</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-generics" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>제네릭 (type parameters) <small>1.18 (2022-03)</small></h3>
+            <button class="theme-btn" popovertarget="go-generics">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>func Map[T, U any](s []T, f func(T) U) []U</code>. 타입 집합
+              기반 제약, 런타임 비용 최소화 (GC shape stenciling).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2009 년부터 가장 많이 요청된 기능. 2010 · 2013 · 2016 제안이
+                  복잡성 때문에 모두 폐기
+                </li>
+                <li>
+                  2019 Featherweight Go 논문 (Phil Wadler 공동) 으로 타입 이론
+                  기반 확보, 2020 "type sets" 설계로 contract 개념 제거 후 수용
+                </li>
+                <li>
+                  1.21 <code>slices</code> · <code>maps</code>, 1.23 이터레이터,
+                  1.26 <code>errors.AsType</code>, 1.27 제네릭 메서드까지 stdlib
+                  가 단계적으로 흡수
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">interface{} + 타입 단언</span
+              ><span class="chip">코드 생성 (genny)</span
+              ><span class="chip">reflect 기반 유틸</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/blog/intro-generics"
+                target="_blank"
+                rel="noopener"
+                >An Introduction To Generics</a
+              >
+              ·
+              <a
+                href="https://go.googlesource.com/proposal/+/refs/heads/master/design/43651-type-parameters.md"
+                target="_blank"
+                rel="noopener"
+                >설계 문서</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-loopvar" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              for 루프 변수 per-iteration
+              <small>1.22 (2024-02) · breaking</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-loopvar">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>for i, v := range xs</code> 의 <code>i</code>,
+              <code>v</code> 가 반복마다 새 변수. 고루틴 · 클로저에서 마지막
+              값만 잡히던 버그 해소.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  Go 1 호환성 약속 때문에 의미론 변경은 금기였음. 10 년간
+                  <code>v := v</code> 관용구와 vet 경고로 버팀
+                </li>
+                <li>
+                  Go 팀이 Google 내부 코드 전체를 분석해 "이 변경으로 깨지는
+                  코드보다 고쳐지는 버그가 압도적으로 많다" 는 데이터를 확보
+                </li>
+                <li>
+                  <code>go.mod</code> 의 <code>go 1.22</code> 선언 단위로만 적용
+                  — 모듈별 opt-in 으로 호환성 약속 유지. 이 메커니즘이 이후 언어
+                  변경의 틀이 됨
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">v := v 관용구</span
+              ><span class="chip">vet loopclosure 경고</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/blog/loopvar-preview"
+                target="_blank"
+                rel="noopener"
+                >Fixing For Loops in Go 1.22</a
+              >
+              ·
+              <a
+                href="https://go.dev/wiki/LoopvarExperiment"
+                target="_blank"
+                rel="noopener"
+                >LoopvarExperiment</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-servemux" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>net/http.ServeMux 패턴 강화 <small>1.22 (2024-02)</small></h3>
+            <button class="theme-btn" popovertarget="go-servemux">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>mux.HandleFunc("GET /users/{id}", h)</code> — 메서드 매칭 ·
+              경로 와일드카드 · <code>r.PathValue("id")</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 의 ServeMux 는 prefix 매칭뿐. 그래서 gorilla/mux (2012) ·
+                  httprouter · chi (2015) · gin · echo 가 라우팅을 채움
+                </li>
+                <li>
+                  2022-12 gorilla 전체 아카이브 사건 — 가장 많이 쓰이던 라우터가
+                  하루아침에 "unmaintained" 가 되자 stdlib 강화 요구 급증 (2023
+                  새 메인테이너로 부활)
+                </li>
+                <li>
+                  제안 #61410: 서드파티 라우터의 "교집합" 만 흡수, 미들웨어 체인
+                  · 그룹 같은 프레임워크 기능은 의도적으로 제외
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">gorilla/mux (소규모 사용)</span
+              ><span class="chip">httprouter</span> — gin · chi 는 미들웨어
+              생태계로 여전히 사용
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/blog/routing-enhancements"
+                target="_blank"
+                rel="noopener"
+                >Routing Enhancements for Go 1.22</a
+              >
+              ·
+              <a
+                href="https://github.com/golang/go/issues/61410"
+                target="_blank"
+                rel="noopener"
+                >proposal #61410</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-toolchain" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              go.mod toolchain + GOTOOLCHAIN <small>1.21 (2023-08)</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-toolchain">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>go.mod</code> 에 <code>toolchain go1.22.3</code> 을 적으면
+              <code>go</code> 명령이 해당 버전을 자동 다운로드해 실행. 버전
+              관리자가 언어에 내장.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  gvm (2012) · goenv (2016) · g · asdf 플러그인 등이 프로젝트별
+                  Go 버전을 관리했지만 CI · 팀원마다 설치가 달라 "내 PC 에선
+                  되는데" 반복
+                </li>
+                <li>
+                  모듈 시스템이 이미 <code>go 1.xx</code> 줄을 갖고 있어
+                  자연스러운 확장
+                </li>
+                <li>
+                  1.21 에서 하위 · 상위 호환 규칙을 공식화하면서 함께 도입 —
+                  1.24 <code>tool</code> 디렉티브까지 이어지는 "go.mod 가 모든
+                  걸 선언" 방향
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">gvm</span><span class="chip">goenv</span
+              ><span class="chip">g</span><span class="chip">asdf-golang</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/doc/toolchain"
+                target="_blank"
+                rel="noopener"
+                >Go Toolchains</a
+              >
+              ·
+              <a
+                href="https://go.dev/blog/compat"
+                target="_blank"
+                rel="noopener"
+                >Backward and Forward Compatibility</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-tool-directive" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>go.mod tool 디렉티브 <small>1.24 (2025-02)</small></h3>
+            <button class="theme-btn" popovertarget="go-tool-directive">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>go get -tool golang.org/x/tools/cmd/stringer</code> →
+              <code>go tool stringer</code>. 개발 도구 의존성을 go.mod 가 추적.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2018 년부터 <code>tools.go</code> +
+                  <code>//go:build tools</code> 관용구로 빌드 도구 버전을
+                  고정했지만 "빌드에 안 쓰이는 import" 라는 꼼수였음
+                </li>
+                <li>
+                  golangci-lint · mockgen · protoc-gen-go 등 도구 버전 불일치가
+                  CI 실패 원인 상위권
+                </li>
+                <li>toolchain 디렉티브 (1.21) 와 같은 선언적 모델로 통일</li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">tools.go 관용구</span
+              ><span class="chip">Makefile install 타깃</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/doc/modules/managing-dependencies#tools"
+                target="_blank"
+                rel="noopener"
+                >Managing tool dependencies</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-iterators" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>range-over-func 이터레이터 <small>1.23 (2024-08)</small></h3>
+            <button class="theme-btn" popovertarget="go-iterators">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>for v := range seq</code> 에서 <code>seq</code> 가
+              <code>func(yield func(T) bool)</code>. <code>iter.Seq</code> /
+              <code>iter.Seq2</code> 표준 타입.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  제네릭 (1.18) 이후 컨테이너 라이브러리마다 이터레이션 API 가
+                  제각각 (Next() 패턴, 채널, 콜백)
+                </li>
+                <li>
+                  채널 기반 이터레이션은 고루틴 누수 · 성능 문제, 콜백은 중첩
+                  지옥 — 언어 차원의 통일 필요
+                </li>
+                <li>
+                  컴파일러가 yield 호출을 인라인 · 최적화해 수동 루프와 비슷한
+                  속도. <code>slices.Sorted(maps.Keys(m))</code> 같은 조합이
+                  가능해짐
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">채널 이터레이션</span
+              ><span class="chip">Next()/Value() 패턴</span
+              ><span class="chip">콜백 Each()</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/blog/range-functions"
+                target="_blank"
+                rel="noopener"
+                >Range Over Function Types</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-gc15" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>동시 GC <small>1.5 (2015-08)</small></h3>
+            <button class="theme-btn" popovertarget="go-gc15">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              tri-color mark &amp; sweep 를 프로그램과 동시에 실행. STW 목표
+              10ms 이하 (이전 수백 ms).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0–1.4 의 stop-the-world GC 는 대형 힙에서 초 단위 정지 — "Go
+                  는 서버용으로 못 쓴다" 는 평가의 근거
+                </li>
+                <li>
+                  1.4 에서 런타임을 Go 로 옮겨 정밀 GC (포인터 위치 정확히 파악)
+                  가 가능해진 것이 선행 조건
+                </li>
+                <li>
+                  1.8 (100µs) · 1.19 (GOMEMLIMIT) · 1.26 (Green Tea) 로 이어지는
+                  "지연 최소화 · 튜닝 노브 최소화" 철학의 출발점
+                </li>
+              </ul>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              1.4 → 1.5: GC 정지 시간 약 100× 단축 (Twitter 사례 수백 ms → 수
+              ms)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/blog/go15gc"
+                target="_blank"
+                rel="noopener"
+                >Go GC: Prioritizing low latency and simplicity</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-greentea" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>Green Tea GC <small>1.25 실험 → 1.26 (2026-02) 기본</small></h3>
+            <button class="theme-btn" popovertarget="go-greentea">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              객체 단위가 아니라 메모리 페이지(span) 단위로 마킹 작업을 묶어
+              캐시 지역성을 높인 GC. 새 CPU 에선 SIMD 스캔.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2015 동시 GC 이후 10 년간 지연은 해결됐지만 처리량 (GC CPU
+                  점유) 은 메모리 대역폭 한계에 묶여 있었음
+                </li>
+                <li>
+                  힙이 수십 GB 로 커진 현대 서버에서 포인터 추적의 캐시 미스가
+                  병목이라는 분석
+                </li>
+                <li>
+                  GC 오버헤드 10–40% 감소, amd64 (Ice Lake · Zen 4 이상) 에서
+                  추가 ~10%. 1.26 에서
+                  <code>GOEXPERIMENT=nogreenteagc</code> 로만 되돌릴 수 있고
+                  1.27 에서 제거 예정
+                </li>
+              </ul>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/doc/go1.26#runtime"
+                target="_blank"
+                rel="noopener"
+                >Go 1.26 release notes</a
+              >
+              ·
+              <a
+                href="https://github.com/golang/go/issues/73581"
+                target="_blank"
+                rel="noopener"
+                >Green Tea 설계 이슈</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="go-generic-methods" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>제네릭 메서드 <small>1.27 (2026-08)</small></h3>
+            <button class="theme-btn" popovertarget="go-generic-methods">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              메서드 선언이 자체 타입 파라미터를 가짐. 예:
+              <code>math/rand/v2</code> 의
+              <code>func (r *Rand) N[Int intType](n Int) Int</code>. 인터페이스
+              메서드는 여전히 불가.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.18 제네릭 설계에서 가장 큰 미완 항목. 인터페이스 만족 판정과
+                  reflect 호환 문제로 4 년간 보류
+                </li>
+                <li>
+                  "인터페이스 메서드로는 선언 불가" 라는 제한을 두어 타입 검사
+                  복잡도를 피하는 절충안으로 수용
+                </li>
+                <li>
+                  함수 타입 추론 확장 · 구조체 리터럴 키 확장과 함께 제네릭
+                  완성도를 높이는 릴리스
+                </li>
+              </ul>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/doc/go1.27#language"
+                target="_blank"
+                rel="noopener"
+                >Go 1.27 release notes</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="container">
+      출처:
+      <a href="https://go.dev/doc/devel/release" target="_blank" rel="noopener"
+        >Go release history</a
+      >
+      · 각 버전 release notes · Go Developer Survey. 막대 굵기(사용량) 는 설문 ·
+      GitHub 스타 · 커뮤니티 언급을 바탕으로 한 근사치이며 정확한 점유율이
+      아닙니다.
+    </footer>
+  </body>
+</html>

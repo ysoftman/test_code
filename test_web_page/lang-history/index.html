@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language History: 버전별 큰 변화와 툴 교체 흐름</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">lang-history</span>
+        </div>
+        <button
+          class="theme-btn"
+          id="theme-btn"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <span id="theme-icon">◐</span>
+          <span id="theme-text">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-header">
+        <h1>Language History</h1>
+        <p class="page-desc">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          언어별로 정리합니다.
+        </p>
+        <nav class="lang-nav" aria-label="언어 선택">
+          <a href="./" aria-current="page">개요</a>
+          <a href="go.html">Go</a>
+          <a href="rust.html" class="soon">Rust (준비 중)</a>
+          <a href="python.html" class="soon">Python (준비 중)</a>
+          <a href="javascript.html" class="soon">JavaScript (준비 중)</a>
+        </nav>
+      </section>
+
+      <h3>언어 횡단 요약 — 지금 쓰는 툴은 무엇이고 어떻게 거기에 도달했나</h3>
+      <p class="lead">
+        승자는 두 부류예요. 공식 툴체인에 <strong>내장</strong>됐거나, 더 빠른
+        언어로 <strong>재작성</strong>돼 나머지를 흡수했거나.
+      </p>
+      <div class="table-wrap">
+        <table class="summary">
+          <thead>
+            <tr>
+              <th>category</th>
+              <th><a href="go.html">Go</a></th>
+              <th class="soon">Rust</th>
+              <th class="soon">Python</th>
+              <th class="soon">JavaScript</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>패키지 관리</th>
+              <td>
+                <code>go mod</code>
+                <span class="how builtin">built-in 1.11</span><br /><small
+                  >GOPATH · godep · glide · dep 흡수</small
+                >
+              </td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+            </tr>
+            <tr>
+              <th>린트</th>
+              <td>
+                <code>go vet</code> <span class="how builtin">built-in</span> +
+                <code>golangci-lint</code>
+                <span class="how fast">5× faster</span><br /><small
+                  >gometalinter · golint 흡수</small
+                >
+              </td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+            </tr>
+            <tr>
+              <th>포맷</th>
+              <td>
+                <code>gofmt</code> <span class="how builtin">built-in 1.0</span
+                ><br /><small>처음부터 하나 — 경쟁 자체가 없었음</small>
+              </td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+            </tr>
+            <tr>
+              <th>빌드 · 테스트</th>
+              <td>
+                <code>go build</code> · <code>go test</code>
+                <span class="how builtin">built-in 1.0</span><br /><small
+                  >fuzz 1.18 · PGO 1.21 · tool 1.24 로 계속 흡수</small
+                >
+              </td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+            </tr>
+            <tr>
+              <th>언어 버전 관리</th>
+              <td>
+                <code>go.mod toolchain</code>
+                <span class="how builtin">built-in 1.21</span><br /><small
+                  >gvm · goenv 흡수</small
+                >
+              </td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+            </tr>
+            <tr>
+              <th>수렴 패턴</th>
+              <td>
+                <strong>공식 툴체인 흡수</strong><br /><small
+                  >서드파티 → stdlib / go 명령</small
+                >
+              </td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+              <td class="soon">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>언어별 페이지</h3>
+      <div class="stat-row">
+        <a class="stat card-link" href="go.html">
+          <b>Go</b>
+          <span
+            >1.0 (2012) → 1.27 (2026) · 릴리스 27개 · 툴 차트 6개 · 상세 시트
+            16개</span
+          >
+        </a>
+        <div class="stat soon">
+          <b>Rust</b>
+          <span>준비 중 — edition 2015 · 2018 · 2021 · 2024 축 포함 예정</span>
+        </div>
+        <div class="stat soon">
+          <b>Python</b>
+          <span
+            >준비 중 — pip · poetry · pipenv → uv, flake8 · black → ruff
+            수렴</span
+          >
+        </div>
+        <div class="stat soon">
+          <b>JavaScript</b>
+          <span>준비 중 — ES 에디션 · 런타임 · 번들러 3개 레인</span>
+        </div>
+      </div>
+    </main>
+
+    <footer class="container">
+      출처는 각 언어 페이지 하단에 있습니다. 막대 굵기(사용량) 는 설문 · GitHub
+      스타 · 커뮤니티 언급을 바탕으로 한 근사치이며 정확한 점유율이 아닙니다.
+    </footer>
+  </body>
+</html>
