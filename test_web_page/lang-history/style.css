@@ -314,6 +314,8 @@ h4 {
   border-color: color-mix(in srgb, var(--tag-rt) 45%, transparent);
 }
 .badge {
+  flex: none;
+  white-space: nowrap;
   font-size: 0.68rem;
   font-weight: 600;
   padding: 1px 7px;
