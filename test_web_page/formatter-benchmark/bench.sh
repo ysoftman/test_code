@@ -107,7 +107,8 @@ for d in small html css js large; do
 done >"$TMP/corpora.jsonl"
 
 os=$(sw_vers -productVersion 2>/dev/null | sed 's/^/macOS /' || uname -sr)
-cpu=$(sysctl -n machdep.cpu.brand_string 2>/dev/null || grep -m1 'model name' /proc/cpuinfo | cut -d: -f2-)
+cpu=$(sysctl -n machdep.cpu.brand_string 2>/dev/null || grep -m1 'model name' /proc/cpuinfo | cut -d: -f2- || true)
+cpu=${cpu:-$(uname -m)} # aarch64 Linux 의 /proc/cpuinfo 에는 model name 이 없다
 jq -n \
     --arg date "$(date -u +%FT%TZ)" --arg os "$os ($(uname -m))" --arg cpu "${cpu# }" \
     --argjson cores "$(getconf _NPROCESSORS_ONLN)" --arg node "$(node --version)" \
