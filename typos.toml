@@ -37,6 +37,8 @@ Paeth = "Paeth"
 teh = "teh"
 # PNG filter name (Paeth predictor), not a typo of "Path"
 Paeth = "Paeth"
+# Yarn Plug'n'Play (PnP), split as "Pn" + "P", not a typo of "On"
+Pn = "Pn"
 
 # typos 검사 제외 파일타입
 # 지원되는 타입 확인

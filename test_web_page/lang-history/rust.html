@@ -1,0 +1,4114 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rust History: 버전별 큰 변화와 툴 교체 흐름</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <a class="nav-back" href="./">lang-history</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">rust</span>
+        </div>
+        <button
+          class="theme-btn"
+          id="theme-btn"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <span id="theme-icon">◐</span>
+          <span id="theme-text">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-header">
+        <h1>Language History</h1>
+        <p class="page-desc">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
+        </p>
+        <nav class="lang-nav" aria-label="언어 선택">
+          <a href="./">개요</a>
+          <a href="go.html">Go</a>
+          <a href="rust.html" aria-current="page">Rust</a>
+          <a href="python.html">Python</a>
+          <a href="javascript.html">JavaScript</a>
+        </nav>
+      </section>
+
+      <!-- ===================================================== Rust -->
+      <section class="lang" id="rust">
+        <h2>Rust</h2>
+        <p class="lead">
+          2015 년 1.0 부터 6 주 주기, 3 년마다 edition. 패키지 관리는
+          <strong>처음부터 cargo 하나</strong>였던 반례이고, 그 밖의 영역은
+          "서드파티가 먼저 검증 → 더 빠른 하나로 수렴 → 공식 컴포넌트나 std 로
+          흡수" 를 반복합니다. 단 async 런타임과 에러 crate 는 의도적으로 std
+          밖에 남겨 둡니다.
+        </p>
+
+        <div class="stat-row">
+          <div class="stat">
+            <b>5</b>
+            <span
+              >2016 · 공식 툴체인 외 필수 툴 (racer · rustfmt · clippy ·
+              error-chain · futures 0.1)</span
+            >
+          </div>
+          <div class="stat">
+            <b>4</b>
+            <span
+              >2020 · rust-analyzer · anyhow/thiserror · tokio · lazy_static /
+              once_cell</span
+            >
+          </div>
+          <div class="stat">
+            <b>2</b>
+            <span>2026 · tokio · anyhow/thiserror 만 남음 (의도된 외부)</span>
+          </div>
+          <div class="stat">
+            <b>11<small>회 crate → std</small></b>
+            <span
+              >matches 1.42 · Backtrace 1.65 · OnceLock · IsTerminal 1.70 · AFIT
+              1.75 · LazyLock 1.80 · core::error 1.81 · pipe 1.87 · File::lock
+              1.89 · cfg_select 1.95 · assert_matches 1.96</span
+            >
+          </div>
+        </div>
+
+        <h3>
+          Editions — 3 년마다 한 번, 호환성을 깨지 않고 문법을 바꾸는 장치
+        </h3>
+        <p class="lead">
+          edition 은 crate 단위 opt-in 이라 2015 코드와 2024 코드가 한 빌드에
+          섞입니다. 띠를 클릭하면 각 edition 이 바꾼 것을 볼 수 있어요.
+        </p>
+        <div class="lanes-wrap">
+          <div class="editions">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <span class="ed pre" style="grid-column: 1 / 4">pre-1.0</span>
+            <button
+              class="ed e2015"
+              style="grid-column: 4 / 7"
+              popovertarget="rs-ed2015"
+            >
+              edition 2015<small>1.0</small>
+            </button>
+            <button
+              class="ed e2018"
+              style="grid-column: 7 / 10"
+              popovertarget="rs-ed2018"
+            >
+              edition 2018<small>1.31 · NLL</small>
+            </button>
+            <button
+              class="ed e2021"
+              style="grid-column: 10 / 14"
+              popovertarget="rs-ed2021"
+            >
+              edition 2021<small>1.56</small>
+            </button>
+            <button
+              class="ed e2024"
+              style="grid-column: 14 / 17"
+              popovertarget="rs-ed2024"
+            >
+              edition 2024<small>1.85</small>
+            </button>
+          </div>
+        </div>
+
+        <h3>Releases — 굵직한 변화</h3>
+        <ul class="timeline">
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.99</span><span class="date">2026-10</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >C 가변 인자 함수를 Rust 에서 <em>정의</em> 가능 (<code
+                    >extern "C" fn f(x: i32, ...)</code
+                  >, <code>VaList</code>) — 호출만 되던 10 년의 제약 해소</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>Box::into_non_null</code> ·
+                  <code>Vec::into_parts</code> ·
+                  <code>mem::size_of_val_raw</code> ·
+                  <code>fs::set_times</code> · <code>Box&lt;[T; N]&gt;</code> 의
+                  <code>IntoIterator</code></span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>std::i32::MAX</code> 식 구형 정수 모듈 전부 deprecated
+                  — 1.43 연관 상수 이후 7 년 만의 정리</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >1.99.1 (10-15): x86_64 FFI <code>bool</code> 반환 miscompile
+                  수정</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.98 · 1.97 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.98</span>2026-08 ·
+                <code>str::substr_range</code> ·
+                <code>String::from_utf16le</code> · thumbv7 타깃 Tier 2 승격 ·
+                모호한 import 가 hard error
+              </li>
+              <li>
+                <span class="ver">1.97</span>2026-07 · <code>v0</code> 심볼
+                맹글링 기본값 · <code>cargo -m</code> (manifest-path 단축) ·
+                <code>build.warnings</code> 설정 · <code>bit_width</code> ·
+                <code>std::char</code> 상수 deprecated
+              </li>
+            </ul>
+          </details>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.96</span><span class="date">2026-05</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>core::range::Range</code> 신형 범위 타입 —
+                  <code>Iterator</code> 가 아니라 <code>IntoIterator</code> 라서
+                  <code>Copy</code> 가능. 2015 년 설계 실수의 정정</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>assert_matches!</code> ·
+                  <code>debug_assert_matches!</code> — assert_matches crate
+                  흡수</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >wasm 타깃이 <code>--allow-undefined</code> 를 더 이상 안 넘김
+                  · cargo CVE-2026-5222/5223 수정</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.95</span><span class="date">2026-04</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-let-chains">
+                  match arm 의 <code>if let</code> guard — let chains (1.88) 의
+                  마지막 조각
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="rs-cfg-select">
+                  <code>cfg_select!</code> — 누적 다운로드 1 위권 cfg-if crate
+                  흡수
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>Vec::push_mut</code> · <code>AtomicPtr::update</code> ·
+                  <code>hint::cold_path</code> ·
+                  <code>Layout::repeat</code></span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >JSON 타깃 스펙 파일이 stable 에서 제거 (nightly 전용으로
+                  되돌림) · <code>--remap-path-scope</code> 안정화</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.94 · 1.93 · 1.92 · 1.91 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.94</span>2026-03 ·
+                <code>LazyLock::get</code> · <code>array_windows</code> ·
+                Unicode 17 · 표준 매크로가 prelude 경유 (glob import 와 충돌
+                가능)
+              </li>
+              <li>
+                <span class="ver">1.93</span>2026-01 · <code>asm_cfg</code> ·
+                <code>fmt::from_fn</code> · <code>Vec::into_raw_parts</code> ·
+                <code>cargo clean --workspace</code> ·
+                <code>-Cjump-tables</code>
+              </li>
+              <li>
+                <span class="ver">1.92</span>2025-12 · unwind 테이블 기본 생성
+                (<code>panic=abort</code> 백트레이스 복구) ·
+                <code>Box::new_zeroed</code> · 최소 외부 LLVM 20
+              </li>
+              <li>
+                <span class="ver">1.91</span>2025-10 ·
+                <code>aarch64-pc-windows-msvc</code> Tier 1 ·
+                <code>Path::file_prefix</code> ·
+                <code>Duration::from_hours</code> · cargo
+                <code>build.build-dir</code>
+              </li>
+            </ul>
+          </details>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.90</span><span class="date">2025-09</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="rs-lld">
+                  <code>x86_64-unknown-linux-gnu</code> 기본 링커가 LLD — 링크
+                  단계 최대 2 배 빠름, mold 쓰던 이유 하나 줄어듦
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>cargo publish</code> 워크스페이스 다중 패키지 동시 발행
+                  (cargo-workspaces · release-plz 의 핵심 기능)</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>u32::checked_sub_signed</code> 계열 · float
+                  <code>round_ties_even</code> const 화</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  ><code>x86_64-apple-darwin</code> Tier 2 강등 (Apple Silicon
+                  시대)</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.89 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.89</span>2025-08 · const 인자
+                <code>_</code> 추론 (<code>[u8; _]</code>) ·
+                <code>File::lock</code> (fs2 · fs4 crate 흡수) ·
+                <code>i128</code> 이 <code>extern "C"</code> 에서 허용 ·
+                <code>mismatched_lifetime_syntaxes</code> lint ·
+                <code>cargo test --doc --target</code> 교차 실행
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.88</span><span class="date">2025-06</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-let-chains">
+                  let chains (<code>if let Some(x) = a &amp;&amp; x &gt; 0</code
+                  >) — RFC 2497 (2018) 이후 7 년, edition 2024 전용
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >naked functions (<code>#[unsafe(naked)]</code>) ·
+                  <code>cfg(true)</code> / <code>cfg(false)</code></span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >cargo 가 <code>~/.cargo</code> 캐시를 자동 청소 (3 개월
+                  미사용 crate 삭제) — cargo-cache 흡수</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>Cell::update</code> ·
+                  <code>HashMap::extract_if</code> ·
+                  <code>proc_macro::Span::line</code></span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.87 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.87</span>2025-05 · 1.0 10 주년 ·
+                <code>std::io::pipe</code> (os_pipe 흡수) ·
+                <code>asm_goto</code> · trait 정의에서
+                <code>use&lt;..&gt;</code> precise capturing ·
+                <code>Vec::extract_if</code> ·
+                <code>i586-pc-windows-msvc</code> 타깃 제거
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.86</span><span class="date">2025-04</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >trait upcasting (<code>&amp;dyn Sub</code> →
+                  <code>&amp;dyn Super</code>) — RFC 401 (2014) 이후 11 년.
+                  <code>as_any()</code> 관용구 종료</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>HashMap::get_disjoint_mut</code> ·
+                  <code>Vec::pop_if</code> ·
+                  <code>NonZero&lt;T&gt;::count_ones</code></span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span>안전한 <code>#[target_feature]</code> 함수</span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.85</span><span class="date">2025-02</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-ed2024">
+                  edition 2024 — RPIT 캡처 규칙 · <code>unsafe extern</code> ·
+                  <code>gen</code> 예약 · 임시값 수명 변경 ·
+                  <code>static mut</code>
+                  참조 금지
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >async closures (<code>async || {}</code>,
+                  <code>AsyncFn</code> 트레이트) — 1.39 이후 5 년 만의 async
+                  문법 확장</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >cargo <code>resolver = "3"</code> (MSRV 인식) 가 edition 2024
+                  기본 · rustfmt <code>style_edition</code></span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>#[diagnostic::do_not_recommend]</code> ·
+                  <code>FromIterator for Box&lt;str&gt;</code></span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.84 · 1.83 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.84</span>2025-01 · MSRV 인식 의존성 해석기
+                (<code>resolver = "3"</code>) · strict provenance API (<code
+                  >with_addr</code
+                >
+                · <code>expose_provenance</code>) · coherence 에 새 trait solver
+                적용
+              </li>
+              <li>
+                <span class="ver">1.83</span>2024-11 · const 문맥에서
+                <code>&amp;mut</code> · 가변 참조 · 원시 포인터 역참조 허용
+                (const 에서 할 수 있는 일이 급증)
+              </li>
+            </ul>
+          </details>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.82</span><span class="date">2024-10</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-ed2024">
+                  <code>use&lt;'a, T&gt;</code> precise capturing ·
+                  <code>unsafe extern</code> 블록 ·
+                  <code>#[unsafe(no_mangle)]</code> — edition 2024 의 준비물
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>&amp;raw const</code> / <code>&amp;raw mut</code> · 빈
+                  패턴 <code>match x {}</code> 안전 함수에서 허용 · 안전한
+                  <code>#[no_mangle]</code> 검증</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>Option::is_none_or</code> ·
+                  <code>Box::new_uninit</code> ·
+                  <code>Rc::new_uninit</code></span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.81</span><span class="date">2024-09</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>#[expect(lint)]</code> — "이 경고가 안 나오면 오히려
+                  에러". <code>#[allow]</code> 가 썩는 문제 해결</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>core::error::Error</code> — <code>no_std</code> 에서도
+                  표준 에러 트레이트. core-error · embedded 용 자체 트레이트
+                  흡수</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  >새 정렬 구현 (driftsort · ipnsort) — <code>Ord</code> 위반 시
+                  UB 대신 panic</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.80</span><span class="date">2024-07</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="rs-lazylock">
+                  <code>LazyCell</code> / <code>LazyLock</code> — 10 년 된
+                  lazy_static (누적 10 억 다운로드) 흡수
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >패턴의 배타 범위 <code>0..10</code> ·
+                  <code>#[cfg]</code> 이름 검증 (check-cfg) 기본 — 오타 cfg 가
+                  조용히 꺼지던 함정 제거</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.79</span><span class="date">2024-06</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >inline <code>const { .. }</code> 블록 — 배열 초기화
+                  <code>[const { None }; N]</code> 에서 const 헬퍼 함수
+                  제거</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >연관 타입 위치의 bound (<code
+                    >T: Iterator&lt;Item: Copy&gt;</code
+                  >) · 임시값 수명 연장 범위 확대</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.78 · 1.77 · 1.76 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.78</span>2024-05 ·
+                <code>#[diagnostic::on_unimplemented]</code> (라이브러리가 에러
+                메시지 커스텀) · unsafe 사전조건 디버그 단언 · Windows 10 최소
+              </li>
+              <li>
+                <span class="ver">1.77</span>2024-03 · C 문자열 리터럴
+                <code>c"hello"</code> · <code>offset_of!</code> · async fn 재귀
+                허용 · release 프로필 <code>strip = true</code> 기본
+              </li>
+              <li>
+                <span class="ver">1.76</span>2024-02 · ABI 호환성 문서화 ·
+                <code>Arc::unwrap_or_clone</code> ·
+                <code>type_name_of_val</code>
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.75</span><span class="date">2023-12</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-afit">
+                  trait 안의 <code>async fn</code> · RPITIT — async-trait crate
+                  (7 억 다운로드) 의 Box 할당 우회
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  >포인터 바이트 오프셋 API (<code>byte_add</code> ·
+                  <code>byte_offset</code>) ·
+                  <code>Option::as_slice</code></span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >rustc 가 <code>-Ccodegen-units=1</code> + LTO + PGO + BOLT 로
+                  자체 빌드 — 컴파일러 자체 최대 15% 빠름</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.74 · 1.73 · 1.72 · 1.71 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.74</span>2023-11 · <code>Cargo.toml</code>
+                <code>[lints]</code> 테이블 (clippy 설정이 crate 에 저장) ·
+                <code>--config</code> 로 cargo 설정 주입
+              </li>
+              <li>
+                <span class="ver">1.73</span>2023-10 · panic 메시지 포맷 변경
+                (메시지가 별도 줄) · <code>LocalKey::with_borrow</code>
+              </li>
+              <li>
+                <span class="ver">1.72</span>2023-08 · const 평가 시간 제한 해제
+                · 비활성 <code>cfg</code> 아이템도 에러 힌트에 사용
+              </li>
+              <li>
+                <span class="ver">1.71</span>2023-07 · C-unwind ABI ·
+                <code>#[debugger_visualizer]</code> 속성
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.70</span><span class="date">2023-06</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="rs-oncelock">
+                  <code>OnceCell</code> / <code>OnceLock</code> — once_cell
+                  crate 흡수 1 단계
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>IsTerminal</code> — RUSTSEC 공지로 사실상 사망한 atty
+                  crate (3.6 억 다운로드) 흡수</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >crates.io <strong>sparse 레지스트리 프로토콜 기본</strong> —
+                  git index clone (수백 MB) 종료, 첫 빌드 수 분 단축</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>Option::is_some_and</code> ·
+                  <code>-Cdebuginfo=line-tables-only</code></span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.69 · 1.68 · 1.67 · 1.66 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.69</span>2023-04 · <code>cargo fix</code>
+                제안 자동 적용 안내 · 디버그 정보 없이 빌드 스크립트 실행 (빌드
+                속도)
+              </li>
+              <li>
+                <span class="ver">1.68</span>2023-03 · sparse 프로토콜 안정화
+                (opt-in) · <code>pin!</code> 매크로 ·
+                <code>Path::as_mut_os_str</code>
+              </li>
+              <li>
+                <span class="ver">1.67</span>2023-01 · async fn 의
+                <code>#[must_use]</code> · <code>mpsc</code> 채널을 crossbeam
+                구현으로 교체 (더 빠름)
+              </li>
+              <li>
+                <span class="ver">1.66</span>2022-12 ·
+                <code>std::hint::black_box</code> (criterion 의 black_box 흡수)
+                · 필드 있는 enum 의 명시적 discriminant ·
+                <code>cargo remove</code>
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.65</span><span class="date">2022-11</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-gats">
+                  GATs (generic associated types) — 6.5 년 걸린 RFC 1598,
+                  "lending iterator" 가능
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>let else</code> — early return 패턴의 보일러플레이트
+                  제거 (guard crate 흡수) · 라벨 블록
+                  <code>break 'a v</code></span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>std::backtrace::Backtrace</code> — backtrace crate 의
+                  캡처 API 흡수</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span>MIR 인라이닝 기본 활성 — 컴파일 3–10% 빠름</span>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.64</span><span class="date">2022-09</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="rs-rust-analyzer">
+                  <code>rustup component add rust-analyzer</code> — RLS 마지막
+                  빌드, 에디터 지원이 하나로 수렴
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>core::ffi::c_int</code> 등 C 타입이 core 로 (libc crate
+                  의존 감소) · <code>IntoFuture</code></span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >Cargo workspace 상속 (<code>[workspace.package]</code> ·
+                  <code>[workspace.dependencies]</code>)</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.63 · 1.62 · 1.61 · 1.60 · 1.59 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.63</span>2022-08 · scoped threads
+                (<code>thread::scope</code>, crossbeam 흡수) ·
+                <code>Mutex::new</code> const 화
+              </li>
+              <li>
+                <span class="ver">1.62</span>2022-06 ·
+                <code>cargo add</code> 내장 (cargo-edit 흡수) ·
+                <code>#[default]</code> enum variant · Linux Mutex 를 futex
+                기반으로 (더 작고 빠름)
+              </li>
+              <li>
+                <span class="ver">1.61</span>2022-05 · <code>main</code> 의
+                커스텀 종료 코드 (<code>ExitCode</code>) · const fn 에서 fn
+                포인터
+              </li>
+              <li>
+                <span class="ver">1.60</span>2022-04 · 소스 기반 코드 커버리지
+                안정화 · Cargo <code>dep:</code> 네임스페이스 feature ·
+                <code>Instant</code> 단조성 보장
+              </li>
+              <li>
+                <span class="ver">1.59</span>2022-02 · inline
+                <code>asm!</code> 안정화 · 구조 분해 대입
+                <code>(a, b) = (b, a)</code> · Cargo <code>strip</code> 옵션
+              </li>
+            </ul>
+          </details>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">1.58</span><span class="date">2022-01</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  >포맷 문자열 식별자 캡처
+                  <code>println!("{name} is {age}")</code> — 2015 년부터 요청된
+                  기능</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  >Windows <code>Command</code> 가 현재 디렉토리를 검색 안 함
+                  (보안) · <code>File::options</code></span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.57 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.57</span>2021-12 · const 문맥의
+                <code>panic!</code> (컴파일 타임 단언) · Cargo 커스텀 프로필 ·
+                fallible allocation <code>try_reserve</code>
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.56</span><span class="date">2021-10</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-ed2021">
+                  edition 2021 — disjoint closure capture · 배열
+                  <code>IntoIterator</code> · <code>panic!</code> 일관성 ·
+                  prelude 에 <code>TryFrom</code>
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>Cargo.toml</code> <code>rust-version</code> 필드 (MSRV
+                  선언) — 1.84 MSRV 인식 해석기의 씨앗</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span>패턴에서 <code>binding @ pattern</code> 동시 사용</span>
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.55 · 1.54 · 1.53 · 1.52 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.55</span>2021-09 · 패턴의 open range
+                <code>1..</code> · 부동소수 파싱을 Eisel-Lemire 알고리즘으로
+                (빠르고 정확) · <code>MaybeUninit::write</code>
+              </li>
+              <li>
+                <span class="ver">1.54</span>2021-07 · 속성 안의 매크로
+                <code>#[doc = include_str!(..)]</code> · 증분 컴파일 재활성화
+                (1.52.1 에서 껐던 것)
+              </li>
+              <li>
+                <span class="ver">1.53</span>2021-06 · 배열
+                <code>IntoIterator</code> (값 순회) · or-pattern
+                <code>Some(1 | 2)</code> · 비 ASCII 식별자
+              </li>
+              <li>
+                <span class="ver">1.52</span>2021-05 ·
+                <code>str::split_once</code> · clippy 가 cargo check 캐시 공유
+                (재실행 시 결과 안 나오던 문제 해결) · 1.52.1 증분 컴파일 버그로
+                긴급 비활성
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.51</span><span class="date">2021-03</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >const generics MVP (<code
+                    >struct Buf&lt;const N: usize&gt;</code
+                  >) — 배열 길이 32 제한 종료, typenum · generic-array 의 역할
+                  축소</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="rs-cargo">
+                  Cargo <code>resolver = "2"</code> — dev/build 의존성 feature
+                  가 일반 빌드에 새던 문제 해결
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>ptr::addr_of!</code> (packed 필드 참조 UB 회피) ·
+                  <code>array::IntoIter</code> ·
+                  <code>str::split_inclusive</code></span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >macOS 에서 split debuginfo 기본 — 디버그 빌드 링크 크게
+                  빨라짐</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.50 · 1.49 · 1.48 · 1.47 · 1.46 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.50</span>2021-02 · const 값으로 배열 반복
+                <code>[C; N]</code> · <code>Option::insert</code> · union 의
+                <code>ManuallyDrop</code> 필드 안전 대입
+              </li>
+              <li>
+                <span class="ver">1.49</span>2020-12 ·
+                <code>aarch64-unknown-linux-gnu</code> Tier 1 ·
+                <code>aarch64-apple-darwin</code> (Apple Silicon) Tier 2
+              </li>
+              <li>
+                <span class="ver">1.48</span>2020-11 · rustdoc intra-doc links
+                <code>[`Vec`]</code> · <code>#![doc(alias)]</code> ·
+                <code>TryFrom&lt;Vec&lt;T&gt;&gt; for [T; N]</code>
+              </li>
+              <li>
+                <span class="ver">1.47</span>2020-10 · 모든 길이 배열에 trait
+                impl (const generics 내부 사용) · 짧아진 백트레이스 · LLVM 11
+              </li>
+              <li>
+                <span class="ver">1.46</span>2020-08 · const fn 안에
+                <code>if</code> · <code>loop</code> · <code>match</code> ·
+                <code>#[track_caller]</code> (<code>unwrap</code> 패닉이 호출
+                위치를 보고)
+              </li>
+            </ul>
+          </details>
+          <details class="minor">
+            <summary>1.45 · 1.44 · 1.43 · 1.42 · 1.41 · 1.40 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.45</span>2020-07 · 함수형 proc macro 를
+                표현식 · 패턴 · 문장 위치에서 허용 (Rocket 이 stable 로) · float
+                → int <code>as</code> 포화 변환으로 UB 제거
+              </li>
+              <li>
+                <span class="ver">1.44</span>2020-06 · <code>cargo tree</code>
+                내장 (cargo-tree 흡수)
+              </li>
+              <li>
+                <span class="ver">1.43</span>2020-04 · 연관 상수
+                <code>u32::MAX</code> (구형 <code>std::u32::MAX</code> 대체
+                시작) · <code>#[cfg(doc)]</code>
+              </li>
+              <li>
+                <span class="ver">1.42</span>2020-03 · <code>matches!</code>
+                매크로 (matches crate 흡수) · 부분 슬라이스 패턴
+                <code>[first, .., last]</code> · <code>unwrap</code> 패닉이
+                호출자 줄 번호 표시
+              </li>
+              <li>
+                <span class="ver">1.41</span>2020-01 · 완화된 orphan rule (<code
+                  >impl From&lt;Local&gt; for Vec&lt;T&gt;</code
+                >) · <code>Cargo.lock</code> 포맷 v2 · 32-bit Apple 타깃 강등
+              </li>
+              <li>
+                <span class="ver">1.40</span>2019-12 ·
+                <code>#[non_exhaustive]</code> · <code>todo!</code> ·
+                <code>macro_rules!</code> 가 proc macro 출력에서 정의 가능
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.39</span><span class="date">2019-11</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-async-await">
+                  <code>async</code> / <code>.await</code> — futures 0.1 콜백
+                  체인 종료, tokio 0.2 · async-std 1.0 이 같은 주에 출시
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >함수 파라미터에 속성 허용 · <code>by-move</code> 바인딩 +
+                  <code>by-ref</code> 바인딩 혼합 매치</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >NLL 마이그레이션 경고가 hard error 로 — 구 borrow checker
+                  완전 퇴역</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.38 · 1.37 · 1.36 · 1.35 · 1.34 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.38</span>2019-09 · 파이프라인 컴파일 (의존성
+                메타데이터 먼저, 10–20% 빠름) ·
+                <code>#[deprecated]</code> 매크로 ·
+                <code>mem::size_of</code> const
+              </li>
+              <li>
+                <span class="ver">1.37</span>2019-08 ·
+                <code>cargo vendor</code> 내장 (cargo-vendor 흡수) ·
+                <code>#[repr(align)]</code> enum · 프로필 오버라이드 ·
+                <code>cargo doc --open</code>
+              </li>
+              <li>
+                <span class="ver">1.36</span>2019-07 ·
+                <code>Future</code> 트레이트 안정화 (async/await 의 전제) ·
+                <code>HashMap</code> 을 hashbrown (SwissTable) 으로 교체 ·
+                <code>alloc</code> crate · <code>MaybeUninit</code> · edition
+                2015 에도 NLL
+              </li>
+              <li>
+                <span class="ver">1.35</span>2019-05 ·
+                <code>Box&lt;dyn FnOnce&gt;</code> 호출 · <code>dbg!</code> 인자
+                없음 · <code>f32::copysign</code>
+              </li>
+              <li>
+                <span class="ver">1.34</span>2019-04 · 대체 레지스트리 ·
+                <code>TryFrom</code> / <code>TryInto</code> 안정화 ·
+                <code>?</code> 를 doctest 에서
+              </li>
+            </ul>
+          </details>
+          <details class="minor">
+            <summary>1.33 · 1.32 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.33</span>2019-02 · <code>Pin</code>
+                안정화 (self-referential future 의 열쇠) · const fn 확장 ·
+                <code>unimplemented!("msg")</code>
+              </li>
+              <li>
+                <span class="ver">1.32</span>2019-01 · 기본 allocator 를
+                jemalloc 에서 시스템 allocator 로 (바이너리 300 KB 감소) ·
+                <code>dbg!</code> · uniform paths (edition 2018)
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.31</span><span class="date">2018-12</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-ed2018">
+                  edition 2018 — NLL (non-lexical lifetimes) · 모듈 경로 단순화
+                  · <code>dyn Trait</code> · <code>async</code> 예약
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="rs-rustfmt-clippy">
+                  rustfmt 1.0 · clippy 1.0 — 둘 다 rustup 컴포넌트로 공식화,
+                  tool lints <code>#[allow(clippy::..)]</code>
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >최소 <code>const fn</code> · <code>'_</code> 생략 수명 ·
+                  <code>impl Trait</code> 에서 수명 생략</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>cargo fix --edition</code> 로 자동 마이그레이션 —
+                  "edition 전환 = 명령 한 줄" 공식 확립</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.30 · 1.29 · 1.28 · 1.27 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.30</span>2018-10 · 속성형 · 함수형 proc
+                macro 일반화 (1.15 custom derive 의 완성) ·
+                <code>crate::</code> 경로 · <code>#[used]</code> ·
+                <code>r#keyword</code> 원시 식별자
+              </li>
+              <li>
+                <span class="ver">1.29</span>2018-09 ·
+                <code>cargo fix</code> (rustfix 흡수) ·
+                <code>cargo clippy</code> preview 컴포넌트 ·
+                <code>Vec::resize_with</code>
+              </li>
+              <li>
+                <span class="ver">1.28</span>2018-08 ·
+                <code>#[global_allocator]</code> (jemalloc 교체 가능) ·
+                <code>NonZeroU32</code> 계열 · <code>Iterator::step_by</code>
+              </li>
+              <li>
+                <span class="ver">1.27</span>2018-06 · SIMD
+                <code>std::arch</code> 안정화 · <code>dyn Trait</code> 문법 ·
+                <code>#[must_use]</code> 함수
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.26</span><span class="date">2018-05</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>impl Trait</code> (인자 · 반환) — 클로저 · 이터레이터
+                  반환에서 <code>Box&lt;dyn&gt;</code> 제거</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >match ergonomics (참조 패턴의 <code>&amp;</code> ·
+                  <code>ref</code> 자동) · <code>..=</code> 포함 범위 · 기본
+                  슬라이스 패턴</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>i128</code> / <code>u128</code> · <code>main</code> 이
+                  <code>Result</code> 반환 가능 (<code>?</code> 가 main
+                  에서도)</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>fs::read_to_string</code> · <code>fs::read</code> ·
+                  <code>fs::write</code> — 한 줄 파일 IO</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.25 · 1.24 · 1.23 · 1.22 · 1.21 · 1.20 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.25</span>2018-03 · 중첩 import
+                <code>use std::{fs::{self, File}, io}</code> · LLVM 6 ·
+                <code>#[repr(align)]</code>
+              </li>
+              <li>
+                <span class="ver">1.24</span>2018-02 · 증분 컴파일 기본 활성 ·
+                <code>rustup component add rustfmt-preview</code> — rustfmt 가
+                처음으로 공식 배포 채널에 · 기본 코드젠 유닛 16 (병렬 컴파일)
+              </li>
+              <li>
+                <span class="ver">1.23</span>2018-01 · rustdoc 이 pulldown-cmark
+                (CommonMark) 로 · <code>#[must_use]</code> 소비 경고 개선
+              </li>
+              <li>
+                <span class="ver">1.22</span>2017-11 · <code>Option</code> 에서
+                <code>?</code> · <code>Box&lt;Error&gt;</code> 변환 ·
+                <code>Box::leak</code>
+              </li>
+              <li>
+                <span class="ver">1.21</span>2017-10 · 리터럴 참조의 static 승격
+                <code>let x: &amp;'static u32 = &amp;5</code> ·
+                <code>mem::needs_drop</code> · <code>cargo install --list</code>
+              </li>
+              <li>
+                <span class="ver">1.20</span>2017-08 · 연관 상수 (<code
+                  >const ID: u32</code
+                >
+                in trait) · <code>mem::ManuallyDrop</code> ·
+                <code>str::from_utf8_mut</code>
+              </li>
+            </ul>
+          </details>
+          <details class="minor">
+            <summary>1.19 · 1.18 · 1.17 · 1.16 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.19</span>2017-07 · <code>union</code> ·
+                <code>loop { break value }</code> · <code>eprintln!</code>
+              </li>
+              <li>
+                <span class="ver">1.18</span>2017-06 ·
+                <code>pub(crate)</code> 등 제한 가시성 ·
+                <code>#![windows_subsystem]</code> · 구조체 필드 재배치로 메모리
+                절약
+              </li>
+              <li>
+                <span class="ver">1.17</span>2017-04 · <code>impl</code> 헤더
+                수명 생략 · <code>'static</code> 상수 기본 · Cargo
+                <code>[build] target-dir</code>
+              </li>
+              <li>
+                <span class="ver">1.16</span>2017-03 ·
+                <code>cargo check</code> — 코드 생성 없이 타입 검사만, IDE 와
+                watch 루프의 기반 (RLS 도 이 위에서) · 임시로 쓰이던 cargo-check
+                플러그인 흡수
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.15</span><span class="date">2017-02</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-derive">
+                  custom derive (Macros 1.1) —
+                  <code>#[derive(Serialize)]</code> 가 stable 에서. serde 가
+                  "사실상 표준" 이 된 순간
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>slice::sort</code> 가 새 merge sort 로 교체 (더 빠름) ·
+                  <code>Vec::dedup_by</code></span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.14 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.14</span>2016-12 ·
+                <strong>rustup 1.0</strong> — 공식 권장 설치 방법으로 승격
+                (multirust 종료) · 실험적
+                <code>wasm32-unknown-emscripten</code> ·
+                <code>println!()</code> 빈 호출 · <code>..</code> 패턴 확장
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.13</span><span class="date">2016-11</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-question">
+                  <code>?</code> 연산자 — <code>try!</code> 매크로 대체, 에러
+                  전파가 문법으로
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>assert_ne!</code> · <code>Result</code> 미사용 경고
+                  강화 — <code>?</code> 와 함께 "에러를 조용히 버리지 못하게"
+                  하는 쌍</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>1.12 · 1.11 · 1.10 · 1.9 · 1.8 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.12</span>2016-09 · MIR 기반 코드 생성 기본 —
+                이후 모든 borrow check · const eval · 최적화의 토대 · 새 에러
+                메시지 포맷 (화살표 + 라벨)
+              </li>
+              <li>
+                <span class="ver">1.11</span>2016-08 · MIR 전환을 위한 내부 정리
+                위주 · <code>cargo</code> 가 네트워크 재시도
+              </li>
+              <li>
+                <span class="ver">1.10</span>2016-07 · <code>cdylib</code>
+                crate 타입 (C 호출용 동적 라이브러리) ·
+                <code>panic = "abort"</code> 프로필 옵션
+              </li>
+              <li>
+                <span class="ver">1.9</span>2016-05 ·
+                <code>panic::catch_unwind</code> ·
+                <code>#[deprecated]</code> 속성 · 특화된
+                <code>Vec::extend</code>
+              </li>
+              <li>
+                <span class="ver">1.8</span>2016-04 · 복합 대입 연산자 오버로딩
+                (<code>AddAssign</code>) · rustbuild (Cargo 기반 컴파일러 빌드)
+                도입 시작
+              </li>
+            </ul>
+          </details>
+          <details class="minor">
+            <summary>1.7 · 1.6 · 1.5 · 1.4 · 1.3 · 1.2 · 1.1 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">1.7</span>2016-03 · <code>HashMap</code>
+                해셔 커스텀 (<code>BuildHasher</code>) ·
+                <code>Ipv4Addr</code> 비교
+              </li>
+              <li>
+                <span class="ver">1.6</span>2016-01 ·
+                <code>libcore</code> 안정화 → <code>#![no_std]</code> 가 stable
+                에서 (임베디드 · OS 개발의 출발) · <code>cargo install</code> 로
+                바이너리 crate
+              </li>
+              <li>
+                <span class="ver">1.5</span>2015-12 ·
+                <code>cargo install</code> 도입 · Windows MSVC 타깃 Tier 1 ·
+                <code>Vec::drain</code> 계열
+              </li>
+              <li>
+                <span class="ver">1.4</span>2015-10 · Windows MSVC 64-bit 타깃
+                지원 · 이름 규칙 lint (<code>camel_case</code>)
+              </li>
+              <li>
+                <span class="ver">1.3</span>2015-09 · Rustonomicon 초판 ·
+                <code>Duration</code> 안정화 · Windows 성능 개선
+              </li>
+              <li>
+                <span class="ver">1.2</span>2015-08 · 병렬 코드 생성 (<code
+                  >-C codegen-units</code
+                >) · MSVC 툴체인 지원 시작 · 컴파일 시간 32% 단축
+              </li>
+              <li>
+                <span class="ver">1.1</span>2015-06 · 컴파일 시간 32% 단축 ·
+                <code>std::fs</code> 확장 · 새 <code>rustc</code> 에러 설명
+                <code>--explain</code>
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">1.0</span><span class="date">2015-05</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="rs-stability">
+                  "Stability as a Deliverable" — 6 주 릴리스 열차 + stable /
+                  beta / nightly 채널 + 안정성 약속
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="rs-cargo">
+                  cargo + crates.io 가 1.0 과 함께 — 패키지 관리자는 첫날부터
+                  하나뿐
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >소유권 · 빌림 검사기 · lifetime · trait — 이후 모든 1.x 가
+                  1.0 코드를 컴파일한다는 약속</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >런타임 없음 (0.x 의 green thread · GC 포인터 전부 제거 후
+                  출시)</span
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
+        <p class="lead">
+          막대 굵기 = 사용량(crates.io 다운로드 · 설문 · 스타 기준 근사치).
+          사라진 툴의 레인은 다음 툴이 재사용합니다. 막대를 클릭하면 교체 배경을
+          볼 수 있어요. Rust 는 2015 년 1.0 부터지만 다른 언어와 축을 맞추기
+          위해 2012 년부터 그립니다.
+        </p>
+        <div class="legend">
+          <span><i class="d"></i>dominant</span>
+          <span><i class="c"></i>common</span>
+          <span><i class="n"></i>niche</span>
+          <span><i class="e"></i>discontinued</span>
+        </div>
+
+        <h4>툴체인 관리 — multirust 가 rustup 으로 이름을 바꾼 수준의 수렴</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 3 / 4"
+              popovertarget="rs-multirust"
+            >
+              <span class="name">multirust</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 2; grid-column: 4 / 6"
+              popovertarget="rs-multirust"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 5 / 6"
+              popovertarget="rs-rustup"
+            >
+              <span class="name">rustup (2016-12 공식)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 3; grid-column: 6 / 17"
+              popovertarget="rs-rustup"
+            ></button>
+            <span class="bar niche" style="--lane: 4; grid-column: 4 / 17"
+              ><span class="name"
+                >배포판 패키지 · homebrew (고정 버전)</span
+              ></span
+            >
+          </div>
+        </div>
+
+        <h4>패키지 · 빌드 — 경쟁 자체가 없었음</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche end"
+              style="--lane: 2; grid-column: 2 / 3"
+              popovertarget="rs-rustpkg"
+            >
+              <span class="name">rustpkg</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 3 / 4"
+              popovertarget="rs-cargo"
+            >
+              <span class="name"
+                >cargo (2014 · 1.0 과 함께 · 처음부터 하나)</span
+              >
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 4 / 17"
+              popovertarget="rs-cargo"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 4 / 6"
+              popovertarget="rs-cargoedit"
+            >
+              <span class="name">cargo-edit (cargo add)</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 3; grid-column: 6 / 11"
+              popovertarget="rs-cargoedit"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 11 / 17"
+              popovertarget="rs-cargo"
+            >
+              <span class="name">cargo (add 1.62 · remove 1.66 내장)</span>
+            </button>
+            <span class="bar common" style="--lane: 4; grid-column: 10 / 17"
+              ><span class="name"
+                >cargo-nextest (테스트 러너 · 미흡수)</span
+              ></span
+            >
+          </div>
+        </div>
+
+        <h4>에디터 지원 (완성 · 정의 이동 · 리네임) — 가장 뚜렷한 수렴</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 3 / 4"
+              popovertarget="rs-rls"
+            >
+              <span class="name">racer</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 4 / 9"
+              popovertarget="rs-rls"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 2; grid-column: 9 / 11"
+              popovertarget="rs-rls"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 5 / 7"
+              popovertarget="rs-rls"
+            >
+              <span class="name">RLS (공식 · rustc 재사용)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 7 / 10"
+              popovertarget="rs-rls"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 3; grid-column: 10 / 12"
+              popovertarget="rs-rls"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 7 / 9"
+              popovertarget="rs-rust-analyzer"
+            >
+              <span class="name">rust-analyzer (2022-02 공식)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 9 / 11"
+              popovertarget="rs-rust-analyzer"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 11 / 17"
+              popovertarget="rs-rust-analyzer"
+            ></button>
+            <span class="bar niche" style="--lane: 5; grid-column: 6 / 8"
+              ><span class="name"
+                >IntelliJ Rust → RustRover (별도 구현)</span
+              ></span
+            >
+            <span
+              class="bar common"
+              style="--lane: 5; grid-column: 8 / 17"
+            ></span>
+          </div>
+        </div>
+
+        <h4>포맷 · 린트 — 서드파티로 시작해 2018 년 공식 컴포넌트로</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 4 / 7"
+              popovertarget="rs-rustfmt-clippy"
+            >
+              <span class="name">rustfmt (서드파티)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 7 / 8"
+              popovertarget="rs-rustfmt-clippy"
+            >
+              <span class="name"
+                >rustfmt (rustup 컴포넌트 1.24 preview → 1.31 1.0)</span
+              >
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 8 / 17"
+              popovertarget="rs-rustfmt-clippy"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 3 / 7"
+              popovertarget="rs-rustfmt-clippy"
+            >
+              <span class="name">clippy (nightly 전용)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 7 / 8"
+              popovertarget="rs-rustfmt-clippy"
+            >
+              <span class="name"
+                >clippy (rustup 컴포넌트 1.29 preview → 1.31 1.0)</span
+              >
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 3; grid-column: 8 / 17"
+              popovertarget="rs-rustfmt-clippy"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 6 / 7"
+              popovertarget="rs-rustfmt-clippy"
+            >
+              <span class="name">rustfix → cargo fix (1.29 내장)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 7 / 17"
+              popovertarget="rs-rustfmt-clippy"
+            ></button>
+          </div>
+        </div>
+
+        <h4>async 런타임 — 의도적으로 std 밖, 그래도 tokio 로 수렴</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 5 / 6"
+              popovertarget="rs-futures"
+            >
+              <span class="name">futures 0.1 (콜백 체인)</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 2; grid-column: 6 / 9"
+              popovertarget="rs-futures"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 9 / 17"
+              popovertarget="rs-futures"
+            >
+              <span class="name">futures (0.3 · 유틸리티로 축소)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 5 / 6"
+              popovertarget="rs-tokio"
+            >
+              <span class="name">tokio</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 6 / 9"
+              popovertarget="rs-tokio"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 3; grid-column: 9 / 17"
+              popovertarget="rs-tokio"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 8 / 10"
+              popovertarget="rs-async-std"
+            >
+              <span class="name">async-std</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 10 / 14"
+              popovertarget="rs-async-std"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 14 / 15"
+              popovertarget="rs-async-std"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 9 / 17"
+              popovertarget="rs-async-std"
+            >
+              <span class="name">smol</span>
+            </button>
+          </div>
+        </div>
+
+        <h4>에러 처리 — 세 번 갈아엎고 anyhow + thiserror 로</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 5 / 7"
+              popovertarget="rs-failure"
+            >
+              <span class="name">error-chain</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 2; grid-column: 7 / 9"
+              popovertarget="rs-failure"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 9 / 17"
+              popovertarget="rs-eyre"
+            >
+              <span class="name">eyre (anyhow 포크 · 리포트 커스텀)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 6 / 7"
+              popovertarget="rs-failure"
+            >
+              <span class="name">failure</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 7 / 9"
+              popovertarget="rs-failure"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 3; grid-column: 9 / 10"
+              popovertarget="rs-failure"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 8 / 9"
+              popovertarget="rs-anyhow"
+            >
+              <span class="name">anyhow + thiserror</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 9 / 10"
+              popovertarget="rs-anyhow"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 10 / 17"
+              popovertarget="rs-anyhow"
+            ></button>
+            <span class="bar niche" style="--lane: 5; grid-column: 8 / 17"
+              ><span class="name">snafu</span></span
+            >
+          </div>
+        </div>
+
+        <h4>crate → std · cargo 흡수 — "서드파티에서 검증 → 표준으로"</h4>
+        <p class="lead">
+          Rust 는 std 를 작게 유지하는 대신, 생태계에서 사실상 표준이 된 crate
+          의 <em>핵심 API 만</em> 골라 들여옵니다. 다운로드는 crates.io 누적
+          (2026-10). 들여온 뒤에도 crate 다운로드가 줄지 않는 이유는 MSRV 가
+          낮은 라이브러리들이 계속 쓰기 때문이에요.
+        </p>
+        <div class="table-wrap">
+          <table class="summary cleanup">
+            <thead>
+              <tr>
+                <th>crate</th>
+                <th>std · cargo 대체</th>
+                <th>버전</th>
+                <th>비고</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th colspan="4">crate → std</th>
+              </tr>
+              <tr>
+                <td><code>matches</code></td>
+                <td><code>matches!</code></td>
+                <td><span class="how builtin">1.42 · 2020-03</span></td>
+                <td>1.9 억 다운로드 · 2023 이후 업데이트 없음</td>
+              </tr>
+              <tr>
+                <td><code>backtrace</code></td>
+                <td><code>std::backtrace::Backtrace</code></td>
+                <td><span class="how builtin">1.65 · 2022-11</span></td>
+                <td>std 가 내부적으로 같은 crate 를 사용</td>
+              </tr>
+              <tr>
+                <td><code>once_cell</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-oncelock">
+                    <code>OnceCell</code> · <code>OnceLock</code>
+                  </button>
+                </td>
+                <td><span class="how builtin">1.70 · 2023-06</span></td>
+                <td>13.9 억 다운로드 · 2 단계로 흡수 (1.80 Lazy)</td>
+              </tr>
+              <tr>
+                <td><code>atty</code></td>
+                <td><code>std::io::IsTerminal</code></td>
+                <td><span class="how builtin">1.70 · 2023-06</span></td>
+                <td>
+                  3.6 억 다운로드 ·
+                  <span class="how dep">RUSTSEC-2021-0145</span>
+                  미수정 → 흡수가 사실상 보안 패치
+                </td>
+              </tr>
+              <tr>
+                <td><code>async-trait</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-afit">
+                    trait 안의 <code>async fn</code>
+                  </button>
+                </td>
+                <td><span class="how builtin">1.75 · 2023-12</span></td>
+                <td>7.3 억 다운로드 · <code>dyn Trait</code> 용도로는 잔존</td>
+              </tr>
+              <tr>
+                <td><code>lazy_static</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-lazylock">
+                    <code>LazyCell</code> · <code>LazyLock</code>
+                  </button>
+                </td>
+                <td><span class="how builtin">1.80 · 2024-07</span></td>
+                <td>
+                  10.7 억 다운로드 · <span class="how arch">archived</span> 2026
+                </td>
+              </tr>
+              <tr>
+                <td>no_std 용 Error 트레이트들</td>
+                <td><code>core::error::Error</code></td>
+                <td><span class="how builtin">1.81 · 2024-09</span></td>
+                <td>임베디드 · 커널 crate 가 std 없이 <code>?</code> 체인</td>
+              </tr>
+              <tr>
+                <td><code>os_pipe</code></td>
+                <td><code>std::io::pipe</code></td>
+                <td><span class="how builtin">1.87 · 2025-05</span></td>
+                <td>익명 파이프</td>
+              </tr>
+              <tr>
+                <td><code>fs2</code> · <code>fs4</code></td>
+                <td><code>File::lock</code> · <code>try_lock</code></td>
+                <td><span class="how builtin">1.89 · 2025-08</span></td>
+                <td>파일 잠금 (advisory lock)</td>
+              </tr>
+              <tr>
+                <td><code>cfg-if</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-cfg-select">
+                    <code>cfg_select!</code>
+                  </button>
+                </td>
+                <td><span class="how builtin">1.95 · 2026-04</span></td>
+                <td>15.9 억 다운로드 — crates.io 전체 1 위권</td>
+              </tr>
+              <tr>
+                <td><code>assert_matches</code></td>
+                <td><code>assert_matches!</code></td>
+                <td><span class="how builtin">1.96 · 2026-05</span></td>
+                <td>0.8 억 다운로드 · prelude 에는 없음</td>
+              </tr>
+
+              <tr>
+                <th colspan="4">cargo 서브커맨드 → cargo 내장</th>
+              </tr>
+              <tr>
+                <td><code>rustfix</code></td>
+                <td><code>cargo fix</code></td>
+                <td><span class="how builtin">1.29 · 2018-09</span></td>
+                <td>edition 마이그레이션의 엔진</td>
+              </tr>
+              <tr>
+                <td><code>cargo-vendor</code></td>
+                <td><code>cargo vendor</code></td>
+                <td><span class="how builtin">1.37 · 2019-08</span></td>
+                <td>오프라인 · 감사용 의존성 복사</td>
+              </tr>
+              <tr>
+                <td><code>cargo-tree</code></td>
+                <td><code>cargo tree</code></td>
+                <td><span class="how builtin">1.44 · 2020-06</span></td>
+                <td>의존성 그래프 출력</td>
+              </tr>
+              <tr>
+                <td><code>cargo-edit</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-cargo">
+                    <code>cargo add</code> · <code>cargo remove</code>
+                  </button>
+                </td>
+                <td><span class="how builtin">1.62 · 2022-06 / 1.66</span></td>
+                <td><code>cargo upgrade</code> 만 cargo-edit 에 잔존</td>
+              </tr>
+              <tr>
+                <td><code>cargo-cache</code></td>
+                <td>자동 캐시 청소</td>
+                <td><span class="how builtin">1.88 · 2025-06</span></td>
+                <td>3 개월 미사용 crate 자동 삭제</td>
+              </tr>
+              <tr>
+                <td><code>cargo-workspaces</code> · release-plz (일부)</td>
+                <td><code>cargo publish</code> 다중 패키지</td>
+                <td><span class="how builtin">1.90 · 2025-09</span></td>
+                <td>워크스페이스 동시 발행 · 버전 bump 는 여전히 외부</td>
+              </tr>
+
+              <tr>
+                <th colspan="4">서드파티 툴 → 공식 컴포넌트</th>
+              </tr>
+              <tr>
+                <td><code>multirust</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-rustup">rustup</button>
+                </td>
+                <td><span class="how builtin">2016-12 · 1.14</span></td>
+                <td>같은 저자 (brson) 가 재작성</td>
+              </tr>
+              <tr>
+                <td><code>rustfmt</code> · <code>clippy</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-rustfmt-clippy">
+                    rustup 컴포넌트
+                  </button>
+                </td>
+                <td><span class="how builtin">2018 · 1.24 / 1.29</span></td>
+                <td>1.31 (edition 2018) 과 함께 1.0</td>
+              </tr>
+              <tr>
+                <td><code>racer</code> · <code>RLS</code></td>
+                <td>
+                  <button class="link" popovertarget="rs-rust-analyzer">
+                    rust-analyzer
+                  </button>
+                </td>
+                <td>
+                  <span class="how builtin">2022-02 · 1.64 컴포넌트</span>
+                </td>
+                <td>
+                  RLS <span class="how arch">archived</span> 2022 · racer "not
+                  actively developed"
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================== Rust bottom sheets -->
+      <aside id="rs-rustup" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              rustup
+              <small>2016-05 공개 → 2016-12 1.0 · 공식 설치 방법</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-rustup">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              stable / beta / nightly 와 cross 타깃을 한 명령으로 설치 · 전환.
+              <code>rust-toolchain.toml</code> 을 읽어 프로젝트별 버전을 자동
+              선택하고, rustfmt · clippy · rust-analyzer 같은 컴포넌트도 같은
+              채널로 배포.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 이전에는 nightly 가 "유일한 Rust" 였고, 설치는 셸 스크립트
+                  + 수동 PATH. brson 이 2014 년 multirust (셸 스크립트 → Rust
+                  재작성) 로 채널 전환을 해결
+                </li>
+                <li>
+                  6 주 열차 모델 (stable / beta / nightly) 이 시작되자 "여러
+                  채널을 동시에" 가 모든 개발자의 기본 요구가 됨. 핵심 팀 멤버가
+                  만든 툴이라 처음부터 공식 승격이 예정돼 있었음
+                </li>
+                <li>
+                  2016-12 rustup 1.0 과 함께 rust-lang.org 다운로드 페이지가
+                  rustup 을 유일한 권장 방법으로 바꿈 — Go 가 2023 년에야 얻은
+                  "툴체인 관리자 내장" 을 Rust 는 1.0 후 1.5 년 만에 확보
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip" popovertarget="rs-multirust">
+                multirust
+              </button>
+              <span class="chip">rustup.sh 설치 스크립트</span
+              ><span class="chip">배포판 패키지 (주류 용도로는)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              GitHub 7.1k stars · multirust 는 2019 년 이후 커밋 없음 (설명에
+              [DEPRECATED])
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2016/05/13/rustup/"
+                target="_blank"
+                rel="noopener"
+                >Taking Rust everywhere with rustup</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2016/12/22/Rust-1.14/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.14 (rustup 1.0)</a
+              >
+              ·
+              <a
+                href="https://github.com/brson/multirust"
+                target="_blank"
+                rel="noopener"
+                >multirust (deprecated)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-cargo" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              cargo — 분열이 없었던 이유
+              <small
+                >2014-03 착수 → 2015-05 1.0 과 함께 · resolver 2 (1.51)</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="rs-cargo">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              빌드 · 테스트 · 의존성 · 발행을 하나로. <code>Cargo.toml</code> +
+              <code>Cargo.lock</code> + crates.io. 서드파티는 <em>대체</em>가
+              아니라 <code>cargo-xxx</code> 서브커맨드로 <em>확장</em>하고,
+              검증된 것은 내장됨.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 이전에 <code>rustpkg</code> (2013) 가 있었지만 설계 문제로
+                  2014-02 폐기. Mozilla 가 Bundler 의 저자 (Yehuda Katz · Carl
+                  Lerche) 에게 cargo 를 의뢰 — lockfile · semver ·
+                  레지스트리라는 Ruby 생태계의 10 년 교훈이 첫날부터 들어감
+                </li>
+                <li>
+                  crates.io (2014-11) 가 1.0 보다 먼저 열려 "패키지 = cargo 로
+                  발행" 이 관습으로 고정. Go 의 GOPATH 처럼 "버전 없는 공백기"
+                  가 없었기 때문에 godep · glide 같은 땜질 툴이 생길 틈이 없었음
+                </li>
+                <li>
+                  부족한 부분은 cargo-edit · cargo-vendor · cargo-tree ·
+                  cargo-cache 같은 플러그인이 메우고, 수요가 증명되면 cargo
+                  본체가 흡수 (1.37 vendor · 1.44 tree · 1.62 add · 1.88 캐시
+                  청소 · 1.90 다중 publish). resolver 2 (1.51) · 3 (1.84) 도
+                  파일 한 줄로 opt-in 하는 같은 방식
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip" popovertarget="rs-rustpkg">rustpkg</button>
+              <span class="chip">Makefile 빌드</span>
+              <button class="chip" popovertarget="rs-cargoedit">
+                cargo-edit (add/rm)
+              </button>
+              <span class="chip">cargo-vendor</span
+              ><span class="chip">cargo-tree</span
+              ><span class="chip">cargo-cache</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              GitHub 15.6k stars · Rust Survey 에서 "빌드 툴" 문항 자체가 없음 —
+              선택지가 하나뿐이라서
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2014/11/20/Cargo/"
+                target="_blank"
+                rel="noopener"
+                >Cargo: Rust's community crate host (2014)</a
+              >
+              ·
+              <a
+                href="https://doc.rust-lang.org/cargo/reference/resolver.html#feature-resolver-version-2"
+                target="_blank"
+                rel="noopener"
+                >feature resolver v2</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2022/06/30/Rust-1.62.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.62 (cargo add)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-rls" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              racer · RLS <small>2014 – 2022 · 공식이었는데 진 경우</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-rls">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              racer: 텍스트 휴리스틱 기반 자동 완성 바이너리 (2014). RLS: rustc
+              · <code>cargo check</code> 결과를 재사용하는 공식 Language Server
+              (RFC 1317, 2016).
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  racer (2014) 는 타입 정보 없이 소스를 훑어 추측 — 제네릭 ·
+                  trait 메서드에서 자주 틀림. 그래도 2015–2018 유일한 선택지라
+                  vim · emacs · VS Code 플러그인 전부가 racer 를 감쌈. 2020 이후
+                  사실상 중단, README 에 "not actively developed, use
+                  rust-analyzer"
+                </li>
+                <li>
+                  RLS (2016) 는 "컴파일러를 재사용하면 정확하다" 는 전략. 그러나
+                  타이핑할 때마다 <code>cargo check</code> 전체를 돌려야 해 대형
+                  crate 에서 수 초–수십 초 지연. 공식 지원 (rustup 컴포넌트) 이
+                  속도를 이기지 못함
+                </li>
+                <li>
+                  2018 matklad 가 "IDE 는 컴파일러와 다른 아키텍처 (증분 · 지연
+                  평가 · 에러 내성 파서) 가 필요하다" 며 rust-analyzer 를
+                  처음부터 다시 작성. 2020 RFC 2912 로 공식 후계 지정, 2022-07
+                  RLS deprecation 공지 (1.64 가 마지막 빌드) · 저장소 archived
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-rust-analyzer">
+                rust-analyzer
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2022/07/01/RLS-deprecation/"
+                target="_blank"
+                rel="noopener"
+                >RLS Deprecation</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/1317-ide.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 1317 (IDE support)</a
+              >
+              ·
+              <a
+                href="https://github.com/racer-rust/racer"
+                target="_blank"
+                rel="noopener"
+                >racer</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rls"
+                target="_blank"
+                rel="noopener"
+                >rls (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-rust-analyzer" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              rust-analyzer
+              <small
+                >2018 착수 → 2022-02 공식 → 1.64 (2022-09) rustup
+                컴포넌트</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="rs-rust-analyzer">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              IDE 전용으로 새로 쓴 Rust 프런트엔드. 에러 내성 파서 + salsa 증분
+              쿼리로 키 입력마다 밀리초 단위 응답. 완성 · 정의 이동 · 리네임 ·
+              매크로 확장 · inlay hint 를 LSP 하나로.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  RLS 가 느린 근본 원인은 rustc 가 "전체를 한 번에 컴파일"
+                  하도록 설계된 것. 선행 사건은 2017–2018 rustc 자체의 쿼리 기반
+                  · 증분 재설계 (rustc 의 salsa 가 여기서 나옴) — 같은
+                  아이디어를 IDE 쪽에서 처음부터 적용할 수 있게 됨
+                </li>
+                <li>
+                  Microsoft LSP (2016) 가 에디터 공통 프로토콜이 되면서 "서버
+                  하나만 잘 만들면 모든 에디터가 얻는다" 가 성립. racer 시절처럼
+                  에디터별 플러그인이 각자 바이너리를 감쌀 필요가 사라짐
+                </li>
+                <li>
+                  2019–2021 사용자 투표 (Rust Survey) 에서 RLS 를 추월 → 2020
+                  RFC 2912 가 공식 후계로 채택 → 2022-02 rust-lang 조직 합류 →
+                  2022-07 RLS 폐기. 공식 툴이 커뮤니티 툴에 진 뒤 그 툴을
+                  <em>공식으로 흡수</em>한 드문 사례
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip" popovertarget="rs-rls">racer</button>
+              <button class="chip" popovertarget="rs-rls">RLS</button>
+              <span class="chip"
+                >rustfmt / clippy 를 각자 호출하던 에디터 설정</span
+              >
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              GitHub 16.9k stars · 2026-10 현재 매주 릴리스 지속 · Rust Survey
+              2023–2024 에서 VS Code 가 과반 (백엔드는 rust-analyzer 단일)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2022/02/21/rust-analyzer-joins-rust-org/"
+                target="_blank"
+                rel="noopener"
+                >rust-analyzer joins the Rust organization</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/pull/2912"
+                target="_blank"
+                rel="noopener"
+                >RFC 2912</a
+              >
+              ·
+              <a
+                href="https://rust-analyzer.github.io/"
+                target="_blank"
+                rel="noopener"
+                >rust-analyzer.github.io</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-rustfmt-clippy" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              rustfmt · clippy · rustfix → cargo fix
+              <small
+                >2014–2015 서드파티 → 2018 rustup 컴포넌트 → 1.31 1.0</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="rs-rustfmt-clippy">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              rustfmt: 공식 스타일 가이드 (RFC 2436) 를 구현한 포맷터. clippy:
+              700 개 이상의 lint 를 가진 공식 린터. rustfix (2017 서드파티
+              바이너리) → cargo fix (1.29): 컴파일러 제안을 자동 적용 (edition
+              마이그레이션의 엔진).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  둘 다 컴파일러 내부 API (<code>rustc_ast</code> ·
+                  <code>rustc_lint</code>) 에 의존해 nightly 마다 깨짐.
+                  2014–2017 에는 <code>cargo install clippy</code> 가 "오늘 밤
+                  nightly 에선 빌드 안 될 수도" 가 일상 — 서드파티로는 지속
+                  불가능
+                </li>
+                <li>
+                  해결책은 둘을 rust-lang 저장소의 서브모듈로 넣고 컴파일러와
+                  <em>같은 CI 에서 같이 빌드</em>해 rustup 으로 배포하는 것.
+                  1.24 rustfmt-preview (2018-02) · 1.29 clippy-preview 와 cargo
+                  fix (2018-09) → 1.31 edition 2018 과 함께 1.0
+                </li>
+                <li>
+                  rustfmt 는 처음부터 "설정은 최소, 기본값이 표준" 이라 gofmt
+                  처럼 경쟁자가 없었음. clippy 는 lint 그룹 (correctness ·
+                  suspicious · style · pedantic) 으로 강도를 고르게 해 "끄는"
+                  대신 "낮추는" 문화를 만들었고, 1.74 <code>[lints]</code> 로
+                  설정이 Cargo.toml 에 정착
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">cargo install rustfmt / clippy</span
+              ><span class="chip">rustfix 단독 바이너리</span
+              ><span class="chip">clippy.toml 흩어진 설정 → [lints]</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              clippy 13.6k · rustfmt 7.0k stars · 둘 다 6 주마다 컴파일러와 같은
+              날 릴리스
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.31 and Rust 2018</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2018/02/15/Rust-1.24/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.24 (rustfmt preview)</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2018/09/13/Rust-1.29/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.29 (cargo fix · clippy)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-tokio" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              tokio 로 수렴
+              <small
+                >futures 0.1 (2016) → tokio 0.2 (2019-11) → 1.0 (2020-12)</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="rs-tokio">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              work-stealing 멀티스레드 스케줄러 + 비동기 IO · 타이머 · 채널 ·
+              <code>#[tokio::main]</code>. std 는 <code>Future</code> 트레이트와
+              <code>async</code> 문법만 제공하고 실행기는 생태계에 맡기는
+              설계라, "하나의 런타임" 은 사실상 tokio.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2016 aturon 의 "zero-cost futures" — futures 0.1 은 콜백
+                  (<code>and_then</code>) 체인이라 타입이 수백 글자, 빌림
+                  검사기와 충돌. 모두가 "async/await 가 오면" 을 기다리며 tokio
+                  0.1 위에 임시로 쌓음
+                </li>
+                <li>
+                  1.39 (2019-11) async/await 안정화 직후 같은 주에 tokio 0.2 와
+                  async-std 1.0 이 출시 — 2 년간 "std 같은 API" (async-std) 대
+                  "성능 · 생태계" (tokio) 경쟁. hyper · tonic · axum · reqwest ·
+                  sqlx 의 기본값이 tokio 로 정해지며 생태계 효과가 결정타
+                </li>
+                <li>
+                  2020-12 tokio 1.0 이 "최소 3 년 호환" 을 약속해 라이브러리
+                  저자들이 안심하고 tokio 에 고정. 2025 async-std 공식 중단으로
+                  경쟁 종료. 1.75 AFIT · 1.85 async closure 등 언어 측 발전은
+                  런타임 중립적이라 수렴을 방해하지 않음
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip" popovertarget="rs-futures">
+                futures 0.1 콜백 체인
+              </button>
+              <span class="chip">mio 직접 사용</span>
+              <button class="chip" popovertarget="rs-async-std">
+                async-std
+              </button>
+              <span class="chip">actix-rt (tokio 위로 이동)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              crates.io 누적 tokio 10.8 억 · futures 8.6 억 · async-std 0.97 억
+              · smol 0.26 억 (2026-10) · tokio GitHub 33.5k stars
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://aturon.github.io/blog/2016/08/11/futures/"
+                target="_blank"
+                rel="noopener"
+                >Zero-cost futures in Rust (2016)</a
+              >
+              ·
+              <a
+                href="https://tokio.rs/blog/2019-11-tokio-0-2"
+                target="_blank"
+                rel="noopener"
+                >tokio 0.2</a
+              >
+              ·
+              <a
+                href="https://tokio.rs/blog/2020-12-tokio-1-0"
+                target="_blank"
+                rel="noopener"
+                >tokio 1.0</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-async-std" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              async-std · smol
+              <small>2019-08 → 2025 discontinued · smol 은 niche 로 생존</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-async-std">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              async-std: "std 와 같은 모양의 async API" 를 내건 런타임 (<code
+                >async_std::fs</code
+              >
+              · <code>net</code> · <code>task</code>). smol: stjepang 이 만든
+              1,500 줄짜리 소형 실행기 — async-std 가 2020 년 내부를 smol 로
+              교체.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  2019 tokio 0.1 의 API 가 async/await 와 안 맞고 무거워 보여
+                  "배우기 쉬운 대안" 수요가 있었음. 1.39 직전 출시로 초기 주목을
+                  받았으나, tokio 0.2 가 같은 시기에 API 를 전면 재설계해 격차가
+                  사라짐
+                </li>
+                <li>
+                  라이브러리 저자가 두 런타임을 다 지원하려면 feature flag 로
+                  코드를 이중화해야 함 (sqlx · surf 가 그렇게 했음). 유지 비용을
+                  감당 못 해 하나씩 tokio 단일 지원으로 돌아섬
+                </li>
+                <li>
+                  핵심 메인테이너 이탈 후 2021 년부터 사실상 정체, 2025 년
+                  README 에 "discontinued, use smol instead" 공지. 저장소는
+                  archived 아님 (2026-10 기준) 이지만 1.13 이 마지막 라인. smol
+                  은 2020 년부터 소형 실행기 niche (최근 90 일 0.07 억 vs tokio
+                  2.6 억) 로 생존
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-tokio">tokio</button>
+              <span class="chip">smol (async-std 의 공식 권장 후계)</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/async-rs/async-std"
+                target="_blank"
+                rel="noopener"
+                >async-std (discontinued)</a
+              >
+              ·
+              <a
+                href="https://github.com/smol-rs/smol"
+                target="_blank"
+                rel="noopener"
+                >smol</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-failure" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              error-chain · failure
+              <small>2016 – 2020 · 두 번 실패한 "표준 에러 crate"</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-failure">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              error-chain (brson, 2016): 매크로로 에러 enum · 변환 · 체인을
+              생성. failure (withoutboats, 2017): std <code>Error</code> 대신
+              자체 <code>Fail</code> 트레이트 + 백트레이스.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 의 <code>std::error::Error</code> 는
+                  <code>cause()</code> 가 <code>'static</code> 이 아니고
+                  백트레이스 · 다운캐스트가 없어 실무에 부족. error-chain (2016)
+                  은 거대한 매크로로 이를 덮었지만 생성 코드가 난해하고 컴파일이
+                  느렸음 — 2019 deprecate, 저장소 archived
+                </li>
+                <li>
+                  failure (2017) 는 "std 를 버리고 새 트레이트" 를 택해
+                  깔끔했지만, 그 순간 생태계가 <code>Error</code> 와
+                  <code>Fail</code> 로 분열. 2018 RFC 2504 가 std
+                  <code>Error</code> 에 <code>source()</code> · 백트레이스
+                  (1.65) 를 넣자 failure 의 존재 이유가 사라짐 — 2020-05 공식
+                  deprecate, archived
+                </li>
+                <li>
+                  2019-10 dtolnay 가 std <code>Error</code> 위에 얇게 얹는
+                  anyhow (앱용) + thiserror (라이브러리용) 를 동시 공개 — 두
+                  역할을 분리한 것이 결정타. 누적 다운로드 error-chain 0.76 억 ·
+                  failure 0.51 억 vs thiserror 16.5 억
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-anyhow">
+                anyhow + thiserror
+              </button>
+              <button class="chip" popovertarget="rs-eyre">eyre</button>
+              <span class="chip">snafu</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/rust-lang-deprecated/failure"
+                target="_blank"
+                rel="noopener"
+                >failure (archived)</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang-deprecated/error-chain"
+                target="_blank"
+                rel="noopener"
+                >error-chain (archived)</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/2504-fix-error.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 2504 (fix Error)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-anyhow" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              anyhow + thiserror
+              <small>2019-10 → · 역할 분리가 만든 수렴</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-anyhow">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              anyhow: <code>Result&lt;T, anyhow::Error&gt;</code> +
+              <code>?</code> + <code>.context("...")</code> — 애플리케이션은
+              에러 타입을 정의하지 않음. thiserror:
+              <code>#[derive(Error)]</code> 로 라이브러리의 구체 에러 enum 을
+              보일러플레이트 없이. 둘 다 std <code>Error</code> 와 100% 호환.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  선행 조건: 1.13 <code>?</code> · 1.15 custom derive · RFC 2504
+                  <code>Error::source</code>. 셋이 갖춰진 2019 년에야 "std 위에
+                  얇게" 가 가능해짐 — failure 가 2017 년에 같은 걸 시도했다면
+                  불가능했음
+                </li>
+                <li>
+                  "앱은 anyhow, 라이브러리는 thiserror" 라는 한 줄 규칙이
+                  커뮤니티 합의가 됨. 이전 crate 들은 둘 다 하려다 둘 다 어정쩡
+                </li>
+                <li>
+                  eyre (2020) 는 anyhow 의 포크로 리포트 포맷 (color-eyre) 만
+                  바꾼 것이라 "교체" 가 아니라 "스킨". snafu 는 context selector
+                  방식으로 niche. 이후 등장한 crate 가 없어 2021 년부터 사실상
+                  확정
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip" popovertarget="rs-failure">
+                error-chain
+              </button>
+              <button class="chip" popovertarget="rs-failure">failure</button>
+              <span class="chip">Box&lt;dyn Error&gt; + 수동 impl</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              crates.io 누적 thiserror 16.5 억 · anyhow 10.6 억 · eyre 1.2 억 ·
+              snafu 1.2 억 (2026-10) · 최근 90 일 thiserror 4.4 억 — serde (3.7
+              억) 보다 많음
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/dtolnay/anyhow"
+                target="_blank"
+                rel="noopener"
+                >anyhow</a
+              >
+              ·
+              <a
+                href="https://github.com/dtolnay/thiserror"
+                target="_blank"
+                rel="noopener"
+                >thiserror</a
+              >
+              ·
+              <a
+                href="https://github.com/eyre-rs/eyre"
+                target="_blank"
+                rel="noopener"
+                >eyre</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-multirust" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>multirust <small>2014 – 2016 · rustup 의 전신</small></h3>
+            <button class="theme-btn" popovertarget="rs-multirust">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              brson 이 2014 년에 만든 툴체인 전환기. 처음엔 셸 스크립트
+              (multirust.sh), 2015 년 Rust 로 재작성 (multirust-rs). nightly ·
+              beta · stable 을 디렉토리별로 바꿔 끼우는 용도.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  Windows 미지원 · 셸 의존 · cross 타깃 설치 불가 — 1.0 이후
+                  Windows 와 임베디드 사용자가 늘자 구조적 한계
+                </li>
+                <li>
+                  저자 본인이 multirust-rs 를 rustup 으로 개명 · 재설계
+                  (2016-05) 하고 rust-lang 조직으로 이관. 경쟁이 아니라 같은
+                  프로젝트의 세대 교체
+                </li>
+                <li>
+                  2016-12 rustup 1.0 과 함께 공식 설치 방법이 되면서 multirust
+                  는 설명에 [DEPRECATED] 만 남기고 2019 년 이후 커밋 없음
+                  (archived 아님)
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-rustup">rustup</button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/brson/multirust"
+                target="_blank"
+                rel="noopener"
+                >brson/multirust</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2016/05/13/rustup/"
+                target="_blank"
+                rel="noopener"
+                >Taking Rust everywhere with rustup</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-rustpkg" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>rustpkg <small>2013 – 2014-02 · 1.0 이전에 폐기</small></h3>
+            <button class="theme-btn" popovertarget="rs-rustpkg">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Rust 0.6–0.8 시절 (2013) 컴파일러에 번들된 첫 패키지 관리자.
+              <code>rustpkg build</code> · <code>rustpkg install</code>. 버전
+              고정 · 레지스트리 · lockfile 없이 git URL 로 소스를 가져오는 방식.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  의존성 버전을 표현할 방법이 없어 재현 가능한 빌드 불가. 빌드
+                  스크립트가 Rust 코드 (<code>pkg.rs</code>) 라 선언적
+                  메타데이터도 없었음
+                </li>
+                <li>
+                  2013 말 Mozilla 가 Bundler 저자들 (Yehuda Katz · Carl Lerche)
+                  에게 "제대로 된 패키지 관리자" 를 의뢰 — rustpkg 는 2014-02
+                  컴파일러 트리에서 삭제, cargo 는 2014-03 착수
+                </li>
+                <li>
+                  1.0 (2015-05) 때 이미 cargo + crates.io 만 남아 있었기 때문에
+                  Rust 사용자 대부분은 rustpkg 의 존재를 모름 — "처음부터 하나"
+                  의 실제 내막
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-cargo">cargo</button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/rust-lang/rust/pull/11987"
+                target="_blank"
+                rel="noopener"
+                >Remove rustpkg (PR #11987 · 2014-02)</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2014/11/20/Cargo/"
+                target="_blank"
+                rel="noopener"
+                >Cargo 공개 (2014-11)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-cargoedit" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              cargo-edit
+              <small>2015 → 2022 핵심 기능 흡수 · upgrade 만 잔존</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-cargoedit">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>cargo add</code> · <code>cargo rm</code> ·
+              <code>cargo upgrade</code> 서브커맨드를 제공하던 서드파티 crate
+              (2015, killercup). <code>Cargo.toml</code> 을 손으로 편집하지 않게
+              해 주는 유일한 수단이었음.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  7 년간 "cargo 에 add 가 없는 게 이상하다" 가 반복 — cargo 팀은
+                  "TOML 을 포맷 보존하며 편집하는 라이브러리 (toml_edit) 가
+                  안정될 때까지" 보류
+                </li>
+                <li>
+                  cargo-edit 메인테이너 (epage) 가 cargo 팀에 합류해 toml_edit
+                  를 cargo 본체에 넣고, 2022-06 1.62 에 <code>cargo add</code>,
+                  2022-12 1.66 에 <code>cargo remove</code> 를 그대로 이식
+                </li>
+                <li>
+                  <code>cargo upgrade</code> 는 semver 범위 정책 논쟁이 남아
+                  cargo-edit 에 잔존 — 서드파티가 "검증 → 흡수 → 잔여 기능만
+                  유지" 로 축소된 전형
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-cargo">
+                cargo add · remove (1.62 · 1.66)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/killercup/cargo-edit"
+                target="_blank"
+                rel="noopener"
+                >cargo-edit</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2022/06/30/Rust-1.62.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.62 (cargo add)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-futures" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              futures 0.1 → 0.3
+              <small
+                >2016-08 → 2019-11 · 런타임 후보에서 유틸리티 crate 로</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="rs-futures">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              futures 0.1 (2016, aturon · alexcrichton): <code>Future</code> ·
+              <code>Stream</code> 트레이트와 <code>and_then</code> ·
+              <code>map</code> 콤비네이터. async/await 이전에 비동기 코드를 쓰는
+              유일한 방법이었고, tokio 0.1 도 이 위에 세워짐.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  콤비네이터 체인은 타입 이름이 수백 글자, 클로저에 참조를 넘길
+                  수 없어 빌림 검사기와 충돌, 에러 메시지가 읽을 수 없는 수준 —
+                  "async Rust 는 못 쓴다" 평가의 원인
+                </li>
+                <li>
+                  1.36 에 <code>Future</code> 트레이트가 std 로 들어가고 1.39
+                  async/await 가 안정화되면서 0.1 의 트레이트 · 콤비네이터는
+                  언어 문법으로 대체. 0.3 (2019-11) 은 std 트레이트 위의
+                  <code>join!</code> · <code>select!</code> ·
+                  <code>Stream</code>
+                  · 채널 같은 유틸리티만 남김
+                </li>
+                <li>
+                  실행기 (<code>futures::executor</code>) 는 테스트용 수준이라
+                  "런타임" 자리는 tokio 가 차지. 그래도 <code>Stream</code> 이
+                  아직 std 에 없어 futures 0.3 은 누적 8.6 억 다운로드로 생존
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-async-await">
+                async / .await (1.39)
+              </button>
+              <button class="chip win" popovertarget="rs-tokio">tokio</button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://aturon.github.io/blog/2016/08/11/futures/"
+                target="_blank"
+                rel="noopener"
+                >Zero-cost futures in Rust (2016)</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/futures-rs"
+                target="_blank"
+                rel="noopener"
+                >futures-rs</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-eyre" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              eyre <small>2020-02 → · anyhow 의 포크, niche 로 공존</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-eyre">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              anyhow 를 포크해 <code>Report</code> 타입의 출력 형식을 훅
+              (<code>EyreHandler</code>) 으로 바꿀 수 있게 한 crate (yaahc).
+              color-eyre 가 컬러 백트레이스 · span trace 를 붙임.
+            </dd>
+            <dt>Why niche</dt>
+            <dd>
+              <ul>
+                <li>
+                  API 가 anyhow 와 거의 동일 (<code>eyre::Result</code> ·
+                  <code>wrap_err</code>) 이라 "교체" 가 아니라 "보고서 스킨".
+                  라이브러리는 thiserror, 앱은 anyhow 라는 합의를 바꾸지 못함
+                </li>
+                <li>
+                  CLI 도구처럼 사람이 에러를 읽는 프로그램에서 color-eyre
+                  조합으로 선택됨. 누적 1.2 억 vs anyhow 10.6 억 (2026-10)
+                </li>
+              </ul>
+            </dd>
+            <dt>See also</dt>
+            <dd>
+              <button class="chip win" popovertarget="rs-anyhow">
+                anyhow + thiserror
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/eyre-rs/eyre"
+                target="_blank"
+                rel="noopener"
+                >eyre</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-ed2015" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>edition 2015 <small>1.0 (2015-05) · 기준선</small></h3>
+            <button class="theme-btn" popovertarget="rs-ed2015">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              edition 을 지정하지 않은 crate 의 기본값. 1.0 당시의 문법 —
+              <code>extern crate</code> 필수, 모듈 경로가 crate 루트 기준,
+              <code>Trait</code> 만 써도 trait object, 구 lexical borrow
+              checker.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 의 핵심 약속은 "stable 에서 컴파일되던 코드는 영원히
+                  컴파일된다". 그래서 문법을 고치려면 호환성 약속을 깨지 않는
+                  별도 장치가 필요했고, 그 장치가 2017 RFC 2052 (epochs →
+                  edition)
+                </li>
+                <li>
+                  edition 은 crate 단위 opt-in. 2015 crate 와 2024 crate 가 한
+                  의존성 그래프에 섞여도 컴파일되고, 서로 호출 가능 — 이 호환
+                  설계 덕에 Python 2 → 3 같은 생태계 분열 없이 3 년마다 문법을
+                  바꿀 수 있었음
+                </li>
+                <li>
+                  edition 2015 는 지금도 유효하고 1.99 에서도 컴파일됨.
+                  <code>cargo fix --edition</code> 이 다음 edition 으로의 이주를
+                  자동화
+                </li>
+              </ul>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://doc.rust-lang.org/edition-guide/rust-2015/index.html"
+                target="_blank"
+                rel="noopener"
+                >Edition Guide: Rust 2015</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/2052-epochs.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 2052 (epochs)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-ed2018" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>edition 2018 · NLL <small>1.31 (2018-12)</small></h3>
+            <button class="theme-btn" popovertarget="rs-ed2018">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              NLL (non-lexical lifetimes) — 빌림이 "마지막 사용" 에서 끝남. 모듈
+              경로 단순화 (<code>extern crate</code> 불필요,
+              <code>crate::</code> · uniform paths).
+              <code>dyn Trait</code> 필수화. <code>async</code> ·
+              <code>await</code> · <code>try</code> 키워드 예약.
+              <code>?</code> 가 main 에서. 원시 식별자 <code>r#</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2015–2017 "빌림 검사기와 싸운다" 는 평가의 대부분이 lexical
+                  scope 기반 수명 때문. NLL 은 2017 RFC 2094 → MIR 기반 borrow
+                  checker (1.12 MIR 도입이 전제) 로 구현. 2018 edition 에서 먼저
+                  켜고, 1.36 에 2015 edition 에도 적용
+                </li>
+                <li>
+                  2017 "Rust 2018 roadmap" 이 목표를 생산성으로 설정 — impl
+                  Trait (1.26) · match ergonomics (1.26) · NLL · 모듈 정리 ·
+                  rustfmt / clippy 1.0 · RLS 를 한 묶음 "Rust 2018" 으로 마케팅.
+                  edition 은 그 묶음의 브랜드
+                </li>
+                <li>
+                  <code>async</code> 를 미리 예약한 덕에 1 년 뒤 1.39
+                  async/await 가 edition 변경 없이 들어올 수 있었음 — "다음 3
+                  년을 위한 예약" 패턴은 2024 <code>gen</code> 으로 반복
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">lexical borrow checker</span
+              ><span class="chip">extern crate 선언</span
+              ><span class="chip">::crate_name 절대 경로</span
+              ><span class="chip">bare trait object</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              Rust Survey 2019: 응답자 다수가 1 년 안에 2018 로 이주 ·
+              <code>cargo fix --edition</code> 자동 변환
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.31 and Rust 2018</a
+              >
+              ·
+              <a
+                href="https://doc.rust-lang.org/edition-guide/rust-2018/index.html"
+                target="_blank"
+                rel="noopener"
+                >Edition Guide: Rust 2018</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/2094-nll.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 2094 (NLL)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-ed2021" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>edition 2021 <small>1.56 (2021-10)</small></h3>
+            <button class="theme-btn" popovertarget="rs-ed2021">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              disjoint closure capture (클로저가 <code>a.b</code> 필드만 잡음).
+              배열 <code>IntoIterator</code> 가 값 순회. <code>panic!</code> 이
+              항상 포맷 문자열 (<code>panic!("{}", x)</code> 강제). prelude 에
+              <code>TryFrom</code> · <code>TryInto</code> ·
+              <code>FromIterator</code>. <code>macro_rules!</code> or-pattern.
+              cargo feature resolver 2 기본. 예약 접두사 (<code>k#</code> ·
+              <code>f"</code>).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2018 과 달리 "작고 확실한 정리" 를 목표로 — 2018 이 너무 많은
+                  걸 한꺼번에 바꿔 RLS · 모듈 시스템에서 혼란을 겪은 반성. 각
+                  항목이 이미 lint 로 예고돼 있어
+                  <code>cargo fix</code> 성공률이 높았음
+                </li>
+                <li>
+                  배열 <code>into_iter()</code> 가 참조를 돌려주던 2015 설계
+                  오류는 1.53 에서 값 순회를 추가했지만 메서드 호출 문법에서만
+                  edition 으로 가려야 했음 — "edition 없이는 못 고치는 버그" 의
+                  전형
+                </li>
+                <li>
+                  disjoint capture 는 1.39 async 블록과 클로저에서 "구조체
+                  전체를 move 해야 하는" 불편의 해소. resolver 2 (1.51) 를
+                  edition 기본값으로 묶어 설정 없이 적용
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">array.iter().copied() 우회</span
+              ><span class="chip">let x = &amp;self.x; move || 관용구</span
+              ><span class="chip">resolver = "2" 수동 설정</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2021/10/21/Rust-1.56.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.56.0 and Rust 2021</a
+              >
+              ·
+              <a
+                href="https://doc.rust-lang.org/edition-guide/rust-2021/index.html"
+                target="_blank"
+                rel="noopener"
+                >Edition Guide: Rust 2021</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-ed2024" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>edition 2024 <small>1.85 (2025-02) · 역대 최대 규모</small></h3>
+            <button class="theme-btn" popovertarget="rs-ed2024">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              RPIT 가 모든 in-scope 수명을 캡처 (<code>use&lt;..&gt;</code> 로
+              조정). <code>unsafe extern</code> 블록 ·
+              <code>#[unsafe(no_mangle)]</code> 필수. <code>gen</code> 키워드
+              예약. <code>if let</code> · tail expression 임시값 수명 단축.
+              <code>static mut</code> 참조 금지. never type fallback 변경.
+              prelude 에 <code>Future</code> · <code>IntoFuture</code>. rustfmt
+              style_edition · cargo resolver 3 (MSRV). 이후 1.88 let chains 가
+              2024 전용으로 추가.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  async 가 6 년 쌓이며 드러난 수명 문제 — RPIT 가 수명을
+                  캡처하지 않아 <code>async fn</code> 과
+                  <code>-&gt; impl Future</code> 의 동작이 달랐음. 1.82
+                  <code>use&lt;..&gt;</code>
+                  로 명시 문법을 먼저 안정화한 뒤 edition 에서 기본값을 뒤집음
+                </li>
+                <li>
+                  unsafe 가 "암묵적으로" 들어오던 곳 (<code>extern</code> 블록
+                  선언 · <code>no_mangle</code> · <code>static mut</code>) 을
+                  명시화 — 2020 년대 보안 감사 (Android · Linux 커널 Rust) 요구
+                  반영
+                </li>
+                <li>
+                  <code>gen</code> 블록 (이터레이터 생성기) 과 let chains 처럼
+                  "다음 3 년에 올 문법" 을 위해 키워드와 임시값 규칙을 미리
+                  정리. 1.88 let chains 가 2024 전용인 이유도 임시값 수명 규칙
+                  때문
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">+ 'a 수명 핵 (RPIT)</span
+              ><span class="chip"
+                >static mut 전역 (→ Mutex · LazyLock · atomic)</span
+              ><span class="chip">if let ... else 임시값 드롭 순서 함정</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2025/02/20/Rust-1.85.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.85.0 and Rust 2024</a
+              >
+              ·
+              <a
+                href="https://doc.rust-lang.org/edition-guide/rust-2024/index.html"
+                target="_blank"
+                rel="noopener"
+                >Edition Guide: Rust 2024</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-stability" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              Stability as a Deliverable
+              <small>2014-10 선언 → 1.0 (2015-05-15)</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-stability">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              6 주 릴리스 열차 (nightly → beta → stable) + feature gate.
+              안정화된 기능은 영원히 컴파일되고, 실험 기능은 nightly 의
+              <code>#![feature]</code> 뒤에만 존재. 1.0 은 "완성" 이 아니라 "더
+              이상 깨지 않겠다" 는 선언.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  0.x 시절 (2012–2014) 은 릴리스마다 문법이 바뀌어 (<code
+                    >~</code
+                  >
+                  포인터 · green thread · GC · <code>@</code> 박스 전부 제거)
+                  사용자가 따라올 수 없었음. 1.0 직전 1 년은 "뺄 것을 빼는" 기간
+                </li>
+                <li>
+                  열차 모델은 Firefox 의 6 주 릴리스 (2011) 를 그대로 가져옴 —
+                  같은 Mozilla 조직의 경험. 큰 기능을 기다리느라 릴리스가 밀리는
+                  일을 구조적으로 제거
+                </li>
+                <li>
+                  feature gate 덕분에 nightly 에서 수년간 검증한 뒤 안정화 —
+                  GATs 6.5 년 · let chains 7 년 · trait upcasting 11 년.
+                  안정화가 느린 대신 안정화 후 되돌린 적이 거의 없음
+                </li>
+              </ul>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              1.0 (2015-05) → 1.99 (2026-10): 11 년 5 개월 동안 100 개 마이너
+              릴리스, 평균 6.0 주
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2014/10/30/Stability/"
+                target="_blank"
+                rel="noopener"
+                >Stability as a Deliverable</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2015/05/15/Rust-1.0/"
+                target="_blank"
+                rel="noopener"
+                >Announcing Rust 1.0</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-question" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>? 연산자 <small>1.13 (2016-11)</small></h3>
+            <button class="theme-btn" popovertarget="rs-question">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>let f = File::open(p)?;</code> — <code>Err</code> 면
+              <code>From</code> 변환 후 즉시 반환. <code>try!(expr)</code>
+              매크로의 후처리 문법.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 의 <code>try!</code> 는 중첩하면
+                  <code>try!(try!(a).b())</code> 처럼 안에서 밖으로 읽어야 했고,
+                  메서드 체인과 어울리지 않았음. 예외 없는 언어에서 에러 전파가
+                  "읽기 흐름을 깨는" 문제
+                </li>
+                <li>
+                  RFC 243 (2014) 에서 <code>?</code> 와
+                  <code>try { }</code> 블록을 함께 제안 — <code>?</code> 만 먼저
+                  안정화 (try 블록은 2026 년에도 nightly). "작은 조각부터" 의
+                  전형
+                </li>
+                <li>
+                  이 문법이 있어야 anyhow 의 <code>.context()?</code> 체인과
+                  1.22 <code>Option</code> 의 <code>?</code>, 1.26 main 의
+                  <code>Result</code> 반환이 자연스러움 — 에러 처리 생태계
+                  수렴의 전제 조건
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">try! 매크로</span
+              ><span class="chip"
+                >match e { Err(e) =&gt; return Err(e.into()) }</span
+              >
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2016/11/10/Rust-1.13/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.13</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/0243-trait-based-exception-handling.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 243</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-derive" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>custom derive (Macros 1.1) <small>1.15 (2017-02)</small></h3>
+            <button class="theme-btn" popovertarget="rs-derive">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>#[derive(Serialize, Deserialize)]</code> 를 서드파티 crate
+              가 정의할 수 있게 하는 proc macro 의 최소 집합. 1.30 에서 속성형 ·
+              함수형 proc macro 로 일반화.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2016 년 serde 는 stable 에서 쓰려면 <code>build.rs</code> 로
+                  코드를 생성하는 syntex 우회가 필요 (컴파일 수 분). nightly 는
+                  컴파일러 플러그인 API 가 매주 깨짐 — "serde 를 stable 에서" 가
+                  당시 최다 요청
+                </li>
+                <li>
+                  완전한 proc macro 설계 (Macros 2.0) 를 기다리면 수년이 걸릴
+                  판이라, "derive 만, TokenStream 문자열 입출력만" 으로 범위를
+                  좁힌 RFC 1681 을 4 개월 만에 안정화
+                </li>
+                <li>
+                  결과: serde · diesel · structopt (→ clap derive) · thiserror ·
+                  tokio::main 까지 생태계의 핵심 crate 가 전부 derive 위에
+                  세워짐. rustc-serialize 는 즉시 deprecated
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">syntex + build.rs 코드 생성</span
+              ><span class="chip">rustc-serialize</span
+              ><span class="chip">nightly 컴파일러 플러그인</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>serde crates.io 누적 15.5 억 다운로드 (2026-10)</dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2017/02/02/Rust-1.15/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.15</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/1681-macros-1.1.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 1681 (Macros 1.1)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-async-await" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>async / .await <small>1.39 (2019-11)</small></h3>
+            <button class="theme-btn" popovertarget="rs-async-await">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>async fn</code> 이 상태 머신 (<code>impl Future</code>) 으로
+              컴파일. 런타임 · 스레드 없이 zero-cost. 실행기는 std 에 없음 —
+              tokio · async-std 가 담당.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2016 futures 0.1 콜백 체인이 빌림 검사기와 충돌해 (클로저에
+                  참조를 못 넘김) "async Rust 는 쓸 수 없다" 는 평가. 2018 RFC
+                  2394 로 문법 결정, 1.33 <code>Pin</code> · 1.36
+                  <code>Future</code> 트레이트가 전제 조건
+                </li>
+                <li>
+                  <code>.await</code> 후위 문법 논쟁 (2019 상반기, 수천 댓글) —
+                  메서드 체인과 <code>?</code> 와의 조합이 결정 근거. edition
+                  2018 에서 미리 예약한 키워드라 edition 변경 없이 도입
+                </li>
+                <li>
+                  안정화 당일 tokio 0.2 · async-std 1.0 · hyper 0.13 이 맞춰
+                  출시. 이후 AFIT (1.75) · async closures (1.85) · 2026 현재
+                  nightly 의 <code>gen</code> · async iterator 로 이어짐
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">futures 0.1 and_then 체인</span
+              ><span class="chip">mio 수동 상태 머신</span
+              ><span class="chip">스레드 풀 블로킹 IO (일부)</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2019/11/07/Async-await-stable/"
+                target="_blank"
+                rel="noopener"
+                >Async-await on stable Rust!</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/2394-async_await.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 2394</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-gats" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              GATs (generic associated types)
+              <small>1.65 (2022-11) · RFC 1598 (2016) 이후 6.5 년</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-gats">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code
+                >trait LendingIterator { type Item&lt;'a&gt; where Self: 'a; fn
+                next(&amp;mut self) -&gt; Option&lt;Self::Item&lt;'_&gt;&gt;;
+                }</code
+              >
+              — 연관 타입이 수명 · 타입 파라미터를 가짐.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  "빌려주는 이터레이터" · "제네릭 컬렉션 trait" · async trait 의
+                  <code>type Future&lt;'a&gt;</code> 는 전부 GATs 없이는 표현
+                  불가 — 2016 RFC 통과 후 구현이 trait solver 의 한계에 막혀
+                  수년간 nightly
+                </li>
+                <li>
+                  2021–2022 "GATs 안정화 찬반" 논쟁: 에러 메시지가 나쁘고 where
+                  절이 과도하다는 반대 vs 이미 생태계가 우회 (<code
+                    >Box&lt;dyn Future&gt;</code
+                  >) 에 지쳤다는 찬성. 결국 "완벽을 기다리면 영원히 못 한다" 로
+                  1.65 안정화
+                </li>
+                <li>
+                  AFIT (1.75) 의 내부 구현이 GATs 위에 올라감 — GATs 가 먼저
+                  안정화돼야 async-trait crate 흡수가 가능했음. let-else 와 같은
+                  릴리스라 "에르고노믹 릴리스" 로 기억됨
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">HRTB 우회 trait</span
+              ><span class="chip">Box&lt;dyn Future&gt; 연관 타입</span
+              ><span class="chip">매크로 생성 trait 변형</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2022/10/28/gats-stabilization/"
+                target="_blank"
+                rel="noopener"
+                >Generic associated types to be stable in Rust 1.65</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/1598-generic_associated_types.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 1598</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-oncelock" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              OnceCell · OnceLock
+              <small>1.70 (2023-06) · once_cell 흡수 1 단계</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-oncelock">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              한 번만 쓰는 셀.
+              <code
+                >static CONFIG: OnceLock&lt;Config&gt; = OnceLock::new();</code
+              >
+              → <code>CONFIG.get_or_init(|| ..)</code>. 매크로 없이 지연 초기화
+              전역.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2014 lazy_static 은 매크로 (<code
+                    >lazy_static! { static ref X }</code
+                  >) 라 타입 · 에러 메시지가 불투명. 2018 matklad 의 once_cell
+                  이 "매크로 없는 타입 기반" 으로 재설계해 2020 년 이후 사실상
+                  표준 (누적 13.9 억)
+                </li>
+                <li>
+                  std 가 들여온 것은 once_cell 의 API 를 거의 그대로 — crate
+                  저자가 std 안정화 RFC 를 직접 주도. "생태계에서 API 를 다듬고
+                  std 는 복사" 의 모범 사례
+                </li>
+                <li>
+                  <code>Lazy</code> 타입은 클로저 타입 파라미터 설계 논의로 1 년
+                  더 걸려 1.80 (LazyLock) 에서 2 단계 흡수. 같은 릴리스의
+                  <code>IsTerminal</code> 은 atty 가 미수정 RUSTSEC 공지를 안은
+                  채 방치되자 보안 이유로 급히 흡수된 경우
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">once_cell::sync::OnceCell</span
+              ><span class="chip">lazy_static (부분)</span
+              ><span class="chip">std::sync::Once + static mut</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              once_cell 최근 90 일 3.2 억 다운로드 (2026-10) — 흡수 후에도 MSRV
+              1.70 미만 라이브러리들이 계속 사용
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2023/06/01/Rust-1.70.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.70.0</a
+              >
+              ·
+              <a
+                href="https://github.com/matklad/once_cell"
+                target="_blank"
+                rel="noopener"
+                >once_cell</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-afit" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              async fn in trait · RPITIT
+              <small>1.75 (2023-12) · async-trait 흡수</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-afit">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code
+                >trait Service { async fn call(&amp;self) -&gt; Response;
+                }</code
+              >
+              — 매크로 · Box 없이. 반환 위치 <code>impl Trait</code> 도 trait
+              메서드에서 허용 (RPITIT).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.39 async/await 는 trait 메서드에선 쓸 수 없었음 (반환 타입이
+                  익명 Future 라 연관 타입으로 표현 불가). dtolnay 의
+                  async-trait (2019-07) 가
+                  <code>Pin&lt;Box&lt;dyn Future&gt;&gt;</code> 로 감싸 4 년간
+                  유일한 해법 — 호출마다 힙 할당 + 동적 디스패치
+                </li>
+                <li>
+                  GATs (1.65) 와 RPITIT 구현이 끝나야 컴파일러가 "trait 마다
+                  익명 연관 타입" 을 만들 수 있었음. 2023 async WG 가 "완벽한
+                  dyn 지원은 미루고 정적 디스패치 먼저" 로 범위를 잘라 안정화
+                </li>
+                <li>
+                  <code>dyn Trait</code> 객체로 쓰려면 여전히 async-trait 이
+                  필요해 crate 는 살아 있음 (최근 90 일 1.7 억). 2024 RFC 3668
+                  (async closures) · 1.85 와 함께 async 생태계 표준화의 2 단계
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">#[async_trait] (정적 디스패치 용도)</span
+              ><span class="chip"
+                >type Fut: Future 연관 타입 보일러플레이트</span
+              >
+            </dd>
+            <dt>Numbers</dt>
+            <dd>async-trait 누적 7.3 억 다운로드 (2026-10)</dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2023/12/21/async-fn-rpit-in-traits/"
+                target="_blank"
+                rel="noopener"
+                >Announcing async fn and return-position impl Trait in traits</a
+              >
+              ·
+              <a
+                href="https://github.com/dtolnay/async-trait"
+                target="_blank"
+                rel="noopener"
+                >async-trait</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-lazylock" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              LazyCell · LazyLock
+              <small>1.80 (2024-07) · lazy_static 흡수</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-lazylock">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code
+                >static RE: LazyLock&lt;Regex&gt; = LazyLock::new(||
+                Regex::new("..").unwrap());</code
+              >
+              — 첫 접근 때 초기화되는 전역. 매크로 없음, 타입이 보임.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  lazy_static (2014-11, Rust 1.0 보다 먼저) 은 10 년간 "가장
+                  많이 쓰이는 crate 10 위권" (누적 10.7 억). 그러나 매크로
+                  안에서 <code>static ref</code> 라는 가짜 문법을 써 초보자 혼란
+                  · IDE 지원 저하
+                </li>
+                <li>
+                  1.70 OnceLock 로 절반을 먼저 들여왔고, 남은 쟁점은 "클로저
+                  타입 파라미터 <code>F</code> 를 노출할 것인가" — 기본값
+                  <code>F = fn() -&gt; T</code> 로 타협해 1.80 안정화
+                </li>
+                <li>
+                  edition 2024 가 <code>static mut</code> 참조를 금지하면서
+                  "전역 상태는 LazyLock + Mutex" 가 공식 권장 패턴이 됨 —
+                  lazy_static 저장소는 2026 년 archived
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">lazy_static!</span
+              ><span class="chip">once_cell::sync::Lazy</span
+              ><span class="chip">static mut + Once</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              lazy_static 최근 90 일 2.2 억 다운로드 (2026-10) — 의존성 트리
+              깊은 곳에 남아 당분간 계속 설치됨
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2024/07/25/Rust-1.80.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.80.0</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang-nursery/lazy-static.rs"
+                target="_blank"
+                rel="noopener"
+                >lazy_static (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-let-chains" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              let chains · if let guard
+              <small>1.88 (2025-06) · 1.95 (2026-04) · RFC 2497 (2018)</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-let-chains">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code
+                >if let Some(x) = a &amp;&amp; let Ok(y) = b &amp;&amp; x &lt; y
+                { }</code
+              >
+              — 패턴 매칭과 불리언 조건을 한 줄에. 1.95 에서
+              <code>match</code> arm 에도 (<code
+                >Some(v) if let Ok(n) = parse(v) =&gt; ..</code
+              >).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2018 RFC 통과 후 구현은 2022 년에 끝났지만, 임시값 드롭 순서가
+                  edition 2021 의 <code>if let</code> 규칙과 충돌해 "edition
+                  2024 에서 임시값 수명을 먼저 바꾼 뒤" 안정화. 그래서 2024 전용
+                </li>
+                <li>
+                  대체 수단이던 <code>if_chain!</code> 매크로 · 중첩
+                  <code>if let</code> 피라미드 · <code>matches!</code> 조합은
+                  clippy 자체 코드에서도 가독성 문제로 지적 — clippy 가 가장
+                  먼저 마이그레이션
+                </li>
+                <li>
+                  1.88 (if/while let chains) → 1.95 (match guard) 로 2 단계.
+                  남은 것은 nightly 의 <code>let</code> 표현식 일반화 — "문법은
+                  한 릴리스에 한 조각" 의 전형
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">if_chain! 매크로</span
+              ><span class="chip">중첩 if let</span
+              ><span class="chip">matches!() &amp;&amp; 조건 우회</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2025/06/26/Rust-1.88.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.88.0</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2026/04/16/Rust-1.95.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.95.0</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md"
+                target="_blank"
+                rel="noopener"
+                >RFC 2497</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-cfg-select" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>cfg_select! <small>1.95 (2026-04) · cfg-if 흡수</small></h3>
+            <button class="theme-btn" popovertarget="rs-cfg-select">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code
+                >cfg_select! { unix =&gt; { .. } windows =&gt; { .. } _ =&gt; {
+                .. } }</code
+              >
+              — 컴파일 타임 <code>match</code>. 첫 번째로 참인 arm 만 남김.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  cfg-if (2015, Alex Crichton) 는 libc · std 자체가 쓰는 기반
+                  crate 라 누적 15.9 억 다운로드 — crates.io 전체 1 위권. 하지만
+                  "if / else if" 모양의 매크로 문법이 <code>cfg</code>
+                  속성과 달라 매번 찾아봐야 했음
+                </li>
+                <li>
+                  의존성 0 개 · 40 줄짜리 crate 를 전 생태계가 깔아야 하는 상황
+                  자체가 공급망 관점에서 불필요한 노출 — 2024 년 xz 사건 이후
+                  "작은 필수 crate 는 std 로" 흐름의 일부
+                </li>
+                <li>
+                  std 버전은 <code>match</code> 문법으로 재설계 (RFC 없이 libs
+                  팀 ACP). 흡수 후에도 cfg-if 는 MSRV 때문에 수년간 남겠지만
+                  신규 코드의 기본값이 바뀜
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">cfg_if! 매크로</span
+              ><span class="chip">#[cfg] 를 단 중복 함수 정의</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>cfg-if 최근 90 일 3.8 억 다운로드 (2026-10)</dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2026/04/16/Rust-1.95.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.95.0</a
+              >
+              ·
+              <a
+                href="https://github.com/rust-lang/cfg-if"
+                target="_blank"
+                rel="noopener"
+                >cfg-if</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="rs-lld" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              LLD 기본 링커
+              <small>1.90 (2025-09) · x86_64-unknown-linux-gnu</small>
+            </h3>
+            <button class="theme-btn" popovertarget="rs-lld">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              rustup 이 배포하는 <code>rust-lld</code> 를 기본 링커로. 설정 없이
+              링크 단계가 GNU ld 대비 최대 2 배 빠름. 문제가 있으면
+              <code>-Clinker-features=-lld</code> 로 복귀.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  Rust 바이너리는 단일 crate 로 모든 의존성을 정적 링크하므로
+                  증분 빌드에서도 링크가 전체 시간의 절반 이상인 경우가 흔함.
+                  2019 년부터 "<code>.cargo/config</code> 에 lld 나 mold 를
+                  지정하라" 가 모든 성능 가이드의 첫 줄
+                </li>
+                <li>
+                  2024-05 nightly 에서 먼저 켜고 1 년간 crater (전 crates.io
+                  빌드) 로 회귀를 수집. glibc · 구형 배포판 호환 문제를 하나씩
+                  잡은 뒤 stable 에 적용 — "nightly 에서 검증 → stable" 의
+                  툴체인 버전
+                </li>
+                <li>
+                  같은 시기 1.75 BOLT · 1.65 MIR 인라이닝 · 1.38 파이프라인
+                  컴파일과 함께 "컴파일이 느리다" 에 대한 다년간의 체계적 대응.
+                  mold 는 여전히 더 빠르지만 "설정 없는 기본값" 이 수렴을 만듦
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip"
+                >.cargo/config 의 linker = "clang" + fuse-ld=lld</span
+              ><span class="chip">mold (설정 없는 용도로는)</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.rust-lang.org/2025/09/18/Rust-1.90.0/"
+                target="_blank"
+                rel="noopener"
+                >Rust 1.90.0</a
+              >
+              ·
+              <a
+                href="https://blog.rust-lang.org/2024/05/17/enabling-rust-lld-on-linux/"
+                target="_blank"
+                rel="noopener"
+                >Faster linking times on nightly on Linux using rust-lld</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="container">
+      출처:
+      <a
+        href="https://github.com/rust-lang/rust/blob/master/RELEASES.md"
+        target="_blank"
+        rel="noopener"
+        >RELEASES.md</a
+      >
+      ·
+      <a
+        href="https://blog.rust-lang.org/releases/"
+        target="_blank"
+        rel="noopener"
+        >Rust release 블로그</a
+      >
+      · Edition Guide · 각 RFC. 최신 안정 버전 1.99.1 (2026-10-15) 기준. 막대
+      굵기(사용량) 는 crates.io 누적 · 최근 90 일 다운로드 (2026-10-19 조회) ·
+      GitHub 스타 · Rust Annual Survey 를 바탕으로 한 근사치이며 정확한 점유율이
+      아닙니다. "archived" 표기는 GitHub API 로 확인한 것만 적었고, async-std ·
+      racer · multirust 는 archived 가 아니라 README 또는 설명에 중단 선언만
+      있는 상태입니다.
+    </footer>
+  </body>
+</html>

@@ -40,9 +40,9 @@
         <nav class="lang-nav" aria-label="언어 선택">
           <a href="./">개요</a>
           <a href="go.html" aria-current="page">Go</a>
-          <a href="rust.html" class="soon">Rust (준비 중)</a>
-          <a href="python.html" class="soon">Python (준비 중)</a>
-          <a href="javascript.html" class="soon">JavaScript (준비 중)</a>
+          <a href="rust.html">Rust</a>
+          <a href="python.html">Python</a>
+          <a href="javascript.html">JavaScript</a>
         </nav>
       </section>
 
@@ -773,14 +773,14 @@
             <button
               class="bar dominant"
               style="--lane: 2; grid-column: 1 / 7"
-              popovertarget="go-modules"
+              popovertarget="go-gopath"
             >
               <span class="name">GOPATH</span>
             </button>
             <button
               class="bar common end"
               style="--lane: 2; grid-column: 7 / 10"
-              popovertarget="go-modules"
+              popovertarget="go-gopath"
             ></button>
             <button
               class="bar common end"
@@ -859,14 +859,14 @@
             <button
               class="bar common"
               style="--lane: 4; grid-column: 5 / 7"
-              popovertarget="go-golangci"
+              popovertarget="go-gometalinter"
             >
               <span class="name">gometalinter</span>
             </button>
             <button
               class="bar niche end"
               style="--lane: 4; grid-column: 7 / 8"
-              popovertarget="go-golangci"
+              popovertarget="go-gometalinter"
             ></button>
             <button
               class="bar common"
@@ -927,19 +927,19 @@
             <button
               class="bar common"
               style="--lane: 2; grid-column: 5 / 6"
-              popovertarget="go-errors13"
+              popovertarget="go-pkgerrors"
             >
               <span class="name">pkg/errors</span>
             </button>
             <button
               class="bar dominant"
               style="--lane: 2; grid-column: 6 / 9"
-              popovertarget="go-errors13"
+              popovertarget="go-pkgerrors"
             ></button>
             <button
               class="bar niche end"
               style="--lane: 2; grid-column: 9 / 10"
-              popovertarget="go-errors13"
+              popovertarget="go-pkgerrors"
             ></button>
             <button
               class="bar common"
@@ -956,7 +956,7 @@
             <button
               class="bar niche end"
               style="--lane: 4; grid-column: 8 / 10"
-              popovertarget="go-errors13"
+              popovertarget="go-pkgerrors"
             >
               <span class="name">xerrors</span>
             </button>
@@ -977,14 +977,14 @@
             <button
               class="bar common"
               style="--lane: 2; grid-column: 1 / 9"
-              popovertarget="go-toolchain"
+              popovertarget="go-gvm"
             >
               <span class="name">gvm</span>
             </button>
             <button
               class="bar niche end"
               style="--lane: 2; grid-column: 9 / 12"
-              popovertarget="go-toolchain"
+              popovertarget="go-gvm"
             ></button>
             <button
               class="bar dominant"
@@ -996,14 +996,14 @@
             <button
               class="bar common"
               style="--lane: 3; grid-column: 5 / 12"
-              popovertarget="go-toolchain"
+              popovertarget="go-gvm"
             >
               <span class="name">goenv</span>
             </button>
             <button
               class="bar niche"
               style="--lane: 3; grid-column: 12 / 17"
-              popovertarget="go-toolchain"
+              popovertarget="go-gvm"
             ></button>
           </div>
         </div>
@@ -1022,19 +1022,19 @@
             <button
               class="bar dominant"
               style="--lane: 2; grid-column: 1 / 9"
-              popovertarget="go-servemux"
+              popovertarget="go-gorilla"
             >
               <span class="name">gorilla/mux</span>
             </button>
             <button
               class="bar common"
               style="--lane: 2; grid-column: 9 / 12"
-              popovertarget="go-servemux"
+              popovertarget="go-gorilla"
             ></button>
             <button
               class="bar niche"
               style="--lane: 2; grid-column: 12 / 17"
-              popovertarget="go-servemux"
+              popovertarget="go-gorilla"
             ></button>
             <span class="bar common" style="--lane: 3; grid-column: 3 / 5"
               ><span class="name">gin</span></span
@@ -1075,14 +1075,14 @@
             <button
               class="bar dominant"
               style="--lane: 2; grid-column: 1 / 8"
-              popovertarget="go-gopls"
+              popovertarget="go-editor-old"
             >
               <span class="name">gocode</span>
             </button>
             <button
               class="bar niche end"
               style="--lane: 2; grid-column: 8 / 9"
-              popovertarget="go-gopls"
+              popovertarget="go-editor-old"
             ></button>
             <button
               class="bar common"
@@ -1099,28 +1099,28 @@
             <button
               class="bar common end"
               style="--lane: 3; grid-column: 1 / 9"
-              popovertarget="go-gopls"
+              popovertarget="go-editor-old"
             >
               <span class="name">godef</span>
             </button>
             <button
               class="bar common end"
               style="--lane: 4; grid-column: 3 / 9"
-              popovertarget="go-gopls"
+              popovertarget="go-editor-old"
             >
               <span class="name">guru (oracle)</span>
             </button>
             <button
               class="bar common end"
               style="--lane: 5; grid-column: 3 / 9"
-              popovertarget="go-gopls"
+              popovertarget="go-editor-old"
             >
               <span class="name">gorename</span>
             </button>
             <button
               class="bar niche end"
               style="--lane: 6; grid-column: 5 / 9"
-              popovertarget="go-gopls"
+              popovertarget="go-editor-old"
             >
               <span class="name">go-outline · go-symbols · gopkgs</span>
             </button>
@@ -1334,9 +1334,12 @@
             </dd>
             <dt>Replaced</dt>
             <dd>
-              <span class="chip">GOPATH</span><span class="chip">godep</span
-              ><span class="chip">glide</span><span class="chip">govendor</span
-              ><span class="chip">gb</span><span class="chip">dep</span>
+              <button class="chip" popovertarget="go-gopath">GOPATH</button
+              ><span class="chip">godep</span
+              ><button class="chip" popovertarget="go-dep">glide</button
+              ><span class="chip">govendor</span
+              ><button class="chip" popovertarget="go-dep">gb</button
+              ><button class="chip" popovertarget="go-dep">dep</button>
             </dd>
             <dt>Numbers</dt>
             <dd>
@@ -1372,7 +1375,10 @@
       <aside id="go-dep" popover class="sheet">
         <div class="sheet-inner">
           <header>
-            <h3>godep · glide · dep <small>2013 – 2020</small></h3>
+            <h3>
+              godep · glide · govendor · gb · gom · dep
+              <small>2013 – 2020</small>
+            </h3>
             <button class="theme-btn" popovertarget="go-dep">닫기 Esc</button>
           </header>
           <dl>
@@ -1895,8 +1901,9 @@
             </dd>
             <dt>Replaced</dt>
             <dd>
-              <span class="chip">gvm</span><span class="chip">goenv</span
-              ><span class="chip">g</span><span class="chip">asdf-golang</span>
+              <button class="chip" popovertarget="go-gvm">gvm</button
+              ><span class="chip">goenv</span><span class="chip">g</span
+              ><span class="chip">asdf-golang</span>
             </dd>
             <dt>Links</dt>
             <dd>
@@ -2199,12 +2206,17 @@
             </dd>
             <dt>Replaced</dt>
             <dd>
-              <span class="chip">gocode</span><span class="chip">godef</span
-              ><span class="chip">guru</span><span class="chip">gorename</span
+              <button class="chip" popovertarget="go-editor-old">gocode</button
+              ><span class="chip">godef</span
+              ><button class="chip" popovertarget="go-editor-old">guru</button
+              ><span class="chip">gorename</span
               ><span class="chip">gomvpkg</span
               ><span class="chip">go-outline</span
               ><span class="chip">go-symbols</span
-              ><span class="chip">gopkgs</span><span class="chip">gotype</span>
+              ><button class="chip" popovertarget="go-editor-old">gopkgs</button
+              ><button class="chip" popovertarget="go-editor-old">
+                gotype
+              </button>
             </dd>
             <dt>Numbers</dt>
             <dd>내 로컬: 에디터 툴 9개 제거 → gopls 1개</dd>
@@ -2284,6 +2296,365 @@
                 target="_blank"
                 rel="noopener"
                 >Go 1.26 release notes</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+      <aside id="go-gopath" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              GOPATH <small>2012 (1.0) – 2021 (1.16 에서 기본 해제)</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-gopath">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              모든 소스를 <code>$GOPATH/src/&lt;import path&gt;</code> 한 트리에
+              두는 워크스페이스 모델. 의존성은 <code>go get</code> 으로 최신
+              master 를 내려받음 — 버전 개념 없음.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  "항상 HEAD" 라서 재현 가능한 빌드가 불가능. 같은 코드가 어제는
+                  되고 오늘은 안 되는 문제가 2013 년부터 godep 등 서드파티를
+                  낳음
+                </li>
+                <li>
+                  프로젝트를 반드시 GOPATH 아래 특정 경로에 두어야 해서 신규
+                  사용자의 첫 번째 장벽이 됨 (Go Survey 2017: 가장 큰 불만 1위가
+                  의존성 관리)
+                </li>
+                <li>
+                  1.11 modules 가 GOPATH 밖 개발을 허용하고, 1.13 proxy, 1.16
+                  <code>GO111MODULE=on</code> 기본으로 역할 종료. 지금은
+                  <code>go install</code> 결과물 보관 디렉토리로만 남음
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="go-modules">
+                go modules (1.11)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://go.dev/doc/gopath_code"
+                target="_blank"
+                rel="noopener"
+                >GOPATH 문서</a
+              >
+              ·
+              <a
+                href="https://go.dev/blog/survey2017-results"
+                target="_blank"
+                rel="noopener"
+                >Survey 2017</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+      <aside id="go-gometalinter" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>gometalinter <small>2016 – 2019 (deprecated)</small></h3>
+            <button class="theme-btn" popovertarget="go-gometalinter">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              20 여 개 린터를 한 번에 실행해 결과를 합치는 최초의 Go 린터
+              집계기. CI 에서 "린터 하나만 돌리면 된다" 는 경험을 처음 만듦.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  린터마다 별도 프로세스를 띄우고 각자 소스를 다시 파싱 — 대형
+                  레포에서 수 분, 메모리 수 GB
+                </li>
+                <li>
+                  golangci-lint (2018) 가 AST · 타입 정보를 린터 간에 공유해
+                  같은 결과를 5 배 이상 빠르게 냄. 설정 파일 호환까지 제공해
+                  이주 비용이 거의 0
+                </li>
+                <li>
+                  2019-04 저자가 README 에 deprecated 를 선언하며 golangci-lint
+                  를 후계로 지목
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="go-golangci">
+                golangci-lint
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/alecthomas/gometalinter"
+                target="_blank"
+                rel="noopener"
+                >gometalinter (deprecated)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+      <aside id="go-pkgerrors" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              pkg/errors · xerrors
+              <small>2016 – 2021 (archived) · 2019 – 2020</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-pkgerrors">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>errors.Wrap(err, "ctx")</code> ·
+              <code>errors.Cause(err)</code> 로 원인 보존과 스택 트레이스를
+              제공한 사실상 표준 서드파티. xerrors 는 1.13 기능의 사전 백포트.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  1.0 의 <code>error</code> 는 문자열뿐이라 "어디서 난 에러인가"
+                  를 알 수 없었고, Dave Cheney 의 2016 블로그 글과 함께
+                  pkg/errors 가 급속히 퍼짐
+                </li>
+                <li>
+                  1.13 (2019) 이 <code>%w</code> ·
+                  <code>errors.Is/As/Unwrap</code> 을 표준에 넣자 래핑 기능은
+                  stdlib 로 충분해짐. 스택 트레이스만 남았는데 그것도 slog ·
+                  트레이싱으로 대체
+                </li>
+                <li>
+                  저자가 2021-12 저장소를 아카이브 — "1.13 이후 더 이상 필요
+                  없음". xerrors 는 1.13 출시와 함께 역할 종료
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="go-errors13">
+                errors.Is / As (1.13)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/pkg/errors"
+                target="_blank"
+                rel="noopener"
+                >pkg/errors (archived)</a
+              >
+              ·
+              <a
+                href="https://dave.cheney.net/2016/04/27/dont-just-check-errors-handle-them-gracefully"
+                target="_blank"
+                rel="noopener"
+                >Don't just check errors</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+      <aside id="go-gvm" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>gvm · goenv <small>2012 – 2021 · 2016 →</small></h3>
+            <button class="theme-btn" popovertarget="go-gvm">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              셸 스크립트로 여러 Go 버전을 설치 · 전환하는 버전 관리자. gvm 은
+              rvm 을, goenv 는 pyenv 를 본뜸.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  팀원 · CI 마다 설치 방식이 달라 "내 PC 에선 되는데" 가 반복.
+                  프로젝트가 요구하는 버전을 저장소 안에 선언할 방법이 없었음
+                </li>
+                <li>
+                  gvm 은 2020 년 이후 사실상 유지보수 중단 (bash 전용 · 소스
+                  빌드 의존). goenv 는 남아 있지만 1.21 이후 쓸 이유가 줄어듦
+                </li>
+                <li>
+                  1.21 <code>toolchain</code> 디렉티브 +
+                  <code>GOTOOLCHAIN</code> 이 go.mod 선언만으로 자동 다운로드 ·
+                  전환을 해결 — 버전 관리자가 언어에 흡수된 사례
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="go-toolchain">
+                go.mod toolchain (1.21)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/moovweb/gvm"
+                target="_blank"
+                rel="noopener"
+                >gvm</a
+              >
+              ·
+              <a
+                href="https://github.com/go-nv/goenv"
+                target="_blank"
+                rel="noopener"
+                >goenv</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+      <aside id="go-gorilla" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              gorilla/mux <small>2012 → · 2022-12 아카이브 → 2023 부활</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-gorilla">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              경로 변수 · 메서드 매칭 · 서브라우터를 제공한 최초의 대중적 Go
+              라우터. 10 년간 "Go 웹 = gorilla" 였음.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  2022-12 메인테이너 부재로 gorilla 조직 전체가 아카이브 — 가장
+                  많이 쓰이던 라우터가 하루아침에 unmaintained. 2023 년 새
+                  메인테이너가 부활시켰지만 신뢰가 회복되지 않음
+                </li>
+                <li>
+                  그 사이 chi (경량 · stdlib 호환) 와 gin (프레임워크) 으로
+                  사용자가 이동
+                </li>
+                <li>
+                  1.22 ServeMux 가 메서드 · 와일드카드 매칭을 흡수하자 "라우터만
+                  필요한" 용도에선 서드파티 자체가 불필요해짐
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="go-servemux">
+                net/http.ServeMux (1.22)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/gorilla/mux"
+                target="_blank"
+                rel="noopener"
+                >gorilla/mux</a
+              >
+              ·
+              <a
+                href="https://github.com/gorilla/mux/issues/659"
+                target="_blank"
+                rel="noopener"
+                >아카이브 당시 이슈</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+      <aside id="go-editor-old" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              gocode · godef · guru · gorename · go-outline · go-symbols ·
+              gopkgs <small>2012 – 2020</small>
+            </h3>
+            <button class="theme-btn" popovertarget="go-editor-old">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              LSP 이전 세대의 에디터 도구. 기능 하나당 바이너리 하나 —
+              완성(gocode) · 정의 이동(godef) · 참조 · 구현 찾기(guru, 옛
+              oracle) · 이름 변경(gorename) · 심볼 · 아웃라인(go-outline ·
+              go-symbols · gopkgs).
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  각 툴이 자체 파서 · 캐시 · 빌드 방식을 가져 결과가 서로
+                  어긋났고, 1.11 modules 전환 때 GOPATH 가정이 깨지며 한꺼번에
+                  동작 불능
+                </li>
+                <li>
+                  gocode 는 모듈 지원을 위해 포크(mdempsky → stamblerre) 가
+                  이어지다 2020 아카이브. guru · gorename 은 x/tools 에서
+                  deprecated, go-outline · go-symbols 는 vscode-go 가 gopls 로
+                  옮기며 폐기
+                </li>
+                <li>
+                  Microsoft LSP (2016) 가 에디터 공통 프로토콜이 되자 Go 팀이
+                  gopls 하나로 전부 흡수. vim-go · vscode-go 가 2020–2021 기본값
+                  전환
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win" popovertarget="go-gopls">gopls</button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/stamblerre/gocode"
+                target="_blank"
+                rel="noopener"
+                >gocode (archived)</a
+              >
+              ·
+              <a
+                href="https://pkg.go.dev/golang.org/x/tools/cmd/guru"
+                target="_blank"
+                rel="noopener"
+                >guru (deprecated)</a
+              >
+              ·
+              <a
+                href="https://go.dev/blog/gopls-vscode-go"
+                target="_blank"
+                rel="noopener"
+                >Gopls on by default</a
               >
             </dd>
           </dl>

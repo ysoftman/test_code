@@ -1,0 +1,4235 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript History: 버전별 큰 변화와 툴 교체 흐름</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <a class="nav-back" href="./">lang-history</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">javascript</span>
+        </div>
+        <button
+          class="theme-btn"
+          id="theme-btn"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <span id="theme-icon">◐</span>
+          <span id="theme-text">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-header">
+        <h1>Language History</h1>
+        <p class="page-desc">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
+        </p>
+        <nav class="lang-nav" aria-label="언어 선택">
+          <a href="./">개요</a>
+          <a href="go.html">Go</a>
+          <a href="rust.html">Rust</a>
+          <a href="python.html">Python</a>
+          <a href="javascript.html" aria-current="page">JavaScript</a>
+        </nav>
+      </section>
+
+      <!-- ============================================= JavaScript -->
+      <section class="lang" id="javascript">
+        <h2>JavaScript</h2>
+        <p class="lead">
+          언어 (ECMAScript 에디션) 와 런타임 (Node · Deno · Bun) 이 따로
+          움직입니다. 2009 ES5 이후 6 년 공백, 2015 부터 매년 6 월 에디션. 공식
+          툴체인이 없어 서드파티가 가장 넓게 난립했고, 2020 년대에 Go · Rust 로
+          <strong>재작성된 하나</strong>와 런타임 <strong>내장 기능</strong>으로
+          수렴합니다.
+        </p>
+
+        <div class="stat-row">
+          <div class="stat">
+            <b>6</b>
+            <span
+              >2016 · 런타임 외 필수 툴 (webpack · babel · eslint · jest/mocha ·
+              karma · tsc/flow)</span
+            >
+          </div>
+          <div class="stat">
+            <b>5</b>
+            <span>2020 · webpack · babel/tsc · eslint · prettier · jest</span>
+          </div>
+          <div class="stat">
+            <b>4</b>
+            <span
+              >2026 · vite (rolldown + oxc 내장) · tsc 7 · oxlint 또는 biome ·
+              vitest — 역할당 하나</span
+            >
+          </div>
+          <div class="stat">
+            <b>9<small>회 흡수</small></b>
+            <span
+              >Node — fetch 18 · test 20 · watch · WebSocket · glob 22 ·
+              require(esm) 22.12 · sqlite 22.5 · TS 23.6 · Temporal 26</span
+            >
+          </div>
+        </div>
+
+        <h3>Releases — 굵직한 변화</h3>
+        <div class="releases-2col">
+          <div>
+            <h4>ECMAScript 에디션</h4>
+            <ul class="timeline">
+              <li class="release">
+                <div class="head">
+                  <span class="ver">ES2027</span
+                  ><span class="date">2027-06 예정</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><button class="link" popovertarget="js-es-recent">
+                      stage 4 확정분 — <code>Temporal</code> ·
+                      <code>using</code> (explicit resource management) ·
+                      <code>Iterator.zip</code> · iterator chunking / includes /
+                      join · <code>Atomics.pause</code>
+                    </button>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">ES2026</span
+                  ><span class="date">2026-06</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><button class="link" popovertarget="js-es-recent">
+                      <code>Array.fromAsync</code> ·
+                      <code>Error.isError</code> ·
+                      <code>Math.sumPrecise</code> ·
+                      <code>Uint8Array</code> base64/hex ·
+                      <code>RegExp.escape</code>
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>Iterator.concat</code> ·
+                      <code>Map.getOrInsert</code> (upsert) ·
+                      <code>JSON.rawJSON</code> / parse source text</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">ES2025</span
+                  ><span class="date">2025-06</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><button class="link" popovertarget="js-es-recent">
+                      Set 메서드 (<code>union</code> ·
+                      <code>intersection</code> …) · 이터레이터 헬퍼 (<code
+                        >.map</code
+                      >
+                      <code>.filter</code> <code>.take</code>
+                      <code>.toArray</code>) — lodash 체인 흡수
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      ><code>import … with { type: "json" }</code> import
+                      attributes · JSON modules · RegExp 수정자
+                      <code>(?i:…)</code> · 중복 named group</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>Promise.try</code> · <code>Float16Array</code> ·
+                      <code>Math.f16round</code> ·
+                      <code>ArrayBuffer.prototype.transfer</code></span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">ES2024</span
+                  ><span class="date">2024-06</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>Object.groupBy</code> · <code>Map.groupBy</code> ·
+                      <code>Promise.withResolvers</code> ·
+                      <code>Atomics.waitAsync</code></span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      >RegExp <code>v</code> 플래그 (집합 연산) · resizable
+                      <code>ArrayBuffer</code> ·
+                      <code>String.isWellFormed</code></span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>ES2023 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">ES2023</span>2023-06 ·
+                    <code>toSorted</code> · <code>toReversed</code> ·
+                    <code>with</code> · <code>toSpliced</code> (change-by-copy)
+                    · <code>findLast</code> · hashbang <code>#!</code> · Symbol
+                    을 WeakMap 키로
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">ES2022</span
+                  ><span class="date">2022-06</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><button class="link" popovertarget="js-es2022">
+                      top-level <code>await</code> · 클래스 필드 ·
+                      <code>#private</code> · <code>static {}</code> — 7 년
+                      stage 3 끝에 확정
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>.at(-1)</code> · <code>Object.hasOwn</code> ·
+                      <code>Error</code> <code>cause</code> · RegExp
+                      <code>d</code> 플래그</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">ES2021</span
+                  ><span class="date">2021-06</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      ><code>&amp;&amp;=</code> <code>||=</code>
+                      <code>??=</code> 논리 할당 · <code>1_000_000</code> 숫자
+                      구분자</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>replaceAll</code> · <code>Promise.any</code> ·
+                      <code>WeakRef</code> ·
+                      <code>FinalizationRegistry</code></span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">ES2020</span
+                  ><span class="date">2020-06</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><button class="link" popovertarget="js-es2020">
+                      <code>?.</code> 옵셔널 체이닝 · <code>??</code> nullish —
+                      lodash.get 의 자리
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      ><code>import()</code> 동적 임포트 ·
+                      <code>import.meta</code> · <code>export * as ns</code> —
+                      번들러 전용 기능 (코드 스플리팅) 의 표준화</span
+                    >
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>BigInt</code> · <code>globalThis</code> ·
+                      <code>Promise.allSettled</code> ·
+                      <code>String.matchAll</code></span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>ES2019 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">ES2019</span>2019-06 · <code>flat</code> ·
+                    <code>flatMap</code> · <code>Object.fromEntries</code> ·
+                    optional catch binding · <code>trimStart/End</code> · 안정
+                    정렬 보장
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">ES2018</span
+                  ><span class="date">2018-06</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      ><code>for await</code> 비동기 반복 · 객체 rest/spread
+                      <code>{ ...obj }</code></span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      >RegExp named group <code>(?&lt;y&gt;…)</code> ·
+                      lookbehind · <code>s</code> 플래그 · Unicode property
+                      escape</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span><code>Promise.finally</code></span>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">ES2017</span
+                  ><span class="date">2017-06</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><button class="link" popovertarget="js-async-await">
+                      <code>async</code> / <code>await</code> — 콜백 지옥과 co ·
+                      Bluebird.coroutine 의 종료
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>Object.entries</code> ·
+                      <code>Object.values</code> · <code>padStart</code> ·
+                      <code>SharedArrayBuffer</code> ·
+                      <code>Atomics</code></span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>ES2016 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">ES2016</span>2016-06 ·
+                    <code>**</code> 거듭제곱 · <code>Array.includes</code> — 연
+                    1 회 체제의 첫 "작은" 에디션 (기능 2 개)
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">ES2015</span
+                  ><span class="date">2015-06</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><button class="link" popovertarget="js-es2015">
+                      <code>class</code> · <code>import</code>/<code
+                        >export</code
+                      >
+                      모듈 · 화살표 함수 · <code>let</code>/<code>const</code> ·
+                      구조 분해 · 템플릿 리터럴 — 6 년 만의 에디션, 연 1 회 체제
+                      시작
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>Promise</code> · <code>Map</code>/<code>Set</code>
+                      · <code>Symbol</code> · <code>Proxy</code>/<code
+                        >Reflect</code
+                      >
+                      · 제네레이터 · typed array — Q · Bluebird · RequireJS ·
+                      underscore 의 역할 흡수</span
+                    >
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      >Babel (6to5) · TypeScript 1.5 가 브라우저보다 먼저 지원 —
+                      "트랜스파일이 기본" 시대 개막</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">ES5 / 5.1</span
+                  ><span class="date">2009-12 · 2011-06</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      >strict mode · getter/setter · <code>JSON</code> ·
+                      <code>forEach</code
+                      >/<code>map</code>/<code>filter</code>/<code>reduce</code>
+                      · <code>Object.create</code> — ES4 폐기 후 10 년 만의
+                      에디션</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      >같은 해 Node.js (2009) · CoffeeScript (2009) · npm (2010)
+                      탄생 — 언어 정체기를 툴이 메움</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>ES3 · ES4 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">ES3</span>1999-12 · 정규식 ·
+                    <code>try</code>/<code>catch</code> · 이후 10 년 공백
+                  </li>
+                  <li>
+                    <span class="ver">ES4</span>2008 폐기 · 클래스 · 타입 ·
+                    패키지를 담은 급진안이 무산 — Harmony 로 재출발해 ES2015 가
+                    됨
+                  </li>
+                </ul>
+              </details>
+            </ul>
+          </div>
+
+          <div>
+            <h4>런타임 (Node.js · Deno · Bun)</h4>
+            <ul class="timeline">
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 26</span
+                  ><span class="date">2026-05</span>
+                  <span class="badge">major</span>
+                  <span class="badge breaking">breaking</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><button class="link" popovertarget="js-es-recent">
+                      <code>Temporal</code> 기본 활성 — <code>Date</code> ·
+                      moment · dayjs 의 대안
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span
+                      >V8 14.6 (<code>Map.getOrInsert</code> ·
+                      <code>Iterator.concat</code>) · Undici 8 ·
+                      <code>_stream_*</code> 레거시 모듈 ·
+                      <code>writeHeader</code> 제거</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      ><code>--experimental-transform-types</code> 플래그 제거 ·
+                      Active LTS 2026-10-28 (2029-04 까지)</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Bun 1.4</span
+                  ><span class="date">2026-08</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><button class="link" popovertarget="js-bun">
+                      Zig → Rust 전면 재작성 (1.3.14 가 마지막 Zig) — 메모리
+                      안전 버그를 컴파일러가 잡게
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-tsgo">
+                      1.4.3 (2026-10) <code>bun check</code> — typescript-go
+                      포트 타입 검사기, tsc 7 대비 3–6.4×
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>Bun.WebView</code> 헤드리스 브라우저 ·
+                      <code>Bun.Image</code> · <code>Bun.markdown</code> · Node
+                      26.3 호환</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Deno 2.9</span
+                  ><span class="date">2026-06</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      >npm / pnpm / yarn 마이그레이션 명령 ·
+                      <code>deno desktop</code> · Node 26 호환 (2.7:
+                      <code>Temporal</code> · npm overrides)</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><button class="link" popovertarget="js-deno">
+                      2026-10-09 팀 전체 Cloudflare 합류 — 런타임은 1 년
+                      유지보수 후 개발 종료 예정, Deploy 는 6 개월 뒤 종료
+                    </button>
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 25 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 25</span>2025-10 · 홀수 Current (6
+                    개월) · 25.2 TypeScript type stripping stable
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 24</span
+                  ><span class="date">2025-05</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span
+                      >V8 13.6 — <code>Float16Array</code> ·
+                      <code>RegExp.escape</code> · <code>Error.isError</code> ·
+                      <code>using</code> (explicit resource management)</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>URLPattern</code> 전역 ·
+                      <code>AsyncLocalStorage</code> 가 AsyncContextFrame 기본 ·
+                      Undici 7</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-node-typescript">
+                      24.12 <code>node app.ts</code> type stripping stable —
+                      ts-node · tsx 대체
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      >npm 11 · <code>--permission</code> (experimental 접두어
+                      제거) · test runner 가 서브테스트 자동 대기</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Bun 1.3</span
+                  ><span class="date">2025-10</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-bun">
+                      풀스택 dev 서버 (<code>bun ./index.html</code>) · 통합 SQL
+                      API · Redis 클라이언트 · 2025-12 Anthropic 인수
+                    </button>
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 23 · Bun 1.2 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Bun 1.2</span>2025-01 ·
+                    <code>bun.lock</code> 텍스트 lockfile ·
+                    <code>Bun.sql</code> Postgres · <code>Bun.s3</code> · Node
+                    호환 대폭 개선
+                  </li>
+                  <li>
+                    <span class="ver">Node 23</span>2024-10 · 23.6 (2025-01)
+                    <code>node app.ts</code> 플래그 없이 실행 ·
+                    <code>require(esm)</code> 기본
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Deno 2.0</span
+                  ><span class="date">2024-10</span>
+                  <span class="badge">major</span>
+                  <span class="badge breaking">breaking</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-deno">
+                      <code>package.json</code> · <code>node_modules</code> ·
+                      <code>npm:</code> 전면 호환 ·
+                      <code>deno install/add</code>
+                      · JSR · workspaces · LTS 채널
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span
+                      >Deno 1 의 "npm 없이 URL import" 노선 철회 — 기존 생태계
+                      200 만 패키지 수용</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 22</span
+                  ><span class="date">2024-04</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-node-20-22">
+                      <code>require(esm)</code> — 22.12 (2024-12) 플래그 제거, 5
+                      년 ESM / CJS 분단 해소
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      ><code>--watch</code> stable (nodemon) ·
+                      <code>fs.glob</code> (glob) · <code>node --run</code> ·
+                      <code>node:sqlite</code> (22.5)</span
+                    >
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><button class="link" popovertarget="js-node-typescript">
+                      WebSocket 클라이언트 기본 (ws) · 22.6
+                      <code>--experimental-strip-types</code>
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span
+                      >V8 12.4 — <code>Array.fromAsync</code> · Set 메서드 ·
+                      이터레이터 헬퍼 · Maglev JIT 기본</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 21 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 21</span>2023-10 ·
+                    <code>fetch</code> · Web Streams stable ·
+                    <code>--experimental-default-type</code>
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Bun 1.0</span
+                  ><span class="date">2023-09</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><button class="link" popovertarget="js-bun">
+                      JavaScriptCore 런타임 + 번들러 + 테스트 러너 + 패키지
+                      매니저를 단일 바이너리에
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      >TS · JSX 네이티브 실행 · <code>bun test</code> (jest 호환
+                      API) · <code>bun install</code> ·
+                      <code>bun build</code></span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 20</span
+                  ><span class="date">2023-04</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-node-20-22">
+                      <code>node:test</code> stable — <code>describe</code> ·
+                      <code>it</code> · mock · coverage · <code>--test</code>
+                      병렬
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span
+                      >permission model experimental
+                      (<code>--experimental-permission</code>) · SEA (단일 실행
+                      파일) · V8 11.3</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      >ESM 로더 훅이 별도 스레드 ·
+                      <code>import.meta.resolve</code> 동기</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 19 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 19</span>2022-10 ·
+                    <code>--watch</code> experimental · HTTP keepAlive 기본 · V8
+                    10.7
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 18</span
+                  ><span class="date">2022-04</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><button class="link" popovertarget="js-node-fetch">
+                      <code>fetch</code> 전역 (undici) · <code>Request</code> ·
+                      <code>Response</code> · <code>Headers</code> ·
+                      <code>FormData</code> — node-fetch · request 대체
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      >Web Streams · <code>Blob</code> ·
+                      <code>BroadcastChannel</code> 전역</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      ><code>node:test</code> experimental · 빌드 시 V8 snapshot
+                      · V8 10.1</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 17 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 17</span>2021-10 · OpenSSL 3 ·
+                    <code>readline/promises</code>
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 16</span
+                  ><span class="date">2021-04</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span>Apple Silicon 네이티브 바이너리 · V8 9.0</span>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-pkg">
+                      npm 7 — workspaces · lockfile v2 · peer deps 자동 설치 —
+                      yarn · lerna 의 역할 흡수
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      >Timers Promises API stable ·
+                      <code>AbortController</code> ·
+                      <code>AbortSignal</code> 전역</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 15 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 15</span>2020-10 · npm 7 첫 동봉 ·
+                    unhandled rejection 이 throw 로 (기본값 변경)
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Deno 1.0</span
+                  ><span class="date">2020-05</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><button class="link" popovertarget="js-deno">
+                      V8 + Rust + Tokio · TS 네이티브 · 권한 샌드박스 · Web API
+                      우선 · npm 미지원 (URL import)
+                    </button>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Node 14</span
+                  ><span class="date">2020-04</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span
+                      >V8 8.1 — <code>?.</code> · <code>??</code> · 14.8
+                      top-level <code>await</code></span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>AsyncLocalStorage</code> experimental · diagnostic
+                      report stable · ESM 경고 제거 (12.17 · 13.2 에서 플래그
+                      해제)</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 13 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 13</span>2019-10 · 13.2 ESM 플래그
+                    해제 · full-icu 기본
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Node 12</span
+                  ><span class="date">2019-04</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-node-20-22">
+                      <code>--experimental-modules</code> ESM (<code>.mjs</code>
+                      · <code>"type": "module"</code>) — CJS / ESM 이중 체제의
+                      시작
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><span
+                      >V8 7.4 — private class fields ·
+                      <code>worker_threads</code> stable · TLS 1.3 · 힙 크기
+                      자동 설정</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 11 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 11</span>2018-10 · V8 7.0 ·
+                    <code>Array.sort</code> 안정 정렬 (TimSort)
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Node 10</span
+                  ><span class="date">2018-04</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      >N-API stable (네이티브 애드온 ABI 안정) ·
+                      <code>fs.promises</code> · HTTP/2 stable</span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span>npm 6 (<code>npm audit</code>) · V8 6.6</span>
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 9 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 9</span>2017-10 · HTTP/2 experimental
+                    · 에러 코드 체계 도입
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 8</span
+                  ><span class="date">2017-05</span>
+                  <span class="badge">major</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><button class="link" popovertarget="js-async-await">
+                      <code>async</code> / <code>await</code> 기본 지원 (V8 5.8
+                      · 7.6 에서 첫 도입)
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><button class="link" popovertarget="js-pkg">
+                      npm 5 — <code>package-lock.json</code> · 2× 빠른 설치 —
+                      yarn 의 핵심 기능 흡수
+                    </button>
+                    <span class="badge absorb">흡수</span>
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>util.promisify</code> · N-API experimental ·
+                      <code>async_hooks</code></span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 7 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 7</span>2016-10 · 7.6 (2017-02)
+                    <code>async</code>/<code>await</code> 첫 지원 · V8 5.4
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">Node 6</span
+                  ><span class="date">2016-04</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag lang">lang</span
+                    ><span
+                      >ES2015 커버리지 93% — 기본 인자 · 구조 분해 · rest 인자 ·
+                      <code>Proxy</code>/<code>Reflect</code></span
+                    >
+                  </li>
+                  <li>
+                    <span class="tag std">stdlib</span
+                    ><span
+                      ><code>Buffer.from</code> (안전한 생성) · npm 3 · 모듈
+                      로딩 4× 빠름</span
+                    >
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 5 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">Node 5</span>2015-10 · npm 3 (flat
+                    <code>node_modules</code>) · 첫 홀수 Current
+                  </li>
+                </ul>
+              </details>
+
+              <li class="release major">
+                <div class="head">
+                  <span class="ver">Node 4</span
+                  ><span class="date">2015-09</span>
+                  <span class="badge">major</span>
+                  <span class="badge breaking">breaking</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><button class="link" popovertarget="js-iojs">
+                      io.js 합류 — V8 4.5: <code>class</code> ·
+                      <code>let</code>/<code>const</code> · 화살표 · 제네레이터
+                      · 템플릿 리터럴
+                    </button>
+                  </li>
+                  <li>
+                    <span class="tag tool">tool</span
+                    ><span
+                      >LTS 체제 시작 (짝수 = 30 개월 지원 · 홀수 = 6 개월) ·
+                      semver · 네이티브 애드온 NAN 전환 (0.12 → 4 버전
+                      점프)</span
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="release">
+                <div class="head">
+                  <span class="ver">io.js 1.0</span
+                  ><span class="date">2015-01</span>
+                </div>
+                <ul>
+                  <li>
+                    <span class="tag rt">runtime</span
+                    ><button class="link" popovertarget="js-iojs">
+                      Node 0.12 정체에 반발한 커뮤니티 포크 — 최신 V8 3.31 · ES6
+                      · 오픈 거버넌스
+                    </button>
+                  </li>
+                </ul>
+              </li>
+              <details class="minor">
+                <summary>Node 0.12 · 0.10 · 0.8 · minor</summary>
+                <ul>
+                  <li>
+                    <span class="ver">0.12</span>2015-02 · 마지막 0.x · cluster
+                    round-robin · 2 년 지연이 io.js 포크의 원인
+                  </li>
+                  <li>
+                    <span class="ver">0.10</span>2013-03 · streams2 · 2 년간
+                    유일한 안정 버전
+                  </li>
+                  <li>
+                    <span class="ver">0.8</span>2012-06 · cluster · domains ·
+                    npm 1.1
+                  </li>
+                </ul>
+              </details>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
+        <p class="lead">
+          막대 굵기 = 사용량 (State of JS 설문 · npm 다운로드 · 스타 기준
+          근사치). 사라진 툴의 레인은 다음 툴이 재사용합니다. 막대를 클릭하면
+          교체 배경을 볼 수 있어요. 2012 이전에 시작한 툴은 첫 열부터 그리고
+          실제 시작 연도는 시트에 적었습니다.
+        </p>
+        <div class="legend">
+          <span><i class="d"></i>dominant</span>
+          <span><i class="c"></i>common</span>
+          <span><i class="n"></i>niche</span>
+          <span><i class="e"></i>discontinued</span>
+        </div>
+
+        <h4>패키지 매니저</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 17"
+              popovertarget="js-pkg"
+            >
+              <span class="name">npm (2010)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 1 / 5"
+              popovertarget="js-bower"
+            >
+              <span class="name">bower</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 3; grid-column: 5 / 7"
+              popovertarget="js-bower"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 9 / 17"
+              popovertarget="js-yarn"
+            >
+              <span class="name">yarn berry</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 5 / 6"
+              popovertarget="js-yarn"
+            >
+              <span class="name">yarn 1</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 6 / 10"
+              popovertarget="js-yarn"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 10 / 17"
+              popovertarget="js-yarn"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 6 / 11"
+              popovertarget="js-pkg"
+            >
+              <span class="name">pnpm</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 11 / 17"
+              popovertarget="js-pkg"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 11 / 13"
+              popovertarget="js-pkg"
+            >
+              <span class="name">bun install</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 6; grid-column: 13 / 17"
+              popovertarget="js-pkg"
+            ></button>
+          </div>
+        </div>
+
+        <h4>번들러 · 빌드 — Go/Rust 재작성 수렴의 핵심</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(8, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 1 / 4"
+              popovertarget="js-grunt-gulp"
+            >
+              <span class="name">grunt</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 4 / 6"
+              popovertarget="js-grunt-gulp"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 9 / 10"
+              popovertarget="js-esbuild"
+            >
+              <span class="name">esbuild (Go)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 10 / 17"
+              popovertarget="js-esbuild"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 1 / 6"
+              popovertarget="js-grunt-gulp"
+            >
+              <span class="name">browserify (2011)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 6 / 9"
+              popovertarget="js-grunt-gulp"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 11 / 17"
+              popovertarget="js-rolldown"
+            >
+              <span class="name">turbopack (Rust · Next.js)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 2 / 8"
+              popovertarget="js-grunt-gulp"
+            >
+              <span class="name">gulp</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 8 / 10"
+              popovertarget="js-grunt-gulp"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 12 / 17"
+              popovertarget="js-rolldown"
+            >
+              <span class="name">rspack (Rust · webpack 호환)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 3 / 5"
+              popovertarget="js-webpack-vite"
+            >
+              <span class="name">webpack</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 5; grid-column: 5 / 11"
+              popovertarget="js-webpack-vite"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 11 / 17"
+              popovertarget="js-webpack-vite"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 6; grid-column: 4 / 15"
+              popovertarget="js-rollup"
+            >
+              <span class="name">rollup</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 15 / 17"
+              popovertarget="js-rollup"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 7; grid-column: 6 / 7"
+              popovertarget="js-parcel"
+            >
+              <span class="name">parcel</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 7; grid-column: 7 / 9"
+              popovertarget="js-parcel"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 7; grid-column: 9 / 17"
+              popovertarget="js-parcel"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 8; grid-column: 9 / 10"
+              popovertarget="js-webpack-vite"
+            >
+              <span class="name">vite</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 8; grid-column: 10 / 11"
+              popovertarget="js-webpack-vite"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 8; grid-column: 11 / 17"
+              popovertarget="js-webpack-vite"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 9; grid-column: 13 / 15"
+              popovertarget="js-rolldown"
+            >
+              <span class="name">rolldown (Rust · Vite 8 기본)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 9; grid-column: 15 / 17"
+              popovertarget="js-rolldown"
+            ></button>
+          </div>
+        </div>
+
+        <h4>트랜스파일 · 타입</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 1 / 4"
+              popovertarget="js-coffee-flow"
+            >
+              <span class="name">coffeescript (2009)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 4 / 6"
+              popovertarget="js-coffee-flow"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 8 / 10"
+              popovertarget="js-babel-swc"
+            >
+              <span class="name">swc (Rust)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 10 / 17"
+              popovertarget="js-babel-swc"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 3 / 4"
+              popovertarget="js-babel-swc"
+            >
+              <span class="name">babel (6to5)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 3; grid-column: 4 / 10"
+              popovertarget="js-babel-swc"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 10 / 17"
+              popovertarget="js-babel-swc"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 1 / 4"
+              popovertarget="js-tsgo"
+            >
+              <span class="name">tsc (TypeScript)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 4 / 6"
+              popovertarget="js-tsgo"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 6 / 15"
+              popovertarget="js-tsgo"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 15 / 17"
+              popovertarget="js-tsgo"
+            >
+              <span class="name">tsc 7 (Go 포트)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 3 / 4"
+              popovertarget="js-coffee-flow"
+            >
+              <span class="name">flow</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 4 / 8"
+              popovertarget="js-coffee-flow"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 8 / 11"
+              popovertarget="js-coffee-flow"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 12 / 14"
+              popovertarget="js-babel-swc"
+            >
+              <span class="name">oxc (Rust)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 14 / 17"
+              popovertarget="js-babel-swc"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 6; grid-column: 9 / 15"
+              popovertarget="js-esbuild"
+            >
+              <span class="name">esbuild (Vite dev 변환)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 15 / 17"
+              popovertarget="js-esbuild"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 7; grid-column: 15 / 17"
+              popovertarget="js-tsgo"
+            >
+              <span class="name">bun check</span>
+            </button>
+          </div>
+        </div>
+
+        <h4>린트</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 1 / 4"
+              popovertarget="js-jslint-jshint"
+            >
+              <span class="name">jslint (2002)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 5 / 6"
+              popovertarget="js-tslint"
+            >
+              <span class="name">tslint</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 6 / 9"
+              popovertarget="js-tslint"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 2; grid-column: 9 / 10"
+              popovertarget="js-tslint"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 12 / 14"
+              popovertarget="js-eslint-biome"
+            >
+              <span class="name">biome (Rust)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 14 / 17"
+              popovertarget="js-eslint-biome"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 1 / 5"
+              popovertarget="js-jslint-jshint"
+            >
+              <span class="name">jshint (2011)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 5 / 10"
+              popovertarget="js-jslint-jshint"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 12 / 14"
+              popovertarget="js-eslint-biome"
+            >
+              <span class="name">oxlint (Rust)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 14 / 17"
+              popovertarget="js-eslint-biome"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 2 / 4"
+              popovertarget="js-eslint"
+            >
+              <span class="name">eslint</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 4 / 5"
+              popovertarget="js-eslint"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 5 / 17"
+              popovertarget="js-eslint"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 4 / 13"
+              popovertarget="js-jslint-jshint"
+            >
+              <span class="name">standard</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 15 / 17"
+              popovertarget="js-eslint-biome"
+            >
+              <span class="name">bun lint (canary)</span>
+            </button>
+          </div>
+        </div>
+
+        <h4>포맷</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common end"
+              style="--lane: 2; grid-column: 2 / 5"
+              popovertarget="js-jscs"
+            >
+              <span class="name">jscs</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 6 / 7"
+              popovertarget="js-prettier-biome"
+            >
+              <span class="name">prettier</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 7 / 17"
+              popovertarget="js-prettier-biome"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 4 / 8"
+              popovertarget="js-jscs"
+            >
+              <span class="name">eslint 스타일 규칙 (--fix)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 8 / 13"
+              popovertarget="js-jscs"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 15 / 17"
+              popovertarget="js-prettier-biome"
+            >
+              <span class="name">bun fmt (canary)</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 10 / 12"
+              popovertarget="js-rome"
+            >
+              <span class="name">rome</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 12 / 14"
+              popovertarget="js-prettier-biome"
+            >
+              <span class="name">biome format</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 14 / 17"
+              popovertarget="js-prettier-biome"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 14 / 17"
+              popovertarget="js-prettier-biome"
+            >
+              <span class="name">oxfmt (beta)</span>
+            </button>
+          </div>
+        </div>
+
+        <h4>테스트</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 5"
+              popovertarget="js-mocha"
+            >
+              <span class="name">mocha (2011)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 5 / 10"
+              popovertarget="js-mocha"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 10 / 17"
+              popovertarget="js-mocha"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 1 / 7"
+              popovertarget="js-mocha"
+            >
+              <span class="name">jasmine (2010)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 7 / 11"
+              popovertarget="js-mocha"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 12 / 14"
+              popovertarget="js-jest-vitest"
+            >
+              <span class="name">bun test</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 14 / 17"
+              popovertarget="js-jest-vitest"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 2 / 8"
+              popovertarget="js-mocha"
+            >
+              <span class="name">karma</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 8 / 13"
+              popovertarget="js-mocha"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 3 / 5"
+              popovertarget="js-jest-vitest"
+            >
+              <span class="name">jest</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 5 / 6"
+              popovertarget="js-jest-vitest"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 5; grid-column: 6 / 12"
+              popovertarget="js-jest-vitest"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 12 / 17"
+              popovertarget="js-jest-vitest"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 10 / 12"
+              popovertarget="js-jest-vitest"
+            >
+              <span class="name">vitest</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 6; grid-column: 12 / 13"
+              popovertarget="js-jest-vitest"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 6; grid-column: 13 / 17"
+              popovertarget="js-jest-vitest"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 7; grid-column: 11 / 12"
+              popovertarget="js-node-20-22"
+            >
+              <span class="name">node:test (18 → 20 stable)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 7; grid-column: 12 / 17"
+              popovertarget="js-node-20-22"
+            ></button>
+          </div>
+        </div>
+
+        <h4>런타임</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 17"
+              popovertarget="js-iojs"
+            >
+              <span class="name">node (2009)</span>
+            </button>
+            <button
+              class="bar common end"
+              style="--lane: 3; grid-column: 4 / 5"
+              popovertarget="js-iojs"
+            >
+              <span class="name">io.js</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 3; grid-column: 7 / 17"
+              popovertarget="js-deno"
+            >
+              <span class="name">deno (2027 개발 종료 예정)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 11 / 13"
+              popovertarget="js-bun"
+            >
+              <span class="name">bun</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 13 / 17"
+              popovertarget="js-bun"
+            ></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================== JavaScript bottom sheets -->
+      <aside id="js-es2015" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              ES2015 (ES6)
+              <small>2015-06 · 6 년 만의 에디션 · 연 1 회 체제 시작</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-es2015">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>class</code> · <code>import</code>/<code>export</code> 모듈
+              · 화살표 함수 · <code>let</code>/<code>const</code> ·
+              <code>Promise</code> · 제네레이터 · 템플릿 리터럴 · 구조 분해 ·
+              <code>Map</code>/<code>Set</code> · <code>Symbol</code> ·
+              <code>Proxy</code>. 언어 역사상 가장 큰 단일 에디션.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  ES4 (2008 폐기) 실패 뒤 ES5 (2009) 는 최소 변경. 그 사이
+                  CoffeeScript (2009) · jQuery · Node (2009) 가 "언어가 못 주는
+                  것" 을 채우며 요구가 쌓임
+                </li>
+                <li>
+                  2012–2014 Traceur · 6to5 (= Babel, 2014-09) 가 미완 표준을
+                  미리 컴파일해 쓰게 하자 "브라우저를 기다리지 않는" 관행이
+                  자리잡음 — 표준이 트랜스파일러에 끌려 나온 셈
+                </li>
+                <li>
+                  TC39 가 2015 부터 stage 0–4 프로세스 + 매년 6 월 Ecma GA 승인
+                  체제로 전환. 큰 에디션 하나 대신 완성된 제안부터 합류 → 이듬해
+                  ES2016 은 기능 2 개뿐
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="js-coffee-flow">
+                CoffeeScript 문법</button
+              ><span class="chip">RequireJS / AMD</span
+              ><span class="chip">Q · Bluebird (Promise)</span
+              ><span class="chip">underscore 일부</span
+              ><span class="chip">prototype 상속 보일러플레이트</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              Node 4 (2015-09) 가 3 개월 뒤 V8 4.5 로 <code>class</code> ·
+              <code>let</code> · 화살표 지원, Node 6 (2016-04) 에서 ES2015
+              커버리지 93%
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://262.ecma-international.org/6.0/"
+                target="_blank"
+                rel="noopener"
+                >ES2015 spec</a
+              >
+              ·
+              <a
+                href="https://tc39.es/process-document/"
+                target="_blank"
+                rel="noopener"
+                >TC39 process</a
+              >
+              ·
+              <a
+                href="https://babeljs.io/blog/2015/02/15/not-born-to-die"
+                target="_blank"
+                rel="noopener"
+                >6to5 → Babel</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-async-await" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              async / await
+              <small>ES2017 (2017-06) · Node 7.6 (2017-02) · Node 8</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-async-await">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>async function</code> / <code>await</code> — Promise 체인을
+              동기 코드 모양으로. 같은 에디션에 <code>Object.entries</code> ·
+              <code>padStart</code> · <code>SharedArrayBuffer</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  ES2015 Promise + 제네레이터로 co (2013) · Bluebird.coroutine
+                  이 "<code>yield</code> 로 await 흉내" 를 먼저 보급. 패턴이
+                  검증된 뒤 문법만 얹음
+                </li>
+                <li>
+                  C# 5 (2012) 의 async/await 를 그대로 가져와 설계 논쟁이
+                  짧았음. TypeScript 1.7 (2015) · Babel 이 먼저 지원하고 V8 5.5
+                  (2016-10) 가 엔진 구현
+                </li>
+                <li>
+                  Node 8 (2017-05) 에 바로 들어가 서버 코드의 콜백 지옥 종결.
+                  <code>util.promisify</code> 가 같은 릴리스에 동봉돼 기존 콜백
+                  API 를 즉시 전환
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">co</span
+              ><span class="chip">Bluebird.coroutine</span
+              ><span class="chip">async.js (waterfall 등)</span
+              ><span class="chip">콜백 지옥</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/tc39/proposal-async-await"
+                target="_blank"
+                rel="noopener"
+                >proposal-async-await</a
+              >
+              ·
+              <a
+                href="https://nodejs.org/en/blog/release/v8.0.0"
+                target="_blank"
+                rel="noopener"
+                >Node 8.0.0</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-es2020" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>ES2020 <small>2020-06 · ?. · ?? · import()</small></h3>
+            <button class="theme-btn" popovertarget="js-es2020">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>?.</code> · <code>??</code> · <code>BigInt</code> · 동적
+              <code>import()</code> · <code>globalThis</code> ·
+              <code>Promise.allSettled</code> · <code>String.matchAll</code> ·
+              <code>import.meta</code> · <code>export * as ns</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  <code>?.</code> 는 CoffeeScript (2009) 의 <code>?.</code> 에서
+                  온 10 년 묵은 요구. 그동안 <code>lodash.get</code> 과
+                  <code>a &amp;&amp; a.b &amp;&amp; a.b.c</code> 가 대체.
+                  TypeScript 3.7 (2019-11) 이 먼저 출시해 수요를 증명
+                </li>
+                <li>
+                  동적 <code>import()</code> 는 webpack 의
+                  <code>require.ensure</code> 코드 스플리팅을 표준화 — 번들러
+                  전용 문법이 언어로 흡수된 사례
+                </li>
+                <li>
+                  IE11 사실상 종료 (Chromium Edge 2020) 로 트랜스파일 부담이
+                  줄어 새 문법 채택이 빨라짐. Node 14 (2020-04) 가 출시 두 달
+                  전에 이미 지원
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">lodash.get</span
+              ><span class="chip">x || default (0 · '' 버그)</span
+              ><span class="chip">require.ensure</span
+              ><span class="chip">window / global / self 분기</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/tc39/proposal-optional-chaining"
+                target="_blank"
+                rel="noopener"
+                >proposal-optional-chaining</a
+              >
+              ·
+              <a
+                href="https://github.com/tc39/proposal-dynamic-import"
+                target="_blank"
+                rel="noopener"
+                >proposal-dynamic-import</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-es2022" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              ES2022 <small>2022-06 · top-level await · 클래스 필드</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-es2022">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              top-level <code>await</code> · 클래스 필드 ·
+              <code>#private</code> · <code>static {}</code> ·
+              <code>.at()</code> · <code>Object.hasOwn</code> ·
+              <code>Error</code> <code>cause</code> · RegExp <code>d</code>
+              플래그.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  클래스 필드는 2015 <code>class</code> 이후 7 년간 stage 3 —
+                  <code>#</code> 문법 논쟁. Babel · TypeScript 가 먼저 구현해
+                  React 컴포넌트에서 사실상 표준으로 쓰이자 그대로 확정
+                </li>
+                <li>
+                  top-level <code>await</code> 은 ESM 전용. Node 14.8 (2020) ·
+                  브라우저 ESM 보급이 선행 조건이었고, CommonJS 가 수용할 수
+                  없는 첫 문법이라 ESM 전환을 가속 (Node 22 의
+                  <code>require(esm)</code> 도 TLA 없는 모듈만 허용)
+                </li>
+                <li>
+                  <code>.at(-1)</code> 은 <code>arr[arr.length - 1]</code> 요구
+                  20 년 만. 작은 기능이 빨리 들어오는 연 1 회 체제의 효과
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">(async () =&gt; {})() IIFE</span
+              ><span class="chip">WeakMap 기반 private</span
+              ><span class="chip">Object.prototype.hasOwnProperty.call</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/tc39/proposal-top-level-await"
+                target="_blank"
+                rel="noopener"
+                >proposal-top-level-await</a
+              >
+              ·
+              <a
+                href="https://github.com/tc39/proposal-class-fields"
+                target="_blank"
+                rel="noopener"
+                >proposal-class-fields</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-es-recent" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              ES2025 · ES2026 · ES2027
+              <small>2025-06 · 2026-06 · 2027-06 예정</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-es-recent">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              ES2025 — Set 메서드 · 이터레이터 헬퍼 · JSON modules + import
+              attributes · RegExp 수정자 · 중복 named group ·
+              <code>Promise.try</code> · Float16. ES2026 —
+              <code>Array.fromAsync</code> · <code>Error.isError</code> ·
+              <code>Math.sumPrecise</code> · <code>Uint8Array</code> base64/hex
+              · <code>RegExp.escape</code> · <code>Iterator.concat</code> ·
+              <code>Map.getOrInsert</code> · JSON.parse source text. ES2027 로
+              확정된 것 — <code>Temporal</code> · <code>using</code> ·
+              <code>Iterator.zip</code> · iterator chunking / includes / join ·
+              <code>Atomics.pause</code>.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  이터레이터 헬퍼 · Set 메서드 · <code>groupBy</code> (2024) 는
+                  lodash · itertools 류가 10 년간 채운 구멍. 제네레이터가 보급된
+                  뒤에야 지연 평가 표준이 가능했음
+                </li>
+                <li>
+                  import attributes 는 2021 import assertions 문법 (<code
+                    >assert { type: 'json' }</code
+                  >) 을 깨고 <code>with</code> 로 재정비 — Chrome 이 먼저 출시한
+                  문법을 되돌린 드문 사례. 미완 제안을 선적용하는 관행의 비용
+                </li>
+                <li>
+                  <code>Temporal</code> (2017 제안, <code>Date</code> 대체) 은 9
+                  년 만에 stage 4 (ES2027). Node 26 · Deno 2.7 은 2026 년에 이미
+                  기본 제공 — 런타임이 표준 확정보다 앞서는 구조가 정착
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">lodash (groupBy · uniq · zip 등)</span
+              ><span class="chip">core-js 폴리필 다수</span
+              ><span class="chip">moment / dayjs (Temporal)</span
+              ><span class="chip">escape-string-regexp</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              TC39 finished-proposals 기준 ES2025 10 개 · ES2026 8 개 · ES2027
+              (2026-10 현재) 7 개 제안이 stage 4
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/tc39/proposals/blob/main/finished-proposals.md"
+                target="_blank"
+                rel="noopener"
+                >finished proposals</a
+              >
+              ·
+              <a
+                href="https://github.com/tc39/proposal-temporal"
+                target="_blank"
+                rel="noopener"
+                >proposal-temporal</a
+              >
+              ·
+              <a
+                href="https://github.com/tc39/proposal-iterator-helpers"
+                target="_blank"
+                rel="noopener"
+                >iterator helpers</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-iojs" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              node · io.js — 분기와 Node 4 LTS 체제
+              <small>node 2009 · io.js 1.0 2015-01 → Node 4.0 2015-09</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-iojs">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Joyent 의 Node 0.12 지연에 반발해 핵심 기여자들이 포크한 io.js —
+              최신 V8 · ES6 · 오픈 거버넌스. 9 개월 뒤 Node.js Foundation 아래
+              Node 4 로 합류하며 0.x 번호 체계를 버림.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  0.10 (2013-03) 이후 0.12 가 2 년 걸림. Joyent 단독 통제 (BDFL
+                  교체 · 기여자 승격 거부) 가 갈등으로 폭발 — 2014-12 포크
+                </li>
+                <li>
+                  io.js 는 semver · 6 주 V8 추종 · TSC 거버넌스를 증명. Joyent
+                  가 2015-02 재단 설립을 수락하며 합류 조건이 충족됨
+                </li>
+                <li>
+                  Node 4 부터 짝수 = LTS 30 개월 · 홀수 = 6 개월 Current. "봄에
+                  짝수 출시 → 10 월 LTS 승격" 이 11 년간 유지 (2025 부터 5 월
+                  출시). 이 예측 가능성이 기업 채택과 생태계 호환 기준선을 만듦
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">Node 0.x 버전 체계</span
+              ><span class="chip">Joyent 단독 거버넌스</span
+              ><span class="chip">io.js (합류)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              io.js 1.0 은 V8 3.31 (템플릿 리터럴 · <code>let</code> ·
+              제네레이터) 을 Node 0.12 의 V8 3.28 보다 먼저 제공. Node 26 이
+              2026-10-28 Active LTS, 22 는 Maintenance, 20 은 2026-04 EOL
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://nodejs.org/en/blog/release/v4.0.0"
+                target="_blank"
+                rel="noopener"
+                >Node 4.0.0</a
+              >
+              ·
+              <a
+                href="https://github.com/nodejs/Release"
+                target="_blank"
+                rel="noopener"
+                >Release schedule</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-node-fetch" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              Node 18 fetch 내장
+              <small>18 (2022-04) experimental → 21 (2023-10) stable</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-node-fetch">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>fetch</code> · <code>Request</code> ·
+              <code>Response</code> · <code>Headers</code> ·
+              <code>FormData</code> 전역. undici 기반. Web Streams ·
+              <code>Blob</code> · <code>BroadcastChannel</code> 도 함께 전역화.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2009–2021 HTTP 클라이언트는 request (2009, 2020-02 deprecated)
+                  · node-fetch · axios · got 의 춘추전국. 브라우저 fetch (2015)
+                  와 API 가 달라 isomorphic 코드가 어려웠음
+                </li>
+                <li>
+                  undici (2018 착수, Node 팀 직접 관리) 가 keep-alive ·
+                  파이프라이닝 성능으로 내장 클라이언트 자격을 확보. 18 에서
+                  experimental 전역 → 21 에서 stable
+                </li>
+                <li>
+                  Deno (2018) · Cloudflare Workers · Bun 이 처음부터 Web API 를
+                  기본으로 삼아 "Node 만 다르다" 는 압박 — WinterCG (2022) 로
+                  런타임 간 Web API 호환이 공식화
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">node-fetch</span
+              ><span class="chip">request (deprecated)</span
+              ><span class="chip">isomorphic-fetch</span
+              ><span class="chip">axios (단순 서버 용도)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              Node 18 → 20 → 22 → 24 로 이어지는 흡수 9 회 중 첫 번째. request
+              는 2020 deprecated 뒤에도 수년간 주간 수천만 다운로드 — 생태계
+              관성의 크기
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://nodejs.org/en/blog/announcements/v18-release-announce"
+                target="_blank"
+                rel="noopener"
+                >Node 18 announce</a
+              >
+              ·
+              <a
+                href="https://undici.nodejs.org/"
+                target="_blank"
+                rel="noopener"
+                >undici</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-node-20-22" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              Node 20 · 22 — node:test · require(esm) · watch
+              <small>2023-04 · 2024-04 · 22.12 2024-12</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-node-20-22">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              20 — <code>node:test</code> stable (describe/it · mock · coverage
+              · watch) · permission model experimental · SEA. 22 —
+              <code>--watch</code> stable · WebSocket 클라이언트 기본 ·
+              <code>fs.glob</code> · <code>node --run</code> ·
+              <code>node:sqlite</code> (22.5) · <code>require(esm)</code> (22.12
+              플래그 제거) · Maglev JIT.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  테스트 러너: mocha → jest 가 각자 전역 (<code>describe</code>)
+                  을 주입하고 ESM · TS 전환마다 깨짐. Deno · Bun 이 내장 러너로
+                  "설치 0" 을 보여 주자 Node 도 18 experimental → 20 stable
+                </li>
+                <li>
+                  <code>require(esm)</code>: 2019 (Node 12) ESM 도입 뒤 5 년간
+                  "dual package hazard" 가 라이브러리 생태계를 둘로 쪼갬. 라이브
+                  브러리들이 ESM-only 로 가면 CJS 앱이 못 쓰는 문제를, top-level
+                  await 없는 ESM 을 동기 <code>require</code> 로 읽게 해 해소 —
+                  Vite 7 이 ESM-only 로 갈 수 있었던 배경
+                </li>
+                <li>
+                  <code>--watch</code> · glob · WebSocket · sqlite 는 nodemon ·
+                  glob · ws · better-sqlite3 가 수년간 사실상 표준이던 자리.
+                  2021–2024 공급망 사고가 "의존성 줄이기" 압력을 키움
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">nodemon (watch)</span
+              ><span class="chip">glob (fs.glob)</span
+              ><span class="chip">ws (클라이언트)</span
+              ><span class="chip">jest / mocha (소규모)</span
+              ><span class="chip">esm · @std/esm 로더</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              <code>require(esm)</code> 은 22.12.0 (2024-12-03) 과 20.19 에서
+              플래그 제거. Vitest 5 (2026-09) 는 Node ≥ 22.12 를 요구 — 생태계가
+              이 경계를 기준선으로 삼음
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://nodejs.org/en/blog/announcements/v20-release-announce"
+                target="_blank"
+                rel="noopener"
+                >Node 20 announce</a
+              >
+              ·
+              <a
+                href="https://nodejs.org/en/blog/announcements/v22-release-announce"
+                target="_blank"
+                rel="noopener"
+                >Node 22 announce</a
+              >
+              ·
+              <a
+                href="https://nodejs.org/en/blog/release/v22.12.0"
+                target="_blank"
+                rel="noopener"
+                >22.12.0</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-node-typescript" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              Node 의 TypeScript 실행 (type stripping)
+              <small
+                >22.6 (2024-08) 실험 → 23.6 (2025-01) 기본 → 24.12 / 25.2
+                stable</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-node-typescript">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>node app.ts</code> — 타입 구문을 지우기만 하는 type
+              stripping (amaro / swc 기반). <code>enum</code> ·
+              <code>namespace</code> 처럼 변환이 필요한 문법은 제외
+              (<code>--experimental-transform-types</code>, 26 에서 플래그
+              제거). 타입 검사는 하지 않음.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  ts-node (2015) · tsx (2022) · esbuild-register 가 "TS 를 바로
+                  실행" 을 채웠으나 ESM 로더 훅이 바뀔 때마다 깨짐. Deno (2018)
+                  · Bun (2022) 은 처음부터 TS 네이티브라 비교가 불리
+                </li>
+                <li>
+                  TypeScript 5.8 <code>--erasableSyntaxOnly</code> (2025-02) 가
+                  "지우기만 하면 되는 TS 부분집합" 을 공식화 — 언어 쪽이
+                  런타임에 맞춰 준 사례. 6.0 (2026-03) 의 strict 기본값과 함께
+                  "표준 JS + 지울 수 있는 타입" 으로 TS 의 정체성이 좁혀짐
+                </li>
+                <li>
+                  타입 검사는 여전히 tsc 몫. 그래서 검사기 쪽은 tsc 7 (Go) ·
+                  tsgolint · <code>bun check</code> 가 "빠른 검사" 로 따로 수렴
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">ts-node</span><span class="chip">tsx</span
+              ><span class="chip">esbuild-register</span
+              ><span class="chip">@babel/register</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              Node 문서 기준 Stability 2 (Stable), 24.12.0 · 25.2.0 에서 stable.
+              Next.js 16 도 <code>next.config.ts</code> 를 Node 네이티브 TS 로
+              읽는 옵션 제공
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://nodejs.org/api/typescript.html"
+                target="_blank"
+                rel="noopener"
+                >Node TypeScript docs</a
+              >
+              ·
+              <a
+                href="https://devblogs.microsoft.com/typescript/announcing-typescript-5-8/"
+                target="_blank"
+                rel="noopener"
+                >TS 5.8 erasableSyntaxOnly</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-grunt-gulp" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              grunt · gulp · browserify → webpack
+              <small>2011–2016 전성기 · 2017 이후 신규 채택 없음</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-grunt-gulp">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              1 세대 빌드 도구. grunt (2012) 는 JSON 설정의 태스크 러너, gulp
+              (2013) 는 스트림 파이프 코드, browserify (2011) 는 CommonJS
+              <code>require</code> 를 브라우저용 번들로.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  2012–2014 빌드 = "concat · minify · sass · 테스트" 태스크
+                  나열. grunt 의 설정 비대화를 gulp (코드 · 스트림) 가 해결하며
+                  2014–2016 gulp 전성기
+                </li>
+                <li>
+                  webpack (2014 · 2.0 2017-01) 이 "모듈 그래프" 로 접근 — 로더 ·
+                  코드 스플리팅 · HMR 이 태스크 러너 + browserify 조합을 통째로
+                  대체. React (2015) 생태계가 webpack 을 기본으로 삼음
+                </li>
+                <li>
+                  gulp 는 5.0 (2024-03) 까지 유지되지만 번들러가 태스크를 흡수해
+                  역할 소멸. grunt · gulp · browserify 저장소는 살아 있음
+                  (GitHub API: archived 아님, 2026 에도 커밋) 그러나 신규 채택은
+                  없음
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-webpack-vite">
+                webpack (2014) → vite (2020)</button
+              ><span class="chip">npm scripts</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/webpack/webpack/releases/tag/v2.2.0"
+                target="_blank"
+                rel="noopener"
+                >webpack 2.2</a
+              >
+              ·
+              <a href="https://gulpjs.com/" target="_blank" rel="noopener"
+                >gulp</a
+              >
+              ·
+              <a
+                href="https://github.com/browserify/browserify"
+                target="_blank"
+                rel="noopener"
+                >browserify</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-webpack-vite" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              webpack → vite
+              <small>webpack 2014 · vite 2020-04 · 2.0 2021-02</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-webpack-vite">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Vite — dev 는 브라우저 네이티브 ESM + esbuild 변환 (번들 없음),
+              프로덕션은 Rollup. webpack 은 dev 도 전체를 번들. parcel (2017) 은
+              "설정 0" 으로 틈새를 노렸으나 같은 번들 모델.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2015–2019 webpack 이 코드 스플리팅 · HMR · 로더로 모든 것을
+                  해결했지만 설정 지옥과 대형 앱 dev 서버 기동 수십 초. CRA ·
+                  vue-cli 가 설정을 숨겨도 속도는 못 숨김
+                </li>
+                <li>
+                  2019–2020 브라우저 ESM 보급 + esbuild (Go, 2020) 등장이 "dev
+                  에선 번들 안 해도 된다" 를 가능하게 함. Snowpack (2019) 이
+                  먼저 시도했으나 Vite 가 Vue 생태계를 등에 업고 확산
+                </li>
+                <li>
+                  Vue 3 · SvelteKit · Astro · Remix · Nuxt 3 · Angular 17 (2023)
+                  이 Vite 를 기본으로 채택 → 프레임워크가 번들러를 골라 주니
+                  개인이 webpack 을 고를 이유가 사라짐. Next.js 만 Turbopack
+                  으로 독자 노선
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">webpack (신규 프로젝트)</span
+              ><span class="chip">CRA</span
+              ><button class="chip link" popovertarget="js-parcel">
+                parcel</button
+              ><span class="chip">snowpack</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              State of JS 2025 "used it": webpack 86.4% · Vite 84.4% (webpack 은
+              레거시 포함, 신규 선택은 Vite). Vite 7 발표 (2025-06) 기준 주간
+              다운로드 3,100 만 — 7 개월 전 대비 +1,400 만. esbuild 53.8%
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://vite.dev/blog/announcing-vite2"
+                target="_blank"
+                rel="noopener"
+                >Vite 2.0</a
+              >
+              ·
+              <a
+                href="https://vite.dev/blog/announcing-vite7"
+                target="_blank"
+                rel="noopener"
+                >Vite 7</a
+              >
+              ·
+              <a
+                href="https://2025.stateofjs.com/en-US/libraries/"
+                target="_blank"
+                rel="noopener"
+                >State of JS 2025</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-rolldown" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              rolldown · rspack · turbopack — Rust 번들러 수렴
+              <small>rolldown 1.0 2026-05 · Vite 8 (2026-03) 기본</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-rolldown">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Rolldown — Rollup 플러그인 API 호환 + esbuild 급 속도의 Rust
+              번들러. Vite 8 이 esbuild (dev) + Rollup (prod) 이중 구조를
+              Rolldown 하나로 교체, Oxc 가 파서 · 변환 · 압축. Rspack
+              (ByteDance, webpack 호환) · Turbopack (Vercel, Next.js 전용) 도
+              같은 해에 stable.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  Vite 의 dev / prod 불일치 (esbuild vs Rollup) 가 수년간 버그
+                  원인. 둘 다 Rust 로 다시 짜는 대신 "Rollup 호환 Rust 번들러"
+                  를 VoidZero (Evan You, 2024-10 창업) 가 전담
+                </li>
+                <li>
+                  2024–2025 Rust 번들러 경쟁 — Rspack 1.0 (2024-08) · Turbopack
+                  (Next 15 dev · Next 16 빌드 기본, 2025-10) · Rolldown. 셋 다
+                  "기존 API 호환" 을 내세움. 재작성 수렴의 조건이 "빠름" 에서
+                  "빠르면서 호환" 으로 바뀜
+                </li>
+                <li>
+                  Oxc 가 파서 · 린터 · 포맷터 · 변환기 · 압축기를 하나의 AST 로
+                  공유하면서 Vite + Rolldown + Oxc "통합 툴체인" 이 가능해짐 —
+                  Go 의 go 명령 하나와 비슷한 모양을 서드파티 조합으로 재현
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="js-esbuild">
+                esbuild (Vite 내부)</button
+              ><button class="chip link" popovertarget="js-rollup">
+                rollup (Vite 내부)</button
+              ><span class="chip">webpack (Rspack 로 이전하는 대형 앱)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              Vite 8 발표 — Rolldown 은 Rollup 보다 10–30×, Linear 빌드 46 s → 6
+              s · Beehiiv −64%. rolldown.rs 벤치 (19k 모듈): Rolldown 1.61 s ·
+              esbuild 1.70 s · Rspack 4.07 s · Rollup + esbuild 40.1 s. Next 16:
+              Turbopack 프로덕션 빌드 2–5× · dev 세션 50% 이상이 이미 Turbopack
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://vite.dev/blog/announcing-vite8"
+                target="_blank"
+                rel="noopener"
+                >Vite 8</a
+              >
+              ·
+              <a href="https://rolldown.rs/" target="_blank" rel="noopener"
+                >rolldown</a
+              >
+              ·
+              <a
+                href="https://github.com/web-infra-dev/rspack/releases/tag/v1.0.0"
+                target="_blank"
+                rel="noopener"
+                >Rspack 1.0</a
+              >
+              ·
+              <a
+                href="https://nextjs.org/blog/next-16"
+                target="_blank"
+                rel="noopener"
+                >Next.js 16</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-babel-swc" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              babel → swc · esbuild · oxc
+              <small>babel 2014 · swc 2019 · esbuild 2020 · oxc 2023</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-babel-swc">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              문법 변환기. Babel 은 JS 로 짠 플러그인 생태계, swc (Rust) ·
+              esbuild (Go) · Oxc (Rust) 는 네이티브로 수십 배. 변환 대상이 "최신
+              문법 → 구형" 에서 "TS · JSX 제거" 로 좁아진 것이 교체를 가능하게
+              함.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2015–2019 Babel 은 ES2015+ · JSX · TS 변환의 사실상 표준.
+                  그러나 플러그인마다 AST 재순회, 대형 모노레포 빌드 수 분
+                </li>
+                <li>
+                  2019 swc (강동윤) 가 Rust 로 Babel API 를 재구현, Next.js 12
+                  (2021-10) · Deno · Parcel 2 가 채택. esbuild 는 변환 + 번들을
+                  Go 하나로 — Vite 의 dev 변환기가 됨
+                </li>
+                <li>
+                  IE 종료 (2022-06) 로 "구형 브라우저용 변환" 수요가 줄어 Babel
+                  플러그인 생태계의 이점이 사라짐. 남은 건 TS 제거 · JSX · 최신
+                  제안 몇 개 — 네이티브 툴이 커버 가능한 범위. Vite 8 은 esbuild
+                  옵션을 Rolldown · Oxc 로 변환하는 호환 계층으로 교체
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">Babel (빌드 파이프라인)</span
+              ><span class="chip">Traceur</span
+              ><button class="chip link" popovertarget="js-esbuild">
+                esbuild transform (Vite 8 이후)
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              esbuild 자체 벤치: 번들 10–100× 빠름. 이 저장소 lint-benchmark
+              에서 Oxc 파서 기반 oxlint 가 ESLint 대비 55× — 같은 파서를
+              Rolldown · oxfmt 가 공유
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://swc.rs/" target="_blank" rel="noopener">swc</a>
+              ·
+              <a
+                href="https://esbuild.github.io/faq/#why-is-esbuild-fast"
+                target="_blank"
+                rel="noopener"
+                >Why is esbuild fast</a
+              >
+              ·
+              <a href="https://oxc.rs/" target="_blank" rel="noopener">oxc</a>
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-coffee-flow" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              coffeescript · flow → ES2015 · TypeScript
+              <small>coffeescript 2009 · flow 2014-11</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-coffee-flow">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              CoffeeScript — 간결 문법 (Ruby / Python 풍) 을 JS 로 컴파일. Flow
+              — Facebook 의 점진적 타입 검사기 (주석 제거 방식, React 와 함께
+              출시).
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  CoffeeScript 의 클래스 · 화살표 · 구조 분해 · 문자열 보간 ·
+                  <code>?.</code> 가 ES2015 / ES2020 에 거의 그대로 흡수 —
+                  언어가 따라오자 "다른 문법" 의 비용만 남음. Rails 가 2011 기본
+                  채택, 2017 (Rails 5.1 webpacker) 이후 이탈
+                </li>
+                <li>
+                  Flow 는 TypeScript 2.x (2016 non-null · mapped types) · VS
+                  Code · DefinitelyTyped 타입 정의 생태계에 밀림. 2019 이후 Meta
+                  내부 전용으로 선회 — 저장소는 활발 (2026 에도 커밋) 하지만
+                  외부 채택 거의 없음
+                </li>
+                <li>
+                  타입은 TypeScript 하나로 수렴. "JS 를 다른 문법으로 쓰기" 는
+                  끝나고 "JS 상위 집합 + 지울 수 있는 타입" 만 남음 — Node 의
+                  type stripping 이 그 결과
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-es2015">
+                ES2015+</button
+              ><button class="chip win link" popovertarget="js-tsgo">
+                TypeScript (tsc)
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              State of JS 2025 빌드 도구 "used it": tsc CLI 52.7% (Flow 는 집계
+              항목에 없음). CoffeeScript 저장소 마지막 push 2024-03 (archived
+              아님)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://coffeescript.org/" target="_blank" rel="noopener"
+                >CoffeeScript</a
+              >
+              ·
+              <a href="https://flow.org/" target="_blank" rel="noopener"
+                >Flow</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-tsgo" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              tsc → tsc 7 (Go 포트) · bun check
+              <small
+                >TypeScript 2012-10 · 포트 발표 2025-03 · 6.0 2026-03 · 7.0
+                2026-07-08</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-tsgo">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              TypeScript (2012-10) 의 컴파일러 <code>tsc</code> 는 14 년간 JS 로
+              짜여 있었음. 7.0 은 tsc 와 언어 서버를 Go 로 그대로 포팅 (프로젝트
+              코드명 Corsa). 6.0 이 마지막 JS 기반 버전, 7.0 은 같은 타입 검사
+              결과를 8–12× 빠르게. <code>typescript@7</code> 로 설치, 6.0 API 가
+              필요한 도구는 <code>@typescript/typescript6</code> 으로 공존.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  tsc 는 10 년간 JS 단일 스레드. VS Code 급 코드베이스 체크 2 분
+                  — 에디터 반응성이 Go / Rust 기반 경쟁 (Biome 타입 추론 ·
+                  tsgolint) 에 밀릴 위기
+                </li>
+                <li>
+                  "재설계 대신 포팅" 선택: Go 가 구조체 · GC · 동시성 모델에서
+                  기존 TS 코드 구조와 가장 가까워 1:1 이식이 가능 — 호환성 깨짐
+                  최소화. 6.0 을 "7.0 기본값 선적용 (<code>strict</code>
+                  기본 등)" 다리 버전으로 둠
+                </li>
+                <li>
+                  2026-07 정식 뒤 생태계가 즉시 흡수: oxlint type-aware
+                  (tsgolint v7, 2026-07) · <code>bun check</code>
+                  (typescript-go 포트, 2026-10, tsc 7 대비 3–6.4×) · VS Code
+                  기본 LSP. 스테이징 저장소 typescript-go 는 역할 완료 후
+                  아카이브 (GitHub API: archived, 개발은 본 저장소로 복귀)
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">tsc 6 (JS)</span
+              ><span class="chip">fork-ts-checker 류 병렬 검사</span
+              ><span class="chip">@typescript/native-preview</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              TS 7 발표 — VS Code 빌드 125.7 s → 10.6 s (11.9×), 메모리 6–26%
+              감소. 프리뷰 패키지 주간 850 만 다운로드. bun check 는 VS Code src
+              10,947 파일을 1.75 s (tsc 7 기본 12.58 s). Vue · Svelte · Astro 는
+              안정 API 부재로 에디터 지원은 6.0 유지 (7.1 에서 새 API 예정)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/"
+                target="_blank"
+                rel="noopener"
+                >TypeScript 7.0</a
+              >
+              ·
+              <a
+                href="https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/"
+                target="_blank"
+                rel="noopener"
+                >TypeScript 6.0</a
+              >
+              ·
+              <a
+                href="https://devblogs.microsoft.com/typescript/typescript-native-port/"
+                target="_blank"
+                rel="noopener"
+                >native port 발표</a
+              >
+              ·
+              <a
+                href="https://bun.sh/blog/bun-v1.4.3"
+                target="_blank"
+                rel="noopener"
+                >bun check</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-eslint" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              eslint
+              <small>2013-06 → · jslint · jshint · jscs · tslint 흡수</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-eslint">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              AST (ESTree) 기반 플러그인 린터. 규칙 하나하나가 플러그인이라
+              프레임워크 · TS · 접근성 규칙이 같은 도구 안에서 돌아감. v9
+              (2024-04) flat config 기본, v10 (2026-02) eslintrc 제거.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  JSLint (2002, Crockford) 는 옵션 없는 독재, JSHint (2011) 는
+                  그 포크로 옵션을 열었지만 규칙 추가가 불가능. ES2015 문법 ·
+                  React JSX 가 나오자 "규칙을 플러그인으로" 가 유일한 생존 조건
+                </li>
+                <li>
+                  JSCS (스타일 검사, 2013) 가 2016-04 ESLint 에 합병 — 린트와
+                  스타일 검사가 한 도구로. 이후 포맷은 Prettier (2017) 가
+                  가져가고 ESLint 는 2023 포맷 규칙을 deprecate 해 역할 분리
+                </li>
+                <li>
+                  standard (2015) 는 "설정 없는 ESLint 프리셋" — 도구가 아니라
+                  설정의 수렴. ESLint 10 은 Node ≥ 20.19 · 멀티스레드
+                  (<code>--concurrency</code>) 로 Rust 린터에 대응
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="js-jslint-jshint">
+                jslint · jshint</button
+              ><button class="chip link" popovertarget="js-jscs">
+                jscs (합병 · archived)</button
+              ><button class="chip link" popovertarget="js-tslint">
+                tslint (2019)
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              State of JS 2025 린터 응답: ESLint 9,697 · Biome 1,762 · oxlint
+              123 — 2026 년에도 압도적 1 위. 속도는 이 저장소 lint-benchmark
+              참고 (ESLint 8.4 s vs oxlint 0.15 s)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://eslint.org/blog/2016/04/welcoming-jscs-to-eslint/"
+                target="_blank"
+                rel="noopener"
+                >Welcoming JSCS to ESLint</a
+              >
+              ·
+              <a
+                href="https://github.com/eslint/eslint/releases/tag/v10.0.0"
+                target="_blank"
+                rel="noopener"
+                >ESLint v10.0.0</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-tslint" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              tslint → eslint
+              <small>2013 → 2019-02 deprecated → 2021-03 archived</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-tslint">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Palantir 의 TypeScript 전용 린터. 자체 규칙 엔진 · 자체 플러그인 ·
+              TS 컴파일러 API 로 타입 정보 접근.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  ESLint 는 JS AST (ESTree) 만 알아 TS 를 못 봤고, TSLint 는
+                  타입 정보까지 썼음. 2016–2018 TS 프로젝트는 TSLint 가 기본
+                  (Angular CLI 포함)
+                </li>
+                <li>
+                  2018 TS 팀이 "ESLint 와 협력" 을 공식 발표 → typescript-eslint
+                  (2019-01). ESLint 의 규칙 · 플러그인 · 에디터 생태계가
+                  압도적이라 "TS 전용 린터" 가 설 자리가 없어짐
+                </li>
+                <li>
+                  Palantir 가 2019-02 deprecate 선언, Angular 11 (2020) 이
+                  ESLint 로 전환, 2021-03 아카이브 (GitHub API 확인). 린터
+                  하나로 수렴 — 같은 일이 2026 oxlint type-aware (tsgolint) 에서
+                  "ESLint 의 타입 규칙까지 Rust 로" 반복
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-eslint">
+                typescript-eslint (eslint 플러그인)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://blog.palantir.com/tslint-in-2019-1a144c2317a9"
+                target="_blank"
+                rel="noopener"
+                >TSLint in 2019</a
+              >
+              ·
+              <a
+                href="https://typescript-eslint.io/"
+                target="_blank"
+                rel="noopener"
+                >typescript-eslint</a
+              >
+              ·
+              <a
+                href="https://github.com/palantir/tslint"
+                target="_blank"
+                rel="noopener"
+                >palantir/tslint (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-eslint-biome" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              eslint → biome · oxlint · bun lint
+              <small
+                >biome 2023-08 · oxlint 1.0 2025-06 · type-aware stable
+                2026-07</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-eslint-biome">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Rust 린터. Biome 은 린터 + 포맷터 단일 바이너리 (Rome 2020 →
+              2023-08 포크, Rome 은 2023-09 archived). oxlint 는 Oxc 기반 린터 —
+              ESLint 규칙 + typescript-eslint 규칙을 같은 이름으로. bun lint
+              (canary) 는 ESLint 설정을 그대로 읽음.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  ESLint 는 10 년간 단일 스레드 JS. 모노레포 수만 파일 린트에 수
+                  분, CI 의 가장 느린 단계. ESLint 10 (2026-02) 이
+                  <code>--concurrency</code> 로 대응했지만 이 저장소 측정에서도
+                  2× 이내
+                </li>
+                <li>
+                  Oxc 가 파서 · AST 를 공유하니 린터는 "규칙만 옮기면" 됐음.
+                  2025-06 1.0 (500+ 규칙), 2026-07 tsgolint (TypeScript 7 Go
+                  포트 기반) 로 type-aware 규칙 59/61 — ESLint 의 마지막
+                  우위였던 타입 기반 규칙까지 따라잡음
+                </li>
+                <li>
+                  Shopify · Airbnb · Mercedes-Benz 가 oxlint 를 ESLint 앞단에
+                  두는 "2 단계 린트" 로 시작해 교체 — 호환 규칙명이 전환 비용을
+                  0 에 가깝게. Biome 2.5 (2026-06) 는 500 규칙 · cross-file
+                  린트로 import 플러그인 영역까지
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="js-eslint">
+                eslint (속도 중심 프로젝트)</button
+              ><span class="chip">typescript-eslint 일부</span
+              ><span class="chip">eslint-plugin-import</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              이 저장소
+              <a href="../lint-benchmark/" target="_blank" rel="noopener"
+                >lint-benchmark</a
+              >
+              (large: 3,160 파일 · 8.1 MB · 공통 규칙 55 개, 2026-10-15): ESLint
+              8.42 s · ESLint <code>--concurrency</code> 4.95 s · Biome 0.58 s
+              (14.6×) · oxlint 0.15 s (55×) · bun lint 0.16 s (54×). 진단 일치
+              (small): bun lint 29/29. oxlint 공식 주장 ESLint 대비 50–100×.
+              State of JS 2025: ESLint 9,697 · Biome 1,762 · oxlint 123
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="../lint-benchmark/" target="_blank" rel="noopener"
+                >lint-benchmark</a
+              >
+              ·
+              <a
+                href="https://oxc.rs/blog/2025-06-10-oxlint-stable.html"
+                target="_blank"
+                rel="noopener"
+                >oxlint stable</a
+              >
+              ·
+              <a
+                href="https://oxc.rs/blog/2026-07-22-type-aware-linting-stable.html"
+                target="_blank"
+                rel="noopener"
+                >type-aware stable</a
+              >
+              ·
+              <a href="https://biomejs.dev/blog/" target="_blank" rel="noopener"
+                >Biome blog</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-prettier-biome" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              prettier → biome format · oxfmt · bun fmt
+              <small
+                >prettier 2017-01 · biome 2023-08 · oxfmt beta 2026-02</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-prettier-biome">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              옵션이 거의 없는 opinionated 포맷터. Biome · oxfmt · bun fmt 는
+              Prettier 와 같은 출력을 목표로 하는 네이티브 재구현 — JS 포맷의
+              "스타일" 은 2017 에 수렴이 끝났고, 이후는 같은 출력을 더 빠르게.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2013–2016 jscs (스타일 검사) 와 ESLint 스타일 규칙
+                  (<code>--fix</code>) 이 포맷을 담당 — 규칙 조합이 팀마다 달라
+                  끝없는 논쟁. jscs 는 2016-04 ESLint 에 합병 (archived)
+                </li>
+                <li>
+                  Prettier (2017-01) 가 gofmt 식 "옵션 없음" 으로 논쟁을 종결.
+                  Rome (2021, 2022 포맷터 베타) 이 Rust 재구현을 시도했으나
+                  회사가 문을 닫고 2023 Biome 으로 포크. ESLint 는 2023 포맷
+                  규칙 deprecate 로 역할을 넘김
+                </li>
+                <li>
+                  Prettier 는 JS 로 짜여 대형 레포 pre-commit 에서 수 초–수십
+                  초. Biome (2023) · oxfmt (2025-12 alpha → 2026-02 beta,
+                  Prettier JS/TS 테스트 100% 통과, 0.73 이 최신) · bun fmt (2026
+                  canary, 태그 릴리스 없음) 가 Prettier 호환을 내세워 교체
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="js-jscs">
+                jscs · eslint 스타일 규칙</button
+              ><button class="chip link" popovertarget="js-rome">rome</button
+              ><button class="chip link" popovertarget="js-jslint-jshint">
+                standard (포맷 역할)</button
+              ><span class="chip">prettier (속도 중심 프로젝트)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              이 저장소
+              <a href="../formatter-benchmark/" target="_blank" rel="noopener"
+                >formatter-benchmark</a
+              >
+              (large: 5,600 파일 · 11.5 MB, 2026-10-14): Prettier 15.48 s ·
+              Biome 0.65 s (24×) · bun fmt 0.43 s (36×). 출력 일치 (small 140
+              파일): bun fmt 140/140, Biome 137/140. oxfmt 공식 주장 Prettier
+              대비 30× · Biome 대비 3× (이 저장소에선 미측정)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="../formatter-benchmark/" target="_blank" rel="noopener"
+                >formatter-benchmark</a
+              >
+              ·
+              <a
+                href="https://prettier.io/blog/2017/04/13/1.0.0.html"
+                target="_blank"
+                rel="noopener"
+                >Prettier 1.0</a
+              >
+              ·
+              <a
+                href="https://eslint.org/blog/2023/10/deprecating-formatting-rules/"
+                target="_blank"
+                rel="noopener"
+                >ESLint 포맷 규칙 deprecate</a
+              >
+              ·
+              <a
+                href="https://oxc.rs/blog/2026-02-24-oxfmt-beta.html"
+                target="_blank"
+                rel="noopener"
+                >oxfmt beta</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-jest-vitest" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              jest → vitest · node:test · bun test
+              <small
+                >jest 2014 (15 2016-09) · vitest 2021-12 · node:test 20 2023 ·
+                bun test 2023</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-jest-vitest">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              테스트 러너의 세대 교체. jest (올인원 · 스냅샷 · jsdom, 2016
+              zero-config) → vitest (vite.config 공유, ESM · TS 네이티브) →
+              node:test · bun test (런타임 내장). 그 전 세대
+              <button class="link" popovertarget="js-mocha">
+                mocha · jasmine · karma
+              </button>
+              는 별도 시트.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2012–2016 mocha + chai + sinon + karma 조합은 설치 4–5 개.
+                  Jest 15 (2016-09) 의 "zero config" + CRA 동봉으로 React 생태계
+                  표준이 됨
+                </li>
+                <li>
+                  Jest 는 CommonJS · Babel 변환 전제. 2020 년대 ESM · TS · Vite
+                  프로젝트에선 설정 이중화 (jest.config + babel) 로 가장 느리고
+                  잘 깨지는 부분. Vitest (2021-12) 가 vite.config 를 그대로 써서
+                  해결, 4.0 (2025-10) 브라우저 모드 stable 로 karma 의 자리까지
+                </li>
+                <li>
+                  Node 20 (2023) node:test stable · Bun 1.0 (2023) bun test
+                  내장으로 "소규모는 설치 0". 러너는 런타임 쪽으로, 브라우저
+                  테스트는 Playwright · Vitest browser mode 로 양분
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="js-mocha">
+                mocha + chai + sinon · jasmine · karma (deprecated)</button
+              ><span class="chip">ava · tape</span
+              ><span class="chip">jest (Vite 프로젝트)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              State of JS 2025 "used it": Jest 74.4% · Vitest 53.8% (Jest 는
+              기존 프로젝트 관성). Vitest 5.0 (2026-09) 은 Vite ≥ 6.4 · Node ≥
+              22.12 요구, 벤치마크에서 4.1 대비 최대 53% 단축
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://jestjs.io/blog/2016/09/01/jest-15"
+                target="_blank"
+                rel="noopener"
+                >Jest 15</a
+              >
+              ·
+              <a
+                href="https://vitest.dev/blog/vitest-4"
+                target="_blank"
+                rel="noopener"
+                >Vitest 4</a
+              >
+              ·
+              <a
+                href="https://vitest.dev/blog/vitest-5"
+                target="_blank"
+                rel="noopener"
+                >Vitest 5</a
+              >
+              ·
+              <a
+                href="https://github.com/karma-runner/karma"
+                target="_blank"
+                rel="noopener"
+                >karma (deprecated)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-pkg" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              npm · pnpm · bun install — 패키지 매니저
+              <small
+                >npm 2010 · yarn 2016-10 · pnpm 2017 · bun install 2022</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-pkg">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              레지스트리는 npm 하나, 클라이언트가 경쟁. yarn 은 lockfile ·
+              오프라인 캐시 · 속도, pnpm 은 content-addressable store + 심볼릭
+              링크 (디스크 절약 · 엄격한 의존성), bun 은 네이티브 바이너리 속도.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2016-10 Facebook 의 yarn 은 npm 3 의 느림 · 비결정적 설치를
+                  겨냥. npm 은 1 년 안에 npm 5 (2017-05, Node 8 동봉,
+                  <code>package-lock.json</code> · 2× 속도) 로 핵심 기능을 흡수
+                  — yarn 의 차별점이 사라짐
+                </li>
+                <li>
+                  yarn 2 "berry" (2020-01) 가 PnP (node_modules 제거) 로 급진
+                  전환하자 생태계가 따라가지 않음. yarn 1 은 frozen (저장소
+                  설명문) — 사용자가 pnpm 으로 이동. pnpm 은 workspaces (2018)
+                  와 디스크 절약으로 2022 이후 모노레포 표준
+                </li>
+                <li>
+                  bun install (2022) 은 네이티브 + 시스템 콜 최소화. 2025 1.2
+                  텍스트 <code>bun.lock</code>, 2026 1.4 global virtual store 로
+                  pnpm 식 구조까지 흡수. Deno 2.9 (2026-06) 도 npm / pnpm / yarn
+                  마이그레이션 명령 제공 — 런타임이 패키지 매니저를 품는 방향
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="js-bower">bower</button
+              ><button class="chip link" popovertarget="js-yarn">
+                yarn 1 (신규 프로젝트)</button
+              ><span class="chip">lerna (workspaces)</span
+              ><span class="chip">npm (속도 중심 레포)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              이 저장소
+              <a href="../runtime-benchmark/" target="_blank" rel="noopener"
+                >runtime-benchmark</a
+              >
+              (2026-10-18, 설치 속도는 미측정): 시작 시간 node 42.5 ms · deno
+              21.6 ms · bun 15.4 ms (2.8×), 시작 메모리 node 54.7 MB · bun 9.9
+              MB. State of JS 2025 모노레포 도구 응답: pnpm 3,940 · npm
+              workspaces 2,129 · yarn workspaces 1,341 · bun install 1,123
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="../runtime-benchmark/" target="_blank" rel="noopener"
+                >runtime-benchmark</a
+              >
+              ·
+              <a
+                href="https://engineering.fb.com/2016/10/11/web/yarn-a-new-package-manager-for-javascript/"
+                target="_blank"
+                rel="noopener"
+                >Yarn 발표</a
+              >
+              ·
+              <a
+                href="https://pnpm.io/motivation"
+                target="_blank"
+                rel="noopener"
+                >pnpm motivation</a
+              >
+              ·
+              <a
+                href="https://bun.sh/blog/bun-v1.2"
+                target="_blank"
+                rel="noopener"
+                >Bun 1.2</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-bower" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>bower <small>2012-09 → 2017 권장 중단</small></h3>
+            <button class="theme-btn" popovertarget="js-bower">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Twitter 가 만든 프론트엔드 전용 패키지 매니저.
+              <code>bower_components</code> 에 flat 설치, 빌드 없이
+              <code>&lt;script&gt;</code> 로 사용.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  2012 npm 은 Node 서버용, 브라우저 라이브러리는 CDN 이나 수동
+                  다운로드. bower 가 그 틈을 채움
+                </li>
+                <li>
+                  browserify (2011) · webpack (2014) 이 npm 패키지를
+                  브라우저에서 쓰게 하자 "레지스트리 두 개" 가 불필요해짐.
+                  jQuery 플러그인 시대의 종말과 함께 수요 소멸
+                </li>
+                <li>
+                  2017 bower 팀이 공식 사이트에 "Yarn + webpack / Parcel 사용
+                  권장" 공지. 저장소는 유지보수 상태 (GitHub API: archived 아님,
+                  마지막 push 2024-10)
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-pkg">npm</button
+              ><button class="chip win link" popovertarget="js-webpack-vite">
+                webpack / vite
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://bower.io/blog/2017/how-to-migrate-away-from-bower/"
+                target="_blank"
+                rel="noopener"
+                >How to migrate away from Bower</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-bun" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              bun
+              <small>1.0 2023-09 → 1.4 2026-08 (Rust) · 1.4.3 2026-10</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-bun">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              JavaScriptCore 기반 런타임 + 번들러 + 테스트 러너 + 패키지 매니저
+              + 셸을 단일 바이너리에. Node API 호환이 목표. 1.4.3 부터
+              <code>bun check</code> 로 타입 검사까지.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2022 Node 생태계는 "런타임 1 + 툴 N 개 설치" 가 당연. Bun 은
+                  Zig 로 모든 툴을 한 프로세스에 넣고 시스템 콜 · 시작 시간을
+                  극단적으로 줄여 "설치 0, 시작 수 ms" 를 보여 줌
+                </li>
+                <li>
+                  1.2 (2025-01) 텍스트 lockfile · Node 호환 대폭 개선, 1.3
+                  (2025-10) 풀스택 dev 서버 · SQL / Redis 내장, 2025-12
+                  Anthropic 인수 (Claude Code 의 런타임). 2026-07 Zig → Rust
+                  전면 재작성 — Zig 의 수동 메모리 관리에서 나오는
+                  use-after-free · 누수를 컴파일러가 잡게. Claude 워크플로 약 50
+                  개 · 11 일, 1.4.0 부터 Rust
+                </li>
+                <li>
+                  1.4.3 (2026-10) <code>bun check</code> — typescript-go 포트로
+                  타입 검사 내장. <code>bun lint</code> · <code>bun fmt</code>
+                  는 canary 에만 (이 저장소 벤치마크가 canary 로 측정) — 포맷 ·
+                  린트 · 타입 검사 · 테스트 · 번들이 런타임 하나로 모이는 끝
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">ts-node · tsx</span
+              ><span class="chip">nodemon</span
+              ><span class="chip">jest (bun test)</span
+              ><span class="chip">esbuild (bun build)</span
+              ><span class="chip">dotenv · ws (내장)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              이 저장소
+              <a href="../runtime-benchmark/" target="_blank" rel="noopener"
+                >runtime-benchmark</a
+              >
+              (Bun 1.4.3 · Node 26.10 · Deno 2.9.5): 시작 15 ms vs 43 ms · fib
+              0.21 s vs 0.44 s (2.1×) · sort 0.36 s vs 0.87 s · Bun.serve 105k
+              rps vs node:http 70k. 크립토 · 파일 I/O 는 5–10% 이내 차이. Rust
+              재작성 후 Bun.serve +4.8% · 바이너리 20% 감소 · Rust 코드 78 만 줄
+              중 unsafe 4%
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="../runtime-benchmark/" target="_blank" rel="noopener"
+                >runtime-benchmark</a
+              >
+              ·
+              <a
+                href="https://bun.sh/blog/bun-v1.0"
+                target="_blank"
+                rel="noopener"
+                >Bun 1.0</a
+              >
+              ·
+              <a
+                href="https://bun.sh/blog/bun-in-rust"
+                target="_blank"
+                rel="noopener"
+                >Rewriting Bun in Rust</a
+              >
+              ·
+              <a
+                href="https://bun.sh/blog/bun-v1.4.3"
+                target="_blank"
+                rel="noopener"
+                >Bun 1.4.3</a
+              >
+              ·
+              <a
+                href="https://bun.sh/blog/bun-joins-anthropic"
+                target="_blank"
+                rel="noopener"
+                >Bun joins Anthropic</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-deno" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              deno
+              <small>1.0 2020-05 → 2.0 2024-10 → Cloudflare 합류 2026-10</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-deno">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Ryan Dahl 의 "Node 를 다시 만든다면". V8 + Rust + Tokio, TS
+              네이티브, 권한 샌드박스, Web API 우선, 처음엔 npm 거부 (URL
+              import). 이 아이디어 대부분이 Node · Bun 으로 흡수됐다.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2018 JSConf EU "10 Things I Regret About Node.js" —
+                  node_modules · 보안 · Promise 미채택을 반성. 1.0 은 npm 없이
+                  deno.land/x URL 로 생태계를 새로 만들려 했으나 기존 패키지 200
+                  만 개를 못 이김
+                </li>
+                <li>
+                  2.0 (2024-10) 에서 package.json · node_modules ·
+                  <code>npm:</code> 지정자로 전면 호환 선회, JSR 레지스트리 (TS
+                  우선 · ESM 전용) · LTS 채널. 그 사이 Node 가 fetch · test ·
+                  permission · TS strip 을 흡수해 Deno 의 차별점을 하나씩 상쇄
+                </li>
+                <li>
+                  2026-10-09 팀 전체가 Cloudflare 로 이동. 런타임은 오픈소스로
+                  남되 1 년간 월간 보안 패치 후 Cloudflare 의 개발 종료
+                  (커뮤니티 이관 요청), Deno Deploy 는 6 개월 뒤 종료, JSR 은
+                  Cloudflare 인프라에서 유지. "별도 런타임" 보다 Workers 모델로
+                  수렴
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip"
+                >— (Deno 의 아이디어를 Node · Bun 이 흡수)</span
+              >
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              State of JS 2025 런타임 응답: Node 10,062 · Bun 2,321 · Deno
+              1,244. 이 저장소
+              <a href="../runtime-benchmark/" target="_blank" rel="noopener"
+                >runtime-benchmark</a
+              >: Deno.serve 105.7k rps (세 런타임 중 최고) · 시작 21.6 ms · fib
+              은 Node 와 동급 (같은 V8)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://deno.com/blog/v1" target="_blank" rel="noopener"
+                >Deno 1.0</a
+              >
+              ·
+              <a
+                href="https://deno.com/blog/v2.0"
+                target="_blank"
+                rel="noopener"
+                >Deno 2.0</a
+              >
+              ·
+              <a
+                href="https://deno.com/blog/cloudflare"
+                target="_blank"
+                rel="noopener"
+                >Deno is joining Cloudflare</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <!-- 밀려난 툴 시트: What / Why it faded / Replaced by (승자 시트로 전환) -->
+      <aside id="js-yarn" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              yarn 1 · yarn berry
+              <small
+                >2016-10 · berry (2.0) 2020-01 · 4.0 2023-10 · 1.x frozen</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-yarn">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Facebook 이 npm 3 의 느림 · 비결정적 설치를 겨냥해 만든 클라이언트
+              —
+              <code>yarn.lock</code> · 오프라인 캐시 · 병렬 설치. berry (2.0,
+              2020-01) 는 PnP (node_modules 제거) · Zero-Install · 플러그인
+              구조로 전면 재설계.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  npm 5 (2017-05) 가 <code>package-lock.json</code> 과 2× 속도로
+                  1 년 만에 핵심 차별점을 흡수
+                </li>
+                <li>
+                  berry 의 PnP 가 node_modules 를 전제한 생태계 (번들러 · TS ·
+                  에디터) 와 충돌 — 대부분 <code>nodeLinker: node-modules</code>
+                  로 되돌려 쓰며 급진 전환이 채택을 막음
+                </li>
+                <li>
+                  1.x 는 frozen ("기능 · 버그 수정은 berry 에서", 저장소 설명).
+                  모노레포 수요는 pnpm (content-addressable store · 엄격한
+                  의존성) 이, 속도 수요는 bun install 이 가져감
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-pkg">
+                pnpm · bun install
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://engineering.fb.com/2016/10/11/web/yarn-a-new-package-manager-for-javascript/"
+                target="_blank"
+                rel="noopener"
+                >Yarn 발표</a
+              >
+              ·
+              <a
+                href="https://github.com/yarnpkg/berry"
+                target="_blank"
+                rel="noopener"
+                >yarnpkg/berry</a
+              >
+              ·
+              <a
+                href="https://github.com/yarnpkg/yarn"
+                target="_blank"
+                rel="noopener"
+                >yarnpkg/yarn (frozen)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-esbuild" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              esbuild <small>2020 (Go) · Vite dev 변환기 2020–2025</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-esbuild">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Evan Wallace (Figma) 가 Go 로 짠 번들러 + 변환기. 단일 바이너리 ·
+              병렬 파싱 · 최소 플러그인. Vite 2–7 은 dev 서버의 TS / JSX 변환과
+              의존성 사전 번들에 esbuild 를, 프로덕션 번들에 Rollup 을 썼음.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2020 webpack · Rollup · Babel 이 전부 JS 단일 스레드이던 때
+                  "10–100× 빠른 번들" 을 보여 네이티브 툴 시대를 열었고, 이후
+                  swc · Rust 툴들의 벤치마크 기준점이 됨
+                </li>
+                <li>
+                  Vite (2020) 가 dev 변환기로 채택하면서 사실상 모든 Vite
+                  프로젝트가 esbuild 를 간접 사용 — "설치한 적 없는데 쓰고 있는
+                  툴"
+                </li>
+                <li>
+                  플러그인 · 코드 스플리팅 세밀 제어를 의도적으로 제한해
+                  프로덕션은 Rollup 이 남았고, dev / prod 불일치가 버그 원인.
+                  Vite 8 (2026-03) 이 Rolldown + Oxc 로 둘 다 교체. 단독 사용
+                  (라이브러리 · 서버 번들) 은 계속
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-rolldown">
+                rolldown · oxc (Vite 8 내부)
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              State of JS 2025 "used it" 53.8%. rolldown.rs 벤치 (19k 모듈):
+              esbuild 1.70 s · Rolldown 1.61 s · Rollup + esbuild 40.1 s
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://esbuild.github.io/faq/#why-is-esbuild-fast"
+                target="_blank"
+                rel="noopener"
+                >Why is esbuild fast</a
+              >
+              ·
+              <a
+                href="https://vite.dev/blog/announcing-vite8"
+                target="_blank"
+                rel="noopener"
+                >Vite 8</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-rollup" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              rollup
+              <small>2015 · 1.0 2018-12 · Vite 프로덕션 번들러 2020–2025</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-rollup">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Rich Harris 의 ES 모듈 번들러. 트리 셰이킹을 대중화했고 라이브러리
+              번들의 표준. Vite 2–7 의 프로덕션 번들러이자 플러그인 API 의 기준.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  JS 단일 스레드라 대형 앱 빌드 수십 초 — Vite 사용자의 빌드
+                  시간 병목 (Vite 8 발표의 Linear 46 s 사례)
+                </li>
+                <li>
+                  2024 VoidZero 가 Rollup 플러그인 API 호환을 유지한 Rust 재구현
+                  Rolldown 에 착수 — Rollup 메인테이너 Lukas Taegert-Atkinson 이
+                  합류해 "교체" 가 아니라 "계승" 형태
+                </li>
+                <li>
+                  Vite 8 (2026-03) 기본 번들러가 Rolldown 으로 바뀌며 Rollup 은
+                  라이브러리 번들 등 단독 용도만 남음 (저장소는 활발, archived
+                  아님)
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-rolldown">
+                rolldown
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://rollupjs.org/" target="_blank" rel="noopener"
+                >rollup</a
+              >
+              ·
+              <a href="https://rolldown.rs/" target="_blank" rel="noopener"
+                >rolldown</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-parcel" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>parcel <small>2017-12 · 2.0 2021-10</small></h3>
+            <button class="theme-btn" popovertarget="js-parcel">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              "설정 0" 번들러. 진입 HTML 을 가리키면 CSS · JS · 에셋을 알아서
+              처리, 멀티코어 · 캐시. 2.0 은 변환기를 swc (Rust) 로 교체.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  2018 webpack 4 설정 피로의 반작용으로 급성장했으나 webpack 4
+                  의 zero-config 모드 · CRA 가 격차를 줄임
+                </li>
+                <li>
+                  2.0 이 3 년 걸리는 동안 (2018 알파 → 2021-10) Vite 가 같은
+                  "설정 0" 을 네이티브 ESM 으로 더 빠르게 제공
+                </li>
+                <li>
+                  프레임워크 (Vue · Svelte · Astro · Nuxt) 가 Vite 를 내장하며
+                  독립 번들러를 고를 일이 사라짐. 저장소는 활발 (2026-10 커밋,
+                  archived 아님) 하나 신규 채택 적음
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-webpack-vite">
+                vite
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://parceljs.org/" target="_blank" rel="noopener"
+                >parcel</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-jslint-jshint" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              jslint · jshint · standard
+              <small>jslint 2002 · jshint 2011-02 · standard 2015-02</small>
+            </h3>
+            <button class="theme-btn" popovertarget="js-jslint-jshint">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              jslint — Douglas Crockford 의 옵션 없는 "좋은 부분" 검사기. jshint
+              — 그 포크, 옵션을 열어 팀 규칙에 맞춤. standard — "설정 없는
+              eslint 프리셋 + CLI", 도구가 아니라 설정의 수렴 시도.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  규칙을 추가할 수 없는 구조 — ES2015 · JSX · TS 가 나오자
+                  jslint / jshint 는 대응 불가. eslint (2013) 의 "규칙 =
+                  플러그인" 모델이 유일한 생존 조건
+                </li>
+                <li>
+                  jshint 는 2020 년대까지 유지 (archived 아님, 마지막 push
+                  2025-02) 됐지만 React · TS 생태계가 eslint 플러그인으로 이동
+                </li>
+                <li>
+                  standard 는 eslint 위의 프리셋이라 prettier (2017) 가 포맷을
+                  가져가자 "린트 + 스타일 일괄" 의 의미가 줄어듦 — 2025-07 이후
+                  커밋 없음
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-eslint">
+                eslint
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://www.jslint.com/" target="_blank" rel="noopener"
+                >jslint</a
+              >
+              ·
+              <a href="https://jshint.com/" target="_blank" rel="noopener"
+                >jshint</a
+              >
+              ·
+              <a href="https://standardjs.com/" target="_blank" rel="noopener"
+                >standard</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-jscs" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              jscs · eslint 스타일 규칙 (--fix)
+              <small
+                >jscs 2013 → 2016-04 eslint 합병 · 스타일 규칙 2023-10
+                deprecated</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-jscs">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              jscs — 들여쓰기 · 따옴표 · 공백 같은 스타일 전용 검사기
+              (JavaScript Code Style). eslint 스타일 규칙 —
+              <code>indent</code> · <code>quotes</code> · <code>semi</code> 를
+              <code>--fix</code> 로 돌려 포맷터처럼 쓰던 관행 (2015–2019).
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  규칙 조합이 팀마다 달라 "스타일 논쟁" 이 설정 논쟁으로
+                  옮겨갔을 뿐 — 검사기로 포맷을 강제하는 접근의 한계
+                </li>
+                <li>2016-04 jscs 팀이 eslint 에 합류 (저장소 archived)</li>
+                <li>
+                  prettier (2017) 가 옵션 없는 AST 재출력으로 논쟁 자체를 없앰 →
+                  eslint 는 2023-10 포맷 규칙 deprecate, 남은 규칙은
+                  <code>@stylistic</code> 으로 분리
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-prettier-biome">
+                prettier</button
+              ><button class="chip link" popovertarget="js-eslint">
+                eslint (린트 역할)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://eslint.org/blog/2016/04/welcoming-jscs-to-eslint/"
+                target="_blank"
+                rel="noopener"
+                >Welcoming JSCS to ESLint</a
+              >
+              ·
+              <a
+                href="https://eslint.org/blog/2023/10/deprecating-formatting-rules/"
+                target="_blank"
+                rel="noopener"
+                >Deprecating formatting rules</a
+              >
+              ·
+              <a
+                href="https://github.com/jscs-dev/node-jscs"
+                target="_blank"
+                rel="noopener"
+                >jscs (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-rome" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              rome
+              <small
+                >2020-02 발표 · 2022 포맷터 · 린터 · 2023-09 archived</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-rome">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Sebastian McKenzie (Babel 원작자) 의 "린터 · 포맷터 · 번들러 ·
+              테스트를 하나로" 프로젝트. 2021 TS → Rust 재작성, 2022 Prettier
+              호환 포맷터와 린터 출시.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  범위가 번들러 · 컴파일러까지 너무 넓어 완성된 부분은 포맷터 ·
+                  린터뿐
+                </li>
+                <li>
+                  Rome Tools Inc. 가 2023 자금 소진으로 팀 해체 — 저장소는
+                  2023-09 archived (GitHub API 확인)
+                </li>
+                <li>
+                  핵심 기여자 Emanuele Stoppa 가 2023-08 Biome 으로 포크 —
+                  코드는 그대로 살아 Biome 2.x 가 됨
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-prettier-biome">
+                biome format</button
+              ><button class="chip win link" popovertarget="js-eslint-biome">
+                biome lint
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/rome/tools"
+                target="_blank"
+                rel="noopener"
+                >rome/tools (archived)</a
+              >
+              ·
+              <a href="https://biomejs.dev/blog/" target="_blank" rel="noopener"
+                >Biome blog</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="js-mocha" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              mocha · jasmine · karma
+              <small
+                >jasmine 2010 · mocha 2011-11 · karma 2012 (2023-04
+                deprecated)</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="js-mocha">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              jasmine — BDD 스타일 (<code>describe</code> / <code>it</code>)
+              올인원, 브라우저 · Node. mocha — 러너만, assertion (chai) · mock
+              (sinon) 은 별도. karma — 실제 브라우저에서 테스트를 돌리는 러너
+              (Angular 팀).
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  조합 설치 4–5 개 + 설정 — jest 15 (2016-09) 의 zero-config ·
+                  스냅샷 · jsdom 이 React 생태계를 가져감
+                </li>
+                <li>
+                  karma 는 실제 브라우저를 띄우는 느림 · 불안정 — 2023-04 README
+                  에 deprecated 선언, Vitest browser mode (4.0 stable) ·
+                  Playwright 로
+                </li>
+                <li>
+                  mocha · jasmine 은 유지 (2026 커밋, archived 아님) 되지만 ESM
+                  · TS 네이티브 러너 (vitest · node:test · bun test) 가 "설치 0"
+                  을 주자 신규 채택 감소
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="js-jest-vitest">
+                jest · vitest · bun test</button
+              ><button class="chip win link" popovertarget="js-node-20-22">
+                node:test
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://mochajs.org/" target="_blank" rel="noopener"
+                >mocha</a
+              >
+              ·
+              <a
+                href="https://jasmine.github.io/"
+                target="_blank"
+                rel="noopener"
+                >jasmine</a
+              >
+              ·
+              <a
+                href="https://github.com/karma-runner/karma"
+                target="_blank"
+                rel="noopener"
+                >karma (deprecated)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="container">
+      출처 (2026-10-19 확인):
+      <a
+        href="https://github.com/tc39/proposals/blob/main/finished-proposals.md"
+        target="_blank"
+        rel="noopener"
+        >TC39 finished proposals</a
+      >
+      ·
+      <a href="https://github.com/nodejs/Release" target="_blank" rel="noopener"
+        >Node.js release schedule</a
+      >
+      · Node.js · Deno · Bun · Vite · Vitest · TypeScript · Biome · Oxc 공식
+      블로그 · 각 저장소 GitHub Releases ·
+      <a href="https://2025.stateofjs.com/" target="_blank" rel="noopener"
+        >State of JS 2025</a
+      >
+      · 이 저장소의
+      <a href="../lint-benchmark/">lint-benchmark</a> ·
+      <a href="../formatter-benchmark/">formatter-benchmark</a> ·
+      <a href="../runtime-benchmark/">runtime-benchmark</a>. archived ·
+      deprecated 표기는 GitHub API (<code>archived</code>) 와 README 로 확인한
+      것만 적었습니다 (tslint · jscs · rome: archived / karma: README deprecated
+      / bower · grunt · gulp · browserify · coffeescript · flow: 활동 저조하나
+      archived 아님). 막대 굵기(사용량) 는 State of JS 설문 · npm 다운로드 ·
+      GitHub 스타를 바탕으로 한 근사치이며 정확한 점유율이 아닙니다.
+    </footer>
+  </body>
+</html>

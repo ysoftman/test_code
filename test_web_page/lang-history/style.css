@@ -668,3 +668,114 @@ footer {
   color: var(--text);
   white-space: normal;
 }
+
+/* Chips that open another sheet */
+button.chip {
+  cursor: pointer;
+  background: none;
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+button.chip:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Long-lived version badge + EOL marker (Python 2.7, Node LTS, ...) */
+.badge.long {
+  background: var(--tag-std);
+  color: #fff;
+}
+.release.eol::before {
+  background: var(--tag-std);
+  border-color: var(--tag-std);
+}
+.chip.link {
+  text-decoration: none;
+}
+
+/* Two-track release timelines side by side (ES editions / runtimes) */
+.releases-2col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 32px;
+}
+.releases-2col > div > h4 {
+  margin-top: 8px;
+}
+@media (min-width: 900px) {
+  .releases-2col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Edition band above the release timeline (Rust editions, ES editions) */
+.editions {
+  --cols: 16;
+  min-width: 720px;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  margin: 0 0 20px;
+  padding-top: 18px;
+  background-image: linear-gradient(
+    to right,
+    var(--border-subtle) 1px,
+    transparent 1px
+  );
+  background-size: calc(100% / var(--cols)) 100%;
+}
+.editions .yr {
+  grid-row: 1;
+  margin-top: -18px;
+  padding-left: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-faint);
+}
+.editions .ed {
+  grid-row: 2;
+  border: 0;
+  border-right: 2px solid var(--bg);
+  padding: 5px 8px;
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+.editions .ed.e2018 {
+  background: color-mix(in srgb, var(--accent) 45%, var(--surface));
+}
+.editions .ed.e2021 {
+  background: color-mix(in srgb, var(--accent) 70%, var(--surface));
+  color: #fff;
+}
+.editions .ed.e2024 {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 0 4px 4px 0;
+}
+.editions .ed.pre {
+  background: var(--surface-subtle);
+  color: var(--text-faint);
+  font-weight: 400;
+  cursor: default;
+  border-radius: 4px 0 0 4px;
+}
+.editions .ed:not(.pre):hover {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.editions .ed small {
+  font-weight: 400;
+  opacity: 0.8;
+  margin-left: 6px;
+}

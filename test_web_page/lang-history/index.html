@@ -33,21 +33,23 @@
         <p class="page-desc">
           버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
           서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
-          언어별로 정리합니다.
+          언어별로 정리합니다. 항목이나 막대를 클릭하면 하단에서 배경과 이유를
+          볼 수 있어요.
         </p>
         <nav class="lang-nav" aria-label="언어 선택">
           <a href="./" aria-current="page">개요</a>
           <a href="go.html">Go</a>
-          <a href="rust.html" class="soon">Rust (준비 중)</a>
-          <a href="python.html" class="soon">Python (준비 중)</a>
-          <a href="javascript.html" class="soon">JavaScript (준비 중)</a>
+          <a href="rust.html">Rust</a>
+          <a href="python.html">Python</a>
+          <a href="javascript.html">JavaScript</a>
         </nav>
       </section>
 
       <h3>언어 횡단 요약 — 지금 쓰는 툴은 무엇이고 어떻게 거기에 도달했나</h3>
       <p class="lead">
         승자는 두 부류예요. 공식 툴체인에 <strong>내장</strong>됐거나, 더 빠른
-        언어로 <strong>재작성</strong>돼 나머지를 흡수했거나.
+        언어로 <strong>재작성</strong>돼 나머지를 흡수했거나. Go · Rust 는 전자,
+        Python · JavaScript 는 후자가 주류예요.
       </p>
       <div class="table-wrap">
         <table class="summary">
@@ -55,9 +57,9 @@
             <tr>
               <th>category</th>
               <th><a href="go.html">Go</a></th>
-              <th class="soon">Rust</th>
-              <th class="soon">Python</th>
-              <th class="soon">JavaScript</th>
+              <th><a href="rust.html">Rust</a></th>
+              <th><a href="python.html">Python</a></th>
+              <th><a href="javascript.html">JavaScript</a></th>
             </tr>
           </thead>
           <tbody>
@@ -69,9 +71,23 @@
                   >GOPATH · godep · glide · dep 흡수</small
                 >
               </td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
+              <td>
+                <code>cargo</code> <span class="how builtin">built-in 1.0</span
+                ><br /><small>처음부터 하나 — rustpkg 는 1.0 전에 폐기</small>
+              </td>
+              <td>
+                <code>uv</code> <span class="how fast">10–100× faster</span
+                ><br /><small
+                  >pip · pipenv · poetry · rye 흡수 (Rust 재작성, 2024)</small
+                >
+              </td>
+              <td>
+                <code>npm</code> <span class="how builtin">Node 동봉</span> +
+                <code>pnpm</code> / <code>bun install</code>
+                <span class="how fast">native</span><br /><small
+                  >bower · yarn 1 흡수 · npm 5 가 yarn 의 lockfile 흡수</small
+                >
+              </td>
             </tr>
             <tr>
               <th>린트</th>
@@ -82,9 +98,25 @@
                   >gometalinter · golint 흡수</small
                 >
               </td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
+              <td>
+                <code>clippy</code>
+                <span class="how builtin">rustup 컴포넌트 2018</span
+                ><br /><small
+                  >nightly 플러그인 → 1.31 에서 1.0 · 설정은 1.74 [lints]</small
+                >
+              </td>
+              <td>
+                <code>ruff</code> <span class="how fast">10–100× faster</span
+                ><br /><small
+                  >flake8 + 플러그인 · isort · pyupgrade 흡수 (2022)</small
+                >
+              </td>
+              <td>
+                <code>eslint</code> → <code>oxlint</code> / <code>biome</code>
+                <span class="how fast">55× faster</span><br /><small
+                  >jslint · jshint · jscs · tslint 흡수 · Rust 재작성</small
+                >
+              </td>
             </tr>
             <tr>
               <th>포맷</th>
@@ -92,9 +124,27 @@
                 <code>gofmt</code> <span class="how builtin">built-in 1.0</span
                 ><br /><small>처음부터 하나 — 경쟁 자체가 없었음</small>
               </td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
+              <td>
+                <code>rustfmt</code>
+                <span class="how builtin">rustup 컴포넌트 2018</span
+                ><br /><small
+                  >서드파티 → 1.24 preview → 1.31 1.0 · 경쟁 없음</small
+                >
+              </td>
+              <td>
+                <code>ruff format</code> <span class="how fast">30× faster</span
+                ><br /><small
+                  >black 스타일 그대로 재구현 · autopep8 · yapf 종료</small
+                >
+              </td>
+              <td>
+                <code>prettier</code> → <code>biome</code> /
+                <code>oxfmt</code> / <code>bun fmt</code>
+                <span class="how fast">24–36× faster</span><br /><small
+                  >jscs · eslint 스타일 규칙 흡수 · 같은 출력을
+                  네이티브로</small
+                >
+              </td>
             </tr>
             <tr>
               <th>빌드 · 테스트</th>
@@ -104,9 +154,26 @@
                   >fuzz 1.18 · PGO 1.21 · tool 1.24 로 계속 흡수</small
                 >
               </td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
+              <td>
+                <code>cargo build</code> · <code>cargo test</code>
+                <span class="how builtin">built-in 1.0</span><br /><small
+                  >vendor 1.37 · tree 1.44 · add 1.62 · 캐시 청소 1.88 흡수 ·
+                  nextest 는 외부</small
+                >
+              </td>
+              <td>
+                <code>uv build</code> (uv_build) + <code>pytest</code
+                ><br /><small
+                  >setup.py → pyproject.toml (PEP 517 · 621) · nose 흡수</small
+                >
+              </td>
+              <td>
+                <code>vite</code> (rolldown + oxc) · <code>vitest</code>
+                <span class="how fast">Rust</span> + <code>node:test</code>
+                <span class="how builtin">built-in 20</span><br /><small
+                  >grunt · gulp · browserify · webpack · jest 흡수</small
+                >
+              </td>
             </tr>
             <tr>
               <th>언어 버전 관리</th>
@@ -116,9 +183,25 @@
                   >gvm · goenv 흡수</small
                 >
               </td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
+              <td>
+                <code>rustup</code>
+                <span class="how builtin">official 2016-12</span><br /><small
+                  >multirust 흡수 · rust-toolchain.toml</small
+                >
+              </td>
+              <td>
+                <code>uv python</code>
+                <span class="how fast">사전 빌드 바이너리</span><br /><small
+                  >pyenv · asdf 흡수 (2024)</small
+                >
+              </td>
+              <td>
+                <code>nvm</code> · <code>fnm</code> · <code>volta</code
+                ><br /><small
+                  >공식 내장 없음 — <code>engines</code> 필드 · LTS 짝수 버전이
+                  기준선</small
+                >
+              </td>
             </tr>
             <tr>
               <th>에디터 지원</th>
@@ -128,9 +211,26 @@
                   >gocode · godef · guru · gorename 흡수</small
                 >
               </td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
+              <td>
+                <code>rust-analyzer</code>
+                <span class="how builtin">official 2022-02</span><br /><small
+                  >racer · RLS 흡수 — 공식 RLS 가 커뮤니티 툴에 진 뒤
+                  흡수</small
+                >
+              </td>
+              <td>
+                <code>Pylance / pyright</code>
+                <span class="how">no official LSP</span><br /><small
+                  >jedi · pyls 대체 · ty 가 다음 후보</small
+                >
+              </td>
+              <td>
+                <code>tsc 7</code> LSP <span class="how fast">10× (Go)</span
+                ><br /><small
+                  >TypeScript 가 JS 에디터 지원까지 담당 · 2026 Go 포트로
+                  전환</small
+                >
+              </td>
             </tr>
             <tr>
               <th>수렴 패턴</th>
@@ -139,9 +239,23 @@
                   >서드파티 → stdlib / go 명령</small
                 >
               </td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
-              <td class="soon">—</td>
+              <td>
+                <strong>crate 에서 검증 → std 흡수</strong><br /><small
+                  >once_cell · lazy_static · async-trait · cfg-if 등 11 회 ·
+                  런타임은 의도적 외부 (tokio)</small
+                >
+              </td>
+              <td>
+                <strong>Rust 재작성 + 단일 툴</strong><br /><small
+                  >난립 → 더 빠른 하나 (uv · ruff) · stdlib 흡수 12 회</small
+                >
+              </td>
+              <td>
+                <strong>Go/Rust 재작성 + 런타임 흡수</strong><br /><small
+                  >esbuild · swc · oxc · rolldown · tsc 7 / fetch · test · TS
+                  strip 을 Node 가 내장</small
+                >
+              </td>
             </tr>
           </tbody>
         </table>
@@ -152,31 +266,38 @@
         <a class="stat card-link" href="go.html">
           <b>Go</b>
           <span
-            >1.0 (2012) → 1.27 (2026) · 릴리스 27개 · 툴 차트 7개 · 상세 시트
-            18개</span
+            >1.0 (2012) → 1.27 (2026) · 릴리스 21개 · 툴 차트 7개 · 상세 시트
+            24개</span
           >
         </a>
-        <div class="stat soon">
+        <a class="stat card-link" href="rust.html">
           <b>Rust</b>
-          <span>준비 중 — edition 2015 · 2018 · 2021 · 2024 축 포함 예정</span>
-        </div>
-        <div class="stat soon">
+          <span
+            >1.0 (2015) → 1.99 (2026) · 릴리스 24개 · edition 띠 4개 · 툴 차트
+            6개 · 상세 시트 29개</span
+          >
+        </a>
+        <a class="stat card-link" href="python.html">
           <b>Python</b>
           <span
-            >준비 중 — pip · poetry · pipenv → uv, flake8 · black → ruff
-            수렴</span
+            >2.7 (2010) → 3.15 (2026) · 릴리스 16개 · 툴 차트 8개 · 상세 시트
+            29개</span
           >
-        </div>
-        <div class="stat soon">
+        </a>
+        <a class="stat card-link" href="javascript.html">
           <b>JavaScript</b>
-          <span>준비 중 — ES 에디션 · 런타임 · 번들러 3개 레인</span>
-        </div>
+          <span
+            >ES5 (2009) → ES2026 · Node 0.10 → 26 · 릴리스 30개 · 툴 차트 7개 ·
+            상세 시트 32개</span
+          >
+        </a>
       </div>
     </main>
 
     <footer class="container">
-      출처는 각 언어 페이지 하단에 있습니다. 막대 굵기(사용량) 는 설문 · GitHub
-      스타 · 커뮤니티 언급을 바탕으로 한 근사치이며 정확한 점유율이 아닙니다.
+      출처는 각 언어 페이지 하단에 있습니다. 막대 굵기(사용량) 는 설문 ·
+      다운로드 통계 · GitHub 스타 · 커뮤니티 언급을 바탕으로 한 근사치이며
+      정확한 점유율이 아닙니다.
     </footer>
   </body>
 </html>

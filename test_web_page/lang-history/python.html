@@ -1,0 +1,3420 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Python History: 버전별 큰 변화와 툴 수렴 흐름</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <a class="nav-back" href="./">lang-history</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">python</span>
+        </div>
+        <button
+          class="theme-btn"
+          id="theme-btn"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <span id="theme-icon">◐</span>
+          <span id="theme-text">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-header">
+        <h1>Language History</h1>
+        <p class="page-desc">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
+        </p>
+        <nav class="lang-nav" aria-label="언어 선택">
+          <a href="./">개요</a>
+          <a href="go.html">Go</a>
+          <a href="rust.html">Rust</a>
+          <a href="python.html" aria-current="page">Python</a>
+          <a href="javascript.html">JavaScript</a>
+        </nav>
+      </section>
+
+      <!-- ================================================= Python -->
+      <section class="lang" id="python">
+        <h2>Python</h2>
+        <p class="lead">
+          2008 년 3.0 분기가 2020 년 2.7 EOL 까지 12 년 이어진 긴 전환. 그 사이
+          서드파티 툴이 어느 언어보다 많이 난립했고, 2024 년 이후 Rust 로
+          재작성된 <strong>uv · ruff 둘로 수렴</strong>했습니다. 네 언어 중 가장
+          극적인 사례예요.
+        </p>
+
+        <div class="stat-row">
+          <div class="stat">
+            <b>7</b>
+            <span
+              >2016 · 공식 툴체인 외 필수 서드파티 (virtualenv · pyenv · flake8
+              · isort · pytest · mypy · pip-tools)</span
+            >
+          </div>
+          <div class="stat">
+            <b>8</b>
+            <span
+              >2020 · 더 늘어남 (pyenv · poetry 또는 pipenv · flake8 · black ·
+              isort · pyupgrade · mypy · pytest)</span
+            >
+          </div>
+          <div class="stat">
+            <b>3</b>
+            <span
+              >2025 · uv · ruff · pytest (타입 체커는 mypy / pyright / ty 중 택
+              1 — 수렴 미완)</span
+            >
+          </div>
+          <div class="stat">
+            <b>12<small>회 흡수</small></b>
+            <span
+              >mock · venv 3.3 · pip · asyncio · pathlib · enum 3.4 · typing 3.5
+              · dataclasses 3.7 · importlib.metadata 3.8 · zoneinfo 3.9 ·
+              tomllib 3.11 · zstd 3.14</span
+            >
+          </div>
+        </div>
+
+        <h3>Releases — 굵직한 변화</h3>
+        <ul class="timeline">
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.15</span><span class="date">2026-10</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="py-315-lazy">
+                  <code>lazy import</code> (PEP 810) — 모듈 로드를 첫 사용
+                  시점까지 지연, 시작 시간 단축
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >컴프리헨션 안 언패킹 <code>[*L for L in lists]</code> (PEP
+                  798) · <code>frozendict</code> 내장 (PEP 814) ·
+                  <code>sentinel</code> (PEP 661)</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >JIT 대폭 개선 — pyperformance 기하평균 7–8% (x86-64) ·
+                  Tachyon 샘플링 프로파일러 (<code>profiling</code> 패키지, PEP
+                  799) · 프레임 포인터 기본 (PEP 831)</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >free-threaded 빌드용 stable ABI <code>abi3t</code> (PEP 803)
+                  · macOS 공식 설치본에 free-threading 포함 · mimalloc 기본 raw
+                  할당자</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  >UTF-8 모드 기본 (PEP 686) — locale 인코딩에 기대던 코드가
+                  깨짐 · <code>math.integer</code> (PEP 791) ·
+                  <code>sre_*</code> 모듈 제거 ·
+                  <code>profile</code> deprecated</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >REPL 자동완성 색상 · <code>pdb</code> 가 새 REPL 사용 ·
+                  <code>argparse</code> 등 색상 출력 확대 · 패키지 시작 파일
+                  <code>.start</code> (PEP 829)</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.14</span><span class="date">2025-10</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="py-314-tstrings">
+                  t-string <code>t"..."</code> (PEP 750) — 보간 전 문자열을
+                  구조로 다룸, SQL · HTML 이스케이프 표준화
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >지연 어노테이션 (PEP 649 · 749) — forward reference 에 따옴표
+                  불필요 · <code>except A, B:</code> 괄호 생략 (PEP 758)</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><button class="link" popovertarget="py-314-tstrings">
+                  free-threading 공식 지원 (PEP 779) — "실험" 딱지 제거, 단일
+                  스레드 오버헤드 5–10%
+                </button>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >다중 인터프리터 <code>concurrent.interpreters</code> (PEP
+                  734) · 실험 JIT 가 Windows · macOS 공식 바이너리에 포함 ·
+                  tail-call 인터프리터 3–5%</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>compression.zstd</code> (PEP 784) — 서드파티
+                  <code>zstandard</code> 흡수 · <code>annotationlib</code></span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >REPL 문법 강조 · <code>import</code> 자동완성 · Linux 에서
+                  <code>forkserver</code> 가 multiprocessing 기본</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.13</span><span class="date">2024-10</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><button class="link" popovertarget="py-313-free-threading">
+                  free-threaded 빌드 실험 (PEP 703, <code>python3.13t</code>) —
+                  GIL 제거의 첫 공식 릴리스
+                </button>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><button class="link" popovertarget="py-313-free-threading">
+                  실험 JIT (PEP 744, copy-and-patch) — 기본 비활성
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >새 대화형 REPL (PyPy 유래 · 멀티라인 편집 · 색상 트레이스백)
+                  · 에러 메시지에 변수 이름 제안</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  >"dead batteries" 19 개 모듈 제거 (PEP 594: <code>cgi</code> ·
+                  <code>telnetlib</code> · <code>imghdr</code> ·
+                  <code>nntplib</code> …)</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >타입 파라미터 기본값 (PEP 696) · <code>TypeIs</code> ·
+                  <code>warnings.deprecated</code> (PEP 702) ·
+                  <code>ReadOnly</code> TypedDict (PEP 705)</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.12</span><span class="date">2023-10</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="py-312-distutils">
+                  타입 파라미터 문법 <code>def f[T](x: T)</code> ·
+                  <code>type</code> 문 (PEP 695)
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >f-string 문법 제한 해제 (PEP 701) — 중첩 따옴표 · 여러 줄 ·
+                  주석 허용</span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="py-312-distutils">
+                  <code>distutils</code> 제거 (PEP 632) — 20 년 된 stdlib 빌드
+                  도구가 setuptools 로 완전 이관
+                </button>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >인터프리터별 GIL (PEP 684, C API) · 컴프리헨션 인라인 (PEP
+                  709, 최대 2×) · 저오버헤드 모니터링
+                  <code>sys.monitoring</code> (PEP 669)</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>itertools.batched</code> · <code>Path.walk</code> ·
+                  <code>@override</code> (PEP 698) · <code>asyncio</code> eager
+                  task</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.11</span><span class="date">2022-10</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><button class="link" popovertarget="py-311-faster">
+                  Faster CPython — 10–60% 빠름 (적응형 특수화 인터프리터, PEP
+                  659)
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >예외 그룹 · <code>except*</code> (PEP 654) ·
+                  <code>Self</code> (PEP 673) · 가변 제네릭 (PEP 646) ·
+                  <code>LiteralString</code></span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>tomllib</code> (PEP 680) — <code>toml</code> ·
+                  <code>tomli</code> 흡수, pyproject.toml 을 stdlib 이
+                  읽음</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>asyncio.TaskGroup</code> · 트레이스백에 정확한 식 위치
+                  표시 (PEP 657)</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.10</span><span class="date">2021-10</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="py-310-match">
+                  구조적 패턴 매칭 <code>match</code> / <code>case</code> (PEP
+                  634–636)
+                </button>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >유니온 타입 <code>int | None</code> (PEP 604) · 괄호 안 여러
+                  컨텍스트 매니저 · <code>ParamSpec</code> (PEP 612) ·
+                  <code>TypeAlias</code></span
+                >
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >에러 메시지 대폭 개선 — 닫히지 않은 괄호 위치 · 오타 제안 ·
+                  <code>zip(strict=True)</code></span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">3.9</span><span class="date">2020-10</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >dict 합치기 <code>a | b</code> (PEP 584) · 내장 제네릭
+                  <code>list[int]</code> (PEP 585) ·
+                  <code>str.removeprefix</code> (PEP 616)</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>zoneinfo</code> (PEP 615) — <code>pytz</code> 대체 ·
+                  <code>graphlib</code></span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >연 1 회 릴리스 주기 (PEP 602, 이전 18 개월) · 새 PEG 파서
+                  (PEP 617)</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release eol">
+            <div class="head">
+              <span class="ver">2.7 EOL</span><span class="date">2020-01</span>
+              <span class="badge long">long-lived · 종료</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag rt">runtime</span
+                ><button class="link" popovertarget="py-2to3">
+                  2.7 지원 종료 — 2008 년 시작된 2→3 전환이 12 년 만에 끝남
+                  (마지막 2.7.18 은 2020-04)
+                </button>
+              </li>
+            </ul>
+          </li>
+
+          <li class="release">
+            <div class="head">
+              <span class="ver">3.8</span><span class="date">2019-10</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >왈러스 <code>:=</code> (PEP 572) · 위치 전용 매개변수
+                  <code>/</code> (PEP 570) · <code>f"{x=}"</code></span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>importlib.metadata</code> —
+                  <code>pkg_resources</code> 대체 · <code>TypedDict</code> ·
+                  <code>Literal</code> · <code>Final</code> ·
+                  <code>Protocol</code></span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  ><code>multiprocessing.shared_memory</code> · pickle 프로토콜
+                  5</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.7</span><span class="date">2018-06</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="py-37-dataclasses">
+                  <code>dataclasses</code> (PEP 557) — attrs 의 핵심 흡수
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>async</code> · <code>await</code> 가 예약어로 ·
+                  <code>from __future__ import annotations</code> (PEP 563, 훗날
+                  PEP 649 로 대체) · <code>breakpoint()</code></span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >dict 삽입 순서 보장이 언어 명세로 ·
+                  <code>contextvars</code> (PEP 567) ·
+                  <code>time.time_ns</code> · 시작 시간 단축</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.6</span><span class="date">2016-12</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >f-string <code>f"{name}"</code> (PEP 498) — 가장 사랑받는
+                  기능 · 변수 주석 <code>x: int = 1</code> (PEP 526)</span
+                >
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >숫자 리터럴 <code>1_000_000</code> (PEP 515) · 비동기
+                  제너레이터 · 비동기 컴프리헨션</span
+                >
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >컴팩트 dict — 메모리 20–25% 절감, 부수 효과로 삽입 순서
+                  유지</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>secrets</code> · 파일시스템 경로 프로토콜 (PEP
+                  519)</span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.5</span><span class="date">2015-09</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="py-35-async-typing">
+                  <code>async</code> / <code>await</code> (PEP 492) — 코루틴이
+                  언어 문법으로
+                </button>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><button class="link" popovertarget="py-35-async-typing">
+                  <code>typing</code> + 타입 힌트 (PEP 484) — mypy 의 주석
+                  문법을 언어 표준으로
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  >행렬 곱 <code>@</code> (PEP 465, NumPy 요청) · 언패킹 일반화
+                  <code>[*a, *b]</code> (PEP 448)</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>os.scandir</code> · <code>subprocess.run</code></span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.4</span><span class="date">2014-03</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="py-venv-pip">
+                  <code>ensurepip</code> — pip 이 공식 설치본에 번들 (PEP 453)
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>asyncio</code> (PEP 3156) — Twisted · Tornado 가 각자
+                  만들던 이벤트 루프를 표준화</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>pathlib</code> (PEP 428) · <code>enum</code> (PEP 435)
+                  · <code>statistics</code> · <code>tracemalloc</code></span
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.3</span><span class="date">2012-09</span>
+              <span class="badge">major</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag tool">tool</span
+                ><button class="link" popovertarget="py-venv-pip">
+                  <code>venv</code> 내장 (PEP 405) — virtualenv 의 핵심 흡수
+                </button>
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag lang">lang</span
+                ><span
+                  ><code>yield from</code> (PEP 380) ·
+                  <code>u"..."</code> 리터럴 복귀 (PEP 414) — 2.x 와 공존을 위한
+                  양보</span
+                >
+              </li>
+              <li>
+                <span class="tag std">stdlib</span
+                ><span
+                  ><code>unittest.mock</code> (mock 흡수) ·
+                  <code>ipaddress</code> · <code>lzma</code> · 네임스페이스
+                  패키지 (PEP 420)</span
+                >
+                <span class="badge absorb">흡수</span>
+              </li>
+              <li>
+                <span class="tag rt">runtime</span
+                ><span
+                  >유연한 문자열 표현 (PEP 393) — 유니코드 메모리 절감</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>3.2 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">3.2</span>2011-02 ·
+                <code>concurrent.futures</code> · <code>argparse</code>
+                (optparse 대체) · stable ABI (PEP 384) ·
+                <code>__pycache__</code>
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">2.7</span><span class="date">2010-07</span>
+              <span class="badge">major</span>
+              <span class="badge long">long-lived · 2020-01 까지</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="py-2to3">
+                  마지막 2.x — 3.x 의 기능을 역이식해 10 년간 다리 역할 (set
+                  리터럴 · dict 컴프리헨션 · <code>OrderedDict</code> ·
+                  <code>argparse</code>)
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  >원래 2015 EOL 예정 → 2014 년 PyCon 에서 2020 년까지 연장 (PEP
+                  373 갱신). <code>pip</code> 도 2.7 지원을 pip 20.3 (2020-11)
+                  까지 유지</span
+                >
+              </li>
+            </ul>
+          </li>
+          <details class="minor">
+            <summary>3.1 · minor</summary>
+            <ul>
+              <li>
+                <span class="ver">3.1</span>2009-06 · <code>OrderedDict</code> ·
+                <code>importlib</code> · 3.0 대비 I/O 속도 개선
+              </li>
+            </ul>
+          </details>
+
+          <li class="release major">
+            <div class="head">
+              <span class="ver">3.0</span><span class="date">2008-12</span>
+              <span class="badge">major</span>
+              <span class="badge breaking">breaking</span>
+            </div>
+            <ul>
+              <li>
+                <span class="tag lang">lang</span
+                ><button class="link" popovertarget="py-2to3">
+                  하위 호환을 버린 유일한 릴리스 — <code>print</code> 함수화 ·
+                  str = 유니코드 / bytes 분리 · <code>/</code> 는 항상 실수
+                  나눗셈
+                </button>
+              </li>
+              <li>
+                <span class="tag tool">tool</span
+                ><span
+                  ><code>2to3</code> 자동 변환기 — 그러나 C 확장 · 라이브러리
+                  생태계는 변환기로 안 옮겨짐</span
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
+        <p class="lead">
+          막대 굵기 = 사용량(설문 · PyPI 다운로드 · 스타 기준 근사치). 사라진
+          툴의 레인은 다음 툴이 재사용합니다. 축은 다른 언어와 맞추려고 2012
+          부터 그렸고, 그 전부터 있던 툴은 시트에 실제 시작 연도를 적었어요.
+          막대를 클릭하면 교체 배경을 볼 수 있어요.
+        </p>
+        <div class="legend">
+          <span><i class="d"></i>dominant</span>
+          <span><i class="c"></i>common</span>
+          <span><i class="n"></i>niche</span>
+          <span><i class="e"></i>discontinued</span>
+        </div>
+
+        <h4>패키지 설치 · 환경 — 10 개가 경쟁하다 uv 하나로</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(10, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 13"
+              popovertarget="py-pip"
+            >
+              <span class="name">pip (2008→)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 13 / 17"
+              popovertarget="py-pip"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 3; grid-column: 1 / 3"
+              popovertarget="py-easy-install"
+            >
+              <span class="name">easy_install</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 6 / 10"
+              popovertarget="py-pipenv-poetry"
+            >
+              <span class="name">pipenv</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 10 / 17"
+              popovertarget="py-pipenv-poetry"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 1 / 13"
+              popovertarget="py-pip"
+            >
+              <span class="name">virtualenv (2007→)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 13 / 17"
+              popovertarget="py-pip"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 1 / 4"
+              popovertarget="py-venv-pip"
+            >
+              <span class="name">venv (built-in 3.3)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 4 / 9"
+              popovertarget="py-venv-pip"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 5; grid-column: 9 / 14"
+              popovertarget="py-venv-pip"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 14 / 17"
+              popovertarget="py-venv-pip"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 1 / 6"
+              popovertarget="py-pip"
+            >
+              <span class="name">pip-tools</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 6; grid-column: 6 / 12"
+              popovertarget="py-pip"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 12 / 17"
+              popovertarget="py-pip"
+            ></button>
+            <span class="bar common" style="--lane: 7; grid-column: 1 / 17"
+              ><span class="name">conda (데이터 과학)</span></span
+            >
+            <button
+              class="bar niche"
+              style="--lane: 8; grid-column: 7 / 9"
+              popovertarget="py-pipenv-poetry"
+            >
+              <span class="name">poetry</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 8; grid-column: 9 / 14"
+              popovertarget="py-pipenv-poetry"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 8; grid-column: 14 / 17"
+              popovertarget="py-pipenv-poetry"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 9; grid-column: 8 / 17"
+              popovertarget="py-pipenv-poetry"
+            >
+              <span class="name">pdm</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 10; grid-column: 12 / 14"
+              popovertarget="py-rye"
+            >
+              <span class="name">rye</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 11; grid-column: 13 / 14"
+              popovertarget="py-uv"
+            >
+              <span class="name">uv (2024-02)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 11; grid-column: 14 / 17"
+              popovertarget="py-uv"
+            ></button>
+          </div>
+        </div>
+
+        <h4>린트 — flake8 + 플러그인 수십 개가 ruff 하나로</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 1 / 13"
+              popovertarget="py-flake8"
+            >
+              <span class="name">pylint (2003→)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 13 / 17"
+              popovertarget="py-flake8"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 1 / 3"
+              popovertarget="py-flake8"
+            >
+              <span class="name">flake8 (pyflakes + pycodestyle, 2010→)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 3; grid-column: 3 / 12"
+              popovertarget="py-flake8"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 12 / 14"
+              popovertarget="py-flake8"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 14 / 17"
+              popovertarget="py-flake8"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 2 / 5"
+              popovertarget="py-flake8"
+            >
+              <span class="name">isort</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 5 / 13"
+              popovertarget="py-flake8"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 13 / 17"
+              popovertarget="py-flake8"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 4 / 17"
+              popovertarget="py-flake8"
+            >
+              <span class="name">bandit (보안)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 6 / 17"
+              popovertarget="py-flake8"
+            >
+              <span class="name">pyupgrade</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 7; grid-column: 11 / 12"
+              popovertarget="py-ruff"
+            >
+              <span class="name">ruff (2022-08)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 7; grid-column: 12 / 17"
+              popovertarget="py-ruff"
+            ></button>
+          </div>
+        </div>
+
+        <h4>포맷 — autopep8 · yapf · black 을 거쳐 ruff format</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 1 / 7"
+              popovertarget="py-black"
+            >
+              <span class="name">autopep8 (2011→)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 7 / 17"
+              popovertarget="py-black"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 4 / 7"
+              popovertarget="py-black"
+            >
+              <span class="name">yapf (Google)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 7 / 17"
+              popovertarget="py-black"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 7 / 8"
+              popovertarget="py-black"
+            >
+              <span class="name">black (2018-03)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 8 / 13"
+              popovertarget="py-black"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 13 / 17"
+              popovertarget="py-black"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 12 / 13"
+              popovertarget="py-ruff-format"
+            >
+              <span class="name">ruff format (2023-10)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 5; grid-column: 13 / 17"
+              popovertarget="py-ruff-format"
+            ></button>
+          </div>
+        </div>
+
+        <h4>타입 체커 — mypy 독주 → pyright → Rust 세대 (수렴 미완)</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 1 / 5"
+              popovertarget="py-mypy"
+            >
+              <span class="name">mypy (2012-12→)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 5 / 14"
+              popovertarget="py-mypy"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 14 / 17"
+              popovertarget="py-mypy"
+            ></button>
+            <button
+              class="bar niche end"
+              style="--lane: 3; grid-column: 4 / 15"
+              popovertarget="py-pytype-pyre"
+            >
+              <span class="name">pytype (Google)</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 7 / 14"
+              popovertarget="py-pytype-pyre"
+            >
+              <span class="name">pyre (Meta)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 14 / 17"
+              popovertarget="py-typecheckers"
+            >
+              <span class="name">pyrefly (Meta · Rust)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 8 / 10"
+              popovertarget="py-typecheckers"
+            >
+              <span class="name">pyright (Microsoft)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 10 / 17"
+              popovertarget="py-typecheckers"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 14 / 15"
+              popovertarget="py-typecheckers"
+            >
+              <span class="name">ty (Astral · Rust)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 6; grid-column: 15 / 17"
+              popovertarget="py-typecheckers"
+            ></button>
+          </div>
+        </div>
+
+        <h4>테스트 — nose 가 죽고 pytest 로</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <span class="bar common" style="--lane: 2; grid-column: 1 / 17"
+              ><span class="name">unittest (built-in)</span></span
+            >
+            <button
+              class="bar common end"
+              style="--lane: 3; grid-column: 1 / 5"
+              popovertarget="py-nose"
+            >
+              <span class="name">nose (2005→)</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 3; grid-column: 5 / 17"
+              popovertarget="py-nose"
+            >
+              <span class="name">nose2 (2012→)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 1 / 5"
+              popovertarget="py-pytest"
+            >
+              <span class="name">pytest (2010→)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 4; grid-column: 5 / 17"
+              popovertarget="py-pytest"
+            ></button>
+          </div>
+        </div>
+
+        <h4>빌드 백엔드 · 메타데이터 — setup.py 에서 pyproject.toml 로</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar niche"
+              style="--lane: 2; grid-column: 6 / 8"
+              popovertarget="py-pyproject"
+            >
+              <span class="name">pyproject.toml (PEP 517 · 518 · 621)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 8 / 10"
+              popovertarget="py-pyproject"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 10 / 17"
+              popovertarget="py-pyproject"
+            ></button>
+            <button
+              class="bar dominant"
+              style="--lane: 3; grid-column: 1 / 8"
+              popovertarget="py-setuptools"
+            >
+              <span class="name">setup.py · setuptools (2004→)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 3; grid-column: 8 / 17"
+              popovertarget="py-setuptools"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 1 / 10"
+              popovertarget="py-312-distutils"
+            >
+              <span class="name">distutils (stdlib)</span>
+            </button>
+            <button
+              class="bar niche end"
+              style="--lane: 4; grid-column: 10 / 12"
+              popovertarget="py-312-distutils"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 14 / 15"
+              popovertarget="py-pyproject"
+            >
+              <span class="name">uv_build (2025-07)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 15 / 17"
+              popovertarget="py-pyproject"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 5; grid-column: 4 / 17"
+              popovertarget="py-pyproject"
+            >
+              <span class="name">flit</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 6; grid-column: 7 / 17"
+              popovertarget="py-pyproject"
+            >
+              <span class="name">poetry-core</span>
+            </button>
+            <button
+              class="bar niche"
+              style="--lane: 7; grid-column: 11 / 12"
+              popovertarget="py-pyproject"
+            >
+              <span class="name">hatchling (2022)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 7; grid-column: 12 / 17"
+              popovertarget="py-pyproject"
+            ></button>
+          </div>
+        </div>
+
+        <h4>Python 버전 관리 — pyenv 에서 uv python 으로</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 1 / 5"
+              popovertarget="py-pyenv"
+            >
+              <span class="name">pyenv (2012-08→)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 5 / 14"
+              popovertarget="py-pyenv"
+            ></button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 14 / 17"
+              popovertarget="py-pyenv"
+            ></button>
+            <span class="bar common" style="--lane: 3; grid-column: 1 / 17"
+              ><span class="name">conda</span></span
+            >
+            <button
+              class="bar niche"
+              style="--lane: 4; grid-column: 5 / 17"
+              popovertarget="py-pyenv"
+            >
+              <span class="name">asdf-python</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 13 / 15"
+              popovertarget="py-uv-python"
+            >
+              <span class="name">uv python (2024-08)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 5; grid-column: 15 / 17"
+              popovertarget="py-uv-python"
+            ></button>
+          </div>
+        </div>
+
+        <h4>에디터 지원 (완성 · 정의 이동 · 리네임)</h4>
+        <div class="lanes-wrap">
+          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+            <span class="yr" style="grid-column: 1">2012</span
+            ><span class="yr" style="grid-column: 3">2014</span
+            ><span class="yr" style="grid-column: 5">2016</span
+            ><span class="yr" style="grid-column: 7">2018</span
+            ><span class="yr" style="grid-column: 9">2020</span
+            ><span class="yr" style="grid-column: 11">2022</span
+            ><span class="yr" style="grid-column: 13">2024</span
+            ><span class="yr" style="grid-column: 15">2026</span>
+            <button
+              class="bar dominant"
+              style="--lane: 2; grid-column: 1 / 9"
+              popovertarget="py-editor"
+            >
+              <span class="name">jedi (2012→)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 2; grid-column: 9 / 17"
+              popovertarget="py-editor"
+            ></button>
+            <span class="bar niche" style="--lane: 3; grid-column: 1 / 17"
+              ><span class="name">rope (리팩토링, 2006→)</span></span
+            >
+            <button
+              class="bar common end"
+              style="--lane: 4; grid-column: 6 / 10"
+              popovertarget="py-editor"
+            >
+              <span class="name">pyls (palantir)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 4; grid-column: 10 / 17"
+              popovertarget="py-editor"
+            >
+              <span class="name">pylsp (커뮤니티 포크)</span>
+            </button>
+            <button
+              class="bar common"
+              style="--lane: 5; grid-column: 9 / 10"
+              popovertarget="py-editor"
+            >
+              <span class="name">Pylance · pyright (2020-06)</span>
+            </button>
+            <button
+              class="bar dominant"
+              style="--lane: 5; grid-column: 10 / 17"
+              popovertarget="py-editor"
+            ></button>
+            <button
+              class="bar niche"
+              style="--lane: 6; grid-column: 14 / 17"
+              popovertarget="py-typecheckers"
+            >
+              <span class="name">ty (LSP 내장)</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================= Python bottom sheets -->
+      <aside id="py-uv" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              uv
+              <small
+                >2024-02 pip 대체 → 2024-08 프로젝트 · 파이썬 · 툴 통합</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="py-uv">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Rust 로 쓴 단일 바이너리. pip · pip-tools · virtualenv · pipenv ·
+              poetry · pyenv · pipx 의 역할을 <code>uv</code> 하나가 담당.
+              "Cargo for Python" 이 명시된 목표.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  표준이 먼저 정착했음 — PEP 517/518 (2017) 로 빌드가 분리되고
+                  PEP 621 (2020) 로 메타데이터가 <code>[project]</code> 로
+                  통일되자, 툴은 "표준을 빠르게 구현하는 것" 만 남음. pip 의 새
+                  resolver (20.3, 2020) 는 정확해졌지만 느렸음
+                </li>
+                <li>
+                  ruff (2022) 가 "Python 툴을 Rust 로 다시 쓰면 10–100× 빨라지고
+                  사람들이 갈아탄다" 를 증명하고 Astral 이 VC 자금 (2023-04)
+                  으로 같은 팀을 패키징에 투입. 첫 벤치는 pip 대비 캐시 없이
+                  8–10×, 웜 캐시 80–115×
+                </li>
+                <li>
+                  Rye (Armin Ronacher, 2023) 가 "하나의 툴" 수요를 먼저 보여줬고
+                  Astral 이 2024-02 인수 → 2024-08 uv 0.3 에 lockfile ·
+                  <code>uv python</code> · <code>uvx</code> · PEP 723 스크립트를
+                  넣으며 Rye 를 흡수 (Rye 는 2025-02 개발 종료)
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-pip">pip</button
+              ><button class="chip link" popovertarget="py-pip">
+                pip-tools</button
+              ><button class="chip link" popovertarget="py-pip">
+                virtualenv</button
+              ><button class="chip link" popovertarget="py-pipenv-poetry">
+                pipenv</button
+              ><button class="chip link" popovertarget="py-pipenv-poetry">
+                poetry</button
+              ><button class="chip link" popovertarget="py-pyenv">pyenv</button
+              ><span class="chip">pipx</span
+              ><button class="chip link" popovertarget="py-rye">rye</button> —
+              conda 는 네이티브 바이너리 생태계로 별도 유지
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              Python Developers Survey 2024: 출시 1 년 만에 11% (Simon Willison:
+              "notable achievement") · PyPI 2026-09 월간 다운로드 uv 128M vs pip
+              407M · GitHub 90.9k stars (2026-10) · 2026-03 Astral 이 OpenAI
+              Codex 팀에 합류, 오픈소스 유지 선언
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://astral.sh/blog/uv" target="_blank" rel="noopener"
+                >uv: fast Python packaging in Rust</a
+              >
+              ·
+              <a
+                href="https://astral.sh/blog/uv-unified-python-packaging"
+                target="_blank"
+                rel="noopener"
+                >Unified Python packaging</a
+              >
+              ·
+              <a
+                href="https://lp.jetbrains.com/python-developers-survey-2024/"
+                target="_blank"
+                rel="noopener"
+                >Survey 2024</a
+              >
+              ·
+              <a
+                href="https://astral.sh/blog/openai"
+                target="_blank"
+                rel="noopener"
+                >Astral to join OpenAI</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-pipenv-poetry" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              pipenv · poetry · pdm
+              <small>2017 – 2024 · "pip 위의 한 겹" 세대</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-pipenv-poetry">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              lockfile · 가상환경 · 의존성 그룹을 한 명령으로 묶은 서드파티
+              프로젝트 관리자. 각자 다른 lock 형식 (Pipfile.lock / poetry.lock /
+              pdm.lock).
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  pipenv (2017-01, Kenneth Reitz): PyPA 가 문서에서 "공식 권장"
+                  으로 소개해 급부상했지만 resolver 가 느리고, 2018-11 → 2020-05
+                  18 개월간 릴리스가 끊기며 신뢰를 잃음. 지금도 유지보수되지만
+                  설문 8% (2024)
+                </li>
+                <li>
+                  poetry (2018-02): 깔끔한 UX 로 2020–2023 사실상 표준. 그러나
+                  <code>[tool.poetry]</code> 독자 메타데이터를 고수해 PEP 621
+                  <code>[project]</code> 를 2.0 (2025-01) 에서야 지원 — 표준에
+                  늦은 사이 uv 가 표준 위에서 10× 빠르게 등장
+                </li>
+                <li>
+                  pdm (2020): PEP 621 을 가장 먼저 따랐지만 PEP 582
+                  (<code>__pypackages__</code>) 에 베팅했다가 2023 년 PEP 가
+                  거부됨. 셋 다 Python 으로 쓰여 Rust 기반 uv 의 속도를 따라갈
+                  구조가 아니었음
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-uv">
+                uv (2024)
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 월간 다운로드 (2026-09): poetry 40M · pipenv 8M · pdm 2.5M vs
+              uv 128M · 2024 설문: poetry 18% · pipenv 8% · uv 11% · GitHub 상태
+              확인 (2026-10): 셋 다 archived 아님, 활발히 커밋 중
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://python-poetry.org/blog/announcing-poetry-2.0.0/"
+                target="_blank"
+                rel="noopener"
+                >Poetry 2.0 (PEP 621)</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0582/"
+                target="_blank"
+                rel="noopener"
+                >PEP 582 (rejected)</a
+              >
+              ·
+              <a
+                href="https://github.com/pypa/pipenv"
+                target="_blank"
+                rel="noopener"
+                >pypa/pipenv</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-venv-pip" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              venv · ensurepip <small>3.3 (2012-09) · 3.4 (2014-03) 흡수</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-venv-pip">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              가상환경 (<code>python -m venv</code>) 과 pip 번들 (<code
+                >python -m ensurepip</code
+              >) 이 표준 설치본에 포함. 설치 직후 "pip 이 없다" 문제가 사라짐.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  easy_install (setuptools, 2004) 은 제거 · 버전 고정이 안 돼
+                  pip (2008) 이 대체했지만, 정작 pip 을 설치하려면 easy_install
+                  이 필요한 닭-달걀 문제가 2013 년까지 지속
+                </li>
+                <li>
+                  virtualenv (2007, Ian Bicking) 가 사실상 필수였으나 인터프리터
+                  내부를 복사하는 해킹이라 버전마다 깨짐 → PEP 405 로
+                  인터프리터가 직접 지원 (<code>pyvenv.cfg</code>)
+                </li>
+                <li>
+                  2.7 이 2020 년까지 살아 있어 virtualenv 는 "2.7 겸용" 으로
+                  오래 남음. 2024 설문에서도 venv 62% · virtualenv 25%. uv 는
+                  venv 형식을 그대로 쓰되 생성 속도를 80× 로
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-easy-install">
+                easy_install</button
+              ><span class="chip">get-pip.py 수동 설치</span
+              ><button class="chip link" popovertarget="py-pip">
+                virtualenv (핵심 기능)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0405/"
+                target="_blank"
+                rel="noopener"
+                >PEP 405 venv</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0453/"
+                target="_blank"
+                rel="noopener"
+                >PEP 453 ensurepip</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-uv-python" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              uv python <small>2024-08 → · pyenv (2012) 의 역할 흡수</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-uv-python">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>uv python install 3.14</code> 또는
+              <code>.python-version</code> · <code>requires-python</code> 만
+              적으면 uv 가 해당 버전을 자동 다운로드. Go 의
+              <code>go.mod toolchain</code> 과 같은 모델.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  pyenv (2012) 는 rbenv 를 옮긴 셸 shim 방식 — 소스를 직접
+                  컴파일해 설치에 수 분, OS 별 빌드 의존성 (openssl · readline)
+                  이 "pyenv install 실패" 질문을 10 년간 양산
+                </li>
+                <li>
+                  python-build-standalone (Gregory Szorc, 2019) 이 재배치 가능한
+                  사전 빌드 바이너리를 만들었고 2024-12 Astral 이 프로젝트를
+                  인수 — 다운로드 수 초면 끝
+                </li>
+                <li>
+                  패키지 · 가상환경 · 파이썬 버전이 한 툴 (uv) 안에 있으니 별도
+                  버전 관리자가 필요 없어짐. asdf · conda 는 다중 언어 ·
+                  네이티브 생태계라는 다른 이유로 잔존
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-pyenv">pyenv</button
+              ><span class="chip">pyenv-win</span
+              ><button class="chip link" popovertarget="py-pyenv">
+                asdf-python</button
+              ><span class="chip">deadsnakes PPA</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              pyenv GitHub 45k stars · 2024 설문 설치 방법 pyenv 17% · 같은
+              설문에서 uv 11% (출시 첫해)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://docs.astral.sh/uv/concepts/python-versions/"
+                target="_blank"
+                rel="noopener"
+                >uv Python versions</a
+              >
+              ·
+              <a
+                href="https://astral.sh/blog/python-build-standalone"
+                target="_blank"
+                rel="noopener"
+                >A new home for python-build-standalone</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-ruff" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>ruff <small>2022-08 → · 2023 부터 dominant</small></h3>
+            <button class="theme-btn" popovertarget="py-ruff">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Rust 로 쓴 린터. flake8 + 플러그인 수십 개 · isort · pyupgrade ·
+              pydocstyle · autoflake · bandit 의 규칙을 900 개 이상 재구현해 한
+              번의 실행으로 끝냄.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  flake8 (2010) 은 pyflakes + pycodestyle 래퍼일 뿐이라 기능은
+                  플러그인 (bugbear · comprehensions · simplify …) 으로 흩어짐.
+                  프로젝트마다 <code>.flake8</code> + isort + pyupgrade +
+                  pre-commit 설정이 5–6 개 쌓임
+                </li>
+                <li>
+                  전부 Python 으로 쓰여 대형 레포에서 수십 초 — Charlie Marsh 의
+                  "Python tooling could be much, much faster" (2022-08) 가 Rust
+                  재작성으로 10–100× 를 보여주자 1 년 만에 pandas · FastAPI ·
+                  Airflow 가 전환
+                </li>
+                <li>
+                  규칙 코드를 flake8 과 호환 (E501, B006, UP032 …) 시켜 이전
+                  비용을 0 에 가깝게 만든 것이 결정적. 2023-10 포맷터까지 넣어
+                  "린트 + 포맷 + import 정렬" 을 하나로
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-flake8">flake8</button
+              ><span class="chip">flake8 플러그인 ×N</span
+              ><button class="chip link" popovertarget="py-flake8">isort</button
+              ><button class="chip link" popovertarget="py-flake8">
+                pyupgrade</button
+              ><span class="chip">autoflake</span
+              ><span class="chip">pydocstyle</span
+              ><button class="chip link" popovertarget="py-flake8">
+                bandit (일부)
+              </button>
+              — pylint 는 타입 기반 검사가 남아 niche 로 잔존
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 월간 다운로드 (2026-09): ruff 304M vs flake8 39.5M · pylint
+              38M · isort 91M · GitHub 50.1k stars · 2026-10 Ruff 0.17 (기본
+              target 3.11)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://docs.astral.sh/ruff/"
+                target="_blank"
+                rel="noopener"
+                >Ruff docs</a
+              >
+              ·
+              <a
+                href="https://notes.crmarsh.com/python-tooling-could-be-much-much-faster"
+                target="_blank"
+                rel="noopener"
+                >Python tooling could be much, much faster</a
+              >
+              ·
+              <a
+                href="https://astral.sh/blog/announcing-astral-the-company-behind-ruff"
+                target="_blank"
+                rel="noopener"
+                >Announcing Astral</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-ruff-format" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              ruff format <small>2023-10 → · black (2018) 스타일 그대로</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-ruff-format">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              black 과 99.9% 이상 같은 출력을 내는 포맷터. 린터와 같은 바이너리
+              · 같은 설정 파일.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  autopep8 (2011) 은 PEP 8 위반만 고치고, yapf (2015, Google) 는
+                  옵션이 수십 개라 팀마다 스타일 논쟁이 계속됨
+                </li>
+                <li>
+                  black (2018-03, Łukasz Langa) 이 "The uncompromising code
+                  formatter" — 옵션 거의 없음 — 으로 Go 의 gofmt 방식을 가져오자
+                  2 년 만에 사실상 표준. 스타일 논쟁 자체를 끝낸 것이 승인
+                </li>
+                <li>
+                  ruff 는 black 스타일을 <em>바꾸지 않고</em> 30× 빠르게 재구현.
+                  2,772 개 Django 파일 중 34 개만 차이. "이미 합의된 스타일을 더
+                  빠른 구현으로" — 수렴의 전형
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-black">
+                black (common 으로 하락)</button
+              ><button class="chip link" popovertarget="py-black">
+                autopep8</button
+              ><button class="chip link" popovertarget="py-black">yapf</button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              black 대비 30× · yapf 대비 100× · PyPI 월간 (2026-09): black 113M
+              · autopep8 6.6M · yapf 5M (2024-11 이후 릴리스 없음)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://astral.sh/blog/the-ruff-formatter"
+                target="_blank"
+                rel="noopener"
+                >The Ruff Formatter</a
+              >
+              ·
+              <a
+                href="https://black.readthedocs.io/en/stable/the_black_code_style/"
+                target="_blank"
+                rel="noopener"
+                >The Black code style</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-typecheckers" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              pyright · ty · pyrefly
+              <small>2019 → 2026 · mypy 이후, 아직 수렴 중</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-typecheckers">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              정적 타입 체커. 유일하게 "하나" 로 수렴하지 못한 카테고리 — CI 는
+              mypy, 에디터는 pyright (Pylance), 신규는 Rust 기반 ty · pyrefly.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  mypy (2012, Jukka Lehtosalo) 가 먼저 문법을 만들고 PEP 484
+                  (3.5, 2015) 가 그것을 언어 표준으로 흡수. Dropbox 400 만 줄
+                  전환 사례로 2016 년부터 독주
+                </li>
+                <li>
+                  Google pytype (2015) · Meta pyre (2018) 는 사내 전용 설계
+                  (바이트코드 추론 · OCaml) 라 외부 확산 실패. pytype 은 "3.12
+                  가 마지막 지원" 선언 후 2026-03 archived, pyre 는 pyrefly 로
+                  대체되며 2026-06 archived
+                </li>
+                <li>
+                  pyright (2019, Microsoft) 는 TypeScript 로 쓰여 mypy 보다
+                  빠르고 Pylance 를 통해 VS Code 기본값이 됨. 2025 년 Astral ty
+                  (베타 2025-12, mypy · pyright 대비 10–60×) 와 Meta pyrefly
+                  (1.0 2026-05) 가 Rust 로 등장 — 속도 경쟁이 다시 시작
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-pytype-pyre">
+                pytype (archived)</button
+              ><button class="chip link" popovertarget="py-pytype-pyre">
+                pyre (archived)
+              </button>
+              — mypy · pyright 는 아직 공존
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 월간 (2026-09): mypy 160M · ty 41M · pyright 40M (npm ·
+              Pylance 제외) · pyrefly 7.8M · pytype 0.9M · ty GitHub 19.9k stars
+              (출시 17 개월)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://astral.sh/blog/ty" target="_blank" rel="noopener"
+                >ty 베타 발표</a
+              >
+              ·
+              <a
+                href="https://github.com/google/pytype#an-update-on-pytype"
+                target="_blank"
+                rel="noopener"
+                >An update on pytype</a
+              >
+              ·
+              <a
+                href="https://github.com/facebook/pyre-check"
+                target="_blank"
+                rel="noopener"
+                >pyre-check (archived)</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0484/"
+                target="_blank"
+                rel="noopener"
+                >PEP 484</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-pytest" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>pytest <small>2010 독립 → 2016 부터 dominant</small></h3>
+            <button class="theme-btn" popovertarget="py-pytest">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>assert</code> 문 하나로 쓰는 테스트 러너. fixture ·
+              parametrize · 플러그인 (1,000 개 이상) 생태계.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  unittest (2001) 는 JUnit 을 옮긴 클래스 기반 API 라 장황. nose
+                  (2005) 가 "파일만 찾아서 실행" 으로 보완했지만 2015-06 1.3.7
+                  이후 릴리스가 끊기고 3.x 신버전에서 깨지기 시작
+                </li>
+                <li>
+                  pytest 는 assert 재작성 (실패 시 값 자동 출력) 과 fixture
+                  의존성 주입이라는 두 가지 고유 기능으로 unittest · nose 코드를
+                  그대로 실행하면서 더 나은 경험을 제공 — 이전 비용 0
+                </li>
+                <li>
+                  nose2 (2012) 는 후계를 자처했지만 nose 호환을 버려 이전 이유가
+                  없었음. NumPy (2018, nose → pytest) · pandas · SciPy 등 대형
+                  프로젝트가 2016–2018 에 옮기며 결정
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-nose">nose</button
+              ><button class="chip link" popovertarget="py-nose">nose2</button
+              ><span class="chip">unittest 직접 실행 (일부)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              2024 설문: pytest 53% · unittest 23% · nose 2% · PyPI 월간
+              (2026-09) pytest 762M · nose2 0.5M · 2026 년에도 교체 조짐 없음
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://docs.pytest.org/en/stable/history.html"
+                target="_blank"
+                rel="noopener"
+                >pytest history</a
+              >
+              ·
+              <a
+                href="https://nose.readthedocs.io/en/latest/"
+                target="_blank"
+                rel="noopener"
+                >nose (maintenance mode)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-pyproject" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              pyproject.toml · flit · poetry-core · hatchling · uv_build
+              <small
+                >PEP 517/518 (2017) → PEP 621 (2020) → uv_build (2025)</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="py-pyproject">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              빌드 도구를 <code>[build-system]</code> 로 선언하고 (PEP 517/518)
+              메타데이터를 <code>[project]</code> 로 통일 (PEP 621). 백엔드는
+              교체 가능한 부품이 됨.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  <code>setup.py</code> 는 설치 시 임의 코드를 실행하는 구조라
+                  의존성 해석조차 실행 없이는 불가. setuptools 가 distutils
+                  (stdlib) 를 monkeypatch 하는 20 년짜리 해킹 위에 서 있었음
+                </li>
+                <li>
+                  pip 10 (2018-04) 이 PEP 518, pip 19 (2019-01) 이 PEP 517 을
+                  구현하자 flit (2015) · poetry-core · hatchling (2022) 등 "코드
+                  없는 선언형 백엔드" 가 경쟁. 3.12 distutils 제거로 setup.py
+                  시대가 공식 종료
+                </li>
+                <li>
+                  uv 가 0.7.19 (2025-07) 에 자체 백엔드 uv_build 를 stable 로,
+                  0.8.0 에서 <code>uv init</code> 기본값으로 — 순수 Python
+                  프로젝트는 "uv 하나" 로 빌드까지 끝남. 네이티브 확장은 여전히
+                  setuptools · maturin · scikit-build
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <button class="chip link" popovertarget="py-setuptools">
+                setup.py 명령형 메타데이터</button
+              ><span class="chip">setup.cfg</span
+              ><span class="chip">requirements.txt (의존성 선언 용도)</span
+              ><span class="chip">MANIFEST.in</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 월간 (2026-09): setuptools 937M (전이 의존 포함) · hatchling
+              321M · poetry-core 86M · flit-core 23M · uv-build 15M · 2026-04
+              PEP 772 Packaging Council 승인, 2026-09 첫 선거
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0517/"
+                target="_blank"
+                rel="noopener"
+                >PEP 517</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0621/"
+                target="_blank"
+                rel="noopener"
+                >PEP 621</a
+              >
+              ·
+              <a
+                href="https://github.com/astral-sh/uv/releases/tag/0.7.19"
+                target="_blank"
+                rel="noopener"
+                >uv 0.7.19 (build backend stable)</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0772/"
+                target="_blank"
+                rel="noopener"
+                >PEP 772</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-editor" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              jedi → pyls · pylsp → Pylance / pyright
+              <small>2012 → 2020 · LSP 로 수렴, ty 가 다음 후보</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-editor">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              자동 완성 · 정의 이동 · 리네임을 제공하는 언어 서버. Go 의 gopls
+              와 달리 Python 은 공식 LSP 가 없어 서드파티끼리 경쟁.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  jedi (2012) 가 10 년간 모든 에디터 플러그인의 완성 엔진. LSP
+                  (2016) 가 나오자 palantir 가 jedi 를 감싼
+                  python-language-server (2017) 를 만들었으나 2020-12 개발 중단
+                  → 커뮤니티가 python-lsp-server 로 포크 (2021)
+                </li>
+                <li>
+                  Microsoft 가 pyright 위에 Pylance (2020-06) 를 얹어 VS Code
+                  기본값으로 — 타입 체커가 곧 언어 서버인 모델. 타입 정보 기반
+                  완성이 jedi 의 추론보다 정확해 2021 년 이후 dominant
+                </li>
+                <li>
+                  ty (2025) 는 처음부터 "타입 체커 + 언어 서버" 로 설계, 편집 후
+                  진단 재계산 4.7ms (pyright 386ms). 타입 체커 수렴과 에디터
+                  수렴이 같은 싸움이 됨
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">python-language-server (palantir)</span
+              ><span class="chip">jedi 직접 연동 플러그인</span
+              ><span class="chip">ropevim · 개별 리팩토링 플러그인</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/microsoft/pylance-release"
+                target="_blank"
+                rel="noopener"
+                >Pylance</a
+              >
+              ·
+              <a
+                href="https://github.com/python-lsp/python-lsp-server"
+                target="_blank"
+                rel="noopener"
+                >python-lsp-server</a
+              >
+              ·
+              <a
+                href="https://github.com/davidhalter/jedi"
+                target="_blank"
+                rel="noopener"
+                >jedi</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-2to3" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              Python 2 → 3 분기
+              <small>3.0 (2008-12) → 2.7 EOL (2020-01) · 12 년</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-2to3">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              유니코드 문자열 · print 함수 · 정수 나눗셈 등을 고치려고 하위
+              호환을 버린 유일한 메이저 릴리스. 그 결과 두 언어가 10 년 넘게
+              병존.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  3.0 은 2.6 보다 느렸고 (I/O 가 순수 Python 재작성) 킬러 기능이
+                  없어 "옮길 이유" 가 없었음. 반면 깨지는 이유 (C 확장 ·
+                  bytes/str 분리) 는 모든 라이브러리에 있었음 — NumPy 2010 ·
+                  Django 2013 · Twisted 2016 순으로 느리게 이식
+                </li>
+                <li>
+                  2.7 (2010) 에 3.x 기능을 대거 역이식해 다리 역할을 맡겼으나,
+                  그 다리가 너무 편해 아무도 건너지 않음. 원래 2015 EOL 을 2014
+                  년 PyCon 에서 2020 까지 연장 (PEP 373 갱신 · PEP 466 보안
+                  백포트) 한 것이 전환을 5 년 더 늦춤
+                </li>
+                <li>
+                  결정적 계기는 언어가 아니라 생태계: 3.6 f-string (2016) · 3.5
+                  async/await 로 "3 에서만 되는 것" 이 생기고, pip · Django 2.0
+                  (2017) · NumPy (2019) 가 2.7 지원을 끊자 1 년 만에 이동 완료.
+                  이후 PEP 602 연 1 회 릴리스 · 점진적 deprecation 정책이 "두
+                  번째 3.0 은 없다" 는 약속이 됨
+                </li>
+              </ul>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              2024 설문에서도 Python 2 사용 4% · 2.7 마지막 릴리스 2.7.18
+              (2020-04-20) · pip 21.0 (2021-01) 에서 2.7 지원 종료
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0373/"
+                target="_blank"
+                rel="noopener"
+                >PEP 373 (2.7 일정)</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0466/"
+                target="_blank"
+                rel="noopener"
+                >PEP 466 (EOL 연장)</a
+              >
+              ·
+              <a
+                href="https://www.python.org/doc/sunset-python-2/"
+                target="_blank"
+                rel="noopener"
+                >Sunsetting Python 2</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0602/"
+                target="_blank"
+                rel="noopener"
+                >PEP 602 연 1 회 릴리스</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-35-async-typing" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>async / await · 타입 힌트 <small>3.5 (2015-09)</small></h3>
+            <button class="theme-btn" popovertarget="py-35-async-typing">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>async def</code> · <code>await</code> (PEP 492) 가 문법이
+              되고, <code>def f(x: int) -> str</code> 주석의 의미가 PEP 484 로
+              표준화. 두 기능 모두 "3 에서만 되는 것" 의 시작.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  3.4 asyncio 는 <code>@coroutine</code> +
+                  <code>yield from</code>
+                  으로 코루틴을 흉내 내 제너레이터와 구분이 안 됐음. C# 의
+                  async/await (2012) 가 성공하자 1 년 만에 문법으로 승격 → 3.6
+                  비동기 제너레이터 · 3.7 예약어 · 3.11 TaskGroup 으로 이어짐
+                </li>
+                <li>
+                  타입 주석 문법은 3.0 (PEP 3107) 에 이미 있었지만 의미가
+                  없었음. mypy (2012) 가 사실상 표준 의미를 만들자 Guido 가
+                  Dropbox 에서 Jukka 와 함께 PEP 484 로 흡수 — 서드파티 툴의
+                  규약을 언어가 받아들인 사례
+                </li>
+                <li>
+                  이후 매 릴리스가 typing 을 확장 (3.8 Protocol · 3.10
+                  <code>X | Y</code>
+                  · 3.12 PEP 695 · 3.14 지연 어노테이션). 타입 힌트가 pyright ·
+                  ty · pydantic · FastAPI 생태계의 토대가 됨
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">@asyncio.coroutine</span
+              ><span class="chip">Twisted inlineCallbacks</span
+              ><span class="chip"># type: 주석 (2.7 호환)</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0492/"
+                target="_blank"
+                rel="noopener"
+                >PEP 492</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0484/"
+                target="_blank"
+                rel="noopener"
+                >PEP 484</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-37-dataclasses" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>dataclasses <small>3.7 (2018-06) · PEP 557</small></h3>
+            <button class="theme-btn" popovertarget="py-37-dataclasses">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>@dataclass</code> 로 <code>__init__</code> ·
+              <code>__repr__</code> · <code>__eq__</code> 자동 생성. 변수 주석
+              (3.6) 을 필드 선언으로 재사용.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  <code>namedtuple</code> 은 불변 · 상속 불편, 수동
+                  <code>__init__</code> 은 보일러플레이트. attrs (2015, Hynek
+                  Schlawack) 가 이 틈을 채워 사실상 표준이 됨
+                </li>
+                <li>
+                  3.6 변수 주석 (PEP 526) 이 "클래스 본문에 타입을 적는 문법" 을
+                  만들어 주자 attrs 의 핵심 80% 를 stdlib 으로 옮길 수 있게 됨 —
+                  PEP 557 저자 Eric Smith 가 attrs 를 명시적 선행 작업으로 인용
+                </li>
+                <li>
+                  attrs 는 validator · slots 등 고급 기능으로 공존, pydantic
+                  (2017) 은 같은 문법으로 런타임 검증까지 — "주석이 곧 스키마"
+                  패턴이 FastAPI 로 이어짐
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">attrs (기본 사용)</span
+              ><span class="chip">namedtuple (일부)</span
+              ><span class="chip">수동 __init__ 보일러플레이트</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0557/"
+                target="_blank"
+                rel="noopener"
+                >PEP 557</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-310-match" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              구조적 패턴 매칭 <small>3.10 (2021-10) · PEP 634–636</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-310-match">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>match cmd: case ["go", direction]:</code> — 시퀀스 · 매핑 ·
+              클래스 구조를 분해해 분기. switch 가 아니라 Rust · Scala 식 패턴
+              매칭.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  2006 PEP 3103 switch 문이 거부된 뒤 15 년간 <code>if</code> /
+                  <code>elif</code> 체인과 dict 디스패치로 버팀
+                </li>
+                <li>
+                  Guido 가 BDFL 사임 (2018) 후 Steering Council 체제의 첫 대형
+                  문법 결정. 3.9 의 새 PEG 파서 (PEP 617) 가 없었으면
+                  <code>match</code> · <code>case</code> 를 소프트 키워드로
+                  추가할 수 없었음 — 파서 교체가 선행 조건
+                </li>
+                <li>
+                  3.10 이 함께 넣은 에러 메시지 개선 · <code>X | Y</code> 와
+                  묶여 "읽기 좋은 Python" 릴리스로 자리 잡음. 2024 설문 기준
+                  3.10 이상 사용자 88%
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">if / elif isinstance 체인</span
+              ><span class="chip">dict 디스패치 테이블</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0634/"
+                target="_blank"
+                rel="noopener"
+                >PEP 634</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0636/"
+                target="_blank"
+                rel="noopener"
+                >PEP 636 튜토리얼</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-311-faster" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>Faster CPython <small>3.11 (2022-10) · PEP 659</small></h3>
+            <button class="theme-btn" popovertarget="py-311-faster">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              적응형 특수화 인터프리터 — 자주 실행되는 바이트코드를 타입에 맞는
+              빠른 버전으로 교체. 평균 1.25×, 범위 10–60%. 코드 변경 없이 얻는
+              속도.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  Unladen Swallow (Google, 2009) · Pyston (Dropbox, 2014) · PyPy
+                  등 외부 고속화 시도가 CPython 과 호환을 못 맞추고 번번이 좌초.
+                  "CPython 자체를 빠르게" 가 유일한 길이라는 합의가 2020 년에야
+                  형성
+                </li>
+                <li>
+                  Mark Shannon 의 "4 년 안에 5×" 계획 (2020-10) 을 Microsoft 가
+                  후원해 Guido · Shannon 팀 (Faster CPython) 결성 — 핵심
+                  개발자가 전업으로 붙은 첫 성능 프로젝트
+                </li>
+                <li>
+                  3.11 특수화 → 3.12 컴프리헨션 인라인 → 3.13 실험 JIT → 3.14
+                  tail-call 인터프리터 3–5% → 3.15 JIT 7–8% 로 매년 누적. 단
+                  2025-05 Microsoft 가 팀 대부분을 해고해 이후 속도는 둔화
+                </li>
+              </ul>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              pyperformance 3.10 대비 1.25× (기하평균) · 함수 호출 · 속성 접근 ·
+              예외 없는 try 비용 0
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://docs.python.org/3/whatsnew/3.11.html#faster-cpython"
+                target="_blank"
+                rel="noopener"
+                >What's New 3.11 — Faster CPython</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0659/"
+                target="_blank"
+                rel="noopener"
+                >PEP 659</a
+              >
+              ·
+              <a
+                href="https://github.com/faster-cpython/ideas"
+                target="_blank"
+                rel="noopener"
+                >faster-cpython/ideas</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-312-distutils" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              distutils 제거 · PEP 695 <small>3.12 (2023-10) · breaking</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-312-distutils">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              2000 년부터 stdlib 에 있던 빌드 도구 <code>distutils</code> 를
+              삭제 (PEP 632). 같은 릴리스에서 <code>class Box[T]:</code> ·
+              <code>type Alias = ...</code> 문법 (PEP 695) 추가.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  distutils 는 Python 릴리스 주기에 묶여 setuptools 가 20 년간
+                  monkeypatch 로 덮어 써야 했음. PEP 517 (2017) 로 빌드 백엔드가
+                  교체 가능해지자 stdlib 에 둘 이유가 사라짐 — 3.10 deprecate ·
+                  3.12 제거
+                </li>
+                <li>
+                  제거 직후 <code>import distutils</code> 하는 구형
+                  <code>setup.py</code> 가 대량으로 깨지면서 pyproject.toml
+                  전환이 강제됨. 3.13 dead batteries 19 개 제거와 함께 "stdlib
+                  도 줄인다" 방향의 신호
+                </li>
+                <li>
+                  PEP 695 는 <code>T = TypeVar("T")</code> 를 10 년 만에
+                  문법으로 대체. 타입 힌트가 더 이상 라이브러리가 아니라 언어의
+                  일부라는 선언
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">distutils</span
+              ><span class="chip">setup.py build_ext 직접 호출</span
+              ><span class="chip">TypeVar · Generic 수동 선언</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0632/"
+                target="_blank"
+                rel="noopener"
+                >PEP 632</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0695/"
+                target="_blank"
+                rel="noopener"
+                >PEP 695</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-313-free-threading" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              free-threading · JIT 실험
+              <small>3.13 (2024-10) · PEP 703 · PEP 744</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-313-free-threading">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              GIL 없는 별도 빌드 (<code>python3.13t</code>) 와 copy-and-patch
+              JIT 를 "실험" 으로 동시 출시. 30 년 된 GIL 논쟁의 첫 공식 답.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  Gilectomy (2016) 등 이전 시도는 단일 스레드가 30% 이상 느려져
+                  거부됨. Sam Gross (Meta) 의 nogil (2021) 이 편향 참조 카운팅 ·
+                  mimalloc 으로 오버헤드를 10% 안으로 줄여 2023-07 Steering
+                  Council 수용 — 단, "3 단계 실험, 되돌릴 수 있음" 조건
+                </li>
+                <li>
+                  멀티코어 CPU 가 기본이 된 데다 PyTorch · NumPy 가 GIL 을
+                  우회하려고 C++ 에 병렬성을 숨기는 비용이 한계. Meta 가 3.13 에
+                  3 년치 엔지니어 투입을 약속
+                </li>
+                <li>
+                  3.14 에서 PEP 779 로 "지원" 단계 승격 (오버헤드 5–10%), 3.15
+                  에서 stable ABI <code>abi3t</code> · macOS 설치본 기본 포함.
+                  JIT 는 3.13 0% → 3.15 7–8% 로 이제 측정 가능한 이득
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">multiprocessing 우회</span
+              ><span class="chip">C 확장에서 GIL 해제 패턴</span
+              ><span class="chip">서브인터프리터 실험 (PEP 684)</span>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0703/"
+                target="_blank"
+                rel="noopener"
+                >PEP 703</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0744/"
+                target="_blank"
+                rel="noopener"
+                >PEP 744 JIT</a
+              >
+              ·
+              <a
+                href="https://docs.python.org/3/whatsnew/3.13.html"
+                target="_blank"
+                rel="noopener"
+                >What's New 3.13</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-314-tstrings" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              t-string · free-threading 공식 지원
+              <small>3.14 (2025-10) · PEP 750 · PEP 779</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-314-tstrings">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>t"SELECT {name}"</code> 은 문자열이 아니라
+              <code>Template</code> 객체 — 라이브러리가 보간값을 받아 안전하게
+              조립. 같은 릴리스에서 free-threaded 빌드가 실험 딱지를 뗌.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  f-string (3.6) 이 너무 편해 SQL · HTML · 셸 명령에 그대로
+                  쓰이며 인젝션의 온상이 됨. JS 의 tagged template 이 같은
+                  문제를 푼 전례가 있었고 PEP 701 (3.12) 로 f-string 파서가
+                  정리된 뒤에야 변형을 추가할 수 있었음
+                </li>
+                <li>
+                  문자열 어노테이션 (PEP 563) 이 3.10 기본값이 될 뻔하다
+                  pydantic 등 런타임에 어노테이션을 읽는 라이브러리가 깨져 철회
+                  (2021) — 4 년 논의 끝에 PEP 649 + 749
+                  <code>annotationlib</code> 로 "문자열 · 값 · forward ref" 세
+                  형식을 다 제공하며 합의
+                </li>
+                <li>
+                  free-threading 은 3.13 1 년간 NumPy · PyTorch · Cython 이
+                  호환을 맞추고 단일 스레드 오버헤드가 5–10% 로 내려가자 PEP 779
+                  의 승격 조건 충족. <code>concurrent.interpreters</code> (PEP
+                  734) 와 <code>compression.zstd</code> (PEP 784) 도 함께
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">f-string 으로 SQL 조립</span
+              ><span class="chip">from __future__ import annotations</span
+              ><span class="chip">zstandard (서드파티)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              free-threaded 단일 스레드 오버헤드 5–10% · tail-call 인터프리터
+              3–5% · 2024 설문 3.14 사용 2% (프리릴리스)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://peps.python.org/pep-0750/"
+                target="_blank"
+                rel="noopener"
+                >PEP 750</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0779/"
+                target="_blank"
+                rel="noopener"
+                >PEP 779</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0649/"
+                target="_blank"
+                rel="noopener"
+                >PEP 649</a
+              >
+              ·
+              <a
+                href="https://docs.python.org/3/whatsnew/3.14.html"
+                target="_blank"
+                rel="noopener"
+                >What's New 3.14</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-315-lazy" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              lazy import · UTF-8 기본 · JIT
+              <small>3.15 (2026-10-09) · PEP 810 · 686</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-315-lazy">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              <code>lazy import json</code> — 모듈 스코프에서만 허용되는 소프트
+              키워드. 실제 import 는 첫 속성 접근 때. 인코딩 미지정 I/O 는 이제
+              항상 UTF-8.
+            </dd>
+            <dt>Why now</dt>
+            <dd>
+              <ul>
+                <li>
+                  CLI 도구 시작 시간의 대부분이 "쓰지도 않을 모듈 import". Meta
+                  의 Cinder 가 2022 년 lazy import 로 사내 CLI 를 최대 70% 빨리
+                  띄운 데이터가 PEP 690 (거부) → PEP 810 (명시적 키워드) 으로
+                  이어짐. Astral 벤치: uv 휠 빌드 최대 18% 단축
+                </li>
+                <li>
+                  UTF-8 모드 (PEP 540, 3.7) 가 옵션으로 5 년, PEP 686 이 3.15 를
+                  전환 시점으로 못박음. Windows 의 cp949 · cp1252 기본값 때문에
+                  생기던 <code>UnicodeDecodeError</code> 가 플랫폼 차이와 함께
+                  사라짐
+                </li>
+                <li>
+                  JIT 는 LLVM 21 기반 스텐실 · 트레이싱 프런트엔드 · 레지스터
+                  할당으로 x86-64 7–8%, aarch64 macOS 11–12% — 3.13 실험 이후
+                  처음 "켤 이유" 가 생김. Tachyon 샘플링 프로파일러 (PEP 799) 가
+                  py-spy 의 역할을 흡수
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced</dt>
+            <dd>
+              <span class="chip">함수 안 지역 import 관용구</span
+              ><span class="chip">PYTHONUTF8=1 환경 변수</span
+              ><span class="chip">py-spy (일부)</span
+              ><span class="chip">cProfile (profiling.tracing 으로 이동)</span>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              3.15.0 final 2026-10-09 (PEP 790) · Ruff 0.17 이 lazy import 규칙
+              TID254 · TID255 추가 · base64 인코딩 2× · Base85 100× (C 재작성)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://docs.python.org/3/whatsnew/3.15.html"
+                target="_blank"
+                rel="noopener"
+                >What's New 3.15</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0810/"
+                target="_blank"
+                rel="noopener"
+                >PEP 810</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0686/"
+                target="_blank"
+                rel="noopener"
+                >PEP 686</a
+              >
+              ·
+              <a
+                href="https://astral.sh/blog/python-3.15"
+                target="_blank"
+                rel="noopener"
+                >Astral: Python 3.15</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <!-- ================================ 밀려난 툴 시트 (짧게) -->
+      <aside id="py-pip" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              pip · pip-tools · virtualenv
+              <small>2008 · 2012 · 2007 → · uv 가 셋을 한 바이너리로</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-pip">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              pip (2008) 설치기 · virtualenv (2007, Ian Bicking) 격리 ·
+              pip-tools (2012) 의존성 고정 (<code>pip-compile</code>). 셋을 따로
+              설치해 조합하는 것이 2012–2023 의 표준 세팅.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  셋이 각자 프로젝트라 lockfile 이 표준에 없었음 —
+                  <code>requirements.txt</code> 는 해석 결과일 뿐 플랫폼별 재현
+                  불가. PEP 751 <code>pylock.toml</code> (2025-03) 까지 17 년
+                </li>
+                <li>
+                  pip 20.3 (2020-11) 의 새 resolver 는 정확해졌지만 backtracking
+                  이 분 단위 — Python 구현의 한계
+                </li>
+                <li>
+                  uv 가 같은 CLI (<code>uv pip install</code> ·
+                  <code>uv venv</code> · <code>uv pip compile</code>) 를 그대로
+                  제공해 이전 비용 0, 캐시 없이 8–10× · 웜 캐시 80–115×
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-uv">uv</button
+              ><button class="chip link" popovertarget="py-venv-pip">
+                venv (3.3, virtualenv 만)
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 2026-09 월간: pip 407M · virtualenv 235M · pip-tools 12M (CI
+              · 전이 의존 포함) · pip 26.2 (2026-08) 는 계속 릴리스 중 — 사라진
+              게 아니라 "직접 쓰는 사람" 이 줄어듦
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://pip.pypa.io/" target="_blank" rel="noopener"
+                >pip</a
+              >
+              ·
+              <a
+                href="https://github.com/pypa/pip-tools"
+                target="_blank"
+                rel="noopener"
+                >pip-tools</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0751/"
+                target="_blank"
+                rel="noopener"
+                >PEP 751</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-easy-install" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>easy_install <small>2004 – 2013 · setuptools 부속</small></h3>
+            <button class="theme-btn" popovertarget="py-easy-install">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              setuptools (2004, Phillip Eby) 의 설치 명령. egg 포맷. 2012 년에도
+              "pip 이 없는 환경에서 pip 을 설치하는 용도" 로 남아 있었음.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  uninstall 없음 · 버전 고정 불가 · 설치 중 임의 코드 실행 — pip
+                  (2008) 이 requirements 파일과 uninstall 로 대체
+                </li>
+                <li>
+                  wheel (PEP 427, 2012) 이 egg 를 대체하고 3.4 ensurepip (2014)
+                  이 "pip 설치용" 쓰임까지 없앰. setuptools 가 2019 deprecate 후
+                  제거
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-pip">pip</button
+              ><button class="chip link" popovertarget="py-venv-pip">
+                ensurepip (3.4)
+              </button>
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://setuptools.pypa.io/en/latest/deprecated/easy_install.html"
+                target="_blank"
+                rel="noopener"
+                >easy_install (deprecated)</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0427/"
+                target="_blank"
+                rel="noopener"
+                >PEP 427 wheel</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-rye" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              rye <small>2023-04 – 2025-02 · Astral 이 인수해 uv 로 흡수</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-rye">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Armin Ronacher 의 실험 — 파이썬 설치 · venv · lock · 빌드를 Rust
+              바이너리 하나로. python-build-standalone 을 처음 대중화.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  2024-02 Astral 이 인수하며 같은 날 uv 발표. rye 는 내부
+                  resolver 를 pip-tools 에서 uv 로 바꿔 쓰다가 uv 0.3 (2024-08)
+                  이 프로젝트 기능을 직접 갖추자 역할 소멸
+                </li>
+                <li>
+                  2025-02 "no longer developed" 공지, 2025-08 retire 커밋 + uv
+                  마이그레이션 가이드. GitHub archived (2026-10 확인)
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-uv">uv</button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>GitHub 14.1k stars · 1 년 10 개월 수명</dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://rye.astral.sh/" target="_blank" rel="noopener"
+                >rye (retired)</a
+              >
+              ·
+              <a
+                href="https://lucumr.pocoo.org/2024/8/21/harvest-season/"
+                target="_blank"
+                rel="noopener"
+                >Rye and uv: Harvest Season</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-flake8" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              flake8 · pylint · isort · pyupgrade · bandit
+              <small>2003 – 2022 · ruff 가 규칙을 재구현</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-flake8">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              각자 한 가지씩 — flake8 (2010) 스타일 + 오류 (pyflakes +
+              pycodestyle 래퍼), pylint (2003) 추론 기반 검사, isort (2013)
+              import 정렬, pyupgrade (2017) 구문 현대화, bandit (2015,
+              OpenStack) 보안 패턴. 전부 Python 구현.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  다섯 개를 pre-commit 에 쌓으면 대형 레포에서 수십 초. ruff 가
+                  전부 합쳐 1 초 미만 — 2023 년 한 해에 전환
+                </li>
+                <li>
+                  flake8 플러그인 (bugbear · comprehensions · simplify …) 이
+                  ruff 안에 같은 규칙 코드로 재구현되자 플러그인 저자들도 ruff
+                  로 이동. isort 는 <code>I</code>, pyupgrade 는
+                  <code>UP</code>, bandit 는 <code>S</code> 규칙으로
+                </li>
+                <li>
+                  pylint 만 추론 기반 규칙이 남아 niche 생존 — ruff 가
+                  <code>PL</code> 규칙으로 일부 흡수, 나머지는 타입 체커
+                  영역으로 넘어감
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-ruff">
+                ruff
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 2026-09 월간: isort 91M · flake8 39.5M · pylint 38M · bandit
+              24M · pyupgrade 1.6M vs ruff 304M · 다섯 모두 archived 아님
+              (2026-10)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://flake8.pycqa.org/" target="_blank" rel="noopener"
+                >flake8</a
+              >
+              ·
+              <a
+                href="https://pylint.readthedocs.io/"
+                target="_blank"
+                rel="noopener"
+                >pylint</a
+              >
+              ·
+              <a
+                href="https://docs.astral.sh/ruff/rules/"
+                target="_blank"
+                rel="noopener"
+                >ruff 규칙 (원본 린터별)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-black" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              black · autopep8 · yapf
+              <small
+                >2018 · 2011 · 2015 → · ruff format 이 black 스타일을
+                계승</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="py-black">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              autopep8 (2011) 은 PEP 8 위반만 수정, yapf (2015, Google) 는
+              clang-format 식 옵션 수십 개, black (2018, Łukasz Langa) 은 옵션
+              없는 "uncompromising" 포맷터.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  autopep8 · yapf: 옵션이 곧 논쟁. black 이 옵션을 없애자 2 년
+                  만에 표준. yapf 는 2024-11 이후 릴리스 없음
+                </li>
+                <li>
+                  black 은 밀린 게 아니라 <em>스타일이 이긴</em> 경우 — ruff
+                  format 이 99.9% 동일 출력을 30× 빠르게 내고 린터와 한
+                  바이너리라 설치가 하나 줄어듦
+                </li>
+                <li>
+                  black 은 여전히 common (113M/월). "black 스타일" 은 ruff 의
+                  기본값으로 살아 있음
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-ruff-format">
+                ruff format
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 2026-09 월간: black 113M · autopep8 6.6M · yapf 5M · black
+              41.9k stars (2026-10)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://black.readthedocs.io/"
+                target="_blank"
+                rel="noopener"
+                >black</a
+              >
+              ·
+              <a
+                href="https://github.com/google/yapf"
+                target="_blank"
+                rel="noopener"
+                >yapf</a
+              >
+              ·
+              <a
+                href="https://github.com/hhatto/autopep8"
+                target="_blank"
+                rel="noopener"
+                >autopep8</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-mypy" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              mypy
+              <small
+                >2012-12 → · 2016–2024 dominant · 지금도 가장 많이 설치</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="py-mypy">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              Jukka Lehtosalo 의 첫 Python 타입 체커이자 PEP 484 의 참조 구현.
+              Python 으로 쓰이고 mypyc 로 자체 컴파일.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  대형 레포에서 분 단위. 데몬 (<code>dmypy</code>) 으로
+                  보완했지만 에디터 실시간 피드백은 pyright 가 차지
+                </li>
+                <li>
+                  Pylance (2020) 가 VS Code 기본이 되며 "CI 는 mypy, 에디터는
+                  pyright" 로 둘을 같이 쓰는 비용이 생김
+                </li>
+                <li>
+                  typing spec (2024) · typeshed 가 표준화돼 구현체 교체가 쉬워진
+                  상태에서 ty · pyrefly 가 10–60× 로 등장 — 아직은 common,
+                  결과는 미정
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-typecheckers">
+                pyright · ty · pyrefly
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 2026-09 월간 160M (타입 체커 중 1 위) · GitHub 20.7k stars ·
+              2.4.0 (2026-10)
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://mypy.readthedocs.io/"
+                target="_blank"
+                rel="noopener"
+                >mypy</a
+              >
+              ·
+              <a
+                href="https://dropbox.tech/application/our-journey-to-type-checking-4-million-lines-of-python"
+                target="_blank"
+                rel="noopener"
+                >Dropbox: 4 million lines</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-pytype-pyre" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              pytype · pyre
+              <small>Google 2015 · Meta 2018 → 2026 archived</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-pytype-pyre">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              사내 수요로 만든 체커. pytype 은 주석 없는 코드도 추론 (바이트코드
+              분석), pyre 는 OCaml 로 쓴 증분 체커 + Pysa 보안 분석.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  둘 다 사내 코드베이스에 최적화돼 신규 typing PEP 반영이 느림.
+                  pytype 은 바이트코드 기반 설계 탓에 "3.12 가 마지막 지원"
+                  선언, 2026-03 archived
+                </li>
+                <li>
+                  Meta 는 pyre 를 Rust 로 다시 쓴 pyrefly (2025) 로 교체하고
+                  Pysa 를 별도 레포로 분리. pyre-check 2026-06 archived
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-typecheckers">
+                pyrefly · ty · pyright
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>PyPI 2026-09 월간: pytype 0.9M · pyre-check 0.2M</dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/google/pytype#an-update-on-pytype"
+                target="_blank"
+                rel="noopener"
+                >An update on pytype</a
+              >
+              ·
+              <a
+                href="https://github.com/facebook/pyre-check"
+                target="_blank"
+                rel="noopener"
+                >pyre-check (archived)</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-nose" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              nose · nose2 <small>2005 – 2015 · nose2 (2012→) 는 niche</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-nose">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              unittest 확장 — 테스트 자동 발견 · 플러그인. 2010 년대 초 대부분의
+              프로젝트가 <code>nosetests</code> 로 실행.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  2015-06 1.3.7 이후 릴리스 없음. 3.x 신버전에서 import 가 깨져
+                  "maintenance mode" 를 공식화
+                </li>
+                <li>
+                  nose2 는 nose 호환을 버리고 unittest2 기반으로 다시 써 이전할
+                  이유가 없었음
+                </li>
+                <li>
+                  pytest 가 nose 스타일 테스트를 그대로 실행해 전환 비용 0 —
+                  NumPy (2018) 등이 옮기며 결정
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-pytest">
+                pytest
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              2024 설문 nose 2% · PyPI 2026-09 월간 nose 6M (구형 의존성) ·
+              nose2 0.5M
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://nose.readthedocs.io/en/latest/"
+                target="_blank"
+                rel="noopener"
+                >nose</a
+              >
+              ·
+              <a href="https://docs.nose2.io/" target="_blank" rel="noopener"
+                >nose2</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-setuptools" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              setup.py · setuptools
+              <small
+                >2004 → · 2019 이후 선언형으로, 백엔드로는 아직 common</small
+              >
+            </h3>
+            <button class="theme-btn" popovertarget="py-setuptools">
+              닫기 Esc
+            </button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              distutils (2000, stdlib) 를 확장한 사실상 표준 빌드 · 설치 도구.
+              <code>setup.py</code> 가 메타데이터와 빌드 로직을 코드로 가짐.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  setup.py 를 실행하지 않으면 의존성조차 알 수 없음 → PEP
+                  517/518 이 "선언 + 교체 가능한 백엔드" 로 분리, pip 19
+                  (2019-01) 이 적용
+                </li>
+                <li>
+                  <code>setup.py install</code> deprecate (setuptools 58, 2021)
+                  · distutils 3.12 제거 · easy_install 제거로 "setup.py 직접
+                  실행" 관행 종료
+                </li>
+                <li>
+                  setuptools 자체는 PEP 621 지원 (61, 2022-03) 후 백엔드 중
+                  하나로 계속 common — C 확장 프로젝트의 기본값
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-pyproject">
+                pyproject.toml 백엔드 (hatchling · uv_build · flit)
+              </button>
+              — 네이티브 확장은 setuptools · maturin · scikit-build 유지
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              PyPI 2026-09 월간 937M (전이 의존 포함) · 84.0.0 (2026-08) 로
+              여전히 활발
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html"
+                target="_blank"
+                rel="noopener"
+                >setuptools pyproject.toml 설정</a
+              >
+              ·
+              <a
+                href="https://peps.python.org/pep-0632/"
+                target="_blank"
+                rel="noopener"
+                >PEP 632</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+
+      <aside id="py-pyenv" popover class="sheet">
+        <div class="sheet-inner">
+          <header>
+            <h3>
+              pyenv · asdf-python
+              <small>2012-08 · 2016 → · uv python 이 역할 흡수</small>
+            </h3>
+            <button class="theme-btn" popovertarget="py-pyenv">닫기 Esc</button>
+          </header>
+          <dl>
+            <dt>What</dt>
+            <dd>
+              rbenv 를 옮긴 셸 shim 방식 버전 관리자 (Yuu Yamashita). 소스를
+              받아 컴파일. asdf (2016) 는 다중 언어 관리자의 Python 플러그인으로
+              같은 python-build 를 재사용.
+            </dd>
+            <dt>Why it faded</dt>
+            <dd>
+              <ul>
+                <li>
+                  설치 = 컴파일: 수 분 + OS 별 빌드 의존성 (openssl · readline ·
+                  tk) 실패가 10 년간 반복된 질문
+                </li>
+                <li>
+                  셸 shim 이 PATH 를 가로채 IDE · CI 에서 "지금 어느 python
+                  인지" 혼란
+                </li>
+                <li>
+                  python-build-standalone 사전 빌드 바이너리 + uv 가
+                  <code>.python-version</code> 을 그대로 읽어 드롭인 대체
+                </li>
+              </ul>
+            </dd>
+            <dt>Replaced by</dt>
+            <dd>
+              <button class="chip win link" popovertarget="py-uv-python">
+                uv python
+              </button>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>
+              pyenv GitHub 45.2k stars (2026-10, 여전히 활발) · 2024 설문 설치
+              방법 17%
+            </dd>
+            <dt>Links</dt>
+            <dd>
+              <a
+                href="https://github.com/pyenv/pyenv"
+                target="_blank"
+                rel="noopener"
+                >pyenv</a
+              >
+              ·
+              <a
+                href="https://github.com/asdf-community/asdf-python"
+                target="_blank"
+                rel="noopener"
+                >asdf-python</a
+              >
+            </dd>
+          </dl>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="container">
+      출처:
+      <a
+        href="https://docs.python.org/3/whatsnew/"
+        target="_blank"
+        rel="noopener"
+        >What's New in Python</a
+      >
+      · 각 PEP · Astral 블로그 ·
+      <a
+        href="https://lp.jetbrains.com/python-developers-survey-2024/"
+        target="_blank"
+        rel="noopener"
+        >Python Developers Survey 2024</a
+      >
+      (PSF · JetBrains, 응답 25k+) · PyPI 월간 다운로드 (pypistats, 2026-09) ·
+      GitHub API (archived 여부 · 스타, 2026-10-19 확인). 막대 굵기(사용량) 는
+      설문 비율 · 다운로드 · 스타를 바탕으로 한 근사치이며 정확한 점유율이
+      아닙니다. stat-row 의 "필수 서드파티" 는 그 해 신규 웹 · 라이브러리
+      프로젝트의 전형적 설정 (가상환경 · 버전 관리 · 린트 · 포맷 · 타입 · 테스트
+      · 의존성 고정) 을 기준으로 센 것입니다.
+    </footer>
+  </body>
+</html>
