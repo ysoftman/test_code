@@ -1,5 +1,8 @@
 :root {
   color-scheme: light;
+  --page-w: 1280px;
+  --prose-w: 820px;
+  --gutter: clamp(16px, 3vw, 32px);
   --bg: #f8fafc;
   --surface: #ffffff;
   --surface-subtle: #f1f5f9;
@@ -54,7 +57,7 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.55;
-  font-size: 14px;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -85,9 +88,9 @@ code {
   z-index: 20;
 }
 .nav-inner {
-  max-width: 980px;
+  max-width: var(--page-w);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--gutter);
   height: 48px;
   display: flex;
   align-items: center;
@@ -133,15 +136,16 @@ code {
 
 /* Layout */
 .container {
-  max-width: 980px;
+  max-width: var(--page-w);
   margin: 0 auto;
-  padding: 32px 20px 80px;
+  padding: 32px var(--gutter) 80px;
 }
 .page-header h1 {
   margin: 0 0 6px;
   font-size: 1.6rem;
 }
 .page-desc {
+  max-width: var(--prose-w);
   margin: 0 0 20px;
   color: var(--text-muted);
 }
@@ -508,9 +512,9 @@ details.minor .ver {
   background: rgb(0 0 0 / 0.35);
 }
 .sheet-inner {
-  max-width: 980px;
+  max-width: var(--page-w);
   margin: 0 auto;
-  padding: 16px 20px 28px;
+  padding: 16px var(--gutter) 28px;
 }
 .sheet header {
   display: flex;
@@ -584,6 +588,7 @@ footer {
 
 /* Overview: cross-language summary table */
 .lead {
+  max-width: var(--prose-w);
   color: var(--text-muted);
   margin: 0 0 18px;
 }
@@ -597,7 +602,7 @@ footer {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 .summary th,
 .summary td {
