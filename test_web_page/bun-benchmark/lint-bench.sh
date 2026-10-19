@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# eslint · oxlint · biome · bun lint(main canary) 린트 속도 벤치마크 → results.json
+# eslint · oxlint · biome · bun lint(main canary) 린트 속도 벤치마크 → lint-results.json
 # 요구: bun, node, hyperfine, jq, rsync, git
 # 환경변수: BUN=<bun 바이너리>(기본: canary 다운로드), COPIES=<large 코퍼스 복제 수>(기본 40)
 set -euo pipefail
@@ -95,7 +95,7 @@ C=$TMP/corpus
 rm -rf "$C"
 mkdir -p "$C/small" "$C/large"
 git -C "$SRC" ls-files | grep -E '\.(js|jsx|ts|tsx)$' |
-    grep -vE '^(formatter|lint)-benchmark/|\.eslintrc' >"$TMP/files.txt"
+    grep -vE '^bun-benchmark/|\.eslintrc' >"$TMP/files.txt"
 rsync -a --files-from="$TMP/files.txt" "$SRC/" "$C/small/"
 for i in $(seq -w 1 "$COPIES"); do rsync -a "$C/small/" "$C/large/c$i/"; done
 pick() { # pick <코퍼스명> <확장자...>
@@ -144,7 +144,7 @@ for t in eslint oxlint biome bun; do
 done | jq -Rn '[inputs | split(" ") | {tool: .[0], rule: .[1], (.[2]): (.[3] | tonumber)}]
     | group_by([.tool, .rule]) | map({count: 0, matched: 0} + add)' >"$TMP/parity.json"
 
-# 6) results.json
+# 6) lint-results.json
 for d in small js ts large; do
     files=$(find "$C/$d" -type f | wc -l)
     bytes=$(find "$C/$d" -type f -exec cat {} + | wc -c)
@@ -168,6 +168,6 @@ jq -n \
     '{meta: {$date, $os, $cpu, $cores, $node, $commit, $copies,
            versions: {$eslint, "typescript-eslint": $tseslint, $oxlint, $biome, $bun}},
     rules: ($rules | split("\n") | map(select(. != "") | split(" ") | {eslint: .[0], biome: .[1]})),
-    $excluded, $corpora, parity: $parity[0]}' >"$HERE/results.json"
+    $excluded, $corpora, parity: $parity[0]}' >"$HERE/lint-results.json"
 
-echo "→ $HERE/results.json"
+echo "→ $HERE/lint-results.json"

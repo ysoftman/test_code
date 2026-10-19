@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prettier · biome · bun fmt(main canary) 포맷 속도 벤치마크 → results.json
+# prettier · biome · bun fmt(main canary) 포맷 속도 벤치마크 → formatter-results.json
 # 요구: bun, hyperfine, jq, rsync, git
 # 환경변수: BUN=<bun 바이너리>(기본: canary 다운로드), COPIES=<large 코퍼스 복제 수>(기본 40)
 set -euo pipefail
@@ -34,7 +34,7 @@ C=$TMP/corpus
 rm -rf "$C"
 mkdir -p "$C/small" "$C/large"
 git -C "$SRC" ls-files | grep -E '\.(html|css|js|jsx|ts|tsx|vue|json)$' |
-    grep -vE '(^formatter-benchmark/|biome\.json$)' >"$TMP/files.txt"
+    grep -vE '(^bun-benchmark/|biome\.json$)' >"$TMP/files.txt"
 rsync -a --files-from="$TMP/files.txt" "$SRC/" "$C/small/"
 for i in $(seq -w 1 "$COPIES"); do rsync -a "$C/small/" "$C/large/c$i/"; done
 pick() { # pick <코퍼스명> <확장자...>
@@ -97,7 +97,7 @@ for ext in html vue css js jsx ts tsx json; do
     done
 done >"$TMP/parity.jsonl"
 
-# 5) results.json
+# 5) formatter-results.json
 for d in small html css js large; do
     files=$(find "$C/$d" -type f ! -name biome.json | wc -l)
     bytes=$(find "$C/$d" -type f ! -name biome.json -exec cat {} + | wc -c)
@@ -118,6 +118,6 @@ jq -n \
     --slurpfile corpora "$TMP/corpora.jsonl" --slurpfile parity "$TMP/parity.jsonl" \
     '{meta: {$date, $os, $cpu, $cores, $node, $commit, $copies,
            versions: {$prettier, $biome, $bun}},
-    $corpora, $parity}' >"$HERE/results.json"
+    $corpora, $parity}' >"$HERE/formatter-results.json"
 
-echo "→ $HERE/results.json"
+echo "→ $HERE/formatter-results.json"

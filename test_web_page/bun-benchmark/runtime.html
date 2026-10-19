@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Runtime Benchmark: Node.js vs Deno vs Bun</title>
+    <title>Bun Benchmark: Runtime</title>
     <script>
       (() => {
         let saved = null;
@@ -556,6 +556,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="./benchmark.css" />
   </head>
   <body>
     <header class="navbar">
@@ -563,9 +564,14 @@
         <div class="nav-brand">
           <a class="nav-back" href="../">← test_web_page</a>
           <span class="nav-sep">/</span>
-          <span class="nav-title">runtime-benchmark</span>
+          <span class="nav-title">Bun Benchmark</span>
         </div>
         <div class="nav-actions">
+          <nav class="section-nav" aria-label="Bun Benchmark pages">
+            <a href="/formatter">Formatter</a>
+            <a href="/lint">Lint</a>
+            <a href="/runtime" aria-current="page">Runtime</a>
+          </nav>
           <button
             class="theme-btn"
             id="theme-btn"
@@ -585,7 +591,7 @@
       <!-- Page Header & Specs -->
       <section class="page-header">
         <div class="title-row">
-          <h1>Runtime Benchmark</h1>
+          <h1>Bun Benchmark: Runtime</h1>
           <span class="version-tag" id="commit-tag">commit: loading...</span>
         </div>
         <p class="page-desc">
@@ -696,7 +702,7 @@
               </li>
               <li>
                 <strong>재현 명령:</strong> <code>bun run bench</code> 실행 시
-                벤치마크가 재수행되고 <code>results.json</code>이
+                벤치마크가 재수행되고 <code>runtime-results.json</code>이
                 업데이트됩니다.
               </li>
             </ul>
@@ -1126,8 +1132,8 @@
         `;
       };
 
-      // Data fetch: 로드 실패와 렌더링 실패(results.json 형식 문제)를 구분해 안내한다
-      fetch("./results.json")
+      // Data fetch: 로드 실패와 렌더링 실패(runtime-results.json 형식 문제)를 구분해 안내한다
+      fetch("./runtime-results.json")
         .then((r) => {
           if (!r.ok) throw new Error(`HTTP ${r.status}`);
           return r.json();
@@ -1143,14 +1149,14 @@
           },
           (err) =>
             showError(
-              "results.json 로드 실패",
+              "runtime-results.json 로드 실패",
               err,
               "로컬 테스트 시 <code>bun run serve</code> 명령을 사용하여 웹 서버 환경에서 열어주세요.",
             ),
         )
         .catch((err) =>
           showError(
-            "results.json 렌더링 실패",
+            "runtime-results.json 렌더링 실패",
             err,
             "항목이 빠졌거나 형식이 다릅니다. <code>bun run bench</code> 로 다시 생성해 주세요.",
           ),

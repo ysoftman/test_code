@@ -2772,9 +2772,9 @@
             </dd>
             <dt>Numbers</dt>
             <dd>
-              esbuild 자체 벤치: 번들 10–100× 빠름. 이 저장소 lint-benchmark
-              에서 Oxc 파서 기반 oxlint 가 ESLint 대비 55× — 같은 파서를
-              Rolldown · oxfmt 가 공유
+              esbuild 자체 벤치: 번들 10–100× 빠름. 이 저장소 Bun Benchmark의
+              lint 결과 에서 Oxc 파서 기반 oxlint 가 ESLint 대비 55× — 같은
+              파서를 Rolldown · oxfmt 가 공유
             </dd>
             <dt>Links</dt>
             <dd>
@@ -3003,8 +3003,8 @@
             <dt>Numbers</dt>
             <dd>
               State of JS 2025 린터 응답: ESLint 9,697 · Biome 1,762 · oxlint
-              123 — 2026 년에도 압도적 1 위. 속도는 이 저장소 lint-benchmark
-              참고 (ESLint 8.4 s vs oxlint 0.15 s)
+              123 — 2026 년에도 압도적 1 위. 속도는 이 저장소 Bun Benchmark의
+              lint 결과 참고 (ESLint 8.4 s vs oxlint 0.15 s)
             </dd>
             <dt>Links</dt>
             <dd>
@@ -3152,8 +3152,11 @@
             <dt>Numbers</dt>
             <dd>
               이 저장소
-              <a href="../../lint-benchmark/" target="_blank" rel="noopener"
-                >lint-benchmark</a
+              <a
+                href="../../bun-benchmark/lint.html"
+                target="_blank"
+                rel="noopener"
+                >Bun Benchmark · Lint</a
               >
               (large: 3,160 파일 · 8.1 MB · 공통 규칙 55 개, 2026-10-15): ESLint
               8.42 s · ESLint <code>--concurrency</code> 4.95 s · Biome 0.58 s
@@ -3163,8 +3166,11 @@
             </dd>
             <dt>Links</dt>
             <dd>
-              <a href="../../lint-benchmark/" target="_blank" rel="noopener"
-                >lint-benchmark</a
+              <a
+                href="../../bun-benchmark/lint.html"
+                target="_blank"
+                rel="noopener"
+                >Bun Benchmark · Lint</a
               >
               ·
               <a
@@ -3244,10 +3250,10 @@
             <dd>
               이 저장소
               <a
-                href="../../formatter-benchmark/"
+                href="../../bun-benchmark/formatter.html"
                 target="_blank"
                 rel="noopener"
-                >formatter-benchmark</a
+                >Bun Benchmark · Formatter</a
               >
               (large: 5,600 파일 · 11.5 MB, 2026-10-14): Prettier 15.48 s ·
               Biome 0.65 s (24×) · bun fmt 0.43 s (36×). 출력 일치 (small 140
@@ -3257,10 +3263,10 @@
             <dt>Links</dt>
             <dd>
               <a
-                href="../../formatter-benchmark/"
+                href="../../bun-benchmark/formatter.html"
                 target="_blank"
                 rel="noopener"
-                >formatter-benchmark</a
+                >Bun Benchmark · Formatter</a
               >
               ·
               <a
@@ -3433,8 +3439,11 @@
             <dt>Numbers</dt>
             <dd>
               이 저장소
-              <a href="../../runtime-benchmark/" target="_blank" rel="noopener"
-                >runtime-benchmark</a
+              <a
+                href="../../bun-benchmark/runtime.html"
+                target="_blank"
+                rel="noopener"
+                >Bun Benchmark · Runtime</a
               >
               (2026-10-18, 설치 속도는 미측정): 시작 시간 node 42.5 ms · deno
               21.6 ms · bun 15.4 ms (2.8×), 시작 메모리 node 54.7 MB · bun 9.9
@@ -3443,8 +3452,11 @@
             </dd>
             <dt>Links</dt>
             <dd>
-              <a href="../../runtime-benchmark/" target="_blank" rel="noopener"
-                >runtime-benchmark</a
+              <a
+                href="../../bun-benchmark/runtime.html"
+                target="_blank"
+                rel="noopener"
+                >Bun Benchmark · Runtime</a
               >
               ·
               <a
@@ -3575,8 +3587,11 @@
             <dt>Numbers</dt>
             <dd>
               이 저장소
-              <a href="../../runtime-benchmark/" target="_blank" rel="noopener"
-                >runtime-benchmark</a
+              <a
+                href="../../bun-benchmark/runtime.html"
+                target="_blank"
+                rel="noopener"
+                >Bun Benchmark · Runtime</a
               >
               (Bun 1.4.3 · Node 26.10 · Deno 2.9.5): 시작 15 ms vs 43 ms · fib
               0.21 s vs 0.44 s (2.1×) · sort 0.36 s vs 0.87 s · Bun.serve 105k
@@ -3586,8 +3601,11 @@
             </dd>
             <dt>Links</dt>
             <dd>
-              <a href="../../runtime-benchmark/" target="_blank" rel="noopener"
-                >runtime-benchmark</a
+              <a
+                href="../../bun-benchmark/runtime.html"
+                target="_blank"
+                rel="noopener"
+                >Bun Benchmark · Runtime</a
               >
               ·
               <a
@@ -3672,8 +3690,11 @@
             <dd>
               State of JS 2025 런타임 응답: Node 10,062 · Bun 2,321 · Deno
               1,244. 이 저장소
-              <a href="../../runtime-benchmark/" target="_blank" rel="noopener"
-                >runtime-benchmark</a
+              <a
+                href="../../bun-benchmark/runtime.html"
+                target="_blank"
+                rel="noopener"
+                >Bun Benchmark · Runtime</a
               >: Deno.serve 105.7k rps (세 런타임 중 최고) · 시작 21.6 ms · fib
               은 Node 와 동급 (같은 V8)
             </dd>
@@ -4228,14 +4249,14 @@
         >State of JS 2025</a
       >
       · 이 저장소의
-      <a href="../../lint-benchmark/">lint-benchmark</a> ·
-      <a href="../../formatter-benchmark/">formatter-benchmark</a> ·
-      <a href="../../runtime-benchmark/">runtime-benchmark</a>. archived ·
-      deprecated 표기는 GitHub API (<code>archived</code>) 와 README 로 확인한
-      것만 적었습니다 (tslint · jscs · rome: archived / karma: README deprecated
-      / bower · grunt · gulp · browserify · coffeescript · flow: 활동 저조하나
-      archived 아님). 막대 굵기(사용량) 는 State of JS 설문 · npm 다운로드 ·
-      GitHub 스타를 바탕으로 한 근사치이며 정확한 점유율이 아닙니다.
+      <a href="../../bun-benchmark/lint.html">Bun Benchmark · Lint</a> ·
+      <a href="../../bun-benchmark/formatter.html">Bun Benchmark · Formatter</a>
+      · <a href="../../bun-benchmark/runtime.html">Bun Benchmark · Runtime</a>.
+      archived · deprecated 표기는 GitHub API (<code>archived</code>) 와 README
+      로 확인한 것만 적었습니다 (tslint · jscs · rome: archived / karma: README
+      deprecated / bower · grunt · gulp · browserify · coffeescript · flow: 활동
+      저조하나 archived 아님). 막대 굵기(사용량) 는 State of JS 설문 · npm
+      다운로드 · GitHub 스타를 바탕으로 한 근사치이며 정확한 점유율이 아닙니다.
     </footer>
   </body>
 </html>

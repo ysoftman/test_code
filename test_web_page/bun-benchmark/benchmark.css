@@ -1,0 +1,356 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-subtle: #edf1f4;
+  --border: #d9e0e6;
+  --border-subtle: #e8edf1;
+  --text: #17212b;
+  --text-muted: #596775;
+  --text-faint: #7f8b96;
+  --accent: #a85000;
+  --accent-subtle: #fff1df;
+  --card: var(--surface);
+  --fg: var(--text);
+  --muted: var(--text-muted);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Pretendard Variable", Pretendard, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+    monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101419;
+  --surface: #181e24;
+  --surface-subtle: #222a32;
+  --border: #35404a;
+  --border-subtle: #29323a;
+  --text: #e8edf1;
+  --text-muted: #a2adb7;
+  --text-faint: #7f8b96;
+  --accent: #f0a34a;
+  --accent-subtle: #352719;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+a {
+  color: var(--accent);
+}
+
+.navbar {
+  background: var(--surface);
+  border-bottom-color: var(--border);
+}
+
+.nav-inner {
+  width: min(1180px, 100%);
+  max-width: 1180px;
+  height: 56px;
+}
+
+.nav-title {
+  color: var(--text);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.nav-title:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.nav-actions {
+  gap: 18px;
+}
+
+.section-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.section-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 550;
+  white-space: nowrap;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+}
+
+.section-nav a:hover {
+  background: var(--surface-subtle);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.section-nav a[aria-current="page"] {
+  background: var(--accent-subtle);
+  border-color: color-mix(in srgb, var(--accent) 22%, transparent);
+  color: var(--accent);
+}
+
+.theme-btn {
+  border-color: var(--border);
+  border-radius: 7px;
+  color: var(--text-muted);
+}
+
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.container {
+  width: min(1180px, 100%);
+  max-width: 1180px;
+  padding: 36px 24px 80px;
+}
+
+.page-header {
+  margin-bottom: 36px;
+}
+
+.title-row {
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  letter-spacing: -0.04em;
+}
+
+.version-tag {
+  border-radius: 6px;
+}
+
+.page-desc {
+  max-width: 68ch;
+  line-height: 1.7;
+}
+
+.section {
+  margin-bottom: 38px;
+}
+
+.section-header {
+  border-bottom-color: var(--border);
+}
+
+.summary-card,
+.specs-grid,
+.parity-card,
+.note-card,
+.corpus-block,
+.segment-control {
+  border-color: var(--border);
+  border-radius: 10px;
+}
+
+.overview-section {
+  margin: 0 0 34px;
+}
+
+.overview-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.overview-heading h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
+}
+
+.overview-heading p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.overview-heading > a {
+  flex: none;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.overview-panel {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.overview-meta {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.79rem;
+}
+
+.overview-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.overview-table th,
+.overview-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.overview-table thead th {
+  background: var(--surface-subtle);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.overview-table tbody th {
+  font-weight: 600;
+}
+
+.overview-table td:not(:first-child),
+.overview-table thead th:not(:first-child) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.overview-table tbody tr:last-child th,
+.overview-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.overview-footnote {
+  margin: 0;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+.overview-footnote strong {
+  color: var(--text);
+}
+
+.overview-subtitle {
+  margin: 0;
+  padding: 11px 16px;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--surface-subtle);
+  font-size: 0.79rem;
+  font-weight: 650;
+}
+
+.runtime-api {
+  margin-left: 6px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.overview-loading,
+.overview-error {
+  margin: 0;
+  padding: 18px 16px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.overview-error {
+  color: #a33b32;
+}
+
+:root[data-theme="dark"] .overview-error {
+  color: #f0958d;
+}
+
+.theme-btn:focus-visible,
+.section-nav a:focus-visible,
+.nav-back:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .nav-inner {
+    height: auto;
+    min-height: 56px;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    padding: 8px 16px;
+  }
+
+  .nav-actions {
+    width: 100%;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .section-nav {
+    min-width: 0;
+    flex: 1;
+    overflow-x: auto;
+  }
+
+  .section-nav a {
+    min-height: 32px;
+    padding: 0 9px;
+  }
+
+  .container {
+    padding: 28px 16px 60px;
+  }
+
+  .overview-heading {
+    align-items: flex-start;
+  }
+
+  .overview-heading > a {
+    margin-top: 4px;
+    white-space: nowrap;
+  }
+
+  .overview-table {
+    min-width: 440px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

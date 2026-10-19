@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formatter Benchmark: Prettier vs Biome vs bun fmt</title>
+    <title>Bun Benchmark: Lint</title>
     <script>
       (() => {
         let saved = null;
@@ -35,7 +35,9 @@
 
         --brand-bun: #d97706;
         --brand-biome: #0284c7;
-        --brand-prettier: #6366f1;
+        --brand-oxlint: #0d9488;
+        --brand-eslint: #4b32c3;
+        --brand-eslint-mt: #a855f7;
 
         --font-sans:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -63,7 +65,9 @@
 
         --brand-bun: #fbbf24;
         --brand-biome: #38bdf8;
-        --brand-prettier: #818cf8;
+        --brand-oxlint: #2dd4bf;
+        --brand-eslint: #818cf8;
+        --brand-eslint-mt: #c084fc;
       }
 
       * {
@@ -338,10 +342,10 @@
         border: 1px solid rgba(217, 119, 6, 0.2);
       }
       .badge-fastest {
-        background: rgba(217, 119, 6, 0.12);
-        color: var(--brand-bun);
+        background: var(--accent-subtle);
+        color: var(--accent);
         font-weight: 600;
-        border: 1px solid rgba(217, 119, 6, 0.25);
+        border: 1px solid var(--border);
       }
 
       /* Control Segmented Buttons */
@@ -410,7 +414,7 @@
       }
       .chart-row {
         display: grid;
-        grid-template-columns: 88px 1fr 140px;
+        grid-template-columns: 100px 1fr 140px;
         align-items: center;
         gap: 12px;
         cursor: default;
@@ -455,7 +459,7 @@
         color: var(--text-muted);
       }
       .row-multiplier.fastest {
-        color: var(--brand-bun);
+        color: var(--accent);
         font-weight: 600;
       }
 
@@ -487,6 +491,9 @@
       }
 
       /* Parity Table */
+      .count-zero {
+        color: var(--text-faint);
+      }
       .parity-card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -570,7 +577,7 @@
 
       @media (max-width: 720px) {
         .chart-row {
-          grid-template-columns: 75px 1fr 100px;
+          grid-template-columns: 84px 1fr 100px;
           gap: 8px;
         }
         .notes-grid {
@@ -582,6 +589,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="./benchmark.css" />
   </head>
   <body>
     <header class="navbar">
@@ -589,9 +597,14 @@
         <div class="nav-brand">
           <a class="nav-back" href="../">← test_web_page</a>
           <span class="nav-sep">/</span>
-          <span class="nav-title">formatter-benchmark</span>
+          <span class="nav-title">Bun Benchmark</span>
         </div>
         <div class="nav-actions">
+          <nav class="section-nav" aria-label="Bun Benchmark pages">
+            <a href="/formatter">Formatter</a>
+            <a href="/lint" aria-current="page">Lint</a>
+            <a href="/runtime">Runtime</a>
+          </nav>
           <button
             class="theme-btn"
             id="theme-btn"
@@ -611,12 +624,13 @@
       <!-- Page Header & Specs -->
       <section class="page-header">
         <div class="title-row">
-          <h1>Formatter Benchmark</h1>
+          <h1>Bun Benchmark: Lint</h1>
           <span class="version-tag" id="commit-tag">commit: loading...</span>
         </div>
         <p class="page-desc">
-          JavaScript / TypeScript 포맷터(Prettier · Biome · bun fmt)의 실행 속도
-          및 Prettier 포맷 출력 일치율을 비교합니다.
+          JavaScript / TypeScript 린터(ESLint · oxlint · Biome · bun lint)에
+          같은 규칙 세트를 걸었을 때의 실행 속도와 ESLint 진단 일치율을
+          비교합니다.
         </p>
         <div class="specs-grid" id="specs-grid">
           <span class="spec-item">환경 정보를 불러오는 중...</span>
@@ -628,10 +642,7 @@
         <div class="section-header">
           <h2 class="section-title">종합 결과 요약 (Benchmark Overview)</h2>
         </div>
-        <p class="section-desc">
-          대용량 코퍼스(프로젝트 전체 ×40 복제본, 5,600개 파일 / 11.5 MB) 포맷
-          소요 시간 및 원본 파일(140개) 기준 Prettier 출력 일치율 요약입니다.
-        </p>
+        <p class="section-desc" id="overview-desc"></p>
         <div class="summary-card">
           <div class="table-responsive">
             <table>
@@ -640,9 +651,9 @@
                   <th>도구 (Tool)</th>
                   <th>버전</th>
                   <th>런타임 / 엔진</th>
-                  <th class="td-num">포맷 시간 (mean)</th>
-                  <th class="td-num">상대 속도 (Throughput)</th>
-                  <th class="td-num">Prettier 바이트 일치율</th>
+                  <th class="td-num">린트 시간 (mean)</th>
+                  <th class="td-num">ESLint 대비</th>
+                  <th class="td-num">ESLint 진단 일치</th>
                 </tr>
               </thead>
               <tbody id="overview-tbody">
@@ -673,14 +684,13 @@
               전체 도구 비교
             </button>
             <button class="segment-btn" id="filter-fast" type="button">
-              고속 도구만 비교 (Prettier 제외)
+              네이티브 도구만 (ESLint 제외)
             </button>
           </div>
         </div>
         <p class="section-desc">
-          <code>hyperfine --write</code> 측정 기준 평균 실행 시간입니다. 바
-          길이가 짧을수록 빠르며, 상대 배수는 해당 코퍼스의 최고 속도
-          기준입니다.
+          <code>hyperfine</code> 측정 기준 평균 실행 시간입니다. 바 길이가
+          짧을수록 빠르며, 상대 배수는 해당 코퍼스의 최고 속도 기준입니다.
         </p>
         <div class="chart-container" id="chart-container"></div>
       </section>
@@ -689,22 +699,20 @@
       <section class="section">
         <div class="section-header">
           <h2 class="section-title">
-            Prettier 출력 일치율 검증 (Byte-for-Byte Parity)
+            ESLint 진단 일치 검증 (Diagnostic Parity)
           </h2>
         </div>
-        <p class="section-desc">
-          프로젝트 원본 소스 파일(140개)을 각 도구로 포맷한 뒤, Prettier 포맷
-          결과와 파일 단위로 바이트 일치 여부를 대조한 결과입니다.
-        </p>
+        <p class="section-desc" id="parity-desc"></p>
         <div class="parity-card">
           <div class="table-responsive">
-            <table id="parity-table">
+            <table>
               <thead>
                 <tr>
-                  <th>구분 / 언어군</th>
-                  <th class="td-num">검증 파일 수</th>
-                  <th class="td-num">bun fmt 일치율</th>
-                  <th class="td-num">Biome 일치율</th>
+                  <th>규칙 (ESLint)</th>
+                  <th class="td-num">ESLint</th>
+                  <th class="td-num">bun lint</th>
+                  <th class="td-num">oxlint</th>
+                  <th class="td-num">Biome</th>
                 </tr>
               </thead>
               <tbody id="parity-tbody"></tbody>
@@ -723,26 +731,27 @@
             <h3>측정 방식 및 재현 (Methodology)</h3>
             <ul>
               <li>
-                <strong>측정 도구:</strong> <code>hyperfine</code> 쓰기
-                모드(<code>--write</code>), 워밍업 1회. 매 반복마다
-                <code>--prepare</code>를 통해 코퍼스를 초기 상태로 원복하며,
-                원복 시간은 측정에서 제외합니다.
+                <strong>측정 도구:</strong> <code>hyperfine -N</code>, 워밍업
+                1회. 린트는 파일을 바꾸지 않으므로 원복 없이 같은 코퍼스를 반복
+                측정합니다. 캐시는 모든 도구에서 꺼진 상태입니다.
               </li>
               <li>
                 <strong>코퍼스 구성:</strong>
-                <code>test_web_page</code> 저장소의 git 추적 소스(HTML, CSS, JS,
-                JSX, TS, TSX, Vue, JSON). <code>large</code> 코퍼스는 이를 40회
-                복제하여 대규모 프로젝트를 모사했습니다.
+                <code>test_web_page</code> 저장소의 git 추적 JS / JSX / TS / TSX
+                소스. Vue 는 bun lint · oxlint 대상이 아니라 제외했고,
+                <code>large</code> 는 이를 복제해 대규모 프로젝트를 모사합니다.
               </li>
               <li>
-                <strong>Biome 옵션:</strong> 실험적 HTML 포맷터를 활성화하고,
-                Prettier와 규격을 맞추기 위해 <code>indentStyle: space</code>,
-                <code>selfCloseVoidElements: always</code> 등을 지정했습니다.
+                <strong>규칙 세트:</strong> <code>eslint:recommended</code> 중
+                네 도구가 모두 지원하는 규칙만 전부 <code>warn</code> 으로
+                켭니다. Biome 대응은 규칙마다 <code>biome migrate eslint</code>
+                로 뽑았고(inspired 제외), 설정은 코퍼스 밖에 두고
+                <code>-c</code> 로 넘깁니다.
               </li>
               <li>
                 <strong>재현 명령:</strong>
                 <code>bun install &amp;&amp; bun run bench</code> 실행 시
-                벤치마크가 재수행되고 <code>results.json</code>이
+                벤치마크가 재수행되고 <code>lint-results.json</code>이
                 업데이트됩니다.
               </li>
             </ul>
@@ -751,30 +760,50 @@
             <h3>성능 및 호환성 분석 (Engineering Notes)</h3>
             <ul>
               <li>
-                <strong>병렬 처리 아키텍처:</strong> Prettier는 Node.js 단일
-                스레드로 동작하는 반면, Biome(Rust)과 bun fmt(Rust, v1.4.0+)는
-                네이티브 스레드 풀을 통해 모든 CPU 코어를 활용하므로 처리량에서
-                큰 격차가 발생합니다.
+                <strong>병렬 처리:</strong> ESLint 는 기본 싱글스레드이고
+                <code>--concurrency=auto</code> 로 worker thread 를 쓸 수
+                있지만, 파일이 적으면 워커 기동 비용 때문에 오히려 느립니다.
+                oxlint · Biome · bun lint 는 네이티브 스레드 풀로 모든 코어를
+                씁니다.
               </li>
               <li>
-                <strong>코퍼스 규모와 Throughput:</strong> 파일 수가 적은 원본
-                1벌(140개)에서는 프로세스 기동(Startup) 오버헤드 비중이 크지만,
-                대용량 코퍼스(5,600개)에서는 I/O 및 파서의 순수 Throughput이
-                드러납니다.
+                <strong>bun lint:</strong> <code>eslint.config.mjs</code> 를
+                그대로 읽고(<code>--doctor</code> 기준 규칙 전부 네이티브 실행),
+                ESLint 와 같은 파일 선택(<code>.jsx</code> 는
+                <code>files</code> 지정 필요)과 같은 진단 결과를 냅니다.
               </li>
               <li>
-                <strong>bun fmt:</strong> main 브랜치 canary 빌드임에도 검증된
-                140개 파일 전원에 걸쳐 Prettier와 100% 바이트 일치를
-                기록했습니다.
+                <strong>TS 파일의 core 규칙:</strong> ESLint core
+                <code>no-unused-vars</code> · <code>no-undef</code> 는 타입
+                선언을 이해하지 못해 TS 에서 오탐을 내고, bun lint 는 이것까지
+                재현합니다. oxlint · Biome 은 TS 를 인식해 이 경고를 내지
+                않습니다.
               </li>
               <li>
-                <strong>Biome:</strong> 전반적으로 높은 호환성(97.9%)을 보이나,
-                HTML 및 Vue/TSX 일부 엣지 케이스에서 미세한 공백/줄바꿈 차이가
-                존재합니다.
+                <strong>oxlint 기동 비용:</strong> npm 배포본은 Node 래퍼 + napi
+                바인딩이라 측정값에 Node 시작 시간이 포함됩니다.
               </li>
             </ul>
           </div>
         </div>
+      </section>
+
+      <!-- Rule Set Details -->
+      <section class="section">
+        <details class="raw-section">
+          <summary id="rules-summary">규칙 세트</summary>
+          <div class="table-responsive" style="margin-top: 14px">
+            <table>
+              <thead>
+                <tr>
+                  <th>ESLint · oxlint · bun lint</th>
+                  <th>Biome</th>
+                </tr>
+              </thead>
+              <tbody id="rules-tbody"></tbody>
+            </table>
+          </div>
+        </details>
       </section>
 
       <!-- Raw Benchmark Data Details -->
@@ -782,7 +811,7 @@
         <details class="raw-section">
           <summary>전체 측정 데이터 테이블 (Raw Benchmark Data)</summary>
           <div class="table-responsive" style="margin-top: 14px">
-            <table id="raw-table">
+            <table>
               <thead>
                 <tr>
                   <th>코퍼스</th>
@@ -805,41 +834,50 @@
     <div id="tooltip" role="tooltip"></div>
 
     <script>
-      const TOOLS = ["bun", "biome", "prettier"];
+      const TOOLS = ["bun", "biome", "oxlint", "eslint-mt", "eslint"];
+      const NATIVE = ["bun", "biome", "oxlint"];
+      const PARITY_TOOLS = ["eslint", "bun", "oxlint", "biome"];
       const TOOL_CONFIG = {
         bun: {
-          name: "bun fmt",
+          name: "bun lint",
+          ver: "bun",
           engine: "Native (Rust, 멀티스레드)",
           colorVar: "var(--brand-bun)",
         },
         biome: {
           name: "Biome",
+          ver: "biome",
           engine: "Native (Rust, 멀티스레드)",
           colorVar: "var(--brand-biome)",
         },
-        prettier: {
-          name: "Prettier",
+        oxlint: {
+          name: "oxlint",
+          ver: "oxlint",
+          engine: "Native (Rust, 멀티스레드) + Node 래퍼",
+          colorVar: "var(--brand-oxlint)",
+        },
+        "eslint-mt": {
+          name: "ESLint (mt)",
+          ver: "eslint",
+          engine: "Node.js (--concurrency=auto)",
+          colorVar: "var(--brand-eslint-mt)",
+        },
+        eslint: {
+          name: "ESLint",
+          ver: "eslint",
           engine: "Node.js (V8, 싱글스레드)",
-          colorVar: "var(--brand-prettier)",
+          colorVar: "var(--brand-eslint)",
         },
       };
 
-      const ORDER = ["large", "js", "html", "css", "small"];
-      const CORPUS_META = {
-        large: { title: "프로젝트 전체 (×40 복제)", tag: "Large" },
-        js: { title: "JS / TS (×40 복제)", tag: "JS/TS" },
-        html: { title: "HTML (×40 복제)", tag: "HTML" },
-        css: { title: "CSS (×40 복제)", tag: "CSS" },
-        small: { title: "프로젝트 원본 (1벌)", tag: "Baseline" },
-      };
-
-      const PARITY_GROUPS = [
-        ["HTML", ["html"]],
-        ["Vue", ["vue"]],
-        ["CSS", ["css"]],
-        ["JS/TS", ["js", "jsx", "ts", "tsx"]],
-        ["JSON", ["json"]],
-      ];
+      const ORDER = ["large", "ts", "js", "small"];
+      const corpusTitle = (name, copies) =>
+        ({
+          large: `프로젝트 전체 (×${copies} 복제)`,
+          ts: `TS / TSX (×${copies} 복제)`,
+          js: `JS / JSX (×${copies} 복제)`,
+          small: "프로젝트 원본 (1벌)",
+        })[name];
 
       const $ = (id) => document.getElementById(id);
 
@@ -852,7 +890,26 @@
         b >= 1e6 ? `${(b / 1e6).toFixed(1)} MB` : `${Math.round(b / 1e3)} KB`;
 
       let currentData = null;
-      let hidePrettier = false;
+      let hideEslint = false;
+
+      // tool 의 진단 합계: count = 전체, matched = ESLint 와 (파일, 줄, 규칙) 이 같은 것
+      const paritySum = (parity, tool) =>
+        parity
+          .filter((p) => p.tool === tool)
+          .reduce(
+            (s, p) => ({
+              count: s.count + p.count,
+              matched: s.matched + p.matched,
+            }),
+            { count: 0, matched: 0 },
+          );
+
+      function parityBadge(eslintCount, { count, matched }) {
+        const extra = count - matched;
+        const ok = matched === eslintCount && extra === 0;
+        const extraText = extra ? ` · +${extra} 추가` : "";
+        return `<span class="badge-tag ${ok ? "badge-success" : "badge-warning"}">${matched} / ${eslintCount}${extraText}</span>`;
+      }
 
       function renderSpecs(meta) {
         $("commit-tag").textContent = `@${meta.commit}`;
@@ -860,6 +917,10 @@
           { label: "CPU", val: `${meta.cpu} (${meta.cores} cores)` },
           { label: "OS", val: meta.os },
           { label: "Node", val: meta.node },
+          {
+            label: "typescript-eslint",
+            val: meta.versions["typescript-eslint"],
+          },
           {
             label: "측정일",
             val: new Date(meta.date).toLocaleDateString("ko-KR"),
@@ -874,49 +935,32 @@
           .join("");
       }
 
-      function renderOverview({ meta, corpora, parity }) {
+      function renderOverview({ meta, corpora, parity, rules }) {
         const large = corpora.find((c) => c.name === "large");
-        const baseTool = "prettier";
-        const prettierMean =
-          large.results.find((r) => r.tool === baseTool)?.mean || 1;
-        const fastestTool = large.results.reduce((a, b) =>
+        const small = corpora.find((c) => c.name === "small");
+        $("overview-desc").textContent =
+          `대용량 코퍼스(원본 ×${meta.copies} 복제, ${large.files.toLocaleString()}개 파일 / ${fmtBytes(large.bytes)})에 ${rules.length}개 규칙을 건 린트 시간과, 원본(${small.files}개 파일) 기준 ESLint 진단 일치 요약입니다.`;
+
+        const eslintMean = large.results.find((r) => r.tool === "eslint").mean;
+        const fastest = large.results.reduce((a, b) =>
           b.mean < a.mean ? b : a,
         ).tool;
+        const eslintCount = paritySum(parity, "eslint").count;
 
-        // Calculate total parity
-        const totalFiles = parity
-          .filter((p) => p.tool === "bun")
-          .reduce((n, p) => n + p.total, 0);
-        const getParityStat = (tool) => {
-          if (tool === "prettier")
-            return { same: totalFiles, total: totalFiles, rate: 100 };
-          const same = parity
-            .filter((p) => p.tool === tool)
-            .reduce((n, p) => n + p.same, 0);
-          return { same, total: totalFiles, rate: (same / totalFiles) * 100 };
-        };
-
-        const rows = TOOLS.map((toolKey) => {
-          const cfg = TOOL_CONFIG[toolKey];
-          const r = large.results.find((x) => x.tool === toolKey);
-          const verStr = meta.versions[toolKey] || "";
-          const [ver, sha] = verStr.split("+");
+        $("overview-tbody").innerHTML = TOOLS.map((tool) => {
+          const cfg = TOOL_CONFIG[tool];
+          const r = large.results.find((x) => x.tool === tool);
+          const [ver, sha] = (meta.versions[cfg.ver] || "").split("+");
           const verDisplay = sha
             ? `<a href="https://github.com/oven-sh/bun/commit/${sha}" target="_blank" rel="noopener">${ver}</a>`
             : ver;
-
-          const speedup = (prettierMean / r.mean).toFixed(1);
-          const speedupText =
-            toolKey === "prettier"
+          const speedup =
+            tool === "eslint"
               ? `<span style="color: var(--text-muted);">1.0× (기준)</span>`
-              : `<span class="badge-tag ${toolKey === fastestTool ? "badge-fastest" : ""}">${speedup}× faster</span>`;
-
-          const pStat = getParityStat(toolKey);
-          const parityBadge =
-            pStat.rate === 100
-              ? `<span class="badge-tag badge-success">${pStat.same} / ${pStat.total} (100%)</span>`
-              : `<span class="badge-tag badge-warning">${pStat.same} / ${pStat.total} (${pStat.rate.toFixed(1)}%)</span>`;
-
+              : `<span class="badge-tag ${tool === fastest ? "badge-fastest" : ""}">${(eslintMean / r.mean).toFixed(1)}× faster</span>`;
+          const parityCell = tool.startsWith("eslint")
+            ? `<span style="color: var(--text-muted);">기준</span>`
+            : parityBadge(eslintCount, paritySum(parity, tool));
           return `
             <tr>
               <td>
@@ -928,52 +972,43 @@
               <td class="td-mono">${verDisplay}</td>
               <td style="color: var(--text-muted); font-size: 0.82rem;">${cfg.engine}</td>
               <td class="td-mono td-num" style="font-weight: 600;">${fmtTime(r.mean)}</td>
-              <td class="td-num">${speedupText}</td>
-              <td class="td-num">${parityBadge}</td>
+              <td class="td-num">${speedup}</td>
+              <td class="td-num">${parityCell}</td>
             </tr>
           `;
         }).join("");
-
-        $("overview-tbody").innerHTML = rows;
       }
 
       function renderChart({ meta, corpora }) {
-        const tools = hidePrettier ? ["bun", "biome"] : TOOLS;
-        const container = $("chart-container");
-
-        container.innerHTML = ORDER.map((corpusName) => {
-          const c = corpora.find((x) => x.name === corpusName);
-          const metaInfo = CORPUS_META[corpusName];
+        const tools = hideEslint ? NATIVE : TOOLS;
+        $("chart-container").innerHTML = ORDER.map((name) => {
+          const c = corpora.find((x) => x.name === name);
+          const title = corpusTitle(name, meta.copies);
           const results = tools.map((t) => c.results.find((r) => r.tool === t));
-
           const max = Math.max(...results.map((r) => r.mean));
           const min = Math.min(...results.map((r) => r.mean));
 
           const rows = results
             .map((r) => {
               const cfg = TOOL_CONFIG[r.tool];
-              const ratio = (r.mean / max) * 100;
-              const isFastest = r.mean === min;
-              const multiplier = (r.mean / min).toFixed(1);
-              const multDisplay = isFastest
-                ? `<span class="row-multiplier fastest">가장 빠름</span>`
-                : `<span class="row-multiplier">×${multiplier}</span>`;
-
+              const multDisplay =
+                r.mean === min
+                  ? `<span class="row-multiplier fastest">가장 빠름</span>`
+                  : `<span class="row-multiplier">×${(r.mean / min).toFixed(1)}</span>`;
               const tipData = JSON.stringify({
                 tool: cfg.name,
-                corpus: `${metaInfo.title}`,
+                corpus: title,
                 mean: fmtTime(r.mean),
                 stddev: fmtTime(r.stddev),
                 min: fmtTime(r.min),
                 max: fmtTime(r.max),
                 runs: c.runs,
               }).replace(/"/g, "&quot;");
-
               return `
                 <div class="chart-row" data-tip="${tipData}">
                   <span class="row-tool">${cfg.name}</span>
                   <div class="row-track">
-                    <div class="row-bar" style="width: ${Math.max(ratio, 1.5)}%; background: ${cfg.colorVar};"></div>
+                    <div class="row-bar" style="width: ${Math.max((r.mean / max) * 100, 1.5)}%; background: ${cfg.colorVar};"></div>
                   </div>
                   <div class="row-values">
                     <span class="row-time">${fmtTime(r.mean)}</span>
@@ -987,94 +1022,84 @@
           return `
             <div class="corpus-block">
               <div class="corpus-header">
-                <h3 class="corpus-title">${metaInfo.title}</h3>
+                <h3 class="corpus-title">${title}</h3>
                 <span class="corpus-meta">${c.files.toLocaleString()} files · ${fmtBytes(c.bytes)} · ${c.runs} runs</span>
               </div>
-              <div class="chart-rows">
-                ${rows}
-              </div>
+              <div class="chart-rows">${rows}</div>
             </div>
           `;
         }).join("");
       }
 
-      function renderParity({ parity }) {
-        const sum = (exts, tool, key) =>
-          parity
-            .filter((p) => p.tool === tool && exts.includes(p.ext))
-            .reduce((n, p) => n + p[key], 0);
+      function renderParity({ corpora, parity }) {
+        const small = corpora.find((c) => c.name === "small");
+        $("parity-desc").innerHTML =
+          `원본 소스(${small.files}개 파일)의 진단을 <code>(파일, 줄, 규칙)</code> 단위로 모아 ESLint 결과와 대조했습니다. 각 칸은 <code>ESLint 와 일치 / ESLint 건수</code> 이고, ESLint 에 없는 진단은 <code>+N 추가</code> 로 표시합니다. Biome 규칙은 ESLint 이름으로 바꿔 비교합니다.`;
 
-        let totalFiles = 0;
-        let bunTotalSame = 0;
-        let biomeTotalSame = 0;
+        const cell = (tool, rule) =>
+          parity.find((p) => p.tool === tool && p.rule === rule) || {
+            count: 0,
+            matched: 0,
+          };
+        const row = (get) => {
+          const eslintCount = get("eslint").count;
+          return PARITY_TOOLS.map((tool) => {
+            const c = get(tool);
+            if (tool === "eslint")
+              return `<td class="td-num td-mono ${c.count ? "" : "count-zero"}">${c.count}</td>`;
+            if (!c.count && !eslintCount)
+              return `<td class="td-num td-mono count-zero">0</td>`;
+            return `<td class="td-num">${parityBadge(eslintCount, c)}</td>`;
+          }).join("");
+        };
 
-        const rows = PARITY_GROUPS.map(([groupName, exts]) => {
-          const total = sum(exts, "bun", "total");
-          if (!total) return "";
-
-          const bunSame = sum(exts, "bun", "same");
-          const biomeSame = sum(exts, "biome", "same");
-
-          totalFiles += total;
-          bunTotalSame += bunSame;
-          biomeTotalSame += biomeSame;
-
-          const bunBadge =
-            bunSame === total
-              ? `<span class="badge-tag badge-success">${bunSame} / ${total} (100%)</span>`
-              : `<span class="badge-tag badge-warning">${bunSame} / ${total} (${((bunSame / total) * 100).toFixed(1)}%)</span>`;
-
-          const biomeBadge =
-            biomeSame === total
-              ? `<span class="badge-tag badge-success">${biomeSame} / ${total} (100%)</span>`
-              : `<span class="badge-tag badge-warning">${biomeSame} / ${total} (${((biomeSame / total) * 100).toFixed(1)}%)</span>`;
-
-          return `
-            <tr>
-              <td><strong>${groupName}</strong> <span style="color: var(--text-muted); font-size: 0.78rem;">(${exts.join(", ")})</span></td>
-              <td class="td-num td-mono">${total}</td>
-              <td class="td-num">${bunBadge}</td>
-              <td class="td-num">${biomeBadge}</td>
-            </tr>
-          `;
-        }).join("");
-
-        const bunTotalBadge =
-          bunTotalSame === totalFiles
-            ? `<span class="badge-tag badge-success">${bunTotalSame} / ${totalFiles} (100%)</span>`
-            : `<span class="badge-tag badge-warning">${bunTotalSame} / ${totalFiles}</span>`;
-
-        const biomeTotalBadge =
-          biomeTotalSame === totalFiles
-            ? `<span class="badge-tag badge-success">${biomeTotalSame} / ${totalFiles} (100%)</span>`
-            : `<span class="badge-tag badge-warning">${biomeTotalSame} / ${totalFiles} (${((biomeTotalSame / totalFiles) * 100).toFixed(1)}%)</span>`;
-
+        const ruleNames = [...new Set(parity.map((p) => p.rule))].sort();
+        const rows = ruleNames
+          .map(
+            (rule) =>
+              `<tr><td class="td-mono">${rule}</td>${row((t) => cell(t, rule))}</tr>`,
+          )
+          .join("");
         const totalRow = `
           <tr style="background: var(--surface-subtle); font-weight: 600;">
-            <td>전체 합계 (Total)</td>
-            <td class="td-num td-mono">${totalFiles}</td>
-            <td class="td-num">${bunTotalBadge}</td>
-            <td class="td-num">${biomeTotalBadge}</td>
+            <td>전체 합계 (Total)</td>${row((t) => paritySum(parity, t))}
           </tr>
         `;
+        $("parity-tbody").innerHTML =
+          (rows ||
+            `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">모든 도구가 진단 0건</td></tr>`) +
+          totalRow;
+      }
 
-        $("parity-tbody").innerHTML = rows + totalRow;
+      function renderRules({ rules, excluded }) {
+        $("rules-summary").textContent =
+          `규칙 세트 (${rules.length}개 사용 · ${excluded.length}개 제외)`;
+        const used = rules
+          .map(
+            (r) =>
+              `<tr><td class="td-mono">${r.eslint}</td><td class="td-mono">${r.biome}</td></tr>`,
+          )
+          .join("");
+        const skipped = excluded
+          .map(
+            (r) =>
+              `<tr><td class="td-mono count-zero"><s>${r.rule}</s></td><td style="color: var(--text-muted);">제외: ${r.reason}</td></tr>`,
+          )
+          .join("");
+        $("rules-tbody").innerHTML = used + skipped;
       }
 
       function renderRawTable({ meta, corpora }) {
-        const rows = ORDER.flatMap((corpusName) => {
-          const c = corpora.find((x) => x.name === corpusName);
-          const metaInfo = CORPUS_META[corpusName];
+        $("raw-tbody").innerHTML = ORDER.flatMap((name) => {
+          const c = corpora.find((x) => x.name === name);
           const min = Math.min(...c.results.map((r) => r.mean));
-
           return TOOLS.map((t) => {
             const r = c.results.find((x) => x.tool === t);
-            const cfg = TOOL_CONFIG[t];
             const mult = (r.mean / min).toFixed(2);
             return `
               <tr>
-                <td>${metaInfo.title}</td>
-                <td><strong>${cfg.name}</strong></td>
+                <td>${corpusTitle(name, meta.copies)}</td>
+                <td><strong>${TOOL_CONFIG[t].name}</strong></td>
                 <td class="td-mono td-num">${fmtTime(r.mean)}</td>
                 <td class="td-mono td-num">± ${fmtTime(r.stddev)}</td>
                 <td class="td-mono td-num">${fmtTime(r.min)}</td>
@@ -1084,13 +1109,10 @@
             `;
           });
         }).join("");
-
-        $("raw-tbody").innerHTML = rows;
       }
 
       // Theme toggle handling
       const root = document.documentElement;
-      const themeBtn = $("theme-btn");
       const themeIcon = $("theme-icon");
       const themeText = $("theme-text");
 
@@ -1102,7 +1124,7 @@
 
       updateThemeUI(root.dataset.theme);
 
-      themeBtn.addEventListener("click", () => {
+      $("theme-btn").addEventListener("click", () => {
         const next = root.dataset.theme === "dark" ? "light" : "dark";
         updateThemeUI(next);
         try {
@@ -1124,22 +1146,15 @@
       // Segmented control buttons
       const btnAll = $("filter-all");
       const btnFast = $("filter-fast");
-
-      btnAll.addEventListener("click", () => {
-        if (!hidePrettier) return;
-        hidePrettier = false;
-        btnAll.classList.add("active");
-        btnFast.classList.remove("active");
+      const setFilter = (hide) => {
+        if (hideEslint === hide) return;
+        hideEslint = hide;
+        btnAll.classList.toggle("active", !hide);
+        btnFast.classList.toggle("active", hide);
         if (currentData) renderChart(currentData);
-      });
-
-      btnFast.addEventListener("click", () => {
-        if (hidePrettier) return;
-        hidePrettier = true;
-        btnFast.classList.add("active");
-        btnAll.classList.remove("active");
-        if (currentData) renderChart(currentData);
-      });
+      };
+      btnAll.addEventListener("click", () => setFilter(false));
+      btnFast.addEventListener("click", () => setFilter(true));
 
       // Tooltip handling
       const tip = $("tooltip");
@@ -1149,30 +1164,20 @@
           tip.style.display = "none";
           return;
         }
-
-        try {
-          const d = JSON.parse(row.dataset.tip);
-          tip.innerHTML = `
-            <div class="tt-title">${d.tool} — ${d.corpus}</div>
-            <div class="tt-line">평균: ${d.mean} (±${d.stddev})</div>
-            <div class="tt-line">최소: ${d.min} / 최대: ${d.max}</div>
-            <div class="tt-line">실행: ${d.runs} runs</div>
-          `;
-          tip.style.display = "block";
-          const x = Math.min(
-            e.clientX + 16,
-            window.innerWidth - tip.offsetWidth - 12,
-          );
-          const y = e.clientY + 16;
-          tip.style.left = `${x}px`;
-          tip.style.top = `${y}px`;
-        } catch {
-          tip.style.display = "none";
-        }
+        const d = JSON.parse(row.dataset.tip);
+        tip.innerHTML = `
+          <div class="tt-title">${d.tool} — ${d.corpus}</div>
+          <div class="tt-line">평균: ${d.mean} (±${d.stddev})</div>
+          <div class="tt-line">최소: ${d.min} / 최대: ${d.max}</div>
+          <div class="tt-line">실행: ${d.runs} runs</div>
+        `;
+        tip.style.display = "block";
+        tip.style.left = `${Math.min(e.clientX + 16, window.innerWidth - tip.offsetWidth - 12)}px`;
+        tip.style.top = `${e.clientY + 16}px`;
       });
 
       // Data fetch
-      fetch("./results.json")
+      fetch("./lint-results.json")
         .then((r) => {
           if (!r.ok) throw new Error(`HTTP ${r.status}`);
           return r.json();
@@ -1183,12 +1188,13 @@
           renderOverview(data);
           renderChart(data);
           renderParity(data);
+          renderRules(data);
           renderRawTable(data);
         })
         .catch((err) => {
           $("error-container").innerHTML = `
             <div class="error-banner">
-              <strong>results.json 로드 실패:</strong> ${err.message}. 로컬 테스트 시 <code>bun run serve</code> 명령을 사용하여 웹 서버 환경에서 열어주세요.
+              <strong>lint-results.json 로드 실패:</strong> ${err.message}. 로컬 테스트 시 <code>bun run serve</code> 명령을 사용하여 웹 서버 환경에서 열어주세요.
             </div>
           `;
         });

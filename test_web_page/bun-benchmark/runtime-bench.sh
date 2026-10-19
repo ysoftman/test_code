@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# node · deno · bun 런타임 성능 벤치마크 → results.json
+# node · deno · bun 런타임 성능 벤치마크 → runtime-results.json
 # 요구: node, deno, bun, hyperfine, oha, jq, curl
 # 환경변수: HTTP_SECS=<HTTP 부하 시간(초)>(기본 10), CONNS=<동시 연결 수>(기본 64), PORT(기본 3456)
 set -euo pipefail
 
 HERE=$(cd "$(dirname "$0")" && pwd)
-W=$HERE/workloads
+W=$HERE
 TMP=${BENCH_TMP:-${TMPDIR:-/tmp}/runtime-benchmark}
 HTTP_SECS=${HTTP_SECS:-10}
 CONNS=${CONNS:-64}
 PORT=${PORT:-3456}
-WORKLOADS="startup.js startup-ts.ts fib.js json.js sort.js crypto.js fs.js"
+WORKLOADS="runtime-startup.js runtime-startup-ts.ts runtime-fib.js runtime-json.js runtime-sort.js runtime-crypto.js runtime-fs.js"
 mkdir -p "$TMP"
-cd "$HERE" # package.json 의 "type": "module" 을 읽도록
+cd "$HERE" # 상위 package.json 의 "type": "module" 을 읽도록
 
 # 런타임 실행 명령. 함수로 감싸 실행하면 `&` 의 $! 가 서브셸 PID 가 되므로 명령 문자열만 돌려준다
 cmd() { if [[ $1 == deno ]]; then echo "deno run -A"; else echo "$1"; fi; }
@@ -58,8 +58,10 @@ for f in $WORKLOADS; do
     w=1 r=10
     [[ $f == startup* ]] && w=3 r=30
     for rt in node deno bun; do
+        name=${f#runtime-}
+        name=${name%.*}
         hyperfine -N -w "$w" -r "$r" -n "$rt" "$(cmd "$rt") $W/$f" \
-            --export-json "$TMP/${f%.*}-$rt.json"
+            --export-json "$TMP/$name-$rt.json"
     done
 done
 
@@ -77,7 +79,7 @@ for target in node:node:node:http deno:native:Deno.serve bun:native:Bun.serve de
         echo "포트 $PORT 를 이미 다른 프로세스가 쓰고 있음" >&2
         exit 1
     fi
-    HTTP_API=$mode PORT=$PORT $(cmd "$rt") "$W/serve.js" &
+    HTTP_API=$mode PORT=$PORT $(cmd "$rt") "$W/runtime-serve.js" &
     pid=$!
     for _ in $(seq 100); do
         curl -fs -o /dev/null "$url" && break
@@ -104,17 +106,19 @@ for target in node:node:node:http deno:native:Deno.serve bun:native:Bun.serve de
         "$TMP/http.json" >>"$TMP/http.jsonl"
 done
 
-# 4) results.json
+# 4) runtime-results.json
 #   memory_usage_byte 는 hyperfine 한 번 안에서 누적 최댓값(워밍업 포함)이라 평균이 아닌 최댓값을 쓴다
 for f in $WORKLOADS; do
-    jq -sc --arg name "${f%.*}" 'map(.results[0]) | {$name, runs: (.[0].times | length),
+    name=${f#runtime-}
+    name=${name%.*}
+    jq -sc --arg name "$name" 'map(.results[0]) | {$name, runs: (.[0].times | length),
       results: map({tool: .command, mean, stddev, min, max, user, system,
-        memory: (.memory_usage_byte | max)})}' "$TMP/${f%.*}"-{node,deno,bun}.json
+        memory: (.memory_usage_byte | max)})}' "$TMP/$name"-{node,deno,bun}.json
 done >"$TMP/workloads.jsonl"
 
 jq -n \
     --argjson secs "$HTTP_SECS" --argjson conns "$CONNS" --slurpfile meta "$TMP/meta.json" \
     --slurpfile workloads "$TMP/workloads.jsonl" --slurpfile http "$TMP/http.jsonl" \
-    '{meta: $meta[0], $workloads, http: {$secs, $conns, results: $http}}' >"$HERE/results.json"
+    '{meta: $meta[0], $workloads, http: {$secs, $conns, results: $http}}' >"$HERE/runtime-results.json"
 
-echo "→ $HERE/results.json"
+echo "→ $HERE/runtime-results.json"

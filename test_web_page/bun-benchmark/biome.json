@@ -1,0 +1,19 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "files": {
+    "includes": [
+      "formatter*.json",
+      "lint*.json",
+      "runtime*.json",
+      "runtime-*.js",
+      "runtime-*.ts",
+      "!formatter-results.json",
+      "!lint-results.json",
+      "!runtime-results.json"
+    ]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2
+  }
+}
