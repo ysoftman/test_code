@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Bun formatter, linter, runtime benchmark results"
+    />
+    <title>Bun Benchmark</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <link rel="stylesheet" href="./benchmark.css" />
+    <style>
+      body {
+        margin: 0;
+        line-height: 1.55;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .benchmark-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .benchmark-card {
+        display: block;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface);
+        color: var(--text);
+        text-decoration: none;
+        transition:
+          border-color 140ms ease,
+          transform 140ms ease;
+      }
+
+      .benchmark-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        text-decoration: none;
+      }
+
+      .benchmark-card h2 {
+        margin: 0 0 8px;
+        font-size: 1.1rem;
+      }
+
+      .benchmark-card p {
+        margin: 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_web_page</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">Bun Benchmark</span>
+        </div>
+        <div class="nav-actions">
+          <nav class="section-nav" aria-label="Bun Benchmark pages">
+            <a href="./formatter.html">Formatter</a>
+            <a href="./lint.html">Lint</a>
+            <a href="./runtime.html">Runtime</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-header">
+        <h1>Bun Benchmark</h1>
+        <p class="page-desc">
+          Formatter, lint, runtime 벤치마크 결과를 확인합니다.
+        </p>
+      </section>
+
+      <div class="benchmark-grid">
+        <a class="benchmark-card" href="./formatter.html">
+          <h2>Formatter</h2>
+          <p>Prettier · Biome · bun fmt 속도와 출력 일치율</p>
+        </a>
+        <a class="benchmark-card" href="./lint.html">
+          <h2>Lint</h2>
+          <p>ESLint · oxlint · Biome · bun lint 속도와 진단 결과</p>
+        </a>
+        <a class="benchmark-card" href="./runtime.html">
+          <h2>Runtime</h2>
+          <p>Node.js · Deno · Bun 실행 시간, 메모리, HTTP 처리량</p>
+        </a>
+      </div>
+    </main>
+  </body>
+</html>
