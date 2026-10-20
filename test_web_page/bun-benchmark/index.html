@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Bun formatter, linter, runtime benchmark results"
+      content="Formatter, lint, and runtime benchmark overview"
     />
-    <title>Bun Benchmark</title>
+    <title>Bun Benchmark Overview</title>
     <script>
       (() => {
         let saved = null;
@@ -19,51 +19,254 @@
           saved || (os ? "dark" : "light");
       })();
     </script>
-    <link rel="stylesheet" href="./benchmark.css" />
     <style>
+      :root {
+        color-scheme: light;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-subtle: #f1f5f9;
+        --border: #e2e8f0;
+        --border-subtle: #edf2f7;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --text-faint: #94a3b8;
+        --accent: #2563eb;
+        --accent-subtle: #eff6ff;
+        --success: #16a34a;
+        --success-bg: #f0fdf4;
+        --warning: #d97706;
+        --warning-bg: #fffbeb;
+
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Pretendard Variable", Pretendard, sans-serif;
+        --font-mono:
+          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+      }
+
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface-subtle: #1f242c;
+        --border: #30363d;
+        --border-subtle: #21262d;
+        --text: #e6edf3;
+        --text-muted: #8b949e;
+        --text-faint: #6e7681;
+        --accent: #58a6ff;
+        --accent-subtle: #121d2f;
+        --success: #3fb950;
+        --success-bg: #0d281e;
+        --warning: #f59e0b;
+        --warning-bg: #2d2206;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--text);
         line-height: 1.55;
         font-size: 14px;
         -webkit-font-smoothing: antialiased;
       }
 
-      .benchmark-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 16px;
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
       }
 
-      .benchmark-card {
-        display: block;
-        padding: 20px;
-        border: 1px solid var(--border);
-        border-radius: 10px;
+      /* Top Navbar */
+      .navbar {
+        border-bottom: 1px solid var(--border);
         background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .nav-inner {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-back {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-back:hover {
         color: var(--text);
         text-decoration: none;
-        transition:
-          border-color 140ms ease,
-          transform 140ms ease;
       }
-
-      .benchmark-card:hover {
-        border-color: var(--accent);
-        transform: translateY(-2px);
-        text-decoration: none;
+      .nav-sep {
+        color: var(--border);
       }
-
-      .benchmark-card h2 {
-        margin: 0 0 8px;
-        font-size: 1.1rem;
+      .nav-title {
+        font-weight: 600;
+        font-size: 0.9rem;
       }
-
-      .benchmark-card p {
-        margin: 0;
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .theme-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
         color: var(--text-muted);
-        line-height: 1.6;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
+      }
+      .theme-btn:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+      }
+
+      /* Layout */
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0;
+        line-height: 1.25;
+      }
+      .page-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 8px 0 0;
+        max-width: 720px;
+      }
+
+      /* Section Common */
+      .section {
+        margin-top: 36px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-desc {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin: 0 0 16px;
+      }
+
+      /* Summary Overview Table */
+      .summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .table-responsive {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        text-align: left;
+      }
+      th {
+        background: var(--surface-subtle);
+        border-bottom: 1px solid var(--border);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 9px 14px;
+        white-space: nowrap;
+      }
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border-subtle);
+        vertical-align: middle;
+      }
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .td-num {
+        text-align: right;
+      }
+      td:not(:first-child) {
+        white-space: nowrap;
+      }
+      td.best {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .data-meta,
+      .table-note {
+        color: var(--text-faint);
+        font-size: 0.8rem;
+      }
+      .data-meta {
+        margin-top: 28px;
+      }
+      .table-note {
+        margin: 9px 0 0;
+      }
+
+      @media (max-width: 760px) {
+        .section {
+          margin-top: 28px;
+        }
       }
     </style>
+    <link rel="stylesheet" href="./benchmark.css" />
   </head>
   <body>
     <header class="navbar">
@@ -75,36 +278,278 @@
         </div>
         <div class="nav-actions">
           <nav class="section-nav" aria-label="Bun Benchmark pages">
+            <a href="./" aria-current="page">Overview</a>
             <a href="./formatter.html">Formatter</a>
             <a href="./lint.html">Lint</a>
             <a href="./runtime.html">Runtime</a>
           </nav>
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon">◐</span>
+            <span id="theme-text">Theme</span>
+          </button>
         </div>
       </div>
     </header>
 
     <main class="container">
       <section class="page-header">
-        <h1>Bun Benchmark</h1>
+        <h1>Bun Benchmark Overview</h1>
         <p class="page-desc">
-          Formatter, lint, runtime 벤치마크 결과를 확인합니다.
+          각 벤치마크의 대표 결과를 한 화면에서 비교합니다. 표의 실행 시간은
+          낮을수록, HTTP 처리량은 높을수록 빠릅니다.
         </p>
       </section>
 
-      <div class="benchmark-grid">
-        <a class="benchmark-card" href="./formatter.html">
-          <h2>Formatter</h2>
-          <p>Prettier · Biome · bun fmt 속도와 출력 일치율</p>
-        </a>
-        <a class="benchmark-card" href="./lint.html">
-          <h2>Lint</h2>
-          <p>ESLint · oxlint · Biome · bun lint 속도와 진단 결과</p>
-        </a>
-        <a class="benchmark-card" href="./runtime.html">
-          <h2>Runtime</h2>
-          <p>Node.js · Deno · Bun 실행 시간, 메모리, HTTP 처리량</p>
-        </a>
-      </div>
+      <section class="section" id="formatter">
+        <div class="section-header">
+          <h2 class="section-title">Formatter</h2>
+        </div>
+        <p class="section-desc">
+          저장소의 대규모 코퍼스를 포맷하는 데 걸린 시간과 Bun 출력
+          일치율입니다.
+        </p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>코퍼스</th>
+                  <th class="td-num">파일</th>
+                  <th class="td-num">Prettier</th>
+                  <th class="td-num">Biome</th>
+                  <th class="td-num">Bun</th>
+                  <th class="td-num">Bun 일치율</th>
+                </tr>
+              </thead>
+              <tbody id="formatter-overview">
+                <tr>
+                  <td colspan="6">결과를 불러오는 중...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="lint">
+        <div class="section-header">
+          <h2 class="section-title">Lint</h2>
+        </div>
+        <p class="section-desc">
+          대규모 JavaScript·TypeScript 코퍼스의 검사 시간과 비교한 린터입니다.
+        </p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>코퍼스</th>
+                  <th class="td-num">파일</th>
+                  <th class="td-num">ESLint</th>
+                  <th class="td-num">ESLint MT</th>
+                  <th class="td-num">oxlint</th>
+                  <th class="td-num">Biome</th>
+                  <th class="td-num">Bun</th>
+                </tr>
+              </thead>
+              <tbody id="lint-overview">
+                <tr>
+                  <td colspan="7">결과를 불러오는 중...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="table-note" id="lint-note"></p>
+      </section>
+
+      <section class="section" id="runtime">
+        <div class="section-header">
+          <h2 class="section-title">Runtime</h2>
+        </div>
+        <p class="section-desc">
+          대표 시작 시간과 HTTP 서버 처리량으로 Node.js·Deno·Bun 런타임을
+          비교합니다.
+        </p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>작업</th>
+                  <th class="td-num">측정 횟수</th>
+                  <th class="td-num">Node.js</th>
+                  <th class="td-num">Deno</th>
+                  <th class="td-num">Bun</th>
+                  <th>가장 빠른 결과</th>
+                </tr>
+              </thead>
+              <tbody id="runtime-overview">
+                <tr>
+                  <td colspan="6">결과를 불러오는 중...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <p class="data-meta" id="data-meta">측정 환경 정보를 불러오는 중...</p>
     </main>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const root = document.documentElement;
+      const themeIcon = $("theme-icon");
+      const themeText = $("theme-text");
+      const updateTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+        themeText.textContent = theme === "dark" ? "Light" : "Dark";
+      };
+      updateTheme(root.dataset.theme);
+      $("theme-btn").addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        updateTheme(next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
+
+      const duration = (value) =>
+        value >= 1
+          ? `${value.toFixed(2)} s`
+          : `${(value * 1000).toFixed(1)} ms`;
+      const runtime = (value) => `${(value * 1000).toFixed(1)} ms`;
+
+      async function loadOverview() {
+        try {
+          const [formatter, lint, runtimeData] = await Promise.all(
+            [
+              "formatter-results.json",
+              "lint-results.json",
+              "runtime-results.json",
+            ].map(async (file) => {
+              const response = await fetch(`./${file}`);
+              if (!response.ok) throw new Error(`${file}: ${response.status}`);
+              return response.json();
+            }),
+          );
+
+          const largeFormatter = formatter.corpora.find(
+            (corpus) => corpus.name === "large",
+          );
+          const formatterResults = Object.fromEntries(
+            largeFormatter.results.map((result) => [result.tool, result.mean]),
+          );
+          const bunParity = formatter.parity.filter(
+            (item) => item.tool === "bun",
+          );
+          const paritySame = bunParity.reduce(
+            (sum, item) => sum + item.same,
+            0,
+          );
+          const parityTotal = bunParity.reduce(
+            (sum, item) => sum + item.total,
+            0,
+          );
+          const formatterFastest = Math.min(...Object.values(formatterResults));
+          $("formatter-overview").innerHTML =
+            `<tr><td>Large</td><td class="td-num">${largeFormatter.files.toLocaleString()}</td><td class="td-num ${formatterResults.prettier === formatterFastest ? "best" : ""}">${duration(formatterResults.prettier)}</td><td class="td-num ${formatterResults.biome === formatterFastest ? "best" : ""}">${duration(formatterResults.biome)}</td><td class="td-num ${formatterResults.bun === formatterFastest ? "best" : ""}">${duration(formatterResults.bun)}</td><td class="td-num">${paritySame}/${parityTotal} (${((paritySame / parityTotal) * 100).toFixed(1)}%)</td></tr>`;
+
+          const largeLint = lint.corpora.find(
+            (corpus) => corpus.name === "large",
+          );
+          const lintResults = Object.fromEntries(
+            largeLint.results.map((result) => [result.tool, result.mean]),
+          );
+          const lintFastest = Math.min(...Object.values(lintResults));
+          $("lint-overview").innerHTML =
+            `<tr><td>Large</td><td class="td-num">${largeLint.files.toLocaleString()}</td><td class="td-num ${lintResults.eslint === lintFastest ? "best" : ""}">${duration(lintResults.eslint)}</td><td class="td-num ${lintResults["eslint-mt"] === lintFastest ? "best" : ""}">${duration(lintResults["eslint-mt"])}</td><td class="td-num ${lintResults.oxlint === lintFastest ? "best" : ""}">${duration(lintResults.oxlint)}</td><td class="td-num ${lintResults.biome === lintFastest ? "best" : ""}">${duration(lintResults.biome)}</td><td class="td-num ${lintResults.bun === lintFastest ? "best" : ""}">${duration(lintResults.bun)}</td></tr>`;
+          const matched = lint.parity
+            .filter((item) => item.tool === "bun")
+            .reduce((sum, item) => sum + item.matched, 0);
+          const rules = lint.parity
+            .filter((item) => item.tool === "bun")
+            .reduce((sum, item) => sum + item.count, 0);
+          $("lint-note").textContent =
+            `Bun 진단 일치: ${matched}/${rules}개 비교 규칙`;
+
+          const toolNames = { node: "Node.js", deno: "Deno", bun: "Bun" };
+          const runtimeRows = [
+            [
+              "시작 시간",
+              runtimeData.workloads.find((item) => item.name === "startup"),
+              "time",
+            ],
+            [
+              "TypeScript 시작",
+              runtimeData.workloads.find((item) => item.name === "startup-ts"),
+              "time",
+            ],
+          ];
+          $("runtime-overview").innerHTML = runtimeRows
+            .map(([label, workload]) => {
+              const values = Object.fromEntries(
+                workload.results.map((result) => [result.tool, result.mean]),
+              );
+              const fastest = Math.min(...Object.values(values));
+              const cells = ["node", "deno", "bun"]
+                .map(
+                  (tool) =>
+                    `<td class="td-num ${values[tool] === fastest ? "best" : ""}">${runtime(values[tool])}</td>`,
+                )
+                .join("");
+              const winner = Object.keys(values).find(
+                (tool) => values[tool] === fastest,
+              );
+              return `<tr><td>${label}</td><td class="td-num">${workload.runs}</td>${cells}<td class="best">${toolNames[winner]}</td></tr>`;
+            })
+            .join("");
+
+          const serveResults = runtimeData.http.results.filter(
+            (result) =>
+              ({ node: "node:http", deno: "Deno.serve", bun: "Bun.serve" })[
+                result.tool
+              ] === result.api,
+          );
+          const serveValues = Object.fromEntries(
+            serveResults.map((result) => [result.tool, result.rps]),
+          );
+          const fastestServe = Math.max(...Object.values(serveValues));
+          const serveCells = ["node", "deno", "bun"]
+            .map(
+              (tool) =>
+                `<td class="td-num ${serveValues[tool] === fastestServe ? "best" : ""}">${Math.round(serveValues[tool]).toLocaleString()} req/s</td>`,
+            )
+            .join("");
+          const serveWinner = Object.keys(serveValues).find(
+            (tool) => serveValues[tool] === fastestServe,
+          );
+          $("runtime-overview").insertAdjacentHTML(
+            "beforeend",
+            `<tr><td>HTTP 처리량</td><td class="td-num">${runtimeData.http.secs}s</td>${serveCells}<td class="best">${toolNames[serveWinner]}</td></tr>`,
+          );
+
+          const meta = formatter.meta;
+          $("data-meta").textContent =
+            `측정 환경: ${meta.cpu}, ${meta.os} · formatter 측정일 ${meta.date.slice(0, 10)} · 데이터는 결과 JSON 기준입니다.`;
+        } catch (error) {
+          document.querySelectorAll("tbody").forEach((body) => {
+            body.innerHTML = `<tr><td colspan="7">벤치마크 결과를 불러오지 못했습니다. ${error.message}</td></tr>`;
+          });
+          $("lint-note").textContent =
+            "로컬 파일로 확인할 때는 bun run serve를 실행하세요.";
+          $("data-meta").textContent = "";
+        }
+      }
+
+      loadOverview();
+    </script>
   </body>
 </html>

@@ -37,6 +37,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background: var(--bg);
   color: var(--text);

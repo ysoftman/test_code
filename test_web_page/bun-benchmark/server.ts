@@ -8,16 +8,13 @@ Bun.serve({
   async fetch(request) {
     const pathname = new URL(request.url).pathname;
 
-    if (pathname === "/") {
-      return Response.redirect(new URL("/formatter", request.url));
-    }
-
     const routeAliases: Record<string, string> = {
       "/formatter": "/formatter.html",
       "/lint": "/lint.html",
       "/runtime": "/runtime.html",
     };
-    const resolvedPathname = routeAliases[pathname] ?? pathname;
+    const resolvedPathname =
+      pathname === "/" ? "/index.html" : (routeAliases[pathname] ?? pathname);
 
     let decodedPath: string;
     try {
