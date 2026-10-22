@@ -1,6 +1,6 @@
 # Bun Benchmark
 
-Formatter, lint, runtime 벤치마크는 각각 별도 결과 페이지에서 확인한다. 상위 `test_web_page` 페이지에서 세 결과 페이지로 바로 이동할 수 있고, 측정 파일은 접두사로 구분한다.
+Formatter, lint, runtime 벤치마크는 각각 별도 결과 페이지에서 확인한다. 상위 `test_pages` 페이지에서 세 결과 페이지로 바로 이동할 수 있고, 측정 파일은 접두사로 구분한다.
 
 ## 설치 및 실행
 
@@ -19,7 +19,7 @@ bun run bench:lint
 bun run bench:runtime
 ```
 
-`bun run serve`를 실행하면 `http://localhost:3000/`에서 Formatter 페이지가 열린다. Formatter, Lint, Runtime 페이지는 각각 `/formatter`, `/lint`, `/runtime`에서 볼 수 있으며, 상위 `test_web_page` 목록에서도 세 페이지로 바로 이동할 수 있다.
+`bun run serve`를 실행하면 `http://localhost:3000/`에서 Formatter 페이지가 열린다. Formatter, Lint, Runtime 페이지는 각각 `/formatter`, `/lint`, `/runtime`에서 볼 수 있으며, 상위 `test_pages` 목록에서도 세 페이지로 바로 이동할 수 있다.
 
 - [`formatter.html`](formatter.html): Prettier · Biome · bun fmt의 포맷 속도와 출력 일치율
 - [`lint.html`](lint.html): ESLint · oxlint · Biome · bun lint의 린트 속도와 진단 결과

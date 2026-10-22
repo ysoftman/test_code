@@ -4,7 +4,7 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)" # css-framework-comparison/
-SRC="$(cd "$HERE/.." && pwd)"         # test_web_page/
+SRC="$(cd "$HERE/.." && pwd)"         # test_pages/
 OUT="$HERE/.preview"                  # 임시 출력 (gitignore)
 SITE="$OUT/test_code"                 # base 가 /test_code/... 라서 이 폴더명 사용
 PORT="${PORT:-3000}"

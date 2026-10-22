@@ -5,7 +5,7 @@
 set -euo pipefail
 
 HERE=$(cd "$(dirname "$0")" && pwd)
-SRC=$(cd "$HERE/.." && pwd) # 코퍼스 원본: test_web_page
+SRC=$(cd "$HERE/.." && pwd) # 코퍼스 원본: test_pages
 # repo 밖에서 돌린다 — 도구가 .gitignore 나 상위 설정 파일을 읽지 않도록
 TMP=${BENCH_TMP:-${TMPDIR:-/tmp}/lint-benchmark}
 COPIES=${COPIES:-40}
@@ -89,7 +89,7 @@ cut -d' ' -f1 "$R/rules.txt" | jq -Rn '{categories: {correctness: "off"}, env: {
 cut -d' ' -f2 "$R/rules.txt" | jq -Rn '[inputs | split("/") | {(.[0]): {(.[1]): "warn"}}]
     | reduce .[] as $x ({preset: "none"}; . * $x) | {linter: {rules: .}, files: {maxSize: 10485760}}' >"$CF/biome.json"
 
-# 3) 코퍼스: test_web_page 의 git 추적 JS/TS 소스 (vue 는 bun lint·oxlint 대상이 아니라 제외)
+# 3) 코퍼스: test_pages 의 git 추적 JS/TS 소스 (vue 는 bun lint·oxlint 대상이 아니라 제외)
 #   small = 원본 1벌, large = COPIES 벌, js / ts 는 large 에서 언어별로 추림
 C=$TMP/corpus
 rm -rf "$C"

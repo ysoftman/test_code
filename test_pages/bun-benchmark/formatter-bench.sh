@@ -5,7 +5,7 @@
 set -euo pipefail
 
 HERE=$(cd "$(dirname "$0")" && pwd)
-SRC=$(cd "$HERE/.." && pwd) # 코퍼스 원본: test_web_page
+SRC=$(cd "$HERE/.." && pwd) # 코퍼스 원본: test_pages
 # repo 밖에서 돌린다 — prettier/bun 이 .gitignore 를 읽어 코퍼스를 건너뛰지 않도록
 TMP=${BENCH_TMP:-${TMPDIR:-/tmp}/formatter-benchmark}
 COPIES=${COPIES:-40}
@@ -28,7 +28,7 @@ fi
     exit 1
 }
 
-# 2) 코퍼스: test_web_page 의 git 추적 소스 (하위 프로젝트 biome.json, 이 디렉토리 제외)
+# 2) 코퍼스: test_pages 의 git 추적 소스 (하위 프로젝트 biome.json, 이 디렉토리 제외)
 #   small = 원본 1벌, large = COPIES 벌, html/css/js = large 에서 언어별로 추림
 C=$TMP/corpus
 rm -rf "$C"

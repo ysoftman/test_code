@@ -65,7 +65,7 @@ bun run preview:all      # build:all → _site 조립 → 정적 서버
 ## 배포 (GitHub Pages)
 
 - 저장소 **Settings → Pages → Source: GitHub Actions** 1회 설정.
-- `main` 브랜치에 `test_web_page/**` 변경을 push 하면
+- `main` 브랜치에 `test_pages/**` 변경을 push 하면
   `.github/workflows/pages.yml` 가 `bun install → build:all → _site 조립 → 배포` 수행.
 - 배포 URL:
   - 랜딩: `https://ysoftman.github.io/test_code/css-framework-comparison/`

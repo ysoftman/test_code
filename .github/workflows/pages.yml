@@ -1,10 +1,10 @@
-name: Deploy test_web_page to GitHub Pages
+name: Deploy test_pages to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
-      - "test_web_page/**"
+      - "test_pages/**"
       - "MachineLearning/*.md"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -33,57 +33,57 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: test_web_page/css-framework-comparison
+        working-directory: test_pages/css-framework-comparison
         run: bun install
 
       - name: Build all framework apps
-        working-directory: test_web_page/css-framework-comparison
+        working-directory: test_pages/css-framework-comparison
         run: bun run build:all
 
       - name: Install vue-sample dependencies
-        working-directory: test_web_page/vue-sample
+        working-directory: test_pages/vue-sample
         run: bun install
 
       - name: Build vue-sample
-        working-directory: test_web_page/vue-sample
+        working-directory: test_pages/vue-sample
         run: bun run build
 
       - name: Install react-sample dependencies
-        working-directory: test_web_page/react-sample
+        working-directory: test_pages/react-sample
         run: bun install
 
       - name: Build react-sample
-        working-directory: test_web_page/react-sample
+        working-directory: test_pages/react-sample
         run: bun run build
 
       - name: Install particle dependencies
-        working-directory: test_web_page/particle
+        working-directory: test_pages/particle
         run: bun install
 
       - name: Build particle
-        working-directory: test_web_page/particle
+        working-directory: test_pages/particle
         run: bun run build
 
       - name: Install tsparticles dependencies
-        working-directory: test_web_page/tsparticles
+        working-directory: test_pages/tsparticles
         run: bun install
 
       - name: Build tsparticles
-        working-directory: test_web_page/tsparticles
+        working-directory: test_pages/tsparticles
         run: bun run build
 
       - name: Install ml-docs dependencies
-        working-directory: test_web_page/ml-docs
+        working-directory: test_pages/ml-docs
         run: bun install
 
       - name: Build ml-docs
-        working-directory: test_web_page/ml-docs
+        working-directory: test_pages/ml-docs
         run: bun run build
 
       - name: Assemble _site
         run: |
           set -euo pipefail
-          SRC=test_web_page
+          SRC=test_pages
           OUT=_site
 
           # 1) static landing pages
