@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pyenv · uv · mise</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -128,8 +139,95 @@
         outline-offset: 2px;
       }
 
+      /* navbar */
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner {
+        max-width: 880px;
+        min-height: 56px;
+        margin: 0 auto;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px 12px;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .nav-back {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .nav-back:hover {
+        color: var(--ink);
+      }
+      .nav-sep {
+        color: var(--axis);
+      }
+      .nav-title {
+        font-family: var(--f-mono);
+        font-weight: 600;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .section-nav {
+        display: flex;
+        gap: 4px;
+      }
+      .section-nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 11px;
+        border-radius: 7px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      .section-nav a:hover {
+        background: var(--code-bg);
+        color: var(--ink);
+      }
+      .theme-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--muted);
+        font: inherit;
+        font-size: 13px;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .theme-btn:hover {
+        border-color: var(--muted);
+        color: var(--ink);
+      }
+      section[id] {
+        scroll-margin-top: 72px;
+      }
+
       /* header */
-      header {
+      .page > header {
         display: grid;
         gap: 20px;
       }
@@ -552,6 +650,27 @@
       }
 
       @media (max-width: 720px) {
+        .nav-inner {
+          flex-wrap: wrap;
+          padding-block: 8px;
+        }
+        .nav-actions {
+          width: 100%;
+          gap: 8px;
+          justify-content: space-between;
+        }
+        .section-nav {
+          min-width: 0;
+          flex: 1;
+          overflow-x: auto;
+        }
+        .section-nav a {
+          min-height: 32px;
+          padding: 0 9px;
+        }
+        section[id] {
+          scroll-margin-top: 96px;
+        }
         .two {
           grid-template-columns: minmax(0, 1fr);
         }
@@ -579,6 +698,34 @@
     </style>
   </head>
   <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_pages</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">pyenv · uv · mise</span>
+        </div>
+        <div class="nav-actions">
+          <nav class="section-nav" aria-label="Sections">
+            <a href="#roles">역할</a>
+            <a href="#bench">벤치마크</a>
+            <a href="#setup">권장 구성</a>
+            <a href="#paths">설치 경로</a>
+            <a href="#method">측정 방법</a>
+          </nav>
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon">◐</span>
+            <span id="theme-text">Theme</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
     <div class="page">
       <header>
         <div class="eyebrow">Python 툴체인 정리 · 2026-10-25</div>
@@ -603,7 +750,7 @@
         </div>
       </header>
 
-      <section>
+      <section id="roles">
         <h2><small>01 · 역할</small>세 도구가 하는 일</h2>
         <p>
           아래 표의 맨 위 ‘실행 방식’은 각 도구가 어떻게 동작하는지를 적은
@@ -696,7 +843,7 @@
         </div>
       </section>
 
-      <section>
+      <section id="bench">
         <h2><small>02 · 측정</small>벤치마크</h2>
         <p>
           hyperfine으로 같은 명령을 반복 실행해 평균과 표준편차를 냈습니다.
@@ -750,7 +897,7 @@
         </details>
       </section>
 
-      <section>
+      <section id="setup">
         <h2><small>03 · 정리</small>권장 구성</h2>
         <p>
           인터프리터를 설치하는 도구가 여럿이면 어느 Python이 실행되는지
@@ -862,7 +1009,7 @@ uv run foo.py</pre>
         </p>
       </section>
 
-      <section>
+      <section id="paths">
         <h2><small>04 · 경로</small>어디에 설치되나</h2>
         <div class="scroll">
           <table>
@@ -918,7 +1065,7 @@ uv run foo.py</pre>
         </div>
       </section>
 
-      <section>
+      <section id="method">
         <h2><small>05 · 방법</small>측정 방법</h2>
         <details>
           <summary>사용한 명령</summary>
@@ -983,6 +1130,26 @@ python-build 3.13.17 $W/pyb    <span class="c"># pyenv install 과 같은 소스
 
     <div id="tip" role="tooltip" hidden></div>
 
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const icon = document.getElementById("theme-icon");
+        const text = document.getElementById("theme-text");
+        const apply = (theme) => {
+          root.dataset.theme = theme;
+          icon.textContent = theme === "dark" ? "☀️" : "🌙";
+          text.textContent = theme === "dark" ? "Light" : "Dark";
+        };
+        apply(root.dataset.theme);
+        document.getElementById("theme-btn").addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          apply(next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch {}
+        });
+      })();
+    </script>
     <script>
       // ms 단위. med 가 있으면 막대는 중앙값, 없으면 평균. gen_charts.py 가 out/*.json 에서 생성한다
       const CHARTS = [
