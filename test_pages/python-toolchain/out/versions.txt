@@ -1,0 +1,4 @@
+uv 0.13.5 (Homebrew 2026-10-22 aarch64-apple-darwin)
+2026.10.19 macos-arm64 (2026-10-24)
+Python 3.14.8
+hyperfine 2.0.0

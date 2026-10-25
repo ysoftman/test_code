@@ -140,6 +140,10 @@ jobs:
           # bun-benchmark: benchmark pages and their shared assets
           cp -r "$SRC/bun-benchmark" "$OUT/"
 
+          # python-toolchain: 단일 정적 페이지
+          mkdir -p "$OUT/python-toolchain"
+          cp "$SRC/python-toolchain/index.html" "$OUT/python-toolchain/"
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 

@@ -1,0 +1,112 @@
+{
+  "schema_version": 2,
+  "metadata": {
+    "hyperfine_version": "2.0.0",
+    "start_time": "2026-10-25T05:00:04Z",
+    "platform": {
+      "os": "Darwin",
+      "architecture": "arm64"
+    }
+  },
+  "primary_metric": "time_wall_clock",
+  "results": [
+    {
+      "command": "$W/pyenv/plugins/python-build/bin/python-build 3.13.17 $W/pyb",
+      "name": "pyenv install",
+      "measurements": [
+        {
+          "time_wall_clock": {
+            "value": 222.385152,
+            "unit": "second"
+          },
+          "time_cpu": {
+            "value": 177.95081199999998,
+            "unit": "second"
+          },
+          "time_user": {
+            "value": 123.058295,
+            "unit": "second"
+          },
+          "time_system": {
+            "value": 54.892517,
+            "unit": "second"
+          },
+          "memory_peak_resident": {
+            "value": 278855680.0,
+            "unit": "byte"
+          },
+          "cpu_cycles": {
+            "value": 184287126
+          },
+          "instructions": {
+            "value": 325406153
+          },
+          "exit_code": 0
+        }
+      ],
+      "summary": {
+        "cpu_cycles": {
+          "count": 1,
+          "mean": 184287126.0,
+          "stddev": null,
+          "median": 184287126.0,
+          "min": 184287126.0,
+          "max": 184287126.0
+        },
+        "instructions": {
+          "count": 1,
+          "mean": 325406153.0,
+          "stddev": null,
+          "median": 325406153.0,
+          "min": 325406153.0,
+          "max": 325406153.0
+        },
+        "memory_peak_resident": {
+          "unit": "byte",
+          "count": 1,
+          "mean": 278855680.0,
+          "stddev": null,
+          "median": 278855680.0,
+          "min": 278855680.0,
+          "max": 278855680.0
+        },
+        "time_cpu": {
+          "unit": "second",
+          "count": 1,
+          "mean": 177.95081199999998,
+          "stddev": null,
+          "median": 177.95081199999998,
+          "min": 177.95081199999998,
+          "max": 177.95081199999998
+        },
+        "time_system": {
+          "unit": "second",
+          "count": 1,
+          "mean": 54.892517,
+          "stddev": null,
+          "median": 54.892517,
+          "min": 54.892517,
+          "max": 54.892517
+        },
+        "time_user": {
+          "unit": "second",
+          "count": 1,
+          "mean": 123.058295,
+          "stddev": null,
+          "median": 123.058295,
+          "min": 123.058295,
+          "max": 123.058295
+        },
+        "time_wall_clock": {
+          "unit": "second",
+          "count": 1,
+          "mean": 222.385152,
+          "stddev": null,
+          "median": 222.385152,
+          "min": 222.385152,
+          "max": 222.385152
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1447 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyenv · uv · mise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <style>
+      /* Layout: one reading column of a terminal-side field note; tables and charts may run wider in their own scrollers */
+      :root {
+        --bg: #f4f5f7;
+        --surface: #ffffff;
+        --ink: #15181d;
+        --ink-2: #474e5b;
+        --muted: #646b78;
+        --line: #e0e3e8;
+        --axis: #c6cad2;
+        --code-bg: #eceef2;
+        --c-uv: #2a78d6;
+        --c-mise: #eb6834;
+        --c-pyenv: #1baf7a;
+        --c-base: #9aa0ab;
+        --chip-bg: #fdeee6;
+        --chip-ink: #9a3a12;
+        --f-display:
+          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+        --f-body:
+          "IBM Plex Sans KR", -apple-system, "Apple SD Gothic Neo",
+          "Noto Sans KR", system-ui, sans-serif;
+        --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #111317;
+          --surface: #191c21;
+          --ink: #eceef2;
+          --ink-2: #b8bec9;
+          --muted: #8a909c;
+          --line: #2a2f37;
+          --axis: #3a404a;
+          --code-bg: #22262d;
+          --c-uv: #3987e5;
+          --c-mise: #d95926;
+          --c-pyenv: #199e70;
+          --c-base: #6b717d;
+          --chip-bg: #3a2216;
+          --chip-ink: #f3a57f;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #111317;
+        --surface: #191c21;
+        --ink: #eceef2;
+        --ink-2: #b8bec9;
+        --muted: #8a909c;
+        --line: #2a2f37;
+        --axis: #3a404a;
+        --code-bg: #22262d;
+        --c-uv: #3987e5;
+        --c-mise: #d95926;
+        --c-pyenv: #199e70;
+        --c-base: #6b717d;
+        --chip-bg: #3a2216;
+        --chip-ink: #f3a57f;
+        color-scheme: dark;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--f-body);
+        font-size: 16px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      .page {
+        max-width: 880px;
+        margin: 0 auto;
+        padding-block: 56px 96px;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        display: grid;
+        gap: 72px;
+      }
+      section {
+        display: grid;
+        gap: 20px;
+        min-width: 0;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        text-wrap: balance;
+      }
+      p {
+        margin: 0;
+        max-width: 66ch;
+      }
+      code {
+        font-family: var(--f-mono);
+        font-size: 0.86em;
+        background: var(--code-bg);
+        padding: 0.1em 0.38em;
+        border-radius: 4px;
+        overflow-wrap: anywhere;
+      }
+      a {
+        color: var(--c-uv);
+      }
+      :focus-visible {
+        outline: 2px solid var(--c-uv);
+        outline-offset: 2px;
+      }
+
+      /* header */
+      header {
+        display: grid;
+        gap: 20px;
+      }
+      .eyebrow {
+        font-family: var(--f-mono);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      h1 {
+        font-family: var(--f-display);
+        font-weight: 800;
+        font-size: clamp(40px, 9vw, 76px);
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+      h1 .sep {
+        color: var(--axis);
+        font-weight: 400;
+      }
+      h1 .prompt {
+        color: var(--muted);
+        font-weight: 400;
+        margin-right: 0.25em;
+      }
+      .lede {
+        font-size: 19px;
+        line-height: 1.65;
+        color: var(--ink-2);
+        max-width: 60ch;
+      }
+      .lede strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+        font-family: var(--f-mono);
+        font-size: 12.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+      }
+      .meta b {
+        color: var(--ink-2);
+        font-weight: 600;
+      }
+
+      h2 {
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+      }
+      h2 small {
+        display: block;
+        font-family: var(--f-mono);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      h3 {
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      .note {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* tool name, dots */
+      .tool-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--f-display);
+        font-weight: 800;
+        font-size: 22px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .dot.uv {
+        background: var(--c-uv);
+      }
+      .dot.mise {
+        background: var(--c-mise);
+      }
+      .dot.pyenv {
+        background: var(--c-pyenv);
+      }
+
+      /* tables */
+      .scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      tr:last-child > * {
+        border-bottom: 0;
+      }
+      thead th {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        background: var(--bg);
+        white-space: nowrap;
+      }
+      thead th .dot {
+        display: inline-block;
+        margin-right: 6px;
+        vertical-align: 1px;
+      }
+      tbody th {
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      td.none {
+        color: var(--muted);
+      }
+      .matrix {
+        min-width: 720px;
+      }
+      .matrix td code {
+        font-size: 12.5px;
+      }
+      .chip {
+        display: inline-block;
+        margin-left: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 1px 7px;
+        border-radius: 999px;
+        background: var(--chip-bg);
+        color: var(--chip-ink);
+        vertical-align: 1px;
+      }
+      .num {
+        font-family: var(--f-mono);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      /* charts */
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        font-size: 13.5px;
+        color: var(--ink-2);
+      }
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .legend i {
+        width: 14px;
+        height: 10px;
+        border-radius: 0 3px 3px 0;
+        display: inline-block;
+      }
+      .charts {
+        display: grid;
+        gap: 20px;
+      }
+      .chart {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 22px 22px 18px;
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+      }
+      .chart-head {
+        display: grid;
+        gap: 4px;
+      }
+      .chart-head p {
+        font-size: 14px;
+        color: var(--ink-2);
+      }
+      .group {
+        display: grid;
+        gap: 6px;
+      }
+      .group-label {
+        font-family: var(--f-mono);
+        font-size: 11.5px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+        padding-top: 6px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 11rem minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+        border-radius: 6px;
+        cursor: default;
+      }
+      .row:hover .bar,
+      .row:focus-visible .bar {
+        filter: brightness(1.12);
+      }
+      .row-label {
+        font-size: 13.5px;
+        color: var(--ink-2);
+        line-height: 1.35;
+        min-width: 0;
+      }
+      .row-label code {
+        font-size: 12px;
+      }
+      .track {
+        position: relative;
+        height: 28px;
+      }
+      .grid-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: var(--line);
+      }
+      .bar-wrap {
+        position: absolute;
+        left: 0;
+        top: 6px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+      }
+      .bar {
+        height: 16px;
+        border-radius: 0 4px 4px 0;
+        min-width: 2px;
+        flex: none;
+      }
+      .bar.uv {
+        background: var(--c-uv);
+      }
+      .bar.mise {
+        background: var(--c-mise);
+      }
+      .bar.pyenv {
+        background: var(--c-pyenv);
+      }
+      .bar.base {
+        background: var(--c-base);
+      }
+      .val {
+        font-family: var(--f-mono);
+        font-size: 12.5px;
+        font-variant-numeric: tabular-nums;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .axis {
+        display: grid;
+        grid-template-columns: 11rem minmax(0, 1fr);
+        gap: 12px;
+      }
+      .axis-ticks {
+        position: relative;
+        height: 18px;
+        border-top: 1px solid var(--axis);
+      }
+      .axis-ticks span {
+        position: absolute;
+        top: 3px;
+        transform: translateX(-50%);
+        font-family: var(--f-mono);
+        font-size: 11px;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .axis-ticks span:first-child {
+        transform: none;
+      }
+      .takeaway {
+        font-size: 14.5px;
+        color: var(--ink);
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+      }
+
+      #tip {
+        position: fixed;
+        z-index: 20;
+        pointer-events: none;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12.5px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+        display: grid;
+        gap: 2px;
+        max-width: 260px;
+      }
+      #tip strong {
+        font-family: var(--f-mono);
+        font-size: 15px;
+      }
+      #tip .k {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--ink-2);
+      }
+      #tip .k i {
+        width: 12px;
+        height: 2px;
+        display: inline-block;
+      }
+      #tip .d {
+        font-family: var(--f-mono);
+        color: var(--muted);
+        font-size: 11.5px;
+      }
+
+      details {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+      details > summary {
+        cursor: pointer;
+        padding: 14px 18px;
+        font-weight: 600;
+        font-size: 15px;
+      }
+      details[open] > summary {
+        border-bottom: 1px solid var(--line);
+      }
+      details .inner {
+        padding: 16px 18px;
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+      }
+      details .scroll {
+        border-radius: 8px;
+      }
+
+      pre {
+        margin: 0;
+        font-family: var(--f-mono);
+        font-size: 13px;
+        line-height: 1.65;
+        background: var(--code-bg);
+        border-radius: 10px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        color: var(--ink);
+      }
+      pre .c {
+        color: var(--muted);
+      }
+      .two {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .layer {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px 20px;
+        display: grid;
+        gap: 8px;
+        min-width: 0;
+      }
+      .layer ul {
+        margin: 0;
+        padding-left: 1.1em;
+        font-size: 14.5px;
+        color: var(--ink-2);
+        display: grid;
+        gap: 4px;
+      }
+
+      footer {
+        font-size: 13px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+      }
+
+      @media (max-width: 720px) {
+        .two {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .row,
+        .axis {
+          grid-template-columns: 7.5rem minmax(0, 1fr);
+          gap: 8px;
+        }
+        .chart {
+          padding: 18px 14px 14px;
+        }
+        .page {
+          gap: 56px;
+          padding-block: 36px 72px;
+        }
+        .lede {
+          font-size: 17px;
+        }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .bar {
+          transition: filter 0.15s;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="eyebrow">Python 툴체인 정리 · 2026-10-25</div>
+        <h1>
+          <span class="prompt">$</span>pyenv <span class="sep">·</span> uv
+          <span class="sep">·</span> mise
+        </h1>
+        <p class="lede">
+          세 도구가 맡는 범위는 서로 다릅니다. <strong>pyenv</strong>는 Python
+          버전만, <strong>uv</strong>는 Python 프로젝트 전체를,
+          <strong>mise</strong>는 언어를 가리지 않는 런타임과 개발 환경을
+          다룹니다. 셋이 모두 겹치는 곳은 Python 인터프리터 설치와 버전
+          고정이고, uv와 mise는 가상환경, CLI 도구, 환경변수에서도 겹칩니다.
+        </p>
+        <div class="meta">
+          <span><b>Apple M1 Max</b> · macOS 27.0.1</span>
+          <span>uv <b>0.13.5</b></span>
+          <span>mise <b>2026.10.19</b></span>
+          <span>pyenv <b>2.8.13</b> (임시 설치로 측정)</span>
+          <span>Python <b>3.14.8</b></span>
+          <span>hyperfine <b>2.0.0</b></span>
+        </div>
+      </header>
+
+      <section>
+        <h2><small>01 · 역할</small>세 도구가 하는 일</h2>
+        <p>
+          아래 표의 맨 위 ‘실행 방식’은 각 도구가 어떻게 동작하는지를 적은
+          줄이고, 그 아래에서 ‘겹침’ 표시가 붙은 줄은 두 도구 이상이 같은 일을
+          하는 기능입니다. 나머지 기능은 한 도구만 할 수 있어서 경쟁할 일이
+          없습니다.
+        </p>
+        <div class="scroll">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th>기능</th>
+                <th><span class="dot pyenv"></span>pyenv</th>
+                <th><span class="dot uv"></span>uv</th>
+                <th><span class="dot mise"></span>mise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>실행 방식</th>
+                <td>bash로 만든 shim이 실행할 때마다 버전을 판단</td>
+                <td>
+                  shim 없음. <code>uv run</code>이 <code>.venv</code>를 동기화한
+                  뒤 실행
+                </td>
+                <td><code>mise activate</code>로 PATH를 바꾸거나 shim 사용</td>
+              </tr>
+              <tr>
+                <th>Python 설치<span class="chip">겹침</span></th>
+                <td>
+                  <code>pyenv install 3.13</code><br />CPython 소스 컴파일
+                </td>
+                <td>
+                  <code>uv python install 3.13</code><br />미리 빌드된
+                  python-build-standalone 바이너리
+                </td>
+                <td>
+                  <code>mise install python@3.13</code><br />uv와 같은 미리
+                  빌드된 바이너리
+                </td>
+              </tr>
+              <tr>
+                <th>디렉터리별 버전 고정<span class="chip">겹침</span></th>
+                <td><code>pyenv local</code> → <code>.python-version</code></td>
+                <td>
+                  <code>uv python pin</code> → <code>.python-version</code>
+                </td>
+                <td><code>mise use</code> → <code>mise.toml</code></td>
+              </tr>
+              <tr>
+                <th>가상환경<span class="chip">겹침</span></th>
+                <td>pyenv-virtualenv 플러그인</td>
+                <td>
+                  <code>uv venv</code>, 프로젝트마다 자동 <code>.venv</code>
+                </td>
+                <td><code>_.python.venv</code> (uv가 있으면 uv로 생성)</td>
+              </tr>
+              <tr>
+                <th>Python CLI 도구<span class="chip">겹침</span></th>
+                <td class="none">—</td>
+                <td><code>uv tool install</code>, <code>uvx</code></td>
+                <td><code>pypi:</code> 백엔드 (옛 이름 <code>pipx:</code>)</td>
+              </tr>
+              <tr>
+                <th>의존성 해석, lockfile</th>
+                <td class="none">—</td>
+                <td><code>uv add</code>, <code>uv.lock</code></td>
+                <td class="none">—</td>
+              </tr>
+              <tr>
+                <th>다른 언어 런타임</th>
+                <td class="none">—</td>
+                <td class="none">—</td>
+                <td>node, go, java, terraform …</td>
+              </tr>
+              <tr>
+                <th>환경변수<span class="chip">겹침</span></th>
+                <td class="none">—</td>
+                <td><code>uv run --env-file</code></td>
+                <td><code>[env]</code> 섹션</td>
+              </tr>
+              <tr>
+                <th>task 실행</th>
+                <td class="none">—</td>
+                <td class="none">—</td>
+                <td><code>mise run</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2><small>02 · 측정</small>벤치마크</h2>
+        <p>
+          hyperfine으로 같은 명령을 반복 실행해 평균과 표준편차를 냈습니다.
+          pyenv는 이미 지웠으므로 임시 디렉터리에 pyenv 2.8.13을 받아, mise와
+          uv가 쓰는 것과 같은 Python 3.14.8을 연결해 쟀습니다. 측정 당시 이
+          머신에서는 다른 가상 머신이 함께 돌고 있었습니다.
+          <span id="load-note"
+            >각 측정 단계를 시작할 때 기록한 load average(1분)는 4.1–9.9
+            사이였고, 마지막 pyenv 소스 컴파일 직후에는 6.5 정도였습니다. 아무
+            일도 하지 않는 <code>/usr/bin/true</code>도 실행에 14–18 ms가
+            걸렸지만 CPU 시간은 약 1.5 ms였습니다. 대부분이 기다린 시간이라,
+            짧은 명령은 CPU 시간 차트를 따로 실었습니다.</span
+          >
+          막대에 마우스를 올리거나 포커스하면 자세한 값이 나옵니다.
+        </p>
+        <div class="legend" role="group" aria-label="범례">
+          <span><i style="background: var(--c-uv)"></i>uv</span>
+          <span><i style="background: var(--c-mise)"></i>mise</span>
+          <span><i style="background: var(--c-pyenv)"></i>pyenv</span>
+          <span
+            ><i style="background: var(--c-base)"></i>표준 도구 (python,
+            pip)</span
+          >
+        </div>
+        <div class="charts" id="charts"></div>
+        <details>
+          <summary>전체 측정값 표</summary>
+          <div class="inner">
+            <div class="scroll">
+              <table id="table">
+                <thead>
+                  <tr>
+                    <th>측정</th>
+                    <th>대상</th>
+                    <th>평균</th>
+                    <th>중앙값</th>
+                    <th>± σ</th>
+                    <th>최소–최대</th>
+                    <th>횟수</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="note">
+              시간은 wall-clock 기준입니다(‘인터프리터 시작: CPU 시간’ 행만 user
+              + sys CPU 시간). 패키지 설치와 인터프리터 설치는 네트워크 상태에
+              따라 크게 달라질 수 있습니다.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section>
+        <h2><small>03 · 정리</small>권장 구성</h2>
+        <p>
+          인터프리터를 설치하는 도구가 여럿이면 어느 Python이 실행되는지
+          헷갈리기 쉽습니다. 역할을 두 층으로 나누고 pyenv는 쓰지 않습니다.
+        </p>
+        <div class="two">
+          <div class="layer">
+            <div class="tool-name"><span class="dot mise"></span>mise</div>
+            <ul>
+              <li>전역 <code>python3</code>와 node, go 같은 런타임</li>
+              <li>디렉터리별 환경변수와 task</li>
+              <li>전역 설정은 <code>~/.config/mise/config.toml</code></li>
+            </ul>
+          </div>
+          <div class="layer">
+            <div class="tool-name"><span class="dot uv"></span>uv</div>
+            <ul>
+              <li>
+                프로젝트 의존성과 <code>uv.lock</code>, <code>.venv</code>
+              </li>
+              <li>black 같은 단독 CLI는 <code>uv tool install</code></li>
+              <li>프로젝트별 Python은 <code>.python-version</code></li>
+            </ul>
+          </div>
+        </div>
+        <pre><span class="c"># 프로젝트</span>
+uv init --python 3.12 myproj &amp;&amp; cd myproj   <span class="c"># .python-version 과 requires-python 을 함께 3.12 로</span>
+uv add fastapi uvicorn
+uv add --dev pytest
+uv run pytest            <span class="c"># .venv 생성과 동기화가 자동으로 됨</span>
+
+<span class="c"># 단독 CLI 도구</span>
+uv tool install black
+uv tool upgrade --all
+
+<span class="c"># 의존성이 있는 단일 스크립트 (PEP 723)</span>
+uv init --script foo.py
+uv add --script foo.py requests
+uv run foo.py</pre>
+
+        <h3>pyenv 명령을 uv로 바꾸면</h3>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>pyenv</th>
+                <th>uv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>pyenv install 3.12</code></td>
+                <td><code>uv python install 3.12</code></td>
+              </tr>
+              <tr>
+                <td><code>pyenv versions</code></td>
+                <td><code>uv python list --only-installed</code></td>
+              </tr>
+              <tr>
+                <td><code>pyenv global 3.14</code></td>
+                <td>
+                  <code>uv python install 3.14 --default</code> (python3 실행
+                  파일), <code>uv python pin --global 3.14</code> (uv 명령의
+                  기본 버전)
+                </td>
+              </tr>
+              <tr>
+                <td><code>pyenv local 3.12</code></td>
+                <td>
+                  <code>uv python pin 3.12</code> (프로젝트 안에서는
+                  <code>requires-python</code> 범위 안의 버전만)
+                </td>
+              </tr>
+              <tr>
+                <td><code>pyenv shell 3.12</code>, <code>pyenv exec</code></td>
+                <td>
+                  <code>uv run --no-project --python 3.12 &lt;cmd&gt;</code>
+                  (<code>--no-project</code> 없이 프로젝트 안에서 쓰면
+                  <code>.venv</code>를 그 버전으로 다시 만듦)
+                </td>
+              </tr>
+              <tr>
+                <td><code>pyenv uninstall 3.12.0</code></td>
+                <td><code>uv python uninstall 3.12.0</code></td>
+              </tr>
+              <tr>
+                <td><code>pyenv virtualenv</code> + <code>activate</code></td>
+                <td>자동 <code>.venv</code> + <code>uv run</code></td>
+              </tr>
+              <tr>
+                <td>전역 <code>pip install black</code></td>
+                <td><code>uv tool install black</code></td>
+              </tr>
+              <tr>
+                <td>전역 <code>pip install requests</code></td>
+                <td>
+                  <code>uv add requests</code> 또는
+                  <code>uv run --with requests</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          이 머신은 mise Python이 PATH 앞쪽에 있어서,
+          <code>uv python install --default</code>로 만든
+          <code>~/.local/bin/python3</code>보다 mise 쪽이 먼저 실행됩니다. 전역
+          <code>python3</code>는 mise에 맡기는 편이 단순합니다.
+        </p>
+      </section>
+
+      <section>
+        <h2><small>04 · 경로</small>어디에 설치되나</h2>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>무엇</th>
+                <th>경로</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>uv add</code>, <code>uv sync</code></td>
+                <td>
+                  <code
+                    >&lt;프로젝트&gt;/.venv/lib/python3.X/site-packages</code
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><code>uv tool install</code></td>
+                <td>
+                  <code>~/.local/share/uv/tools/&lt;도구&gt;/</code>, 실행
+                  파일은 <code>~/.local/bin</code>
+                </td>
+              </tr>
+              <tr>
+                <td><code>uvx</code>, <code>uv run --with</code></td>
+                <td><code>~/.cache/uv</code> 안의 임시 환경</td>
+              </tr>
+              <tr>
+                <td>uv가 받은 Python</td>
+                <td><code>~/.local/share/uv/python</code></td>
+              </tr>
+              <tr>
+                <td>uv 캐시 (측정 당시 38 GB)</td>
+                <td><code>~/.cache/uv</code>, venv에는 APFS clone으로 복제</td>
+              </tr>
+              <tr>
+                <td>mise Python</td>
+                <td>
+                  <code>~/.local/share/mise/installs/python/&lt;버전&gt;</code>
+                </td>
+              </tr>
+              <tr>
+                <td><code>pip install</code> (현재 셸)</td>
+                <td>
+                  mise Python 3.14.8의 <code>site-packages</code>. mise가
+                  Python을 새 버전으로 올리면 새 버전에는 없음
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2><small>05 · 방법</small>측정 방법</h2>
+        <details>
+          <summary>사용한 명령</summary>
+          <div class="inner">
+            <pre><span class="c"># 준비: 임시 pyenv 에 같은 Python 을 'bench' 로 연결, mise 바이너리를 python3 로 링크</span>
+git clone --branch v2.8.13 https://github.com/pyenv/pyenv $W/pyenv
+ln -s $PY_PREFIX $W/pyenv/versions/bench &amp;&amp; pyenv global bench &amp;&amp; pyenv rehash
+ln -s $MISE $W/shim/python3
+uv init --bare proj &amp;&amp; uv python pin --project proj $PY &amp;&amp; uv add --project proj requests
+
+<span class="c"># 시작 오버헤드 (hyperfine -N -w 5 -r 30)</span>
+/usr/bin/true
+$PY -c pass
+$W/pyenv/shims/python -c pass
+$W/shim/python3 -c pass
+uv run --project proj python -c pass
+
+<span class="c"># venv 생성 (-w 2 -r 10, 매 회 디렉터리 삭제)</span>
+$PY -m venv v1                 <span class="c"># pip 포함</span>
+uv venv --seed v2              <span class="c"># pip 포함</span>
+$PY -m venv --without-pip v3
+uv venv v4
+
+<span class="c"># 패키지 설치: requests rich pydantic httpx 를 빈 venv 에</span>
+pip install --no-compile …     <span class="c"># pyc 없음</span>
+uv pip install …               <span class="c"># pyc 없음 (uv 기본)</span>
+pip install …                  <span class="c"># pyc 생성 (pip 기본)</span>
+uv pip install --compile-bytecode …
+<span class="c"># cold: pip 은 --no-cache-dir, uv 는 매 회 캐시 삭제. 네 명령을 1회씩 번갈아 5바퀴, 짝수 바퀴는 순서를 뒤집음</span>
+<span class="c"># warm: 캐시를 남긴 채 -w 1 -r 5</span>
+
+<span class="c"># 인터프리터 설치 (매 회 설치 디렉터리 삭제, 두 명령을 번갈아 5바퀴, 짝수 바퀴는 순서를 뒤집음)</span>
+uv python install --no-bin --install-dir $W/uvpy 3.13.17
+mise install python@3.13.17    <span class="c"># MISE_DATA_DIR 등은 미리 export</span>
+python-build 3.13.17 $W/pyb    <span class="c"># pyenv install 과 같은 소스 빌드, 1회</span></pre>
+            <p class="note">
+              전체 절차는
+              <a
+                href="https://github.com/ysoftman/test_code/blob/main/test_pages/python-toolchain/bench.sh"
+                ><code>bench.sh</code></a
+              >에 있고, 결과 원본과 단계별 load average는 같은 디렉터리의
+              <code>out/</code>에 있습니다. 차트 데이터와 결론 문장의 수치는
+              <code>gen_charts.py</code>가 <code>out/</code>에서 만듭니다. 명령
+              앞에 <code>env</code>를 붙이면 프로세스가 하나 더 떠서 시간이
+              섞이므로, 캐시 경로 같은 환경변수는 미리 export했습니다.
+              네트워크가 섞이는 측정은 같은 시간대에 번갈아 재서 회선 상태
+              차이를 줄였습니다.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <footer>
+        측정일 2026-10-25 · 한 대의 개발용 맥북에서 잰 값이라 다른 환경에서는
+        수치가 달라질 수 있습니다. · Source:
+        <a
+          href="https://github.com/ysoftman/test_code/tree/main/test_pages/python-toolchain"
+          >github.com/ysoftman/test_code</a
+        >
+      </footer>
+    </div>
+
+    <div id="tip" role="tooltip" hidden></div>
+
+    <script>
+      // ms 단위. med 가 있으면 막대는 중앙값, 없으면 평균. gen_charts.py 가 out/*.json 에서 생성한다
+      const CHARTS = [
+        {
+          title: "인터프리터 시작: 실제 걸린 시간",
+          desc: "아무것도 하지 않는 Python을 한 번 실행하는 데 걸린 wall-clock 시간입니다. 세 도구 모두 같은 Python 3.14.8을 실행합니다. 가끔 크게 튀는 회차의 영향을 줄이려고 막대는 평균 대신 중앙값으로 그렸습니다.",
+          groups: [
+            {
+              label: "",
+              rows: [
+                {
+                  name: "프로세스 1회 (/usr/bin/true)",
+                  tool: "base",
+                  med: 14.8,
+                  mean: 15.0,
+                  sd: 0.8,
+                  min: 14.1,
+                  max: 17.6,
+                  n: 30,
+                },
+                {
+                  name: "python 직접 실행",
+                  tool: "base",
+                  med: 35.8,
+                  mean: 36.1,
+                  sd: 1.5,
+                  min: 33.8,
+                  max: 41.2,
+                  n: 30,
+                },
+                {
+                  name: "pyenv shim",
+                  tool: "pyenv",
+                  med: 748.7,
+                  mean: 865.1,
+                  sd: 189.9,
+                  min: 726.9,
+                  max: 1342.8,
+                  n: 30,
+                },
+                {
+                  name: "mise shim",
+                  tool: "mise",
+                  med: 74.3,
+                  mean: 74.5,
+                  sd: 1.9,
+                  min: 71.2,
+                  max: 79.5,
+                  n: 30,
+                },
+                {
+                  name: "uv run (프로젝트 안)",
+                  tool: "uv",
+                  med: 69.4,
+                  mean: 70.1,
+                  sd: 2.2,
+                  min: 66.0,
+                  max: 76.2,
+                  n: 30,
+                },
+              ],
+            },
+          ],
+          takeaway:
+            "python 직접 실행보다 pyenv shim은 약 710 ms, mise shim은 약 38 ms, uv run은 약 34 ms(중앙값 기준) 더 걸립니다. mise shim과 uv run의 차이(약 4 ms)는 작지만, 30회씩 잰 값을 서로 견주면 93%에서 uv run이 빨랐습니다. CPU 시간도 uv run이 더 적게 썼습니다. pyenv shim은 회차마다 727–1343 ms로 흔들림도 컸습니다. 실제 걸린 시간에는 CPU를 쓰지 않고 기다린 시간도 들어 있으므로, CPU 시간은 다음 차트에서 따로 봅니다.",
+        },
+        {
+          title: "인터프리터 시작: CPU 시간",
+          desc: "같은 측정에서 프로세스와 그 하위 프로세스가 실제로 CPU를 쓴 시간(user + sys)입니다. 기다린 시간이 빠지므로 부하의 영향을 덜 받습니다.",
+          groups: [
+            {
+              label: "",
+              rows: [
+                {
+                  name: "프로세스 1회 (/usr/bin/true)",
+                  tool: "base",
+                  mean: 1.5,
+                  sd: 0.1,
+                  min: 1.3,
+                  max: 1.8,
+                  n: 30,
+                },
+                {
+                  name: "python 직접 실행",
+                  tool: "base",
+                  mean: 15.7,
+                  sd: 0.8,
+                  min: 14.8,
+                  max: 18.9,
+                  n: 30,
+                },
+                {
+                  name: "pyenv shim",
+                  tool: "pyenv",
+                  mean: 49.5,
+                  sd: 1.5,
+                  min: 47.0,
+                  max: 52.9,
+                  n: 30,
+                },
+                {
+                  name: "mise shim",
+                  tool: "mise",
+                  mean: 34.0,
+                  sd: 0.9,
+                  min: 32.3,
+                  max: 35.7,
+                  n: 30,
+                },
+                {
+                  name: "uv run (프로젝트 안)",
+                  tool: "uv",
+                  mean: 27.7,
+                  sd: 0.6,
+                  min: 26.6,
+                  max: 29.1,
+                  n: 30,
+                },
+              ],
+            },
+          ],
+          takeaway:
+            "python 직접 실행보다 pyenv shim은 약 34 ms, mise shim은 약 18 ms, uv run은 약 12 ms의 CPU를 더 씁니다. pyenv shim은 실제 걸린 시간(평균)의 약 94%가 CPU를 쓰지 않고 기다린 시간입니다. bash 스크립트가 하위 프로세스를 여러 번 띄우는데, 측정 당시 이 머신은 프로세스를 띄울 때마다 기다리는 시간이 길었습니다(원인은 확인하지 않았습니다). 프로세스 실행이 빠른 환경에서는 pyenv shim의 실제 시간이 훨씬 짧을 수 있습니다. mise를 기본 방식인 mise activate로 쓰면 PATH에 실제 설치 경로가 들어가 실행할 때 shim 비용이 붙지 않습니다(따로 재지는 않았고, 대신 프롬프트마다 mise hook-env가 실행됩니다). uv run에는 lockfile과 .venv 상태를 확인하는 시간이 들어 있습니다.",
+        },
+        {
+          title: "venv 생성",
+          desc: "가상환경 하나를 새로 만드는 시간입니다. pip을 넣는지에 따라 짝을 지어 비교했고, 매 회 디렉터리를 지우고 다시 만들었습니다.",
+          groups: [
+            {
+              label: "pip 포함",
+              rows: [
+                {
+                  name: "python -m venv",
+                  tool: "base",
+                  mean: 1859.6,
+                  sd: 16.4,
+                  min: 1834.2,
+                  max: 1883.2,
+                  n: 10,
+                },
+                {
+                  name: "uv venv --seed",
+                  tool: "uv",
+                  mean: 45.6,
+                  sd: 1.8,
+                  min: 43.9,
+                  max: 49.5,
+                  n: 10,
+                },
+              ],
+            },
+            {
+              label: "pip 없음",
+              rows: [
+                {
+                  name: "venv --without-pip",
+                  tool: "base",
+                  mean: 66.1,
+                  sd: 1.2,
+                  min: 64.1,
+                  max: 67.6,
+                  n: 10,
+                },
+                {
+                  name: "uv venv",
+                  tool: "uv",
+                  mean: 30.2,
+                  sd: 2.2,
+                  min: 28.0,
+                  max: 33.8,
+                  n: 10,
+                },
+              ],
+            },
+          ],
+          takeaway:
+            "pip을 넣을 때는 uv가 약 41배, pip 없이 만들 때는 약 2.2배 빠릅니다. python -m venv는 pip을 venv 안에 새로 설치하고, uv는 캐시에 있는 pip을 복제해 넣습니다. uv venv는 기본으로 pip을 넣지 않습니다.",
+        },
+        {
+          title: "패키지 설치: requests rich pydantic httpx",
+          desc: "빈 venv에 패키지 4개와 그 의존성을 설치하는 시간입니다. pyenv는 패키지를 다루지 않아 pyenv 환경에서는 pip이 이 일을 맡으므로 pip과 uv를 비교합니다. pip은 기본으로 .pyc 바이트코드를 만들고 uv는 만들지 않으므로, 같은 조건끼리 짝을 지었습니다.",
+          groups: [
+            {
+              label: "캐시 없음 · pyc 안 만듦",
+              rows: [
+                {
+                  name: "pip --no-compile",
+                  tool: "base",
+                  mean: 1863.2,
+                  sd: 89.4,
+                  min: 1759.8,
+                  max: 1981.2,
+                  n: 5,
+                },
+                {
+                  name: "uv pip",
+                  tool: "uv",
+                  mean: 532.6,
+                  sd: 70.4,
+                  min: 443.6,
+                  max: 616.9,
+                  n: 5,
+                },
+              ],
+            },
+            {
+              label: "캐시 없음 · pyc 만듦",
+              rows: [
+                {
+                  name: "pip",
+                  tool: "base",
+                  mean: 3083.6,
+                  sd: 51.3,
+                  min: 3031.8,
+                  max: 3165.6,
+                  n: 5,
+                },
+                {
+                  name: "uv pip --compile-bytecode",
+                  tool: "uv",
+                  mean: 1043.9,
+                  sd: 106.1,
+                  min: 942.5,
+                  max: 1214.9,
+                  n: 5,
+                },
+              ],
+            },
+            {
+              label: "캐시 있음 · pyc 안 만듦",
+              rows: [
+                {
+                  name: "pip --no-compile",
+                  tool: "base",
+                  mean: 1206.7,
+                  sd: 21.4,
+                  min: 1191.0,
+                  max: 1240.8,
+                  n: 5,
+                },
+                {
+                  name: "uv pip",
+                  tool: "uv",
+                  mean: 63.4,
+                  sd: 12.2,
+                  min: 55.8,
+                  max: 85.0,
+                  n: 5,
+                },
+              ],
+            },
+            {
+              label: "캐시 있음 · pyc 만듦",
+              rows: [
+                {
+                  name: "pip",
+                  tool: "base",
+                  mean: 2448.5,
+                  sd: 32.9,
+                  min: 2400.6,
+                  max: 2485.1,
+                  n: 5,
+                },
+                {
+                  name: "uv pip --compile-bytecode",
+                  tool: "uv",
+                  mean: 520.6,
+                  sd: 34.4,
+                  min: 481.8,
+                  max: 565.0,
+                  n: 5,
+                },
+              ],
+            },
+          ],
+          takeaway:
+            "캐시가 없으면 uv가 3.0–3.5배, 캐시가 있으면 4.7–19배 빠릅니다. 차이가 가장 큰 경우는 캐시가 있고 pyc를 만들지 않을 때입니다. pip은 캐시가 있어도 매번 압축을 풀어 복사하지만, uv는 캐시에 풀어 둔 파일을 APFS clone으로 복제하기만 합니다. pyc를 미리 만들지 않으면 처음 import할 때 만들어지므로 그 시간이 사라지는 것은 아닙니다. 실제 uv 프로젝트는 lockfile이 있어 의존성 해석을 건너뛰는 uv sync를 쓰므로 이 측정과 조건이 다릅니다.",
+        },
+        {
+          title: "인터프리터 설치: Python 3.13.17",
+          desc: "Python 3.13.17을 새로 설치하는 시간입니다. uv와 mise는 같은 시간대에 번갈아 5회씩(짝수 회차는 순서를 뒤집어), pyenv는 소스 컴파일이라 1회만 쟀습니다. 매 회 설치 디렉터리와 캐시를 지웠습니다.",
+          groups: [
+            {
+              label: "",
+              rows: [
+                {
+                  name: "uv python install",
+                  tool: "uv",
+                  mean: 3252.9,
+                  sd: 253.9,
+                  min: 3046.1,
+                  max: 3540.8,
+                  n: 5,
+                },
+                {
+                  name: "mise install",
+                  tool: "mise",
+                  mean: 2717.1,
+                  sd: 552.7,
+                  min: 2424.1,
+                  max: 3704.3,
+                  n: 5,
+                },
+                {
+                  name: "pyenv install (python-build)",
+                  tool: "pyenv",
+                  mean: 222385.2,
+                  n: 1,
+                },
+              ],
+            },
+          ],
+          takeaway:
+            "uv와 mise는 python-build-standalone의 같은 미리 빌드된 파일(cpython-3.13.17+20261021 install_only_stripped)을 받아 풀기 때문에 몇 초면 끝나고, 설치 크기도 66 MB와 65 MB로 거의 같습니다. 번갈아 잰 5회 중 4회는 mise가 빨랐지만(평균 0.5초 차이) 원인은 확인하지 않았습니다. uv는 이 파일을 Astral 미러(releases.astral.sh)에서 받습니다. pyenv는 CPython을 소스에서 컴파일해 3분 42초가 걸렸고 설치 크기는 259 MB였습니다. 컴파일 단계를 시작할 때 load average(1분)가 7.0 정도로 다른 작업도 CPU를 쓰고 있었으므로, 조용한 머신에서는 컴파일이 더 빨리 끝날 수 있습니다.",
+        },
+      ];
+
+      function fmt(ms) {
+        if (ms >= 60000)
+          return `${Math.floor(ms / 60000)}분 ${Math.round((ms % 60000) / 1000)}초`;
+        if (ms >= 10000) return (ms / 1000).toFixed(1) + " s";
+        if (ms >= 1000) return (ms / 1000).toFixed(2) + " s";
+        if (ms >= 100) return Math.round(ms) + " ms";
+        return ms.toFixed(1) + " ms";
+      }
+      function niceStep(max) {
+        const raw = max / 4;
+        const p = Math.pow(10, Math.floor(Math.log10(raw)));
+        const m = raw / p;
+        return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
+      }
+      function fmtTick(v) {
+        if (v >= 60000) return `${v / 60000}분`;
+        return v >= 1000
+          ? `${+(v / 1000).toFixed(2)} s`
+          : `${+v.toFixed(1)} ms`;
+      }
+      function el(tag, cls, text) {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text != null) e.textContent = text;
+        return e;
+      }
+
+      const tip = document.getElementById("tip");
+      function showTip(row, r) {
+        tip.replaceChildren();
+        const k = el("div", "k");
+        const line = el("i");
+        line.style.background = `var(--c-${r.tool})`;
+        k.append(line, document.createTextNode(r.name));
+        const parts = [];
+        let head = fmt(r.mean);
+        if (r.med != null) {
+          head = `중앙값 ${fmt(r.med)}`;
+          parts.push(`평균 ${fmt(r.mean)} ± ${fmt(r.sd)}`);
+        } else if (r.n > 1) head += ` ± ${fmt(r.sd)}`;
+        if (r.n > 1) parts.push(`최소 ${fmt(r.min)} · 최대 ${fmt(r.max)}`);
+        parts.push(`${r.n}회`);
+        tip.append(
+          el("strong", null, head),
+          k,
+          el("div", "d", parts.join(" · ")),
+        );
+        tip.hidden = false;
+        const bar = row.querySelector(".bar").getBoundingClientRect();
+        const t = tip.getBoundingClientRect();
+        let x = Math.min(bar.right + 12, window.innerWidth - t.width - 12);
+        let y = bar.top - t.height - 8;
+        if (y < 8) y = bar.bottom + 8;
+        tip.style.left = Math.max(12, x) + "px";
+        tip.style.top = y + "px";
+      }
+      function hideTip() {
+        tip.hidden = true;
+      }
+
+      const tbody = document.querySelector("#table tbody");
+      const SCALE = 0.8; // leave room past the longest bar for its value label
+
+      for (const c of CHARTS) {
+        const card = el("figure", "chart");
+        card.style.margin = "0";
+        const head = el("figcaption", "chart-head");
+        head.append(el("h3", null, c.title), el("p", null, c.desc));
+        card.append(head);
+
+        const value = (r) => r.med ?? r.mean;
+        const max = Math.max(...c.groups.flatMap((g) => g.rows).map(value));
+        const top = max / SCALE;
+        // 2분이 넘으면 1분 간격 눈금 (ms 기준 간격이면 1.67분 같은 라벨이 나온다)
+        const step = top >= 120000 ? 60000 : niceStep(top);
+        const ticks = [];
+        for (let v = 0; v <= top + 1e-9; v += step) ticks.push(v);
+        const pos = (v) => (v / top) * 100;
+
+        for (const g of c.groups) {
+          const grp = el("div", "group");
+          if (c.groups.length > 1 || g.label)
+            grp.append(el("div", "group-label", g.label));
+          for (const r of g.rows) {
+            const row = el("div", "row");
+            row.tabIndex = 0;
+            row.setAttribute("role", "img");
+            row.setAttribute("aria-describedby", "tip");
+            row.setAttribute("aria-label", `${r.name}: ${fmt(value(r))}`);
+            const lab = el("div", "row-label", r.name);
+            const track = el("div", "track");
+            for (const t of ticks.slice(1)) {
+              const gl = el("div", "grid-line");
+              gl.style.left = pos(t) + "%";
+              track.append(gl);
+            }
+            const wrap = el("div", "bar-wrap");
+            const bar = el("div", `bar ${r.tool}`);
+            bar.style.width = pos(value(r)) + "%";
+            const val = el("span", "val", fmt(value(r)));
+            wrap.append(bar, val);
+            track.append(wrap);
+            row.append(lab, track);
+            row.addEventListener("pointerenter", () => showTip(row, r));
+            row.addEventListener("pointerleave", hideTip);
+            row.addEventListener("focus", () => showTip(row, r));
+            row.addEventListener("blur", hideTip);
+            grp.append(row);
+
+            const tr = document.createElement("tr");
+            const cells = [
+              c.title,
+              `${r.name}${g.label ? " (" + g.label + ")" : ""}`,
+              fmt(r.mean),
+              r.med != null ? fmt(r.med) : "—",
+              r.n > 1 ? fmt(r.sd) : "—",
+              r.n > 1 ? `${fmt(r.min)} – ${fmt(r.max)}` : "—",
+              String(r.n),
+            ];
+            cells.forEach((t, i) => {
+              const td = el("td", i >= 2 ? "num" : null, t);
+              tr.append(td);
+            });
+            tbody.append(tr);
+          }
+          card.append(grp);
+        }
+
+        const axis = el("div", "axis");
+        axis.setAttribute("aria-hidden", "true");
+        const at = el("div", "axis-ticks");
+        for (const t of ticks) {
+          const s = el("span", null, t === 0 ? "0" : fmtTick(t));
+          s.style.left = pos(t) + "%";
+          at.append(s);
+        }
+        axis.append(el("div"), at);
+        card.append(axis);
+        if (c.takeaway) card.append(el("p", "takeaway", c.takeaway));
+        document.getElementById("charts").append(card);
+      }
+      window.addEventListener("scroll", hideTip, { passive: true });
+    </script>
+  </body>
+</html>
