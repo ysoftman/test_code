@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>React 19 + Vite sample</h1>
+        <h1>React 19 + Bun sample</h1>
         <nav className="tabs">
           {TABS.map((tab) => (
             <button

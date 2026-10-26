@@ -1,6 +1,6 @@
 # react app test
 
-React 19 + Vite 샘플. 탭으로 3가지 예제를 전환할 수 있다.
+React 19 + Bun 샘플(dev 서버·번들러 모두 bun). 탭으로 3가지 예제를 전환할 수 있다.
 
 ## 예제 구성
 
@@ -24,7 +24,7 @@ React 19 + Vite 샘플. 탭으로 3가지 예제를 전환할 수 있다.
 ## 앱 생성시
 
 ```bash
-# React + Vite (CRA 는 deprecated 라 vite 사용)
+# React + Vite 템플릿으로 생성 후 vite 를 걷어내고 bun 으로 dev/build
 bun create vite@latest react-sample --template react
 ```
 

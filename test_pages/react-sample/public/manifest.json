@@ -1,6 +1,6 @@
 {
   "short_name": "react-sample",
-  "name": "React + Vite Sample",
+  "name": "React + Bun Sample",
   "icons": [
     {
       "src": "favicon.ico",

@@ -4,17 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "bun ./index.html",
+    "build": "rm -rf dist && bun build ./index.html --outdir=dist --production && cp -r public/. dist/",
+    "preview": "bunx serve dist"
   },
   "dependencies": {
     "prop-types": "^15.8.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^6.0.3",
-    "vite": "^8.1.0"
   }
 }

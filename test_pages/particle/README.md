@@ -5,7 +5,7 @@
 
 ## 기술 스택
 
-Vite + TypeScript + Pixi.js(렌더링) + Matter.js(물리) + Biome + bun
+TypeScript + Pixi.js(렌더링) + Matter.js(물리) + Biome + bun(dev 서버·번들러)
 
 ## 실행
 
