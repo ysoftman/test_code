@@ -746,8 +746,8 @@
             <h3>결과 해석 (Engineering Notes)</h3>
             <ul>
               <li>
-                <strong>네이티브 vs JS:</strong> esbuild(Go) · bun build(Zig) ·
-                Rolldown · Rspack(Rust)은 파싱 · 링크 · minify 를 네이티브
+                <strong>네이티브 vs JS:</strong> esbuild(Go) · bun build(Rust,
+                v1.4.0+) · Rolldown · Rspack(Rust)은 파싱 · 링크 · minify 를 네이티브
                 코드로 병렬 처리합니다. Rollup · webpack 은 번들링과 minify 가
                 모두 JS 라 시간이 10배 이상, 메모리가 GB 단위로 듭니다.
               </li>
@@ -857,7 +857,7 @@
         bun: {
           name: "bun build",
           colorVar: "var(--brand-bun)",
-          how: "Zig · 자체 minifier",
+          how: "Rust · 자체 minifier",
         },
       };
 
