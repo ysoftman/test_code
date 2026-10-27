@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Formatter, lint, and runtime benchmark overview"
+      content="Formatter, lint, runtime, and test runner benchmark overview"
     />
     <title>Bun Benchmark Overview</title>
     <script>
@@ -282,6 +282,7 @@
             <a href="./formatter.html">Formatter</a>
             <a href="./lint.html">Lint</a>
             <a href="./runtime.html">Runtime</a>
+            <a href="./test.html">Test</a>
           </nav>
           <button
             class="theme-btn"
@@ -399,6 +400,39 @@
         </div>
       </section>
 
+      <section class="section" id="test">
+        <div class="section-header">
+          <h2 class="section-title">Test</h2>
+        </div>
+        <p class="section-desc">
+          같은 TypeScript 테스트를 각 테스트 러너 기본 설정으로 실행한
+          시간입니다.
+        </p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>코퍼스</th>
+                  <th class="td-num">파일</th>
+                  <th class="td-num">Jest</th>
+                  <th class="td-num">Vitest</th>
+                  <th class="td-num">node --test</th>
+                  <th class="td-num">Deno</th>
+                  <th class="td-num">Bun</th>
+                </tr>
+              </thead>
+              <tbody id="test-overview">
+                <tr>
+                  <td colspan="7">결과를 불러오는 중...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="table-note" id="test-note"></p>
+      </section>
+
       <p class="data-meta" id="data-meta">측정 환경 정보를 불러오는 중...</p>
     </main>
 
@@ -429,11 +463,12 @@
 
       async function loadOverview() {
         try {
-          const [formatter, lint, runtimeData] = await Promise.all(
+          const [formatter, lint, runtimeData, testData] = await Promise.all(
             [
               "formatter-results.json",
               "lint-results.json",
               "runtime-results.json",
+              "test-results.json",
             ].map(async (file) => {
               const response = await fetch(`./${file}`);
               if (!response.ok) throw new Error(`${file}: ${response.status}`);
@@ -535,6 +570,29 @@
             "beforeend",
             `<tr><td>HTTP 처리량</td><td class="td-num">${runtimeData.http.secs}s</td>${serveCells}<td class="best">${toolNames[serveWinner]}</td></tr>`,
           );
+
+          const testLabels = { single: "파일 1개", suite: "스위트" };
+          $("test-overview").innerHTML = testData.corpora
+            .map((corpus) => {
+              const values = Object.fromEntries(
+                corpus.results.map((result) => [result.tool, result.mean]),
+              );
+              const tools = ["jest", "vitest", "node", "deno", "bun"];
+              const fastest = Math.min(...tools.map((tool) => values[tool]));
+              const cells = tools
+                .map(
+                  (tool) =>
+                    `<td class="td-num ${values[tool] === fastest ? "best" : ""}">${duration(values[tool])}</td>`,
+                )
+                .join("");
+              return `<tr><td>${testLabels[corpus.name] ?? corpus.name}</td><td class="td-num">${corpus.files.toLocaleString()}</td>${cells}</tr>`;
+            })
+            .join("");
+          const suite = testData.corpora.find((item) => item.name === "suite");
+          const parallel = (tool) =>
+            duration(suite.results.find((result) => result.tool === tool).mean);
+          $("test-note").textContent =
+            `스위트 병렬 옵션: Deno --parallel ${parallel("deno-parallel")} · Bun --parallel ${parallel("bun-parallel")}`;
 
           const meta = formatter.meta;
           $("data-meta").textContent =

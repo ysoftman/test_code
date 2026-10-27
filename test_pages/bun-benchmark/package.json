@@ -7,15 +7,21 @@
     "bench:formatter": "bash formatter-bench.sh",
     "bench:lint": "bash lint-bench.sh",
     "bench:runtime": "bash runtime-bench.sh",
+    "bench:test": "bash test-bench.sh",
     "serve": "bun run server.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "@eslint/js": "10.0.1",
+    "@swc/core": "1.16.20",
+    "@swc/jest": "0.2.39",
     "eslint": "10.12.0",
+    "expect": "30.5.2",
     "globals": "17.13.0",
+    "jest": "30.5.2",
     "oxlint": "1.88.0",
     "prettier": "3.9.10",
-    "typescript-eslint": "8.71.2"
+    "typescript-eslint": "8.71.2",
+    "vitest": "5.0.5"
   }
 }

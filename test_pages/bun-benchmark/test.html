@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bun Benchmark: Test Runner</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-subtle: #f1f5f9;
+        --border: #e2e8f0;
+        --border-subtle: #edf2f7;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --text-faint: #94a3b8;
+        --accent: #2563eb;
+        --accent-subtle: #eff6ff;
+
+        --brand-jest: #c21325;
+        --brand-vitest: #729b1b;
+        --brand-node: #3c873a;
+        --brand-deno: #475569;
+        --brand-bun: #d97706;
+
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Pretendard Variable", Pretendard, sans-serif;
+        --font-mono:
+          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+      }
+
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface-subtle: #1f242c;
+        --border: #30363d;
+        --border-subtle: #21262d;
+        --text: #e6edf3;
+        --text-muted: #8b949e;
+        --text-faint: #6e7681;
+        --accent: #58a6ff;
+        --accent-subtle: #121d2f;
+
+        --brand-jest: #f87171;
+        --brand-vitest: #bcd45a;
+        --brand-node: #6cc24a;
+        --brand-deno: #cbd5e1;
+        --brand-bun: #fbbf24;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.86em;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        padding: 1px 5px;
+        border-radius: 4px;
+        color: inherit;
+      }
+
+      /* Top Navbar */
+      .navbar {
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .nav-inner {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-back {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-back:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-sep {
+        color: var(--border);
+      }
+      .nav-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .theme-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
+      }
+      .theme-btn:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+      }
+
+      /* Layout */
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+      .title-row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0;
+        line-height: 1.25;
+      }
+      .version-tag {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 2px 7px;
+        border-radius: 4px;
+      }
+      .page-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 0 0 16px;
+        max-width: 720px;
+      }
+
+      /* Specs Bar */
+      .specs-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+      .spec-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .spec-item + .spec-item::before {
+        content: "·";
+        color: var(--border);
+        margin-right: 2px;
+      }
+      .spec-item strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* Section Common */
+      .section {
+        margin-top: 36px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-desc {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin: 0 0 16px;
+      }
+
+      /* Summary Overview Table */
+      .summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .table-responsive {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        text-align: left;
+      }
+      th {
+        background: var(--surface-subtle);
+        border-bottom: 1px solid var(--border);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 9px 14px;
+        white-space: nowrap;
+      }
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border-subtle);
+        vertical-align: middle;
+      }
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .td-mono {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+      }
+      .td-num {
+        text-align: right;
+      }
+
+      .tool-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+      }
+      .tool-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .tool-ver {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        font-family: var(--font-mono);
+      }
+      .badge-tag {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-fastest {
+        background: var(--accent-subtle);
+        color: var(--accent);
+        font-weight: 600;
+        border: 1px solid var(--border);
+      }
+
+      /* Control Segmented Buttons */
+      .segment-control {
+        display: inline-flex;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px;
+        gap: 2px;
+      }
+      .segment-btn {
+        background: none;
+        border: 0;
+        color: var(--text-muted);
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        border-radius: 4px;
+        cursor: pointer;
+        transition:
+          background-color 0.1s,
+          color 0.1s;
+      }
+      .segment-btn.active {
+        background: var(--surface);
+        color: var(--text);
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Benchmark Chart */
+      .chart-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .corpus-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .corpus-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      .corpus-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      .corpus-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+      .chart-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .chart-row {
+        display: grid;
+        grid-template-columns: 124px 1fr 140px;
+        align-items: center;
+        gap: 12px;
+        cursor: default;
+      }
+      .row-tool {
+        font-size: 0.82rem;
+        font-weight: 500;
+        white-space: nowrap;
+        text-align: right;
+        color: var(--text);
+      }
+      .row-track {
+        height: 24px;
+        background: var(--surface-subtle);
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-subtle);
+      }
+      .row-bar {
+        height: 100%;
+        min-width: 3px;
+        border-radius: 3px;
+        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .row-values {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        white-space: nowrap;
+      }
+      .row-time {
+        font-weight: 600;
+        color: var(--text);
+      }
+      .row-multiplier {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .row-multiplier.fastest {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* Hover Tooltip */
+      #tooltip {
+        position: fixed;
+        z-index: 50;
+        pointer-events: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.78rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: none;
+        line-height: 1.5;
+        max-width: 280px;
+      }
+      #tooltip .tt-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 2px;
+      }
+      #tooltip .tt-line {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      /* Methodology & Technical Notes (2-Column Grid) */
+      .notes-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .note-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px;
+      }
+      .note-card h3 {
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin: 0 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .note-card ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+      .note-card li {
+        margin-bottom: 8px;
+      }
+      .note-card li:last-child {
+        margin-bottom: 0;
+      }
+      .note-card strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* Raw Details */
+      details.raw-section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+      details.raw-section summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        user-select: none;
+      }
+      details.raw-section summary:hover {
+        color: var(--text);
+      }
+      details.raw-section[open] summary {
+        margin-bottom: 14px;
+      }
+
+      /* Error Banner */
+      .error-banner {
+        padding: 14px 16px;
+        background: #fee2e2;
+        border: 1px solid #f87171;
+        border-radius: 8px;
+        color: #991b1b;
+        font-size: 0.88rem;
+        margin-bottom: 20px;
+      }
+      :root[data-theme="dark"] .error-banner {
+        background: #381515;
+        border-color: #7f1d1d;
+        color: #fca5a5;
+      }
+
+      @media (max-width: 720px) {
+        .chart-row {
+          grid-template-columns: 104px 1fr 100px;
+          gap: 8px;
+        }
+        .notes-grid {
+          grid-template-columns: 1fr;
+        }
+        .row-values {
+          flex-direction: column;
+          gap: 0;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="./benchmark.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_pages</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">Bun Benchmark</span>
+        </div>
+        <div class="nav-actions">
+          <nav class="section-nav" aria-label="Bun Benchmark pages">
+            <a href="./">Overview</a>
+            <a href="./formatter.html">Formatter</a>
+            <a href="./lint.html">Lint</a>
+            <a href="./runtime.html">Runtime</a>
+            <a href="./test.html" aria-current="page">Test</a>
+          </nav>
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon">◐</span>
+            <span id="theme-text">Theme</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div id="error-container"></div>
+
+      <!-- Page Header & Specs -->
+      <section class="page-header">
+        <div class="title-row">
+          <h1>Bun Benchmark: Test Runner</h1>
+          <span class="version-tag" id="commit-tag">commit: loading...</span>
+        </div>
+        <p class="page-desc">
+          같은 TypeScript 테스트를 Jest · Vitest · node --test · Deno · Bun
+          테스트 러너로 실행했을 때 걸린 시간을 비교합니다. 러너마다 다른 것은
+          <code>test</code> · <code>expect</code> 를 가져오는 import 한
+          줄뿐입니다.
+        </p>
+        <div class="specs-grid" id="specs-grid">
+          <span class="spec-item">환경 정보를 불러오는 중...</span>
+        </div>
+      </section>
+
+      <!-- Executive Overview Table -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">종합 결과 요약 (Benchmark Overview)</h2>
+        </div>
+        <p class="section-desc" id="overview-desc"></p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>러너</th>
+                  <th>버전</th>
+                  <th>실행 방식</th>
+                  <th class="td-num">파일 1개</th>
+                  <th class="td-num" id="suite-th">스위트</th>
+                  <th class="td-num">CPU (스위트)</th>
+                  <th class="td-num">Jest 대비 (스위트)</th>
+                </tr>
+              </thead>
+              <tbody id="overview-tbody">
+                <tr>
+                  <td
+                    colspan="7"
+                    style="
+                      text-align: center;
+                      color: var(--text-muted);
+                      padding: 20px;
+                    "
+                  >
+                    데이터를 불러오는 중...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Corpus Chart -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">코퍼스별 결과 (Corpora)</h2>
+          <div class="segment-control" role="group" aria-label="지표 선택">
+            <button class="segment-btn active" id="metric-time" type="button">
+              실행 시간
+            </button>
+            <button class="segment-btn" id="metric-cpu" type="button">
+              CPU 시간 (user + sys)
+            </button>
+          </div>
+        </div>
+        <p class="section-desc">
+          <code>hyperfine</code> 으로 러너 프로세스 시작부터 종료까지 잰
+          값입니다. 실행 시간은 벽시계 평균, CPU 시간은 워커를 포함한 모든 자식
+          프로세스의 user + sys 평균입니다. 바 길이가 짧을수록 좋으며, 상대
+          배수는 해당 코퍼스의 최솟값 기준입니다. 빗금 바는 병렬 옵션을 켠
+          결과입니다.
+        </p>
+        <div class="chart-container" id="chart-container"></div>
+      </section>
+
+      <!-- Methodology & Technical Analysis -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">측정 환경 및 기술적 분석</h2>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card">
+            <h3>측정 방식 및 재현 (Methodology)</h3>
+            <ul>
+              <li>
+                <strong>코퍼스:</strong> 테스트 파일마다 같은 내용의
+                <code>src/mNNN.ts</code> 모듈을 하나씩 import 하고, 덧셈 ·
+                문자열 · 깊은 비교(<code>toEqual</code>) · 비동기
+                (<code>resolves</code>) · 예외(<code>toThrow</code>) 테스트를
+                돌아가며 담습니다. 파일 1개와 스위트 두 가지 크기로 잽니다.
+              </li>
+              <li>
+                <strong>같은 테스트:</strong> 각 러너 자체의
+                <code>expect</code> 를 씁니다. Bun · Vitest 는 자체 모듈에서
+                import 하고, Jest 는 전역 주입, Deno 는
+                <code>node:test</code> 와 <code>jsr:@std/expect</code> 입니다.
+                자체 <code>expect</code> 가 없는 Node.js 만
+                <code>node:test</code> 와 Jest 의 npm <code>expect</code> 를
+                씁니다.
+              </li>
+              <li>
+                <strong>설정:</strong> 러너 기본값을 그대로 씁니다. Jest 는 TS
+                를 직접 읽지 못해 <code>@swc/jest</code> 변환을 붙이고, Deno 는
+                다른 러너처럼 타입 검사를 건너뛰도록 <code>--no-check</code> 를
+                줍니다. 파일을 직렬로 도는 Deno · Bun 은
+                <code>--parallel</code> 도 함께 잽니다.
+              </li>
+              <li>
+                <strong>검증:</strong> 측정 전에 각 러너를 한 번 돌려, 출력의
+                통과 수가 전체 테스트 수와 같을 때만 측정합니다. 측정 중에도
+                실패하면 hyperfine 이 중단됩니다.
+              </li>
+              <li>
+                <strong>재현 명령:</strong> <code>bun run bench:test</code>
+                실행 시 벤치마크가 재수행되고
+                <code>test-results.json</code>이 업데이트됩니다.
+              </li>
+            </ul>
+          </div>
+          <div class="note-card">
+            <h3>결과 해석 (Engineering Notes)</h3>
+            <ul>
+              <li>
+                <strong>파일 격리 비용:</strong> Bun 은 기본으로 모든 테스트
+                파일을 한 프로세스 · 한 전역에서 직렬로 실행해 파일당 고정
+                비용이 거의 없습니다. Vitest(파일마다 격리된 모듈 그래프), node
+                --test(파일마다 프로세스), Deno(모듈마다 새 isolate)는 파일 수에
+                비례하는 고정 비용을 냅니다. 격리를 끄면 (<code
+                  >vitest --no-isolate</code
+                >, <code>node --test --test-isolation=none</code>) 이 스위트가
+                0.6 ~ 0.8 s 로 줄지만(별도 3회 측정), 파일 사이에 전역 상태가
+                공유됩니다.
+              </li>
+              <li>
+                <strong>병렬 실행:</strong> Jest · Vitest · node --test 는
+                기본으로 워커를 병렬로 돌려 CPU 시간이 벽시계 시간보다 훨씬
+                큽니다. Deno 는 <code>--parallel</code> 로 크게 빨라지지만, Bun
+                은 <code>--parallel</code> 이 격리(<code>--isolate</code>)를
+                켜고 워커를 띄우는 비용이 더 커서 이 규모에서는 오히려 느립니다.
+                파일당 테스트가 무거울 때 이득입니다.
+              </li>
+              <li>
+                <strong>Jest vs Vitest:</strong> 이 스위트에서는 Jest 가 더
+                빠릅니다. Jest 는 <code>@swc/jest</code> 변환 결과를 디스크에
+                캐시해 워밍업 뒤에는 변환을 건너뛰고, Vitest 는 실행마다
+                변환하면서 파일마다 격리된 환경을 새로 만듭니다.
+              </li>
+              <li>
+                <strong>시작 오버헤드:</strong> 파일 1개 결과는 대부분 러너
+                자체를 띄우는 비용입니다. Node.js 위에서 도는 Jest · Vitest 는
+                러너 모듈 로딩에 수백 ms 의 CPU 를 쓰고, Bun 은 10 ms
+                안팎입니다. 측정 머신은 프로세스 기동마다 약 20 ms 가 붙고
+                흔들려서, 50 ms 미만 값은 편차가 크니 순위 위주로 보세요.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Raw Benchmark Data Details -->
+      <section class="section">
+        <details class="raw-section">
+          <summary>전체 측정 데이터 테이블 (Raw Benchmark Data)</summary>
+          <div class="table-responsive" style="margin-top: 14px">
+            <table>
+              <thead>
+                <tr>
+                  <th>코퍼스</th>
+                  <th>러너</th>
+                  <th class="td-num">평균 (Mean)</th>
+                  <th class="td-num">표준 편차</th>
+                  <th class="td-num">최소</th>
+                  <th class="td-num">최대</th>
+                  <th class="td-num">user / sys</th>
+                  <th class="td-num">상대 배수</th>
+                </tr>
+              </thead>
+              <tbody id="raw-tbody"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <!-- Hover Tooltip -->
+    <div id="tooltip" role="tooltip"></div>
+
+    <script>
+      const TOOLS = [
+        "jest",
+        "vitest",
+        "node",
+        "deno",
+        "deno-parallel",
+        "bun",
+        "bun-parallel",
+      ];
+      // 병렬 옵션 결과는 같은 브랜드 색의 빗금 바로 구분한다
+      const stripe = (c) =>
+        `repeating-linear-gradient(135deg, ${c} 0 6px, color-mix(in srgb, ${c} 40%, transparent) 6px 10px)`;
+      const TOOL_CONFIG = {
+        jest: {
+          name: "Jest",
+          ver: "jest",
+          colorVar: "var(--brand-jest)",
+          how: "Node.js · @swc/jest 변환 · 워커 병렬",
+        },
+        vitest: {
+          name: "Vitest",
+          ver: "vitest",
+          colorVar: "var(--brand-vitest)",
+          how: "Node.js · Vite 변환 · 워커 병렬",
+        },
+        node: {
+          name: "node --test",
+          ver: "node",
+          colorVar: "var(--brand-node)",
+          how: "타입 스트리핑 · 파일마다 프로세스",
+        },
+        deno: {
+          name: "Deno",
+          ver: "deno",
+          colorVar: "var(--brand-deno)",
+          how: "파일 직렬",
+        },
+        "deno-parallel": {
+          name: "Deno --parallel",
+          ver: "deno",
+          colorVar: stripe("var(--brand-deno)"),
+          how: "파일 병렬",
+        },
+        bun: {
+          name: "Bun",
+          ver: "bun",
+          colorVar: "var(--brand-bun)",
+          how: "한 프로세스 · 파일 직렬",
+        },
+        "bun-parallel": {
+          name: "Bun --parallel",
+          ver: "bun",
+          colorVar: stripe("var(--brand-bun)"),
+          how: "워커 프로세스 병렬 · 파일 격리",
+        },
+      };
+
+      const CORPORA = {
+        single: ["테스트 파일 1개", "러너 기동 · 변환 · 실행 — 시작 오버헤드"],
+        suite: ["테스트 스위트", "파일마다 src 모듈 하나를 import"],
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      const fmtTime = (s) =>
+        s >= 1
+          ? `${s.toFixed(2)} s`
+          : `${(s * 1000).toFixed(s < 0.01 ? 1 : 0)} ms`;
+      const cpuOf = (r) => r.user + r.system;
+
+      let currentData = null;
+      let metric = "mean";
+
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      const tipAttr = (title, lines) => esc(JSON.stringify({ title, lines }));
+      const resultOf = (corpus, tool) =>
+        corpus.results.find((r) => r.tool === tool);
+      const corpusOf = (corpora, name) => corpora.find((c) => c.name === name);
+      const scale = (c) =>
+        `${c.files.toLocaleString()} files × ${c.tests / c.files} tests`;
+
+      // rows: [{tool, value, label, tip}], 값이 작을수록 좋다
+      function barRows(rows) {
+        const max = Math.max(...rows.map((r) => r.value));
+        const best = Math.min(...rows.map((r) => r.value));
+        return rows
+          .map((r) => {
+            const cfg = TOOL_CONFIG[r.tool];
+            const mult =
+              r.value === best
+                ? `<span class="row-multiplier fastest">최소</span>`
+                : `<span class="row-multiplier">×${(r.value / best).toFixed(1)}</span>`;
+            return `
+              <div class="chart-row" data-tip="${r.tip}">
+                <span class="row-tool">${cfg.name}</span>
+                <div class="row-track">
+                  <div class="row-bar" style="width: ${Math.max((r.value / max) * 100, 1.5)}%; background: ${cfg.colorVar};"></div>
+                </div>
+                <div class="row-values">
+                  <span class="row-time">${r.label}</span>
+                  ${mult}
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderSpecs({ meta, corpora }) {
+        $("commit-tag").textContent = `@${meta.commit}`;
+        const specs = [
+          { label: "CPU", val: `${meta.cpu} (${meta.cores} cores)` },
+          { label: "OS", val: meta.os },
+          {
+            label: "측정일",
+            val: new Date(meta.date).toLocaleDateString("ko-KR"),
+          },
+          { label: "스위트", val: scale(corpusOf(corpora, "suite")) },
+        ];
+        $("specs-grid").innerHTML = specs
+          .map(
+            (s) =>
+              `<span class="spec-item">${s.label}: <strong>${s.val}</strong></span>`,
+          )
+          .join("");
+      }
+
+      function renderOverview({ meta, corpora }) {
+        const single = corpusOf(corpora, "single");
+        const suite = corpusOf(corpora, "suite");
+        $("suite-th").textContent = `스위트 (${suite.files} files)`;
+        $("overview-desc").textContent =
+          `파일 1개는 ${single.tests}개 테스트가 든 테스트 파일 하나, 스위트는 ${scale(suite)} = ${suite.tests.toLocaleString()}개 테스트의 평균 실행 시간입니다. CPU 는 스위트 실행 동안 워커까지 합한 user + sys, Jest 대비는 스위트 실행 시간 비율입니다.`;
+        const fastest = (c) =>
+          c.results.reduce((a, b) => (b.mean < a.mean ? b : a)).tool;
+        const fastSingle = fastest(single);
+        const fastSuite = fastest(suite);
+        const jestMean = resultOf(suite, "jest").mean;
+
+        $("overview-tbody").innerHTML = TOOLS.map((tool) => {
+          const cfg = TOOL_CONFIG[tool];
+          const s1 = resultOf(single, tool);
+          const s2 = resultOf(suite, tool);
+          const speed = jestMean / s2.mean;
+          const speedCell =
+            tool === "jest"
+              ? `<span style="color: var(--text-muted);">1.0× (기준)</span>`
+              : `<span class="badge-tag">${speed >= 1 ? `${speed.toFixed(1)}× faster` : `${(1 / speed).toFixed(1)}× slower`}</span>`;
+          return `
+            <tr>
+              <td>
+                <span class="tool-label">
+                  <span class="tool-dot" style="background: ${cfg.colorVar};"></span>
+                  ${cfg.name}
+                </span>
+              </td>
+              <td class="td-mono">${meta.versions[cfg.ver]}</td>
+              <td style="color: var(--text-muted); font-size: 0.82rem;">${cfg.how}</td>
+              <td class="td-mono td-num"><span class="${tool === fastSingle ? "badge-tag badge-fastest" : ""}">${fmtTime(s1.mean)}</span></td>
+              <td class="td-mono td-num"><span class="${tool === fastSuite ? "badge-tag badge-fastest" : ""}">${fmtTime(s2.mean)}</span></td>
+              <td class="td-mono td-num" style="color: var(--text-muted);">${fmtTime(cpuOf(s2))}</td>
+              <td class="td-num">${speedCell}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function renderChart({ corpora }) {
+        $("chart-container").innerHTML = corpora
+          .map((c) => {
+            const [title, desc] = CORPORA[c.name] ?? [c.name, ""];
+            const rows = TOOLS.map((tool) => {
+              const r = resultOf(c, tool);
+              const value = metric === "mean" ? r.mean : cpuOf(r);
+              return {
+                tool,
+                value,
+                label: fmtTime(value),
+                tip: tipAttr(`${TOOL_CONFIG[tool].name} — ${title}`, [
+                  `평균: ${fmtTime(r.mean)} (±${fmtTime(r.stddev)})`,
+                  `최소: ${fmtTime(r.min)} / 최대: ${fmtTime(r.max)}`,
+                  `user ${fmtTime(r.user)} · sys ${fmtTime(r.system)}`,
+                  `실행: ${c.runs} runs`,
+                ]),
+              };
+            });
+            return `
+              <div class="corpus-block">
+                <div class="corpus-header">
+                  <h3 class="corpus-title">${title} <span class="tool-ver">${c.name}</span></h3>
+                  <span class="corpus-meta">${desc} · ${scale(c)} · ${c.runs} runs</span>
+                </div>
+                <div class="chart-rows">${barRows(rows)}</div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderRawTable({ corpora }) {
+        $("raw-tbody").innerHTML = corpora
+          .flatMap((c) => {
+            const min = Math.min(...c.results.map((r) => r.mean));
+            return TOOLS.map((t) => {
+              const r = resultOf(c, t);
+              const mult = (r.mean / min).toFixed(2);
+              return `
+                <tr>
+                  <td>${CORPORA[c.name]?.[0] ?? c.name}</td>
+                  <td><strong>${TOOL_CONFIG[t].name}</strong></td>
+                  <td class="td-mono td-num">${fmtTime(r.mean)}</td>
+                  <td class="td-mono td-num">± ${fmtTime(r.stddev)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.min)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.max)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.user)} / ${fmtTime(r.system)}</td>
+                  <td class="td-mono td-num">${mult === "1.00" ? "1.00× (최단)" : `${mult}×`}</td>
+                </tr>
+              `;
+            });
+          })
+          .join("");
+      }
+
+      // Theme toggle handling
+      const root = document.documentElement;
+      const themeIcon = $("theme-icon");
+      const themeText = $("theme-text");
+
+      function updateThemeUI(t) {
+        root.dataset.theme = t;
+        themeIcon.textContent = t === "dark" ? "☀️" : "🌙";
+        themeText.textContent = t === "dark" ? "Light" : "Dark";
+      }
+
+      updateThemeUI(root.dataset.theme);
+
+      $("theme-btn").addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        updateThemeUI(next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
+
+      matchMedia("(prefers-color-scheme: dark)").addEventListener(
+        "change",
+        (e) => {
+          let saved = null;
+          try {
+            saved = localStorage.getItem("theme");
+          } catch {}
+          if (!saved) updateThemeUI(e.matches ? "dark" : "light");
+        },
+      );
+
+      // Segmented control buttons
+      const btnTime = $("metric-time");
+      const btnCpu = $("metric-cpu");
+      const setMetric = (m) => {
+        if (metric === m) return;
+        metric = m;
+        btnTime.classList.toggle("active", m === "mean");
+        btnCpu.classList.toggle("active", m === "cpu");
+        if (currentData) renderChart(currentData);
+      };
+      btnTime.addEventListener("click", () => setMetric("mean"));
+      btnCpu.addEventListener("click", () => setMetric("cpu"));
+
+      // Tooltip handling
+      const tip = $("tooltip");
+      document.addEventListener("pointermove", (e) => {
+        const row = e.target.closest(".chart-row");
+        if (!row || !row.dataset.tip) {
+          tip.style.display = "none";
+          return;
+        }
+        const d = JSON.parse(row.dataset.tip);
+        tip.replaceChildren(
+          ...[d.title, ...d.lines].map((text, i) => {
+            const div = document.createElement("div");
+            div.className = i ? "tt-line" : "tt-title";
+            div.textContent = text;
+            return div;
+          }),
+        );
+        tip.style.display = "block";
+        tip.style.left = `${Math.min(e.clientX + 16, window.innerWidth - tip.offsetWidth - 12)}px`;
+        tip.style.top = `${e.clientY + 16}px`;
+      });
+
+      const showError = (title, err, hint) => {
+        $("error-container").innerHTML = `
+          <div class="error-banner">
+            <strong>${title}:</strong> ${esc(err.message)}. ${hint}
+          </div>
+        `;
+      };
+
+      // Data fetch: 로드 실패와 렌더링 실패(test-results.json 형식 문제)를 구분해 안내한다
+      fetch("./test-results.json")
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
+        .then(
+          (data) => {
+            currentData = data;
+            renderSpecs(data);
+            renderOverview(data);
+            renderChart(data);
+            renderRawTable(data);
+          },
+          (err) =>
+            showError(
+              "test-results.json 로드 실패",
+              err,
+              "로컬 테스트 시 <code>bun run serve</code> 명령을 사용하여 웹 서버 환경에서 열어주세요.",
+            ),
+        )
+        .catch((err) =>
+          showError(
+            "test-results.json 렌더링 실패",
+            err,
+            "항목이 빠졌거나 형식이 다릅니다. <code>bun run bench:test</code> 로 다시 생성해 주세요.",
+          ),
+        );
+    </script>
+  </body>
+</html>

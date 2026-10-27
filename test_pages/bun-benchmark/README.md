@@ -1,6 +1,6 @@
 # Bun Benchmark
 
-Formatter, lint, runtime 벤치마크는 각각 별도 결과 페이지에서 확인한다. 상위 `test_pages` 페이지에서 세 결과 페이지로 바로 이동할 수 있고, 측정 파일은 접두사로 구분한다.
+Formatter, lint, runtime, test 벤치마크는 각각 별도 결과 페이지에서 확인한다. 상위 `test_pages` 페이지에서 네 결과 페이지로 바로 이동할 수 있고, 측정 파일은 접두사로 구분한다.
 
 ## 설치 및 실행
 
@@ -11,19 +11,21 @@ cd bun-benchmark
 bun install
 ```
 
-필요한 벤치마크만 실행한다. 결과는 각각 `formatter-results.json`, `lint-results.json`, `runtime-results.json`에 기록한다.
+필요한 벤치마크만 실행한다. 결과는 각각 `formatter-results.json`, `lint-results.json`, `runtime-results.json`, `test-results.json`에 기록한다.
 
 ```bash
 bun run bench:formatter
 bun run bench:lint
 bun run bench:runtime
+bun run bench:test
 ```
 
-`bun run serve`를 실행하면 `http://localhost:3000/`에서 Formatter 페이지가 열린다. Formatter, Lint, Runtime 페이지는 각각 `/formatter`, `/lint`, `/runtime`에서 볼 수 있으며, 상위 `test_pages` 목록에서도 세 페이지로 바로 이동할 수 있다.
+`bun run serve`를 실행하면 `http://localhost:3000/`에서 Formatter 페이지가 열린다. Formatter, Lint, Runtime, Test 페이지는 각각 `/formatter`, `/lint`, `/runtime`, `/test`에서 볼 수 있으며, 상위 `test_pages` 목록에서도 네 페이지로 바로 이동할 수 있다.
 
 - [`formatter.html`](formatter.html): Prettier · Biome · bun fmt의 포맷 속도와 출력 일치율
 - [`lint.html`](lint.html): ESLint · oxlint · Biome · bun lint의 린트 속도와 진단 결과
 - [`runtime.html`](runtime.html): Node.js · Deno · Bun의 시작 시간, 연산, 메모리, HTTP 처리량
+- [`test.html`](test.html): Jest · Vitest · node --test · Deno · Bun 테스트 러너의 실행 시간
 
 ## Formatter
 
@@ -66,15 +68,27 @@ bun run bench:lint
 bun run bench:runtime
 ```
 
+## Test
+
+설치된 Node.js, Deno, Bun과 `package.json`에 고정한 Jest, Vitest를 사용한다. 같은 TS 테스트를 러너마다 `test`·`expect` import 한 줄만 바꿔 만들고, 테스트 파일마다 `src` 모듈 하나를 import 한다. `expect`는 러너 자체 것을 쓴다. Jest는 `@swc/jest`로 TS를 변환하고, Deno는 `node:test`와 `jsr:@std/expect`, 자체 `expect`가 없는 Node.js만 `node:test`와 npm `expect`를 쓴다.
+
+러너 기본 설정 그대로 측정하되, Deno는 다른 러너처럼 타입 검사를 건너뛰도록 `--no-check`를 준다. 파일을 직렬로 도는 Deno·Bun은 `--parallel`도 함께 측정한다. 측정 전에 각 러너의 통과 수가 전체 테스트 수와 같은지 확인한다. 파일 1개 코퍼스는 워밍업 3회와 20회, 스위트는 워밍업 1회와 10회 측정이다.
+
+```bash
+bun run bench:test
+```
+
 ## 실행 환경 변수
 
 | 변수 | 적용 대상 | 기본값 | 설명 |
 | --- | --- | --- | --- |
 | `COPIES` | Formatter, Lint | `40` | 큰 코퍼스 복제 수 |
-| `BENCH_TMP` | 전체 | `$TMPDIR/formatter-benchmark`, `$TMPDIR/lint-benchmark`, `$TMPDIR/runtime-benchmark` | 임시 작업 디렉토리 |
-| `BUN` | Formatter, Lint | canary 다운로드 | 측정할 Bun 바이너리 |
+| `BENCH_TMP` | 전체 | `$TMPDIR/formatter-benchmark`, `$TMPDIR/lint-benchmark`, `$TMPDIR/runtime-benchmark`, `$TMPDIR/test-benchmark` | 임시 작업 디렉토리 |
+| `BUN` | Formatter, Lint, Test | canary 다운로드 (Test 는 PATH 의 `bun`) | 측정할 Bun 바이너리 |
 | `HTTP_SECS` | Runtime | `10` | HTTP 부하 시간(초) |
 | `CONNS` | Runtime | `64` | HTTP 동시 연결 수 |
 | `PORT` | Runtime | `3456` | HTTP 서버 포트 |
+| `FILES` | Test | `200` | 스위트 테스트 파일 수 |
+| `TESTS` | Test | `20` | 파일당 테스트 수 |
 
 필요한 도구는 Bun, Node.js, Deno, hyperfine, jq, rsync, git이며 Runtime HTTP 측정에는 oha와 curl도 필요하다. 각 결과 페이지는 대응하는 `*-results.json`을 fetch하므로 정적 서버로 열어야 한다.

@@ -12,6 +12,7 @@ Bun.serve({
       "/formatter": "/formatter.html",
       "/lint": "/lint.html",
       "/runtime": "/runtime.html",
+      "/test": "/test.html",
     };
     const resolvedPathname =
       pathname === "/" ? "/index.html" : (routeAliases[pathname] ?? pathname);
