@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Formatter, lint, runtime, and test runner benchmark overview"
+      content="Formatter, lint, runtime, test runner, and bundler benchmark overview"
     />
     <title>Bun Benchmark Overview</title>
     <script>
@@ -168,11 +168,12 @@
         margin: 0;
         line-height: 1.25;
       }
-      .page-desc {
+      /* benchmark.css 의 .page-desc max-width 보다 우선하도록 선택자를 한 단계 높인다 */
+      .page-header .page-desc {
         color: var(--text-muted);
         font-size: 0.95rem;
         margin: 8px 0 0;
-        max-width: 720px;
+        max-width: none;
       }
 
       /* Section Common */
@@ -283,6 +284,7 @@
             <a href="./lint.html">Lint</a>
             <a href="./runtime.html">Runtime</a>
             <a href="./test.html">Test</a>
+            <a href="./bundler.html">Bundler</a>
           </nav>
           <button
             class="theme-btn"
@@ -433,6 +435,38 @@
         <p class="table-note" id="test-note"></p>
       </section>
 
+      <section class="section" id="bundler">
+        <div class="section-header">
+          <h2 class="section-title">Bundler</h2>
+        </div>
+        <p class="section-desc">
+          three.js r108 사본을 minify + sourcemap 으로 번들링한 시간입니다.
+        </p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>코퍼스</th>
+                  <th class="td-num">esbuild</th>
+                  <th class="td-num">Rolldown</th>
+                  <th class="td-num">Vite</th>
+                  <th class="td-num">Rspack</th>
+                  <th class="td-num">Rollup</th>
+                  <th class="td-num">webpack</th>
+                  <th class="td-num">Bun</th>
+                </tr>
+              </thead>
+              <tbody id="bundler-overview">
+                <tr>
+                  <td colspan="8">결과를 불러오는 중...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <p class="data-meta" id="data-meta">측정 환경 정보를 불러오는 중...</p>
     </main>
 
@@ -463,18 +497,21 @@
 
       async function loadOverview() {
         try {
-          const [formatter, lint, runtimeData, testData] = await Promise.all(
-            [
-              "formatter-results.json",
-              "lint-results.json",
-              "runtime-results.json",
-              "test-results.json",
-            ].map(async (file) => {
-              const response = await fetch(`./${file}`);
-              if (!response.ok) throw new Error(`${file}: ${response.status}`);
-              return response.json();
-            }),
-          );
+          const [formatter, lint, runtimeData, testData, bundler] =
+            await Promise.all(
+              [
+                "formatter-results.json",
+                "lint-results.json",
+                "runtime-results.json",
+                "test-results.json",
+                "bundler-results.json",
+              ].map(async (file) => {
+                const response = await fetch(`./${file}`);
+                if (!response.ok)
+                  throw new Error(`${file}: ${response.status}`);
+                return response.json();
+              }),
+            );
 
           const largeFormatter = formatter.corpora.find(
             (corpus) => corpus.name === "large",
@@ -593,6 +630,32 @@
             duration(suite.results.find((result) => result.tool === tool).mean);
           $("test-note").textContent =
             `스위트 병렬 옵션: Deno --parallel ${parallel("deno-parallel")} · Bun --parallel ${parallel("bun-parallel")}`;
+
+          const bundlerTools = [
+            "esbuild",
+            "rolldown",
+            "vite",
+            "rspack",
+            "rollup",
+            "webpack",
+            "bun",
+          ];
+          $("bundler-overview").innerHTML = bundler.corpora
+            .map((corpus) => {
+              const values = Object.fromEntries(
+                corpus.results.map((result) => [result.tool, result.mean]),
+              );
+              const fastest = Math.min(...Object.values(values));
+              const cells = bundlerTools
+                .map(
+                  (tool) =>
+                    `<td class="td-num ${values[tool] === fastest ? "best" : ""}">${duration(values[tool])}</td>`,
+                )
+                .join("");
+              const copies = corpus.name === "small" ? 1 : bundler.meta.copies;
+              return `<tr><td>three.js ×${copies}</td>${cells}</tr>`;
+            })
+            .join("");
 
           const meta = formatter.meta;
           $("data-meta").textContent =

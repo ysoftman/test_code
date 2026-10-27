@@ -13,6 +13,7 @@ Bun.serve({
       "/lint": "/lint.html",
       "/runtime": "/runtime.html",
       "/test": "/test.html",
+      "/bundler": "/bundler.html",
     };
     const resolvedPathname =
       pathname === "/" ? "/index.html" : (routeAliases[pathname] ?? pathname);

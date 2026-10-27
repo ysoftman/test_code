@@ -1,0 +1,1174 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bun Benchmark: Bundler</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-subtle: #f1f5f9;
+        --border: #e2e8f0;
+        --border-subtle: #edf2f7;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --text-faint: #94a3b8;
+        --accent: #2563eb;
+        --accent-subtle: #eff6ff;
+
+        --brand-esbuild: #65a30d;
+        --brand-rolldown: #c026d3;
+        --brand-vite: #4f46e5;
+        --brand-rspack: #e11d48;
+        --brand-rollup: #0d9488;
+        --brand-webpack: #2563eb;
+        --brand-bun: #d97706;
+
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Pretendard Variable", Pretendard, sans-serif;
+        --font-mono:
+          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+      }
+
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface-subtle: #1f242c;
+        --border: #30363d;
+        --border-subtle: #21262d;
+        --text: #e6edf3;
+        --text-muted: #8b949e;
+        --text-faint: #6e7681;
+        --accent: #58a6ff;
+        --accent-subtle: #121d2f;
+
+        --brand-esbuild: #a3e635;
+        --brand-rolldown: #e879f9;
+        --brand-vite: #818cf8;
+        --brand-rspack: #fb7185;
+        --brand-rollup: #2dd4bf;
+        --brand-webpack: #60a5fa;
+        --brand-bun: #fbbf24;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.86em;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        padding: 1px 5px;
+        border-radius: 4px;
+        color: inherit;
+      }
+
+      /* Top Navbar */
+      .navbar {
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .nav-inner {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-back {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-back:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-sep {
+        color: var(--border);
+      }
+      .nav-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .theme-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
+      }
+      .theme-btn:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+      }
+
+      /* Layout */
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+      .title-row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0;
+        line-height: 1.25;
+      }
+      .version-tag {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 2px 7px;
+        border-radius: 4px;
+      }
+      .page-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 0 0 16px;
+        max-width: 720px;
+      }
+
+      /* Specs Bar */
+      .specs-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+      .spec-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .spec-item + .spec-item::before {
+        content: "·";
+        color: var(--border);
+        margin-right: 2px;
+      }
+      .spec-item strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* Section Common */
+      .section {
+        margin-top: 36px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-desc {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin: 0 0 16px;
+      }
+
+      /* Summary Overview Table */
+      .summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .table-responsive {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        text-align: left;
+      }
+      th {
+        background: var(--surface-subtle);
+        border-bottom: 1px solid var(--border);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 9px 14px;
+        white-space: nowrap;
+      }
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border-subtle);
+        vertical-align: middle;
+      }
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .td-mono {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+      }
+      .td-num {
+        text-align: right;
+      }
+
+      .tool-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+      }
+      .tool-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .tool-ver {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        font-family: var(--font-mono);
+      }
+      .badge-tag {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-fastest {
+        background: var(--accent-subtle);
+        color: var(--accent);
+        font-weight: 600;
+        border: 1px solid var(--border);
+      }
+
+      /* Control Segmented Buttons */
+      .segment-control {
+        display: inline-flex;
+        background: var(--surface-subtle);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px;
+        gap: 2px;
+      }
+      .segment-btn {
+        background: none;
+        border: 0;
+        color: var(--text-muted);
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        border-radius: 4px;
+        cursor: pointer;
+        transition:
+          background-color 0.1s,
+          color 0.1s;
+      }
+      .segment-btn.active {
+        background: var(--surface);
+        color: var(--text);
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Benchmark Chart */
+      .chart-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .corpus-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .corpus-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      .corpus-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      .corpus-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+      .chart-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .chart-row {
+        display: grid;
+        grid-template-columns: 124px 1fr 140px;
+        align-items: center;
+        gap: 12px;
+        cursor: default;
+      }
+      .row-tool {
+        font-size: 0.82rem;
+        font-weight: 500;
+        white-space: nowrap;
+        text-align: right;
+        color: var(--text);
+      }
+      .row-track {
+        height: 24px;
+        background: var(--surface-subtle);
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-subtle);
+      }
+      .row-bar {
+        height: 100%;
+        min-width: 3px;
+        border-radius: 3px;
+        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .row-values {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        white-space: nowrap;
+      }
+      .row-time {
+        font-weight: 600;
+        color: var(--text);
+      }
+      .row-multiplier {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .row-multiplier.fastest {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* Hover Tooltip */
+      #tooltip {
+        position: fixed;
+        z-index: 50;
+        pointer-events: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.78rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: none;
+        line-height: 1.5;
+        max-width: 280px;
+      }
+      #tooltip .tt-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 2px;
+      }
+      #tooltip .tt-line {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      /* Methodology & Technical Notes (2-Column Grid) */
+      .notes-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .note-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px;
+      }
+      .note-card h3 {
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin: 0 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .note-card ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+      .note-card li {
+        margin-bottom: 8px;
+      }
+      .note-card li:last-child {
+        margin-bottom: 0;
+      }
+      .note-card strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* Raw Details */
+      details.raw-section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+      details.raw-section summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        user-select: none;
+      }
+      details.raw-section summary:hover {
+        color: var(--text);
+      }
+      details.raw-section[open] summary {
+        margin-bottom: 14px;
+      }
+
+      /* Error Banner */
+      .error-banner {
+        padding: 14px 16px;
+        background: #fee2e2;
+        border: 1px solid #f87171;
+        border-radius: 8px;
+        color: #991b1b;
+        font-size: 0.88rem;
+        margin-bottom: 20px;
+      }
+      :root[data-theme="dark"] .error-banner {
+        background: #381515;
+        border-color: #7f1d1d;
+        color: #fca5a5;
+      }
+
+      @media (max-width: 720px) {
+        .chart-row {
+          grid-template-columns: 104px 1fr 100px;
+          gap: 8px;
+        }
+        .notes-grid {
+          grid-template-columns: 1fr;
+        }
+        .row-values {
+          flex-direction: column;
+          gap: 0;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="./benchmark.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_pages</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">Bun Benchmark</span>
+        </div>
+        <div class="nav-actions">
+          <nav class="section-nav" aria-label="Bun Benchmark pages">
+            <a href="./">Overview</a>
+            <a href="./formatter.html">Formatter</a>
+            <a href="./lint.html">Lint</a>
+            <a href="./runtime.html">Runtime</a>
+            <a href="./test.html">Test</a>
+            <a href="./bundler.html" aria-current="page">Bundler</a>
+          </nav>
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon">◐</span>
+            <span id="theme-text">Theme</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div id="error-container"></div>
+
+      <!-- Page Header & Specs -->
+      <section class="page-header">
+        <div class="title-row">
+          <h1>Bun Benchmark: Bundler</h1>
+          <span class="version-tag" id="commit-tag">commit: loading...</span>
+        </div>
+        <p class="page-desc">
+          esbuild 공식 벤치마크와 같은 three.js r108 소스를 esbuild · Rolldown ·
+          Vite · Rspack · Rollup · webpack · bun build 로 번들링(minify +
+          sourcemap)한 시간과 결과물 크기를 비교합니다.
+        </p>
+        <div class="specs-grid" id="specs-grid">
+          <span class="spec-item">환경 정보를 불러오는 중...</span>
+        </div>
+      </section>
+
+      <!-- Executive Overview Table -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">종합 결과 요약 (Benchmark Overview)</h2>
+        </div>
+        <p class="section-desc" id="overview-desc"></p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>번들러</th>
+                  <th>버전</th>
+                  <th>구현 · minifier</th>
+                  <th class="td-num">three.js ×1</th>
+                  <th class="td-num" id="large-th">three.js ×N</th>
+                  <th class="td-num">피크 메모리</th>
+                  <th class="td-num">webpack 대비</th>
+                </tr>
+              </thead>
+              <tbody id="overview-tbody">
+                <tr>
+                  <td
+                    colspan="7"
+                    style="
+                      text-align: center;
+                      color: var(--text-muted);
+                      padding: 20px;
+                    "
+                  >
+                    데이터를 불러오는 중...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Corpus Chart -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">코퍼스별 결과 (Corpora)</h2>
+          <div class="segment-control" role="group" aria-label="지표 선택">
+            <button class="segment-btn active" id="metric-time" type="button">
+              실행 시간
+            </button>
+            <button class="segment-btn" id="metric-cpu" type="button">
+              CPU 시간
+            </button>
+            <button class="segment-btn" id="metric-memory" type="button">
+              피크 메모리
+            </button>
+          </div>
+        </div>
+        <p class="section-desc">
+          <code>hyperfine -N</code> 으로 번들러 프로세스 시작부터 종료까지 잰
+          값입니다. 실행 시간은 벽시계 평균, CPU 시간은 자식 프로세스를 포함한
+          user + sys 평균, 피크 메모리는 가장 큰 프로세스 하나의 피크 RSS
+          최댓값입니다. 바 길이가 짧을수록 좋으며, 상대 배수는 해당 코퍼스의
+          최솟값 기준입니다.
+        </p>
+        <div class="chart-container" id="chart-container"></div>
+      </section>
+
+      <!-- Output Size -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">결과물 크기 (Output Size)</h2>
+        </div>
+        <p class="section-desc">
+          three.js ×1 번들의 minify 결과와 <code>gzip -9</code> 크기입니다.
+          차이는 가장 작은 결과 기준입니다.
+        </p>
+        <div class="summary-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>번들러</th>
+                  <th class="td-num">minify</th>
+                  <th class="td-num">gzip</th>
+                  <th class="td-num">gzip 차이</th>
+                </tr>
+              </thead>
+              <tbody id="size-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Methodology & Technical Analysis -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">측정 환경 및 기술적 분석</h2>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card">
+            <h3>측정 방식 및 재현 (Methodology)</h3>
+            <ul>
+              <li>
+                <strong>코퍼스:</strong> three.js r108 <code>src</code>(ES 모듈
+                370개)를 사본으로 복제하고, entry 가 사본마다
+                <code>import * as copyN</code> 한 namespace 를 전역 배열에
+                담습니다. 모든 코드가 쓰이므로 tree-shaking 으로 빠지는 코드가
+                없습니다.
+              </li>
+              <li>
+                <strong>같은 출력:</strong> 모든 번들러가 minify + 외부
+                sourcemap 으로 파일 하나를 만듭니다. Rollup 은 minifier 가 없어
+                <code>@rollup/plugin-terser</code> 를 붙이고, webpack · Rspack
+                은 <code>mode: "production"</code> 기본 minifier 를 씁니다. Vite
+                는 JS entry 하나를 묶는 lib 모드(<code>iife</code>)에 기본
+                minifier(Oxc)를 씁니다. 캐시는 쓰지 않습니다.
+              </li>
+              <li>
+                <strong>검증:</strong> 측정 전에 각 번들을 node 로 실행해 사본
+                수만큼 three.js 가 들어 있는지(<code>REVISION</code>), sourcemap
+                파일이 있는지 확인합니다.
+              </li>
+              <li>
+                <strong>재현 명령:</strong> <code>bun run bench:bundler</code>
+                실행 시 벤치마크가 재수행되고
+                <code>bundler-results.json</code>이 업데이트됩니다.
+              </li>
+            </ul>
+          </div>
+          <div class="note-card">
+            <h3>결과 해석 (Engineering Notes)</h3>
+            <ul>
+              <li>
+                <strong>네이티브 vs JS:</strong> esbuild(Go) · bun build(Zig) ·
+                Rolldown · Rspack(Rust)은 파싱 · 링크 · minify 를 네이티브
+                코드로 병렬 처리합니다. Rollup · webpack 은 번들링과 minify 가
+                모두 JS 라 시간이 10배 이상, 메모리가 GB 단위로 듭니다.
+              </li>
+              <li>
+                <strong>minify 비중:</strong> Rollup · webpack 시간의 대부분은
+                terser 입니다. ×10 에서 minify 를 끄면 Rollup 은 약 5 s, webpack
+                은 약 3 s 로 줄어듭니다(별도 3회 측정).
+              </li>
+              <li>
+                <strong>Rspack vs webpack:</strong> 같은 설정 파일을 그대로
+                쓰지만, Rust 코어와 SWC minifier 덕분에 webpack 보다 열 배 안팎
+                빠릅니다.
+              </li>
+              <li>
+                <strong>Vite vs Rolldown:</strong> Vite 8 은 같은 Rolldown 과
+                Oxc minifier 로 번들링하고, 그 위에 설정 해석 · 플러그인
+                파이프라인 · gzip 크기 보고가 더해져 Rolldown 단독보다 조금
+                느립니다. gzip 크기 보고(<code>reportCompressedSize</code>)를
+                끄면 ×10 에서 약 60 ms 줄어듭니다(별도 5회 측정).
+              </li>
+              <li>
+                <strong>고정 비용:</strong> Rolldown · Vite · Rspack 은 Node.js
+                위에서 CLI 와 설정을 읽고 Rust 코어를 napi 로 부르는 구조라,
+                단일 네이티브 바이너리인 esbuild · bun 보다 기동 비용이 커서
+                작은 입력에서 차이가 더 벌어집니다.
+              </li>
+              <li>
+                <strong>결과물 크기:</strong> gzip 기준 차이는 몇 % 안쪽입니다.
+                terser · SWC · Oxc 가 조금 더 작고, 속도를 우선하는 esbuild ·
+                bun 이 조금 더 큽니다.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Raw Benchmark Data Details -->
+      <section class="section">
+        <details class="raw-section">
+          <summary>전체 측정 데이터 테이블 (Raw Benchmark Data)</summary>
+          <div class="table-responsive" style="margin-top: 14px">
+            <table>
+              <thead>
+                <tr>
+                  <th>코퍼스</th>
+                  <th>번들러</th>
+                  <th class="td-num">평균 (Mean)</th>
+                  <th class="td-num">표준 편차</th>
+                  <th class="td-num">최소</th>
+                  <th class="td-num">최대</th>
+                  <th class="td-num">user / sys</th>
+                  <th class="td-num">피크 RSS</th>
+                  <th class="td-num">상대 배수</th>
+                </tr>
+              </thead>
+              <tbody id="raw-tbody"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <!-- Hover Tooltip -->
+    <div id="tooltip" role="tooltip"></div>
+
+    <script>
+      const TOOLS = [
+        "esbuild",
+        "rolldown",
+        "vite",
+        "rspack",
+        "rollup",
+        "webpack",
+        "bun",
+      ];
+      const TOOL_CONFIG = {
+        esbuild: {
+          name: "esbuild",
+          colorVar: "var(--brand-esbuild)",
+          how: "Go · 자체 minifier",
+        },
+        rolldown: {
+          name: "Rolldown",
+          colorVar: "var(--brand-rolldown)",
+          how: "Rust · Oxc minifier",
+        },
+        vite: {
+          name: "Vite",
+          colorVar: "var(--brand-vite)",
+          how: "Rolldown 기반 · Oxc minifier",
+        },
+        rspack: {
+          name: "Rspack",
+          colorVar: "var(--brand-rspack)",
+          how: "Rust · SWC minifier",
+        },
+        rollup: {
+          name: "Rollup",
+          colorVar: "var(--brand-rollup)",
+          how: "JS · terser 플러그인",
+        },
+        webpack: {
+          name: "webpack",
+          colorVar: "var(--brand-webpack)",
+          how: "JS · terser",
+        },
+        bun: {
+          name: "bun build",
+          colorVar: "var(--brand-bun)",
+          how: "Zig · 자체 minifier",
+        },
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      const fmtTime = (s) =>
+        s >= 1
+          ? `${s.toFixed(2)} s`
+          : `${(s * 1000).toFixed(s < 0.01 ? 1 : 0)} ms`;
+      const fmtMem = (b) => `${Math.round(b / 2 ** 20)} MB`;
+      const fmtKB = (b) => `${(b / 1024).toFixed(1)} KB`;
+      const fmtMB = (b) => `${(b / 2 ** 20).toFixed(1)} MB`;
+      const cpuOf = (r) => r.user + r.system;
+      const METRICS = {
+        mean: [(r) => r.mean, fmtTime],
+        cpu: [cpuOf, fmtTime],
+        memory: [(r) => r.memory, fmtMem],
+      };
+
+      let currentData = null;
+      let metric = "mean";
+
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      const tipAttr = (title, lines) => esc(JSON.stringify({ title, lines }));
+      const resultOf = (corpus, tool) =>
+        corpus.results.find((r) => r.tool === tool);
+      const corpusOf = (corpora, name) => corpora.find((c) => c.name === name);
+      const titleOf = (c, meta) =>
+        `three.js ×${c.name === "small" ? 1 : meta.copies}`;
+
+      // rows: [{tool, value, label, tip}], 값이 작을수록 좋다
+      function barRows(rows) {
+        const max = Math.max(...rows.map((r) => r.value));
+        const best = Math.min(...rows.map((r) => r.value));
+        return rows
+          .map((r) => {
+            const cfg = TOOL_CONFIG[r.tool];
+            const mult =
+              r.value === best
+                ? `<span class="row-multiplier fastest">최소</span>`
+                : `<span class="row-multiplier">×${(r.value / best).toFixed(1)}</span>`;
+            return `
+              <div class="chart-row" data-tip="${r.tip}">
+                <span class="row-tool">${cfg.name}</span>
+                <div class="row-track">
+                  <div class="row-bar" style="width: ${Math.max((r.value / max) * 100, 1.5)}%; background: ${cfg.colorVar};"></div>
+                </div>
+                <div class="row-values">
+                  <span class="row-time">${r.label}</span>
+                  ${mult}
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderSpecs({ meta, corpora }) {
+        $("commit-tag").textContent = `@${meta.commit}`;
+        const large = corpusOf(corpora, "large");
+        const specs = [
+          { label: "CPU", val: `${meta.cpu} (${meta.cores} cores)` },
+          { label: "OS", val: meta.os },
+          { label: "Node", val: meta.node },
+          {
+            label: "측정일",
+            val: new Date(meta.date).toLocaleDateString("ko-KR"),
+          },
+          {
+            label: titleOf(large, meta),
+            val: `${large.files.toLocaleString()} files · ${fmtMB(large.bytes)}`,
+          },
+        ];
+        $("specs-grid").innerHTML = specs
+          .map(
+            (s) =>
+              `<span class="spec-item">${s.label}: <strong>${s.val}</strong></span>`,
+          )
+          .join("");
+      }
+
+      function renderOverview({ meta, corpora }) {
+        const small = corpusOf(corpora, "small");
+        const large = corpusOf(corpora, "large");
+        $("large-th").textContent = titleOf(large, meta);
+        $("overview-desc").textContent =
+          `three.js 사본 1벌과 ${meta.copies}벌을 번들링한 평균 시간입니다. 피크 메모리와 webpack 대비는 ${titleOf(large, meta)} 기준입니다.`;
+        const fastest = (c) =>
+          c.results.reduce((a, b) => (b.mean < a.mean ? b : a)).tool;
+        const fastSmall = fastest(small);
+        const fastLarge = fastest(large);
+        const webpackMean = resultOf(large, "webpack").mean;
+
+        $("overview-tbody").innerHTML = TOOLS.map((tool) => {
+          const cfg = TOOL_CONFIG[tool];
+          const s = resultOf(small, tool);
+          const l = resultOf(large, tool);
+          const speedCell =
+            tool === "webpack"
+              ? `<span style="color: var(--text-muted);">1.0× (기준)</span>`
+              : `<span class="badge-tag">${(webpackMean / l.mean).toFixed(1)}× faster</span>`;
+          return `
+            <tr>
+              <td>
+                <span class="tool-label">
+                  <span class="tool-dot" style="background: ${cfg.colorVar};"></span>
+                  ${cfg.name}
+                </span>
+              </td>
+              <td class="td-mono">${meta.versions[tool]}</td>
+              <td style="color: var(--text-muted); font-size: 0.82rem;">${cfg.how}</td>
+              <td class="td-mono td-num"><span class="${tool === fastSmall ? "badge-tag badge-fastest" : ""}">${fmtTime(s.mean)}</span></td>
+              <td class="td-mono td-num"><span class="${tool === fastLarge ? "badge-tag badge-fastest" : ""}">${fmtTime(l.mean)}</span></td>
+              <td class="td-mono td-num" style="color: var(--text-muted);">${fmtMem(l.memory)}</td>
+              <td class="td-num">${speedCell}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function renderChart({ meta, corpora }) {
+        const [valueOf, fmt] = METRICS[metric];
+        $("chart-container").innerHTML = corpora
+          .map((c) => {
+            const title = titleOf(c, meta);
+            const rows = TOOLS.map((tool) => {
+              const r = resultOf(c, tool);
+              return {
+                tool,
+                value: valueOf(r),
+                label: fmt(valueOf(r)),
+                tip: tipAttr(`${TOOL_CONFIG[tool].name} — ${title}`, [
+                  `평균: ${fmtTime(r.mean)} (±${fmtTime(r.stddev)})`,
+                  `최소: ${fmtTime(r.min)} / 최대: ${fmtTime(r.max)}`,
+                  `user ${fmtTime(r.user)} · sys ${fmtTime(r.system)}`,
+                  `피크 RSS: ${fmtMem(r.memory)}`,
+                  `실행: ${c.runs} runs`,
+                ]),
+              };
+            });
+            return `
+              <div class="corpus-block">
+                <div class="corpus-header">
+                  <h3 class="corpus-title">${title} <span class="tool-ver">${c.name}</span></h3>
+                  <span class="corpus-meta">${c.files.toLocaleString()} files · ${fmtMB(c.bytes)} · ${c.runs} runs</span>
+                </div>
+                <div class="chart-rows">${barRows(rows)}</div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderSize({ outputs }) {
+        const best = Math.min(...outputs.map((o) => o.gzip));
+        $("size-tbody").innerHTML = TOOLS.map((tool) => {
+          const o = outputs.find((x) => x.tool === tool);
+          const cfg = TOOL_CONFIG[tool];
+          const diff = ((o.gzip / best - 1) * 100).toFixed(1);
+          return `
+            <tr>
+              <td>
+                <span class="tool-label">
+                  <span class="tool-dot" style="background: ${cfg.colorVar};"></span>
+                  ${cfg.name}
+                </span>
+              </td>
+              <td class="td-mono td-num">${fmtKB(o.bytes)}</td>
+              <td class="td-mono td-num">${fmtKB(o.gzip)}</td>
+              <td class="td-mono td-num">${o.gzip === best ? `<span class="badge-tag badge-fastest">최소</span>` : `+${diff}%`}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function renderRawTable({ meta, corpora }) {
+        $("raw-tbody").innerHTML = corpora
+          .flatMap((c) => {
+            const min = Math.min(...c.results.map((r) => r.mean));
+            return TOOLS.map((t) => {
+              const r = resultOf(c, t);
+              const mult = (r.mean / min).toFixed(2);
+              return `
+                <tr>
+                  <td>${titleOf(c, meta)}</td>
+                  <td><strong>${TOOL_CONFIG[t].name}</strong></td>
+                  <td class="td-mono td-num">${fmtTime(r.mean)}</td>
+                  <td class="td-mono td-num">± ${fmtTime(r.stddev)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.min)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.max)}</td>
+                  <td class="td-mono td-num">${fmtTime(r.user)} / ${fmtTime(r.system)}</td>
+                  <td class="td-mono td-num">${fmtMem(r.memory)}</td>
+                  <td class="td-mono td-num">${mult === "1.00" ? "1.00× (최단)" : `${mult}×`}</td>
+                </tr>
+              `;
+            });
+          })
+          .join("");
+      }
+
+      // Theme toggle handling
+      const root = document.documentElement;
+      const themeIcon = $("theme-icon");
+      const themeText = $("theme-text");
+
+      function updateThemeUI(t) {
+        root.dataset.theme = t;
+        themeIcon.textContent = t === "dark" ? "☀️" : "🌙";
+        themeText.textContent = t === "dark" ? "Light" : "Dark";
+      }
+
+      updateThemeUI(root.dataset.theme);
+
+      $("theme-btn").addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        updateThemeUI(next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
+
+      matchMedia("(prefers-color-scheme: dark)").addEventListener(
+        "change",
+        (e) => {
+          let saved = null;
+          try {
+            saved = localStorage.getItem("theme");
+          } catch {}
+          if (!saved) updateThemeUI(e.matches ? "dark" : "light");
+        },
+      );
+
+      // Segmented control buttons
+      const metricBtns = {
+        mean: $("metric-time"),
+        cpu: $("metric-cpu"),
+        memory: $("metric-memory"),
+      };
+      for (const [m, btn] of Object.entries(metricBtns)) {
+        btn.addEventListener("click", () => {
+          if (metric === m) return;
+          metric = m;
+          for (const [k, b] of Object.entries(metricBtns))
+            b.classList.toggle("active", k === m);
+          if (currentData) renderChart(currentData);
+        });
+      }
+
+      // Tooltip handling
+      const tip = $("tooltip");
+      document.addEventListener("pointermove", (e) => {
+        const row = e.target.closest(".chart-row");
+        if (!row || !row.dataset.tip) {
+          tip.style.display = "none";
+          return;
+        }
+        const d = JSON.parse(row.dataset.tip);
+        tip.replaceChildren(
+          ...[d.title, ...d.lines].map((text, i) => {
+            const div = document.createElement("div");
+            div.className = i ? "tt-line" : "tt-title";
+            div.textContent = text;
+            return div;
+          }),
+        );
+        tip.style.display = "block";
+        tip.style.left = `${Math.min(e.clientX + 16, window.innerWidth - tip.offsetWidth - 12)}px`;
+        tip.style.top = `${e.clientY + 16}px`;
+      });
+
+      const showError = (title, err, hint) => {
+        $("error-container").innerHTML = `
+          <div class="error-banner">
+            <strong>${title}:</strong> ${esc(err.message)}. ${hint}
+          </div>
+        `;
+      };
+
+      // Data fetch: 로드 실패와 렌더링 실패(bundler-results.json 형식 문제)를 구분해 안내한다
+      fetch("./bundler-results.json")
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
+        .then(
+          (data) => {
+            currentData = data;
+            renderSpecs(data);
+            renderOverview(data);
+            renderChart(data);
+            renderSize(data);
+            renderRawTable(data);
+          },
+          (err) =>
+            showError(
+              "bundler-results.json 로드 실패",
+              err,
+              "로컬 테스트 시 <code>bun run serve</code> 명령을 사용하여 웹 서버 환경에서 열어주세요.",
+            ),
+        )
+        .catch((err) =>
+          showError(
+            "bundler-results.json 렌더링 실패",
+            err,
+            "항목이 빠졌거나 형식이 다릅니다. <code>bun run bench:bundler</code> 로 다시 생성해 주세요.",
+          ),
+        );
+    </script>
+  </body>
+</html>
