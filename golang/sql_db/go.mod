@@ -1,14 +1,14 @@
 module sql_db
 
-go 1.25.0
+go 1.26.0
 
 // 디버깅을 위해 다운받은 gorm 패키지 사용시
 // replace gorm.io/gorm => /Users/ysoftman/workspace/gorm
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
-	github.com/go-jose/go-jose/v4 v4.1.4
-	github.com/go-sql-driver/mysql v1.10.0
+	github.com/go-jose/go-jose/v4 v4.1.7
+	github.com/go-sql-driver/mysql v1.10.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/stretchr/testify v1.10.0
 	gorm.io/driver/mysql v1.6.0
@@ -21,8 +21,8 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/mattn/go-sqlite3 v1.14.47 // indirect
+	github.com/mattn/go-sqlite3 v1.14.52 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/text v0.39.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
