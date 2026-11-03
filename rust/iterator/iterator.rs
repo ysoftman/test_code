@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 // ysoftman
 // iterator(반복자) test
 // 반복자는 표준 라이브러리에 다음과 같은 트레잇을 가지고 있다.
@@ -79,6 +80,8 @@ fn main() {
 
     // map 메소드에 v1 요소에 +1 하는 클로저를 넘겨 반복자를 리턴 받는다.
     // 반복자는 collect() 로 벡터를 리턴한다.
+    // collect() 는 iterator 를 관련있는 collection(컬렉션, vector, string, hash map등)으로 변환시켜 준다.
+    // map 등 이터레이터 어댑터(Iterator Adaptor)라고 불리는 거의 모든 메서드들은 예외 없이 전부 지연 평가(Lazy Evaluation)로 동작(collect() 가 실행될때 실행)한다.
     let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
     assert_eq!(vec![2, 3, 4], v2);
 
@@ -86,6 +89,9 @@ fn main() {
     println!("{:?}", find_my_size(vec_size, 10));
     // find_my_size 내에서 vec_size를 into_iter() 로 소유권을 가져가서  소비했기 때문에 더이상 사용할 수 없다.
     // println!("{:?}", find_my_size(vec_size, 12));
+
+    println!("--- custom_iter_test ---");
+    custom_iter_test();
 }
 
 fn find_my_size(v_size: Vec<u32>, my_size: u32) -> Vec<u32> {
@@ -93,4 +99,74 @@ fn find_my_size(v_size: Vec<u32>, my_size: u32) -> Vec<u32> {
     // filter() 에 shoes_size 에 맞는 사이즈들을 shoe 벡터에서 찾아
     // collect() 로 벡터로 리턴한다.
     v_size.into_iter().filter(|s| *s == my_size).collect()
+}
+
+#[derive(Debug)]
+struct Counter {
+    count: u32,
+}
+
+impl Counter {
+    fn new() -> Counter {
+        Counter { count: 0 }
+    }
+}
+
+// Counter 를 위한 커스텀 반복자 trait(트레잇) 생성
+// 반복자 트레잇은 Item 과 next() 메소드를 정의해야 한다.
+// rust 에서 Iterator trait 을 어떻게 정의하고 있는지 참고하면 좋다.
+impl Iterator for Counter {
+    type Item = u32;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.count += 1;
+        if self.count < 6 {
+            Some(self.count)
+        } else {
+            None
+        }
+    }
+}
+
+fn custom_iter_test() {
+    let mut counter = Counter::new();
+
+    // counter 의 커스텀 반복자 트레잇의 next() 메소드를 사용
+    assert_eq!(counter.next(), Some(1));
+    assert_eq!(counter.next(), Some(2));
+    assert_eq!(counter.next(), Some(3));
+    assert_eq!(counter.next(), Some(4));
+    assert_eq!(counter.next(), Some(5));
+    assert_eq!(counter.next(), None);
+
+    // [1,2,3,4,5]
+    let temp: Vec<u32> = Counter::new().collect();
+    println!("{temp:?}");
+    // 1번째 요소 건너뛰어 [2,3,4,5]
+    let temp: Vec<u32> = Counter::new().skip(1).collect();
+    println!("{temp:?}");
+    // zip()으로 위 2개 벡터를 쌍으로 묶는다.
+    // {1: 2, 4: 5, 3: 4, 2: 3} 으로 vec1의 5에 대한 쌍이 없으면(None) 생성되지 않음
+    let temp: HashMap<_, _> = Counter::new().zip(Counter::new().skip(1)).collect();
+    println!("{temp:?}");
+    // key * value 값을 벡터로 [2, 6, 12, 20]
+    let temp: Vec<_> = Counter::new()
+        .zip(Counter::new().skip(1))
+        .map(|(a, b)| a * b)
+        .collect();
+    println!("{temp:?}");
+    // 이 벡터에서 3의 배수만 필터링해서 [6, 12]
+    let temp: Vec<_> = Counter::new()
+        .zip(Counter::new().skip(1))
+        .map(|(a, b)| a * b)
+        .filter(|x| x % 3 == 0)
+        .collect();
+    println!("{temp:?}");
+    // 필터링된 벡터의 합을 구한다.
+    let sum: u32 = Counter::new()
+        .zip(Counter::new().skip(1))
+        .map(|(a, b)| a * b)
+        .filter(|x| x % 3 == 0)
+        .sum();
+    println!("sum: {sum}");
+    assert_eq!(18, sum);
 }
