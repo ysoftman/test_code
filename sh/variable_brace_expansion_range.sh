@@ -146,3 +146,15 @@ echo "-----"
 echo {0..10..2}
 # a~z 까지 3씩 건너뛰기: a d g j m p s v y
 echo {a..z..3}
+
+
+# z-1 z-2 z-3 파일 생성 및 삭제
+touch z-{1,2,3}
+rm z-{1,2,3}
+touch z-{1..3}
+rm z-{1,2,3}
+
+# ls 에선 항상 , 가 있어야 인식을 할 수 있다.
+ls -l variable{_brace_expansion_range.sh,}
+ls -l variable{_brace_expansion_range.sh,_check_null.sh}
+
