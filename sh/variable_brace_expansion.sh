@@ -154,7 +154,7 @@ rm z-{1,2,3}
 touch z-{1..3}
 rm z-{1,2,3}
 
-# ls 에선 항상 , 가 있어야 인식을 할 수 있다.
+# ls 에서 {} 사용시 , 가 있어야 인식을 할 수 있다.
 ls -l variable{_brace_expansion.sh,}
 ls -l variable{_brace_expansion.sh,_check_null.sh}
 
