@@ -2,11 +2,9 @@
 # chart 는 argocd multi-source 로 upstream(https://grafana-community.github.io/helm-charts) 에서 받는다.
 
 # admin 비밀번호를 지정하지 않으면 chart 가 렌더링마다 랜덤 값을 만들어 argocd 에서 항상 OutOfSync 가 된다.
-# 공개 저장소에 비밀번호를 두지 않기 위해 클러스터에 수동 생성한 secret 을 참조한다(생성 명령은 README-ysoftman.md).
-admin:
-  existingSecret: grafana-admin
-  userKey: admin-user
-  passwordKey: admin-password
+# 테스트 클러스터라 다른 admin 들과 같은 값(ysoftman)을 고정한다. chart 가 이 값으로 secret 을 직접 만든다.
+adminUser: admin
+adminPassword: ysoftman
 
 # prometheus 앱(namespace: prometheus)의 server service 를 기본 datasource 로 등록
 datasources:

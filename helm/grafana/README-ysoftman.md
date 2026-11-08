@@ -5,17 +5,7 @@
 - argocd 배포는 upstream helm repo 의 chart 를 직접 쓴다(버전은 `argocd-apps/values-ysoftman.yaml` 의 `grafana.source.targetRevision`).
   버전 올릴 때는 그 값만 바꾸면 된다.
 - datasource 로 `prometheus` 앱(`prometheus-server.prometheus.svc.cluster.local`)을 기본 등록한다.
-- admin 계정은 git 밖에서 수동으로 만든 `grafana-admin` secret 을 참조한다(없으면 파드가 기동하지 않는다).
-
-```bash
-kubectl --context colima create namespace grafana
-kubectl --context colima -n grafana create secret generic grafana-admin \
-  --from-literal=admin-user=admin \
-  --from-literal=admin-password="$(openssl rand -hex 12)"
-# 비밀번호 확인
-kubectl --context colima -n grafana get secret grafana-admin -o jsonpath='{.data.admin-password}' | base64 -d
-```
-
+- admin 계정은 `admin` / `ysoftman` 으로 고정한다(테스트 클러스터라 git 에 둔다. 지정하지 않으면 chart 가 랜덤 값을 만들어 argocd 에서 OutOfSync 가 된다).
 - 수동 배포시
 
 ```bash
