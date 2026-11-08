@@ -25,7 +25,7 @@ spec:
       helm:
         releaseName: {{ index .Values "grafana" "name" }}
         # ↓ 2) 의 git 저장소에 있는 values 파일을 $values 로 참조
-        valueFiles: {{ index .Values "grafana" "valueFiles" }}
+        valueFiles: {{ index .Values "grafana" "valueFiles" | toJson }}
         values: |
           {{ toYaml (index .Values "grafana" "values") | nindent 10 }}
     # 2) values: 내 git 저장소. ref 이름(values)으로 위에서 $values 로 가리킴
