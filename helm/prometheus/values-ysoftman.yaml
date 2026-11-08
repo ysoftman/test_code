@@ -1,0 +1,29 @@
+# prometheus-community/prometheus chart 용 커스텀 values
+# chart 는 argocd multi-source 로 upstream(https://prometheus-community.github.io/helm-charts) 에서 받는다.
+
+# 테스트용이라 필요 없는 구성요소는 끈다.
+alertmanager:
+  enabled: false
+prometheus-pushgateway:
+  enabled: false
+
+# 기본 이미지 prometheus-config-reloader v0.95.1 은 amd64 전용이라 arm64(colima on Apple Silicon)에서
+# ImagePullBackOff 가 난다. arm64 를 지원하는 v0.94.0 으로 고정한다(upstream 이 멀티아치로 고치면 제거).
+configmapReload:
+  prometheus:
+    image:
+      tag: v0.94.0
+
+server:
+  # 테스트 클러스터라 보관 기간과 PV 크기를 줄인다.
+  retention: 3d
+  persistentVolume:
+    size: 2Gi
+  ingress:
+    enabled: true
+    # colima k3s 기본 내장 traefik ingress controller 사용
+    ingressClassName: traefik
+    hosts:
+      - prometheus.ysoftman
+    path: /
+    pathType: Prefix
