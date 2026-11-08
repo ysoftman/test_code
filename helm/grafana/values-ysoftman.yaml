@@ -28,6 +28,7 @@ ingress:
   path: /
   pathType: Prefix
 
+# rate() 윈도우는 prometheus scrape_interval(1m)의 4배 이상(5m)이어야 샘플이 2개 이상 잡혀 값이 나온다.
 # 대시보드를 파일 provider 로 등록하고 아래 dashboards 의 json 을 /var/lib/grafana/dashboards/default 에 둔다.
 dashboardProviders:
   dashboardproviders.yaml:
@@ -84,7 +85,7 @@ dashboards:
                     "type": "prometheus",
                     "uid": "prometheus"
                   },
-                  "expr": "sum by (level) (rate(ysoftman_log_lines_total[1m]))",
+                  "expr": "sum by (level) (rate(ysoftman_log_lines_total[5m]))",
                   "legendFormat": "{{level}}"
                 }
               ],
@@ -116,7 +117,7 @@ dashboards:
                     "type": "prometheus",
                     "uid": "prometheus"
                   },
-                  "expr": "sum by (namespace) (rate(ysoftman_log_lines_total[1m]))",
+                  "expr": "sum by (namespace) (rate(ysoftman_log_lines_total[5m]))",
                   "legendFormat": "{{namespace}}"
                 }
               ],
@@ -180,7 +181,7 @@ dashboards:
                     "type": "prometheus",
                     "uid": "prometheus"
                   },
-                  "expr": "sum by (component_id) (rate(vector_component_received_events_total[1m]))",
+                  "expr": "sum by (component_id) (rate(vector_component_received_events_total[5m]))",
                   "legendFormat": "{{component_id}}"
                 }
               ],
