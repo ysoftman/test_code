@@ -1,0 +1,153 @@
+# grafana 대시보드: vector -> prometheus 파이프라인 확인용(prometheus datasource)
+# 이 파일은 argocd-apps 의 grafana.valueFiles 로 values-ysoftman.yaml 과 함께 helm 에 전달되어 deep-merge 된다.
+# rate() 윈도우는 prometheus scrape_interval(1m)의 4배 이상(5m)이어야 샘플이 2개 이상 잡혀 값이 나온다.
+dashboards:
+  default:
+    vector-pipeline:
+      json: |
+        {
+          "uid": "vector-pipeline",
+          "title": "Vector Pipeline",
+          "tags": [
+            "vector"
+          ],
+          "timezone": "browser",
+          "schemaVersion": 39,
+          "version": 4,
+          "refresh": "30s",
+          "time": {
+            "from": "now-1h",
+            "to": "now"
+          },
+          "editable": true,
+          "panels": [
+            {
+              "id": 1,
+              "type": "timeseries",
+              "title": "Log lines/sec by level",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (level) (rate(ysoftman_log_lines_total[5m]))",
+                  "legendFormat": "{{level}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 2,
+              "type": "timeseries",
+              "title": "Log lines/sec by namespace",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (namespace) (rate(ysoftman_log_lines_total[5m]))",
+                  "legendFormat": "{{namespace}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 3,
+              "type": "timeseries",
+              "title": "Top 10 pods by log lines/sec",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 8
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "topk(10, sum by (pod) (rate(ysoftman_log_lines_total[5m])))",
+                  "legendFormat": "{{pod}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 4,
+              "type": "timeseries",
+              "title": "Vector events received/sec by component",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 8
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (component_id) (rate(vector_component_received_events_total[5m]))",
+                  "legendFormat": "{{component_id}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            }
+          ]
+        }

@@ -1,0 +1,242 @@
+# grafana 대시보드: vector 가 loki 로 보낸 컨테이너 로그 조회용(loki datasource)
+# 이 파일은 argocd-apps 의 grafana.valueFiles 로 values-ysoftman.yaml 과 함께 helm 에 전달되어 deep-merge 된다.
+# 에러 판정은 loki 가 자동으로 붙이는 detected_level 기준이다(레벨이 없는 로그는 search 변수로 찾는다).
+dashboards:
+  default:
+    loki-logs:
+      json: |
+        {
+          "uid": "loki-logs",
+          "title": "Loki Logs",
+          "tags": [
+            "loki"
+          ],
+          "timezone": "browser",
+          "schemaVersion": 39,
+          "version": 1,
+          "refresh": "30s",
+          "time": {
+            "from": "now-1h",
+            "to": "now"
+          },
+          "editable": true,
+          "panels": [
+            {
+              "id": 1,
+              "type": "timeseries",
+              "title": "Log volume by level",
+              "datasource": {
+                "type": "loki",
+                "uid": "loki"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "loki",
+                    "uid": "loki"
+                  },
+                  "queryType": "range",
+                  "legendFormat": "{{detected_level}}",
+                  "expr": "sum by (detected_level) (count_over_time({namespace=~\"$namespace\"}[$__auto]))"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "custom": {
+                    "drawStyle": "bars",
+                    "fillOpacity": 60,
+                    "stacking": {
+                      "mode": "normal"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "error"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "red"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "warn"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "orange"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": 2,
+              "type": "timeseries",
+              "title": "Error logs by pod",
+              "datasource": {
+                "type": "loki",
+                "uid": "loki"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "loki",
+                    "uid": "loki"
+                  },
+                  "queryType": "range",
+                  "legendFormat": "{{pod}}",
+                  "expr": "sum by (pod) (count_over_time({namespace=~\"$namespace\"} | detected_level=~\"(?i)error|err|fatal|critical|panic\" [$__auto]))"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "custom": {
+                    "drawStyle": "bars",
+                    "fillOpacity": 60,
+                    "stacking": {
+                      "mode": "normal"
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 3,
+              "type": "logs",
+              "title": "Error logs only",
+              "datasource": {
+                "type": "loki",
+                "uid": "loki"
+              },
+              "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 8
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "loki",
+                    "uid": "loki"
+                  },
+                  "queryType": "range",
+                  "maxLines": 200,
+                  "expr": "{namespace=~\"$namespace\"} | detected_level=~\"(?i)error|err|fatal|critical|panic\" |~ \"(?i)$search\""
+                }
+              ],
+              "options": {
+                "showTime": true,
+                "wrapLogMessage": true,
+                "sortOrder": "Descending",
+                "enableLogDetails": true
+              }
+            },
+            {
+              "id": 4,
+              "type": "logs",
+              "title": "All container logs",
+              "datasource": {
+                "type": "loki",
+                "uid": "loki"
+              },
+              "gridPos": {
+                "h": 12,
+                "w": 24,
+                "x": 0,
+                "y": 18
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "loki",
+                    "uid": "loki"
+                  },
+                  "expr": "{namespace=~\"$namespace\"} |~ \"(?i)$search\"",
+                  "queryType": "range",
+                  "maxLines": 200
+                }
+              ],
+              "options": {
+                "showTime": true,
+                "wrapLogMessage": true,
+                "sortOrder": "Descending",
+                "enableLogDetails": true
+              }
+            }
+          ],
+          "templating": {
+            "list": [
+              {
+                "name": "namespace",
+                "label": "namespace",
+                "type": "query",
+                "datasource": {
+                  "type": "loki",
+                  "uid": "loki"
+                },
+                "query": {
+                  "label": "namespace",
+                  "refId": "ns",
+                  "stream": "",
+                  "type": 1
+                },
+                "definition": "label_values(namespace)",
+                "refresh": 2,
+                "multi": true,
+                "includeAll": true,
+                "allValue": ".+",
+                "current": {
+                  "selected": true,
+                  "text": "All",
+                  "value": "$__all"
+                },
+                "sort": 1
+              },
+              {
+                "name": "search",
+                "label": "search (regex)",
+                "type": "textbox",
+                "query": "",
+                "current": {
+                  "text": "",
+                  "value": ""
+                }
+              }
+            ]
+          }
+        }

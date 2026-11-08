@@ -3,4 +3,5 @@
 *
 !.gitignore
 !values-ysoftman.yaml
+!dashboard-*.yaml
 !README-ysoftman.md

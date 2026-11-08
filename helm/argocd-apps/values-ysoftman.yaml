@@ -82,8 +82,11 @@ grafana:
     repoURL: https://grafana-community.github.io/helm-charts
     chart: grafana
     targetRevision: 14.4.0
+  # 뒤쪽 파일이 앞쪽 파일에 deep-merge 된다. 대시보드는 파일별로 나눠 dashboards 키로 병합한다.
   valueFiles:
     - $values/helm/grafana/values-ysoftman.yaml
+    - $values/helm/grafana/dashboard-vector-pipeline.yaml
+    - $values/helm/grafana/dashboard-loki-logs.yaml
   # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
   # grafana.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
   valuesRevision: HEAD
