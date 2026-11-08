@@ -90,6 +90,24 @@ grafana:
   values:
     test1: test1
 
+loki:
+  enabled: true
+  name: loki
+  # git 에는 vendored chart 원본이 없으므로 chart 는 upstream helm repo 에서 받고,
+  # values 파일만 git(common.valuesRepo) 에서 $values ref 로 읽는다.
+  # grafana/loki chart 는 grafana-community 저장소로 이전되어 그쪽 버전(21.x)을 쓴다.
+  source:
+    repoURL: https://grafana-community.github.io/helm-charts
+    chart: loki
+    targetRevision: 21.0.0
+  valueFiles:
+    - $values/helm/loki/values-ysoftman.yaml
+  # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # loki.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
+  values:
+    test1: test1
+
 tekton:
   enabled: true
   name: tekton
