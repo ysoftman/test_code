@@ -105,8 +105,8 @@ loki:
   # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
   # loki.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
   valuesRevision: HEAD
-  values:
-    test1: test1
+  # loki chart 는 values 스키마 검증이 엄격해 자리표시자(test1)를 넣으면 helm template 이 실패하므로 비워 둔다.
+  values: {}
 
 tekton:
   enabled: true

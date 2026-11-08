@@ -45,10 +45,16 @@ vector (kubernetes_logs -> log_to_metric, internal_metrics)
   -> prometheus_exporter :9598/metrics
   -> prometheus (pod annotation prometheus.io/scrape 으로 scrape)
   -> grafana (Vector Pipeline 대시보드)
+
+vector (kubernetes_logs 원본)
+  -> loki sink (http://loki.loki.svc.cluster.local:3100)
+  -> grafana (Explore, 대시보드의 로그 패널)
 ```
 
 - 로그 한 줄마다 `ysoftman_log_lines_total{namespace,pod,level}` counter 를 올린다.
   vector 자체 메트릭(`vector_component_received_events_total` 등)도 같이 노출한다.
+- 컨테이너 로그 원본은 `loki_sink` 로 loki 에 보낸다. label 은 `namespace`/`pod`/`container` 만 쓴다(카디널리티 억제).
+  grafana 에서 `{namespace="argocd"}` 같은 LogQL 로 조회한다.
 - prometheus 는 `values-ysoftman.yaml` 의 `podAnnotations` 를 보고 scrape 한다(별도 scrape 설정 없음).
 - grafana 의 `Vector Pipeline` 대시보드는 `helm/grafana/values-ysoftman.yaml` 의 `dashboards` 로 provisioning 한다.
 - `customConfig` 는 chart 가 helm `tpl` 로 한 번 더 렌더링하므로, vector 템플릿 `{{ field }}` 는
@@ -60,5 +66,9 @@ vector (kubernetes_logs -> log_to_metric, internal_metrics)
 kubectl --context colima -n vector port-forward ds/vector 9598:9598
 curl -s localhost:9598/metrics | rg "ysoftman_log_lines_total|vector_component_received_events_total" | head
 # prometheus 쿼리
-curl -s -H "Host: prometheus.ysoftman" "http://127.0.0.1/api/v1/query?query=sum(rate(ysoftman_log_lines_total[1m]))"
+curl -s -H "Host: prometheus.ysoftman" "http://127.0.0.1/api/v1/query?query=sum(rate(ysoftman_log_lines_total[5m]))"
+# loki 에 로그가 들어오는지
+kubectl --context colima -n loki port-forward svc/loki 3100:3100
+curl -s localhost:3100/loki/api/v1/labels
+curl -s --get localhost:3100/loki/api/v1/query_range --data-urlencode 'query={namespace="argocd"}' --data-urlencode 'limit=3'
 ```

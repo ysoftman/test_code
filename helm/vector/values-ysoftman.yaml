@@ -122,3 +122,18 @@ customConfig:
         - "log_lines_metric"
         - "internal_metrics"
       address: "0.0.0.0:9598"
+
+    # 컨테이너 로그 원본을 loki 로 보낸다(grafana Explore 에서 LogQL 로 조회).
+    # loki label 은 카디널리티를 줄이기 위해 namespace/pod/container 만 쓴다.
+    # 참고: https://vector.dev/docs/reference/configuration/sinks/loki/
+    loki_sink:
+      type: "loki"
+      inputs:
+        - "container_logs"
+      endpoint: "http://loki.loki.svc.cluster.local:3100"
+      encoding:
+        codec: "text"
+      labels:
+        namespace: '{{ "{{ kubernetes.pod_namespace }}" }}'
+        pod: '{{ "{{ kubernetes.pod_name }}" }}'
+        container: '{{ "{{ kubernetes.container_name }}" }}'
