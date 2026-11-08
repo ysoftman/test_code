@@ -34,6 +34,12 @@ ingress:
 # Stateless-Aggregator = Deployment
 role: "Agent"
 
+# prometheus chart 의 kubernetes-pods job 이 이 annotation 을 보고 vector 의 prometheus_exporter 를 scrape 한다.
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9598"
+  prometheus.io/path: "/metrics"
+
 customConfig:
   data_dir: /vector-data-dir
   api:
@@ -46,6 +52,10 @@ customConfig:
       type: "kubernetes_logs"
       glob_minimum_cooldown_ms: 8000
       max_line_bytes: 204800
+    # vector 자체 처리량 메트릭(vector_component_received_events_total 등)
+    # 참고: https://vector.dev/docs/reference/configuration/sources/internal_metrics/
+    internal_metrics:
+      type: "internal_metrics"
   transforms:
     # 로그 데이터를 재매핑(Remap)하는 Transform
     remap_log_fields:
@@ -74,6 +84,24 @@ customConfig:
 
         .final_message, _ = "[ " + .simple_time + " | " + level_up + " | " + .kubernetes.pod_name + " ] " + .simple_message
 
+    # 로그 한 줄당 counter 를 1 올려 ysoftman_log_lines_total{namespace,pod,level} 메트릭으로 바꾼다.
+    # 참고: https://vector.dev/docs/reference/configuration/transforms/log_to_metric/
+    log_lines_metric:
+      type: "log_to_metric"
+      inputs:
+        - "remap_log_fields"
+      metrics:
+        - type: "counter"
+          field: "message"
+          name: "log_lines_total"
+          namespace: "ysoftman"
+          increment_by_value: false
+          # chart 가 customConfig 를 helm tpl 로 한 번 더 렌더링하므로 vector 템플릿({{ }})은 이스케이프한다.
+          tags:
+            namespace: '{{ "{{ kubernetes.pod_namespace }}" }}'
+            pod: '{{ "{{ kubernetes.pod_name }}" }}'
+            level: '{{ "{{ level }}" }}'
+
   sinks:
     # 표준 출력(stdout)으로 데이터를 내보내는 Sink
     stdout_sink:
@@ -85,3 +113,12 @@ customConfig:
         codec: "text"
         # 출력할 메시지 필드를 지정합니다.
         field: "final_message"
+
+    # 메트릭을 :9598/metrics 로 노출한다(prometheus 가 scrape).
+    # 참고: https://vector.dev/docs/reference/configuration/sinks/prometheus_exporter/
+    prometheus_sink:
+      type: "prometheus_exporter"
+      inputs:
+        - "log_lines_metric"
+        - "internal_metrics"
+      address: "0.0.0.0:9598"

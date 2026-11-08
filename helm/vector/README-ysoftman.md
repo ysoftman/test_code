@@ -37,3 +37,28 @@ http://vector.ysoftman
 ```bash
 kubectl exec -it $(kubectl get pod --no-headers -n vector | awk '{print $1}' | head -1) -n vector -- vector top
 ```
+
+## vector > prometheus > grafana 파이프라인
+
+```text
+vector (kubernetes_logs -> log_to_metric, internal_metrics)
+  -> prometheus_exporter :9598/metrics
+  -> prometheus (pod annotation prometheus.io/scrape 으로 scrape)
+  -> grafana (Vector Pipeline 대시보드)
+```
+
+- 로그 한 줄마다 `ysoftman_log_lines_total{namespace,pod,level}` counter 를 올린다.
+  vector 자체 메트릭(`vector_component_received_events_total` 등)도 같이 노출한다.
+- prometheus 는 `values-ysoftman.yaml` 의 `podAnnotations` 를 보고 scrape 한다(별도 scrape 설정 없음).
+- grafana 의 `Vector Pipeline` 대시보드는 `helm/grafana/values-ysoftman.yaml` 의 `dashboards` 로 provisioning 한다.
+- `customConfig` 는 chart 가 helm `tpl` 로 한 번 더 렌더링하므로, vector 템플릿 `{{ field }}` 는
+  `'{{ "{{ field }}" }}'` 로 이스케이프해야 한다(안 하면 `function "field" not defined` 로 helm 렌더링 실패).
+- 확인
+
+```bash
+# vector 가 노출하는 메트릭
+kubectl --context colima -n vector port-forward ds/vector 9598:9598
+curl -s localhost:9598/metrics | rg "ysoftman_log_lines_total|vector_component_received_events_total" | head
+# prometheus 쿼리
+curl -s -H "Host: prometheus.ysoftman" "http://127.0.0.1/api/v1/query?query=sum(rate(ysoftman_log_lines_total[1m]))"
+```

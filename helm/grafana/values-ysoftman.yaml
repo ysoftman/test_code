@@ -15,6 +15,8 @@ datasources:
         type: prometheus
         access: proxy
         url: http://prometheus-server.prometheus.svc.cluster.local
+        # 대시보드가 datasource 를 uid 로 참조하므로 고정한다.
+        uid: prometheus
         isDefault: true
 
 ingress:
@@ -25,3 +27,169 @@ ingress:
     - grafana.ysoftman
   path: /
   pathType: Prefix
+
+# 대시보드를 파일 provider 로 등록하고 아래 dashboards 의 json 을 /var/lib/grafana/dashboards/default 에 둔다.
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: default
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+dashboards:
+  default:
+    # vector -> prometheus 파이프라인 확인용 대시보드
+    vector-pipeline:
+      json: |
+        {
+          "uid": "vector-pipeline",
+          "title": "Vector Pipeline",
+          "tags": [
+            "vector"
+          ],
+          "timezone": "browser",
+          "schemaVersion": 39,
+          "version": 1,
+          "refresh": "30s",
+          "time": {
+            "from": "now-1h",
+            "to": "now"
+          },
+          "editable": true,
+          "panels": [
+            {
+              "id": 1,
+              "type": "timeseries",
+              "title": "Log lines/sec by level",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (level) (rate(ysoftman_log_lines_total[1m]))",
+                  "legendFormat": "{{level}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 2,
+              "type": "timeseries",
+              "title": "Log lines/sec by namespace",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (namespace) (rate(ysoftman_log_lines_total[1m]))",
+                  "legendFormat": "{{namespace}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 3,
+              "type": "timeseries",
+              "title": "Top 10 pods by log lines/sec",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 8
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "topk(10, sum by (pod) (rate(ysoftman_log_lines_total[5m])))",
+                  "legendFormat": "{{pod}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 4,
+              "type": "timeseries",
+              "title": "Vector events received/sec by component",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 8
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (component_id) (rate(vector_component_received_events_total[1m]))",
+                  "legendFormat": "{{component_id}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            }
+          ]
+        }
