@@ -127,7 +127,7 @@
       th {
         color: var(--muted);
         font-weight: 600;
-        white-space: nowrap;
+        word-break: keep-all;
       }
       .table-wrap {
         overflow-x: auto;
@@ -360,15 +360,6 @@
                 finish gate 강제 (PASS 전 종료 불가, 최대 3라운드)
               </td>
               <td>검사 스크립트 없음, 문서 체크리스트만</td>
-            </tr>
-            <tr>
-              <th>작업 시간 (검증 포함)</th>
-              <td>약 19분 — 검증은 <code>doctor</code> 몇 초</td>
-              <td>
-                약 2시간 50분 — 주로 체커 실행(1회 수 분)과 지적 사항 수정 반복.
-                네트워크 중단 약 30분·스킬 버전 갱신 재작업 포함
-              </td>
-              <td>약 18분 — 스킬 자체 검증 단계 없음</td>
             </tr>
           </tbody>
         </table>
