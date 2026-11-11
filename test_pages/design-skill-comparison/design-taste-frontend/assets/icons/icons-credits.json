@@ -1,0 +1,132 @@
+[
+  {
+    "file": "aws-s3.svg",
+    "icon": "logos:aws-s3",
+    "name": "Aws S",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://aws.amazon.com/s3/"
+  },
+  {
+    "file": "docker.svg",
+    "icon": "logos:docker-icon",
+    "name": "Docker",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://www.docker.com/"
+  },
+  {
+    "file": "google-cloud.svg",
+    "icon": "logos:google-cloud",
+    "name": "Google Cloud",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://cloud.google.com/"
+  },
+  {
+    "file": "grafana.svg",
+    "icon": "logos:grafana",
+    "name": "Grafana",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://grafana.com/"
+  },
+  {
+    "file": "kubernetes.svg",
+    "icon": "logos:kubernetes",
+    "name": "Kubernetes",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://kubernetes.io/"
+  },
+  {
+    "file": "linux-tux.svg",
+    "icon": "logos:linux-tux",
+    "name": "Linux",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://en.wikipedia.org/wiki/Tux_(mascot)"
+  },
+  {
+    "file": "nginx.svg",
+    "icon": "logos:nginx",
+    "name": "NGINX",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://www.nginx.com/"
+  },
+  {
+    "file": "opentelemetry.svg",
+    "icon": "logos:opentelemetry-icon",
+    "name": "OpenTelemetry",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://opentelemetry.io/"
+  },
+  {
+    "file": "slack.svg",
+    "icon": "logos:slack-icon",
+    "name": "Slack",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://slack.com/"
+  },
+  {
+    "file": "ui-package.svg",
+    "icon": "ui:package",
+    "name": "Package",
+    "kind": "line",
+    "source": "@iconify-json/lucide@1.2.100",
+    "author": "Lucide Contributors",
+    "licence": "ISC",
+    "url": "https://github.com/lucide-icons/lucide",
+    "trademark": false
+  },
+  {
+    "file": "ui-scroll-text.svg",
+    "icon": "ui:scroll-text",
+    "name": "Scroll Text",
+    "kind": "line",
+    "source": "@iconify-json/lucide@1.2.100",
+    "author": "Lucide Contributors",
+    "licence": "ISC",
+    "url": "https://github.com/lucide-icons/lucide",
+    "trademark": false
+  }
+]

@@ -1,0 +1,2487 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-type="software"
+  data-radius="sharp"
+  data-ground="sand"
+  data-buttons="solid"
+  data-motion
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Driftlog: 백엔드 팀을 위한 로그 수집·검색·알림</title>
+    <meta
+      name="description"
+      content="쿠버네티스와 서버에 경량 에이전트를 붙이면 로그를 오브젝트 스토리지에 저렴하게 쌓고, LogQL 문법으로 검색하고, 에러가 급증하면 Slack으로 알리는 팀용 로그 SaaS."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Driftlog: 백엔드 팀을 위한 로그 수집·검색·알림"
+    />
+    <meta
+      property="og:description"
+      content="에이전트가 모은 로그를 오브젝트 스토리지에 쌓고 LogQL 문법으로 찾습니다. 하루 5GB까지 무료."
+    />
+    <meta property="og:image" content="share.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#161c1a"
+      media="(prefers-color-scheme: dark)"
+    />
+    <!-- <link rel="canonical" href="https://[the client's domain]/"> : the client's domain is not known yet -->
+    <meta name="site-kind" content="software" />
+    <meta name="page-type" content="software" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wdth,wght@85..100,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/system.css" />
+    <link rel="stylesheet" href="assets/ui/cards.css" />
+    <link rel="stylesheet" href="assets/motion/motion.css" />
+    <link rel="stylesheet" href="assets/backgrounds/backgrounds.css" />
+    <link rel="stylesheet" href="assets/layout/layout.css" />
+    <link rel="stylesheet" href="assets/icons/icon.css" />
+    <!-- palette white-link-blue (light) and green-black-bone (dark), both dealt for a developer tool by
+     start.mjs 2.5.1, each block as printed; type plex; radius sharp -->
+    <style>
+      :root {
+        --p-bg: #ffffff;
+        --p-surface: #f4f4f4;
+        --p-ink: #111111;
+        --p-muted: #6b6b6b;
+        --p-accent: #1a4be0;
+        --p-accent-ink: #ffffff;
+        --p-action: #1a4be0;
+        --p-action-ink: #ffffff;
+        --p-inv-bg: #111111;
+        --p-inv-surface: #1e1e1e;
+        --p-inv-ink: #ffffff;
+        --p-inv-muted: #9a9a9a;
+        --p-inv-accent: #ffffff;
+        --p-inv-accent-ink: #111111;
+        --p-inv-action: #ffffff;
+        --p-inv-action-ink: #111111;
+        --font-display: "IBM Plex Sans", system-ui, sans-serif;
+        --font-text: "IBM Plex Sans", system-ui, sans-serif;
+        --font-mono:
+          "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas,
+          monospace;
+        --display-weight: 500;
+        --display-tracking: -0.025em;
+        --display-tracking-xl: -0.035em;
+        --ly-scale: 0.98;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --p-bg: #161c1a;
+          --p-surface: #1f2725;
+          --p-ink: #e3e2da;
+          --p-muted: #8e948d;
+          --p-accent: #9fc7b8;
+          --p-accent-ink: #161c1a;
+          --p-action: #9fc7b8;
+          --p-action-ink: #161c1a;
+          --p-inv-bg: #e3e2da;
+          --p-inv-surface: #d3d2cb;
+          --p-inv-ink: #161c1a;
+          --p-inv-muted: #555a55;
+          --p-inv-accent: #161c1a;
+          --p-inv-accent-ink: #e3e2da;
+          --p-inv-action: #161c1a;
+          --p-inv-action-ink: #e3e2da;
+        }
+      }
+    </style>
+    <!-- the hero's entrance (motion.md): the words wait for motion.js instead of flashing -->
+    <script>
+      document.documentElement.classList.add("m-enter");
+      setTimeout(
+        () => document.documentElement.classList.add("m-enter-done"),
+        700,
+      );
+    </script>
+    <link rel="stylesheet" href="assets/ui/base.css" />
+    <link rel="stylesheet" href="assets/ui/window/fragment.css" />
+    <link rel="stylesheet" href="assets/ui/search/fragment.css" />
+    <link rel="stylesheet" href="assets/ui/toggles/fragment.css" />
+    <link rel="stylesheet" href="assets/ui/stat/fragment.css" />
+    <link rel="stylesheet" href="assets/diagrams/diagram.css" />
+    <script src="assets/backgrounds/backgrounds.js"></script>
+    <script>
+      document.documentElement.classList.add("mo-js");
+      setTimeout(() => document.documentElement.classList.add("mo-safe"), 2500);
+    </script>
+    <link rel="modulepreload" href="assets/moments/moments.js" />
+    <link rel="modulepreload" href="assets/moments/lib.js" />
+    <link
+      rel="modulepreload"
+      href="assets/moments/letters-assemble/moment.js"
+    />
+    <!-- page CSS: only what sits inside a visual, and one --p-h per card group -->
+    <style>
+      /* ---------- the hero art: Driftlog's live tail window, cut by the frame (hero--collage) */
+      .hero__art {
+        background-color: var(--ground-bg);
+        --action: var(--ground-ink);
+      }
+      .hero__art .ui {
+        --fx-bg: #fdfcf9;
+      }
+      .dl-win {
+        background: var(--u-bg);
+        border: 1px solid var(--u-border);
+        border-radius: 10px;
+        box-shadow: var(--u-shadow);
+        overflow: hidden;
+        z-index: 1;
+      }
+      .dl-win__bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 40px;
+        padding: 0 76px 0 14px;
+        border-bottom: 1px solid var(--u-line);
+        background: var(--u-fill);
+      }
+      .dl-win__crumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--u-muted);
+        white-space: nowrap;
+      }
+      .dl-win__crumb b {
+        font-weight: 500;
+        color: var(--u-ink);
+      }
+      .dl-mark {
+        display: inline-grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        background: var(--u-ink);
+        color: var(--u-bg);
+        font: 600 11px/1 var(--ui-font);
+      }
+      .dl-q {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 44px;
+        padding: 0 76px 0 14px;
+        border-bottom: 1px solid var(--u-line);
+      }
+      .dl-q__code {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: block;
+        align-content: center;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 6px;
+        background: var(--u-fill);
+        box-shadow: inset 0 0 0 1px var(--u-line);
+        font: 400 13px/20px var(--ui-mono);
+        color: var(--u-ink);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .dl-q__code i {
+        font-style: normal;
+        color: var(--u-muted);
+      }
+      .dl-lines {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        padding: 4px 0;
+        font: 400 13px/20px var(--ui-mono);
+      }
+      .dl-ln {
+        display: grid;
+        grid-template-columns: 96px 60px 104px minmax(0, 1fr);
+        align-items: center;
+        column-gap: 10px;
+        height: 30px;
+        padding: 0 76px 0 14px;
+        color: var(--u-text-2);
+        white-space: nowrap;
+      }
+      .dl-ln + .dl-ln {
+        box-shadow: inset 0 1px 0 var(--u-line);
+      }
+      .dl-ln > span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .dl-ln__t {
+        color: var(--u-muted);
+      }
+      .dl-ln__svc {
+        color: var(--u-ink);
+      }
+      .dl-lv {
+        justify-self: start;
+        display: inline-flex;
+        align-items: center;
+        height: 20px;
+        padding: 0 6px;
+        border-radius: 4px;
+        font: 500 11px/1 var(--ui-mono);
+        letter-spacing: 0.02em;
+        background: var(--u-fill-2);
+        color: var(--u-text-2);
+      }
+      .dl-lv--warn {
+        --lv: oklch(0.72 0.15 75);
+        background: color-mix(in oklab, var(--lv) 22%, var(--u-bg));
+        color: color-mix(in oklab, var(--lv) 50%, var(--u-ink));
+      }
+      .dl-lv--error {
+        --lv: oklch(0.6 0.19 27);
+        background: color-mix(in oklab, var(--lv) 16%, var(--u-bg));
+        color: color-mix(in oklab, var(--lv) 78%, var(--u-ink));
+      }
+      .dl-ln.is-err {
+        background: color-mix(in oklab, oklch(0.6 0.19 27) 5%, var(--u-bg));
+      }
+      @container dl-win (max-width: 460px) {
+        .dl-ln {
+          grid-template-columns: 84px 56px minmax(0, 1fr);
+        }
+        .dl-ln__svc {
+          display: none;
+        }
+      }
+      .dl-win {
+        container: dl-win / inline-size;
+      }
+      /* the one small card over the window's lower-left corner: the alert it sent */
+      .hero__art > .ly-piece--note {
+        left: var(--s-6);
+        bottom: var(--s-6);
+        width: 300px;
+        z-index: 2;
+      }
+      .dl-alert {
+        background: var(--u-bg);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow:
+          0 0 0 1px var(--u-border),
+          var(--u-shadow);
+      }
+      .dl-alert__head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .dl-alert__head .ui-logo {
+        width: 32px;
+        height: 32px;
+      }
+      .dl-alert__head .ui-logo img {
+        width: 18px;
+        height: 18px;
+      }
+      .dl-alert__who {
+        display: grid;
+        line-height: 18px;
+      }
+      .dl-alert__who b {
+        font-weight: 500;
+      }
+      .dl-alert__who span,
+      .dl-alert time {
+        color: var(--u-muted);
+        font-size: 12px;
+      }
+      .dl-alert time {
+        margin-left: auto;
+        align-self: start;
+      }
+      .dl-alert__title {
+        margin-top: 10px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .dl-alert__line {
+        display: flex;
+        gap: 8px;
+        padding: 7px 0;
+        border-top: 1px solid var(--u-line);
+        color: var(--u-text-2);
+      }
+      .dl-alert__line:first-of-type {
+        margin-top: 8px;
+      }
+      .dl-alert__line b {
+        font-weight: 500;
+        color: var(--u-ink);
+      }
+      .dl-alert__line code {
+        font: 400 12px/20px var(--ui-mono);
+      }
+      @media (max-width: 1023px) {
+        .hero__art > .ly-piece--note {
+          left: var(--s-4);
+          bottom: var(--s-4);
+          width: 270px;
+        }
+      }
+      .hero__proof {
+        font-size: var(--t-small);
+        color: var(--muted);
+      }
+      .hero--collage .hero__text > h1:first-child {
+        text-box: normal;
+      }
+      .hero__art > .ly-piece--main.dl-win {
+        bottom: calc(-1 * var(--ly-cut));
+        display: flex;
+        flex-direction: column;
+      }
+      .dl-win > .dl-lines {
+        flex: 1 1 0;
+        min-height: 0;
+        margin-bottom: var(--ly-cut);
+        overflow: hidden;
+        container: dl-rows / size;
+      }
+      @container dl-rows (max-height: 63px) {
+        .dl-ln:nth-child(n + 2) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 93px) {
+        .dl-ln:nth-child(n + 3) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 123px) {
+        .dl-ln:nth-child(n + 4) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 153px) {
+        .dl-ln:nth-child(n + 5) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 183px) {
+        .dl-ln:nth-child(n + 6) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 213px) {
+        .dl-ln:nth-child(n + 7) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 243px) {
+        .dl-ln:nth-child(n + 8) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 273px) {
+        .dl-ln:nth-child(n + 9) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 303px) {
+        .dl-ln:nth-child(n + 10) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 333px) {
+        .dl-ln:nth-child(n + 11) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 363px) {
+        .dl-ln:nth-child(n + 12) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 393px) {
+        .dl-ln:nth-child(n + 13) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 423px) {
+        .dl-ln:nth-child(n + 14) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 453px) {
+        .dl-ln:nth-child(n + 15) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 483px) {
+        .dl-ln:nth-child(n + 16) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 513px) {
+        .dl-ln:nth-child(n + 17) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 543px) {
+        .dl-ln:nth-child(n + 18) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 573px) {
+        .dl-ln:nth-child(n + 19) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 603px) {
+        .dl-ln:nth-child(n + 20) {
+          display: none;
+        }
+      }
+      @container dl-rows (max-height: 633px) {
+        .dl-ln:nth-child(n + 21) {
+          display: none;
+        }
+      }
+
+      /* ---------- app-frame (sections-library.md: the whole recipe) */
+      /* the window keeps a neutral surface on the tinted ground (a red row tint on a blue-tinted pane reads violet) */
+      #product .app.ui {
+        --fx-bg: var(--p-bg);
+        --fx-surface: var(--p-surface);
+      }
+      .app.ui {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        margin-top: var(--s-7);
+        background: var(--u-bg);
+        border: 1px solid var(--u-border);
+        border-radius: var(--u-r);
+        box-shadow: var(--u-shadow);
+      }
+      .app > .app__pane {
+        position: relative;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .app > .app__pane + .app__pane {
+        border-left: 1px solid var(--u-line);
+      }
+      .app > .app__pane > .ui-panel {
+        width: 100%;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .app > .app__pane {
+        -webkit-mask: linear-gradient(
+          to bottom,
+          #000 calc(100% - 64px),
+          transparent calc(100% - 4px)
+        );
+        mask: linear-gradient(
+          to bottom,
+          #000 calc(100% - 64px),
+          transparent calc(100% - 4px)
+        );
+      }
+      @media (min-width: 1024px) and (max-width: 1279px) {
+        .app.ui {
+          grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+        }
+      }
+      @media (max-width: 1023px) {
+        .app.ui {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: auto minmax(0, 1fr);
+        }
+        .app > .app__pane--list {
+          height: 252px;
+        }
+        .app > .app__pane--list {
+          -webkit-mask: none;
+          mask: none;
+        }
+        .app .ui-win__side {
+          display: none;
+        }
+        .app .ui-win__body {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .app > .app__pane + .app__pane {
+          border-left: 0;
+          border-top: 1px solid var(--u-line);
+        }
+      }
+      @media (max-width: 639px) {
+        .app.ui {
+          grid-template-rows: minmax(0, 1fr);
+        }
+        .app > .app__pane--list {
+          display: none;
+        }
+        .app > .app__pane + .app__pane {
+          border-top: 0;
+        }
+      }
+      /* both panes show whole rows only: a row the pane cannot hold whole is left out, so no line sits cut or
+     half-hidden under the frame's foot (the last whole row fades with the pane) */
+      .app > .app__pane--list {
+        container: dl-list / size;
+      }
+      .app > .app__pane--open > .dl-ex {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .dl-ex > .dl-lines {
+        flex: 1 1 0;
+        min-height: 0;
+        overflow: hidden;
+        container: dl-exl / size;
+      }
+      @container dl-list (min-width: 540px) and (max-height: 163px) {
+        .ui-win__row:nth-child(n + 2) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 155px) {
+        .ui-win__row:nth-child(n + 2) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 207px) {
+        .ui-win__row:nth-child(n + 3) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 211px) {
+        .ui-win__row:nth-child(n + 3) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 251px) {
+        .ui-win__row:nth-child(n + 4) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 267px) {
+        .ui-win__row:nth-child(n + 4) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 295px) {
+        .ui-win__row:nth-child(n + 5) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 323px) {
+        .ui-win__row:nth-child(n + 5) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 339px) {
+        .ui-win__row:nth-child(n + 6) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 379px) {
+        .ui-win__row:nth-child(n + 6) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 383px) {
+        .ui-win__row:nth-child(n + 7) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 435px) {
+        .ui-win__row:nth-child(n + 7) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 427px) {
+        .ui-win__row:nth-child(n + 8) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 491px) {
+        .ui-win__row:nth-child(n + 8) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 471px) {
+        .ui-win__row:nth-child(n + 9) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 547px) {
+        .ui-win__row:nth-child(n + 9) {
+          display: none;
+        }
+      }
+      @container dl-list (min-width: 540px) and (max-height: 515px) {
+        .ui-win__row:nth-child(n + 10) {
+          display: none;
+        }
+      }
+      @container dl-list (max-width: 539px) and (max-height: 603px) {
+        .ui-win__row:nth-child(n + 10) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 63px) {
+        .dl-ln:nth-child(n + 2) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 93px) {
+        .dl-ln:nth-child(n + 3) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 123px) {
+        .dl-ln:nth-child(n + 4) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 153px) {
+        .dl-ln:nth-child(n + 5) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 183px) {
+        .dl-ln:nth-child(n + 6) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 213px) {
+        .dl-ln:nth-child(n + 7) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 243px) {
+        .dl-ln:nth-child(n + 8) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 273px) {
+        .dl-ln:nth-child(n + 9) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 303px) {
+        .dl-ln:nth-child(n + 10) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 333px) {
+        .dl-ln:nth-child(n + 11) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 363px) {
+        .dl-ln:nth-child(n + 12) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 393px) {
+        .dl-ln:nth-child(n + 13) {
+          display: none;
+        }
+      }
+      @container dl-exl (max-height: 423px) {
+        .dl-ln:nth-child(n + 14) {
+          display: none;
+        }
+      }
+      /* the open pane: the log search screen (query bar, the volume by minute, the matching lines) */
+      .dl-ex__head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 48px;
+        padding: 0 16px;
+        border-bottom: 1px solid var(--u-line);
+      }
+      .dl-ex__head .ui-title {
+        font-family: var(--ui-mono);
+      }
+      .dl-ex__q {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--u-line);
+      }
+      .dl-ex__q .dl-q__code {
+        height: 32px;
+      }
+      .dl-run {
+        animation: dl-press var(--m-cycle) linear infinite;
+      }
+      .dl-ex .dl-lines,
+      .dl-hist__top b {
+        animation: dl-rerun var(--m-cycle) linear infinite;
+      }
+      @keyframes dl-press {
+        0%,
+        30% {
+          transform: none;
+        }
+        33% {
+          transform: scale(0.96);
+        }
+        39%,
+        100% {
+          transform: none;
+        }
+      }
+      @keyframes dl-rerun {
+        0%,
+        33% {
+          opacity: 1;
+        }
+        38% {
+          opacity: 0.45;
+        }
+        56%,
+        100% {
+          opacity: 1;
+        }
+      }
+      .dl-hist {
+        padding: 14px 16px 10px;
+        border-bottom: 1px solid var(--u-line);
+      }
+      .dl-hist__top {
+        display: flex;
+        justify-content: space-between;
+        color: var(--u-muted);
+        font-size: 12px;
+        line-height: 16px;
+      }
+      .dl-hist__top b {
+        font-weight: 500;
+        color: var(--u-ink);
+      }
+      .dl-bars {
+        display: block;
+        width: 100%;
+        height: 92px;
+        margin-top: 10px;
+      }
+      .dl-bars .b {
+        fill: color-mix(in oklab, var(--u-ink) 22%, var(--u-bg));
+      }
+      .dl-bars .e {
+        fill: oklch(0.6 0.19 27);
+      }
+      .dl-bars .sel {
+        fill: color-mix(in oklab, var(--u-accent) 12%, transparent);
+        stroke: color-mix(in oklab, var(--u-accent) 45%, transparent);
+        stroke-width: 1;
+        vector-effect: non-scaling-stroke;
+      }
+      .dl-axis {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 6px;
+        color: var(--u-muted);
+        font: 400 11px/16px var(--ui-mono);
+      }
+      .dl-ex .dl-ln {
+        grid-template-columns: 104px 60px minmax(0, 1fr);
+        padding: 0 16px;
+      }
+      .dl-ex .dl-ln b {
+        font-weight: 500;
+        color: var(--u-ink);
+      }
+      @container dl-ex (max-width: 420px) {
+        .dl-ex .dl-ln {
+          grid-template-columns: 56px minmax(0, 1fr);
+        }
+        .dl-ex .dl-ln__t {
+          display: none;
+        }
+        .dl-hist__top span:last-child {
+          display: none;
+        }
+      }
+      .dl-ex {
+        container: dl-ex / inline-size;
+      }
+      @container dl-ex (max-width: 420px) {
+        .dl-ex__head > :is(.ui-meta, .ui-btn) {
+          display: none;
+        }
+        .dl-bars {
+          height: 64px;
+        }
+      }
+
+      /* ---------- the four features: one --p-h for the group */
+      #features .panel {
+        --p-h: 336px;
+      }
+      @media (min-width: 1024px) and (max-width: 1279px) {
+        #features .panel {
+          --p-h: 300px;
+        }
+      }
+      @media (min-width: 640px) and (max-width: 1023px) {
+        #features .panel {
+          --p-h: max(300px, calc(100svh - 520px));
+        }
+      }
+      @media (max-width: 639px) {
+        #features .panel {
+          --p-h: 150px;
+        }
+      }
+      /* the live tail: a terminal of the CLI, new lines arriving at the top, the oldest leaving through the fade */
+      .dl-tail {
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .dl-tail > .dl-tail__track {
+        flex: 1 1 0;
+        min-height: 0;
+        container: dl-tail / size;
+      }
+      @container dl-tail (max-height: 51px) {
+        .dl-tail__ln:nth-child(n + 2) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 77px) {
+        .dl-tail__ln:nth-child(n + 3) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 103px) {
+        .dl-tail__ln:nth-child(n + 4) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 129px) {
+        .dl-tail__ln:nth-child(n + 5) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 155px) {
+        .dl-tail__ln:nth-child(n + 6) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 181px) {
+        .dl-tail__ln:nth-child(n + 7) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 207px) {
+        .dl-tail__ln:nth-child(n + 8) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 233px) {
+        .dl-tail__ln:nth-child(n + 9) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 259px) {
+        .dl-tail__ln:nth-child(n + 10) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 285px) {
+        .dl-tail__ln:nth-child(n + 11) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 311px) {
+        .dl-tail__ln:nth-child(n + 12) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 337px) {
+        .dl-tail__ln:nth-child(n + 13) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 363px) {
+        .dl-tail__ln:nth-child(n + 14) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 389px) {
+        .dl-tail__ln:nth-child(n + 15) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 415px) {
+        .dl-tail__ln:nth-child(n + 16) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 441px) {
+        .dl-tail__ln:nth-child(n + 17) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 467px) {
+        .dl-tail__ln:nth-child(n + 18) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 493px) {
+        .dl-tail__ln:nth-child(n + 19) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 519px) {
+        .dl-tail__ln:nth-child(n + 20) {
+          display: none;
+        }
+      }
+      @container dl-tail (max-height: 545px) {
+        .dl-tail__ln:nth-child(n + 21) {
+          display: none;
+        }
+      }
+      .dl-tail__head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 40px;
+        padding: 0 14px;
+        border-bottom: 1px solid var(--u-line);
+        background: var(--u-fill);
+      }
+      .dl-tail__head b {
+        font-weight: 500;
+      }
+      .dl-tail__cmd {
+        padding: 10px 14px 4px;
+        font: 400 13px/20px var(--ui-mono);
+        white-space: nowrap;
+      }
+      .dl-tail__cmd span {
+        color: var(--u-muted);
+      }
+      .dl-tail__cmd b {
+        font-weight: 500;
+      }
+      .dl-tail__track {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        padding: 0 0 8px;
+        font: 400 13px/20px var(--ui-mono);
+        animation: dl-feed var(--m-cycle) linear infinite;
+      }
+      .dl-tail__ln {
+        display: grid;
+        grid-template-columns: 64px 44px minmax(0, 1fr);
+        column-gap: 10px;
+        height: 26px;
+        align-items: center;
+        padding: 0 14px;
+        color: var(--u-text-2);
+        white-space: nowrap;
+      }
+      .dl-tail__ln > span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .dl-tail__ln > span:first-child {
+        color: var(--u-muted);
+      }
+      .dl-tail__ln .is-warn {
+        color: color-mix(in oklab, oklch(0.72 0.15 75) 50%, var(--u-ink));
+      }
+      .dl-tail__ln .is-err {
+        color: color-mix(in oklab, oklch(0.6 0.19 27) 78%, var(--u-ink));
+      }
+      .dl-tail__ln:first-child {
+        animation: dl-arrive var(--m-cycle) linear infinite;
+      }
+      @keyframes dl-feed {
+        0% {
+          transform: translateY(-26px);
+        }
+        8%,
+        100% {
+          transform: none;
+        }
+      }
+      @keyframes dl-arrive {
+        0% {
+          opacity: 0;
+        }
+        10%,
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* ---------- the statement's figures (the product-statement facts: a hairline, the value, a grey line) */
+      .mo-la__type + .dl-numbers {
+        margin-top: var(--s-7);
+      }
+      .dl-facts {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        column-gap: var(--gutter);
+        margin-top: var(--s-7);
+      }
+      .dl-facts .t-stat + p {
+        margin-top: var(--s-2);
+      }
+      #numbers .frame--lit {
+        --card: var(--ground-surface);
+        --ratio: 0px;
+      }
+      #numbers .frame--lit > .stage {
+        --fade-h: 24px;
+      }
+
+      /* ---------- FAQ: the hub of the tools it works with, held still */
+      #faq .panel {
+        --p-h: 300px;
+      }
+      @media (min-width: 1024px) and (max-width: 1279px) {
+        #faq .panel {
+          --p-h: 240px;
+        }
+      }
+      @media (max-width: 1023px) {
+        #faq .panel {
+          --p-h: 200px;
+        }
+      }
+      #faq .faq > .faq__ask {
+        margin-top: var(--s-6);
+      }
+      /* a pause disc on the lit ground (the hero art, a card panel) rings in the lit ground's own ink */
+      :is(.hero__art, .panel) > .loop-pause {
+        --ink: var(--ground-ink);
+        --bg: var(--ground-surface);
+      }
+      @media (max-width: 639px) {
+        #faq > .wrap > .grid {
+          display: contents;
+        }
+      }
+      @media (max-width: 639px) {
+        #faq .panel {
+          --p-h: 320px;
+        }
+      }
+      @media (min-width: 640px) and (max-width: 1023px) {
+        #faq .faq {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          column-gap: var(--gutter);
+          align-items: stretch;
+        }
+        #faq .faq > .faq__item:nth-child(2) {
+          padding-top: 0;
+        }
+        #faq .faq > .faq__ask {
+          grid-column: 1 / -1;
+        }
+      }
+      /* the tablet: the three plans side by side, so the section holds one screen (as the short page's
+     three groups do in sections.md) */
+      @media (min-width: 640px) and (max-width: 1023px) {
+        #pricing .grid > .card--plan {
+          grid-column: auto / span 4;
+          padding: var(--s-7) var(--s-6);
+        }
+      }
+
+      /* ---------- Korean: lines break between words, never inside one (a CJK default breaks any syllable) */
+      :root:lang(ko) {
+        word-break: keep-all;
+      }
+      /* the two dealt section grounds (backgrounds.css) centre their words and set their own padding and
+     minimum height; the section box stays the system's (layout-v4.md: a ground never changes a
+     section's height), so only the colour is the ground's */
+      main > section.section:is(.bg-dusk, .bg-dots):not(.section--hero) {
+        padding: var(--padt) 0 calc(var(--padb) + var(--bar));
+        align-content: normal;
+      }
+      @media (min-width: 1280px) {
+        main > section.section:is(.bg-dusk, .bg-dots):not(.section--hero) {
+          display: block;
+          min-height: 0;
+        }
+      }
+      @media (min-width: 640px) and (max-width: 1279px) {
+        main > section.section:is(.bg-dusk, .bg-dots):not(.section--hero) {
+          display: flex;
+          flex-direction: column;
+          min-height: calc(var(--h, 1) * 100svh);
+        }
+      }
+      @media (max-width: 639px) {
+        main > section.section:is(.bg-dusk, .bg-dots):not(.section--hero) {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: 1fr;
+          grid-auto-rows: auto;
+          min-height: calc(var(--hm, var(--h, 1)) * 100vh);
+          min-height: calc(var(--hm, var(--h, 1)) * 100lvh);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- type: software (page type software, site-kind software)
+     deal (tasteskill 2.5.1): hero collage (triptych dealt first and dealt again: its use, a product with many
+       outputs and one button, does not fit a log tool whose brief asks for two hero actions); palette
+       white-link-blue (light) and green-black-bone (dark, the first palette start.mjs deals a developer tool),
+       chosen because a log tool lives beside terminals and editors: a white sheet with one link-blue action
+       by day, the near-black of a terminal with a muted green by night; type plex (IBM Plex Sans + Mono, the
+       first pairing; Hangul falls back to the system face); radius sharp (developer tool); nav nav-centre;
+       footer footer-columns; close close-type; rhythm dark-band (#numbers); buttons solid; mark initial;
+       lit ground sand; grounds bg-dusk (#product), bg-dots (#pricing)
+     effect: grain-gradient, the hero art's ground (live, its pause disc; the hero card holds still, since
+       with a live effect in the hero no other timed loop runs). Card grounds: none fit the grain family on
+       light, so the panels take the lit ground plain.
+     moments: letters-assemble in #numbers (one on a page of six sections). Hero moment dealt liquid-type,
+       not listed by the collage hero: none. Scene: none.
+     why it moves: hero entrance, the category arrives first, then what to do; letters-assemble, the one
+       claim the price rests on builds itself as the reader reaches it; the live tail card, new lines arrive
+       at the top as they do in the product; the fan-in diagram, logs flowing from nodes to the bucket;
+       the search pane's run button, one query re-run; hover, every link answers.
+     voice: technical-dry (copy-registers.md 2); exact, not cold; the product is the subject of the feature
+       lines; real commands and log lines on the page; no humour in the hero, prices or FAQ; house words
+       from the brief (에이전트, 라이브 테일, LogQL, 오브젝트 스토리지); never virtue words about ourselves.
+     screens at 1440x900: hero 1 · product (app-frame) 1 · numbers (statement, dark band) 1 ·
+       features (2x2) 2 · pricing (three plans) 1 · faq (with the hub diagram) 1 · footer.closing 1 -->
+    <header class="nav nav--centre">
+      <div class="wrap nav__bar">
+        <a class="skip-link" href="#top">본문으로 건너뛰기</a>
+        <a class="nav__logo" href="#top" aria-label="Driftlog"
+          ><span class="mark mark--initial">D</span>Driftlog</a
+        >
+        <nav class="nav__links" aria-label="주 메뉴">
+          <div class="nav__item">
+            <a class="nav__link" href="#features"
+              >기능
+              <svg class="chev" viewBox="0 0 12 12" aria-hidden="true">
+                <path
+                  d="M3 4.5l3 3 3-3"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                /></svg
+            ></a>
+            <div class="nav__menu">
+              <div class="wrap grid">
+                <div class="menu-col span-3">
+                  <p class="t-label">로그 다루기</p>
+                  <a href="#collect"
+                    >수집<span>Kubernetes와 서버의 에이전트</span></a
+                  >
+                  <a href="#search">검색<span>LogQL과 같은 쿼리 문법</span></a>
+                </div>
+                <div class="menu-col span-3">
+                  <p class="t-label">운영</p>
+                  <a href="#tail"
+                    >라이브 테일<span>새 로그를 들어오는 대로</span></a
+                  >
+                  <a href="#alerts">알림<span>ERROR 급증을 Slack으로</span></a>
+                </div>
+                <div class="menu-col span-3">
+                  <p class="t-label">둘러보기</p>
+                  <a href="#product"
+                    >데모 보기<span>로그 검색 화면 그대로</span></a
+                  >
+                  <a href="#numbers"
+                    >저장 비용<span>오브젝트 스토리지에 압축 저장</span></a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nav__item">
+            <a class="nav__link" href="#pricing">가격</a>
+          </div>
+          <div class="nav__item"><a class="nav__link" href="#faq">FAQ</a></div>
+        </nav>
+        <div class="nav__actions">
+          <a class="nav__link" href="https://app.driftlog.example/login"
+            >로그인</a
+          >
+          <a
+            class="btn btn--primary"
+            href="mailto:hello@driftlog.example?subject=Driftlog%20Free"
+            >무료로 시작</a
+          >
+        </div>
+        <button
+          class="nav__toggle"
+          type="button"
+          aria-expanded="false"
+          aria-label="메뉴"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <path
+              d="M2 5h14M2 13h14"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- HERO (collage): the words on span-5, the live tail window on the lit ground on span-6 start-7 -->
+      <section class="hero hero--collage" data-enter aria-labelledby="hero-h">
+        <div class="wrap">
+          <div class="hero-text grid hero__grid">
+            <div class="hero__text span-6">
+              <h1 id="hero-h">백엔드 팀을 위한 로그 수집·검색·알림</h1>
+              <p class="hero__lead">
+                쿠버네티스와 서버에 경량 에이전트를 붙이면 로그가 오브젝트
+                스토리지에 저렴하게 쌓입니다. 바로 검색하고, 에러가 급증하면
+                Slack으로 알려 드립니다. 하루 5GB까지 무료입니다.
+              </p>
+              <div class="btn-row">
+                <a
+                  class="btn btn--primary"
+                  href="mailto:hello@driftlog.example?subject=Driftlog%20Free"
+                  >무료로 시작<svg
+                    class="m-arrow"
+                    viewBox="0 0 12 12"
+                    aria-hidden="true"
+                  >
+                    <path class="m-arrow__stem" d="M1 6h8" />
+                    <path
+                      class="m-arrow__head"
+                      d="M4.5 2.5 8 6l-3.5 3.5"
+                    /></svg></a
+                ><a class="btn btn--secondary" href="#product">데모 보기</a>
+              </div>
+              <p class="hero__proof">
+                Kubernetes와 Linux 서버에서 수집하고, Grafana 데이터소스로
+                연결됩니다.
+              </p>
+            </div>
+            <div
+              class="hero__art span-6 start-7"
+              data-fx="grain-gradient"
+              data-fx-seed="7"
+              data-fx-params='{"speed":0.3,"grainMotion":0,"grain":0.35,"calm":0.6,"calmX":0.3,"calmY":0.75}'
+              role="img"
+              aria-label="Driftlog 라이브 테일 화면: prod 네임스페이스의 로그가 흐르고, payment-api의 ERROR 급증 알림이 Slack #oncall 채널로 전송됨"
+            >
+              <div
+                class="ly-piece ly-piece--main ui ui-panel dl-win"
+                aria-hidden="true"
+              >
+                <div class="dl-win__bar">
+                  <span class="ui-dots"><i></i><i></i><i></i></span
+                  ><span class="dl-win__crumb"
+                    ><span class="dl-mark">D</span>prod <i>/</i>
+                    <b>라이브 테일</b></span
+                  ><span class="ui-spacer"></span
+                  ><span class="ui-chip ui-chip--accent">실시간</span>
+                </div>
+                <div class="dl-q">
+                  <span class="dl-q__code"
+                    >{namespace="prod"} <i>|</i> level != "debug"</span
+                  >
+                </div>
+                <div class="dl-lines">
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:02:07.412</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span class="dl-ln__svc">payment-api</span
+                    ><span>upstream timeout after 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:07.398</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">checkout</span
+                    ><span>POST /orders 201</span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:02:07.215</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span class="dl-ln__svc">payment-api</span
+                    ><span>upstream timeout after 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:06.977</span
+                    ><span class="dl-lv dl-lv--warn">WARN</span
+                    ><span class="dl-ln__svc">worker</span
+                    ><span>retry 3/5 job=settle-batch</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:06.803</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">gateway</span
+                    ><span>GET /healthz 200</span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:02:06.640</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span class="dl-ln__svc">payment-api</span
+                    ><span>connection reset by peer</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:06.512</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">checkout</span
+                    ><span>POST /orders 201</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:06.300</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">auth</span
+                    ><span>token refreshed user=u_4821</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:06.118</span
+                    ><span class="dl-lv dl-lv--warn">WARN</span
+                    ><span class="dl-ln__svc">payment-api</span
+                    ><span>pool exhausted, waited 250ms</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:05.964</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">search-api</span
+                    ><span>GET /v2/items?q=desk 200</span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:02:05.731</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span class="dl-ln__svc">payment-api</span
+                    ><span>upstream timeout after 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:05.602</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">notifier</span
+                    ><span>sent 42 receipt emails</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:05.377</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">checkout</span
+                    ><span>POST /orders 201</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:05.141</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">inventory</span
+                    ><span>stock sync done 1,204 rows</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:04.988</span
+                    ><span class="dl-lv dl-lv--warn">WARN</span
+                    ><span class="dl-ln__svc">worker</span
+                    ><span>retry 2/5 job=settle-batch</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:04.720</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">gateway</span
+                    ><span>GET /healthz 200 3ms</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:04.512</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">billing</span
+                    ><span>invoice batch 0412 closed</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:04.306</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">auth</span
+                    ><span>login ok user=u_1093</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:04.090</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">checkout</span
+                    ><span>POST /orders 201</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:02:03.871</span
+                    ><span class="dl-lv">INFO</span
+                    ><span class="dl-ln__svc">search-api</span
+                    ><span>GET /v2/items?q=lamp 200</span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ly-piece ly-piece--note ui ui-panel dl-alert"
+                aria-hidden="true"
+              >
+                <div class="dl-alert__head">
+                  <span class="ui-logo"
+                    ><img
+                      data-icon="slack"
+                      src="assets/icons/slack.svg"
+                      alt=""
+                      width="18"
+                      height="18" /></span
+                  ><span class="dl-alert__who"
+                    ><b>Driftlog</b><span>#oncall</span></span
+                  ><time>14:02</time>
+                </div>
+                <div class="dl-alert__title">
+                  <span class="dl-lv dl-lv--error">ERROR</span>payment-api 급증
+                </div>
+                <div class="dl-alert__line">
+                  <span>최근 5분 <b>312건</b>, 평소의 9배</span>
+                </div>
+                <div class="dl-alert__line">
+                  <code>upstream timeout after 30s</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP-FRAME: the log search screen, the product big, across the .wrap -->
+      <section class="section bg-dusk" id="product" aria-labelledby="product-h">
+        <div class="wrap">
+          <div class="grid grid--top">
+            <h2 id="product-h" class="span-6">
+              서비스별 로그를 한 화면에서 검색
+            </h2>
+            <div class="span-6 start-7 stack-4">
+              <p class="t-lead muted">
+                왼쪽에서 서비스를 고르고 쿼리를 입력하면, 시간대별 로그량과
+                일치하는 로그 줄이 함께 나옵니다. 막대를 누르면 그 구간만 다시
+                보여 줍니다.
+              </p>
+              <p><a class="link" href="#features">기능 보기</a></p>
+            </div>
+          </div>
+          <div
+            class="ui app fill"
+            role="img"
+            aria-label="Driftlog 로그 검색 화면: 서비스 목록에서 payment-api를 고르고, timeout 쿼리로 지난 1시간 로그량 히스토그램과 ERROR 로그 줄을 본 모습"
+            data-ui-pause-host
+          >
+            <div class="app__pane app__pane--list">
+              <div
+                class="ui ui-panel ui-win"
+                data-ui="window"
+                data-open="대기"
+                data-work="확인 중"
+                data-done="해결"
+              >
+                <div class="ui-win__bar">
+                  <span class="ui-dots" aria-hidden="true"
+                    ><i></i><i></i><i></i
+                  ></span>
+                  <span class="ui-win__crumb"
+                    ><span class="dl-mark" aria-hidden="true">D</span>prod
+                    <i>/</i> <b>서비스</b></span
+                  >
+                  <span class="ui-spacer"></span>
+                  <span class="ui-win__search" aria-hidden="true"
+                    ><svg class="ui-icon" viewBox="0 0 16 16">
+                      <circle cx="7" cy="7" r="4.5" />
+                      <path d="m10.5 10.5 3 3" /></svg
+                    ><span class="ui-win__ph">검색</span
+                    ><span class="ui-kbd">/</span></span
+                  >
+                </div>
+                <div class="ui-win__body">
+                  <nav class="ui-win__side" aria-hidden="true">
+                    <span class="ui-win__nav is-on"
+                      ><svg class="ui-icon" viewBox="0 0 16 16">
+                        <path d="M3 4h10M3 8h10M3 12h6" /></svg
+                      >서비스<em>24</em></span
+                    >
+                    <span class="ui-win__nav"
+                      ><svg class="ui-icon" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="4.5" />
+                        <path d="m10.5 10.5 3 3" /></svg
+                      >저장된 쿼리<em>6</em></span
+                    >
+                    <span class="ui-win__nav"
+                      ><svg class="ui-icon" viewBox="0 0 16 16">
+                        <path
+                          d="M8 2.5a3.5 3.5 0 0 0-3.5 3.5v3L3 11h10l-1.5-2V6A3.5 3.5 0 0 0 8 2.5zM6.5 13a1.5 1.5 0 0 0 3 0"
+                        /></svg
+                      >알림 규칙<em>5</em></span
+                    >
+                    <span class="ui-win__nav"
+                      ><svg class="ui-icon" viewBox="0 0 16 16">
+                        <path d="M2.5 8h2l1.5-4 3 8 1.5-4h3" /></svg
+                      >라이브 테일</span
+                    >
+                    <span class="ui-win__label">네임스페이스</span>
+                    <span class="ui-win__nav"
+                      ><span class="ui-win__hash">#</span>prod</span
+                    >
+                    <span class="ui-win__nav"
+                      ><span class="ui-win__hash">#</span>staging</span
+                    >
+                  </nav>
+                  <div class="ui-win__main">
+                    <div class="ui-win__cols" aria-hidden="true">
+                      <span>서비스</span><span>최근 로그</span><span>상태</span
+                      ><span>시간</span>
+                    </div>
+                    <ul class="ui-win__rows">
+                      <li class="ui-win__row is-sel" data-row>
+                        <span class="ui-avatar" data-tone="5">PA</span
+                        ><span class="ui-win__who">payment-api</span
+                        ><span class="ui-win__sub"
+                          >upstream timeout after 30s</span
+                        ><span class="ui-win__st is-you" data-st
+                          >ERROR 급증</span
+                        ><span class="ui-win__age">1분</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="1">CO</span
+                        ><span class="ui-win__who">checkout</span
+                        ><span class="ui-win__sub">POST /v1/orders 201</span
+                        ><span class="ui-win__st is-done" data-st>정상</span
+                        ><span class="ui-win__age">방금</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="2">WK</span
+                        ><span class="ui-win__who">worker</span
+                        ><span class="ui-win__sub"
+                          >retry 3/5 job=settle-batch</span
+                        ><span class="ui-win__st" data-st>WARN</span
+                        ><span class="ui-win__age">2분</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="3">GW</span
+                        ><span class="ui-win__who">gateway</span
+                        ><span class="ui-win__sub">GET /healthz 200</span
+                        ><span class="ui-win__st is-done" data-st>정상</span
+                        ><span class="ui-win__age">방금</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="4">AU</span
+                        ><span class="ui-win__who">auth</span
+                        ><span class="ui-win__sub">token refreshed</span
+                        ><span class="ui-win__st is-done" data-st>정상</span
+                        ><span class="ui-win__age">1분</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="1">SE</span
+                        ><span class="ui-win__who">search-api</span
+                        ><span class="ui-win__sub">slow query 1.8s</span
+                        ><span class="ui-win__st" data-st>WARN</span
+                        ><span class="ui-win__age">4분</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="3">NO</span
+                        ><span class="ui-win__who">notifier</span
+                        ><span class="ui-win__sub">sent 42 receipt emails</span
+                        ><span class="ui-win__st is-done" data-st>정상</span
+                        ><span class="ui-win__age">3분</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="2">IN</span
+                        ><span class="ui-win__who">inventory</span
+                        ><span class="ui-win__sub">stock sync done</span
+                        ><span class="ui-win__st is-done" data-st>정상</span
+                        ><span class="ui-win__age">6분</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="4">BI</span
+                        ><span class="ui-win__who">billing</span
+                        ><span class="ui-win__sub"
+                          >invoice batch 0412 closed</span
+                        ><span class="ui-win__st is-done" data-st>정상</span
+                        ><span class="ui-win__age">9분</span>
+                      </li>
+                      <li class="ui-win__row" data-row>
+                        <span class="ui-avatar" data-tone="5">RE</span
+                        ><span class="ui-win__who">recommender</span
+                        ><span class="ui-win__sub">model v12 loaded</span
+                        ><span class="ui-win__st is-done" data-st>정상</span
+                        ><span class="ui-win__age">12분</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="app__pane app__pane--open" data-m-loop>
+              <div class="ui ui-panel dl-ex">
+                <div class="dl-ex__head">
+                  <span class="ui-title">payment-api</span
+                  ><span class="ui-chip ui-chip--plain">prod</span
+                  ><span class="ui-spacer"></span
+                  ><span class="ui-meta">지난 1시간</span
+                  ><span class="ui-btn ui-btn--ghost ui-btn--sm"
+                    >라이브 테일</span
+                  >
+                </div>
+                <div class="dl-ex__q">
+                  <span class="dl-q__code"
+                    >{app="payment-api"} |= "timeout"</span
+                  ><span class="ui-btn ui-btn--sm dl-run">실행</span>
+                </div>
+                <div class="dl-hist">
+                  <div class="dl-hist__top">
+                    <span><b>2,431줄</b> 중 ERROR 312줄</span
+                    ><span>0.84초 · 1분 단위</span>
+                  </div>
+                  <svg
+                    class="dl-bars"
+                    viewBox="0 0 360 92"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <rect
+                      class="sel"
+                      x="298.5"
+                      y="0.5"
+                      width="61"
+                      height="91"
+                      rx="3"
+                    />
+                    <rect class="b" x="1" y="60.7" width="7" height="31.3" />
+                    <rect class="e" x="1" y="90.7" width="7" height="1.3" />
+                    <rect class="b" x="11" y="57.0" width="7" height="35.0" />
+                    <rect class="e" x="11" y="90.9" width="7" height="1.1" />
+                    <rect class="b" x="21" y="63.5" width="7" height="28.5" />
+                    <rect class="e" x="21" y="90.6" width="7" height="1.4" />
+                    <rect class="b" x="31" y="58.9" width="7" height="33.1" />
+                    <rect class="e" x="31" y="91.3" width="7" height="0.7" />
+                    <rect class="b" x="41" y="55.2" width="7" height="36.8" />
+                    <rect class="e" x="41" y="90.5" width="7" height="1.5" />
+                    <rect class="b" x="51" y="59.8" width="7" height="32.2" />
+                    <rect class="e" x="51" y="91.0" width="7" height="1.0" />
+                    <rect class="b" x="61" y="61.6" width="7" height="30.4" />
+                    <rect class="e" x="61" y="90.5" width="7" height="1.5" />
+                    <rect class="b" x="71" y="56.1" width="7" height="35.9" />
+                    <rect class="e" x="71" y="90.9" width="7" height="1.1" />
+                    <rect class="b" x="81" y="53.4" width="7" height="38.6" />
+                    <rect class="e" x="81" y="90.5" width="7" height="1.5" />
+                    <rect class="b" x="91" y="58.0" width="7" height="34.0" />
+                    <rect class="e" x="91" y="91.3" width="7" height="0.7" />
+                    <rect class="b" x="101" y="60.7" width="7" height="31.3" />
+                    <rect class="e" x="101" y="90.7" width="7" height="1.3" />
+                    <rect class="b" x="111" y="64.4" width="7" height="27.6" />
+                    <rect class="e" x="111" y="91.2" width="7" height="0.8" />
+                    <rect class="b" x="121" y="58.9" width="7" height="33.1" />
+                    <rect class="e" x="121" y="90.3" width="7" height="1.7" />
+                    <rect class="b" x="131" y="54.3" width="7" height="37.7" />
+                    <rect class="e" x="131" y="90.9" width="7" height="1.1" />
+                    <rect class="b" x="141" y="51.5" width="7" height="40.5" />
+                    <rect class="e" x="141" y="90.4" width="7" height="1.6" />
+                    <rect class="b" x="151" y="57.0" width="7" height="35.0" />
+                    <rect class="e" x="151" y="90.9" width="7" height="1.1" />
+                    <rect class="b" x="161" y="59.8" width="7" height="32.2" />
+                    <rect class="e" x="161" y="91.4" width="7" height="0.6" />
+                    <rect class="b" x="171" y="58.0" width="7" height="34.0" />
+                    <rect class="e" x="171" y="90.6" width="7" height="1.4" />
+                    <rect class="b" x="181" y="55.2" width="7" height="36.8" />
+                    <rect class="e" x="181" y="90.9" width="7" height="1.1" />
+                    <rect class="b" x="191" y="52.4" width="7" height="39.6" />
+                    <rect class="e" x="191" y="90.0" width="7" height="2.0" />
+                    <rect class="b" x="201" y="56.1" width="7" height="35.9" />
+                    <rect class="e" x="201" y="90.6" width="7" height="1.4" />
+                    <rect class="b" x="211" y="58.9" width="7" height="33.1" />
+                    <rect class="e" x="211" y="91.0" width="7" height="1.0" />
+                    <rect class="b" x="221" y="53.4" width="7" height="38.6" />
+                    <rect class="e" x="221" y="90.5" width="7" height="1.5" />
+                    <rect class="b" x="231" y="50.6" width="7" height="41.4" />
+                    <rect class="e" x="231" y="89.5" width="7" height="2.5" />
+                    <rect class="b" x="241" y="54.3" width="7" height="37.7" />
+                    <rect class="e" x="241" y="90.1" width="7" height="1.9" />
+                    <rect class="b" x="251" y="51.5" width="7" height="40.5" />
+                    <rect class="e" x="251" y="88.8" width="7" height="3.2" />
+                    <rect class="b" x="261" y="48.8" width="7" height="43.2" />
+                    <rect class="e" x="261" y="86.8" width="7" height="5.2" />
+                    <rect class="b" x="271" y="44.2" width="7" height="47.8" />
+                    <rect class="e" x="271" y="83.4" width="7" height="8.6" />
+                    <rect class="b" x="281" y="46.9" width="7" height="45.1" />
+                    <rect class="e" x="281" y="85.2" width="7" height="6.8" />
+                    <rect class="b" x="291" y="41.4" width="7" height="50.6" />
+                    <rect class="e" x="291" y="80.9" width="7" height="11.1" />
+                    <rect class="b" x="301" y="29.4" width="7" height="62.6" />
+                    <rect class="e" x="301" y="68.2" width="7" height="23.8" />
+                    <rect class="b" x="311" y="16.6" width="7" height="75.4" />
+                    <rect class="e" x="311" y="52.8" width="7" height="39.2" />
+                    <rect class="b" x="321" y="3.7" width="7" height="88.3" />
+                    <rect class="e" x="321" y="38.1" width="7" height="53.9" />
+                    <rect class="b" x="331" y="11.0" width="7" height="81.0" />
+                    <rect class="e" x="331" y="45.8" width="7" height="46.2" />
+                    <rect class="b" x="341" y="8.3" width="7" height="83.7" />
+                    <rect class="e" x="341" y="41.8" width="7" height="50.2" />
+                    <rect class="b" x="351" y="13.8" width="7" height="78.2" />
+                    <rect class="e" x="351" y="49.8" width="7" height="42.2" />
+                  </svg>
+                  <div class="dl-axis" aria-hidden="true">
+                    <span>13:05</span><span>13:20</span><span>13:35</span
+                    ><span>13:50</span><span>14:05</span>
+                  </div>
+                </div>
+                <div class="dl-lines">
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:58.102</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>upstream <b>timeout</b> after 30s</span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:57.880</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>upstream <b>timeout</b> after 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:04:57.311</span
+                    ><span class="dl-lv dl-lv--warn">WARN</span
+                    ><span>retry after <b>timeout</b>, 2 of 3</span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:56.947</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>charge failed: lock <b>timeout</b></span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:04:56.502</span
+                    ><span class="dl-lv dl-lv--warn">WARN</span
+                    ><span>pool wait 250ms, <b>timeout</b> guard</span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:55.774</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>upstream <b>timeout</b> after 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:04:55.209</span
+                    ><span class="dl-lv">INFO</span
+                    ><span>breaker half-open: <b>timeout</b></span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:54.860</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>refund failed: <b>timeout</b> 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:04:54.118</span
+                    ><span class="dl-lv dl-lv--warn">WARN</span
+                    ><span>retry after <b>timeout</b>, 1 of 3</span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:53.637</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>upstream <b>timeout</b> after 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:04:52.995</span
+                    ><span class="dl-lv">INFO</span
+                    ><span>probe ok after <b>timeout</b></span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:52.401</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>charge failed: lock <b>timeout</b></span>
+                  </div>
+                  <div class="dl-ln is-err">
+                    <span class="dl-ln__t">14:04:51.766</span
+                    ><span class="dl-lv dl-lv--error">ERROR</span
+                    ><span>upstream <b>timeout</b> after 30s</span>
+                  </div>
+                  <div class="dl-ln">
+                    <span class="dl-ln__t">14:04:51.230</span
+                    ><span class="dl-lv dl-lv--warn">WARN</span
+                    ><span>retry after <b>timeout</b>, 3 of 3</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATEMENT (the dealt moment letters-assemble) on the page's one dark band: the h2 first, the statement
+       set very large (2 to 5 words, no figure), then the line and the brief's three figures beside the storage
+       bill they describe, which takes what the screen leaves (.fill) -->
+      <section
+        class="section ground-inverse"
+        id="numbers"
+        data-moment="letters-assemble"
+        data-moment-opts='{"heading": ".mo-la__type"}'
+        aria-labelledby="numbers-h"
+      >
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="numbers-h">저장 비용이 낮은 이유</h2>
+          </div>
+          <p class="mo-la__type">라벨만 인덱싱</p>
+          <div class="grid grid--top fill dl-numbers">
+            <div class="span-6">
+              <p class="t-lead">
+                로그 본문은 압축 블록으로 오브젝트 스토리지에 쌓고, 검색할 때
+                필요한 구간만 읽습니다.
+              </p>
+              <div class="dl-facts">
+                <div>
+                  <p class="t-stat">70%</p>
+                  <p>저장 비용 절감</p>
+                </div>
+                <div>
+                  <p class="t-stat">2TB</p>
+                  <p>하루 수집량</p>
+                </div>
+                <div>
+                  <p class="t-stat">1.2초</p>
+                  <p>쿼리 응답 p95</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="frame frame--lit frame--fill span-6 start-7"
+              role="img"
+              aria-label="Driftlog 사용량 화면: 오브젝트 스토리지로 옮긴 뒤 하루 저장 비용이 크게 줄어든 14일 막대그래프"
+            >
+              <div class="stage stage--fade-b">
+                <div
+                  class="at-rise fit to-edge"
+                  style="
+                    --fit-max: 440px;
+                    --ax: max(24px, 50% - 220px);
+                    --ay: 40px;
+                    --ay-sm: 24px;
+                    --cut: 0px;
+                  "
+                >
+                  <div
+                    class="ui ui-panel ui-stat"
+                    data-ui="stat"
+                    data-ui-opts='{"fill":true}'
+                    data-values="96,99,97,101,98,100,97,33,31,30,29,30,29,28"
+                    data-prev="96,99,97,101,98,100,97,99,98,100,97,99,98,100"
+                  >
+                    <div class="ui-stat__head">
+                      <div class="ui-stat__top">
+                        <span class="ui-stat__label">로그 저장 비용 (일)</span>
+                        <span class="ui-stat__range"
+                          >최근 14일<svg
+                            class="ui-icon"
+                            viewBox="0 0 16 16"
+                            aria-hidden="true"
+                          >
+                            <path d="m4.5 6.5 3.5 3.5 3.5-3.5" /></svg
+                        ></span>
+                      </div>
+                      <div class="ui-stat__line">
+                        <span class="ui-stat__num" data-stat-num>12,400원</span>
+                        <span class="ui-chip ui-chip--plain ui-stat__delta"
+                          ><svg viewBox="0 0 12 12" aria-hidden="true">
+                            <path
+                              d="M6 2.5v7M3 6.5l3 3 3-3"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            /></svg
+                          >28,900원</span
+                        >
+                        <span class="ui-stat__sub">S3로 옮긴 뒤</span>
+                      </div>
+                    </div>
+                    <div class="ui-stat__chart">
+                      <svg
+                        class="ui-stat__svg"
+                        viewBox="0 0 400 120"
+                        preserveAspectRatio="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          class="ui-stat__grid"
+                          d="M0 30.5H400M0 60.5H400M0 90.5H400"
+                        />
+                        <path class="ui-stat__cover" fill-rule="evenodd" d="" />
+                        <g class="ui-stat__bars"></g>
+                      </svg>
+                      <div class="ui-stat__axis" aria-hidden="true">
+                        <span>10월 29일</span><span>11월 4일</span
+                        ><span>오늘</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES (features-2x2, two screens): collect, search, live tail, alerts -->
+      <section class="section g2" id="features" aria-labelledby="features-h">
+        <div class="wrap">
+          <div class="group">
+            <div class="section-head">
+              <h2 id="features-h">수집부터 알림까지, 에이전트 하나로</h2>
+            </div>
+            <div class="grid">
+              <article
+                class="card card--row card--open span-6 m-nolift"
+                id="collect"
+              >
+                <h3>서버와 pod 로그를 모읍니다</h3>
+                <p>
+                  DaemonSet이나 systemd로 띄운 에이전트가 pod와 journald 로그를
+                  압축해 보냅니다.
+                </p>
+                <div class="panel">
+                  <div
+                    class="dg"
+                    data-diagram='{"layout":"fanin","alt":"Kubernetes, Docker, Linux, NGINX 로그가 Driftlog 에이전트를 거쳐 압축되어 AWS S3에 저장됩니다.","sources":[{"label":"Kubernetes","icon":"kubernetes","sub":"pod 로그"},{"label":"Docker","icon":"docker","sub":"컨테이너"},{"label":"Linux","icon":"linux-tux","sub":"journald"},{"label":"NGINX","icon":"nginx","sub":"access 로그"}],"target":{"label":"에이전트","icon":"ui:package"},"then":{"label":"AWS S3","icon":"logos:aws-s3","meta":"zstd 압축"}}'
+                  ></div>
+                </div>
+              </article>
+              <article
+                class="card card--row card--open span-6 m-nolift"
+                id="search"
+              >
+                <h3>LogQL 문법으로 검색합니다</h3>
+                <p>
+                  라벨 선택자와 |= 필터를 그대로 쓰고, Grafana 패널에도 같은
+                  쿼리를 넣습니다.
+                </p>
+                <div class="panel">
+                  <div class="stage stage--fade-b">
+                    <div
+                      class="at-rise fit"
+                      style="
+                        --fit-max: 400px;
+                        --ax: max(24px, 50% - 200px);
+                        --ay: 56px;
+                        --ay-sm: 56px;
+                      "
+                    >
+                      <div class="ui ui-panel ui-search" data-ui="search">
+                        <div class="ui-search__field">
+                          <svg
+                            class="ui-icon"
+                            viewBox="0 0 16 16"
+                            aria-hidden="true"
+                          >
+                            <circle cx="7" cy="7" r="4.5" />
+                            <path d="m10.5 10.5 3 3" />
+                          </svg>
+                          <span class="ui-search__q"
+                            ><span data-search-q
+                              >{app="checkout"} |= "timeout"</span
+                            ><i class="ui-search__caret"></i
+                          ></span>
+                          <kbd class="ui-search__kbd">Ctrl K</kbd>
+                        </div>
+                        <div class="ui-search__group">최근 15분 · 3줄</div>
+                        <ul class="ui-search__list" data-search-list>
+                          <li class="ui-search__row is-sel">
+                            <span class="ui-search__ico"
+                              ><svg class="ui-icon" viewBox="0 0 16 16">
+                                <path d="M3 4h10M3 8h10M3 12h6" /></svg></span
+                            ><span class="ui-search__t"
+                              >payment <b>timeout</b> after 30s</span
+                            ><span class="ui-search__m">ERROR</span>
+                          </li>
+                          <li class="ui-search__row">
+                            <span class="ui-search__ico"
+                              ><svg class="ui-icon" viewBox="0 0 16 16">
+                                <path d="M3 4h10M3 8h10M3 12h6" /></svg></span
+                            ><span class="ui-search__t"
+                              >cart lock <b>timeout</b>, retried</span
+                            ><span class="ui-search__m">WARN</span>
+                          </li>
+                          <li class="ui-search__row">
+                            <span class="ui-search__ico"
+                              ><svg class="ui-icon" viewBox="0 0 16 16">
+                                <path d="M3 4h10M3 8h10M3 12h6" /></svg></span
+                            ><span class="ui-search__t"
+                              >coupon api <b>timeout</b> 5s</span
+                            ><span class="ui-search__m">WARN</span>
+                          </li>
+                        </ul>
+                        <div class="ui-search__foot">
+                          <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> 이동</span
+                          ><span><kbd>Enter</kbd> 열기</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="grid">
+            <article
+              class="card card--row card--open span-6 m-nolift"
+              id="tail"
+            >
+              <h3>새 로그를 실시간으로 봅니다</h3>
+              <p>
+                쿼리에 맞는 새 로그를 들어오는 대로 터미널과 브라우저에 보여
+                줍니다.
+              </p>
+              <div class="panel">
+                <div class="stage stage--fade-b">
+                  <div
+                    class="at-rise fit to-edge"
+                    style="
+                      --fit-max: 460px;
+                      --ax: max(24px, 50% - 230px);
+                      --ay: 36px;
+                      --ay-sm: 24px;
+                      --cut: 0px;
+                    "
+                  >
+                    <div
+                      class="ui ui-panel dl-tail"
+                      aria-hidden="true"
+                      data-m-loop
+                    >
+                      <div class="dl-tail__head">
+                        <span class="ui-dots"><i></i><i></i><i></i></span
+                        ><b>driftlog</b><span class="ui-meta">zsh</span
+                        ><span class="ui-spacer"></span
+                        ><span class="ui-chip ui-chip--accent">실시간</span>
+                      </div>
+                      <div class="dl-tail__cmd">
+                        <span>$</span> <b>driftlog tail '{app="shop"}'</b>
+                      </div>
+                      <div class="dl-tail__track">
+                        <div class="dl-tail__ln">
+                          <span>14:02:09</span><span>INFO</span
+                          ><span>POST /orders 201</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:09</span><span>INFO</span
+                          ><span>GET /cart 200</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:08</span><span class="is-warn">WARN</span
+                          ><span>lock timeout</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:08</span><span>INFO</span
+                          ><span>POST /orders 201</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:08</span><span>INFO</span
+                          ><span>GET /cart 200</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:07</span><span>INFO</span
+                          ><span>POST /orders 201</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:07</span><span class="is-err">ERROR</span
+                          ><span>payment timeout</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:07</span><span>INFO</span
+                          ><span>GET /cart 200</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:06</span><span>INFO</span
+                          ><span>POST /coupons 200</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:06</span><span>INFO</span
+                          ><span>POST /orders 201</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:06</span><span class="is-warn">WARN</span
+                          ><span>stock slow 840ms</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:05</span><span>INFO</span
+                          ><span>GET /cart 200</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:05</span><span>INFO</span
+                          ><span>POST /orders 201</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:05</span><span>INFO</span
+                          ><span>GET /healthz 200</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:04</span><span>INFO</span
+                          ><span>POST /orders 201</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:04</span><span>INFO</span
+                          ><span>GET /cart 200</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:04</span><span>INFO</span
+                          ><span>POST /orders 201</span>
+                        </div>
+                        <div class="dl-tail__ln">
+                          <span>14:02:03</span><span>INFO</span
+                          ><span>GET /cart 200</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article
+              class="card card--row card--open span-6 m-nolift"
+              id="alerts"
+            >
+              <h3>에러 급증을 Slack으로 알립니다</h3>
+              <p>ERROR가 평소보다 늘면 채널에 건수와 첫 로그를 보냅니다.</p>
+              <div class="panel">
+                <div class="stage stage--fade-b">
+                  <div class="at-right" style="--ax: 32px; --ay: 56px">
+                    <div class="ui ui-panel ui-toggles" data-ui="toggles">
+                      <div class="ui-head">
+                        <span class="ui-logo ui-logo--sm"
+                          ><img
+                            data-icon="slack"
+                            src="assets/icons/slack.svg"
+                            alt=""
+                            width="16"
+                            height="16"
+                            loading="lazy"
+                        /></span>
+                        <div class="ui-title">#oncall 알림 규칙</div>
+                        <span class="ui-spacer"></span>
+                        <div class="ui-meta" data-tg-count>4개 켜짐</div>
+                      </div>
+                      <ul class="ui-toggles__list">
+                        <li class="ui-tg">
+                          <span class="ui-tg__text"
+                            ><span class="ui-tg__label">ERROR 급증</span
+                            ><span class="ui-tg__sub"
+                              >5분간 평소의 5배 이상</span
+                            ></span
+                          >
+                          <button
+                            class="ui-switch is-on"
+                            type="button"
+                            role="switch"
+                            aria-checked="true"
+                            aria-label="ERROR 급증"
+                          >
+                            <i></i>
+                          </button>
+                        </li>
+                        <li class="ui-tg">
+                          <span class="ui-tg__text"
+                            ><span class="ui-tg__label">처음 보는 ERROR</span
+                            ><span class="ui-tg__sub"
+                              >새 스택 트레이스가 나타날 때</span
+                            ></span
+                          >
+                          <button
+                            class="ui-switch is-on"
+                            type="button"
+                            role="switch"
+                            aria-checked="true"
+                            aria-label="처음 보는 ERROR"
+                          >
+                            <i></i>
+                          </button>
+                        </li>
+                        <li class="ui-tg">
+                          <span class="ui-tg__text"
+                            ><span class="ui-tg__label">WARN 지속</span
+                            ><span class="ui-tg__sub"
+                              >30분 넘게 이어질 때</span
+                            ></span
+                          >
+                          <button
+                            class="ui-switch"
+                            type="button"
+                            role="switch"
+                            aria-checked="false"
+                            aria-label="WARN 지속"
+                          >
+                            <i></i>
+                          </button>
+                        </li>
+                        <li class="ui-tg">
+                          <span class="ui-tg__text"
+                            ><span class="ui-tg__label">에이전트 끊김</span
+                            ><span class="ui-tg__sub"
+                              >노드에서 3분간 수신 없음</span
+                            ></span
+                          >
+                          <button
+                            class="ui-switch is-on"
+                            type="button"
+                            role="switch"
+                            aria-checked="true"
+                            aria-label="에이전트 끊김"
+                          >
+                            <i></i>
+                          </button>
+                        </li>
+                        <li class="ui-tg">
+                          <span class="ui-tg__text"
+                            ><span class="ui-tg__label">5xx 응답</span
+                            ><span class="ui-tg__sub"
+                              >gateway에서 1분에 50건 이상</span
+                            ></span
+                          >
+                          <button
+                            class="ui-switch is-on"
+                            type="button"
+                            role="switch"
+                            aria-checked="true"
+                            aria-label="5xx 응답"
+                          >
+                            <i></i>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRICING (pricing-three) -->
+      <section
+        class="section bg-dots"
+        id="pricing"
+        style="--hm: 2"
+        aria-labelledby="pricing-h"
+      >
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="pricing-h">팀 규모에 맞는 세 가지 요금제</h2>
+            <p>
+              모든 요금제에서 수집, LogQL 검색, 라이브 테일, Slack 알림을
+              씁니다.
+            </p>
+          </div>
+          <div class="grid">
+            <article class="card card--plan span-4">
+              <h3>Free</h3>
+              <p>개인 프로젝트와 작은 팀</p>
+              <p class="price">
+                <span class="t-stat">0원</span><span class="muted">/ 월</span>
+              </p>
+              <a
+                class="btn btn--secondary"
+                href="mailto:hello@driftlog.example?subject=Driftlog%20Free"
+                >무료로 시작</a
+              >
+              <ul class="checks">
+                <li>하루 5GB 수집</li>
+                <li>7일 보관</li>
+                <li>LogQL 검색·라이브 테일</li>
+                <li>Slack·Grafana 연동</li>
+              </ul>
+            </article>
+            <article class="card card--plan is-featured span-4">
+              <h3>Team <span class="badge">추천</span></h3>
+              <p>5~200명 엔지니어링 팀</p>
+              <p class="price">
+                <span class="t-stat">49,000원</span
+                ><span class="muted">/ 월</span>
+              </p>
+              <a
+                class="btn btn--primary"
+                href="mailto:hello@driftlog.example?subject=Driftlog%20Team"
+                >Team으로 가입</a
+              >
+              <ul class="checks">
+                <li>하루 50GB 수집</li>
+                <li>30일 보관</li>
+                <li>LogQL 검색·라이브 테일</li>
+                <li>Slack·Grafana 연동</li>
+              </ul>
+            </article>
+            <article class="card card--plan span-4">
+              <h3>Enterprise</h3>
+              <p>보안과 감사가 필요한 조직</p>
+              <p class="price"><span class="t-stat">문의</span></p>
+              <a
+                class="btn btn--secondary"
+                href="mailto:sales@driftlog.example?subject=Driftlog%20Enterprise"
+                >영업팀에 문의</a
+              >
+              <ul class="checks">
+                <li>수집량 무제한</li>
+                <li>1년 이상 보관</li>
+                <li>SSO 로그인</li>
+                <li>감사 로그</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ: the page's split, the question list open; the tools it works with as a still hub diagram -->
+      <section class="section g2m" id="faq" aria-labelledby="faq-h">
+        <div class="wrap">
+          <div class="grid grid--top">
+            <div class="span-6">
+              <div class="section-head">
+                <h2 id="faq-h">자주 묻는 질문</h2>
+                <p>도입 전에 가장 많이 받는 네 가지 질문입니다.</p>
+              </div>
+              <div
+                class="panel"
+                role="img"
+                aria-label="Driftlog이 연결되는 도구: Kubernetes, OpenTelemetry, AWS S3, Google Cloud, Grafana, Slack"
+              >
+                <div
+                  class="dg"
+                  data-dg-still
+                  data-diagram='{"layout":"hub","alt":"Driftlog은 Kubernetes, OpenTelemetry에서 로그를 받고, AWS S3와 Google Cloud에 저장하며, Grafana와 Slack으로 내보냅니다.","center":{"label":"Driftlog","icon":"ui:scroll-text"},"spokes":[{"label":"Kubernetes","icon":"kubernetes"},{"label":"OpenTelemetry","icon":"opentelemetry"},{"label":"AWS S3","icon":"logos:aws-s3"},{"label":"Google Cloud","icon":"google-cloud"},{"label":"Grafana","icon":"grafana"},{"label":"Slack","icon":"slack"}]}'
+                ></div>
+              </div>
+            </div>
+            <div class="faq span-6 start-7">
+              <div class="faq__item">
+                <h3>자체 호스팅도 할 수 있나요?</h3>
+                <p>
+                  Enterprise 요금제에서 고객의 Kubernetes 클러스터에 설치하는
+                  방식으로 상담합니다. 이때 로그는 고객의 스토리지에만 남습니다.
+                </p>
+              </div>
+              <div class="faq__item">
+                <h3>지금 쓰는 Loki나 Vector와 함께 쓸 수 있나요?</h3>
+                <p>
+                  네. Vector와 Promtail에서 Loki push API 형식으로 보내면 되고,
+                  기존 LogQL 쿼리도 대부분 그대로 씁니다.
+                </p>
+              </div>
+              <div class="faq__item">
+                <h3>로그 데이터는 어디에 저장되나요?</h3>
+                <p>
+                  <span data-assumed>서울 리전</span>의 오브젝트 스토리지에
+                  조직별 버킷으로 암호화해 둡니다. Enterprise는 고객의 S3 버킷을
+                  지정할 수 있습니다.
+                </p>
+              </div>
+              <div class="faq__item">
+                <h3>하루 수집량을 넘기면 어떻게 되나요?</h3>
+                <p>
+                  수집은 멈추지 않습니다. 넘긴 날에는 메일로 알리고, 한 달에 세
+                  번 넘게 초과하면 다음 요금제를 안내합니다.
+                </p>
+              </div>
+              <p class="faq__ask">
+                <a
+                  class="btn btn--secondary"
+                  href="mailto:sales@driftlog.example?subject=Driftlog%20Enterprise"
+                  >영업팀에 문의</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer closing" id="contact" aria-labelledby="close-h">
+      <div class="wrap">
+        <div class="closing__cta close--type">
+          <div class="section-head">
+            <h2 id="close-h">하루 5GB까지는 무료입니다</h2>
+            <p>
+              Free 요금제는 로그를 7일 동안 보관하고, 필요할 때 Team으로 바꿀 수
+              있습니다.
+            </p>
+          </div>
+          <a
+            class="btn btn--primary btn--xl btn--wide"
+            href="mailto:hello@driftlog.example?subject=Driftlog%20Free"
+            >무료로 시작<svg
+              class="m-arrow"
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+            >
+              <path class="m-arrow__stem" d="M1 6h8" />
+              <path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg
+          ></a>
+        </div>
+        <div class="closing__links">
+          <div class="grid">
+            <div class="span-4 stack-4">
+              <a class="nav__logo" href="#top">Driftlog</a>
+              <p class="footer__lede">팀을 위한 로그 수집·검색·알림</p>
+            </div>
+            <div class="span-2 start-9 footer__col">
+              <h3>제품</h3>
+              <ul>
+                <li><a href="#features">기능</a></li>
+                <li><a href="#product">데모 보기</a></li>
+                <li><a href="#pricing">가격</a></li>
+                <li><a href="#faq">FAQ</a></li>
+              </ul>
+            </div>
+            <div class="span-2 footer__col">
+              <h3>문의</h3>
+              <ul>
+                <li><a href="mailto:sales@driftlog.example">도입 상담</a></li>
+                <li><a href="mailto:support@driftlog.example">기술 지원</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer__legal">
+            <span>&copy; 2026 Driftlog</span>
+            <div class="socials"></div>
+            <span>제품명과 로고는 각 소유자의 상표입니다.</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="assets/system.js"></script>
+    <script type="module" src="assets/motion/motion.js"></script>
+    <script type="module" src="assets/layout/layout.js"></script>
+    <script type="module" src="assets/diagrams/mount.js"></script>
+  </body>
+</html>

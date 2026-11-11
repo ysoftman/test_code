@@ -1,0 +1,13 @@
+{
+	"name": "driftlog-landing-ui-ux-pro-max",
+	"private": true,
+	"version": "1.0.0",
+	"description": "Driftlog landing page built with the ui-ux-pro-max skill (html-tailwind stack)",
+	"scripts": {
+		"build": "rm -rf dist && mkdir -p dist && cp src/index.html src/app.js dist/ && tailwindcss -c tailwind.config.js -i src/input.css -o dist/styles.css --minify",
+		"dev": "tailwindcss -c tailwind.config.js -i src/input.css -o src/styles.css --watch"
+	},
+	"devDependencies": {
+		"tailwindcss": "3.4.19"
+	}
+}

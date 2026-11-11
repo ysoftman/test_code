@@ -80,6 +80,15 @@ jobs:
         working-directory: test_pages/ml-docs
         run: bun run build
 
+      - name: Build design-skill-comparison apps
+        run: |
+          set -euo pipefail
+          for dir in test_pages/design-skill-comparison/*/; do
+            if [ -f "$dir/package.json" ]; then
+              (cd "$dir" && bun install && bun run build)
+            fi
+          done
+
       - name: Assemble _site
         run: |
           set -euo pipefail
@@ -139,6 +148,19 @@ jobs:
 
           # bun-benchmark: benchmark pages and their shared assets
           cp -r "$SRC/bun-benchmark" "$OUT/"
+
+          # design-skill-comparison: 랜딩 + 스킬별 페이지 (package.json 있으면 dist, 없으면 폴더 그대로)
+          mkdir -p "$OUT/design-skill-comparison"
+          cp "$SRC/design-skill-comparison/index.html" "$OUT/design-skill-comparison/"
+          for dir in "$SRC"/design-skill-comparison/*/; do
+            app=$(basename "$dir")
+            mkdir -p "$OUT/design-skill-comparison/$app"
+            if [ -f "$dir/package.json" ]; then
+              cp -r "$dir/dist/." "$OUT/design-skill-comparison/$app/"
+            else
+              cp -r "$dir/." "$OUT/design-skill-comparison/$app/"
+            fi
+          done
 
           # python-toolchain: 단일 정적 페이지
           mkdir -p "$OUT/python-toolchain"

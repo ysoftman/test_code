@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Skill Comparison</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0f1115;
+        --card: #1a1d23;
+        --border: #2a2e36;
+        --fg: #e6e6e6;
+        --muted: #9aa0aa;
+        --accent: #6ea8fe;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.6;
+      }
+      a {
+        color: var(--accent);
+      }
+      .wrap {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+      h1 {
+        font-size: 2rem;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 1.2rem;
+        margin: 40px 0 12px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .controls button {
+        font: inherit;
+        color: var(--fg);
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 6px 14px;
+        cursor: pointer;
+      }
+      .controls button[aria-pressed="true"] {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      @media (max-width: 960px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .col {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .col header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      .col header b {
+        font-size: 1rem;
+      }
+      .col header a {
+        font-size: 0.85rem;
+      }
+      .frame {
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+      .frame iframe {
+        border: 0;
+        transform-origin: top left;
+        background: #fff;
+      }
+      table {
+        width: 100%;
+        min-width: 720px;
+        table-layout: fixed;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      col.rowhead {
+        width: 8em;
+      }
+      td {
+        overflow-wrap: anywhere;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      details {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 16px;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      details ul {
+        color: var(--muted);
+        margin: 8px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p><a href="../">← test_pages</a></p>
+      <h1>Design Skill Comparison</h1>
+      <p class="sub">
+        같은 브리프(가상의 로그 SaaS <b>Driftlog</b> 랜딩 페이지)를 세 가지
+        디자인 도구로 각각 만든 결과 비교. 각 페이지는 서로의 결과를 보지 않는
+        독립 에이전트가 자기 도구 하나만 써서 만들었다.
+      </p>
+
+      <div class="controls" role="group" aria-label="미리보기 화면 너비">
+        <span>미리보기 너비</span>
+        <button type="button" data-vw="1440" aria-pressed="true">
+          데스크톱 1440
+        </button>
+        <button type="button" data-vw="375" aria-pressed="false">
+          모바일 375
+        </button>
+      </div>
+
+      <div class="grid">
+        <section class="col">
+          <header>
+            <b>astryx</b
+            ><a href="./astryx/" target="_blank" rel="noopener">새 탭 ↗</a>
+          </header>
+          <div class="frame">
+            <iframe src="./astryx/" title="astryx 결과" loading="lazy"></iframe>
+          </div>
+        </section>
+        <section class="col">
+          <header>
+            <b>design-taste-frontend</b
+            ><a href="./design-taste-frontend/" target="_blank" rel="noopener"
+              >새 탭 ↗</a
+            >
+          </header>
+          <div class="frame">
+            <iframe
+              src="./design-taste-frontend/"
+              title="design-taste-frontend 결과"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </section>
+        <section class="col">
+          <header>
+            <b>ui-ux-pro-max</b
+            ><a href="./ui-ux-pro-max/" target="_blank" rel="noopener"
+              >새 탭 ↗</a
+            >
+          </header>
+          <div class="frame">
+            <iframe
+              src="./ui-ux-pro-max/"
+              title="ui-ux-pro-max 결과"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </section>
+      </div>
+
+      <h2>비교</h2>
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col class="rowhead" />
+            <col />
+            <col />
+            <col />
+          </colgroup>
+          <thead>
+            <tr>
+              <th></th>
+              <th>astryx</th>
+              <th>design-taste-frontend</th>
+              <th>ui-ux-pro-max</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>출처</th>
+              <td>
+                <a
+                  href="https://github.com/meta/astryx"
+                  target="_blank"
+                  rel="noopener"
+                  >meta/astryx</a
+                >
+              </td>
+              <td>
+                <a
+                  href="https://github.com/leonxlnx/taste-skill"
+                  target="_blank"
+                  rel="noopener"
+                  >leonxlnx/taste-skill</a
+                >
+              </td>
+              <td>
+                <a
+                  href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill"
+                  target="_blank"
+                  rel="noopener"
+                  >nextlevelbuilder/ui-ux-pro-max-skill</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <th>설치 · 버전</th>
+              <td>npm 전역 CLI + 스킬 · 0.7.13</td>
+              <td>skills CLI (GitHub) · 2.5.0 → 2.5.1 (작업 중 갱신)</td>
+              <td>Claude Code 플러그인 (GitHub) · 2.5.0</td>
+            </tr>
+            <tr>
+              <th>결과물 의존성</th>
+              <td>
+                있음 — 페이지가 <code>@astryxdesign/core</code> 를 번들에 포함
+              </td>
+              <td>없음 — 지침·체커만, 쓴 asset 은 페이지 폴더로 복사</td>
+              <td>없음 — 지침·디자인 시스템 문서만</td>
+            </tr>
+            <tr>
+              <th>특징</th>
+              <td>
+                코드로 쓰는 React 디자인 시스템. CLI 가 템플릿·블록·컴포넌트
+                문서를 주고 <code>doctor</code> 로 규칙 위반을 검사
+              </td>
+              <td>
+                "안티 슬롭" 지침 + 스타일 asset 라이브러리. 카피·섹션
+                구성·모션까지 규정하고 실제 브라우저 체커로 검증
+              </td>
+              <td>
+                스타일·팔레트·폰트·UX 규칙 DB 를 BM25 검색해 디자인 시스템
+                문서(MASTER.md)를 생성
+              </td>
+            </tr>
+            <tr>
+              <th>결과 스택</th>
+              <td>React 19 + astryx core + recharts (Vite)</td>
+              <td>정적 HTML + 스킬 kit CSS/JS (빌드 없음)</td>
+              <td>정적 HTML + Tailwind 3 + vanilla JS</td>
+            </tr>
+            <tr>
+              <th>디자인 방향</th>
+              <td>
+                neutral 모노크롬 테마, Figtree, 모션 거의 없음. 조용하고 일관된
+                앱 UI 느낌
+              </td>
+              <td>
+                스킬이 딜한 팔레트(다크 green-black-bone / 라이트
+                white-link-blue), IBM Plex Sans·Mono, collage 히어로(라이브 테일
+                창 + Slack 알림), 한 섹션 = 한 화면, WebGL 그레인 효과와 등장
+                모션
+              </td>
+              <td>
+                Dark Mode (OLED) + run green 강조, Inter + JetBrains Mono,
+                인터랙티브 제품 데모
+              </td>
+            </tr>
+            <tr>
+              <th>산출물 크기</th>
+              <td>약 1.7MB (JS gzip 약 471KB)</td>
+              <td>약 928KB (kit asset 41개 포함, 전송 약 327KiB)</td>
+              <td>약 84KB (gzip 약 22KB)</td>
+            </tr>
+            <tr>
+              <th>장점</th>
+              <td>
+                컴포넌트·토큰·테마가 하나의 체계라 일관성이 높음.
+                접근성·반응형(모바일 드로어 등)이 컴포넌트에 내장. 문서를 CLI 로
+                바로 조회
+              </td>
+              <td>
+                한 섹션 = 한 화면, 같은 가장자리, 실제 로고, 제품 UI 목업, 모션,
+                라이트/다크, 성능(CLS 0)까지 체커가 실측으로 잡아줘 기본 품질과
+                일관성이 높음
+              </td>
+              <td>
+                대비·포커스·reduced-motion·차트 접근성 등 체크리스트가 구체적.
+                스택 제약이 없어 결과가 가벼움
+              </td>
+            </tr>
+            <tr>
+              <th>단점</th>
+              <td>
+                마케팅 랜딩용 블록(가격표·기능 그리드·CTA) 없음. 번들이 큼.
+                한국어 줄바꿈 등은 테마 확장까지 거쳐야 함
+              </td>
+              <td>
+                규칙·문서가 방대하고 체커 1회가 수 분이라 시간·토큰 비용이 큼.
+                영어·라틴 전제 체커(한글 제목 길이 오판정 등)와 kit 간 충돌
+                때문에 우회 CSS 가 생김
+              </td>
+              <td>
+                검색 키워드에 따라 결과가 크게 흔들림. 생성된 MASTER 에 대비
+                미달·라이트/다크 혼재 등 모순이 있어 직접 교정 필요. 문서가
+                React Native 전용으로 쓰여 있음
+              </td>
+            </tr>
+            <tr>
+              <th>검증 방식</th>
+              <td>
+                <code>astryx doctor</code> 정적 규칙 검사 (권장, 강제 아님)
+              </td>
+              <td>
+                headless Chrome 체커(카피·일관성·레이아웃·성능) + Stop hook 으로
+                finish gate 강제 (PASS 전 종료 불가, 최대 3라운드)
+              </td>
+              <td>검사 스크립트 없음, 문서 체크리스트만</td>
+            </tr>
+            <tr>
+              <th>작업 시간 (검증 포함)</th>
+              <td>약 19분 — 검증은 <code>doctor</code> 몇 초</td>
+              <td>
+                약 2시간 50분 — 주로 체커 실행(1회 수 분)과 지적 사항 수정 반복.
+                네트워크 중단 약 30분·스킬 버전 갱신 재작업 포함
+              </td>
+              <td>약 18분 — 스킬 자체 검증 단계 없음</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>공통 브리프</h2>
+      <details>
+        <summary>Driftlog — 팀용 로그 수집·검색·알림 SaaS (가상 제품)</summary>
+        <ul>
+          <li>
+            필수 섹션: 내비게이션 · 히어로(CTA 2개) · 로그 검색 화면 미리보기 ·
+            기능 4개(수집/검색/라이브 테일/알림) · 수치 · 가격 3단 · FAQ 4개 ·
+            하단 CTA/푸터
+          </li>
+          <li>가격: Free 월 0원 / Team 월 49,000원(추천) / Enterprise 문의</li>
+          <li>
+            한국어 본문, 라이트/다크 모드, 375px ~ 1440px 반응형, 자체 포함
+            asset, 상대 경로
+          </li>
+          <li>카피와 디자인 결정은 각 도구의 지침에 맡김</li>
+        </ul>
+      </details>
+    </div>
+
+    <script>
+      // iframe 을 실제 뷰포트 너비로 렌더링한 뒤 열 너비에 맞게 축소한다.
+      const VIEW_H = 900;
+      let vw = 1440;
+      function fit() {
+        for (const frame of document.querySelectorAll(".frame")) {
+          const iframe = frame.querySelector("iframe");
+          const s = Math.min(1, frame.parentElement.clientWidth / vw);
+          iframe.style.width = `${vw}px`;
+          iframe.style.height = `${VIEW_H}px`;
+          iframe.style.transform = `scale(${s})`;
+          frame.style.width = `${vw * s}px`;
+          frame.style.height = `${VIEW_H * s}px`;
+        }
+      }
+      for (const btn of document.querySelectorAll("[data-vw]")) {
+        btn.addEventListener("click", () => {
+          vw = Number(btn.dataset.vw);
+          for (const b of document.querySelectorAll("[data-vw]"))
+            b.setAttribute("aria-pressed", String(b === btn));
+          fit();
+        });
+      }
+      addEventListener("resize", fit);
+      fit();
+    </script>
+  </body>
+</html>

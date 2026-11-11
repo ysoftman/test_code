@@ -81,6 +81,8 @@ extend-exclude = [
   "go.mod",
   "cjson",
   "helm/argo-cd*",
+  # design-taste-frontend 스킬 kit 원본 사본 (wdth 폰트 축 태그 등 오탐)
+  "test_pages/design-skill-comparison/design-taste-frontend/assets/*",
 ]
 
 
