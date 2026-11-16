@@ -1,0 +1,45 @@
+# tidb 없이 pd + tikv 만 띄우는 테스트용 단일 인스턴스 클러스터
+# (spec.tidb 를 생략하면 tidb 는 만들어지지 않는다.)
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: tikv
+spec:
+  # pd, tikv 이미지 태그
+  version: v8.5.8
+  timezone: UTC
+  # 테스트용이라 클러스터를 지우면 PV 도 같이 지운다.
+  pvReclaimPolicy: Delete
+  enableDynamicConfiguration: true
+  configUpdateStrategy: RollingUpdate
+  discovery: {}
+  helper:
+    image: alpine:3.16.0
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    # 단일 인스턴스라 failover 로 파드를 늘리지 않는다.
+    maxFailoverCount: 0
+    requests:
+      storage: 1Gi
+    # config 는 yaml map 이 아니라 toml 문자열로 쓴다.
+    # map 으로 쓰면 operator 가 toml 문자열로 바꿔 써서 필드 소유권이 넘어가고, 다음 server-side apply 가 conflict 로 실패한다.
+    config: ""
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 1
+    maxFailoverCount: 0
+    requests:
+      storage: 2Gi
+    # operator 가 toml 을 정규화(섹션 알파벳순, 2칸 들여쓰기, 주석 제거)해서 다시 쓰므로
+    # 정규화된 형태 그대로 적어야 conflict 가 나지 않는다. 그래서 주석은 문자열 밖에 둔다.
+    # storage.reserve-space: 기본 예약 공간(5GB)이 테스트용 PVC 보다 커서 끈다.
+    config: |
+      [raftdb]
+        max-open-files = 256
+
+      [rocksdb]
+        max-open-files = 256
+
+      [storage]
+        reserve-space = "0MB"

@@ -1,0 +1,13 @@
+# pingcap/tidb-operator chart 용 커스텀 values
+# chart 는 argocd multi-source 로 upstream(https://charts.pingcap.com/) 에서 받는다.
+# tikv 전용 chart(tikv-operator)는 유지보수가 중단되어 tidb-operator 로 tikv(+pd)만 띄운다.
+# 실제 tikv 클러스터 정의는 tidbcluster.yaml 에 있다.
+
+# 테스트용이라 operator(controller-manager)만 띄운다.
+# admissionWebhook 은 인증서를 다루므로 켜면 argocd 렌더링이 결정적인지 다시 확인해야 한다.
+scheduler:
+  create: false
+advancedStatefulset:
+  create: false
+admissionWebhook:
+  create: false

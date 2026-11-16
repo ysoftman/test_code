@@ -111,6 +111,25 @@ loki:
   # loki chart 는 values 스키마 검증이 엄격해 자리표시자(test1)를 넣으면 helm template 이 실패하므로 비워 둔다.
   values: {}
 
+tikv:
+  enabled: true
+  name: tikv
+  # tikv 전용 chart(tikv-operator)는 유지보수가 중단되어 pingcap/tidb-operator chart 로 operator 를 설치하고,
+  # git(common.valuesRepo) 의 kustomization(CRD + TidbCluster)으로 pd + tikv 만 띄운다.
+  # operator 버전을 올릴 때는 helm/tikv/kustomization.yaml 의 CRD url 버전도 같이 맞춘다.
+  source:
+    repoURL: https://charts.pingcap.com/
+    chart: tidb-operator
+    targetRevision: v1.6.6
+  valueFiles:
+    - $values/helm/tikv/values-ysoftman.yaml
+  # CRD + TidbCluster kustomization 경로
+  path: helm/tikv
+  # values 파일과 kustomization 을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # tikv.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
+  values: {}
+
 tekton:
   enabled: true
   name: tekton
