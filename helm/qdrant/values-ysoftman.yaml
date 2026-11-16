@@ -1,0 +1,31 @@
+# qdrant/qdrant chart 용 커스텀 values
+# chart 는 argocd multi-source 로 upstream(https://qdrant.github.io/qdrant-helm) 에서 받는다.
+# 테스트용 단일 인스턴스 구성이다.
+
+replicaCount: 1
+
+# 테스트 클러스터라 PV 크기를 줄인다(chart 기본값 10Gi).
+persistence:
+  size: 2Gi
+
+# apiKey 를 true 로 켜면 chart 가 랜덤 키를 만들고 lookup 으로 재사용하는데, argocd 는 lookup 을 쓸 수 없어
+# 렌더링마다 값이 바뀌어 항상 OutOfSync 가 된다. 테스트용이라 인증 없이 쓴다(chart 기본값).
+# 인증이 필요하면 클러스터에 수동으로 만든 secret 을 apiKey.valueFrom 으로 참조한다.
+
+# prometheus 앱의 kubernetes-pods job 이 수집하도록 annotation 을 붙인다.
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "6333"
+  prometheus.io/path: /metrics
+
+# REST api 와 web ui(/dashboard) 용. gRPC(6334)는 클러스터 안에서 service 로 접속한다.
+ingress:
+  enabled: true
+  # colima k3s 기본 내장 traefik ingress controller 사용
+  ingressClassName: traefik
+  hosts:
+    - host: qdrant.ysoftman
+      paths:
+        - path: /
+          pathType: Prefix
+          servicePort: 6333

@@ -112,6 +112,22 @@ loki:
   # loki chart 는 values 스키마 검증이 엄격해 자리표시자(test1)를 넣으면 helm template 이 실패하므로 비워 둔다.
   values: {}
 
+qdrant:
+  enabled: true
+  name: qdrant
+  # git 에는 vendored chart 원본이 없으므로 chart 는 upstream helm repo 에서 받고,
+  # values 파일만 git(common.valuesRepo) 에서 $values ref 로 읽는다.
+  source:
+    repoURL: https://qdrant.github.io/qdrant-helm
+    chart: qdrant
+    targetRevision: 1.20.1
+  valueFiles:
+    - $values/helm/qdrant/values-ysoftman.yaml
+  # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # qdrant.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
+  values: {}
+
 tikv:
   enabled: true
   name: tikv
