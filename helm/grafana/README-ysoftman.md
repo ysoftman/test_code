@@ -8,6 +8,7 @@
   - `dashboard-vector-pipeline.yaml`: vector 처리량과 로그 줄 수(prometheus datasource)
   - `dashboard-loki-logs.yaml`: 컨테이너 로그, 에러 로그, 레벨별 그래프(loki datasource)
   - `dashboard-tikv.yaml`: tikv 앱의 store 상태, region 수, 저장소 크기, gRPC 요청, cpu/메모리(prometheus datasource)
+  - `dashboard-qdrant.yaml`: qdrant 앱의 컬렉션/벡터 수, 요청량과 지연, cpu/메모리(prometheus datasource)
   - 대시보드를 추가하려면 새 `dashboard-<name>.yaml` 을 만들고 argocd-apps 의 `grafana.valueFiles` 에 한 줄 추가한다.
 - argocd 배포는 upstream helm repo 의 chart 를 직접 쓴다(버전은 `argocd-apps/values-ysoftman.yaml` 의 `grafana.source.targetRevision`).
   버전 올릴 때는 그 값만 바꾸면 된다.
@@ -46,7 +47,8 @@ helm upgrade --install grafana grafana \
 --values values-ysoftman.yaml \
 --values dashboard-vector-pipeline.yaml \
 --values dashboard-loki-logs.yaml \
---values dashboard-tikv.yaml
+--values dashboard-tikv.yaml \
+--values dashboard-qdrant.yaml
 ```
 
 - 로컬에 ingress 도메인 접근을 위해

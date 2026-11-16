@@ -1,0 +1,373 @@
+# grafana 대시보드: qdrant 앱(namespace: qdrant) 상태 확인용(prometheus datasource)
+# 이 파일은 argocd-apps 의 grafana.valueFiles 로 values-ysoftman.yaml 과 함께 helm 에 전달되어 deep-merge 된다.
+# qdrant 파드의 prometheus.io/scrape annotation(helm/qdrant/values-ysoftman.yaml)으로 prometheus 의 kubernetes-pods job 이 수집한다.
+# 요청 패널은 points 조회/쓰기 같은 요청이 들어온 뒤부터, 컬렉션 패널은 컬렉션이 있을 때만 값이 나온다.
+dashboards:
+  default:
+    qdrant:
+      json: |
+        {
+          "uid": "qdrant",
+          "title": "Qdrant",
+          "tags": [
+            "qdrant"
+          ],
+          "timezone": "browser",
+          "schemaVersion": 39,
+          "version": 1,
+          "refresh": "30s",
+          "time": {
+            "from": "now-1h",
+            "to": "now"
+          },
+          "editable": true,
+          "panels": [
+            {
+              "id": 1,
+              "type": "stat",
+              "title": "Collections",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 0,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum(collections_total{namespace=\"qdrant\"})",
+                  "legendFormat": "collections"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 2,
+              "type": "stat",
+              "title": "Vectors",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 6,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum(collections_vector_total{namespace=\"qdrant\"})",
+                  "legendFormat": "vectors"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 3,
+              "type": "stat",
+              "title": "Dead replicas",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 12,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum(collection_dead_replicas{namespace=\"qdrant\"})",
+                  "legendFormat": "dead"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 4,
+              "type": "stat",
+              "title": "Cluster peers",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 18,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "max(cluster_peers_total{namespace=\"qdrant\"})",
+                  "legendFormat": "peers"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 5,
+              "type": "timeseries",
+              "title": "Points by collection",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 4
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (id) (collection_points{namespace=\"qdrant\"})",
+                  "legendFormat": "{{id}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 6,
+              "type": "timeseries",
+              "title": "Update queue length by collection",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 4
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (id) (collection_update_queue_length{namespace=\"qdrant\"})",
+                  "legendFormat": "{{id}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 7,
+              "type": "timeseries",
+              "title": "Requests/sec by endpoint",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 12
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (method, endpoint) (rate(rest_responses_total{namespace=\"qdrant\"}[5m]))",
+                  "legendFormat": "rest {{method}} {{endpoint}}"
+                },
+                {
+                  "refId": "B",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (method, endpoint) (rate(grpc_responses_total{namespace=\"qdrant\"}[5m]))",
+                  "legendFormat": "grpc {{endpoint}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 8,
+              "type": "timeseries",
+              "title": "Request p99 duration by endpoint",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 12
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "histogram_quantile(0.99, sum by (le, endpoint) (rate(rest_responses_duration_seconds_bucket{namespace=\"qdrant\"}[5m])))",
+                  "legendFormat": "rest {{endpoint}}"
+                },
+                {
+                  "refId": "B",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "histogram_quantile(0.99, sum by (le, endpoint) (rate(grpc_responses_duration_seconds_bucket{namespace=\"qdrant\"}[5m])))",
+                  "legendFormat": "grpc {{endpoint}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "s"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 9,
+              "type": "timeseries",
+              "title": "CPU cores by pod",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 20
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "cpu_cores_used{namespace=\"qdrant\"}",
+                  "legendFormat": "{{pod}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 10,
+              "type": "timeseries",
+              "title": "Memory by pod",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 20
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "memory_resident_bytes{namespace=\"qdrant\"}",
+                  "legendFormat": "{{pod}} resident"
+                },
+                {
+                  "refId": "B",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "memory_allocated_bytes{namespace=\"qdrant\"}",
+                  "legendFormat": "{{pod}} allocated"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes"
+                },
+                "overrides": []
+              }
+            }
+          ]
+        }

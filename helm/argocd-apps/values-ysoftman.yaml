@@ -88,6 +88,7 @@ grafana:
     - $values/helm/grafana/dashboard-vector-pipeline.yaml
     - $values/helm/grafana/dashboard-loki-logs.yaml
     - $values/helm/grafana/dashboard-tikv.yaml
+    - $values/helm/grafana/dashboard-qdrant.yaml
   # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
   # grafana.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
   valuesRevision: HEAD
