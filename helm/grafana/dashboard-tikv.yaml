@@ -1,0 +1,346 @@
+# grafana 대시보드: tikv 앱(namespace: tikv)의 pd + tikv 상태 확인용(prometheus datasource)
+# 이 파일은 argocd-apps 의 grafana.valueFiles 로 values-ysoftman.yaml 과 함께 helm 에 전달되어 deep-merge 된다.
+# pd/tikv 파드에는 operator 가 prometheus.io/scrape annotation 을 붙여 주므로 prometheus 의 kubernetes-pods job 이
+# 별도 설정 없이 수집한다. gRPC 패널은 tikv 에 클라이언트 요청이 들어온 뒤부터 값이 나온다.
+dashboards:
+  default:
+    tikv:
+      json: |
+        {
+          "uid": "tikv",
+          "title": "TiKV",
+          "tags": [
+            "tikv"
+          ],
+          "timezone": "browser",
+          "schemaVersion": 39,
+          "version": 1,
+          "refresh": "30s",
+          "time": {
+            "from": "now-1h",
+            "to": "now"
+          },
+          "editable": true,
+          "panels": [
+            {
+              "id": 1,
+              "type": "stat",
+              "title": "Stores up",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 0,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum(pd_cluster_status{namespace=\"tikv\",type=\"store_up_count\"})",
+                  "legendFormat": "up"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 2,
+              "type": "stat",
+              "title": "Stores down/disconnected",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 6,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum(pd_cluster_status{namespace=\"tikv\",type=\"store_down_count\"}) + sum(pd_cluster_status{namespace=\"tikv\",type=\"store_disconnected_count\"})",
+                  "legendFormat": "down"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 3,
+              "type": "stat",
+              "title": "Regions",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 12,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum(pd_cluster_status{namespace=\"tikv\",type=\"region_count\"})",
+                  "legendFormat": "regions"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 4,
+              "type": "stat",
+              "title": "Storage used",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 18,
+                "y": 0
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum(pd_cluster_status{namespace=\"tikv\",type=\"storage_size\"})",
+                  "legendFormat": "used"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 5,
+              "type": "timeseries",
+              "title": "Store size by tikv",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 4
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "tikv_store_size_bytes{namespace=\"tikv\",type=~\"capacity|available|used\"}",
+                  "legendFormat": "{{pod}} {{type}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 6,
+              "type": "timeseries",
+              "title": "Region/leader count by tikv",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 4
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "tikv_raftstore_region_count{namespace=\"tikv\",type=~\"region|leader\"}",
+                  "legendFormat": "{{pod}} {{type}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 7,
+              "type": "timeseries",
+              "title": "gRPC requests/sec by type",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 12
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "sum by (type) (rate(tikv_grpc_msg_duration_seconds_count{namespace=\"tikv\"}[5m]))",
+                  "legendFormat": "{{type}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 8,
+              "type": "timeseries",
+              "title": "gRPC p99 duration by type",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 12
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "histogram_quantile(0.99, sum by (le, type) (rate(tikv_grpc_msg_duration_seconds_bucket{namespace=\"tikv\"}[5m])))",
+                  "legendFormat": "{{type}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "s"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 9,
+              "type": "timeseries",
+              "title": "CPU cores by pod",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 20
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "rate(process_cpu_seconds_total{namespace=\"tikv\"}[5m])",
+                  "legendFormat": "{{pod}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none"
+                },
+                "overrides": []
+              }
+            },
+            {
+              "id": 10,
+              "type": "timeseries",
+              "title": "Memory (RSS) by pod",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 20
+              },
+              "targets": [
+                {
+                  "refId": "A",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "process_resident_memory_bytes{namespace=\"tikv\"}",
+                  "legendFormat": "{{pod}}"
+                }
+              ],
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes"
+                },
+                "overrides": []
+              }
+            }
+          ]
+        }
