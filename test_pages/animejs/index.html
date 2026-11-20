@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Anime.js v4 주요 기능 데모" />
+    <title>Anime.js 데모</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f1115;
+        --card: #1a1d23;
+        --border: #2a2e36;
+        --fg: #e6e6e6;
+        --muted: #9aa0aa;
+        --accent: #6ea8fe;
+        --c1: #ff4b4b;
+        --c2: #ffcc2a;
+        --c3: #2ee6a8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 16px;
+      }
+      h1 {
+        font-size: 2rem;
+        margin: 0 0 4px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 32px;
+      }
+      a {
+        color: var(--accent);
+      }
+      #demos {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      }
+      .demo {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .demo header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 12px 16px;
+      }
+      .demo h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+      button {
+        font: inherit;
+        font-size: 0.8rem;
+        color: var(--fg);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px 10px;
+        cursor: pointer;
+      }
+      button:hover {
+        border-color: var(--accent);
+      }
+      .stage {
+        position: relative;
+        height: 11rem;
+        padding: 16px;
+        background: var(--bg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+      }
+      pre {
+        margin: 0;
+        padding: 12px 16px;
+        font-size: 0.72rem;
+        line-height: 1.5;
+        color: var(--muted);
+        overflow-x: auto;
+        flex: 1;
+      }
+      .box {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 6px;
+        background: var(--c1);
+        flex: none;
+      }
+      .box:nth-child(2) {
+        background: var(--c2);
+      }
+      .box:nth-child(3) {
+        background: var(--c3);
+      }
+      .circle {
+        border-radius: 50%;
+      }
+      .dots {
+        display: grid;
+        grid-template-columns: repeat(11, 1rem);
+        gap: 0.5rem;
+        justify-content: center;
+      }
+      .dot {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: var(--c3);
+      }
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--accent);
+      }
+      .ball {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        background: var(--c2);
+        margin: auto;
+        cursor: grab;
+        touch-action: none;
+      }
+      .stage svg {
+        display: block;
+        margin: auto;
+        fill: none;
+        stroke: var(--c3);
+        stroke-width: 3;
+        stroke-linecap: round;
+      }
+      .track {
+        position: relative;
+        width: 300px;
+        height: 120px;
+        margin: auto;
+      }
+      .track svg {
+        stroke: var(--border);
+      }
+      .car {
+        position: absolute;
+        top: -8px;
+        left: -12px;
+        width: 24px;
+        height: 16px;
+        border-radius: 4px;
+        background: var(--c1);
+      }
+      .title {
+        margin: 0;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 800;
+      }
+      .scroller {
+        position: absolute;
+        inset: 0;
+        overflow-y: auto;
+        padding: 16px;
+      }
+      .scroller p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .scroller .box {
+        margin: 12rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Anime.js 데모</h1>
+      <p class="sub">
+        <a href="https://github.com/juliangarnier/anime">juliangarnier/anime</a>
+        v4.5.0 주요 기능 · 각 카드 아래 코드가 실제로 실행되는 코드입니다 (<code
+          >$</code
+        >
+        는 카드 안에서만 찾는 <code>querySelectorAll</code>)
+      </p>
+      <div id="demos"></div>
+    </div>
+
+    <script type="module">
+      import {
+        animate,
+        createDraggable,
+        spring,
+        createTimeline,
+        onScroll,
+        splitText,
+        stagger,
+        svg,
+      } from "https://cdn.jsdelivr.net/npm/animejs@4.5.0/dist/bundles/anime.esm.min.js";
+
+      const boxes = '<div class="box"></div>'.repeat(3);
+
+      const demos = [
+        {
+          title: "animate · easing",
+          html: boxes,
+          run($) {
+            return animate($(".box"), {
+              x: "12rem",
+              rotate: "1turn",
+              duration: 1200,
+              ease: "inOutExpo",
+              delay: stagger(120),
+              loop: true,
+              alternate: true,
+            });
+          },
+        },
+        {
+          title: "stagger grid",
+          html: `<div class="dots">${'<div class="dot"></div>'.repeat(55)}</div>`,
+          run($) {
+            return animate($(".dot"), {
+              scale: [{ to: 0.2 }, { to: 1 }],
+              duration: 500,
+              ease: "inOutQuad",
+              delay: stagger(60, { grid: [11, 5], from: "center" }),
+              loop: true,
+              loopDelay: 300,
+            });
+          },
+        },
+        {
+          title: "timeline · seek",
+          html: `${boxes}<input type="range" min="0" max="1" step="0.001" value="0" aria-label="타임라인 위치">`,
+          run($) {
+            const [range] = $("input");
+            const [a, b, c] = $(".box");
+            const tl = createTimeline({
+              defaults: { duration: 700, ease: "outExpo" },
+              onUpdate: (self) => (range.value = self.progress),
+            })
+              .add(a, { x: "12rem" })
+              .add(b, { x: "12rem", rotate: 180 }, "-=400")
+              .add(c, { x: "12rem", scale: 0.5 }, "-=400");
+            range.oninput = () => tl.pause().seek(tl.duration * range.value);
+            return tl;
+          },
+        },
+        {
+          title: "spring",
+          html: boxes,
+          run($) {
+            return animate($(".box"), {
+              x: "12rem",
+              ease: spring({ stiffness: 120, damping: 6 }),
+              delay: stagger(150),
+              loop: true,
+              loopDelay: 500,
+            });
+          },
+        },
+        {
+          title: "draggable (끌어서 던져보세요)",
+          html: '<div class="ball"></div>',
+          run($, stage) {
+            return createDraggable($(".ball"), {
+              container: stage,
+              releaseEase: spring({ stiffness: 150, damping: 8 }),
+            });
+          },
+        },
+        {
+          title: "svg line drawing",
+          html: `<svg width="280" height="120" viewBox="0 0 280 120">
+            <path d="M10 60 Q 45 0 80 60 T 150 60 T 220 60 T 270 60"/>
+            <path d="M10 90 H 270" stroke="#ffcc2a"/>
+            <circle cx="140" cy="30" r="18" stroke="#ff4b4b"/>
+          </svg>`,
+          run($) {
+            return animate(svg.createDrawable($("svg > *")), {
+              draw: ["0 0", "0 1", "1 1"],
+              duration: 2400,
+              ease: "inOutQuad",
+              delay: stagger(200),
+              loop: true,
+            });
+          },
+        },
+        {
+          title: "svg motion path",
+          html: `<div class="track">
+            <svg width="300" height="120" viewBox="0 0 300 120">
+              <path d="M30 60 C 30 0 120 0 150 60 S 270 120 270 60 S 180 0 150 60 S 30 120 30 60 Z"/>
+            </svg>
+            <div class="car"></div>
+          </div>`,
+          run($) {
+            const { translateX, translateY, rotate } = svg.createMotionPath(
+              $("path")[0],
+            );
+            return animate($(".car"), {
+              translateX,
+              translateY,
+              rotate,
+              duration: 4000,
+              ease: "linear",
+              loop: true,
+            });
+          },
+        },
+        {
+          title: "text split",
+          html: '<p class="title">Hello Anime.js</p>',
+          run($) {
+            const { chars } = splitText($(".title")[0], { chars: true });
+            return animate(chars, {
+              y: [{ to: "-1.2rem" }, { to: 0 }],
+              duration: 400,
+              ease: "inOutQuad",
+              delay: stagger(40),
+              loop: true,
+              loopDelay: 800,
+            });
+          },
+        },
+        {
+          title: "scroll sync",
+          html: `<div class="scroller" tabindex="0">
+            <p>↓ 이 영역을 스크롤하면 스크롤 위치에 맞춰 움직입니다</p>
+            <div class="box"></div>
+          </div>`,
+          run($) {
+            return animate($(".box"), {
+              x: "12rem",
+              rotate: "1turn",
+              ease: "linear",
+              autoplay: onScroll({ container: $(".scroller")[0], sync: true }),
+            });
+          },
+        },
+      ];
+
+      const source = (fn) => {
+        const lines = fn.toString().split("\n").slice(1, -1);
+        const indent = Math.min(
+          ...lines.filter((l) => l.trim()).map((l) => l.search(/\S/)),
+        );
+        return lines.map((l) => l.slice(indent)).join("\n");
+      };
+
+      for (const demo of demos) {
+        const card = document.createElement("section");
+        card.className = "demo";
+        card.innerHTML =
+          '<header><h2></h2><button type="button">다시 재생</button></header><div class="stage"></div><pre></pre>';
+        card.querySelector("h2").textContent = demo.title;
+        card.querySelector("pre").textContent = source(demo.run);
+        const stage = card.querySelector(".stage");
+        let current;
+        const play = () => {
+          current?.revert();
+          stage.innerHTML = demo.html;
+          current = demo.run((s) => stage.querySelectorAll(s), stage);
+        };
+        card.querySelector("button").onclick = play;
+        document.querySelector("#demos").append(card);
+        play();
+      }
+    </script>
+  </body>
+</html>

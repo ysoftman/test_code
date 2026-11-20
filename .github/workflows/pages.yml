@@ -166,6 +166,10 @@ jobs:
           mkdir -p "$OUT/python-toolchain"
           cp "$SRC/python-toolchain/index.html" "$OUT/python-toolchain/"
 
+          # animejs: 단일 정적 페이지 (CDN ESM)
+          mkdir -p "$OUT/animejs"
+          cp "$SRC/animejs/index.html" "$OUT/animejs/"
+
           # 모든 페이지 우하단에 빌드/배포 시간 배지 삽입
           BUILT_AT=$(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')
           export BADGE="<div style=\"position:fixed;right:8px;bottom:8px;z-index:2147483647;padding:2px 8px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;font:12px/1.6 system-ui,sans-serif;pointer-events:none\">deployed ${BUILT_AT}</div>"
