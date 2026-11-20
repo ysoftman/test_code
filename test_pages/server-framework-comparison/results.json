@@ -1,0 +1,340 @@
+{
+	"env": {
+		"date": "2026-11-20T02:18:14Z",
+		"os": "macOS 27.2.1 (arm64)",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryGb": 32,
+		"node": "26.12.1",
+		"bun": "1.4.4",
+		"oha": "1.16.0",
+		"httpSecs": 10,
+		"conns": 64,
+		"packages": {
+			"express": "5.3.0",
+			"fastify": "5.12.8",
+			"koa": "3.3.0",
+			"@koa/router": "15.7.1",
+			"hono": "4.13.19",
+			"@hono/node-server": "2.1.9",
+			"elysia": "1.4.32"
+		}
+	},
+	"scenarios": [
+		{
+			"id": "plaintext",
+			"path": "/",
+			"description": "GET / → 평문 Hello World"
+		},
+		{
+			"id": "json",
+			"path": "/json",
+			"description": "GET /json → 작은 JSON 객체"
+		},
+		{
+			"id": "param",
+			"path": "/user/123",
+			"description": "GET /user/:id → 경로 파라미터를 JSON 으로 반환"
+		}
+	],
+	"results": [
+		{
+			"framework": "node:http",
+			"runtime": "node",
+			"version": "26.12.1",
+			"json": {
+				"rps": 76372,
+				"avgMs": 0.836,
+				"p50Ms": 0.791,
+				"p99Ms": 1.657,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 76659,
+				"avgMs": 0.833,
+				"p50Ms": 0.79,
+				"p99Ms": 1.655,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 80891,
+				"avgMs": 0.789,
+				"p50Ms": 0.744,
+				"p99Ms": 1.583,
+				"successRate": 1.0
+			},
+			"rssMb": 82.6
+		},
+		{
+			"framework": "Express",
+			"runtime": "node",
+			"version": "5.3.0",
+			"json": {
+				"rps": 44515,
+				"avgMs": 1.436,
+				"p50Ms": 1.352,
+				"p99Ms": 2.821,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 43611,
+				"avgMs": 1.465,
+				"p50Ms": 1.37,
+				"p99Ms": 2.91,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 47292,
+				"avgMs": 1.351,
+				"p50Ms": 1.273,
+				"p99Ms": 2.667,
+				"successRate": 1.0
+			},
+			"rssMb": 110.9
+		},
+		{
+			"framework": "Fastify",
+			"runtime": "node",
+			"version": "5.12.8",
+			"json": {
+				"rps": 70433,
+				"avgMs": 0.907,
+				"p50Ms": 0.858,
+				"p99Ms": 1.794,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 69851,
+				"avgMs": 0.914,
+				"p50Ms": 0.868,
+				"p99Ms": 1.799,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 73033,
+				"avgMs": 0.875,
+				"p50Ms": 0.824,
+				"p99Ms": 1.741,
+				"successRate": 1.0
+			},
+			"rssMb": 91.6
+		},
+		{
+			"framework": "Koa",
+			"runtime": "node",
+			"version": "3.3.0",
+			"json": {
+				"rps": 55239,
+				"avgMs": 1.156,
+				"p50Ms": 1.089,
+				"p99Ms": 2.285,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 54719,
+				"avgMs": 1.168,
+				"p50Ms": 1.102,
+				"p99Ms": 2.305,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 56996,
+				"avgMs": 1.121,
+				"p50Ms": 1.063,
+				"p99Ms": 2.212,
+				"successRate": 1.0
+			},
+			"rssMb": 107.4
+		},
+		{
+			"framework": "Hono",
+			"runtime": "node",
+			"version": "4.13.19",
+			"json": {
+				"rps": 67884,
+				"avgMs": 0.941,
+				"p50Ms": 0.893,
+				"p99Ms": 1.851,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 66444,
+				"avgMs": 0.961,
+				"p50Ms": 0.91,
+				"p99Ms": 1.889,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 70697,
+				"avgMs": 0.903,
+				"p50Ms": 0.859,
+				"p99Ms": 1.781,
+				"successRate": 1.0
+			},
+			"rssMb": 101.3
+		},
+		{
+			"framework": "Bun.serve",
+			"runtime": "bun",
+			"version": "1.4.4",
+			"json": {
+				"rps": 107215,
+				"avgMs": 0.595,
+				"p50Ms": 0.561,
+				"p99Ms": 1.207,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 103832,
+				"avgMs": 0.615,
+				"p50Ms": 0.57,
+				"p99Ms": 1.272,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 112718,
+				"avgMs": 0.566,
+				"p50Ms": 0.531,
+				"p99Ms": 1.15,
+				"successRate": 1.0
+			},
+			"rssMb": 39
+		},
+		{
+			"framework": "Hono",
+			"runtime": "bun",
+			"version": "4.13.19",
+			"json": {
+				"rps": 93666,
+				"avgMs": 0.681,
+				"p50Ms": 0.633,
+				"p99Ms": 1.41,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 91506,
+				"avgMs": 0.698,
+				"p50Ms": 0.656,
+				"p99Ms": 1.391,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 102361,
+				"avgMs": 0.623,
+				"p50Ms": 0.579,
+				"p99Ms": 1.302,
+				"successRate": 1.0
+			},
+			"rssMb": 45
+		},
+		{
+			"framework": "Elysia",
+			"runtime": "bun",
+			"version": "1.4.32",
+			"json": {
+				"rps": 102619,
+				"avgMs": 0.622,
+				"p50Ms": 0.567,
+				"p99Ms": 1.401,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 103302,
+				"avgMs": 0.618,
+				"p50Ms": 0.577,
+				"p99Ms": 1.263,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 102927,
+				"avgMs": 0.62,
+				"p50Ms": 0.551,
+				"p99Ms": 1.599,
+				"successRate": 1.0
+			},
+			"rssMb": 57.6
+		},
+		{
+			"framework": "Express",
+			"runtime": "bun",
+			"version": "5.3.0",
+			"json": {
+				"rps": 51274,
+				"avgMs": 1.246,
+				"p50Ms": 1.137,
+				"p99Ms": 2.576,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 50566,
+				"avgMs": 1.264,
+				"p50Ms": 1.155,
+				"p99Ms": 2.644,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 55437,
+				"avgMs": 1.152,
+				"p50Ms": 1.064,
+				"p99Ms": 2.277,
+				"successRate": 1.0
+			},
+			"rssMb": 115.3
+		},
+		{
+			"framework": "Fastify",
+			"runtime": "bun",
+			"version": "5.12.8",
+			"json": {
+				"rps": 68733,
+				"avgMs": 0.929,
+				"p50Ms": 0.874,
+				"p99Ms": 1.821,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 68117,
+				"avgMs": 0.938,
+				"p50Ms": 0.878,
+				"p99Ms": 1.841,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 70094,
+				"avgMs": 0.911,
+				"p50Ms": 0.851,
+				"p99Ms": 1.808,
+				"successRate": 1.0
+			},
+			"rssMb": 98
+		},
+		{
+			"framework": "Koa",
+			"runtime": "bun",
+			"version": "3.3.0",
+			"json": {
+				"rps": 49731,
+				"avgMs": 1.285,
+				"p50Ms": 1.176,
+				"p99Ms": 2.613,
+				"successRate": 1.0
+			},
+			"param": {
+				"rps": 49027,
+				"avgMs": 1.303,
+				"p50Ms": 1.201,
+				"p99Ms": 2.587,
+				"successRate": 1.0
+			},
+			"plaintext": {
+				"rps": 51353,
+				"avgMs": 1.244,
+				"p50Ms": 1.14,
+				"p99Ms": 2.533,
+				"successRate": 1.0
+			},
+			"rssMb": 106.1
+		}
+	],
+	"excluded": []
+}

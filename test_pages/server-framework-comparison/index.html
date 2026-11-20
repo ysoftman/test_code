@@ -1,0 +1,2298 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server Framework Comparison</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <style>
+      /* python-toolchain 페이지와 같은 체계: 읽기용 한 단, 표와 차트만 자체 스크롤 */
+      :root {
+        --bg: #f4f5f7;
+        --surface: #ffffff;
+        --ink: #15181d;
+        --ink-2: #474e5b;
+        --muted: #646b78;
+        --line: #e0e3e8;
+        --axis: #c6cad2;
+        --code-bg: #eceef2;
+        --c-link: #2a78d6;
+        --c-node: #1baf7a;
+        --c-bun: #eb6834;
+        --c-other: #9aa0ab;
+        --chip-bg: #fdeee6;
+        --chip-ink: #9a3a12;
+        --f-display:
+          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+        --f-body:
+          "IBM Plex Sans KR", -apple-system, "Apple SD Gothic Neo",
+          "Noto Sans KR", system-ui, sans-serif;
+        --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #111317;
+          --surface: #191c21;
+          --ink: #eceef2;
+          --ink-2: #b8bec9;
+          --muted: #8a909c;
+          --line: #2a2f37;
+          --axis: #3a404a;
+          --code-bg: #22262d;
+          --c-link: #6aa6ee;
+          --c-node: #199e70;
+          --c-bun: #d95926;
+          --c-other: #6b717d;
+          --chip-bg: #3a2216;
+          --chip-ink: #f3a57f;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #111317;
+        --surface: #191c21;
+        --ink: #eceef2;
+        --ink-2: #b8bec9;
+        --muted: #8a909c;
+        --line: #2a2f37;
+        --axis: #3a404a;
+        --code-bg: #22262d;
+        --c-link: #6aa6ee;
+        --c-node: #199e70;
+        --c-bun: #d95926;
+        --c-other: #6b717d;
+        --chip-bg: #3a2216;
+        --chip-ink: #f3a57f;
+        color-scheme: dark;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--f-body);
+        font-size: 16px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      .page {
+        max-width: 880px;
+        margin: 0 auto;
+        padding-block: 32px 96px;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        display: grid;
+        gap: 72px;
+      }
+      section {
+        display: grid;
+        gap: 20px;
+        min-width: 0;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        text-wrap: balance;
+      }
+      p {
+        margin: 0;
+        max-width: 66ch;
+      }
+      code {
+        font-family: var(--f-mono);
+        font-size: 0.86em;
+        background: var(--code-bg);
+        padding: 0.1em 0.38em;
+        border-radius: 4px;
+        overflow-wrap: anywhere;
+      }
+      a {
+        color: var(--c-link);
+        overflow-wrap: anywhere;
+      }
+      :focus-visible {
+        outline: 2px solid var(--c-link);
+        outline-offset: 2px;
+      }
+
+      /* navbar */
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner {
+        max-width: 880px;
+        min-height: 56px;
+        margin: 0 auto;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 6px 12px;
+        padding-block: 8px;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        white-space: nowrap;
+        min-width: 0;
+      }
+      .nav-back {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .nav-back:hover {
+        color: var(--ink);
+      }
+      .nav-sep {
+        color: var(--axis);
+      }
+      .nav-title {
+        font-family: var(--f-mono);
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        min-width: 0;
+      }
+      .section-nav {
+        display: flex;
+        gap: 4px;
+        min-width: 0;
+      }
+      .section-nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 11px;
+        border-radius: 7px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      .section-nav a:hover {
+        background: var(--code-bg);
+        color: var(--ink);
+      }
+      .theme-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--muted);
+        font: inherit;
+        font-size: 13px;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .theme-btn:hover {
+        border-color: var(--muted);
+        color: var(--ink);
+      }
+      section[id],
+      article[id] {
+        scroll-margin-top: 72px;
+      }
+
+      /* header */
+      .page > header {
+        display: grid;
+        gap: 20px;
+      }
+      .eyebrow {
+        font-family: var(--f-mono);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      h1 {
+        font-family: var(--f-display);
+        font-weight: 800;
+        font-size: clamp(32px, 7vw, 60px);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+      }
+      h1 .prompt {
+        color: var(--muted);
+        font-weight: 400;
+        margin-right: 0.25em;
+      }
+      .lede {
+        font-size: 19px;
+        line-height: 1.65;
+        color: var(--ink-2);
+        max-width: 60ch;
+      }
+      .lede strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+        font-family: var(--f-mono);
+        font-size: 12.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+      }
+      .meta b {
+        color: var(--ink-2);
+        font-weight: 600;
+      }
+
+      h2 {
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+      }
+      h2 small {
+        display: block;
+        font-family: var(--f-mono);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      h3 {
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      h4 {
+        font-family: var(--f-mono);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+      .note {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .callout {
+        max-width: none;
+        font-size: 14.5px;
+        color: var(--ink);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--c-bun);
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+
+      /* tables */
+      .scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      tr:last-child > * {
+        border-bottom: 0;
+      }
+      thead th {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        background: var(--bg);
+        white-space: nowrap;
+      }
+      thead tr:not(:last-child) > th {
+        border-bottom: 1px solid var(--line);
+      }
+      tbody th {
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .matrix {
+        min-width: 1120px;
+      }
+      .matrix td code {
+        font-size: 12.5px;
+      }
+      .matrix td small {
+        display: block;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .chip {
+        display: inline-block;
+        margin-left: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 1px 7px;
+        border-radius: 999px;
+        background: var(--chip-bg);
+        color: var(--chip-ink);
+        vertical-align: 1px;
+        white-space: nowrap;
+      }
+      .num {
+        font-family: var(--f-mono);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      td.num,
+      th.num {
+        text-align: right;
+      }
+
+      /* framework cards */
+      .cards {
+        display: grid;
+        gap: 20px;
+      }
+      .fw {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 22px;
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+      }
+      .fw-name {
+        font-family: var(--f-display);
+        font-weight: 800;
+        font-size: 22px;
+      }
+      .fw-sum {
+        color: var(--ink-2);
+      }
+      .fw .meta {
+        border-top: 0;
+        padding-top: 0;
+      }
+      .fw ul {
+        margin: 0;
+        padding-left: 1.1em;
+        font-size: 14.5px;
+        color: var(--ink-2);
+        display: grid;
+        gap: 4px;
+      }
+      .fw-block {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+        align-content: start;
+      }
+      .two {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .fw-fit {
+        font-size: 14.5px;
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+        max-width: none;
+      }
+      .fw-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .fw-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 12px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        font-size: 13.5px;
+        font-weight: 500;
+        text-decoration: none;
+      }
+      .fw-links a:hover {
+        border-color: var(--c-link);
+      }
+
+      #bench-body {
+        display: grid;
+        gap: 32px;
+        min-width: 0;
+      }
+
+      /* charts */
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        font-size: 13.5px;
+        color: var(--ink-2);
+      }
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .legend i {
+        width: 14px;
+        height: 10px;
+        border-radius: 0 3px 3px 0;
+        display: inline-block;
+      }
+      .charts {
+        display: grid;
+        gap: 20px;
+      }
+      .chart {
+        margin: 0;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 22px 22px 18px;
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+      }
+      .chart-head {
+        display: grid;
+        gap: 4px;
+      }
+      .chart-head p {
+        font-size: 14px;
+        color: var(--ink-2);
+      }
+      .group {
+        display: grid;
+        gap: 6px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 11rem minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+      }
+      .row-label {
+        font-size: 13.5px;
+        color: var(--ink);
+        line-height: 1.35;
+        min-width: 0;
+      }
+      .row-label .rt {
+        color: var(--muted);
+        font-size: 12px;
+        font-family: var(--f-mono);
+        white-space: nowrap;
+      }
+      .track {
+        position: relative;
+        height: 28px;
+      }
+      .grid-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: var(--line);
+      }
+      .bar-wrap {
+        position: absolute;
+        left: 0;
+        top: 6px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+      }
+      .bar {
+        height: 16px;
+        border-radius: 0 4px 4px 0;
+        min-width: 2px;
+        flex: none;
+      }
+      .node {
+        background-color: var(--c-node);
+      }
+      .bun {
+        background-color: var(--c-bun);
+      }
+      .other {
+        background-color: var(--c-other);
+      }
+      .baseline {
+        background-image: repeating-linear-gradient(
+          135deg,
+          transparent 0 4px,
+          var(--surface) 4px 6px
+        );
+      }
+      .val {
+        font-family: var(--f-mono);
+        font-size: 12.5px;
+        font-variant-numeric: tabular-nums;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .axis {
+        display: grid;
+        grid-template-columns: 11rem minmax(0, 1fr);
+        gap: 12px;
+      }
+      .axis-ticks {
+        position: relative;
+        height: 18px;
+        border-top: 1px solid var(--axis);
+      }
+      .axis-ticks span {
+        position: absolute;
+        top: 3px;
+        transform: translateX(-50%);
+        font-family: var(--f-mono);
+        font-size: 11px;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .axis-ticks span:first-child {
+        transform: none;
+      }
+
+      .links {
+        margin: 0;
+        padding-left: 1.1em;
+        font-size: 14.5px;
+        color: var(--ink-2);
+        display: grid;
+        gap: 6px;
+      }
+      .source {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px 20px;
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+      }
+      .source p,
+      .source li {
+        font-size: 14.5px;
+        color: var(--ink-2);
+        max-width: none;
+      }
+      .source .scroll {
+        border-radius: 8px;
+      }
+
+      footer {
+        font-size: 13px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+      }
+
+      @media (max-width: 720px) {
+        .nav-actions {
+          width: 100%;
+          gap: 8px;
+          justify-content: space-between;
+        }
+        .section-nav {
+          flex: 1;
+          overflow-x: auto;
+        }
+        .section-nav a {
+          min-height: 32px;
+          padding: 0 9px;
+        }
+        section[id],
+        article[id] {
+          scroll-margin-top: 104px;
+        }
+        .two {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .row,
+        .axis {
+          grid-template-columns: 6.5rem minmax(0, 1fr);
+          gap: 8px;
+        }
+        .chart,
+        .fw {
+          padding: 18px 14px 14px;
+        }
+        .page {
+          gap: 56px;
+          padding-block: 32px 72px;
+        }
+        .lede {
+          font-size: 17px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_pages</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">server frameworks</span>
+        </div>
+        <div class="nav-actions">
+          <nav class="section-nav" aria-label="Sections">
+            <a href="#matrix">비교표</a>
+            <a href="#frameworks">프레임워크</a>
+            <a href="#bench">벤치마크</a>
+            <a href="#public">공개 벤치마크</a>
+            <a href="#guide">선택 가이드</a>
+            <a href="#refs">참고</a>
+          </nav>
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span aria-hidden="true">◐</span>
+            <span id="theme-text">Theme</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="page">
+      <header>
+        <div class="eyebrow">JS/TS 서버 프레임워크 정리 · 2026-11-20</div>
+        <h1><span class="prompt">$</span>Server Framework Comparison</h1>
+        <p class="lede">
+          <strong>Express · Fastify · Hono · Koa · Elysia · NestJS</strong>의
+          특징과 장단점을 한 표로 비교하고, 이 머신에서 직접 잰 HTTP 처리량을
+          함께 싣습니다.
+        </p>
+        <div class="meta">
+          <span>버전·stars·다운로드 조회 기준일 <b>2026-11-20</b></span>
+          <span>버전은 <b>최신 안정 버전</b> 기준</span>
+          <span>npm 주간 다운로드 <b>2026-11-12 ~ 11-18</b></span>
+        </div>
+      </header>
+
+      <section id="matrix">
+        <h2><small>01 · 한눈에</small>비교표</h2>
+        <p>
+          버전은 npm <code>latest</code> 태그의 최신 안정 버전입니다. Fastify 6,
+          Hono 5, Elysia 2는 아직 pre-release 단계라 표의 내용은 현재 안정
+          메이저를 기준으로 합니다. 좁은 화면에서는 표를 가로로 스크롤할 수
+          있습니다.
+        </p>
+        <div class="scroll" tabindex="0" role="region" aria-label="비교표">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th scope="col">항목</th>
+                <th scope="col">Express</th>
+                <th scope="col">Fastify</th>
+                <th scope="col">Hono</th>
+                <th scope="col">Koa</th>
+                <th scope="col">Elysia</th>
+                <th scope="col">NestJS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">최신 안정 버전</th>
+                <td><span class="num">5.3.0</span><small>2026-10-09</small></td>
+                <td>
+                  <span class="num">5.12.8</span><small>2026-11-02</small>
+                </td>
+                <td>
+                  <span class="num">4.13.19</span><small>2026-11-16</small>
+                </td>
+                <td><span class="num">3.3.0</span><small>2026-11-03</small></td>
+                <td>
+                  <span class="num">1.4.32</span><small>2026-11-11</small>
+                </td>
+                <td>
+                  <span class="num">12.5.1</span
+                  ><small>2026-11-16 · <code>@nestjs/core</code></small>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">차기 메이저</th>
+                <td>없음</td>
+                <td>
+                  6.0.0-alpha.6<small>npm <code>next</code></small>
+                </td>
+                <td>
+                  5.0.0-rc.1<small>npm <code>next</code></small>
+                </td>
+                <td>없음 (확인 범위)</td>
+                <td>
+                  2.0.0-rc.3<small>npm <code>rc</code></small>
+                </td>
+                <td>없음 (확인 범위)</td>
+              </tr>
+              <tr>
+                <th scope="row">최초 공개</th>
+                <td>2010-12<small>저장소 2009-06</small></td>
+                <td>2016-10<small>저장소 2016-09</small></td>
+                <td>2021-12<small>저장소 2021-12</small></td>
+                <td>2013-11<small>저장소 2013-07</small></td>
+                <td>2022-12<small>저장소 2022-12</small></td>
+                <td>2017-05<small>저장소 2017-02</small></td>
+              </tr>
+              <tr>
+                <th scope="row">런타임</th>
+                <td>Node.js (&gt;=18)</td>
+                <td>Node.js (공식 사이트 “Node.js 20+”)</td>
+                <td>
+                  Cloudflare Workers, Deno, Bun, Fastly, AWS Lambda, Node.js,
+                  Vercel, WASM 등
+                </td>
+                <td>Node.js (&gt;=18)</td>
+                <td>
+                  Bun 최적화 + Node.js, Deno, Cloudflare Workers, Vercel 등
+                  <small>Node는 <code>@elysia/node</code> 어댑터</small>
+                </td>
+                <td>Node.js (&gt;=20.19 또는 &gt;=22.12)</td>
+              </tr>
+              <tr>
+                <th scope="row">Web 표준 기반</th>
+                <td>
+                  아니오<small>Node <code>http</code></small>
+                </td>
+                <td>
+                  아니오<small>Node <code>http</code></small>
+                </td>
+                <td>예<small>Fetch API만 사용</small></td>
+                <td>
+                  아니오<small
+                    >Node <code>http</code>, 3.0부터 WHATWG 응답 body
+                    지원</small
+                  >
+                </td>
+                <td>예<small>WinterTC 준수</small></td>
+                <td>아니오<small>Express/Fastify 어댑터 위 추상화</small></td>
+              </tr>
+              <tr>
+                <th scope="row">라우터</th>
+                <td>
+                  <code>path-to-regexp</code> 8.x 기반
+                  <small><code>router</code> 패키지</small>
+                </td>
+                <td><code>find-my-way</code></td>
+                <td>
+                  RegExpRouter, TrieRouter, SmartRouter, LinearRouter,
+                  PatternRouter
+                  <small>기본 SmartRouter = RegExp + Trie</small>
+                </td>
+                <td>
+                  코어에 없음<small><code>@koa/router</code> 등 별도</small>
+                </td>
+                <td><code>memoirist</code></td>
+                <td>
+                  하부 어댑터의 라우터<small>Express 기본, Fastify 선택</small>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">미들웨어 모델</th>
+                <td>connect 스타일 <code>(req, res, next)</code></td>
+                <td>hook + plugin + decorator, 캡슐화</td>
+                <td>onion <code>(c, next)</code> + 내장/서드파티 미들웨어</td>
+                <td>onion (async 함수 cascade, <code>koa-compose</code>)</td>
+                <td>lifecycle hook + plugin + macro</td>
+                <td>모듈 + DI + 데코레이터 (Guard/Pipe/Interceptor/Filter)</td>
+              </tr>
+              <tr>
+                <th scope="row">TypeScript</th>
+                <td><code>@types/express</code> 별도</td>
+                <td>타입 내장, TypeBox 등 type provider</td>
+                <td>내장, RPC 클라이언트 <code>hc</code></td>
+                <td><code>@types/koa</code> 별도</td>
+                <td>내장, 엔드투엔드 추론 + Eden 클라이언트</td>
+                <td>내장 (TypeScript 우선 설계), 데코레이터 기반</td>
+              </tr>
+              <tr>
+                <th scope="row">검증</th>
+                <td>내장 없음 (외부 라이브러리)</td>
+                <td>JSON Schema(ajv) 내장, TypeBox/Zod 등 type provider</td>
+                <td>validator 미들웨어 + Zod 등 연동</td>
+                <td>내장 없음</td>
+                <td>
+                  <code>t</code>(TypeBox) 내장 + Standard Schema (Zod, Valibot,
+                  ArkType 등)
+                </td>
+                <td>
+                  class-validator <code>ValidationPipe</code>, v12부터 Standard
+                  Schema
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">직렬화</th>
+                <td><code>res.json</code> (JSON.stringify)</td>
+                <td><code>fast-json-stringify</code> (응답 스키마 기반)</td>
+                <td><code>c.json</code> (JSON.stringify)</td>
+                <td><code>ctx.body</code> 객체 (JSON.stringify)</td>
+                <td>내장, <code>exact-mirror</code> 기반 정규화</td>
+                <td>어댑터 따름 + Serializer Interceptor</td>
+              </tr>
+              <tr>
+                <th scope="row">GitHub stars</th>
+                <td class="num">약 69.7k</td>
+                <td class="num">약 37.5k</td>
+                <td class="num">약 33.0k</td>
+                <td class="num">약 35.7k</td>
+                <td class="num">약 19.4k</td>
+                <td class="num">약 77.1k</td>
+              </tr>
+              <tr>
+                <th scope="row">npm 주간 다운로드</th>
+                <td class="num">약 2억 735만</td>
+                <td class="num">약 2,400만</td>
+                <td class="num">약 1억 1,449만</td>
+                <td class="num">약 972만</td>
+                <td class="num">약 220만</td>
+                <td class="num">약 2,548만</td>
+              </tr>
+              <tr>
+                <th scope="row">직접 의존성 수</th>
+                <td class="num">28</td>
+                <td class="num">15</td>
+                <td class="num">0</td>
+                <td class="num">18</td>
+                <td class="num">4</td>
+                <td class="num">5</td>
+              </tr>
+              <tr>
+                <th scope="row">unpacked 크기</th>
+                <td class="num">약 75KB</td>
+                <td class="num">약 3.0MB</td>
+                <td class="num">약 1.3MB</td>
+                <td class="num">약 66KB</td>
+                <td class="num">약 1.2MB</td>
+                <td class="num">약 0.9MB</td>
+              </tr>
+              <tr>
+                <th scope="row">라이선스</th>
+                <td>MIT</td>
+                <td>MIT</td>
+                <td>MIT</td>
+                <td>MIT</td>
+                <td>MIT</td>
+                <td>MIT</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          stars와 다운로드 수는 2026-11-20에 조회한 대략값입니다. 다운로드 수는
+          CI 캐시와 미러의 영향을 받으므로 사용자 수가 아닙니다. NestJS의
+          다운로드·의존성·크기는 <code>@nestjs/core</code> 패키지 하나의 값이며,
+          실제로는 <code>@nestjs/common</code> 등이 함께 필요합니다. Elysia의
+          의존성 4개 외에 optional peer 의존성이 여럿 있습니다.
+        </p>
+      </section>
+
+      <section id="frameworks">
+        <h2><small>02 · 프레임워크별</small>특징과 장단점</h2>
+        <div class="cards">
+          <article class="fw" id="fw-express">
+            <h3 class="fw-name">Express</h3>
+            <p class="fw-sum">
+              Node.js의 사실상 표준인 최소주의 웹 프레임워크. 여섯 중 생태계와
+              레퍼런스가 가장 큽니다.
+            </p>
+            <div class="meta">
+              <span>최신 안정 <b>5.3.0</b> (2026-10-09)</span>
+              <span>4.x 병행 (<code>latest-4</code> 4.22.3)</span>
+              <span>stars <b>약 69.7k</b> (2026-11-20)</span>
+            </div>
+            <div class="fw-block">
+              <h4>핵심 특징</h4>
+              <ul>
+                <li>
+                  connect 스타일 <code>(req, res, next)</code> 미들웨어 체인
+                </li>
+                <li>
+                  5.x부터 async 핸들러가 reject되면 라우터가 에러로 처리
+                  (Promise 지원)
+                </li>
+                <li>
+                  라우팅을 <code>path-to-regexp</code> 8.x로 갱신하고 정규식
+                  sub-expression 패턴을 제거 (ReDoS 완화)
+                </li>
+                <li>
+                  템플릿 엔진, 정적 파일, body-parser, cors, session 등 공식
+                  미들웨어 목록 제공
+                </li>
+                <li>
+                  v5는 Node.js 18 이상. Bun에서도 동작 (Hono 문서의 언급 기준)
+                </li>
+                <li>직접 의존성 28개, 패키지 자체는 약 75KB</li>
+              </ul>
+            </div>
+            <div class="two">
+              <div class="fw-block">
+                <h4>장점</h4>
+                <ul>
+                  <li>
+                    가장 큰 생태계: npm 주간 다운로드 약 2억 건, stars 약 7만
+                  </li>
+                  <li>학습 자료와 예제를 찾기 쉬운 편 (정성적 평가)</li>
+                  <li>
+                    5.x에서 async 에러 처리가 자동화되어
+                    <code>try/catch</code> + <code>next(err)</code>
+                    보일러플레이트 감소
+                  </li>
+                  <li>
+                    미들웨어 모델이 단순해 서드파티 미들웨어 호환성이 높음
+                  </li>
+                  <li>
+                    4.x → 5.x 마이그레이션 가이드와 보안 패치 지속 (5.2.0에서
+                    CVE-2024-51999 수정)
+                  </li>
+                </ul>
+              </div>
+              <div class="fw-block">
+                <h4>단점</h4>
+                <ul>
+                  <li>
+                    검증, 스키마, 직렬화가 내장되어 있지 않아 직접 조합해야 함
+                  </li>
+                  <li>
+                    타입은 <code>@types/express</code> 별도이고, 라우트 단위
+                    타입 추론은 일반적으로 약한 편으로 평가됨
+                  </li>
+                  <li>
+                    Web 표준(Fetch) 기반이 아니어서 Workers, Deno 같은 엣지
+                    런타임에 그대로 올릴 수 없음
+                  </li>
+                  <li>
+                    공개 벤치마크에서 하위권 (<a href="#public"
+                      >fastify/benchmarks</a
+                    >
+                    2026-11-14 실행 기준 53,784 req/s)
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="fw-fit">
+              <strong>적합한 상황</strong> — 레퍼런스와 인력 수급이 중요하고
+              생태계 호환이 우선인 일반 Node.js API/서버.
+            </p>
+            <div class="fw-links">
+              <a
+                href="https://github.com/expressjs/express"
+                target="_blank"
+                rel="noopener"
+                >GitHub · expressjs/express</a
+              >
+              <a href="https://expressjs.com" target="_blank" rel="noopener"
+                >공식 문서 · expressjs.com</a
+              >
+            </div>
+          </article>
+
+          <article class="fw" id="fw-fastify">
+            <h3 class="fw-name">Fastify</h3>
+            <p class="fw-sum">
+              스키마 기반 검증·직렬화와 플러그인 캡슐화를 갖춘 저오버헤드
+              Node.js 프레임워크.
+            </p>
+            <div class="meta">
+              <span>최신 안정 <b>5.12.8</b> (2026-11-02)</span>
+              <span>차기 6.0.0-alpha.6 (pre-release)</span>
+              <span>stars <b>약 37.5k</b> (2026-11-20)</span>
+            </div>
+            <div class="fw-block">
+              <h4>핵심 특징</h4>
+              <ul>
+                <li>
+                  JSON Schema로 라우트 검증과 응답 직렬화 (<code>ajv</code>,
+                  <code>fast-json-stringify</code>)
+                </li>
+                <li>
+                  hooks / plugins / decorators와 encapsulation으로 컴포넌트 격리
+                </li>
+                <li>Pino 내장 로깅</li>
+                <li>
+                  타입 내장, TypeBox type provider로 스키마에서 핸들러 타입 추론
+                </li>
+                <li>라우터는 <code>find-my-way</code></li>
+                <li>
+                  HTTP 서버 없이 요청을 주입하는 테스트용
+                  <code>light-my-request</code> 포함
+                </li>
+              </ul>
+            </div>
+            <div class="two">
+              <div class="fw-block">
+                <h4>장점</h4>
+                <ul>
+                  <li>
+                    스키마 하나로 검증 + 직렬화 + 타입 추론(type provider)을
+                    연결할 수 있음
+                  </li>
+                  <li>플러그인 캡슐화로 대형 앱 구조화에 유리</li>
+                  <li>
+                    로깅(Pino), 테스트 inject 등 서버 개발에 필요한 요소가 기본
+                    제공
+                  </li>
+                  <li>
+                    <a href="#public">fastify/benchmarks</a>에서 Node 전용
+                    프레임워크 중 상위권 (2026-11-14: 78,696 req/s, Express
+                    53,784)
+                  </li>
+                  <li>
+                    활발한 릴리스 (5.7 ~ 5.12가 2026-01 ~ 2026-08 사이 연속
+                    릴리스)
+                  </li>
+                </ul>
+              </div>
+              <div class="fw-block">
+                <h4>단점</h4>
+                <ul>
+                  <li>
+                    Node <code>http</code> 기반이라 엣지 런타임에 그대로
+                    올리기는 일반적으로 어려움
+                  </li>
+                  <li>
+                    플러그인 캡슐화, 데코레이터, 훅 개념의 학습 비용 (Express
+                    대비)
+                  </li>
+                  <li>
+                    직접 의존성 15개, 설치 크기 약 3.0MB (여섯 중 가장 큼)
+                  </li>
+                  <li>
+                    메이저 전환 시 breaking change 존재 (5.0.0:
+                    <code>setDefaultRoute</code> 제거, variadic listen 제거, 새
+                    logger API 등)
+                  </li>
+                  <li>
+                    스키마 없이 쓰면 직렬화·검증의 이점이 일반적으로 줄어듦
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="fw-fit">
+              <strong>적합한 상황</strong> — Node.js에서 스키마 기반으로
+              고성능이고 구조화된 REST API를 만들 때.
+            </p>
+            <div class="fw-links">
+              <a
+                href="https://github.com/fastify/fastify"
+                target="_blank"
+                rel="noopener"
+                >GitHub · fastify/fastify</a
+              >
+              <a href="https://fastify.dev" target="_blank" rel="noopener"
+                >공식 문서 · fastify.dev</a
+              >
+            </div>
+          </article>
+
+          <article class="fw" id="fw-hono">
+            <h3 class="fw-name">Hono</h3>
+            <p class="fw-sum">
+              Web 표준만 사용하는 초경량 프레임워크. Cloudflare Workers, Deno,
+              Bun, Node.js에서 같은 코드가 동작합니다.
+            </p>
+            <div class="meta">
+              <span>최신 안정 <b>4.13.19</b> (2026-11-16)</span>
+              <span>차기 5.0.0-rc.1 (pre-release)</span>
+              <span>stars <b>약 33.0k</b> (2026-11-20)</span>
+            </div>
+            <div class="fw-block">
+              <h4>핵심 특징</h4>
+              <ul>
+                <li>Fetch API(Request/Response)만 사용</li>
+                <li>
+                  라우터 5종: RegExpRouter(전체 라우트를 하나의 정규식으로),
+                  TrieRouter, SmartRouter(기본, RegExp + Trie 중 선택),
+                  LinearRouter(콜드스타트용), PatternRouter(최소 크기)
+                </li>
+                <li>
+                  <code>hono/tiny</code> 프리셋은 14kB 미만 (공식 홈 문구)
+                </li>
+                <li>직접 의존성 0</li>
+                <li>
+                  내장 미들웨어(CORS, JWT, Logger, Compress, ETag, Secure
+                  Headers 등)와 헬퍼, JSX, RPC(<code>hc</code>)
+                </li>
+                <li>Node.js에서는 별도 어댑터를 사용</li>
+              </ul>
+            </div>
+            <div class="two">
+              <div class="fw-block">
+                <h4>장점</h4>
+                <ul>
+                  <li>
+                    멀티 런타임: Cloudflare Workers, Deno, Bun, Fastly, AWS
+                    Lambda, Node.js, Vercel, WASM
+                  </li>
+                  <li>의존성 0, 작은 번들</li>
+                  <li>
+                    내장 미들웨어가 풍부 (공식 홈 문구 “batteries included”)
+                  </li>
+                  <li>타입 추론과 RPC 클라이언트 <code>hc</code> 제공</li>
+                  <li>활발한 릴리스 (4.13.x가 2026-10 ~ 11에 연속 릴리스)</li>
+                </ul>
+              </div>
+              <div class="fw-block">
+                <h4>단점</h4>
+                <ul>
+                  <li>
+                    Node.js에서는 어댑터를 거치므로 Node 네이티브 프레임워크
+                    대비 이점이 줄 수 있음 (<a href="#public"
+                      >fastify/benchmarks</a
+                    >
+                    2026-11-14: Hono 74,163, Fastify 78,696 req/s)
+                  </li>
+                  <li>
+                    5.0이 RC 단계이고 breaking change 예고: ESM only, 런타임
+                    어댑터를 <code>@hono/*</code> 패키지로 분리,
+                    <code>onError</code> 시그니처 변경 등
+                  </li>
+                  <li>
+                    검증은 validator 미들웨어에 Zod 등 외부 라이브러리를
+                    연동하는 방식
+                  </li>
+                  <li>
+                    DI 같은 대규모 앱 구조화 기능은 제공하지 않음 (설계 철학상
+                    최소)
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="fw-fit">
+              <strong>적합한 상황</strong> — 엣지/서버리스/멀티 런타임 배포,
+              가볍고 이식성 높은 API.
+            </p>
+            <div class="fw-links">
+              <a
+                href="https://github.com/honojs/hono"
+                target="_blank"
+                rel="noopener"
+                >GitHub · honojs/hono</a
+              >
+              <a href="https://hono.dev" target="_blank" rel="noopener"
+                >공식 문서 · hono.dev</a
+              >
+            </div>
+          </article>
+
+          <article class="fw" id="fw-koa">
+            <h3 class="fw-name">Koa</h3>
+            <p class="fw-sum">
+              Express 팀이 만든, 더 작고 표현력 높은 async 미들웨어 코어.
+              라우터와 바디 파서 등은 번들하지 않습니다.
+            </p>
+            <div class="meta">
+              <span>최신 안정 <b>3.3.0</b> (2026-11-03)</span>
+              <span>2.x 병행 (<code>latest-2</code> 2.16.4)</span>
+              <span>stars <b>약 35.7k</b> (2026-11-20)</span>
+            </div>
+            <div class="fw-block">
+              <h4>핵심 특징</h4>
+              <ul>
+                <li>async 함수 기반, 콜백 제거로 에러 처리 개선</li>
+                <li>
+                  코어에 미들웨어를 번들하지 않고, 미들웨어를 스택처럼 cascade
+                  (onion)
+                </li>
+                <li>
+                  <code>ctx</code>(context)가 req/res를 감싸고 content
+                  negotiation, 캐시 freshness, redirect 같은 sugar 제공
+                </li>
+                <li>
+                  3.0: Node 18 이상, generator 지원 제거, WHATWG 응답 body 지원,
+                  <code>app.currentContext</code>(AsyncLocalStorage) 추가
+                </li>
+              </ul>
+            </div>
+            <div class="two">
+              <div class="fw-block">
+                <h4>장점</h4>
+                <ul>
+                  <li>
+                    코어가 작고(unpacked 약 66KB) 개념이 단순 (<code>ctx</code>
+                    + async 미들웨어)
+                  </li>
+                  <li>onion 모델로 요청 전/후 처리를 하나의 함수에서 표현</li>
+                  <li>3.x에서 AsyncLocalStorage 기반 현재 context 접근 지원</li>
+                  <li>Express 대비 에러 전파가 async/await 중심으로 일관됨</li>
+                  <li>필요한 것만 골라 붙이는 구성 자유도</li>
+                </ul>
+              </div>
+              <div class="fw-block">
+                <h4>단점</h4>
+                <ul>
+                  <li>
+                    라우터, 바디 파싱, 정적 서빙이 모두 별도 패키지라 조합과
+                    선택 비용 발생
+                  </li>
+                  <li>
+                    내장 검증/스키마/OpenAPI 없음, 타입은
+                    <code>@types/koa</code> 별도
+                  </li>
+                  <li>
+                    공개 벤치마크에서 Fastify, Hono보다 낮음 (<a href="#public"
+                      >fastify/benchmarks</a
+                    >
+                    2026-11-14: Koa 57,570 req/s, koa-router 포함 시 52,548)
+                  </li>
+                  <li>
+                    3.0 breaking change: <code>ctx.throw</code> 시그니처 변경,
+                    <code>redirect('back')</code> 제거, 특수 ENOENT 처리 제거 등
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="fw-fit">
+              <strong>적합한 상황</strong> — 프레임워크를 최소로 두고 미들웨어를
+              직접 조립하려는 소규모 서비스.
+            </p>
+            <div class="fw-links">
+              <a
+                href="https://github.com/koajs/koa"
+                target="_blank"
+                rel="noopener"
+                >GitHub · koajs/koa</a
+              >
+              <a href="https://koajs.com" target="_blank" rel="noopener"
+                >공식 문서 · koajs.com</a
+              >
+            </div>
+          </article>
+
+          <article class="fw" id="fw-elysia">
+            <h3 class="fw-name">Elysia</h3>
+            <p class="fw-sum">
+              Bun에 최적화된 프레임워크. 엔드투엔드 타입 안전성과 인체공학적
+              API를 앞세웁니다.
+            </p>
+            <div class="meta">
+              <span>최신 안정 <b>1.4.32</b> (2026-11-11)</span>
+              <span>차기 2.0.0-rc.3 (pre-release)</span>
+              <span>stars <b>약 19.4k</b> (2026-11-20)</span>
+            </div>
+            <div class="fw-block">
+              <h4>핵심 특징</h4>
+              <ul>
+                <li>
+                  코드에서 타입을 자동 추론하고, <code>Elysia.t</code>(TypeBox
+                  기반) 스키마가 런타임과 컴파일 타임의 단일 소스
+                </li>
+                <li>
+                  Standard Schema 지원: Zod, Valibot, ArkType, Effect Schema,
+                  Yup, Joi 등
+                </li>
+                <li>
+                  <code>@elysia/openapi</code> 플러그인으로 OpenAPI 적용,
+                  타입에서 OpenAPI 생성도 지원
+                </li>
+                <li>
+                  Eden Treaty(<code>@elysia/eden</code>)로 서버 타입을 코드 생성
+                  없이 클라이언트에서 사용
+                </li>
+                <li>
+                  WinterTC 준수. Bun, Node.js, Deno, Cloudflare Workers, Vercel
+                  등에 배포 (Node는 <code>@elysia/node</code> 어댑터 필요)
+                </li>
+              </ul>
+            </div>
+            <div class="two">
+              <div class="fw-block">
+                <h4>장점</h4>
+                <ul>
+                  <li>
+                    라우트 → 스키마 → 클라이언트로 이어지는 엔드투엔드 타입 추론
+                    (Eden)
+                  </li>
+                  <li>
+                    직접 의존성 4개 (cookie, exact-mirror,
+                    fast-decode-uri-component, memoirist)
+                  </li>
+                  <li>
+                    Standard Schema 지원으로 검증 라이브러리 선택이 자유로움
+                  </li>
+                  <li>lifecycle hook, macro, plugin으로 횡단 관심사 재사용</li>
+                  <li>
+                    Bun 환경에서 상위권이라는 벤치마크를 공식 문서가 제시 (<a
+                      href="#public"
+                      >벤더 자체 주장</a
+                    >)
+                  </li>
+                </ul>
+              </div>
+              <div class="fw-block">
+                <h4>단점</h4>
+                <ul>
+                  <li>
+                    생태계와 커뮤니티 규모가 작음 (stars 약 1.9만, npm 주간 약
+                    220만으로 여섯 중 최저)
+                  </li>
+                  <li>
+                    최고 성능과 기능은 Bun 전제. Node에서는 어댑터를 거치며,
+                    <a href="#public">fastify/benchmarks</a>(Node,
+                    2026-11-14)에서 68,231 req/s로 Fastify, Hono보다 낮음
+                  </li>
+                  <li>
+                    2.0이 beta/rc 단계이고 “전체 재작성”이라 1.x 사용자는 이행
+                    비용이 생길 수 있음
+                  </li>
+                  <li>
+                    peerDependencies에 <code>@types/bun</code>,
+                    <code>@sinclair/typebox</code>,
+                    <code>openapi-types</code> 등이 있어 구성이 Bun 중심
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="fw-fit">
+              <strong>적합한 상황</strong> — Bun 기반 신규 프로젝트, 프런트와
+              타입을 공유하는 풀스택 TypeScript.
+            </p>
+            <div class="fw-links">
+              <a
+                href="https://github.com/elysiajs/elysia"
+                target="_blank"
+                rel="noopener"
+                >GitHub · elysiajs/elysia</a
+              >
+              <a href="https://elysiajs.com" target="_blank" rel="noopener"
+                >공식 문서 · elysiajs.com</a
+              >
+            </div>
+          </article>
+
+          <article class="fw" id="fw-nestjs">
+            <h3 class="fw-name">NestJS</h3>
+            <p class="fw-sum">
+              모듈, DI, 데코레이터로 서버 앱을 구조화하는 TypeScript 프레임워크.
+              내부 HTTP 서버는 Express(기본) 또는 Fastify입니다.
+            </p>
+            <div class="meta">
+              <span
+                >최신 안정 <b>12.5.1</b> (2026-11-16,
+                <code>@nestjs/core</code>)</span
+              >
+              <span>11.x 병행 (<code>legacy</code> 11.2.11)</span>
+              <span>stars <b>약 77.1k</b> (2026-11-20)</span>
+            </div>
+            <div class="fw-block">
+              <h4>핵심 특징</h4>
+              <ul>
+                <li>모듈, 의존성 주입, 데코레이터, 마이크로서비스 지원</li>
+                <li>
+                  HTTP 어댑터: Express(기본), 선택적으로 Fastify 또는
+                  <code>node:http</code>
+                </li>
+                <li>
+                  v12(2026-08-27): ESM 패키지, Standard Schema 검증/직렬화, CLI
+                  재작성, <code>@nestjs/observe</code>
+                </li>
+                <li>v12는 Node.js 20.19+ 또는 22.12+ 필요</li>
+                <li>
+                  v11(2025-01-16): Express v5, Fastify v5로 업그레이드, Node
+                  16/18 지원 중단
+                </li>
+              </ul>
+            </div>
+            <div class="two">
+              <div class="fw-block">
+                <h4>장점</h4>
+                <ul>
+                  <li>
+                    구조(모듈/DI/Guard/Pipe/Interceptor)가 정해져 있어 대규모,
+                    다인원 팀에서 일관성 확보
+                  </li>
+                  <li>
+                    마이크로서비스, WebSocket, GraphQL 등 확장 패키지를 공식
+                    제공
+                  </li>
+                  <li>어댑터 방식이라 Express ↔ Fastify 전환 가능</li>
+                  <li>
+                    12.x에서 Standard Schema 지원으로 Zod, Valibot, ArkType 사용
+                    가능 (class-validator도 계속 지원)
+                  </li>
+                </ul>
+              </div>
+              <div class="fw-block">
+                <h4>단점</h4>
+                <ul>
+                  <li>
+                    하부 어댑터 위의 추상화 레이어라 순수 프레임워크 대비
+                    오버헤드와 학습 곡선이 있음
+                  </li>
+                  <li>
+                    데코레이터 + <code>reflect-metadata</code> 의존, 요구하는
+                    Node 버전이 높음
+                  </li>
+                  <li>
+                    메이저가 빠르게 바뀜: 11.0.0(2025-01) → 12.0.0(2026-08), 11
+                    계열은 <code>legacy</code> 태그로 이동
+                  </li>
+                  <li>
+                    Web 표준/엣지 런타임 직접 지원은 목표가 아님 (Node.js 기반)
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="fw-fit">
+              <strong>적합한 상황</strong> — 엔터프라이즈 백엔드, 여러 팀이 같은
+              구조를 공유해야 하는 대규모 서비스.
+            </p>
+            <div class="fw-links">
+              <a
+                href="https://github.com/nestjs/nest"
+                target="_blank"
+                rel="noopener"
+                >GitHub · nestjs/nest</a
+              >
+              <a href="https://docs.nestjs.com" target="_blank" rel="noopener"
+                >공식 문서 · docs.nestjs.com</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="bench">
+        <h2><small>03 · 실측</small>벤치마크</h2>
+        <p class="callout">
+          이 머신 한 대에서 잰 단순 hello-world 급 측정입니다. 프레임워크가 요청
+          하나에 얹는 오버헤드만 보여 주며, 실제 서비스 성능은 DB와 비즈니스
+          로직이 지배합니다. 순위를 그대로 서비스 성능으로 읽지 마세요.
+        </p>
+        <p>
+          <a href="https://github.com/hatoo/oha" target="_blank" rel="noopener"
+            >oha</a
+          >로 loopback(<code>127.0.0.1</code>)의 서버 프로세스 하나에 부하를
+          걸었습니다. 서버마다 같은 8개 라우트를 등록하고, 응답 본문과 상태
+          코드가 기대값과 같은지 확인한 뒤, 시나리오마다 2초 워밍업 후 본 측정을
+          했습니다. 조합은 하나씩 차례로 실행했고
+          <code>NODE_ENV=production</code>으로 띄웠습니다. Fastify는 응답 스키마
+          없이, Koa는 <code>@koa/router</code>와 함께, Node.js의 Hono는
+          <code>@hono/node-server</code>로 측정했습니다.
+          <code>node:http</code>와 <code>Bun.serve</code>는 프레임워크 없이
+          런타임 내장 서버만 쓴 기준선입니다.
+        </p>
+        <p class="note">
+          NestJS는 실측 대상이 아닙니다. Express 또는 Fastify 어댑터 위에서
+          동작하는 구조라 이번 측정 스크립트에는 넣지 않았습니다.
+        </p>
+        <p class="note" id="bench-status" role="status">
+          results.json 을 불러오는 중입니다.
+        </p>
+
+        <div id="bench-body" hidden>
+          <section aria-label="측정 환경">
+            <h3>측정 환경</h3>
+            <div class="meta" id="bench-env"></div>
+          </section>
+
+          <section aria-label="처리량">
+            <h3>시나리오별 처리량 (req/s, 클수록 좋음)</h3>
+            <div class="legend" role="group" aria-label="범례">
+              <span><i class="node"></i>Node.js에서 실행</span>
+              <span><i class="bun"></i>Bun에서 실행</span>
+              <span
+                ><i class="other baseline"></i>빗금 = 런타임 내장 서버
+                (기준선)</span
+              >
+            </div>
+            <p class="note">
+              막대 색과 함께 각 행의 이름 아래에 런타임을 글자로 적었습니다.
+              차트마다 가로축 눈금이 다릅니다.
+            </p>
+            <div class="charts" id="charts"></div>
+          </section>
+
+          <section aria-label="지연과 메모리">
+            <h3>지연과 메모리</h3>
+            <div
+              class="scroll"
+              tabindex="0"
+              role="region"
+              aria-label="지연과 메모리 표"
+            >
+              <table id="latency">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="note">
+              지연은 ms 단위이고 작을수록 좋습니다. RSS는 세 시나리오의 부하가
+              모두 끝난 직후 서버 프로세스의 상주 메모리(MB)입니다.
+            </p>
+          </section>
+
+          <section id="bench-excluded" aria-label="제외된 조합" hidden>
+            <h3>제외된 조합</h3>
+            <ul class="links" id="excluded-list"></ul>
+          </section>
+        </div>
+      </section>
+
+      <section id="public">
+        <h2><small>04 · 인용</small>공개 벤치마크 출처</h2>
+        <p>
+          아래 수치는 각 출처가 자기 환경에서 잰 값을 그대로 옮긴 것입니다.
+          머신, 런타임, 버전이 서로 다르므로 출처끼리, 또는 위의 실측치와 직접
+          비교할 수 없습니다.
+        </p>
+
+        <div class="source">
+          <h3>fastify/benchmarks<span class="chip">Fastify 팀 운영</span></h3>
+          <p>
+            <a
+              href="https://github.com/fastify/benchmarks"
+              target="_blank"
+              rel="noopener"
+              >github.com/fastify/benchmarks</a
+            >
+            · 시각화
+            <a
+              href="https://fastify.dev/benchmarks/"
+              target="_blank"
+              rel="noopener"
+              >fastify.dev/benchmarks</a
+            >
+          </p>
+          <p>
+            측정 조건 (2026-11-14 실행): linux x64, 4 vCPU, 15.6GB, Node
+            v24.22.3,
+            <code>autocannon -c 100 -d 40 -p 10 localhost:3000</code> (워밍업 +
+            측정 2라운드), 시나리오는 <code>GET /</code> →
+            <code>{hello:'world'}</code>. README는 “실제 시나리오가 아니라
+            프레임워크 오버헤드 지표”이며 GitHub Actions 가상 하드웨어라 결과가
+            흔들릴 수 있다고 밝힙니다.
+          </p>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">프레임워크</th>
+                  <th scope="col">버전</th>
+                  <th scope="col" class="num">req/s</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Fastify</th>
+                  <td class="num">5.12.8</td>
+                  <td class="num">78,696</td>
+                </tr>
+                <tr>
+                  <th scope="row">Hono</th>
+                  <td class="num">4.13.17</td>
+                  <td class="num">74,163</td>
+                </tr>
+                <tr>
+                  <th scope="row">Elysia</th>
+                  <td class="num">1.4.31</td>
+                  <td class="num">68,231</td>
+                </tr>
+                <tr>
+                  <th scope="row">Koa</th>
+                  <td class="num">3.3.0</td>
+                  <td class="num">57,570</td>
+                </tr>
+                <tr>
+                  <th scope="row">Express</th>
+                  <td class="num">5.3.0</td>
+                  <td class="num">53,784</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">
+            NestJS의 수치는 이 표에서 확인하지 못해 싣지 않았습니다.
+          </p>
+        </div>
+
+        <div class="source">
+          <h3>
+            Elysia 공식 문서 “At a glance”<span class="chip"
+              >벤더 자체 주장 · 2023 측정</span
+            >
+          </h3>
+          <p>
+            <a
+              href="https://elysiajs.com/at-glance"
+              target="_blank"
+              rel="noopener"
+              >elysiajs.com/at-glance</a
+            >
+          </p>
+          <p>
+            측정 조건 (문서 각주): query 파싱, path param, 응답 헤더 설정을
+            포함한 시나리오, Debian 11, Intel i7-13700K, Bun 0.7.2, 2023-08-06
+            측정. 3년 넘게 지난 구버전 조건이라 최신 버전 비교의 근거로는 쓸 수
+            없습니다.
+          </p>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">대상 (런타임)</th>
+                  <th scope="col" class="num">평균 req/s</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Bun 내장 서버</th>
+                  <td class="num">262,660</td>
+                </tr>
+                <tr>
+                  <th scope="row">Elysia (Bun)</th>
+                  <td class="num">255,574</td>
+                </tr>
+                <tr>
+                  <th scope="row">Hono (Bun)</th>
+                  <td class="num">203,937</td>
+                </tr>
+                <tr>
+                  <th scope="row">Fastify (Bun)</th>
+                  <td class="num">65,897</td>
+                </tr>
+                <tr>
+                  <th scope="row">Fastify (Node)</th>
+                  <td class="num">60,322</td>
+                </tr>
+                <tr>
+                  <th scope="row">Koa (Node)</th>
+                  <td class="num">39,594</td>
+                </tr>
+                <tr>
+                  <th scope="row">Express (Bun)</th>
+                  <td class="num">29,715</td>
+                </tr>
+                <tr>
+                  <th scope="row">Express (Node)</th>
+                  <td class="num">15,913</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="source">
+          <h3>
+            Hono 공식 문서 “Benchmarks”<span class="chip">벤더 자체 주장</span>
+          </h3>
+          <p>
+            <a
+              href="https://hono.dev/docs/concepts/benchmarks"
+              target="_blank"
+              rel="noopener"
+              >hono.dev/docs/concepts/benchmarks</a
+            >
+          </p>
+          <p>
+            HTTP 서버 전체가 아니라 라우터 단독 마이크로벤치마크(find-my-way,
+            koa-tree-router, express 등과 비교)와 Cloudflare Workers, Deno
+            환경의 결과입니다. 예를 들어 Cloudflare Workers(M1 Pro) 항목은 Hono
+            402,820 ops/sec, itty-router 212,598 ops/sec라고 적고 있습니다.
+            대부분 구버전에서 측정한 값입니다.
+          </p>
+        </div>
+
+        <div class="source">
+          <h3>그 밖의 참고 출처 (수치 인용 없음)</h3>
+          <ul class="links">
+            <li>
+              <a
+                href="https://www.techempower.com/benchmarks/"
+                target="_blank"
+                rel="noopener"
+                >TechEmpower Framework Benchmarks</a
+              >
+              (<a
+                href="https://github.com/TechEmpower/FrameworkBenchmarks"
+                target="_blank"
+                rel="noopener"
+                >소스</a
+              >) — 여러 언어와 프레임워크를 JSON, DB, Fortunes 등으로 비교. 여섯
+              프레임워크의 최신 라운드 수치는 확인하지 못했습니다.
+            </li>
+            <li>
+              <a
+                href="https://github.com/SaltyAom/bun-http-framework-benchmark"
+                target="_blank"
+                rel="noopener"
+                >SaltyAom/bun-http-framework-benchmark</a
+              >
+              — Bun 프레임워크 비교용. Elysia 작성자의 저장소라 벤더 성격이
+              있습니다.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="guide">
+        <h2><small>05 · 정리</small>선택 가이드</h2>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">이런 상황이면</th>
+                <th scope="col">후보</th>
+                <th scope="col">이유</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  레퍼런스와 인력 수급, 생태계 호환이 우선인 일반 Node.js 서버
+                </td>
+                <th scope="row"><a href="#fw-express">Express</a></th>
+                <td>생태계와 레퍼런스가 가장 풍부한 표준 선택지</td>
+              </tr>
+              <tr>
+                <td>Node.js에서 스키마 기반의 고성능 REST API</td>
+                <th scope="row"><a href="#fw-fastify">Fastify</a></th>
+                <td>검증·직렬화·타입을 스키마 하나로 연결, 플러그인 캡슐화</td>
+              </tr>
+              <tr>
+                <td>엣지, 서버리스, 여러 런타임에 같은 코드를 배포</td>
+                <th scope="row"><a href="#fw-hono">Hono</a></th>
+                <td>Web 표준만 사용, 의존성 0, 작은 번들</td>
+              </tr>
+              <tr>
+                <td>프레임워크를 최소로 두고 미들웨어를 직접 조립</td>
+                <th scope="row"><a href="#fw-koa">Koa</a></th>
+                <td>미니멀 코어 + async onion 미들웨어</td>
+              </tr>
+              <tr>
+                <td>Bun 기반 신규 프로젝트, 프런트와 타입 공유</td>
+                <th scope="row"><a href="#fw-elysia">Elysia</a></th>
+                <td>Bun 최적화, 엔드투엔드 타입 추론과 Eden 클라이언트</td>
+              </tr>
+              <tr>
+                <td>
+                  여러 팀이 같은 구조를 공유하는 대규모/엔터프라이즈 백엔드
+                </td>
+                <th scope="row"><a href="#fw-nestjs">NestJS</a></th>
+                <td>모듈 + DI + 데코레이터로 정해진 구조</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          Fastify 6, Hono 5, Elysia 2가 pre-release 단계이고 Hono 5와 Elysia 2는
+          breaking change를 예고했습니다. 새로 도입한다면 각 마이그레이션
+          가이드를 함께 확인하세요.
+        </p>
+      </section>
+
+      <section id="refs">
+        <h2><small>06 · 출처</small>참고 링크</h2>
+        <h3>GitHub 저장소</h3>
+        <ul class="links">
+          <li>
+            <a
+              href="https://github.com/expressjs/express"
+              target="_blank"
+              rel="noopener"
+              >github.com/expressjs/express</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/fastify/fastify"
+              target="_blank"
+              rel="noopener"
+              >github.com/fastify/fastify</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/honojs/hono"
+              target="_blank"
+              rel="noopener"
+              >github.com/honojs/hono</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/koajs/koa"
+              target="_blank"
+              rel="noopener"
+              >github.com/koajs/koa</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/elysiajs/elysia"
+              target="_blank"
+              rel="noopener"
+              >github.com/elysiajs/elysia</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/nestjs/nest"
+              target="_blank"
+              rel="noopener"
+              >github.com/nestjs/nest</a
+            >
+          </li>
+        </ul>
+        <h3>공식 사이트와 문서</h3>
+        <ul class="links">
+          <li>
+            Express —
+            <a href="https://expressjs.com" target="_blank" rel="noopener"
+              >expressjs.com</a
+            >,
+            <a
+              href="https://expressjs.com/en/blog/2025-03-31-v5-1-latest-release"
+              target="_blank"
+              rel="noopener"
+              >5.x가 npm 기본(latest)이 된 공지</a
+            >
+          </li>
+          <li>
+            Fastify —
+            <a href="https://fastify.dev" target="_blank" rel="noopener"
+              >fastify.dev</a
+            >
+          </li>
+          <li>
+            Hono —
+            <a href="https://hono.dev" target="_blank" rel="noopener"
+              >hono.dev</a
+            >,
+            <a
+              href="https://hono.dev/docs/concepts/routers"
+              target="_blank"
+              rel="noopener"
+              >Routers</a
+            >,
+            <a
+              href="https://hono.dev/docs/concepts/web-standard"
+              target="_blank"
+              rel="noopener"
+              >Web Standard</a
+            >,
+            <a
+              href="https://hono.dev/docs/guides/migrating-to-v5"
+              target="_blank"
+              rel="noopener"
+              >v5 마이그레이션 가이드</a
+            >
+          </li>
+          <li>
+            Koa —
+            <a href="https://koajs.com" target="_blank" rel="noopener"
+              >koajs.com</a
+            >
+          </li>
+          <li>
+            Elysia —
+            <a href="https://elysiajs.com" target="_blank" rel="noopener"
+              >elysiajs.com</a
+            >,
+            <a
+              href="https://elysiajs.com/integrations/node"
+              target="_blank"
+              rel="noopener"
+              >Node.js 통합</a
+            >
+          </li>
+          <li>
+            NestJS —
+            <a href="https://nestjs.com" target="_blank" rel="noopener"
+              >nestjs.com</a
+            >,
+            <a href="https://docs.nestjs.com" target="_blank" rel="noopener"
+              >docs.nestjs.com</a
+            >,
+            <a
+              href="https://docs.nestjs.com/migration-guide"
+              target="_blank"
+              rel="noopener"
+              >마이그레이션 가이드</a
+            >
+          </li>
+        </ul>
+        <h3>릴리스 노트</h3>
+        <ul class="links">
+          <li>
+            <a
+              href="https://github.com/expressjs/express/releases/tag/v5.0.0"
+              target="_blank"
+              rel="noopener"
+              >Express v5.0.0</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/fastify/fastify/releases/tag/v5.0.0"
+              target="_blank"
+              rel="noopener"
+              >Fastify v5.0.0</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/koajs/koa/releases/tag/v3.0.0"
+              target="_blank"
+              rel="noopener"
+              >Koa v3.0.0</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/nestjs/nest/releases/tag/v11.0.0"
+              target="_blank"
+              rel="noopener"
+              >NestJS v11.0.0</a
+            >,
+            <a
+              href="https://github.com/nestjs/nest/releases/tag/v12.0.0"
+              target="_blank"
+              rel="noopener"
+              >v12.0.0</a
+            >
+          </li>
+        </ul>
+        <p class="note">
+          버전, 릴리스 시기, 의존성, 크기는 npm registry에서, stars와 저장소
+          생성일은 GitHub API에서 2026-11-20에 조회했습니다.
+        </p>
+      </section>
+
+      <footer>
+        조회 기준일 2026-11-20 · 실측은 한 대의 개발용 머신에서 잰 값이라 다른
+        환경에서는 수치가 달라질 수 있습니다. · Source:
+        <a
+          href="https://github.com/ysoftman/test_code/tree/main/test_pages/server-framework-comparison"
+          target="_blank"
+          rel="noopener"
+          >github.com/ysoftman/test_code</a
+        >
+      </footer>
+    </div>
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const text = document.getElementById("theme-text");
+        const apply = (theme) => {
+          root.dataset.theme = theme;
+          text.textContent = theme === "dark" ? "Light" : "Dark";
+        };
+        apply(root.dataset.theme);
+        document.getElementById("theme-btn").addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          apply(next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch {}
+        });
+      })();
+    </script>
+    <script>
+      const RUNTIMES = { node: "Node.js", bun: "Bun" };
+      const BASELINES = new Set(["node:http", "Bun.serve"]);
+      const SCALE = 0.8; // 가장 긴 막대 오른쪽에 값 라벨이 들어갈 자리를 남긴다
+
+      const byId = (id) => document.getElementById(id);
+      const isNum = (v) => typeof v === "number" && Number.isFinite(v);
+      const fmtInt = (v) => (isNum(v) ? v.toLocaleString("ko-KR") : "—");
+      const fmtMs = (v) => (isNum(v) ? v.toFixed(3) : "—");
+      const runtimeName = (r) =>
+        RUNTIMES[r.runtime] ?? String(r.runtime ?? "?");
+
+      function el(tag, cls, text) {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text != null) e.textContent = text;
+        return e;
+      }
+      function niceStep(max) {
+        const raw = max / 4;
+        const p = Math.pow(10, Math.floor(Math.log10(raw)));
+        const m = raw / p;
+        return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
+      }
+      function barClass(r) {
+        const rt = RUNTIMES[r.runtime] ? r.runtime : "other";
+        return BASELINES.has(r.framework) ? `${rt} baseline` : rt;
+      }
+
+      function renderEnv(env) {
+        const box = byId("bench-env");
+        const add = (label, value) => {
+          if (value == null || value === "") return;
+          const s = el("span", null, `${label} `);
+          s.append(el("b", null, String(value)));
+          box.append(s);
+        };
+        const d = new Date(env.date);
+        if (!Number.isNaN(d.getTime()))
+          add(
+            "측정 일시",
+            `${d.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "medium", timeStyle: "short" })} KST`,
+          );
+        add("OS", env.os);
+        add(
+          "CPU",
+          isNum(env.cores) ? `${env.cpu} (${env.cores}코어)` : env.cpu,
+        );
+        if (isNum(env.memoryGb)) add("메모리", `${env.memoryGb} GB`);
+        add("Node.js", env.node);
+        add("Bun", env.bun);
+        add("oha", env.oha);
+        if (isNum(env.httpSecs)) add("시나리오당 부하", `${env.httpSecs}초`);
+        if (isNum(env.conns)) add("동시 연결", env.conns);
+        for (const [name, version] of Object.entries(env.packages ?? {}))
+          add(name, version);
+        if (!box.children.length)
+          box.append(
+            el("span", null, "측정 환경 정보가 results.json 에 없습니다."),
+          );
+      }
+
+      function renderChart(scenario, results) {
+        const rows = results
+          .filter((r) => isNum(r[scenario.id]?.rps))
+          .sort((a, b) => b[scenario.id].rps - a[scenario.id].rps);
+        const card = el("figure", "chart");
+        const head = el("figcaption", "chart-head");
+        head.append(el("h4", null, scenario.id));
+        head.append(el("p", null, scenario.description ?? scenario.path ?? ""));
+        card.append(head);
+        if (!rows.length || rows[0][scenario.id].rps <= 0) {
+          card.append(el("p", "note", "이 시나리오의 측정값이 없습니다."));
+          return card;
+        }
+
+        const top = rows[0][scenario.id].rps / SCALE;
+        const step = niceStep(top);
+        const ticks = [];
+        for (let v = 0; v <= top + 1e-9; v += step) ticks.push(v);
+        const pos = (v) => `${(v / top) * 100}%`;
+
+        const group = el("div", "group");
+        for (const r of rows) {
+          const rps = r[scenario.id].rps;
+          const baseline = BASELINES.has(r.framework);
+          const row = el("div", "row");
+          row.setAttribute("role", "img");
+          row.setAttribute(
+            "aria-label",
+            `${r.framework} (${runtimeName(r)}${baseline ? ", 기준선" : ""}): ${fmtInt(rps)} req/s`,
+          );
+          const label = el("div", "row-label", String(r.framework ?? "?"));
+          label.append(
+            document.createElement("br"),
+            el("span", "rt", `${runtimeName(r)}${baseline ? " · 기준선" : ""}`),
+          );
+          const track = el("div", "track");
+          for (const t of ticks.slice(1)) {
+            const line = el("div", "grid-line");
+            line.style.left = pos(t);
+            track.append(line);
+          }
+          const wrap = el("div", "bar-wrap");
+          const bar = el("div", `bar ${barClass(r)}`);
+          bar.style.width = pos(rps);
+          wrap.append(bar, el("span", "val", fmtInt(rps)));
+          track.append(wrap);
+          row.append(label, track);
+          group.append(row);
+        }
+        card.append(group);
+
+        const axis = el("div", "axis");
+        axis.setAttribute("aria-hidden", "true");
+        const axisTicks = el("div", "axis-ticks");
+        for (const t of ticks) {
+          const s = el(
+            "span",
+            null,
+            t === 0 ? "0" : `${+(t / 1000).toFixed(1)}k`,
+          );
+          s.style.left = pos(t);
+          axisTicks.append(s);
+        }
+        axis.append(el("div"), axisTicks);
+        card.append(axis);
+        return card;
+      }
+
+      function renderLatency(scenarios, results) {
+        const table = byId("latency");
+        const top = document.createElement("tr");
+        const sub = document.createElement("tr");
+        for (const name of ["프레임워크", "런타임", "버전"]) {
+          const th = el("th", null, name);
+          th.scope = "col";
+          th.rowSpan = 2;
+          top.append(th);
+        }
+        for (const s of scenarios) {
+          const th = el("th", null, `${s.id} (ms)`);
+          th.scope = "colgroup";
+          th.colSpan = 3;
+          top.append(th);
+          for (const name of ["평균", "p50", "p99"]) {
+            const c = el("th", "num", name);
+            c.scope = "col";
+            sub.append(c);
+          }
+        }
+        const rss = el("th", "num", "RSS (MB)");
+        rss.scope = "col";
+        rss.rowSpan = 2;
+        top.append(rss);
+        table.tHead.append(top, sub);
+
+        for (const r of results) {
+          const tr = document.createElement("tr");
+          const name = el("th", null, String(r.framework ?? "?"));
+          name.scope = "row";
+          if (BASELINES.has(r.framework))
+            name.append(el("span", "chip", "기준선"));
+          tr.append(
+            name,
+            el("td", null, runtimeName(r)),
+            el("td", "num", String(r.version ?? "—")),
+          );
+          for (const s of scenarios) {
+            const m = r[s.id] ?? {};
+            tr.append(
+              el("td", "num", fmtMs(m.avgMs)),
+              el("td", "num", fmtMs(m.p50Ms)),
+              el("td", "num", fmtMs(m.p99Ms)),
+            );
+          }
+          tr.append(el("td", "num", isNum(r.rssMb) ? r.rssMb.toFixed(1) : "—"));
+          table.tBodies[0].append(tr);
+        }
+      }
+
+      function renderExcluded(excluded) {
+        if (!Array.isArray(excluded) || !excluded.length) return;
+        for (const x of excluded)
+          byId("excluded-list").append(
+            el(
+              "li",
+              null,
+              `${x.framework} (${runtimeName(x)}) ${x.version ?? ""} — ${x.reason ?? "이유 없음"}`,
+            ),
+          );
+        byId("bench-excluded").hidden = false;
+      }
+
+      function render(data) {
+        if (
+          !data ||
+          !Array.isArray(data.scenarios) ||
+          !Array.isArray(data.results) ||
+          !data.scenarios.length ||
+          !data.results.length
+        )
+          throw new Error("scenarios 또는 results 가 비어 있음");
+        const scenarios = data.scenarios.filter((s) => s && s.id);
+        const results = data.results.filter((r) => r && r.framework);
+        renderEnv(data.env ?? {});
+        for (const s of scenarios)
+          byId("charts").append(renderChart(s, results));
+        renderLatency(scenarios, results);
+        renderExcluded(data.excluded);
+        byId("bench-status").hidden = true;
+        byId("bench-body").hidden = false;
+      }
+
+      function fail(message) {
+        byId("bench-body").hidden = true;
+        const status = byId("bench-status");
+        status.hidden = false;
+        status.textContent = message;
+      }
+
+      fetch("./results.json")
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
+        .then(
+          (data) => {
+            try {
+              render(data);
+            } catch (err) {
+              fail(
+                `results.json 의 형식이 예상과 달라 벤치마크를 표시하지 못했습니다 (${err.message}). bun run bench 로 다시 생성해 주세요.`,
+              );
+            }
+          },
+          (err) =>
+            fail(
+              `results.json 을 불러오지 못했습니다 (${err.message}). 아직 측정 전이거나, 파일을 직접 연 경우입니다. 정적 서버로 열거나 bun run bench 로 결과를 생성해 주세요.`,
+            ),
+        );
+    </script>
+  </body>
+</html>
