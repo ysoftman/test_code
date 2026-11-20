@@ -220,9 +220,47 @@
         place-items: center;
         font-weight: 700;
       }
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: var(--card);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 16px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-back {
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .nav-back:hover {
+        color: var(--fg);
+      }
+      .nav-sep {
+        color: var(--border);
+      }
+      .nav-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
     </style>
   </head>
   <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <a class="nav-back" href="../">← test_pages</a>
+        <span class="nav-sep">/</span>
+        <span class="nav-title">Anime.js</span>
+      </div>
+    </header>
     <div class="wrap">
       <h1>Anime.js 데모</h1>
       <p class="sub">
