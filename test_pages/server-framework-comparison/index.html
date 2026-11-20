@@ -552,8 +552,7 @@
         padding: 0;
         list-style: none;
       }
-      .jump a,
-      .fw-links a {
+      .jump a {
         display: inline-flex;
         align-items: center;
         min-height: 44px;
@@ -569,8 +568,7 @@
         font-family: var(--f-mono);
         color: var(--ink);
       }
-      .jump a:hover,
-      .fw-links a:hover {
+      .jump a:hover {
         border-color: var(--link);
       }
       .cards {
@@ -700,12 +698,6 @@
         border-top: 1px solid var(--line);
         padding-top: 14px;
       }
-      .fw-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-self: end;
-      }
 
       /* benchmark */
       .facts {
@@ -821,8 +813,7 @@
         margin-inline: -8px;
         border-radius: 6px;
       }
-      .brow[tabindex]:hover,
-      .brow[tabindex]:focus-visible {
+      .brow:not(.bhead):hover {
         background: var(--row-hover);
       }
       .bhead {
@@ -878,44 +869,6 @@
         text-align: right;
         white-space: nowrap;
       }
-      #tip {
-        position: fixed;
-        z-index: 25;
-        pointer-events: none;
-        background: var(--surface);
-        color: var(--ink);
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 10px 12px;
-        font-size: 12.5px;
-        line-height: 1.5;
-        box-shadow: var(--shadow);
-        display: grid;
-        gap: 4px;
-        max-width: calc(100vw - 24px);
-      }
-      #tip strong {
-        font-size: 14px;
-      }
-      #tip .d {
-        color: var(--muted);
-      }
-      #tip .k {
-        display: grid;
-        grid-template-columns: 12px 4.6rem 1fr;
-        align-items: center;
-        gap: 8px;
-        font-family: var(--f-mono);
-        font-variant-numeric: tabular-nums;
-      }
-      #tip .k i {
-        height: 2px;
-      }
-      #tip .k b {
-        font-weight: 600;
-        white-space: nowrap;
-      }
-
       #latency {
         font-size: 13px;
       }
@@ -1029,7 +982,7 @@
         }
         @supports (grid-template-rows: subgrid) {
           .fw {
-            grid-row: span 8;
+            grid-row: span 7;
             grid-template-rows: subgrid;
           }
         }
@@ -1634,17 +1587,6 @@
               <strong>적합한 상황</strong> — 레퍼런스와 인력 수급이 중요하고
               생태계 호환이 우선인 일반 Node.js API/서버.
             </p>
-            <div class="fw-links">
-              <a
-                href="https://github.com/expressjs/express"
-                target="_blank"
-                rel="noopener"
-                >GitHub · expressjs/express</a
-              >
-              <a href="https://expressjs.com" target="_blank" rel="noopener"
-                >공식 문서 · expressjs.com</a
-              >
-            </div>
           </article>
           <article class="fw" id="fw-fastify">
             <div class="fw-head">
@@ -1743,17 +1685,6 @@
               <strong>적합한 상황</strong> — Node.js에서 스키마 기반으로
               고성능이고 구조화된 REST API를 만들 때.
             </p>
-            <div class="fw-links">
-              <a
-                href="https://github.com/fastify/fastify"
-                target="_blank"
-                rel="noopener"
-                >GitHub · fastify/fastify</a
-              >
-              <a href="https://fastify.dev" target="_blank" rel="noopener"
-                >공식 문서 · fastify.dev</a
-              >
-            </div>
           </article>
           <article class="fw" id="fw-hono">
             <div class="fw-head">
@@ -1846,17 +1777,6 @@
               <strong>적합한 상황</strong> — 엣지/서버리스/멀티 런타임 배포,
               가볍고 이식성 높은 API.
             </p>
-            <div class="fw-links">
-              <a
-                href="https://github.com/honojs/hono"
-                target="_blank"
-                rel="noopener"
-                >GitHub · honojs/hono</a
-              >
-              <a href="https://hono.dev" target="_blank" rel="noopener"
-                >공식 문서 · hono.dev</a
-              >
-            </div>
           </article>
           <article class="fw" id="fw-koa">
             <div class="fw-head">
@@ -1945,17 +1865,6 @@
               <strong>적합한 상황</strong> — 프레임워크를 최소로 두고 미들웨어를
               직접 조립하려는 소규모 서비스.
             </p>
-            <div class="fw-links">
-              <a
-                href="https://github.com/koajs/koa"
-                target="_blank"
-                rel="noopener"
-                >GitHub · koajs/koa</a
-              >
-              <a href="https://koajs.com" target="_blank" rel="noopener"
-                >공식 문서 · koajs.com</a
-              >
-            </div>
           </article>
           <article class="fw" id="fw-elysia">
             <div class="fw-head">
@@ -2061,17 +1970,6 @@
               <strong>적합한 상황</strong> — Bun 기반 신규 프로젝트, 프런트와
               타입을 공유하는 풀스택 TypeScript.
             </p>
-            <div class="fw-links">
-              <a
-                href="https://github.com/elysiajs/elysia"
-                target="_blank"
-                rel="noopener"
-                >GitHub · elysiajs/elysia</a
-              >
-              <a href="https://elysiajs.com" target="_blank" rel="noopener"
-                >공식 문서 · elysiajs.com</a
-              >
-            </div>
           </article>
           <article class="fw" id="fw-nestjs">
             <div class="fw-head">
@@ -2163,17 +2061,6 @@
               <strong>적합한 상황</strong> — 엔터프라이즈 백엔드, 여러 팀이 같은
               구조를 공유해야 하는 대규모 서비스.
             </p>
-            <div class="fw-links">
-              <a
-                href="https://github.com/nestjs/nest"
-                target="_blank"
-                rel="noopener"
-                >GitHub · nestjs/nest</a
-              >
-              <a href="https://docs.nestjs.com" target="_blank" rel="noopener"
-                >공식 문서 · docs.nestjs.com</a
-              >
-            </div>
           </article>
         </div>
       </section>
@@ -2720,7 +2607,6 @@
         >
       </footer>
     </main>
-    <div id="tip" role="tooltip" hidden></div>
     <script>
       (() => {
         const root = document.documentElement;
@@ -2845,39 +2731,6 @@
         pkgs.hidden = !pkgs.children.length;
       }
 
-      const tip = byId("tip");
-      function showTip(row, r, scenarios) {
-        tip.replaceChildren(
-          el("strong", null, String(r.framework)),
-          el(
-            "div",
-            "d",
-            `${runtimeName(r)}${isBaseline(r) ? " · 기준선" : ""} · ${r.version ?? "버전 미상"}`,
-          ),
-        );
-        for (const s of scenarios) {
-          const m = r[s.id] ?? {};
-          const k = el("div", "k");
-          k.append(
-            el("i", seriesClass(r)),
-            el("span", null, s.id),
-            el("b", null, `${fmtInt(m.rps)} req/s · p99 ${fmtMs(m.p99Ms)} ms`),
-          );
-          tip.append(k);
-        }
-        tip.hidden = false;
-        const box = row.getBoundingClientRect();
-        const t = tip.getBoundingClientRect();
-        const x = Math.min(box.left + 160, window.innerWidth - t.width - 12);
-        let y = box.top - t.height - 6;
-        if (y < 64) y = box.bottom + 6;
-        tip.style.left = `${Math.max(12, x)}px`;
-        tip.style.top = `${y}px`;
-      }
-      function hideTip() {
-        tip.hidden = true;
-      }
-
       function renderBars(scenarios, groups) {
         const list = byId("scenario-list");
         for (const s of scenarios) {
@@ -2921,9 +2774,7 @@
 
           for (const r of g.rows) {
             const row = el("div", "brow");
-            row.tabIndex = 0;
             row.setAttribute("role", "img");
-            row.setAttribute("aria-describedby", "tip");
             row.setAttribute(
               "aria-label",
               `${r.framework} (${g.name}${isBaseline(r) ? ", 기준선" : ""}): ${scenarios.map((s) => `${s.id} ${fmtInt(r[s.id]?.rps)} req/s`).join(", ")}`,
@@ -2947,12 +2798,6 @@
               );
               row.append(cell);
             }
-            row.addEventListener("pointerenter", () =>
-              showTip(row, r, scenarios),
-            );
-            row.addEventListener("pointerleave", hideTip);
-            row.addEventListener("focus", () => showTip(row, r, scenarios));
-            row.addEventListener("blur", hideTip);
             bars.append(row);
           }
         }
@@ -3065,8 +2910,6 @@
         status.hidden = false;
         status.textContent = message;
       }
-
-      window.addEventListener("scroll", hideTip, { passive: true });
 
       fetch("./results.json")
         .then((r) => {

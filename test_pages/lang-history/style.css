@@ -1,7 +1,6 @@
 :root {
   color-scheme: light;
   --page-w: 1280px;
-  --prose-w: 820px;
   --gutter: clamp(16px, 3vw, 32px);
   --bg: #f8fafc;
   --surface: #ffffff;
@@ -195,7 +194,6 @@ code {
   font-size: 1.6rem;
 }
 .page-desc {
-  max-width: var(--prose-w);
   margin: 0 0 20px;
   color: var(--text-muted);
 }
@@ -638,7 +636,6 @@ footer {
 
 /* Overview: cross-language summary table */
 .lead {
-  max-width: var(--prose-w);
   color: var(--text-muted);
   margin: 0 0 18px;
 }
