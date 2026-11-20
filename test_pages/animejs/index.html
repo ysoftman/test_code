@@ -5,8 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Anime.js v4 주요 기능 데모" />
     <title>Anime.js 데모</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
     <style>
       :root {
+        color-scheme: light;
+        --bg: #f4f5f7;
+        --card: #ffffff;
+        --border: #d9dde3;
+        --fg: #15181d;
+        --muted: #5b626e;
+        --accent: #1d5fd1;
+        --c1: #ff4b4b;
+        --c2: #ffcc2a;
+        --c3: #2ee6a8;
+      }
+      :root[data-theme="dark"] {
         color-scheme: dark;
         --bg: #0f1115;
         --card: #1a1d23;
@@ -14,9 +37,6 @@
         --fg: #e6e6e6;
         --muted: #9aa0aa;
         --accent: #6ea8fe;
-        --c1: #ff4b4b;
-        --c2: #ffcc2a;
-        --c3: #2ee6a8;
       }
       * {
         box-sizing: border-box;
@@ -220,45 +240,118 @@
         place-items: center;
         font-weight: 700;
       }
+      #theme-text {
+        display: inline-block;
+        min-width: 2.75em;
+        text-align: center;
+      }
       .navbar {
         position: sticky;
         top: 0;
         z-index: 20;
         background: var(--card);
         border-bottom: 1px solid var(--border);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        line-height: 1.5;
       }
       .nav-inner {
         max-width: 1100px;
+        min-height: 56px;
         margin: 0 auto;
-        padding: 0 16px;
-        height: 48px;
+        padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0
+          max(16px, env(safe-area-inset-left, 0px));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+      }
+      .nav-brand {
         display: flex;
         align-items: center;
         gap: 12px;
+        font-size: 14px;
+        white-space: nowrap;
+        min-width: 0;
       }
       .nav-back {
-        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
         color: var(--muted);
         text-decoration: none;
       }
       .nav-back:hover {
         color: var(--fg);
+        text-decoration: none;
       }
       .nav-sep {
         color: var(--border);
       }
       .nav-title {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
         font-weight: 600;
-        font-size: 0.9rem;
+        color: var(--fg);
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-width: 0;
+      }
+      .theme-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 40px;
+        padding: 0 12px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--muted);
+        font: inherit;
+        font-size: 13px;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .theme-btn:hover {
+        border-color: var(--muted);
+        color: var(--fg);
+      }
+      @media (max-width: 767px) {
+        .nav-actions {
+          flex: 1 1 auto;
+          justify-content: space-between;
+        }
       }
     </style>
   </head>
   <body>
     <header class="navbar">
       <div class="nav-inner">
-        <a class="nav-back" href="../">← test_pages</a>
-        <span class="nav-sep">/</span>
-        <span class="nav-title">Anime.js</span>
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_pages</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">Anime.js</span>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon" aria-hidden="true"></span>
+            <span id="theme-text">Dark</span>
+          </button>
+        </div>
       </div>
     </header>
     <div class="wrap">
@@ -273,6 +366,26 @@
       <div id="demos"></div>
     </div>
 
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const icon = document.getElementById("theme-icon");
+        const text = document.getElementById("theme-text");
+        const apply = (theme) => {
+          root.dataset.theme = theme;
+          icon.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="${theme === "dark" ? "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" : "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"}"/></svg>`;
+          text.textContent = theme === "dark" ? "Light" : "Dark";
+        };
+        apply(root.dataset.theme);
+        document.getElementById("theme-btn").addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          apply(next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch {}
+        });
+      })();
+    </script>
     <script type="module">
       import {
         animate,

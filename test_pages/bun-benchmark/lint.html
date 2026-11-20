@@ -102,72 +102,6 @@
         color: inherit;
       }
 
-      /* Top Navbar */
-      .navbar {
-        border-bottom: 1px solid var(--border);
-        background: var(--surface);
-        position: sticky;
-        top: 0;
-        z-index: 20;
-      }
-      .nav-inner {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 0 20px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .nav-back {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-      }
-      .nav-back:hover {
-        color: var(--text);
-        text-decoration: none;
-      }
-      .nav-sep {
-        color: var(--border);
-      }
-      .nav-title {
-        font-weight: 600;
-        font-size: 0.9rem;
-      }
-      .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .theme-btn {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        color: var(--text-muted);
-        padding: 4px 10px;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        font-family: inherit;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition:
-          border-color 0.15s,
-          color 0.15s;
-      }
-      .theme-btn:hover {
-        border-color: var(--text-muted);
-        color: var(--text);
-      }
-
       /* Layout */
       .container {
         max-width: 980px;
@@ -614,8 +548,8 @@
             type="button"
             aria-label="Toggle theme"
           >
-            <span id="theme-icon">◐</span>
-            <span id="theme-text">Theme</span>
+            <span id="theme-icon" aria-hidden="true"></span>
+            <span id="theme-text">Dark</span>
           </button>
         </div>
       </div>
@@ -1121,7 +1055,7 @@
 
       function updateThemeUI(t) {
         root.dataset.theme = t;
-        themeIcon.textContent = t === "dark" ? "☀️" : "🌙";
+        themeIcon.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="${t === "dark" ? "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" : "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"}"/></svg>`;
         themeText.textContent = t === "dark" ? "Light" : "Dark";
       }
 
