@@ -24,6 +24,8 @@
         background: var(--bg);
         color: var(--fg);
         line-height: 1.6;
+        word-break: keep-all;
+        overflow-wrap: break-word;
       }
       .wrap {
         max-width: 860px;
@@ -37,6 +39,15 @@
       .sub {
         color: var(--muted);
         margin: 0 0 32px;
+      }
+      .group + .group {
+        margin-top: 48px;
+      }
+      .group > h2 {
+        margin: 0 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+        font-size: 1.3rem;
       }
       .grid {
         display: grid;
@@ -59,7 +70,7 @@
         border-color: var(--accent);
         transform: translateY(-2px);
       }
-      a.card h2 {
+      a.card h3 {
         margin: 0 0 6px;
         font-size: 1.1rem;
       }
@@ -80,71 +91,87 @@
       <h1>test_pages</h1>
       <p class="sub">테스트 요소 모음 · GitHub Pages</p>
 
-      <!-- 새 테스트 요소를 추가하면 아래 grid 에 카드 하나를 더합니다. -->
-      <div class="grid">
-        <a class="card" href="./vue-sample/">
-          <h2>vue-sample</h2>
-          <p>Vue 3 · Vuetify · Vue Router · Pinia 테스트 앱</p>
-        </a>
-        <a class="card" href="./react-sample/">
-          <h2>react-sample</h2>
-          <p>React 19 테스트 앱</p>
-        </a>
-        <a class="card" href="./particle/">
-          <h2>Particle Blaster</h2>
-          <p>PixiJS · Matter.js 파티클 슈터 게임</p>
-        </a>
-        <a class="card" href="./tsparticles/">
-          <h2>tsParticles</h2>
-          <p>
-            tsParticles v3 파티클 프리셋 예시 (Links · Stars · Snow · Bubbles)
-          </p>
-        </a>
-        <a class="card" href="./ml-docs/">
-          <h2>ml-docs</h2>
-          <p>VitePress 로 만든 MachineLearning 책, 강의 정리 문서</p>
-        </a>
-        <a class="card" href="./css-framework-comparison/">
-          <h2>CSS Framework Comparison</h2>
-          <p>MUI · Tailwind · Panda CSS 등 스타일링 솔루션 비교</p>
-        </a>
-        <a class="card" href="./bun-benchmark/">
-          <h2>Bun Benchmark</h2>
-          <p>
-            Formatter · Lint · Runtime · Test · Bundler 벤치마크 통합 페이지
-          </p>
-        </a>
-        <a class="card" href="./python-toolchain/">
-          <h2>pyenv · uv · mise</h2>
-          <p>Python 버전·패키지 도구의 역할 비교와 벤치마크</p>
-        </a>
-        <a class="card" href="./design-skill-comparison/">
-          <h2>Design Skill Comparison</h2>
-          <p>
-            astryx · design-taste-frontend · ui-ux-pro-max 로 같은 랜딩 페이지
-            만들기 비교
-          </p>
-        </a>
-        <a class="card" href="./lang-history/">
-          <h2>Language History</h2>
-          <p>
-            Go 버전별 큰 변화와 툴 교체 · 수렴 흐름 (Rust · Python · JS 예정)
-          </p>
-        </a>
-        <a class="card" href="./animejs/">
-          <h2>Anime.js</h2>
-          <p>
-            Anime.js v4 데모 (Timeline · Stagger · Spring · Draggable · SVG)
-          </p>
-        </a>
-        <a class="card" href="./server-framework-comparison/">
-          <h2>Server Framework Comparison</h2>
-          <p>
-            Express · Fastify · Hono · Koa · Elysia · NestJS 비교와 HTTP
-            벤치마크
-          </p>
-        </a>
-      </div>
+      <!-- 새 테스트 요소를 추가하면 성격에 맞는 그룹(샘플 · 데모 / 비교 · 벤치마크 / 문서 · 정리)의 grid 에 카드 하나를 더합니다. -->
+      <section class="group">
+        <h2>샘플 · 데모</h2>
+        <div class="grid">
+          <a class="card" href="./vue-sample/">
+            <h3>vue-sample</h3>
+            <p>Vue 3 · Vuetify · Vue Router · Pinia 테스트 앱</p>
+          </a>
+          <a class="card" href="./react-sample/">
+            <h3>react-sample</h3>
+            <p>React 19 테스트 앱</p>
+          </a>
+          <a class="card" href="./particle/">
+            <h3>Particle Blaster</h3>
+            <p>PixiJS · Matter.js 파티클 슈터 게임</p>
+          </a>
+          <a class="card" href="./tsparticles/">
+            <h3>tsParticles</h3>
+            <p>
+              tsParticles v3 파티클 프리셋 예시 (Links · Stars · Snow · Bubbles)
+            </p>
+          </a>
+          <a class="card" href="./animejs/">
+            <h3>Anime.js</h3>
+            <p>
+              Anime.js v4 데모 (Timeline · Stagger · Spring · Draggable · SVG)
+            </p>
+          </a>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2>비교 · 벤치마크</h2>
+        <div class="grid">
+          <a class="card" href="./css-framework-comparison/">
+            <h3>CSS Framework Comparison</h3>
+            <p>MUI · Tailwind · Panda CSS 등 스타일링 솔루션 비교</p>
+          </a>
+          <a class="card" href="./bun-benchmark/">
+            <h3>Bun Benchmark</h3>
+            <p>
+              Formatter · Lint · Runtime · Test · Bundler 벤치마크 통합 페이지
+            </p>
+          </a>
+          <a class="card" href="./python-toolchain/">
+            <h3>pyenv · uv · mise</h3>
+            <p>Python 버전·패키지 도구의 역할 비교와 벤치마크</p>
+          </a>
+          <a class="card" href="./design-skill-comparison/">
+            <h3>Design Skill Comparison</h3>
+            <p>
+              astryx · design-taste-frontend · ui-ux-pro-max 로 같은 랜딩 페이지
+              만들기 비교
+            </p>
+          </a>
+          <a class="card" href="./server-framework-comparison/">
+            <h3>Server Framework Comparison</h3>
+            <p>
+              Express · Fastify · Hono · Koa · Elysia · NestJS 비교와 HTTP
+              벤치마크
+            </p>
+          </a>
+          <a class="card" href="./lang-history/">
+            <h3>Language History</h3>
+            <p>
+              Go · Rust · Python · JavaScript 버전별 큰 변화와 툴 교체 · 수렴
+              흐름
+            </p>
+          </a>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2>문서 · 정리</h2>
+        <div class="grid">
+          <a class="card" href="./ml-docs/">
+            <h3>ml-docs</h3>
+            <p>VitePress 로 만든 MachineLearning 책, 강의 정리 문서</p>
+          </a>
+        </div>
+      </section>
 
       <footer>
         Source:
