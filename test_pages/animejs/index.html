@@ -190,6 +190,36 @@
       .scroller .box {
         margin: 12rem 0;
       }
+      button.dot {
+        padding: 0;
+        border: 0;
+      }
+      .follower {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--c3);
+        margin: auto;
+        pointer-events: none;
+      }
+      .cells {
+        display: grid;
+        grid-template-columns: repeat(3, 3rem);
+        gap: 0.5rem;
+        justify-content: center;
+      }
+      .cells.wide {
+        grid-template-columns: repeat(6, 2rem);
+      }
+      .cell {
+        height: 2.5rem;
+        border-radius: 6px;
+        background: var(--card);
+        border: 1px solid var(--accent);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+      }
     </style>
   </head>
   <body>
@@ -208,7 +238,14 @@
     <script type="module">
       import {
         animate,
+        createAnimatable,
         createDraggable,
+        createLayout,
+        createTimer,
+        scrambleText,
+        shuffle,
+        utils,
+        waapi,
         spring,
         createTimeline,
         onScroll,
@@ -356,6 +393,141 @@
               ease: "linear",
               autoplay: onScroll({ container: $(".scroller")[0], sync: true }),
             });
+          },
+        },
+        {
+          title: "svg morphing",
+          html: `<svg width="120" height="120" viewBox="0 0 120 120">
+            <path class="from" d="M60 10 L74 46 L112 46 L82 70 L94 108 L60 84 L26 108 L38 70 L8 46 L46 46 Z"/>
+            <path class="to" d="M60 12 A48 48 0 1 1 59.9 12 Z" style="display: none"/>
+          </svg>`,
+          run($) {
+            return animate($(".from"), {
+              d: svg.morphTo($(".to")[0]),
+              duration: 1200,
+              ease: "inOutCirc",
+              loop: true,
+              alternate: true,
+              loopDelay: 400,
+            });
+          },
+        },
+        {
+          title: "animatable (커서를 올려보세요)",
+          html: '<div class="follower"></div>',
+          run($, stage) {
+            const follower = createAnimatable($(".follower"), {
+              x: 500,
+              y: 500,
+              ease: "out(3)",
+            });
+            stage.onpointermove = (e) => {
+              const r = stage.getBoundingClientRect();
+              follower.x(e.clientX - r.left - r.width / 2);
+              follower.y(e.clientY - r.top - r.height / 2);
+            };
+            return follower;
+          },
+        },
+        {
+          title: "scramble text",
+          html: '<p class="title">Hello Anime.js</p>',
+          run($) {
+            return animate($(".title"), {
+              innerHTML: scrambleText({ text: "Scramble Text!", cursor: true }),
+              loop: true,
+              alternate: true,
+              loopDelay: 1000,
+            });
+          },
+        },
+        {
+          title: "layout · timer",
+          html: `<div class="cells">${[1, 2, 3, 4, 5, 6].map((n) => `<div class="cell">${n}</div>`).join("")}</div>`,
+          run($) {
+            const [root] = $(".cells");
+            const layout = createLayout(root, {
+              duration: 600,
+              ease: "outExpo",
+            });
+            return createTimer({
+              duration: 1400,
+              loop: true,
+              onLoop: () =>
+                layout.update(() => {
+                  root.append(...shuffle([...root.children]));
+                  root.classList.toggle("wide");
+                }),
+            });
+          },
+        },
+        {
+          title: "keyframes · color",
+          html: '<div class="box"></div>',
+          run($) {
+            return animate($(".box"), {
+              keyframes: [
+                { x: "6rem", backgroundColor: "#ffcc2a", borderRadius: "50%" },
+                { y: "-2.5rem", scale: 1.6, backgroundColor: "#2ee6a8" },
+                { x: "12rem", y: 0, rotate: 180, borderRadius: "6px" },
+                { x: 0, scale: 1, rotate: 0, backgroundColor: "#ff4b4b" },
+              ],
+              duration: 3200,
+              ease: "inOutQuad",
+              loop: true,
+            });
+          },
+        },
+        {
+          title: "JS object · utils",
+          html: '<p class="title">0</p>',
+          run($) {
+            const [label] = $(".title");
+            const score = { value: 0 };
+            return animate(score, {
+              value: () => utils.random(1000, 9999),
+              modifier: utils.round(0),
+              duration: 1500,
+              ease: "outExpo",
+              loop: true,
+              loopDelay: 700,
+              onLoop: (self) => self.refresh(),
+              onUpdate: () => (label.textContent = score.value),
+            });
+          },
+        },
+        {
+          title: "waapi.animate",
+          html: boxes,
+          run($) {
+            return waapi.animate($(".box"), {
+              x: "12rem",
+              rotate: "1turn",
+              duration: 1200,
+              ease: "inOutExpo",
+              delay: stagger(120),
+              loop: true,
+              alternate: true,
+            });
+          },
+        },
+        {
+          title: "stagger from (점을 클릭)",
+          html: `<div class="dots">${'<button class="dot" aria-label="여기서 시작"></button>'.repeat(55)}</div>`,
+          run($, stage) {
+            const dots = [...$(".dot")];
+            const ripple = (from) =>
+              animate(dots, {
+                scale: [{ to: 0.2 }, { to: 1 }],
+                duration: 400,
+                ease: "inOutQuad",
+                delay: stagger(50, { grid: [11, 5], from }),
+              });
+            stage.onclick = (e) => {
+              const index = dots.indexOf(e.target);
+              if (index >= 0) ripple(index);
+            };
+            return ripple("first");
           },
         },
       ];
