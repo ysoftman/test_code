@@ -5,19 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Go History: 버전별 큰 변화와 툴 교체 흐름</title>
     <script src="../theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../../common/doc.css" />
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
           <a class="nav-back" href="../../">← test_pages</a>
           <span class="nav-sep">/</span>
-          <a class="nav-back" href="../">lang-history</a>
-          <span class="nav-sep">/</span>
-          <span class="nav-title">go</span>
+          <span class="nav-title">lang-history</span>
         </div>
         <div class="nav-actions">
+          <nav class="section-nav" aria-label="언어 선택">
+            <a href="../">Overview</a>
+            <a href="../go/" aria-current="page">Go</a>
+            <a href="../rust/">Rust</a>
+            <a href="../python/">Python</a>
+            <a href="../javascript/">JavaScript</a>
+          </nav>
           <button
             class="theme-btn"
             id="theme-btn"
@@ -31,31 +44,19 @@
       </div>
     </header>
 
-    <main class="container">
-      <section class="page-header">
-        <h1>Language History</h1>
-        <p class="page-desc">
+    <main class="page" id="main">
+      <header>
+        <div class="eyebrow">버전별 큰 변화와 툴 교체 흐름</div>
+        <h1><span class="prompt">$</span>Language History: Go</h1>
+        <p class="lede">
+          2012 년 1.0 부터 6 개월 주기. 서드파티 툴이 경쟁하다가 공식 툴체인에
+          <strong>흡수되는</strong> 패턴이 반복됩니다.
+        </p>
+        <p class="note">
           버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
           서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
           한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
         </p>
-        <nav class="lang-nav" aria-label="언어 선택">
-          <a href="../">개요</a>
-          <a href="../go/" aria-current="page">Go</a>
-          <a href="../rust/">Rust</a>
-          <a href="../python/">Python</a>
-          <a href="../javascript/">JavaScript</a>
-        </nav>
-      </section>
-
-      <!-- ===================================================== Go -->
-      <section class="lang" id="go">
-        <h2>Go</h2>
-        <p class="lead">
-          2012 년 1.0 부터 6 개월 주기. 서드파티 툴이 경쟁하다가 공식 툴체인에
-          <strong>흡수되는</strong> 패턴이 반복됩니다.
-        </p>
-
         <div class="stat-row">
           <div class="stat">
             <b>4</b>
@@ -80,8 +81,10 @@
             >
           </div>
         </div>
+      </header>
 
-        <h3>Releases — 굵직한 변화</h3>
+      <section id="releases">
+        <h2><small>01 · Releases</small>굵직한 변화</h2>
         <ul class="timeline">
           <li class="release major">
             <div class="head">
@@ -748,9 +751,11 @@
             </ul>
           </li>
         </ul>
+      </section>
 
-        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
-        <p class="lead">
+      <section id="tooling">
+        <h2><small>02 · Tooling</small>무엇이 무엇으로 바뀌었나</h2>
+        <p>
           막대 굵기 = 사용량(설문·스타·언급 기준 근사치). 사라진 툴의 레인은
           다음 툴이 재사용합니다. 막대를 클릭하면 교체 배경을 볼 수 있어요.
         </p>
@@ -761,376 +766,392 @@
           <span><i class="e"></i>discontinued</span>
         </div>
 
-        <h4>의존성 관리</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 7"
-              popovertarget="go-gopath"
-            >
-              <span class="name">GOPATH</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 2; grid-column: 7 / 10"
-              popovertarget="go-gopath"
-            ></button>
-            <button
-              class="bar common end"
-              style="--lane: 3; grid-column: 2 / 6"
-              popovertarget="go-dep"
-            >
-              <span class="name">godep</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 3; grid-column: 6 / 9"
-              popovertarget="go-dep"
-            >
-              <span class="name">dep</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 4; grid-column: 4 / 7"
-              popovertarget="go-dep"
-            >
-              <span class="name">glide</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 7 / 8"
-              popovertarget="go-modules"
-            >
-              <span class="name">go modules</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 8 / 10"
-              popovertarget="go-modules"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 10 / 17"
-              popovertarget="go-modules"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 5; grid-column: 4 / 8"
-              popovertarget="go-dep"
-            >
-              <span class="name">govendor · gb · gom</span>
-            </button>
+        <div class="chart">
+          <h3>의존성 관리</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 7"
+                popovertarget="go-gopath"
+              >
+                <span class="name">GOPATH</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 2; grid-column: 7 / 10"
+                popovertarget="go-gopath"
+              ></button>
+              <button
+                class="bar common end"
+                style="--lane: 3; grid-column: 2 / 6"
+                popovertarget="go-dep"
+              >
+                <span class="name">godep</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 3; grid-column: 6 / 9"
+                popovertarget="go-dep"
+              >
+                <span class="name">dep</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 4; grid-column: 4 / 7"
+                popovertarget="go-dep"
+              >
+                <span class="name">glide</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 7 / 8"
+                popovertarget="go-modules"
+              >
+                <span class="name">go modules</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 8 / 10"
+                popovertarget="go-modules"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 10 / 17"
+                popovertarget="go-modules"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 5; grid-column: 4 / 8"
+                popovertarget="go-dep"
+              >
+                <span class="name">govendor · gb · gom</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <h4>린트 · 정적 분석</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <span class="bar common" style="--lane: 2; grid-column: 1 / 17"
-              ><span class="name">go vet (built-in)</span></span
-            >
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 2 / 8"
-              popovertarget="go-golint"
-            >
-              <span class="name">golint</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 3; grid-column: 8 / 11"
-              popovertarget="go-golint"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 5 / 7"
-              popovertarget="go-gometalinter"
-            >
-              <span class="name">gometalinter</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 7 / 8"
-              popovertarget="go-gometalinter"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 7 / 8"
-              popovertarget="go-golangci"
-            >
-              <span class="name">golangci-lint</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 5; grid-column: 8 / 17"
-              popovertarget="go-golangci"
-            ></button>
-            <span class="bar common" style="--lane: 6; grid-column: 5 / 17"
-              ><span class="name">staticcheck</span></span
-            >
+        <div class="chart">
+          <h3>린트 · 정적 분석</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <span class="bar common" style="--lane: 2; grid-column: 1 / 17"
+                ><span class="name">go vet (built-in)</span></span
+              >
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 2 / 8"
+                popovertarget="go-golint"
+              >
+                <span class="name">golint</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 3; grid-column: 8 / 11"
+                popovertarget="go-golint"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 5 / 7"
+                popovertarget="go-gometalinter"
+              >
+                <span class="name">gometalinter</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 7 / 8"
+                popovertarget="go-gometalinter"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 7 / 8"
+                popovertarget="go-golangci"
+              >
+                <span class="name">golangci-lint</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 5; grid-column: 8 / 17"
+                popovertarget="go-golangci"
+              ></button>
+              <span class="bar common" style="--lane: 6; grid-column: 5 / 17"
+                ><span class="name">staticcheck</span></span
+              >
+            </div>
           </div>
         </div>
 
-        <h4>포맷</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 17"
-              popovertarget="go-gofmt"
-            >
-              <span class="name">gofmt (built-in)</span>
-            </button>
-            <span class="bar common" style="--lane: 3; grid-column: 2 / 17"
-              ><span class="name">goimports</span></span
-            >
-            <span class="bar niche" style="--lane: 4; grid-column: 8 / 17"
-              ><span class="name">gofumpt</span></span
-            >
+        <div class="chart">
+          <h3>포맷</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 17"
+                popovertarget="go-gofmt"
+              >
+                <span class="name">gofmt (built-in)</span>
+              </button>
+              <span class="bar common" style="--lane: 3; grid-column: 2 / 17"
+                ><span class="name">goimports</span></span
+              >
+              <span class="bar niche" style="--lane: 4; grid-column: 8 / 17"
+                ><span class="name">gofumpt</span></span
+              >
+            </div>
           </div>
         </div>
 
-        <h4>에러 처리</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 5 / 6"
-              popovertarget="go-pkgerrors"
-            >
-              <span class="name">pkg/errors</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 6 / 9"
-              popovertarget="go-pkgerrors"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 2; grid-column: 9 / 10"
-              popovertarget="go-pkgerrors"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 8 / 10"
-              popovertarget="go-errors13"
-            >
-              <span class="name">errors.Is / As (1.13)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 3; grid-column: 10 / 17"
-              popovertarget="go-errors13"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 8 / 10"
-              popovertarget="go-pkgerrors"
-            >
-              <span class="name">xerrors</span>
-            </button>
+        <div class="chart">
+          <h3>에러 처리</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 5 / 6"
+                popovertarget="go-pkgerrors"
+              >
+                <span class="name">pkg/errors</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 6 / 9"
+                popovertarget="go-pkgerrors"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 2; grid-column: 9 / 10"
+                popovertarget="go-pkgerrors"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 8 / 10"
+                popovertarget="go-errors13"
+              >
+                <span class="name">errors.Is / As (1.13)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 3; grid-column: 10 / 17"
+                popovertarget="go-errors13"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 8 / 10"
+                popovertarget="go-pkgerrors"
+              >
+                <span class="name">xerrors</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <h4>Go 버전 관리</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(2, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 1 / 9"
-              popovertarget="go-gvm"
-            >
-              <span class="name">gvm</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 2; grid-column: 9 / 12"
-              popovertarget="go-gvm"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 12 / 17"
-              popovertarget="go-toolchain"
-            >
-              <span class="name">go.mod toolchain (1.21)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 5 / 12"
-              popovertarget="go-gvm"
-            >
-              <span class="name">goenv</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 12 / 17"
-              popovertarget="go-gvm"
-            ></button>
+        <div class="chart">
+          <h3>Go 버전 관리</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(2, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 1 / 9"
+                popovertarget="go-gvm"
+              >
+                <span class="name">gvm</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 2; grid-column: 9 / 12"
+                popovertarget="go-gvm"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 12 / 17"
+                popovertarget="go-toolchain"
+              >
+                <span class="name">go.mod toolchain (1.21)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 5 / 12"
+                popovertarget="go-gvm"
+              >
+                <span class="name">goenv</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 12 / 17"
+                popovertarget="go-gvm"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>HTTP 라우터</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 9"
-              popovertarget="go-gorilla"
-            >
-              <span class="name">gorilla/mux</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 9 / 12"
-              popovertarget="go-gorilla"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 12 / 17"
-              popovertarget="go-gorilla"
-            ></button>
-            <span class="bar common" style="--lane: 3; grid-column: 3 / 5"
-              ><span class="name">gin</span></span
-            >
-            <span
-              class="bar dominant"
-              style="--lane: 3; grid-column: 5 / 17"
-            ></span>
-            <span class="bar common" style="--lane: 4; grid-column: 4 / 17"
-              ><span class="name">chi</span></span
-            >
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 1 / 13"
-              popovertarget="go-servemux"
-            >
-              <span class="name">net/http ServeMux</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 13 / 17"
-              popovertarget="go-servemux"
-            ></button>
+        <div class="chart">
+          <h3>HTTP 라우터</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 9"
+                popovertarget="go-gorilla"
+              >
+                <span class="name">gorilla/mux</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 9 / 12"
+                popovertarget="go-gorilla"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 12 / 17"
+                popovertarget="go-gorilla"
+              ></button>
+              <span class="bar common" style="--lane: 3; grid-column: 3 / 5"
+                ><span class="name">gin</span></span
+              >
+              <span
+                class="bar dominant"
+                style="--lane: 3; grid-column: 5 / 17"
+              ></span>
+              <span class="bar common" style="--lane: 4; grid-column: 4 / 17"
+                ><span class="name">chi</span></span
+              >
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 1 / 13"
+                popovertarget="go-servemux"
+              >
+                <span class="name">net/http ServeMux</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 13 / 17"
+                popovertarget="go-servemux"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>에디터 지원 (완성 · 정의 이동 · 리네임)</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 8"
-              popovertarget="go-editor-old"
-            >
-              <span class="name">gocode</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 2; grid-column: 8 / 9"
-              popovertarget="go-editor-old"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 9 / 10"
-              popovertarget="go-gopls"
-            >
-              <span class="name">gopls (LSP)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 10 / 17"
-              popovertarget="go-gopls"
-            ></button>
-            <button
-              class="bar common end"
-              style="--lane: 3; grid-column: 1 / 9"
-              popovertarget="go-editor-old"
-            >
-              <span class="name">godef</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 4; grid-column: 3 / 9"
-              popovertarget="go-editor-old"
-            >
-              <span class="name">guru (oracle)</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 5; grid-column: 3 / 9"
-              popovertarget="go-editor-old"
-            >
-              <span class="name">gorename</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 6; grid-column: 5 / 9"
-              popovertarget="go-editor-old"
-            >
-              <span class="name">go-outline · go-symbols · gopkgs</span>
-            </button>
+        <div class="chart">
+          <h3>에디터 지원 (완성 · 정의 이동 · 리네임)</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 8"
+                popovertarget="go-editor-old"
+              >
+                <span class="name">gocode</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 2; grid-column: 8 / 9"
+                popovertarget="go-editor-old"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 9 / 10"
+                popovertarget="go-gopls"
+              >
+                <span class="name">gopls (LSP)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 10 / 17"
+                popovertarget="go-gopls"
+              ></button>
+              <button
+                class="bar common end"
+                style="--lane: 3; grid-column: 1 / 9"
+                popovertarget="go-editor-old"
+              >
+                <span class="name">godef</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 4; grid-column: 3 / 9"
+                popovertarget="go-editor-old"
+              >
+                <span class="name">guru (oracle)</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 5; grid-column: 3 / 9"
+                popovertarget="go-editor-old"
+              >
+                <span class="name">gorename</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 6; grid-column: 5 / 9"
+                popovertarget="go-editor-old"
+              >
+                <span class="name">go-outline · go-symbols · gopkgs</span>
+              </button>
+            </div>
           </div>
         </div>
+      </section>
 
-        <h3>로컬 설치 툴 정리 — 2026-10-18</h3>
-        <p class="lead">
+      <section id="cleanup">
+        <h2><small>03 · 2026-10-18</small>로컬 설치 툴 정리</h2>
+        <p>
           위 흐름이 실제 내 환경에서도 그대로 일어났어요.
           <code>installgolangtools.sh</code> 의 <code>go install</code> 목록
           111개 중 <strong>53개 제거</strong>, 58개 유지. 제거 사유는 모두 "더
@@ -1142,7 +1163,12 @@
             >커밋 보기</a
           >
         </p>
-        <div class="table-wrap">
+        <div
+          class="scroll"
+          tabindex="0"
+          role="region"
+          aria-label="로컬 설치 툴 정리"
+        >
           <table class="summary cleanup">
             <thead>
               <tr>
@@ -1152,8 +1178,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th colspan="3">
+              <tr class="rg">
+                <th colspan="3" scope="rowgroup">
                   gopls 로 수렴 — 에디터 툴 9종이 LSP 서버 하나로
                 </th>
               </tr>
@@ -1200,8 +1226,8 @@
                 <td>gopls 진단 · <code>goimports</code></td>
               </tr>
 
-              <tr>
-                <th colspan="3">공식 툴체인에 흡수</th>
+              <tr class="rg">
+                <th colspan="3" scope="rowgroup">공식 툴체인에 흡수</th>
               </tr>
               <tr>
                 <td><code>godoc</code></td>
@@ -1254,8 +1280,8 @@
                 <td><code>go tool cover -html</code></td>
               </tr>
 
-              <tr>
-                <th colspan="3">관리 중단 · 미사용</th>
+              <tr class="rg">
+                <th colspan="3" scope="rowgroup">관리 중단 · 미사용</th>
               </tr>
               <tr>
                 <td><code>misspell</code></td>
@@ -1305,7 +1331,7 @@
               Go modules
               <small>1.11 (2018-08) 실험 → 1.14 정식 → 1.16 기본</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-modules">
+            <button class="sheet-close" popovertarget="go-modules">
               닫기 Esc
             </button>
           </header>
@@ -1381,7 +1407,7 @@
               godep · glide · govendor · gb · gom · dep
               <small>2013 – 2020</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-dep">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="go-dep">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -1432,7 +1458,7 @@
         <div class="sheet-inner">
           <header>
             <h3>golangci-lint <small>2018-05 →</small></h3>
-            <button class="theme-btn" popovertarget="go-golangci">
+            <button class="sheet-close" popovertarget="go-golangci">
               닫기 Esc
             </button>
           </header>
@@ -1493,7 +1519,7 @@
         <div class="sheet-inner">
           <header>
             <h3>golint <small>2013 – 2021 (frozen) · 2022 archived</small></h3>
-            <button class="theme-btn" popovertarget="go-golint">
+            <button class="sheet-close" popovertarget="go-golint">
               닫기 Esc
             </button>
           </header>
@@ -1540,7 +1566,9 @@
         <div class="sheet-inner">
           <header>
             <h3>gofmt <small>2012 (1.0) → · 사실상 2009 부터</small></h3>
-            <button class="theme-btn" popovertarget="go-gofmt">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="go-gofmt">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -1577,7 +1605,7 @@
         <div class="sheet-inner">
           <header>
             <h3>errors.Is / As / Unwrap + %w <small>1.13 (2019-09)</small></h3>
-            <button class="theme-btn" popovertarget="go-errors13">
+            <button class="sheet-close" popovertarget="go-errors13">
               닫기 Esc
             </button>
           </header>
@@ -1639,7 +1667,9 @@
         <div class="sheet-inner">
           <header>
             <h3>//go:embed <small>1.16 (2021-02)</small></h3>
-            <button class="theme-btn" popovertarget="go-embed">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="go-embed">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -1692,7 +1722,7 @@
         <div class="sheet-inner">
           <header>
             <h3>제네릭 (type parameters) <small>1.18 (2022-03)</small></h3>
-            <button class="theme-btn" popovertarget="go-generics">
+            <button class="sheet-close" popovertarget="go-generics">
               닫기 Esc
             </button>
           </header>
@@ -1753,7 +1783,7 @@
               for 루프 변수 per-iteration
               <small>1.22 (2024-02) · breaking</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-loopvar">
+            <button class="sheet-close" popovertarget="go-loopvar">
               닫기 Esc
             </button>
           </header>
@@ -1811,7 +1841,7 @@
         <div class="sheet-inner">
           <header>
             <h3>net/http.ServeMux 패턴 강화 <small>1.22 (2024-02)</small></h3>
-            <button class="theme-btn" popovertarget="go-servemux">
+            <button class="sheet-close" popovertarget="go-servemux">
               닫기 Esc
             </button>
           </header>
@@ -1871,7 +1901,7 @@
             <h3>
               go.mod toolchain + GOTOOLCHAIN <small>1.21 (2023-08)</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-toolchain">
+            <button class="sheet-close" popovertarget="go-toolchain">
               닫기 Esc
             </button>
           </header>
@@ -1931,7 +1961,7 @@
         <div class="sheet-inner">
           <header>
             <h3>go.mod tool 디렉티브 <small>1.24 (2025-02)</small></h3>
-            <button class="theme-btn" popovertarget="go-tool-directive">
+            <button class="sheet-close" popovertarget="go-tool-directive">
               닫기 Esc
             </button>
           </header>
@@ -1978,7 +2008,7 @@
         <div class="sheet-inner">
           <header>
             <h3>range-over-func 이터레이터 <small>1.23 (2024-08)</small></h3>
-            <button class="theme-btn" popovertarget="go-iterators">
+            <button class="sheet-close" popovertarget="go-iterators">
               닫기 Esc
             </button>
           </header>
@@ -2030,7 +2060,9 @@
         <div class="sheet-inner">
           <header>
             <h3>동시 GC <small>1.5 (2015-08)</small></h3>
-            <button class="theme-btn" popovertarget="go-gc15">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="go-gc15">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2077,7 +2109,7 @@
         <div class="sheet-inner">
           <header>
             <h3>Green Tea GC <small>1.25 실험 → 1.26 (2026-02) 기본</small></h3>
-            <button class="theme-btn" popovertarget="go-greentea">
+            <button class="sheet-close" popovertarget="go-greentea">
               닫기 Esc
             </button>
           </header>
@@ -2130,7 +2162,7 @@
         <div class="sheet-inner">
           <header>
             <h3>제네릭 메서드 <small>1.27 (2026-08)</small></h3>
-            <button class="theme-btn" popovertarget="go-generic-methods">
+            <button class="sheet-close" popovertarget="go-generic-methods">
               닫기 Esc
             </button>
           </header>
@@ -2177,7 +2209,9 @@
             <h3>
               gopls <small>2019-06 첫 릴리스 → 2020–2021 에디터 기본값</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-gopls">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="go-gopls">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2253,7 +2287,9 @@
         <div class="sheet-inner">
           <header>
             <h3>go fix modernizers <small>1.26 (2026-02)</small></h3>
-            <button class="theme-btn" popovertarget="go-gofix">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="go-gofix">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2309,7 +2345,7 @@
             <h3>
               GOPATH <small>2012 (1.0) – 2021 (1.16 에서 기본 해제)</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-gopath">
+            <button class="sheet-close" popovertarget="go-gopath">
               닫기 Esc
             </button>
           </header>
@@ -2369,7 +2405,7 @@
         <div class="sheet-inner">
           <header>
             <h3>gometalinter <small>2016 – 2019 (deprecated)</small></h3>
-            <button class="theme-btn" popovertarget="go-gometalinter">
+            <button class="sheet-close" popovertarget="go-gometalinter">
               닫기 Esc
             </button>
           </header>
@@ -2422,7 +2458,7 @@
               pkg/errors · xerrors
               <small>2016 – 2021 (archived) · 2019 – 2020</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-pkgerrors">
+            <button class="sheet-close" popovertarget="go-pkgerrors">
               닫기 Esc
             </button>
           </header>
@@ -2482,7 +2518,7 @@
         <div class="sheet-inner">
           <header>
             <h3>gvm · goenv <small>2012 – 2021 · 2016 →</small></h3>
-            <button class="theme-btn" popovertarget="go-gvm">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="go-gvm">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2539,7 +2575,7 @@
             <h3>
               gorilla/mux <small>2012 → · 2022-12 아카이브 → 2023 부활</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-gorilla">
+            <button class="sheet-close" popovertarget="go-gorilla">
               닫기 Esc
             </button>
           </header>
@@ -2599,7 +2635,7 @@
               gocode · godef · guru · gorename · go-outline · go-symbols ·
               gopkgs <small>2012 – 2020</small>
             </h3>
-            <button class="theme-btn" popovertarget="go-editor-old">
+            <button class="sheet-close" popovertarget="go-editor-old">
               닫기 Esc
             </button>
           </header>
@@ -2662,16 +2698,18 @@
           </dl>
         </div>
       </aside>
+      <footer>
+        출처:
+        <a
+          href="https://go.dev/doc/devel/release"
+          target="_blank"
+          rel="noopener"
+          >Go release history</a
+        >
+        · 각 버전 release notes · Go Developer Survey. 막대 굵기(사용량) 는 설문
+        · GitHub 스타 · 커뮤니티 언급을 바탕으로 한 근사치이며 정확한 점유율이
+        아닙니다.
+      </footer>
     </main>
-
-    <footer class="container">
-      출처:
-      <a href="https://go.dev/doc/devel/release" target="_blank" rel="noopener"
-        >Go release history</a
-      >
-      · 각 버전 release notes · Go Developer Survey. 막대 굵기(사용량) 는 설문 ·
-      GitHub 스타 · 커뮤니티 언급을 바탕으로 한 근사치이며 정확한 점유율이
-      아닙니다.
-    </footer>
   </body>
 </html>

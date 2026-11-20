@@ -21,327 +21,32 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
     />
+    <link rel="stylesheet" href="../common/doc.css" />
     <style>
-      /* Layout: one reading column of a terminal-side field note; tables and charts may run wider in their own scrollers */
       :root {
-        --bg: #f4f5f7;
-        --surface: #ffffff;
-        --ink: #15181d;
-        --ink-2: #474e5b;
-        --muted: #646b78;
-        --line: #e0e3e8;
-        --axis: #c6cad2;
-        --code-bg: #eceef2;
         --c-uv: #2a78d6;
         --c-mise: #eb6834;
         --c-pyenv: #1baf7a;
         --c-base: #9aa0ab;
-        --chip-bg: #fdeee6;
-        --chip-ink: #9a3a12;
-        --f-display:
-          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-        --f-body:
-          "IBM Plex Sans KR", -apple-system, "Apple SD Gothic Neo",
-          "Noto Sans KR", system-ui, sans-serif;
-        --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
       }
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
-          --bg: #111317;
-          --surface: #191c21;
-          --ink: #eceef2;
-          --ink-2: #b8bec9;
-          --muted: #8a909c;
-          --line: #2a2f37;
-          --axis: #3a404a;
-          --code-bg: #22262d;
           --c-uv: #3987e5;
           --c-mise: #d95926;
           --c-pyenv: #199e70;
           --c-base: #6b717d;
-          --chip-bg: #3a2216;
-          --chip-ink: #f3a57f;
-          color-scheme: dark;
         }
       }
       :root[data-theme="dark"] {
-        --bg: #111317;
-        --surface: #191c21;
-        --ink: #eceef2;
-        --ink-2: #b8bec9;
-        --muted: #8a909c;
-        --line: #2a2f37;
-        --axis: #3a404a;
-        --code-bg: #22262d;
         --c-uv: #3987e5;
         --c-mise: #d95926;
         --c-pyenv: #199e70;
         --c-base: #6b717d;
-        --chip-bg: #3a2216;
-        --chip-ink: #f3a57f;
-        color-scheme: dark;
       }
 
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-      [hidden] {
-        display: none !important;
-      }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: var(--f-body);
-        font-size: 16px;
-        line-height: 1.7;
-        -webkit-font-smoothing: antialiased;
-      }
-      .page {
-        max-width: 880px;
-        margin: 0 auto;
-        padding-block: 32px 96px;
-        padding-left: max(16px, env(safe-area-inset-left, 0px));
-        padding-right: max(16px, env(safe-area-inset-right, 0px));
-        display: grid;
-        gap: 72px;
-      }
-      section {
-        display: grid;
-        gap: 20px;
-        min-width: 0;
-      }
-      h1,
-      h2,
-      h3 {
-        margin: 0;
-        text-wrap: balance;
-      }
-      p {
-        margin: 0;
-      }
-      code {
-        font-family: var(--f-mono);
-        font-size: 0.86em;
-        background: var(--code-bg);
-        padding: 0.1em 0.38em;
-        border-radius: 4px;
-        overflow-wrap: anywhere;
-      }
-      a {
-        color: var(--c-uv);
-      }
-      :focus-visible {
-        outline: 2px solid var(--c-uv);
-        outline-offset: 2px;
-      }
-
-      /* navbar */
-      #theme-text {
-        display: inline-block;
-        min-width: 2.75em;
-        text-align: center;
-      }
-      .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: var(--surface);
-        border-bottom: 1px solid var(--line);
-        font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
-        line-height: 1.5;
-      }
-      .nav-inner {
-        max-width: 880px;
-        min-height: 56px;
-        margin: 0 auto;
-        padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0
-          max(16px, env(safe-area-inset-left, 0px));
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 4px 12px;
-      }
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 14px;
-        white-space: nowrap;
-        min-width: 0;
-      }
-      .nav-back {
-        display: inline-flex;
-        align-items: center;
-        min-height: 44px;
-        color: var(--muted);
-        text-decoration: none;
-      }
-      .nav-back:hover {
-        color: var(--ink);
-        text-decoration: none;
-      }
-      .nav-sep {
-        color: var(--axis);
-      }
-      .nav-title {
-        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-        font-weight: 600;
-        color: var(--ink);
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        min-width: 0;
-      }
-      .section-nav {
-        display: flex;
-        gap: 4px;
-        min-width: 0;
-      }
-      .section-nav a {
-        display: inline-flex;
-        align-items: center;
-        min-height: 40px;
-        padding: 0 12px;
-        border-radius: 8px;
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 500;
-        white-space: nowrap;
-        text-decoration: none;
-      }
-      .section-nav a:hover {
-        background: var(--code-bg);
-        color: var(--ink);
-      }
-      .section-nav a[aria-current] {
-        color: var(--ink);
-        font-weight: 600;
-        box-shadow: inset 0 -2px 0 var(--ink);
-        border-radius: 8px 8px 0 0;
-      }
-      .theme-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        min-height: 40px;
-        padding: 0 12px;
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        color: var(--muted);
-        font: inherit;
-        font-size: 13px;
-        white-space: nowrap;
-        cursor: pointer;
-      }
-      .theme-btn:hover {
-        border-color: var(--muted);
-        color: var(--ink);
-      }
-      @media (max-width: 767px) {
-        .nav-actions {
-          flex: 1 1 auto;
-          justify-content: space-between;
-        }
-        .section-nav {
-          overflow-x: auto;
-          scrollbar-width: none;
-        }
-      }
-      section[id] {
-        scroll-margin-top: 72px;
-      }
-
-      /* header */
-      .page > header {
-        display: grid;
-        gap: 20px;
-      }
-      .eyebrow {
-        font-family: var(--f-mono);
-        font-size: 12px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-      h1 {
-        font-family: var(--f-display);
-        font-weight: 800;
-        font-size: clamp(40px, 9vw, 76px);
-        line-height: 1;
-        letter-spacing: -0.03em;
-      }
       h1 .sep {
         color: var(--axis);
         font-weight: 400;
-      }
-      h1 .prompt {
-        color: var(--muted);
-        font-weight: 400;
-        margin-right: 0.25em;
-      }
-      .lede {
-        font-size: 19px;
-        line-height: 1.65;
-        color: var(--ink-2);
-      }
-      .lede strong {
-        color: var(--ink);
-        font-weight: 600;
-      }
-      .meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px 18px;
-        font-family: var(--f-mono);
-        font-size: 12.5px;
-        color: var(--muted);
-        border-top: 1px solid var(--line);
-        padding-top: 14px;
-      }
-      .meta b {
-        color: var(--ink-2);
-        font-weight: 600;
-      }
-
-      h2 {
-        font-size: 26px;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        line-height: 1.3;
-      }
-      h2 small {
-        display: block;
-        font-family: var(--f-mono);
-        font-size: 12px;
-        font-weight: 400;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 6px;
-      }
-      h3 {
-        font-size: 17px;
-        font-weight: 600;
-        line-height: 1.4;
-      }
-      .note {
-        font-size: 14px;
-        color: var(--muted);
-        line-height: 1.6;
       }
 
       /* tool name, dots */
@@ -352,6 +57,7 @@
         font-family: var(--f-display);
         font-weight: 800;
         font-size: 22px;
+        line-height: 1.2;
       }
       .dot {
         width: 10px;
@@ -370,109 +76,29 @@
       }
 
       /* tables */
-      .scroll {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        background: var(--surface);
-      }
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 14px;
-      }
-      th,
-      td {
-        text-align: left;
-        vertical-align: top;
-        padding: 11px 14px;
-        border-bottom: 1px solid var(--line);
-      }
-      tr:last-child > * {
-        border-bottom: 0;
-      }
-      thead th {
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--muted);
-        letter-spacing: 0.04em;
-        background: var(--bg);
-        white-space: nowrap;
-      }
       thead th .dot {
         display: inline-block;
         margin-right: 6px;
         vertical-align: 1px;
       }
-      tbody th {
-        font-weight: 600;
+      .matrix {
+        min-width: 720px;
+      }
+      .matrix tbody th {
         white-space: nowrap;
       }
       td.none {
         color: var(--muted);
       }
-      .matrix {
-        min-width: 720px;
-      }
-      .matrix td code {
-        font-size: 12.5px;
-      }
-      .chip {
-        display: inline-block;
-        margin-left: 8px;
-        font-size: 11px;
-        font-weight: 600;
-        padding: 1px 7px;
-        border-radius: 999px;
-        background: var(--chip-bg);
-        color: var(--chip-ink);
-        vertical-align: 1px;
-      }
-      .num {
-        font-family: var(--f-mono);
-        font-variant-numeric: tabular-nums;
-        white-space: nowrap;
-      }
 
       /* charts */
-      .legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px 20px;
-        font-size: 13.5px;
-        color: var(--ink-2);
-      }
-      .legend span {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .legend i {
-        width: 14px;
-        height: 10px;
-        border-radius: 0 3px 3px 0;
-        display: inline-block;
-      }
-      .charts {
-        display: grid;
-        gap: 20px;
-      }
-      .chart {
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        padding: 22px 22px 18px;
-        display: grid;
-        gap: 14px;
-        min-width: 0;
-      }
       .chart-head {
         display: grid;
         gap: 4px;
       }
       .chart-head p {
         font-size: 14px;
+        line-height: 1.6;
         color: var(--ink-2);
       }
       .group {
@@ -484,7 +110,6 @@
         font-size: 11.5px;
         color: var(--muted);
         letter-spacing: 0.02em;
-        padding-top: 6px;
       }
       .row {
         display: grid;
@@ -504,9 +129,6 @@
         line-height: 1.35;
         min-width: 0;
       }
-      .row-label code {
-        font-size: 12px;
-      }
       .track {
         position: relative;
         height: 28px;
@@ -525,7 +147,7 @@
         height: 16px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 4px;
         width: 100%;
       }
       .bar {
@@ -552,6 +174,8 @@
         font-variant-numeric: tabular-nums;
         color: var(--ink);
         white-space: nowrap;
+        padding-inline: 4px;
+        background: var(--surface);
       }
       .axis {
         display: grid;
@@ -578,9 +202,10 @@
       }
       .takeaway {
         font-size: 14.5px;
+        line-height: 1.65;
         color: var(--ink);
         border-top: 1px solid var(--line);
-        padding-top: 12px;
+        padding-top: 16px;
       }
 
       #tip {
@@ -593,7 +218,7 @@
         border-radius: 8px;
         padding: 8px 12px;
         font-size: 12.5px;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+        box-shadow: var(--shadow);
         display: grid;
         gap: 2px;
         max-width: 260px;
@@ -657,57 +282,51 @@
       pre .c {
         color: var(--muted);
       }
-      .two {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-      }
-      .layer {
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        padding: 18px 20px;
-        display: grid;
-        gap: 8px;
-        min-width: 0;
-      }
-      .layer ul {
-        margin: 0;
-        padding-left: 1.1em;
-        font-size: 14.5px;
-        color: var(--ink-2);
-        display: grid;
-        gap: 4px;
-      }
 
-      footer {
-        font-size: 13px;
-        color: var(--muted);
-        border-top: 1px solid var(--line);
-        padding-top: 16px;
+      @media (min-width: 1100px) {
+        /* 넓은 화면: 막대는 왼쪽, 그 차트의 결론은 오른쪽. 마지막 1fr 행이 결론 쪽 남는 높이를 받아 막대 사이가 벌어지지 않는다 */
+        .chart {
+          grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+          grid-template-rows: repeat(12, auto) 1fr;
+          gap: 0 32px;
+        }
+        .chart-head {
+          grid-column: 1 / -1;
+          margin-bottom: 20px;
+        }
+        .group,
+        .axis {
+          grid-column: 1;
+        }
+        .group + .group,
+        .axis {
+          margin-top: 16px;
+        }
+        .takeaway {
+          grid-column: 2;
+          grid-row: 2 / -1;
+          border-top: 0;
+          padding-top: 0;
+          border-left: 1px solid var(--line);
+          padding-left: 32px;
+        }
       }
-
-      @media (max-width: 720px) {
-        section[id] {
-          scroll-margin-top: 104px;
-        }
-        .two {
-          grid-template-columns: minmax(0, 1fr);
-        }
+      @media (max-width: 767px) {
+        /* 좁은 화면: 이름을 막대 위로 올려 막대 끝의 값 라벨이 카드 안에 들어가게 한다 */
         .row,
         .axis {
-          grid-template-columns: 7.5rem minmax(0, 1fr);
-          gap: 8px;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 0;
         }
-        .chart {
-          padding: 18px 14px 14px;
+        .axis > :first-child {
+          display: none;
         }
-        .page {
-          gap: 56px;
-          padding-block: 32px 72px;
+        #table {
+          min-width: 760px;
         }
-        .lede {
-          font-size: 17px;
+        table:not(.matrix) td code {
+          white-space: normal;
+          overflow-wrap: anywhere;
         }
       }
       @media (prefers-reduced-motion: no-preference) {
@@ -718,6 +337,7 @@
     </style>
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
@@ -746,7 +366,7 @@
       </div>
     </header>
 
-    <div class="page">
+    <main class="page" id="main">
       <header>
         <div class="eyebrow">Python 툴체인 정리 · 2026-10-25</div>
         <h1>
@@ -778,7 +398,7 @@
           하는 기능입니다. 나머지 기능은 한 도구만 할 수 있어서 경쟁할 일이
           없습니다.
         </p>
-        <div class="scroll">
+        <div class="scroll" tabindex="0" role="region" aria-label="역할 비교표">
           <table class="matrix">
             <thead>
               <tr>
@@ -880,29 +500,39 @@
           막대에 마우스를 올리거나 포커스하면 자세한 값이 나옵니다.
         </p>
         <div class="legend" role="group" aria-label="범례">
-          <span><i style="background: var(--c-uv)"></i>uv</span>
-          <span><i style="background: var(--c-mise)"></i>mise</span>
-          <span><i style="background: var(--c-pyenv)"></i>pyenv</span>
+          <span><i class="swatch" style="background: var(--c-uv)"></i>uv</span>
           <span
-            ><i style="background: var(--c-base)"></i>표준 도구 (python,
-            pip)</span
+            ><i class="swatch" style="background: var(--c-mise)"></i>mise</span
+          >
+          <span
+            ><i class="swatch" style="background: var(--c-pyenv)"></i
+            >pyenv</span
+          >
+          <span
+            ><i class="swatch" style="background: var(--c-base)"></i>표준 도구
+            (python, pip)</span
           >
         </div>
-        <div class="charts" id="charts"></div>
+        <div class="block" id="charts"></div>
         <details>
           <summary>전체 측정값 표</summary>
           <div class="inner">
-            <div class="scroll">
+            <div
+              class="scroll"
+              tabindex="0"
+              role="region"
+              aria-label="전체 측정값 표"
+            >
               <table id="table">
                 <thead>
                   <tr>
                     <th>측정</th>
                     <th>대상</th>
-                    <th>평균</th>
-                    <th>중앙값</th>
-                    <th>± σ</th>
-                    <th>최소–최대</th>
-                    <th>횟수</th>
+                    <th class="num">평균</th>
+                    <th class="num">중앙값</th>
+                    <th class="num">± σ</th>
+                    <th class="num">최소–최대</th>
+                    <th class="num">횟수</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -923,18 +553,18 @@
           인터프리터를 설치하는 도구가 여럿이면 어느 Python이 실행되는지
           헷갈리기 쉽습니다. 역할을 두 층으로 나누고 pyenv는 쓰지 않습니다.
         </p>
-        <div class="two">
-          <div class="layer">
+        <div class="cols-2">
+          <div class="card">
             <div class="tool-name"><span class="dot mise"></span>mise</div>
-            <ul>
+            <ul class="facts">
               <li>전역 <code>python3</code>와 node, go 같은 런타임</li>
               <li>디렉터리별 환경변수와 task</li>
               <li>전역 설정은 <code>~/.config/mise/config.toml</code></li>
             </ul>
           </div>
-          <div class="layer">
+          <div class="card">
             <div class="tool-name"><span class="dot uv"></span>uv</div>
-            <ul>
+            <ul class="facts">
               <li>
                 프로젝트 의존성과 <code>uv.lock</code>, <code>.venv</code>
               </li>
@@ -959,7 +589,12 @@ uv add --script foo.py requests
 uv run foo.py</pre>
 
         <h3>pyenv 명령을 uv로 바꾸면</h3>
-        <div class="scroll">
+        <div
+          class="scroll"
+          tabindex="0"
+          role="region"
+          aria-label="pyenv 명령을 uv로 바꾸면"
+        >
           <table>
             <thead>
               <tr>
@@ -1031,7 +666,12 @@ uv run foo.py</pre>
 
       <section id="paths">
         <h2><small>04 · 경로</small>어디에 설치되나</h2>
-        <div class="scroll">
+        <div
+          class="scroll"
+          tabindex="0"
+          role="region"
+          aria-label="설치 경로 표"
+        >
           <table>
             <thead>
               <tr>
@@ -1146,7 +786,7 @@ python-build 3.13.17 $W/pyb    <span class="c"># pyenv install 과 같은 소스
           >github.com/ysoftman/test_code</a
         >
       </footer>
-    </div>
+    </main>
 
     <div id="tip" role="tooltip" hidden></div>
 

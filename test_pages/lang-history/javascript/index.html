@@ -5,19 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JavaScript History: 버전별 큰 변화와 툴 교체 흐름</title>
     <script src="../theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../../common/doc.css" />
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
           <a class="nav-back" href="../../">← test_pages</a>
           <span class="nav-sep">/</span>
-          <a class="nav-back" href="../">lang-history</a>
-          <span class="nav-sep">/</span>
-          <span class="nav-title">javascript</span>
+          <span class="nav-title">lang-history</span>
         </div>
         <div class="nav-actions">
+          <nav class="section-nav" aria-label="언어 선택">
+            <a href="../">Overview</a>
+            <a href="../go/">Go</a>
+            <a href="../rust/">Rust</a>
+            <a href="../python/">Python</a>
+            <a href="../javascript/" aria-current="page">JavaScript</a>
+          </nav>
           <button
             class="theme-btn"
             id="theme-btn"
@@ -31,34 +44,22 @@
       </div>
     </header>
 
-    <main class="container">
-      <section class="page-header">
-        <h1>Language History</h1>
-        <p class="page-desc">
-          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
-          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
-          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
-        </p>
-        <nav class="lang-nav" aria-label="언어 선택">
-          <a href="../">개요</a>
-          <a href="../go/">Go</a>
-          <a href="../rust/">Rust</a>
-          <a href="../python/">Python</a>
-          <a href="../javascript/" aria-current="page">JavaScript</a>
-        </nav>
-      </section>
-
-      <!-- ============================================= JavaScript -->
-      <section class="lang" id="javascript">
-        <h2>JavaScript</h2>
-        <p class="lead">
+    <main class="page" id="main">
+      <header>
+        <div class="eyebrow">버전별 큰 변화와 툴 교체 흐름</div>
+        <h1><span class="prompt">$</span>Language History: JavaScript</h1>
+        <p class="lede">
           언어 (ECMAScript 에디션) 와 런타임 (Node · Deno · Bun) 이 따로
           움직입니다. 2009 ES5 이후 6 년 공백, 2015 부터 매년 6 월 에디션. 공식
           툴체인이 없어 서드파티가 가장 넓게 난립했고, 2020 년대에 Go · Rust 로
           <strong>재작성된 하나</strong>와 런타임 <strong>내장 기능</strong>으로
           수렴합니다.
         </p>
-
+        <p class="note">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
+        </p>
         <div class="stat-row">
           <div class="stat">
             <b>6</b>
@@ -86,11 +87,13 @@
             >
           </div>
         </div>
+      </header>
 
-        <h3>Releases — 굵직한 변화</h3>
+      <section id="releases">
+        <h2><small>01 · Releases</small>굵직한 변화</h2>
         <div class="releases-2col">
-          <div>
-            <h4>ECMAScript 에디션</h4>
+          <div class="block">
+            <h3>ECMAScript 에디션</h3>
             <ul class="timeline">
               <li class="release">
                 <div class="head">
@@ -454,8 +457,8 @@
             </ul>
           </div>
 
-          <div>
-            <h4>런타임 (Node.js · Deno · Bun)</h4>
+          <div class="block">
+            <h3>런타임 (Node.js · Deno · Bun)</h3>
             <ul class="timeline">
               <li class="release major">
                 <div class="head">
@@ -1107,9 +1110,11 @@
             </ul>
           </div>
         </div>
+      </section>
 
-        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
-        <p class="lead">
+      <section id="tooling">
+        <h2><small>02 · Tooling</small>무엇이 무엇으로 바뀌었나</h2>
+        <p>
           막대 굵기 = 사용량 (State of JS 설문 · npm 다운로드 · 스타 기준
           근사치). 사라진 툴의 레인은 다음 툴이 재사용합니다. 막대를 클릭하면
           교체 배경을 볼 수 있어요. 2012 이전에 시작한 툴은 첫 열부터 그리고
@@ -1122,710 +1127,724 @@
           <span><i class="e"></i>discontinued</span>
         </div>
 
-        <h4>패키지 매니저</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 17"
-              popovertarget="js-pkg"
-            >
-              <span class="name">npm (2010)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 1 / 5"
-              popovertarget="js-bower"
-            >
-              <span class="name">bower</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 3; grid-column: 5 / 7"
-              popovertarget="js-bower"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 9 / 17"
-              popovertarget="js-yarn"
-            >
-              <span class="name">yarn berry</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 5 / 6"
-              popovertarget="js-yarn"
-            >
-              <span class="name">yarn 1</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 6 / 10"
-              popovertarget="js-yarn"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 10 / 17"
-              popovertarget="js-yarn"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 6 / 11"
-              popovertarget="js-pkg"
-            >
-              <span class="name">pnpm</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 11 / 17"
-              popovertarget="js-pkg"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 11 / 13"
-              popovertarget="js-pkg"
-            >
-              <span class="name">bun install</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 6; grid-column: 13 / 17"
-              popovertarget="js-pkg"
-            ></button>
+        <div class="chart">
+          <h3>패키지 매니저</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 17"
+                popovertarget="js-pkg"
+              >
+                <span class="name">npm (2010)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 1 / 5"
+                popovertarget="js-bower"
+              >
+                <span class="name">bower</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 3; grid-column: 5 / 7"
+                popovertarget="js-bower"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 9 / 17"
+                popovertarget="js-yarn"
+              >
+                <span class="name">yarn berry</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 5 / 6"
+                popovertarget="js-yarn"
+              >
+                <span class="name">yarn 1</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 6 / 10"
+                popovertarget="js-yarn"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 10 / 17"
+                popovertarget="js-yarn"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 6 / 11"
+                popovertarget="js-pkg"
+              >
+                <span class="name">pnpm</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 11 / 17"
+                popovertarget="js-pkg"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 11 / 13"
+                popovertarget="js-pkg"
+              >
+                <span class="name">bun install</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 6; grid-column: 13 / 17"
+                popovertarget="js-pkg"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>번들러 · 빌드 — Go/Rust 재작성 수렴의 핵심</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(8, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 1 / 4"
-              popovertarget="js-grunt-gulp"
-            >
-              <span class="name">grunt</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 4 / 6"
-              popovertarget="js-grunt-gulp"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 9 / 10"
-              popovertarget="js-esbuild"
-            >
-              <span class="name">esbuild (Go)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 10 / 17"
-              popovertarget="js-esbuild"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 1 / 6"
-              popovertarget="js-grunt-gulp"
-            >
-              <span class="name">browserify (2011)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 6 / 9"
-              popovertarget="js-grunt-gulp"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 11 / 17"
-              popovertarget="js-rolldown"
-            >
-              <span class="name">turbopack (Rust · Next.js)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 2 / 8"
-              popovertarget="js-grunt-gulp"
-            >
-              <span class="name">gulp</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 8 / 10"
-              popovertarget="js-grunt-gulp"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 12 / 17"
-              popovertarget="js-rolldown"
-            >
-              <span class="name">rspack (Rust · webpack 호환)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 3 / 5"
-              popovertarget="js-webpack-vite"
-            >
-              <span class="name">webpack</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 5; grid-column: 5 / 11"
-              popovertarget="js-webpack-vite"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 11 / 17"
-              popovertarget="js-webpack-vite"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 6; grid-column: 4 / 15"
-              popovertarget="js-rollup"
-            >
-              <span class="name">rollup</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 15 / 17"
-              popovertarget="js-rollup"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 7; grid-column: 6 / 7"
-              popovertarget="js-parcel"
-            >
-              <span class="name">parcel</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 7; grid-column: 7 / 9"
-              popovertarget="js-parcel"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 7; grid-column: 9 / 17"
-              popovertarget="js-parcel"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 8; grid-column: 9 / 10"
-              popovertarget="js-webpack-vite"
-            >
-              <span class="name">vite</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 8; grid-column: 10 / 11"
-              popovertarget="js-webpack-vite"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 8; grid-column: 11 / 17"
-              popovertarget="js-webpack-vite"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 9; grid-column: 13 / 15"
-              popovertarget="js-rolldown"
-            >
-              <span class="name">rolldown (Rust · Vite 8 기본)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 9; grid-column: 15 / 17"
-              popovertarget="js-rolldown"
-            ></button>
+        <div class="chart">
+          <h3>번들러 · 빌드 — Go/Rust 재작성 수렴의 핵심</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(8, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 1 / 4"
+                popovertarget="js-grunt-gulp"
+              >
+                <span class="name">grunt</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 4 / 6"
+                popovertarget="js-grunt-gulp"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 9 / 10"
+                popovertarget="js-esbuild"
+              >
+                <span class="name">esbuild (Go)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 10 / 17"
+                popovertarget="js-esbuild"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 1 / 6"
+                popovertarget="js-grunt-gulp"
+              >
+                <span class="name">browserify (2011)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 6 / 9"
+                popovertarget="js-grunt-gulp"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 11 / 17"
+                popovertarget="js-rolldown"
+              >
+                <span class="name">turbopack (Rust · Next.js)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 2 / 8"
+                popovertarget="js-grunt-gulp"
+              >
+                <span class="name">gulp</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 8 / 10"
+                popovertarget="js-grunt-gulp"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 12 / 17"
+                popovertarget="js-rolldown"
+              >
+                <span class="name">rspack (Rust · webpack 호환)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 3 / 5"
+                popovertarget="js-webpack-vite"
+              >
+                <span class="name">webpack</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 5; grid-column: 5 / 11"
+                popovertarget="js-webpack-vite"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 11 / 17"
+                popovertarget="js-webpack-vite"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 6; grid-column: 4 / 15"
+                popovertarget="js-rollup"
+              >
+                <span class="name">rollup</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 15 / 17"
+                popovertarget="js-rollup"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 7; grid-column: 6 / 7"
+                popovertarget="js-parcel"
+              >
+                <span class="name">parcel</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 7; grid-column: 7 / 9"
+                popovertarget="js-parcel"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 7; grid-column: 9 / 17"
+                popovertarget="js-parcel"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 8; grid-column: 9 / 10"
+                popovertarget="js-webpack-vite"
+              >
+                <span class="name">vite</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 8; grid-column: 10 / 11"
+                popovertarget="js-webpack-vite"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 8; grid-column: 11 / 17"
+                popovertarget="js-webpack-vite"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 9; grid-column: 13 / 15"
+                popovertarget="js-rolldown"
+              >
+                <span class="name">rolldown (Rust · Vite 8 기본)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 9; grid-column: 15 / 17"
+                popovertarget="js-rolldown"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>트랜스파일 · 타입</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 1 / 4"
-              popovertarget="js-coffee-flow"
-            >
-              <span class="name">coffeescript (2009)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 4 / 6"
-              popovertarget="js-coffee-flow"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 8 / 10"
-              popovertarget="js-babel-swc"
-            >
-              <span class="name">swc (Rust)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 10 / 17"
-              popovertarget="js-babel-swc"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 3 / 4"
-              popovertarget="js-babel-swc"
-            >
-              <span class="name">babel (6to5)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 3; grid-column: 4 / 10"
-              popovertarget="js-babel-swc"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 10 / 17"
-              popovertarget="js-babel-swc"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 1 / 4"
-              popovertarget="js-tsgo"
-            >
-              <span class="name">tsc (TypeScript)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 4 / 6"
-              popovertarget="js-tsgo"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 6 / 15"
-              popovertarget="js-tsgo"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 15 / 17"
-              popovertarget="js-tsgo"
-            >
-              <span class="name">tsc 7 (Go 포트)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 3 / 4"
-              popovertarget="js-coffee-flow"
-            >
-              <span class="name">flow</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 4 / 8"
-              popovertarget="js-coffee-flow"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 8 / 11"
-              popovertarget="js-coffee-flow"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 12 / 14"
-              popovertarget="js-babel-swc"
-            >
-              <span class="name">oxc (Rust)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 14 / 17"
-              popovertarget="js-babel-swc"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 6; grid-column: 9 / 15"
-              popovertarget="js-esbuild"
-            >
-              <span class="name">esbuild (Vite dev 변환)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 15 / 17"
-              popovertarget="js-esbuild"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 7; grid-column: 15 / 17"
-              popovertarget="js-tsgo"
-            >
-              <span class="name">bun check</span>
-            </button>
+        <div class="chart">
+          <h3>트랜스파일 · 타입</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 1 / 4"
+                popovertarget="js-coffee-flow"
+              >
+                <span class="name">coffeescript (2009)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 4 / 6"
+                popovertarget="js-coffee-flow"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 8 / 10"
+                popovertarget="js-babel-swc"
+              >
+                <span class="name">swc (Rust)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 10 / 17"
+                popovertarget="js-babel-swc"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 3 / 4"
+                popovertarget="js-babel-swc"
+              >
+                <span class="name">babel (6to5)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 3; grid-column: 4 / 10"
+                popovertarget="js-babel-swc"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 10 / 17"
+                popovertarget="js-babel-swc"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 1 / 4"
+                popovertarget="js-tsgo"
+              >
+                <span class="name">tsc (TypeScript)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 4 / 6"
+                popovertarget="js-tsgo"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 6 / 15"
+                popovertarget="js-tsgo"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 15 / 17"
+                popovertarget="js-tsgo"
+              >
+                <span class="name">tsc 7 (Go 포트)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 3 / 4"
+                popovertarget="js-coffee-flow"
+              >
+                <span class="name">flow</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 4 / 8"
+                popovertarget="js-coffee-flow"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 8 / 11"
+                popovertarget="js-coffee-flow"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 12 / 14"
+                popovertarget="js-babel-swc"
+              >
+                <span class="name">oxc (Rust)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 14 / 17"
+                popovertarget="js-babel-swc"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 6; grid-column: 9 / 15"
+                popovertarget="js-esbuild"
+              >
+                <span class="name">esbuild (Vite dev 변환)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 15 / 17"
+                popovertarget="js-esbuild"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 7; grid-column: 15 / 17"
+                popovertarget="js-tsgo"
+              >
+                <span class="name">bun check</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <h4>린트</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 1 / 4"
-              popovertarget="js-jslint-jshint"
-            >
-              <span class="name">jslint (2002)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 5 / 6"
-              popovertarget="js-tslint"
-            >
-              <span class="name">tslint</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 6 / 9"
-              popovertarget="js-tslint"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 2; grid-column: 9 / 10"
-              popovertarget="js-tslint"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 12 / 14"
-              popovertarget="js-eslint-biome"
-            >
-              <span class="name">biome (Rust)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 14 / 17"
-              popovertarget="js-eslint-biome"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 1 / 5"
-              popovertarget="js-jslint-jshint"
-            >
-              <span class="name">jshint (2011)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 5 / 10"
-              popovertarget="js-jslint-jshint"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 12 / 14"
-              popovertarget="js-eslint-biome"
-            >
-              <span class="name">oxlint (Rust)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 14 / 17"
-              popovertarget="js-eslint-biome"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 2 / 4"
-              popovertarget="js-eslint"
-            >
-              <span class="name">eslint</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 4 / 5"
-              popovertarget="js-eslint"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 5 / 17"
-              popovertarget="js-eslint"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 4 / 13"
-              popovertarget="js-jslint-jshint"
-            >
-              <span class="name">standard</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 15 / 17"
-              popovertarget="js-eslint-biome"
-            >
-              <span class="name">bun lint (canary)</span>
-            </button>
+        <div class="chart">
+          <h3>린트</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 1 / 4"
+                popovertarget="js-jslint-jshint"
+              >
+                <span class="name">jslint (2002)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 5 / 6"
+                popovertarget="js-tslint"
+              >
+                <span class="name">tslint</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 6 / 9"
+                popovertarget="js-tslint"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 2; grid-column: 9 / 10"
+                popovertarget="js-tslint"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 12 / 14"
+                popovertarget="js-eslint-biome"
+              >
+                <span class="name">biome (Rust)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 14 / 17"
+                popovertarget="js-eslint-biome"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 1 / 5"
+                popovertarget="js-jslint-jshint"
+              >
+                <span class="name">jshint (2011)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 5 / 10"
+                popovertarget="js-jslint-jshint"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 12 / 14"
+                popovertarget="js-eslint-biome"
+              >
+                <span class="name">oxlint (Rust)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 14 / 17"
+                popovertarget="js-eslint-biome"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 2 / 4"
+                popovertarget="js-eslint"
+              >
+                <span class="name">eslint</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 4 / 5"
+                popovertarget="js-eslint"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 5 / 17"
+                popovertarget="js-eslint"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 4 / 13"
+                popovertarget="js-jslint-jshint"
+              >
+                <span class="name">standard</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 15 / 17"
+                popovertarget="js-eslint-biome"
+              >
+                <span class="name">bun lint (canary)</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <h4>포맷</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common end"
-              style="--lane: 2; grid-column: 2 / 5"
-              popovertarget="js-jscs"
-            >
-              <span class="name">jscs</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 6 / 7"
-              popovertarget="js-prettier-biome"
-            >
-              <span class="name">prettier</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 7 / 17"
-              popovertarget="js-prettier-biome"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 4 / 8"
-              popovertarget="js-jscs"
-            >
-              <span class="name">eslint 스타일 규칙 (--fix)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 8 / 13"
-              popovertarget="js-jscs"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 15 / 17"
-              popovertarget="js-prettier-biome"
-            >
-              <span class="name">bun fmt (canary)</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 10 / 12"
-              popovertarget="js-rome"
-            >
-              <span class="name">rome</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 12 / 14"
-              popovertarget="js-prettier-biome"
-            >
-              <span class="name">biome format</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 14 / 17"
-              popovertarget="js-prettier-biome"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 14 / 17"
-              popovertarget="js-prettier-biome"
-            >
-              <span class="name">oxfmt (beta)</span>
-            </button>
+        <div class="chart">
+          <h3>포맷</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common end"
+                style="--lane: 2; grid-column: 2 / 5"
+                popovertarget="js-jscs"
+              >
+                <span class="name">jscs</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 6 / 7"
+                popovertarget="js-prettier-biome"
+              >
+                <span class="name">prettier</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 7 / 17"
+                popovertarget="js-prettier-biome"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 4 / 8"
+                popovertarget="js-jscs"
+              >
+                <span class="name">eslint 스타일 규칙 (--fix)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 8 / 13"
+                popovertarget="js-jscs"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 15 / 17"
+                popovertarget="js-prettier-biome"
+              >
+                <span class="name">bun fmt (canary)</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 10 / 12"
+                popovertarget="js-rome"
+              >
+                <span class="name">rome</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 12 / 14"
+                popovertarget="js-prettier-biome"
+              >
+                <span class="name">biome format</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 14 / 17"
+                popovertarget="js-prettier-biome"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 14 / 17"
+                popovertarget="js-prettier-biome"
+              >
+                <span class="name">oxfmt (beta)</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <h4>테스트</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 5"
-              popovertarget="js-mocha"
-            >
-              <span class="name">mocha (2011)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 5 / 10"
-              popovertarget="js-mocha"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 10 / 17"
-              popovertarget="js-mocha"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 1 / 7"
-              popovertarget="js-mocha"
-            >
-              <span class="name">jasmine (2010)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 7 / 11"
-              popovertarget="js-mocha"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 12 / 14"
-              popovertarget="js-jest-vitest"
-            >
-              <span class="name">bun test</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 14 / 17"
-              popovertarget="js-jest-vitest"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 2 / 8"
-              popovertarget="js-mocha"
-            >
-              <span class="name">karma</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 8 / 13"
-              popovertarget="js-mocha"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 3 / 5"
-              popovertarget="js-jest-vitest"
-            >
-              <span class="name">jest</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 5 / 6"
-              popovertarget="js-jest-vitest"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 5; grid-column: 6 / 12"
-              popovertarget="js-jest-vitest"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 12 / 17"
-              popovertarget="js-jest-vitest"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 10 / 12"
-              popovertarget="js-jest-vitest"
-            >
-              <span class="name">vitest</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 6; grid-column: 12 / 13"
-              popovertarget="js-jest-vitest"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 6; grid-column: 13 / 17"
-              popovertarget="js-jest-vitest"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 7; grid-column: 11 / 12"
-              popovertarget="js-node-20-22"
-            >
-              <span class="name">node:test (18 → 20 stable)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 7; grid-column: 12 / 17"
-              popovertarget="js-node-20-22"
-            ></button>
+        <div class="chart">
+          <h3>테스트</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 5"
+                popovertarget="js-mocha"
+              >
+                <span class="name">mocha (2011)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 5 / 10"
+                popovertarget="js-mocha"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 10 / 17"
+                popovertarget="js-mocha"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 1 / 7"
+                popovertarget="js-mocha"
+              >
+                <span class="name">jasmine (2010)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 7 / 11"
+                popovertarget="js-mocha"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 12 / 14"
+                popovertarget="js-jest-vitest"
+              >
+                <span class="name">bun test</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 14 / 17"
+                popovertarget="js-jest-vitest"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 2 / 8"
+                popovertarget="js-mocha"
+              >
+                <span class="name">karma</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 8 / 13"
+                popovertarget="js-mocha"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 3 / 5"
+                popovertarget="js-jest-vitest"
+              >
+                <span class="name">jest</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 5 / 6"
+                popovertarget="js-jest-vitest"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 5; grid-column: 6 / 12"
+                popovertarget="js-jest-vitest"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 12 / 17"
+                popovertarget="js-jest-vitest"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 10 / 12"
+                popovertarget="js-jest-vitest"
+              >
+                <span class="name">vitest</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 6; grid-column: 12 / 13"
+                popovertarget="js-jest-vitest"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 6; grid-column: 13 / 17"
+                popovertarget="js-jest-vitest"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 7; grid-column: 11 / 12"
+                popovertarget="js-node-20-22"
+              >
+                <span class="name">node:test (18 → 20 stable)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 7; grid-column: 12 / 17"
+                popovertarget="js-node-20-22"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>런타임</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 17"
-              popovertarget="js-iojs"
-            >
-              <span class="name">node (2009)</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 3; grid-column: 4 / 5"
-              popovertarget="js-iojs"
-            >
-              <span class="name">io.js</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 3; grid-column: 7 / 17"
-              popovertarget="js-deno"
-            >
-              <span class="name">deno (2027 개발 종료 예정)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 11 / 13"
-              popovertarget="js-bun"
-            >
-              <span class="name">bun</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 13 / 17"
-              popovertarget="js-bun"
-            ></button>
+        <div class="chart">
+          <h3>런타임</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 17"
+                popovertarget="js-iojs"
+              >
+                <span class="name">node (2009)</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 3; grid-column: 4 / 5"
+                popovertarget="js-iojs"
+              >
+                <span class="name">io.js</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 3; grid-column: 7 / 17"
+                popovertarget="js-deno"
+              >
+                <span class="name">deno (2027 개발 종료 예정)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 11 / 13"
+                popovertarget="js-bun"
+              >
+                <span class="name">bun</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 13 / 17"
+                popovertarget="js-bun"
+              ></button>
+            </div>
           </div>
         </div>
       </section>
@@ -1838,7 +1857,7 @@
               ES2015 (ES6)
               <small>2015-06 · 6 년 만의 에디션 · 연 1 회 체제 시작</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-es2015">
+            <button class="sheet-close" popovertarget="js-es2015">
               닫기 Esc
             </button>
           </header>
@@ -1920,7 +1939,7 @@
               async / await
               <small>ES2017 (2017-06) · Node 7.6 (2017-02) · Node 8</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-async-await">
+            <button class="sheet-close" popovertarget="js-async-await">
               닫기 Esc
             </button>
           </header>
@@ -1982,7 +2001,7 @@
         <div class="sheet-inner">
           <header>
             <h3>ES2020 <small>2020-06 · ?. · ?? · import()</small></h3>
-            <button class="theme-btn" popovertarget="js-es2020">
+            <button class="sheet-close" popovertarget="js-es2020">
               닫기 Esc
             </button>
           </header>
@@ -2048,7 +2067,7 @@
             <h3>
               ES2022 <small>2022-06 · top-level await · 클래스 필드</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-es2022">
+            <button class="sheet-close" popovertarget="js-es2022">
               닫기 Esc
             </button>
           </header>
@@ -2114,7 +2133,7 @@
               ES2025 · ES2026 · ES2027
               <small>2025-06 · 2026-06 · 2027-06 예정</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-es-recent">
+            <button class="sheet-close" popovertarget="js-es-recent">
               닫기 Esc
             </button>
           </header>
@@ -2199,7 +2218,9 @@
               node · io.js — 분기와 Node 4 LTS 체제
               <small>node 2009 · io.js 1.0 2015-01 → Node 4.0 2015-09</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-iojs">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-iojs">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2265,7 +2286,7 @@
               Node 18 fetch 내장
               <small>18 (2022-04) experimental → 21 (2023-10) stable</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-node-fetch">
+            <button class="sheet-close" popovertarget="js-node-fetch">
               닫기 Esc
             </button>
           </header>
@@ -2337,7 +2358,7 @@
               Node 20 · 22 — node:test · require(esm) · watch
               <small>2023-04 · 2024-04 · 22.12 2024-12</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-node-20-22">
+            <button class="sheet-close" popovertarget="js-node-20-22">
               닫기 Esc
             </button>
           </header>
@@ -2424,7 +2445,7 @@
                 stable</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-node-typescript">
+            <button class="sheet-close" popovertarget="js-node-typescript">
               닫기 Esc
             </button>
           </header>
@@ -2496,7 +2517,7 @@
               grunt · gulp · browserify → webpack
               <small>2011–2016 전성기 · 2017 이후 신규 채택 없음</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-grunt-gulp">
+            <button class="sheet-close" popovertarget="js-grunt-gulp">
               닫기 Esc
             </button>
           </header>
@@ -2565,7 +2586,7 @@
               webpack → vite
               <small>webpack 2014 · vite 2020-04 · 2.0 2021-02</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-webpack-vite">
+            <button class="sheet-close" popovertarget="js-webpack-vite">
               닫기 Esc
             </button>
           </header>
@@ -2645,7 +2666,7 @@
               rolldown · rspack · turbopack — Rust 번들러 수렴
               <small>rolldown 1.0 2026-05 · Vite 8 (2026-03) 기본</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-rolldown">
+            <button class="sheet-close" popovertarget="js-rolldown">
               닫기 Esc
             </button>
           </header>
@@ -2732,7 +2753,7 @@
               babel → swc · esbuild · oxc
               <small>babel 2014 · swc 2019 · esbuild 2020 · oxc 2023</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-babel-swc">
+            <button class="sheet-close" popovertarget="js-babel-swc">
               닫기 Esc
             </button>
           </header>
@@ -2802,7 +2823,7 @@
               coffeescript · flow → ES2015 · TypeScript
               <small>coffeescript 2009 · flow 2014-11</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-coffee-flow">
+            <button class="sheet-close" popovertarget="js-coffee-flow">
               닫기 Esc
             </button>
           </header>
@@ -2873,7 +2894,9 @@
                 2026-07-08</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-tsgo">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-tsgo">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2961,7 +2984,7 @@
               eslint
               <small>2013-06 → · jslint · jshint · jscs · tslint 흡수</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-eslint">
+            <button class="sheet-close" popovertarget="js-eslint">
               닫기 Esc
             </button>
           </header>
@@ -3035,7 +3058,7 @@
               tslint → eslint
               <small>2013 → 2019-02 deprecated → 2021-03 archived</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-tslint">
+            <button class="sheet-close" popovertarget="js-tslint">
               닫기 Esc
             </button>
           </header>
@@ -3109,7 +3132,7 @@
                 2026-07</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-eslint-biome">
+            <button class="sheet-close" popovertarget="js-eslint-biome">
               닫기 Esc
             </button>
           </header>
@@ -3206,7 +3229,7 @@
                 >prettier 2017-01 · biome 2023-08 · oxfmt beta 2026-02</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-prettier-biome">
+            <button class="sheet-close" popovertarget="js-prettier-biome">
               닫기 Esc
             </button>
           </header>
@@ -3306,7 +3329,7 @@
                 bun test 2023</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-jest-vitest">
+            <button class="sheet-close" popovertarget="js-jest-vitest">
               닫기 Esc
             </button>
           </header>
@@ -3398,7 +3421,7 @@
                 >npm 2010 · yarn 2016-10 · pnpm 2017 · bun install 2022</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-pkg">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-pkg">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3490,7 +3513,9 @@
         <div class="sheet-inner">
           <header>
             <h3>bower <small>2012-09 → 2017 권장 중단</small></h3>
-            <button class="theme-btn" popovertarget="js-bower">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-bower">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3545,7 +3570,7 @@
               bun
               <small>1.0 2023-09 → 1.4 2026-08 (Rust) · 1.4.3 2026-10</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-bun">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-bun">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3649,7 +3674,9 @@
               deno
               <small>1.0 2020-05 → 2.0 2024-10 → Cloudflare 합류 2026-10</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-deno">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-deno">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3734,7 +3761,9 @@
                 >2016-10 · berry (2.0) 2020-01 · 4.0 2023-10 · 1.x frozen</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-yarn">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-yarn">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3803,7 +3832,7 @@
             <h3>
               esbuild <small>2020 (Go) · Vite dev 변환기 2020–2025</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-esbuild">
+            <button class="sheet-close" popovertarget="js-esbuild">
               닫기 Esc
             </button>
           </header>
@@ -3873,7 +3902,7 @@
               rollup
               <small>2015 · 1.0 2018-12 · Vite 프로덕션 번들러 2020–2025</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-rollup">
+            <button class="sheet-close" popovertarget="js-rollup">
               닫기 Esc
             </button>
           </header>
@@ -3926,7 +3955,7 @@
         <div class="sheet-inner">
           <header>
             <h3>parcel <small>2017-12 · 2.0 2021-10</small></h3>
-            <button class="theme-btn" popovertarget="js-parcel">
+            <button class="sheet-close" popovertarget="js-parcel">
               닫기 Esc
             </button>
           </header>
@@ -3977,7 +4006,7 @@
               jslint · jshint · standard
               <small>jslint 2002 · jshint 2011-02 · standard 2015-02</small>
             </h3>
-            <button class="theme-btn" popovertarget="js-jslint-jshint">
+            <button class="sheet-close" popovertarget="js-jslint-jshint">
               닫기 Esc
             </button>
           </header>
@@ -4041,7 +4070,9 @@
                 deprecated</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-jscs">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-jscs">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -4110,7 +4141,9 @@
                 >2020-02 발표 · 2022 포맷터 · 린터 · 2023-09 archived</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-rome">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-rome">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -4171,7 +4204,9 @@
                 deprecated)</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="js-mocha">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="js-mocha">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -4231,34 +4266,40 @@
           </dl>
         </div>
       </aside>
+      <footer>
+        출처 (2026-10-19 확인):
+        <a
+          href="https://github.com/tc39/proposals/blob/main/finished-proposals.md"
+          target="_blank"
+          rel="noopener"
+          >TC39 finished proposals</a
+        >
+        ·
+        <a
+          href="https://github.com/nodejs/Release"
+          target="_blank"
+          rel="noopener"
+          >Node.js release schedule</a
+        >
+        · Node.js · Deno · Bun · Vite · Vitest · TypeScript · Biome · Oxc 공식
+        블로그 · 각 저장소 GitHub Releases ·
+        <a href="https://2025.stateofjs.com/" target="_blank" rel="noopener"
+          >State of JS 2025</a
+        >
+        · 이 저장소의
+        <a href="../../bun-benchmark/lint.html">Bun Benchmark · Lint</a> ·
+        <a href="../../bun-benchmark/formatter.html"
+          >Bun Benchmark · Formatter</a
+        >
+        ·
+        <a href="../../bun-benchmark/runtime.html">Bun Benchmark · Runtime</a>.
+        archived · deprecated 표기는 GitHub API (<code>archived</code>) 와
+        README 로 확인한 것만 적었습니다 (tslint · jscs · rome: archived /
+        karma: README deprecated / bower · grunt · gulp · browserify ·
+        coffeescript · flow: 활동 저조하나 archived 아님). 막대 굵기(사용량) 는
+        State of JS 설문 · npm 다운로드 · GitHub 스타를 바탕으로 한 근사치이며
+        정확한 점유율이 아닙니다.
+      </footer>
     </main>
-
-    <footer class="container">
-      출처 (2026-10-19 확인):
-      <a
-        href="https://github.com/tc39/proposals/blob/main/finished-proposals.md"
-        target="_blank"
-        rel="noopener"
-        >TC39 finished proposals</a
-      >
-      ·
-      <a href="https://github.com/nodejs/Release" target="_blank" rel="noopener"
-        >Node.js release schedule</a
-      >
-      · Node.js · Deno · Bun · Vite · Vitest · TypeScript · Biome · Oxc 공식
-      블로그 · 각 저장소 GitHub Releases ·
-      <a href="https://2025.stateofjs.com/" target="_blank" rel="noopener"
-        >State of JS 2025</a
-      >
-      · 이 저장소의
-      <a href="../../bun-benchmark/lint.html">Bun Benchmark · Lint</a> ·
-      <a href="../../bun-benchmark/formatter.html">Bun Benchmark · Formatter</a>
-      · <a href="../../bun-benchmark/runtime.html">Bun Benchmark · Runtime</a>.
-      archived · deprecated 표기는 GitHub API (<code>archived</code>) 와 README
-      로 확인한 것만 적었습니다 (tslint · jscs · rome: archived / karma: README
-      deprecated / bower · grunt · gulp · browserify · coffeescript · flow: 활동
-      저조하나 archived 아님). 막대 굵기(사용량) 는 State of JS 설문 · npm
-      다운로드 · GitHub 스타를 바탕으로 한 근사치이며 정확한 점유율이 아닙니다.
-    </footer>
   </body>
 </html>

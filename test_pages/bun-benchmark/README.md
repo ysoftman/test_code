@@ -21,7 +21,7 @@ bun run bench:test
 bun run bench:bundler
 ```
 
-`bun run serve`를 실행하면 `http://localhost:3000/`에서 Formatter 페이지가 열린다. Formatter, Lint, Runtime, Test, Bundler 페이지는 각각 `/formatter`, `/lint`, `/runtime`, `/test`, `/bundler`에서 볼 수 있으며, 상위 `test_pages` 목록에서도 다섯 페이지로 바로 이동할 수 있다.
+`bun run serve`를 실행하면 `http://localhost:3000/`에서 Formatter 페이지가 열린다. Formatter, Lint, Runtime, Test, Bundler 페이지는 각각 `/formatter`, `/lint`, `/runtime`, `/test`, `/bundler`에서 볼 수 있으며, 상위 `test_pages` 목록에서도 다섯 페이지로 바로 이동할 수 있다. 페이지가 쓰는 공용 스타일(`../common/doc.css`)은 이 서버가 `/common/` 경로로 함께 서빙한다.
 
 - [`formatter.html`](formatter.html): Prettier · Biome · bun fmt의 포맷 속도와 출력 일치율
 - [`lint.html`](lint.html): ESLint · oxlint · Biome · bun lint의 린트 속도와 진단 결과

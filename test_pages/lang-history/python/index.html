@@ -5,19 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Python History: 버전별 큰 변화와 툴 수렴 흐름</title>
     <script src="../theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../../common/doc.css" />
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
           <a class="nav-back" href="../../">← test_pages</a>
           <span class="nav-sep">/</span>
-          <a class="nav-back" href="../">lang-history</a>
-          <span class="nav-sep">/</span>
-          <span class="nav-title">python</span>
+          <span class="nav-title">lang-history</span>
         </div>
         <div class="nav-actions">
+          <nav class="section-nav" aria-label="언어 선택">
+            <a href="../">Overview</a>
+            <a href="../go/">Go</a>
+            <a href="../rust/">Rust</a>
+            <a href="../python/" aria-current="page">Python</a>
+            <a href="../javascript/">JavaScript</a>
+          </nav>
           <button
             class="theme-btn"
             id="theme-btn"
@@ -31,33 +44,21 @@
       </div>
     </header>
 
-    <main class="container">
-      <section class="page-header">
-        <h1>Language History</h1>
-        <p class="page-desc">
-          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
-          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
-          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
-        </p>
-        <nav class="lang-nav" aria-label="언어 선택">
-          <a href="../">개요</a>
-          <a href="../go/">Go</a>
-          <a href="../rust/">Rust</a>
-          <a href="../python/" aria-current="page">Python</a>
-          <a href="../javascript/">JavaScript</a>
-        </nav>
-      </section>
-
-      <!-- ================================================= Python -->
-      <section class="lang" id="python">
-        <h2>Python</h2>
-        <p class="lead">
+    <main class="page" id="main">
+      <header>
+        <div class="eyebrow">버전별 큰 변화와 툴 수렴 흐름</div>
+        <h1><span class="prompt">$</span>Language History: Python</h1>
+        <p class="lede">
           2008 년 3.0 분기가 2020 년 2.7 EOL 까지 12 년 이어진 긴 전환. 그 사이
           서드파티 툴이 어느 언어보다 많이 난립했고, 2024 년 이후 Rust 로
           재작성된 <strong>uv · ruff 둘로 수렴</strong>했습니다. 네 언어 중 가장
           극적인 사례예요.
         </p>
-
+        <p class="note">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
+        </p>
         <div class="stat-row">
           <div class="stat">
             <b>7</b>
@@ -89,8 +90,10 @@
             >
           </div>
         </div>
+      </header>
 
-        <h3>Releases — 굵직한 변화</h3>
+      <section id="releases">
+        <h2><small>01 · Releases</small>굵직한 변화</h2>
         <ul class="timeline">
           <li class="release major">
             <div class="head">
@@ -693,9 +696,11 @@
             </ul>
           </li>
         </ul>
+      </section>
 
-        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
-        <p class="lead">
+      <section id="tooling">
+        <h2><small>02 · Tooling</small>무엇이 무엇으로 바뀌었나</h2>
+        <p>
           막대 굵기 = 사용량(설문 · PyPI 다운로드 · 스타 기준 근사치). 사라진
           툴의 레인은 다음 툴이 재사용합니다. 축은 다른 언어와 맞추려고 2012
           부터 그렸고, 그 전부터 있던 툴은 시트에 실제 시작 연도를 적었어요.
@@ -708,630 +713,646 @@
           <span><i class="e"></i>discontinued</span>
         </div>
 
-        <h4>패키지 설치 · 환경 — 10 개가 경쟁하다 uv 하나로</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(10, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 13"
-              popovertarget="py-pip"
-            >
-              <span class="name">pip (2008→)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 13 / 17"
-              popovertarget="py-pip"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 3; grid-column: 1 / 3"
-              popovertarget="py-easy-install"
-            >
-              <span class="name">easy_install</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 6 / 10"
-              popovertarget="py-pipenv-poetry"
-            >
-              <span class="name">pipenv</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 10 / 17"
-              popovertarget="py-pipenv-poetry"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 1 / 13"
-              popovertarget="py-pip"
-            >
-              <span class="name">virtualenv (2007→)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 13 / 17"
-              popovertarget="py-pip"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 1 / 4"
-              popovertarget="py-venv-pip"
-            >
-              <span class="name">venv (built-in 3.3)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 4 / 9"
-              popovertarget="py-venv-pip"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 5; grid-column: 9 / 14"
-              popovertarget="py-venv-pip"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 14 / 17"
-              popovertarget="py-venv-pip"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 1 / 6"
-              popovertarget="py-pip"
-            >
-              <span class="name">pip-tools</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 6; grid-column: 6 / 12"
-              popovertarget="py-pip"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 12 / 17"
-              popovertarget="py-pip"
-            ></button>
-            <span class="bar common" style="--lane: 7; grid-column: 1 / 17"
-              ><span class="name">conda (데이터 과학)</span></span
-            >
-            <button
-              class="bar niche"
-              style="--lane: 8; grid-column: 7 / 9"
-              popovertarget="py-pipenv-poetry"
-            >
-              <span class="name">poetry</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 8; grid-column: 9 / 14"
-              popovertarget="py-pipenv-poetry"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 8; grid-column: 14 / 17"
-              popovertarget="py-pipenv-poetry"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 9; grid-column: 8 / 17"
-              popovertarget="py-pipenv-poetry"
-            >
-              <span class="name">pdm</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 10; grid-column: 12 / 14"
-              popovertarget="py-rye"
-            >
-              <span class="name">rye</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 11; grid-column: 13 / 14"
-              popovertarget="py-uv"
-            >
-              <span class="name">uv (2024-02)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 11; grid-column: 14 / 17"
-              popovertarget="py-uv"
-            ></button>
+        <div class="chart">
+          <h3>패키지 설치 · 환경 — 10 개가 경쟁하다 uv 하나로</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(10, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 13"
+                popovertarget="py-pip"
+              >
+                <span class="name">pip (2008→)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 13 / 17"
+                popovertarget="py-pip"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 3; grid-column: 1 / 3"
+                popovertarget="py-easy-install"
+              >
+                <span class="name">easy_install</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 6 / 10"
+                popovertarget="py-pipenv-poetry"
+              >
+                <span class="name">pipenv</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 10 / 17"
+                popovertarget="py-pipenv-poetry"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 1 / 13"
+                popovertarget="py-pip"
+              >
+                <span class="name">virtualenv (2007→)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 13 / 17"
+                popovertarget="py-pip"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 1 / 4"
+                popovertarget="py-venv-pip"
+              >
+                <span class="name">venv (built-in 3.3)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 4 / 9"
+                popovertarget="py-venv-pip"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 5; grid-column: 9 / 14"
+                popovertarget="py-venv-pip"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 14 / 17"
+                popovertarget="py-venv-pip"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 1 / 6"
+                popovertarget="py-pip"
+              >
+                <span class="name">pip-tools</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 6; grid-column: 6 / 12"
+                popovertarget="py-pip"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 12 / 17"
+                popovertarget="py-pip"
+              ></button>
+              <span class="bar common" style="--lane: 7; grid-column: 1 / 17"
+                ><span class="name">conda (데이터 과학)</span></span
+              >
+              <button
+                class="bar niche"
+                style="--lane: 8; grid-column: 7 / 9"
+                popovertarget="py-pipenv-poetry"
+              >
+                <span class="name">poetry</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 8; grid-column: 9 / 14"
+                popovertarget="py-pipenv-poetry"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 8; grid-column: 14 / 17"
+                popovertarget="py-pipenv-poetry"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 9; grid-column: 8 / 17"
+                popovertarget="py-pipenv-poetry"
+              >
+                <span class="name">pdm</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 10; grid-column: 12 / 14"
+                popovertarget="py-rye"
+              >
+                <span class="name">rye</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 11; grid-column: 13 / 14"
+                popovertarget="py-uv"
+              >
+                <span class="name">uv (2024-02)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 11; grid-column: 14 / 17"
+                popovertarget="py-uv"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>린트 — flake8 + 플러그인 수십 개가 ruff 하나로</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 1 / 13"
-              popovertarget="py-flake8"
-            >
-              <span class="name">pylint (2003→)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 13 / 17"
-              popovertarget="py-flake8"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 1 / 3"
-              popovertarget="py-flake8"
-            >
-              <span class="name">flake8 (pyflakes + pycodestyle, 2010→)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 3; grid-column: 3 / 12"
-              popovertarget="py-flake8"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 12 / 14"
-              popovertarget="py-flake8"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 14 / 17"
-              popovertarget="py-flake8"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 2 / 5"
-              popovertarget="py-flake8"
-            >
-              <span class="name">isort</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 5 / 13"
-              popovertarget="py-flake8"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 13 / 17"
-              popovertarget="py-flake8"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 4 / 17"
-              popovertarget="py-flake8"
-            >
-              <span class="name">bandit (보안)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 6 / 17"
-              popovertarget="py-flake8"
-            >
-              <span class="name">pyupgrade</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 7; grid-column: 11 / 12"
-              popovertarget="py-ruff"
-            >
-              <span class="name">ruff (2022-08)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 7; grid-column: 12 / 17"
-              popovertarget="py-ruff"
-            ></button>
+        <div class="chart">
+          <h3>린트 — flake8 + 플러그인 수십 개가 ruff 하나로</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 1 / 13"
+                popovertarget="py-flake8"
+              >
+                <span class="name">pylint (2003→)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 13 / 17"
+                popovertarget="py-flake8"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 1 / 3"
+                popovertarget="py-flake8"
+              >
+                <span class="name">flake8 (pyflakes + pycodestyle, 2010→)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 3; grid-column: 3 / 12"
+                popovertarget="py-flake8"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 12 / 14"
+                popovertarget="py-flake8"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 14 / 17"
+                popovertarget="py-flake8"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 2 / 5"
+                popovertarget="py-flake8"
+              >
+                <span class="name">isort</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 5 / 13"
+                popovertarget="py-flake8"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 13 / 17"
+                popovertarget="py-flake8"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 4 / 17"
+                popovertarget="py-flake8"
+              >
+                <span class="name">bandit (보안)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 6 / 17"
+                popovertarget="py-flake8"
+              >
+                <span class="name">pyupgrade</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 7; grid-column: 11 / 12"
+                popovertarget="py-ruff"
+              >
+                <span class="name">ruff (2022-08)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 7; grid-column: 12 / 17"
+                popovertarget="py-ruff"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>포맷 — autopep8 · yapf · black 을 거쳐 ruff format</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 1 / 7"
-              popovertarget="py-black"
-            >
-              <span class="name">autopep8 (2011→)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 7 / 17"
-              popovertarget="py-black"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 4 / 7"
-              popovertarget="py-black"
-            >
-              <span class="name">yapf (Google)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 7 / 17"
-              popovertarget="py-black"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 7 / 8"
-              popovertarget="py-black"
-            >
-              <span class="name">black (2018-03)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 8 / 13"
-              popovertarget="py-black"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 13 / 17"
-              popovertarget="py-black"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 12 / 13"
-              popovertarget="py-ruff-format"
-            >
-              <span class="name">ruff format (2023-10)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 5; grid-column: 13 / 17"
-              popovertarget="py-ruff-format"
-            ></button>
+        <div class="chart">
+          <h3>포맷 — autopep8 · yapf · black 을 거쳐 ruff format</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 1 / 7"
+                popovertarget="py-black"
+              >
+                <span class="name">autopep8 (2011→)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 7 / 17"
+                popovertarget="py-black"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 4 / 7"
+                popovertarget="py-black"
+              >
+                <span class="name">yapf (Google)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 7 / 17"
+                popovertarget="py-black"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 7 / 8"
+                popovertarget="py-black"
+              >
+                <span class="name">black (2018-03)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 8 / 13"
+                popovertarget="py-black"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 13 / 17"
+                popovertarget="py-black"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 12 / 13"
+                popovertarget="py-ruff-format"
+              >
+                <span class="name">ruff format (2023-10)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 5; grid-column: 13 / 17"
+                popovertarget="py-ruff-format"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>타입 체커 — mypy 독주 → pyright → Rust 세대 (수렴 미완)</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 1 / 5"
-              popovertarget="py-mypy"
-            >
-              <span class="name">mypy (2012-12→)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 5 / 14"
-              popovertarget="py-mypy"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 14 / 17"
-              popovertarget="py-mypy"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 3; grid-column: 4 / 15"
-              popovertarget="py-pytype-pyre"
-            >
-              <span class="name">pytype (Google)</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 7 / 14"
-              popovertarget="py-pytype-pyre"
-            >
-              <span class="name">pyre (Meta)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 14 / 17"
-              popovertarget="py-typecheckers"
-            >
-              <span class="name">pyrefly (Meta · Rust)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 8 / 10"
-              popovertarget="py-typecheckers"
-            >
-              <span class="name">pyright (Microsoft)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 10 / 17"
-              popovertarget="py-typecheckers"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 14 / 15"
-              popovertarget="py-typecheckers"
-            >
-              <span class="name">ty (Astral · Rust)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 6; grid-column: 15 / 17"
-              popovertarget="py-typecheckers"
-            ></button>
+        <div class="chart">
+          <h3>타입 체커 — mypy 독주 → pyright → Rust 세대 (수렴 미완)</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 1 / 5"
+                popovertarget="py-mypy"
+              >
+                <span class="name">mypy (2012-12→)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 5 / 14"
+                popovertarget="py-mypy"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 14 / 17"
+                popovertarget="py-mypy"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 3; grid-column: 4 / 15"
+                popovertarget="py-pytype-pyre"
+              >
+                <span class="name">pytype (Google)</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 7 / 14"
+                popovertarget="py-pytype-pyre"
+              >
+                <span class="name">pyre (Meta)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 14 / 17"
+                popovertarget="py-typecheckers"
+              >
+                <span class="name">pyrefly (Meta · Rust)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 8 / 10"
+                popovertarget="py-typecheckers"
+              >
+                <span class="name">pyright (Microsoft)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 10 / 17"
+                popovertarget="py-typecheckers"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 14 / 15"
+                popovertarget="py-typecheckers"
+              >
+                <span class="name">ty (Astral · Rust)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 6; grid-column: 15 / 17"
+                popovertarget="py-typecheckers"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>테스트 — nose 가 죽고 pytest 로</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <span class="bar common" style="--lane: 2; grid-column: 1 / 17"
-              ><span class="name">unittest (built-in)</span></span
-            >
-            <button
-              class="bar common end"
-              style="--lane: 3; grid-column: 1 / 5"
-              popovertarget="py-nose"
-            >
-              <span class="name">nose (2005→)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 5 / 17"
-              popovertarget="py-nose"
-            >
-              <span class="name">nose2 (2012→)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 1 / 5"
-              popovertarget="py-pytest"
-            >
-              <span class="name">pytest (2010→)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 5 / 17"
-              popovertarget="py-pytest"
-            ></button>
+        <div class="chart">
+          <h3>테스트 — nose 가 죽고 pytest 로</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <span class="bar common" style="--lane: 2; grid-column: 1 / 17"
+                ><span class="name">unittest (built-in)</span></span
+              >
+              <button
+                class="bar common end"
+                style="--lane: 3; grid-column: 1 / 5"
+                popovertarget="py-nose"
+              >
+                <span class="name">nose (2005→)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 5 / 17"
+                popovertarget="py-nose"
+              >
+                <span class="name">nose2 (2012→)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 1 / 5"
+                popovertarget="py-pytest"
+              >
+                <span class="name">pytest (2010→)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 5 / 17"
+                popovertarget="py-pytest"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>빌드 백엔드 · 메타데이터 — setup.py 에서 pyproject.toml 로</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 6 / 8"
-              popovertarget="py-pyproject"
-            >
-              <span class="name">pyproject.toml (PEP 517 · 518 · 621)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 8 / 10"
-              popovertarget="py-pyproject"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 10 / 17"
-              popovertarget="py-pyproject"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 3; grid-column: 1 / 8"
-              popovertarget="py-setuptools"
-            >
-              <span class="name">setup.py · setuptools (2004→)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 8 / 17"
-              popovertarget="py-setuptools"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 1 / 10"
-              popovertarget="py-312-distutils"
-            >
-              <span class="name">distutils (stdlib)</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 10 / 12"
-              popovertarget="py-312-distutils"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 14 / 15"
-              popovertarget="py-pyproject"
-            >
-              <span class="name">uv_build (2025-07)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 15 / 17"
-              popovertarget="py-pyproject"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 4 / 17"
-              popovertarget="py-pyproject"
-            >
-              <span class="name">flit</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 6; grid-column: 7 / 17"
-              popovertarget="py-pyproject"
-            >
-              <span class="name">poetry-core</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 7; grid-column: 11 / 12"
-              popovertarget="py-pyproject"
-            >
-              <span class="name">hatchling (2022)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 7; grid-column: 12 / 17"
-              popovertarget="py-pyproject"
-            ></button>
+        <div class="chart">
+          <h3>빌드 백엔드 · 메타데이터 — setup.py 에서 pyproject.toml 로</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(6, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 6 / 8"
+                popovertarget="py-pyproject"
+              >
+                <span class="name">pyproject.toml (PEP 517 · 518 · 621)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 8 / 10"
+                popovertarget="py-pyproject"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 10 / 17"
+                popovertarget="py-pyproject"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 3; grid-column: 1 / 8"
+                popovertarget="py-setuptools"
+              >
+                <span class="name">setup.py · setuptools (2004→)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 8 / 17"
+                popovertarget="py-setuptools"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 1 / 10"
+                popovertarget="py-312-distutils"
+              >
+                <span class="name">distutils (stdlib)</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 10 / 12"
+                popovertarget="py-312-distutils"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 14 / 15"
+                popovertarget="py-pyproject"
+              >
+                <span class="name">uv_build (2025-07)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 15 / 17"
+                popovertarget="py-pyproject"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 4 / 17"
+                popovertarget="py-pyproject"
+              >
+                <span class="name">flit</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 6; grid-column: 7 / 17"
+                popovertarget="py-pyproject"
+              >
+                <span class="name">poetry-core</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 7; grid-column: 11 / 12"
+                popovertarget="py-pyproject"
+              >
+                <span class="name">hatchling (2022)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 7; grid-column: 12 / 17"
+                popovertarget="py-pyproject"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>Python 버전 관리 — pyenv 에서 uv python 으로</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 1 / 5"
-              popovertarget="py-pyenv"
-            >
-              <span class="name">pyenv (2012-08→)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 5 / 14"
-              popovertarget="py-pyenv"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 14 / 17"
-              popovertarget="py-pyenv"
-            ></button>
-            <span class="bar common" style="--lane: 3; grid-column: 1 / 17"
-              ><span class="name">conda</span></span
-            >
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 5 / 17"
-              popovertarget="py-pyenv"
-            >
-              <span class="name">asdf-python</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 13 / 15"
-              popovertarget="py-uv-python"
-            >
-              <span class="name">uv python (2024-08)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 5; grid-column: 15 / 17"
-              popovertarget="py-uv-python"
-            ></button>
+        <div class="chart">
+          <h3>Python 버전 관리 — pyenv 에서 uv python 으로</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 1 / 5"
+                popovertarget="py-pyenv"
+              >
+                <span class="name">pyenv (2012-08→)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 5 / 14"
+                popovertarget="py-pyenv"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 14 / 17"
+                popovertarget="py-pyenv"
+              ></button>
+              <span class="bar common" style="--lane: 3; grid-column: 1 / 17"
+                ><span class="name">conda</span></span
+              >
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 5 / 17"
+                popovertarget="py-pyenv"
+              >
+                <span class="name">asdf-python</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 13 / 15"
+                popovertarget="py-uv-python"
+              >
+                <span class="name">uv python (2024-08)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 5; grid-column: 15 / 17"
+                popovertarget="py-uv-python"
+              ></button>
+            </div>
           </div>
         </div>
 
-        <h4>에디터 지원 (완성 · 정의 이동 · 리네임)</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 1 / 9"
-              popovertarget="py-editor"
-            >
-              <span class="name">jedi (2012→)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 9 / 17"
-              popovertarget="py-editor"
-            ></button>
-            <span class="bar niche" style="--lane: 3; grid-column: 1 / 17"
-              ><span class="name">rope (리팩토링, 2006→)</span></span
-            >
-            <button
-              class="bar common end"
-              style="--lane: 4; grid-column: 6 / 10"
-              popovertarget="py-editor"
-            >
-              <span class="name">pyls (palantir)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 10 / 17"
-              popovertarget="py-editor"
-            >
-              <span class="name">pylsp (커뮤니티 포크)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 5; grid-column: 9 / 10"
-              popovertarget="py-editor"
-            >
-              <span class="name">Pylance · pyright (2020-06)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 5; grid-column: 10 / 17"
-              popovertarget="py-editor"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 6; grid-column: 14 / 17"
-              popovertarget="py-typecheckers"
-            >
-              <span class="name">ty (LSP 내장)</span>
-            </button>
+        <div class="chart">
+          <h3>에디터 지원 (완성 · 정의 이동 · 리네임)</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(5, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 1 / 9"
+                popovertarget="py-editor"
+              >
+                <span class="name">jedi (2012→)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 9 / 17"
+                popovertarget="py-editor"
+              ></button>
+              <span class="bar niche" style="--lane: 3; grid-column: 1 / 17"
+                ><span class="name">rope (리팩토링, 2006→)</span></span
+              >
+              <button
+                class="bar common end"
+                style="--lane: 4; grid-column: 6 / 10"
+                popovertarget="py-editor"
+              >
+                <span class="name">pyls (palantir)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 10 / 17"
+                popovertarget="py-editor"
+              >
+                <span class="name">pylsp (커뮤니티 포크)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 5; grid-column: 9 / 10"
+                popovertarget="py-editor"
+              >
+                <span class="name">Pylance · pyright (2020-06)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 5; grid-column: 10 / 17"
+                popovertarget="py-editor"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 6; grid-column: 14 / 17"
+                popovertarget="py-typecheckers"
+              >
+                <span class="name">ty (LSP 내장)</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -1346,7 +1367,7 @@
                 >2024-02 pip 대체 → 2024-08 프로젝트 · 파이썬 · 툴 통합</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="py-uv">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-uv">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -1439,7 +1460,7 @@
               pipenv · poetry · pdm
               <small>2017 – 2024 · "pip 위의 한 겹" 세대</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-pipenv-poetry">
+            <button class="sheet-close" popovertarget="py-pipenv-poetry">
               닫기 Esc
             </button>
           </header>
@@ -1518,7 +1539,7 @@
             <h3>
               venv · ensurepip <small>3.3 (2012-09) · 3.4 (2014-03) 흡수</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-venv-pip">
+            <button class="sheet-close" popovertarget="py-venv-pip">
               닫기 Esc
             </button>
           </header>
@@ -1584,7 +1605,7 @@
             <h3>
               uv python <small>2024-08 → · pyenv (2012) 의 역할 흡수</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-uv-python">
+            <button class="sheet-close" popovertarget="py-uv-python">
               닫기 Esc
             </button>
           </header>
@@ -1653,7 +1674,9 @@
         <div class="sheet-inner">
           <header>
             <h3>ruff <small>2022-08 → · 2023 부터 dominant</small></h3>
-            <button class="theme-btn" popovertarget="py-ruff">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-ruff">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -1737,7 +1760,7 @@
             <h3>
               ruff format <small>2023-10 → · black (2018) 스타일 그대로</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-ruff-format">
+            <button class="sheet-close" popovertarget="py-ruff-format">
               닫기 Esc
             </button>
           </header>
@@ -1806,7 +1829,7 @@
               pyright · ty · pyrefly
               <small>2019 → 2026 · mypy 이후, 아직 수렴 중</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-typecheckers">
+            <button class="sheet-close" popovertarget="py-typecheckers">
               닫기 Esc
             </button>
           </header>
@@ -1888,7 +1911,7 @@
         <div class="sheet-inner">
           <header>
             <h3>pytest <small>2010 독립 → 2016 부터 dominant</small></h3>
-            <button class="theme-btn" popovertarget="py-pytest">
+            <button class="sheet-close" popovertarget="py-pytest">
               닫기 Esc
             </button>
           </header>
@@ -1958,7 +1981,7 @@
                 >PEP 517/518 (2017) → PEP 621 (2020) → uv_build (2025)</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="py-pyproject">
+            <button class="sheet-close" popovertarget="py-pyproject">
               닫기 Esc
             </button>
           </header>
@@ -2046,7 +2069,7 @@
               jedi → pyls · pylsp → Pylance / pyright
               <small>2012 → 2020 · LSP 로 수렴, ty 가 다음 후보</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-editor">
+            <button class="sheet-close" popovertarget="py-editor">
               닫기 Esc
             </button>
           </header>
@@ -2117,7 +2140,9 @@
               Python 2 → 3 분기
               <small>3.0 (2008-12) → 2.7 EOL (2020-01) · 12 년</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-2to3">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-2to3">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2193,7 +2218,7 @@
         <div class="sheet-inner">
           <header>
             <h3>async / await · 타입 힌트 <small>3.5 (2015-09)</small></h3>
-            <button class="theme-btn" popovertarget="py-35-async-typing">
+            <button class="sheet-close" popovertarget="py-35-async-typing">
               닫기 Esc
             </button>
           </header>
@@ -2258,7 +2283,7 @@
         <div class="sheet-inner">
           <header>
             <h3>dataclasses <small>3.7 (2018-06) · PEP 557</small></h3>
-            <button class="theme-btn" popovertarget="py-37-dataclasses">
+            <button class="sheet-close" popovertarget="py-37-dataclasses">
               닫기 Esc
             </button>
           </header>
@@ -2314,7 +2339,7 @@
             <h3>
               구조적 패턴 매칭 <small>3.10 (2021-10) · PEP 634–636</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-310-match">
+            <button class="sheet-close" popovertarget="py-310-match">
               닫기 Esc
             </button>
           </header>
@@ -2374,7 +2399,7 @@
         <div class="sheet-inner">
           <header>
             <h3>Faster CPython <small>3.11 (2022-10) · PEP 659</small></h3>
-            <button class="theme-btn" popovertarget="py-311-faster">
+            <button class="sheet-close" popovertarget="py-311-faster">
               닫기 Esc
             </button>
           </header>
@@ -2444,7 +2469,7 @@
             <h3>
               distutils 제거 · PEP 695 <small>3.12 (2023-10) · breaking</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-312-distutils">
+            <button class="sheet-close" popovertarget="py-312-distutils">
               닫기 Esc
             </button>
           </header>
@@ -2510,7 +2535,7 @@
               free-threading · JIT 실험
               <small>3.13 (2024-10) · PEP 703 · PEP 744</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-313-free-threading">
+            <button class="sheet-close" popovertarget="py-313-free-threading">
               닫기 Esc
             </button>
           </header>
@@ -2581,7 +2606,7 @@
               t-string · free-threading 공식 지원
               <small>3.14 (2025-10) · PEP 750 · PEP 779</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-314-tstrings">
+            <button class="sheet-close" popovertarget="py-314-tstrings">
               닫기 Esc
             </button>
           </header>
@@ -2668,7 +2693,7 @@
               lazy import · UTF-8 기본 · JIT
               <small>3.15 (2026-10-09) · PEP 810 · 686</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-315-lazy">
+            <button class="sheet-close" popovertarget="py-315-lazy">
               닫기 Esc
             </button>
           </header>
@@ -2756,7 +2781,7 @@
               pip · pip-tools · virtualenv
               <small>2008 · 2012 · 2007 → · uv 가 셋을 한 바이너리로</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-pip">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-pip">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2825,7 +2850,7 @@
         <div class="sheet-inner">
           <header>
             <h3>easy_install <small>2004 – 2013 · setuptools 부속</small></h3>
-            <button class="theme-btn" popovertarget="py-easy-install">
+            <button class="sheet-close" popovertarget="py-easy-install">
               닫기 Esc
             </button>
           </header>
@@ -2882,7 +2907,7 @@
             <h3>
               rye <small>2023-04 – 2025-02 · Astral 이 인수해 uv 로 흡수</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-rye">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-rye">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2934,7 +2959,7 @@
               flake8 · pylint · isort · pyupgrade · bandit
               <small>2003 – 2022 · ruff 가 규칙을 재구현</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-flake8">
+            <button class="sheet-close" popovertarget="py-flake8">
               닫기 Esc
             </button>
           </header>
@@ -3012,7 +3037,9 @@
                 계승</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="py-black">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-black">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3086,7 +3113,9 @@
                 >2012-12 → · 2016–2024 dominant · 지금도 가장 많이 설치</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="py-mypy">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-mypy">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3150,7 +3179,7 @@
               pytype · pyre
               <small>Google 2015 · Meta 2018 → 2026 archived</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-pytype-pyre">
+            <button class="sheet-close" popovertarget="py-pytype-pyre">
               닫기 Esc
             </button>
           </header>
@@ -3208,7 +3237,9 @@
             <h3>
               nose · nose2 <small>2005 – 2015 · nose2 (2012→) 는 niche</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-nose">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-nose">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3270,7 +3301,7 @@
                 >2004 → · 2019 이후 선언형으로, 백엔드로는 아직 common</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="py-setuptools">
+            <button class="sheet-close" popovertarget="py-setuptools">
               닫기 Esc
             </button>
           </header>
@@ -3338,7 +3369,9 @@
               pyenv · asdf-python
               <small>2012-08 · 2016 → · uv python 이 역할 흡수</small>
             </h3>
-            <button class="theme-btn" popovertarget="py-pyenv">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="py-pyenv">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3394,29 +3427,28 @@
           </dl>
         </div>
       </aside>
+      <footer>
+        출처:
+        <a
+          href="https://docs.python.org/3/whatsnew/"
+          target="_blank"
+          rel="noopener"
+          >What's New in Python</a
+        >
+        · 각 PEP · Astral 블로그 ·
+        <a
+          href="https://lp.jetbrains.com/python-developers-survey-2024/"
+          target="_blank"
+          rel="noopener"
+          >Python Developers Survey 2024</a
+        >
+        (PSF · JetBrains, 응답 25k+) · PyPI 월간 다운로드 (pypistats, 2026-09) ·
+        GitHub API (archived 여부 · 스타, 2026-10-19 확인). 막대 굵기(사용량) 는
+        설문 비율 · 다운로드 · 스타를 바탕으로 한 근사치이며 정확한 점유율이
+        아닙니다. stat-row 의 "필수 서드파티" 는 그 해 신규 웹 · 라이브러리
+        프로젝트의 전형적 설정 (가상환경 · 버전 관리 · 린트 · 포맷 · 타입 ·
+        테스트 · 의존성 고정) 을 기준으로 센 것입니다.
+      </footer>
     </main>
-
-    <footer class="container">
-      출처:
-      <a
-        href="https://docs.python.org/3/whatsnew/"
-        target="_blank"
-        rel="noopener"
-        >What's New in Python</a
-      >
-      · 각 PEP · Astral 블로그 ·
-      <a
-        href="https://lp.jetbrains.com/python-developers-survey-2024/"
-        target="_blank"
-        rel="noopener"
-        >Python Developers Survey 2024</a
-      >
-      (PSF · JetBrains, 응답 25k+) · PyPI 월간 다운로드 (pypistats, 2026-09) ·
-      GitHub API (archived 여부 · 스타, 2026-10-19 확인). 막대 굵기(사용량) 는
-      설문 비율 · 다운로드 · 스타를 바탕으로 한 근사치이며 정확한 점유율이
-      아닙니다. stat-row 의 "필수 서드파티" 는 그 해 신규 웹 · 라이브러리
-      프로젝트의 전형적 설정 (가상환경 · 버전 관리 · 린트 · 포맷 · 타입 · 테스트
-      · 의존성 고정) 을 기준으로 센 것입니다.
-    </footer>
   </body>
 </html>

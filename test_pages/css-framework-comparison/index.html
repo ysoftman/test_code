@@ -4,159 +4,108 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSS Framework Comparison</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../common/doc.css" />
     <style>
       :root {
-        color-scheme: light dark;
-        --bg: #0f1115;
-        --panel: #1a1d23;
-        --border: #2a2e36;
-        --fg: #e6e6e6;
-        --muted: #9aa0aa;
-        --accent: #6ea8fe;
         /* 크기 조절: 슬라이더/버튼으로 바뀜 (iframe 내용 배율 + 프레임 높이) */
         --zoom: 1;
         --frame-base: 900px;
+        --series-util: #2a78d6;
+        --series-lib: #eb6834;
       }
-      * {
-        box-sizing: border-box;
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --series-util: #3987e5;
+          --series-lib: #d95926;
+        }
       }
-      body {
-        margin: 0;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: var(--bg);
-        color: var(--fg);
-        line-height: 1.5;
+      :root[data-theme="dark"] {
+        --series-util: #3987e5;
+        --series-lib: #d95926;
       }
       #themeLabel {
         display: inline-block;
         min-width: 2.75em;
         text-align: center;
       }
-      .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: var(--panel);
-        border-bottom: 1px solid var(--border);
-        font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
-        line-height: 1.5;
-      }
+      /* 뷰어는 화면 폭을 다 쓰므로 네비바도 본문 폭 제한 없이 맞춘다 */
       .nav-inner {
-        min-height: 56px;
-        margin: 0 auto;
-        padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0
-          max(16px, env(safe-area-inset-left, 0px));
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 4px 12px;
-      }
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 14px;
-        white-space: nowrap;
-        min-width: 0;
-      }
-      .nav-back {
-        display: inline-flex;
-        align-items: center;
-        min-height: 44px;
-        color: var(--muted);
-        text-decoration: none;
-      }
-      .nav-back:hover {
-        color: var(--fg);
-        text-decoration: none;
-      }
-      .nav-sep {
-        color: var(--border);
+        max-width: none;
       }
       .nav-title {
-        margin: 0;
-        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
         font-size: inherit;
-        font-weight: 600;
-        color: var(--fg);
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: inherit;
+        letter-spacing: normal;
       }
       .nav-actions {
-        display: flex;
-        align-items: center;
         flex-wrap: wrap;
         gap: 4px 16px;
-        min-width: 0;
-      }
-      .nav-actions .ctl,
-      .nav-actions .btn {
-        font-size: 13px;
-      }
-      .nav-actions .btn {
-        min-height: 40px;
-        padding: 0 12px;
-        color: var(--muted);
-        font-family: inherit;
-        white-space: nowrap;
-      }
-      .nav-actions .btn:hover {
-        border-color: var(--muted);
-        color: var(--fg);
       }
       .ctl {
         display: flex;
         align-items: center;
         gap: 8px;
-        font-size: 0.85rem;
+        font-size: 13px;
         color: var(--muted);
       }
       .ctl input[type="range"] {
         width: 160px;
-        accent-color: var(--accent);
+        accent-color: var(--link);
       }
       .btn {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        cursor: pointer;
-        border: 1px solid var(--border);
-        background: var(--panel);
-        color: var(--fg);
+        min-height: 40px;
+        padding: 0 12px;
+        background: var(--surface);
+        border: 1px solid var(--line);
         border-radius: 8px;
-        padding: 5px 10px;
-        font-size: 0.85rem;
+        color: var(--muted);
+        font: inherit;
+        font-size: 13px;
+        white-space: nowrap;
+        cursor: pointer;
       }
       .btn:hover {
-        border-color: var(--accent);
+        border-color: var(--muted);
+        color: var(--ink);
       }
       /* 강조 액션 버튼 (성능 측정 모달) — 색 채움으로 잘 보이게 */
-      .btn-accent {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: #07203f;
-        font-weight: 700;
-      }
+      .btn-accent,
       .btn-accent:hover {
-        filter: brightness(1.1);
-        border-color: var(--accent);
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--surface);
+        font-weight: 600;
       }
-      .btn-warn {
-        background: #f0883e;
-        border-color: #f0883e;
-        color: #2a1505;
-        font-weight: 700;
-      }
+      .btn-warn,
       .btn-warn:hover {
-        filter: brightness(1.1);
-        border-color: #f0883e;
+        background: var(--con);
+        border-color: var(--con);
+        color: var(--surface);
+        font-weight: 600;
+      }
+      .btn-accent:hover,
+      .btn-warn:hover {
+        opacity: 0.85;
       }
       .wrap {
         padding: 14px 16px 48px;
@@ -164,13 +113,13 @@
       .grid {
         display: grid;
         gap: 12px;
-        grid-template-columns: repeat(auto-fill, minmax(560px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(min(560px, 100%), 1fr));
       }
       .panel {
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
         overflow: hidden;
-        background: var(--panel);
+        background: var(--surface);
         display: flex;
         flex-direction: column;
       }
@@ -181,11 +130,10 @@
         justify-content: flex-end;
         gap: 12px;
         padding: 5px 12px;
-        border-bottom: 1px solid var(--border);
-        font-size: 0.75rem;
+        border-bottom: 1px solid var(--line);
+        font-size: 12px;
       }
       .panel-head a {
-        color: var(--accent);
         text-decoration: none;
       }
       .panel-head a:hover {
@@ -220,9 +168,10 @@
         display: flex;
       }
       .modal {
-        background: var(--panel);
-        border: 1px solid var(--border);
+        background: var(--surface);
+        border: 1px solid var(--line);
         border-radius: 12px;
+        box-shadow: var(--shadow);
         max-width: 760px;
         width: 100%;
         max-height: 85vh;
@@ -232,62 +181,63 @@
       .modal-head {
         display: flex;
         align-items: center;
+        gap: 12px;
         margin-bottom: 8px;
       }
       .modal-head h2 {
-        margin: 0;
-        font-size: 1.2rem;
+        font-size: 20px;
       }
       .modal-close {
         margin-left: auto;
+        flex: none;
         cursor: pointer;
-        border: 1px solid var(--border);
+        border: 1px solid var(--line);
         background: transparent;
-        color: var(--fg);
+        color: var(--muted);
         border-radius: 8px;
-        width: 30px;
-        height: 30px;
-        font-size: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
       }
       .modal-close:hover {
-        border-color: var(--accent);
+        border-color: var(--muted);
+        color: var(--ink);
       }
       .modal h3 {
-        margin: 18px 0 6px;
-        font-size: 1rem;
-        color: var(--accent);
+        margin: 20px 0 6px;
+        font-size: 16px;
       }
       .modal p {
         margin: 4px 0;
-        font-size: 0.9rem;
+        font-size: 14.5px;
+        line-height: 1.65;
       }
       .modal .axis {
         color: var(--muted);
-        font-size: 0.82rem;
+        font-size: 13px;
         margin: 2px 0 0;
       }
-      .modal table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.85rem;
+      .modal .scroll {
         margin: 10px 0 4px;
+      }
+      .modal table {
+        font-size: 13.5px;
       }
       .modal th,
       .modal td {
-        border: 1px solid var(--border);
-        padding: 6px 9px;
-        text-align: left;
-        vertical-align: top;
+        padding: 8px 12px;
       }
-      .modal th {
+      .modal .legend {
+        margin: 4px 0 10px;
+        font-size: 12.5px;
         color: var(--muted);
-        font-weight: 600;
       }
-      .modal code {
-        background: var(--border);
-        border-radius: 4px;
-        padding: 1px 5px;
-        font-size: 0.85em;
+      .perf-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin: 8px 0;
       }
       /* 성능(번들) 막대그래프 */
       .bar-row {
@@ -295,7 +245,7 @@
         align-items: center;
         gap: 10px;
         margin: 6px 0;
-        font-size: 0.82rem;
+        font-size: 13px;
       }
       .bar-row .name {
         flex: 0 0 130px;
@@ -303,42 +253,35 @@
       .bar-track {
         flex: 1 1 auto;
         height: 18px;
-        background: var(--border);
+        background: var(--code-bg);
         border-radius: 4px;
         overflow: hidden;
       }
       .bar-fill {
         display: block;
         height: 100%;
-        background: var(--accent);
+        background: var(--series-util);
         border-radius: 4px;
       }
       .bar-fill.lib {
-        background: #f0883e;
+        background: var(--series-lib);
       }
       .bar-row .val {
         flex: 0 0 64px;
         text-align: right;
         color: var(--muted);
+        font-family: var(--f-mono);
+        font-variant-numeric: tabular-nums;
       }
-      .legend {
-        display: flex;
-        gap: 16px;
-        font-size: 0.78rem;
-        color: var(--muted);
-        margin: 4px 0 10px;
-      }
-      .legend i {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        border-radius: 3px;
-        margin-right: 5px;
-        vertical-align: -1px;
+      @media (max-width: 767px) {
+        .nav-actions {
+          justify-content: flex-start;
+        }
       }
     </style>
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
@@ -452,7 +395,7 @@
       </div>
     </header>
 
-    <div class="wrap">
+    <main class="wrap" id="main">
       <div class="grid">
         <div class="panel">
           <div class="panel-head">
@@ -566,7 +509,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <div class="modal-overlay" id="glossary">
       <div class="modal">
@@ -604,23 +547,29 @@
         </p>
 
         <h3>① 생성 시점 — build-time vs runtime</h3>
-        <table>
-          <tr>
-            <th>구분</th>
-            <th>CSS 를 만드는 시점</th>
-            <th>결과</th>
-          </tr>
-          <tr>
-            <td><b>build-time</b></td>
-            <td>개발자가 빌드(<code>bun run build</code>)할 때</td>
-            <td>정적 <code>.css</code> 로 미리 추출</td>
-          </tr>
-          <tr>
-            <td><b>runtime</b></td>
-            <td>사용자가 페이지를 열어 브라우저에서 JS 실행될 때</td>
-            <td>JS 가 <code>&lt;style&gt;</code> 을 동적 주입</td>
-          </tr>
-        </table>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">구분</th>
+                <th scope="col">CSS 를 만드는 시점</th>
+                <th scope="col">결과</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>build-time</b></td>
+                <td>개발자가 빌드(<code>bun run build</code>)할 때</td>
+                <td>정적 <code>.css</code> 로 미리 추출</td>
+              </tr>
+              <tr>
+                <td><b>runtime</b></td>
+                <td>사용자가 페이지를 열어 브라우저에서 JS 실행될 때</td>
+                <td>JS 가 <code>&lt;style&gt;</code> 을 동적 주입</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <h3>② 런타임 비용 — zero runtime vs runtime</h3>
         <p>
@@ -635,48 +584,54 @@
         </p>
 
         <h3>이 데모의 분류</h3>
-        <table>
-          <tr>
-            <th>프레임워크</th>
-            <th>분류</th>
-            <th>런타임</th>
-          </tr>
-          <tr>
-            <td>Tailwind</td>
-            <td>유틸리티 CSS</td>
-            <td>zero runtime</td>
-          </tr>
-          <tr>
-            <td>shadcn/ui</td>
-            <td>유틸리티 CSS (Tailwind + Radix)</td>
-            <td>zero runtime</td>
-          </tr>
-          <tr>
-            <td>Panda CSS</td>
-            <td>CSS-in-JS (build-time)</td>
-            <td>zero runtime</td>
-          </tr>
-          <tr>
-            <td>vanilla-extract</td>
-            <td>CSS-in-JS (build-time)</td>
-            <td>zero runtime</td>
-          </tr>
-          <tr>
-            <td>Chakra UI v3</td>
-            <td>컴포넌트 라이브러리 (Panda 기반)</td>
-            <td>zero runtime</td>
-          </tr>
-          <tr>
-            <td>MUI</td>
-            <td>컴포넌트 라이브러리 (Emotion)</td>
-            <td>runtime</td>
-          </tr>
-          <tr>
-            <td>styled-components</td>
-            <td>CSS-in-JS</td>
-            <td>runtime</td>
-          </tr>
-        </table>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">프레임워크</th>
+                <th scope="col">분류</th>
+                <th scope="col">런타임</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tailwind</td>
+                <td>유틸리티 CSS</td>
+                <td>zero runtime</td>
+              </tr>
+              <tr>
+                <td>shadcn/ui</td>
+                <td>유틸리티 CSS (Tailwind + Radix)</td>
+                <td>zero runtime</td>
+              </tr>
+              <tr>
+                <td>Panda CSS</td>
+                <td>CSS-in-JS (build-time)</td>
+                <td>zero runtime</td>
+              </tr>
+              <tr>
+                <td>vanilla-extract</td>
+                <td>CSS-in-JS (build-time)</td>
+                <td>zero runtime</td>
+              </tr>
+              <tr>
+                <td>Chakra UI v3</td>
+                <td>컴포넌트 라이브러리 (Panda 기반)</td>
+                <td>zero runtime</td>
+              </tr>
+              <tr>
+                <td>MUI</td>
+                <td>컴포넌트 라이브러리 (Emotion)</td>
+                <td>runtime</td>
+              </tr>
+              <tr>
+                <td>styled-components</td>
+                <td>CSS-in-JS</td>
+                <td>runtime</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -717,9 +672,7 @@
           스타일 주입을 그대로 다 수행합니다(7/7 프레임 응답이 그 증거). 7 개
           프레임이 동일 조건으로 덮이므로 상대 비교에도 영향이 없습니다.
         </p>
-        <div
-          style="display: flex; gap: 8px; align-items: center; margin: 8px 0"
-        >
+        <div class="perf-actions">
           <button class="btn btn-accent" id="renderRun">↻ 다시 실행</button>
           <button class="btn btn-warn" id="renderClose">
             ✕ 생성 컴포넌트 닫기
@@ -754,9 +707,13 @@
         </p>
         <div class="legend">
           <span
-            ><i style="background: var(--accent)"></i>유틸리티 / CSS-in-JS</span
+            ><span class="swatch" style="background: var(--series-util)"></span
+            >유틸리티 / CSS-in-JS</span
           >
-          <span><i style="background: #f0883e"></i>컴포넌트 라이브러리</span>
+          <span
+            ><span class="swatch" style="background: var(--series-lib)"></span
+            >컴포넌트 라이브러리</span
+          >
         </div>
 
         <div class="bar-row">
@@ -810,56 +767,62 @@
         </div>
 
         <h3>상세 (raw / gzip)</h3>
-        <table>
-          <tr>
-            <th>프레임워크</th>
-            <th>JS</th>
-            <th>CSS</th>
-            <th>합계 (gzip)</th>
-          </tr>
-          <tr>
-            <td>vanilla-extract</td>
-            <td>148.4KB (47.9)</td>
-            <td>2.6KB (0.8)</td>
-            <td><b>48.7KB</b></td>
-          </tr>
-          <tr>
-            <td>Tailwind</td>
-            <td>149.6KB (48.2)</td>
-            <td>11.7KB (3.2)</td>
-            <td><b>51.4KB</b></td>
-          </tr>
-          <tr>
-            <td>Panda CSS</td>
-            <td>163.9KB (53.6)</td>
-            <td>18.5KB (5.6)</td>
-            <td><b>59.2KB</b></td>
-          </tr>
-          <tr>
-            <td>styled-components</td>
-            <td>180.6KB (60.4)</td>
-            <td>—</td>
-            <td><b>60.4KB</b></td>
-          </tr>
-          <tr>
-            <td>shadcn/ui</td>
-            <td>195.6KB (62.6)</td>
-            <td>11.8KB (3.2)</td>
-            <td><b>65.8KB</b></td>
-          </tr>
-          <tr>
-            <td>MUI</td>
-            <td>379.2KB (120.5)</td>
-            <td>—</td>
-            <td><b>120.5KB</b></td>
-          </tr>
-          <tr>
-            <td>Chakra UI</td>
-            <td>440.4KB (125.6)</td>
-            <td>—</td>
-            <td><b>125.6KB</b></td>
-          </tr>
-        </table>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">프레임워크</th>
+                <th scope="col">JS</th>
+                <th scope="col">CSS</th>
+                <th scope="col">합계 (gzip)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>vanilla-extract</td>
+                <td>148.4KB (47.9)</td>
+                <td>2.6KB (0.8)</td>
+                <td><b>48.7KB</b></td>
+              </tr>
+              <tr>
+                <td>Tailwind</td>
+                <td>149.6KB (48.2)</td>
+                <td>11.7KB (3.2)</td>
+                <td><b>51.4KB</b></td>
+              </tr>
+              <tr>
+                <td>Panda CSS</td>
+                <td>163.9KB (53.6)</td>
+                <td>18.5KB (5.6)</td>
+                <td><b>59.2KB</b></td>
+              </tr>
+              <tr>
+                <td>styled-components</td>
+                <td>180.6KB (60.4)</td>
+                <td>—</td>
+                <td><b>60.4KB</b></td>
+              </tr>
+              <tr>
+                <td>shadcn/ui</td>
+                <td>195.6KB (62.6)</td>
+                <td>11.8KB (3.2)</td>
+                <td><b>65.8KB</b></td>
+              </tr>
+              <tr>
+                <td>MUI</td>
+                <td>379.2KB (120.5)</td>
+                <td>—</td>
+                <td><b>120.5KB</b></td>
+              </tr>
+              <tr>
+                <td>Chakra UI</td>
+                <td>440.4KB (125.6)</td>
+                <td>—</td>
+                <td><b>125.6KB</b></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <p class="axis">
           ※ MUI/Chakra 는 컴포넌트 라이브러리라 완성 컴포넌트·접근성·테마
           시스템이 포함돼 큽니다(트레이드오프). CSS-in-JS(MUI·styled·Chakra)는
@@ -1070,8 +1033,8 @@
       const SUN_PATH =
         "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41";
 
-      // 테마 설정은 localStorage 에 저장 → 새로고침해도 유지
-      let dark = localStorage.getItem("cfcTheme") === "dark";
+      // 껍데기 테마(<html data-theme>)와 iframe 테마를 함께 바꾼다. 저장 키는 다른 페이지와 같은 "theme"
+      let dark = root.dataset.theme === "dark";
       const themeIconPath = document.querySelector("#themeIcon path");
       const themeLabel = document.getElementById("themeLabel");
       function updateThemeBtn() {
@@ -1092,7 +1055,10 @@
       const themeBtn = document.getElementById("themeBtn");
       themeBtn.addEventListener("click", () => {
         dark = !dark;
-        localStorage.setItem("cfcTheme", dark ? "dark" : "light");
+        root.dataset.theme = dark ? "dark" : "light";
+        try {
+          localStorage.setItem("theme", root.dataset.theme);
+        } catch {}
         updateThemeBtn();
         broadcast();
       });

@@ -11,6 +11,7 @@ PORT="${PORT:-3001}"
 rm -rf "$OUT"
 mkdir -p "$SITE"
 ln -s "$HERE/../index.html" "$OUT/test_code/index.html"
+ln -s "$HERE/../common" "$OUT/test_code/common"
 ln -s "$HERE/index.html" "$SITE/index.html"
 
 for dir in "$HERE"/*/; do

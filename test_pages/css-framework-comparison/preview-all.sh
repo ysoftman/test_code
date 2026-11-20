@@ -15,6 +15,8 @@ mkdir -p "$SITE/css-framework-comparison"
 # 랜딩 HTML 은 정적이라 심볼릭 링크 → 수정 후 브라우저 새로고침만 하면 반영됨
 ln -sf "$SRC/index.html" "$SITE/index.html"
 ln -sf "$SRC/css-framework-comparison/index.html" "$SITE/css-framework-comparison/index.html"
+# 랜딩이 ../common/doc.css 를 불러오므로 공용 스타일 폴더도 같은 경로로 연결
+ln -sf "$SRC/common" "$SITE/common"
 
 for dir in "$SRC"/css-framework-comparison/*/; do
   app="$(basename "$dir")"

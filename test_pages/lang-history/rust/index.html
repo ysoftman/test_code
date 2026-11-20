@@ -5,19 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rust History: 버전별 큰 변화와 툴 교체 흐름</title>
     <script src="../theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../../common/doc.css" />
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
           <a class="nav-back" href="../../">← test_pages</a>
           <span class="nav-sep">/</span>
-          <a class="nav-back" href="../">lang-history</a>
-          <span class="nav-sep">/</span>
-          <span class="nav-title">rust</span>
+          <span class="nav-title">lang-history</span>
         </div>
         <div class="nav-actions">
+          <nav class="section-nav" aria-label="언어 선택">
+            <a href="../">Overview</a>
+            <a href="../go/">Go</a>
+            <a href="../rust/" aria-current="page">Rust</a>
+            <a href="../python/">Python</a>
+            <a href="../javascript/">JavaScript</a>
+          </nav>
           <button
             class="theme-btn"
             id="theme-btn"
@@ -31,34 +44,22 @@
       </div>
     </header>
 
-    <main class="container">
-      <section class="page-header">
-        <h1>Language History</h1>
-        <p class="page-desc">
-          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
-          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
-          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
-        </p>
-        <nav class="lang-nav" aria-label="언어 선택">
-          <a href="../">개요</a>
-          <a href="../go/">Go</a>
-          <a href="../rust/" aria-current="page">Rust</a>
-          <a href="../python/">Python</a>
-          <a href="../javascript/">JavaScript</a>
-        </nav>
-      </section>
-
-      <!-- ===================================================== Rust -->
-      <section class="lang" id="rust">
-        <h2>Rust</h2>
-        <p class="lead">
+    <main class="page" id="main">
+      <header>
+        <div class="eyebrow">버전별 큰 변화와 툴 교체 흐름</div>
+        <h1><span class="prompt">$</span>Language History: Rust</h1>
+        <p class="lede">
           2015 년 1.0 부터 6 주 주기, 3 년마다 edition. 패키지 관리는
           <strong>처음부터 cargo 하나</strong>였던 반례이고, 그 밖의 영역은
           "서드파티가 먼저 검증 → 더 빠른 하나로 수렴 → 공식 컴포넌트나 std 로
           흡수" 를 반복합니다. 단 async 런타임과 에러 crate 는 의도적으로 std
           밖에 남겨 둡니다.
         </p>
-
+        <p class="note">
+          버전별 굵직한 변화(문법 · 표준 라이브러리 · 툴체인 · 런타임)와,
+          서드파티 툴이 난립하다가 빠르거나 공식 내장된 하나로 수렴하는 흐름을
+          한눈에 봅니다. 항목을 클릭하면 아래에서 배경과 이유를 볼 수 있어요.
+        </p>
         <div class="stat-row">
           <div class="stat">
             <b>5</b>
@@ -87,57 +88,64 @@
             >
           </div>
         </div>
+      </header>
 
-        <h3>
-          Editions — 3 년마다 한 번, 호환성을 깨지 않고 문법을 바꾸는 장치
-        </h3>
-        <p class="lead">
+      <section id="editions">
+        <h2>
+          <small>01 · Editions</small>3 년마다 한 번, 호환성을 깨지 않고 문법을
+          바꾸는 장치
+        </h2>
+        <p>
           edition 은 crate 단위 opt-in 이라 2015 코드와 2024 코드가 한 빌드에
           섞입니다. 띠를 클릭하면 각 edition 이 바꾼 것을 볼 수 있어요.
         </p>
-        <div class="lanes-wrap">
-          <div class="editions">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <span class="ed pre" style="grid-column: 1 / 4">pre-1.0</span>
-            <button
-              class="ed e2015"
-              style="grid-column: 4 / 7"
-              popovertarget="rs-ed2015"
-            >
-              edition 2015<small>1.0</small>
-            </button>
-            <button
-              class="ed e2018"
-              style="grid-column: 7 / 10"
-              popovertarget="rs-ed2018"
-            >
-              edition 2018<small>1.31 · NLL</small>
-            </button>
-            <button
-              class="ed e2021"
-              style="grid-column: 10 / 14"
-              popovertarget="rs-ed2021"
-            >
-              edition 2021<small>1.56</small>
-            </button>
-            <button
-              class="ed e2024"
-              style="grid-column: 14 / 17"
-              popovertarget="rs-ed2024"
-            >
-              edition 2024<small>1.85</small>
-            </button>
+        <div class="chart">
+          <div class="lanes-wrap">
+            <div class="editions">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <span class="ed pre" style="grid-column: 1 / 4">pre-1.0</span>
+              <button
+                class="ed e2015"
+                style="grid-column: 4 / 7"
+                popovertarget="rs-ed2015"
+              >
+                edition 2015<small>1.0</small>
+              </button>
+              <button
+                class="ed e2018"
+                style="grid-column: 7 / 10"
+                popovertarget="rs-ed2018"
+              >
+                edition 2018<small>1.31 · NLL</small>
+              </button>
+              <button
+                class="ed e2021"
+                style="grid-column: 10 / 14"
+                popovertarget="rs-ed2021"
+              >
+                edition 2021<small>1.56</small>
+              </button>
+              <button
+                class="ed e2024"
+                style="grid-column: 14 / 17"
+                popovertarget="rs-ed2024"
+              >
+                edition 2024<small>1.85</small>
+              </button>
+            </div>
           </div>
         </div>
+      </section>
 
-        <h3>Releases — 굵직한 변화</h3>
+      <section id="releases">
+        <h2><small>02 · Releases</small>굵직한 변화</h2>
         <ul class="timeline">
           <li class="release major">
             <div class="head">
@@ -1441,9 +1449,11 @@
             </ul>
           </li>
         </ul>
+      </section>
 
-        <h3>Tooling — 무엇이 무엇으로 바뀌었나</h3>
-        <p class="lead">
+      <section id="tooling">
+        <h2><small>03 · Tooling</small>무엇이 무엇으로 바뀌었나</h2>
+        <p>
           막대 굵기 = 사용량(crates.io 다운로드 · 설문 · 스타 기준 근사치).
           사라진 툴의 레인은 다음 툴이 재사용합니다. 막대를 클릭하면 교체 배경을
           볼 수 있어요. Rust 는 2015 년 1.0 부터지만 다른 언어와 축을 맞추기
@@ -1456,586 +1466,618 @@
           <span><i class="e"></i>discontinued</span>
         </div>
 
-        <h4>툴체인 관리 — multirust 가 rustup 으로 이름을 바꾼 수준의 수렴</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 3 / 4"
-              popovertarget="rs-multirust"
-            >
-              <span class="name">multirust</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 2; grid-column: 4 / 6"
-              popovertarget="rs-multirust"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 5 / 6"
-              popovertarget="rs-rustup"
-            >
-              <span class="name">rustup (2016-12 공식)</span>
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 3; grid-column: 6 / 17"
-              popovertarget="rs-rustup"
-            ></button>
-            <span class="bar niche" style="--lane: 4; grid-column: 4 / 17"
-              ><span class="name"
-                >배포판 패키지 · homebrew (고정 버전)</span
-              ></span
-            >
-          </div>
-        </div>
-
-        <h4>패키지 · 빌드 — 경쟁 자체가 없었음</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche end"
-              style="--lane: 2; grid-column: 2 / 3"
-              popovertarget="rs-rustpkg"
-            >
-              <span class="name">rustpkg</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 3 / 4"
-              popovertarget="rs-cargo"
-            >
-              <span class="name"
-                >cargo (2014 · 1.0 과 함께 · 처음부터 하나)</span
+        <div class="chart">
+          <h3>
+            툴체인 관리 — multirust 가 rustup 으로 이름을 바꾼 수준의 수렴
+          </h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 3 / 4"
+                popovertarget="rs-multirust"
               >
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 4 / 17"
-              popovertarget="rs-cargo"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 4 / 6"
-              popovertarget="rs-cargoedit"
-            >
-              <span class="name">cargo-edit (cargo add)</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 3; grid-column: 6 / 11"
-              popovertarget="rs-cargoedit"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 11 / 17"
-              popovertarget="rs-cargo"
-            >
-              <span class="name">cargo (add 1.62 · remove 1.66 내장)</span>
-            </button>
-            <span class="bar common" style="--lane: 4; grid-column: 10 / 17"
-              ><span class="name"
-                >cargo-nextest (테스트 러너 · 미흡수)</span
-              ></span
-            >
-          </div>
-        </div>
-
-        <h4>에디터 지원 (완성 · 정의 이동 · 리네임) — 가장 뚜렷한 수렴</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 3 / 4"
-              popovertarget="rs-rls"
-            >
-              <span class="name">racer</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 4 / 9"
-              popovertarget="rs-rls"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 2; grid-column: 9 / 11"
-              popovertarget="rs-rls"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 5 / 7"
-              popovertarget="rs-rls"
-            >
-              <span class="name">RLS (공식 · rustc 재사용)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 7 / 10"
-              popovertarget="rs-rls"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 3; grid-column: 10 / 12"
-              popovertarget="rs-rls"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 7 / 9"
-              popovertarget="rs-rust-analyzer"
-            >
-              <span class="name">rust-analyzer (2022-02 공식)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 9 / 11"
-              popovertarget="rs-rust-analyzer"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 11 / 17"
-              popovertarget="rs-rust-analyzer"
-            ></button>
-            <span class="bar niche" style="--lane: 5; grid-column: 6 / 8"
-              ><span class="name"
-                >IntelliJ Rust → RustRover (별도 구현)</span
-              ></span
-            >
-            <span
-              class="bar common"
-              style="--lane: 5; grid-column: 8 / 17"
-            ></span>
-          </div>
-        </div>
-
-        <h4>포맷 · 린트 — 서드파티로 시작해 2018 년 공식 컴포넌트로</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 4 / 7"
-              popovertarget="rs-rustfmt-clippy"
-            >
-              <span class="name">rustfmt (서드파티)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 7 / 8"
-              popovertarget="rs-rustfmt-clippy"
-            >
-              <span class="name"
-                >rustfmt (rustup 컴포넌트 1.24 preview → 1.31 1.0)</span
+                <span class="name">multirust</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 2; grid-column: 4 / 6"
+                popovertarget="rs-multirust"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 5 / 6"
+                popovertarget="rs-rustup"
               >
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 2; grid-column: 8 / 17"
-              popovertarget="rs-rustfmt-clippy"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 3 / 7"
-              popovertarget="rs-rustfmt-clippy"
-            >
-              <span class="name">clippy (nightly 전용)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 7 / 8"
-              popovertarget="rs-rustfmt-clippy"
-            >
-              <span class="name"
-                >clippy (rustup 컴포넌트 1.29 preview → 1.31 1.0)</span
+                <span class="name">rustup (2016-12 공식)</span>
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 3; grid-column: 6 / 17"
+                popovertarget="rs-rustup"
+              ></button>
+              <span class="bar niche" style="--lane: 4; grid-column: 4 / 17"
+                ><span class="name"
+                  >배포판 패키지 · homebrew (고정 버전)</span
+                ></span
               >
-            </button>
-            <button
-              class="bar dominant"
-              style="--lane: 3; grid-column: 8 / 17"
-              popovertarget="rs-rustfmt-clippy"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 6 / 7"
-              popovertarget="rs-rustfmt-clippy"
-            >
-              <span class="name">rustfix → cargo fix (1.29 내장)</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 7 / 17"
-              popovertarget="rs-rustfmt-clippy"
-            ></button>
+            </div>
           </div>
         </div>
 
-        <h4>async 런타임 — 의도적으로 std 밖, 그래도 tokio 로 수렴</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 5 / 6"
-              popovertarget="rs-futures"
-            >
-              <span class="name">futures 0.1 (콜백 체인)</span>
-            </button>
-            <button
-              class="bar common end"
-              style="--lane: 2; grid-column: 6 / 9"
-              popovertarget="rs-futures"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 9 / 17"
-              popovertarget="rs-futures"
-            >
-              <span class="name">futures (0.3 · 유틸리티로 축소)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 5 / 6"
-              popovertarget="rs-tokio"
-            >
-              <span class="name">tokio</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 6 / 9"
-              popovertarget="rs-tokio"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 3; grid-column: 9 / 17"
-              popovertarget="rs-tokio"
-            ></button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 8 / 10"
-              popovertarget="rs-async-std"
-            >
-              <span class="name">async-std</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 10 / 14"
-              popovertarget="rs-async-std"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 4; grid-column: 14 / 15"
-              popovertarget="rs-async-std"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 5; grid-column: 9 / 17"
-              popovertarget="rs-async-std"
-            >
-              <span class="name">smol</span>
-            </button>
+        <div class="chart">
+          <h3>패키지 · 빌드 — 경쟁 자체가 없었음</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche end"
+                style="--lane: 2; grid-column: 2 / 3"
+                popovertarget="rs-rustpkg"
+              >
+                <span class="name">rustpkg</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 3 / 4"
+                popovertarget="rs-cargo"
+              >
+                <span class="name"
+                  >cargo (2014 · 1.0 과 함께 · 처음부터 하나)</span
+                >
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 4 / 17"
+                popovertarget="rs-cargo"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 4 / 6"
+                popovertarget="rs-cargoedit"
+              >
+                <span class="name">cargo-edit (cargo add)</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 3; grid-column: 6 / 11"
+                popovertarget="rs-cargoedit"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 11 / 17"
+                popovertarget="rs-cargo"
+              >
+                <span class="name">cargo (add 1.62 · remove 1.66 내장)</span>
+              </button>
+              <span class="bar common" style="--lane: 4; grid-column: 10 / 17"
+                ><span class="name"
+                  >cargo-nextest (테스트 러너 · 미흡수)</span
+                ></span
+              >
+            </div>
           </div>
         </div>
 
-        <h4>에러 처리 — 세 번 갈아엎고 anyhow + thiserror 로</h4>
-        <div class="lanes-wrap">
-          <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
-            <span class="yr" style="grid-column: 1">2012</span
-            ><span class="yr" style="grid-column: 3">2014</span
-            ><span class="yr" style="grid-column: 5">2016</span
-            ><span class="yr" style="grid-column: 7">2018</span
-            ><span class="yr" style="grid-column: 9">2020</span
-            ><span class="yr" style="grid-column: 11">2022</span
-            ><span class="yr" style="grid-column: 13">2024</span
-            ><span class="yr" style="grid-column: 15">2026</span>
-            <button
-              class="bar common"
-              style="--lane: 2; grid-column: 5 / 7"
-              popovertarget="rs-failure"
-            >
-              <span class="name">error-chain</span>
-            </button>
-            <button
-              class="bar niche end"
-              style="--lane: 2; grid-column: 7 / 9"
-              popovertarget="rs-failure"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 2; grid-column: 9 / 17"
-              popovertarget="rs-eyre"
-            >
-              <span class="name">eyre (anyhow 포크 · 리포트 커스텀)</span>
-            </button>
-            <button
-              class="bar niche"
-              style="--lane: 3; grid-column: 6 / 7"
-              popovertarget="rs-failure"
-            >
-              <span class="name">failure</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 3; grid-column: 7 / 9"
-              popovertarget="rs-failure"
-            ></button>
-            <button
-              class="bar niche end"
-              style="--lane: 3; grid-column: 9 / 10"
-              popovertarget="rs-failure"
-            ></button>
-            <button
-              class="bar niche"
-              style="--lane: 4; grid-column: 8 / 9"
-              popovertarget="rs-anyhow"
-            >
-              <span class="name">anyhow + thiserror</span>
-            </button>
-            <button
-              class="bar common"
-              style="--lane: 4; grid-column: 9 / 10"
-              popovertarget="rs-anyhow"
-            ></button>
-            <button
-              class="bar dominant"
-              style="--lane: 4; grid-column: 10 / 17"
-              popovertarget="rs-anyhow"
-            ></button>
-            <span class="bar niche" style="--lane: 5; grid-column: 8 / 17"
-              ><span class="name">snafu</span></span
-            >
+        <div class="chart">
+          <h3>에디터 지원 (완성 · 정의 이동 · 리네임) — 가장 뚜렷한 수렴</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 3 / 4"
+                popovertarget="rs-rls"
+              >
+                <span class="name">racer</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 4 / 9"
+                popovertarget="rs-rls"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 2; grid-column: 9 / 11"
+                popovertarget="rs-rls"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 5 / 7"
+                popovertarget="rs-rls"
+              >
+                <span class="name">RLS (공식 · rustc 재사용)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 7 / 10"
+                popovertarget="rs-rls"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 3; grid-column: 10 / 12"
+                popovertarget="rs-rls"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 7 / 9"
+                popovertarget="rs-rust-analyzer"
+              >
+                <span class="name">rust-analyzer (2022-02 공식)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 9 / 11"
+                popovertarget="rs-rust-analyzer"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 11 / 17"
+                popovertarget="rs-rust-analyzer"
+              ></button>
+              <span class="bar niche" style="--lane: 5; grid-column: 6 / 8"
+                ><span class="name"
+                  >IntelliJ Rust → RustRover (별도 구현)</span
+                ></span
+              >
+              <span
+                class="bar common"
+                style="--lane: 5; grid-column: 8 / 17"
+              ></span>
+            </div>
           </div>
         </div>
 
-        <h4>crate → std · cargo 흡수 — "서드파티에서 검증 → 표준으로"</h4>
-        <p class="lead">
-          Rust 는 std 를 작게 유지하는 대신, 생태계에서 사실상 표준이 된 crate
-          의 <em>핵심 API 만</em> 골라 들여옵니다. 다운로드는 crates.io 누적
-          (2026-10). 들여온 뒤에도 crate 다운로드가 줄지 않는 이유는 MSRV 가
-          낮은 라이브러리들이 계속 쓰기 때문이에요.
-        </p>
-        <div class="table-wrap">
-          <table class="summary cleanup">
-            <thead>
-              <tr>
-                <th>crate</th>
-                <th>std · cargo 대체</th>
-                <th>버전</th>
-                <th>비고</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th colspan="4">crate → std</th>
-              </tr>
-              <tr>
-                <td><code>matches</code></td>
-                <td><code>matches!</code></td>
-                <td><span class="how builtin">1.42 · 2020-03</span></td>
-                <td>1.9 억 다운로드 · 2023 이후 업데이트 없음</td>
-              </tr>
-              <tr>
-                <td><code>backtrace</code></td>
-                <td><code>std::backtrace::Backtrace</code></td>
-                <td><span class="how builtin">1.65 · 2022-11</span></td>
-                <td>std 가 내부적으로 같은 crate 를 사용</td>
-              </tr>
-              <tr>
-                <td><code>once_cell</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-oncelock">
-                    <code>OnceCell</code> · <code>OnceLock</code>
-                  </button>
-                </td>
-                <td><span class="how builtin">1.70 · 2023-06</span></td>
-                <td>13.9 억 다운로드 · 2 단계로 흡수 (1.80 Lazy)</td>
-              </tr>
-              <tr>
-                <td><code>atty</code></td>
-                <td><code>std::io::IsTerminal</code></td>
-                <td><span class="how builtin">1.70 · 2023-06</span></td>
-                <td>
-                  3.6 억 다운로드 ·
-                  <span class="how dep">RUSTSEC-2021-0145</span>
-                  미수정 → 흡수가 사실상 보안 패치
-                </td>
-              </tr>
-              <tr>
-                <td><code>async-trait</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-afit">
-                    trait 안의 <code>async fn</code>
-                  </button>
-                </td>
-                <td><span class="how builtin">1.75 · 2023-12</span></td>
-                <td>7.3 억 다운로드 · <code>dyn Trait</code> 용도로는 잔존</td>
-              </tr>
-              <tr>
-                <td><code>lazy_static</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-lazylock">
-                    <code>LazyCell</code> · <code>LazyLock</code>
-                  </button>
-                </td>
-                <td><span class="how builtin">1.80 · 2024-07</span></td>
-                <td>
-                  10.7 억 다운로드 · <span class="how arch">archived</span> 2026
-                </td>
-              </tr>
-              <tr>
-                <td>no_std 용 Error 트레이트들</td>
-                <td><code>core::error::Error</code></td>
-                <td><span class="how builtin">1.81 · 2024-09</span></td>
-                <td>임베디드 · 커널 crate 가 std 없이 <code>?</code> 체인</td>
-              </tr>
-              <tr>
-                <td><code>os_pipe</code></td>
-                <td><code>std::io::pipe</code></td>
-                <td><span class="how builtin">1.87 · 2025-05</span></td>
-                <td>익명 파이프</td>
-              </tr>
-              <tr>
-                <td><code>fs2</code> · <code>fs4</code></td>
-                <td><code>File::lock</code> · <code>try_lock</code></td>
-                <td><span class="how builtin">1.89 · 2025-08</span></td>
-                <td>파일 잠금 (advisory lock)</td>
-              </tr>
-              <tr>
-                <td><code>cfg-if</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-cfg-select">
-                    <code>cfg_select!</code>
-                  </button>
-                </td>
-                <td><span class="how builtin">1.95 · 2026-04</span></td>
-                <td>15.9 억 다운로드 — crates.io 전체 1 위권</td>
-              </tr>
-              <tr>
-                <td><code>assert_matches</code></td>
-                <td><code>assert_matches!</code></td>
-                <td><span class="how builtin">1.96 · 2026-05</span></td>
-                <td>0.8 억 다운로드 · prelude 에는 없음</td>
-              </tr>
+        <div class="chart">
+          <h3>포맷 · 린트 — 서드파티로 시작해 2018 년 공식 컴포넌트로</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(3, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 4 / 7"
+                popovertarget="rs-rustfmt-clippy"
+              >
+                <span class="name">rustfmt (서드파티)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 7 / 8"
+                popovertarget="rs-rustfmt-clippy"
+              >
+                <span class="name"
+                  >rustfmt (rustup 컴포넌트 1.24 preview → 1.31 1.0)</span
+                >
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 2; grid-column: 8 / 17"
+                popovertarget="rs-rustfmt-clippy"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 3 / 7"
+                popovertarget="rs-rustfmt-clippy"
+              >
+                <span class="name">clippy (nightly 전용)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 7 / 8"
+                popovertarget="rs-rustfmt-clippy"
+              >
+                <span class="name"
+                  >clippy (rustup 컴포넌트 1.29 preview → 1.31 1.0)</span
+                >
+              </button>
+              <button
+                class="bar dominant"
+                style="--lane: 3; grid-column: 8 / 17"
+                popovertarget="rs-rustfmt-clippy"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 6 / 7"
+                popovertarget="rs-rustfmt-clippy"
+              >
+                <span class="name">rustfix → cargo fix (1.29 내장)</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 7 / 17"
+                popovertarget="rs-rustfmt-clippy"
+              ></button>
+            </div>
+          </div>
+        </div>
 
-              <tr>
-                <th colspan="4">cargo 서브커맨드 → cargo 내장</th>
-              </tr>
-              <tr>
-                <td><code>rustfix</code></td>
-                <td><code>cargo fix</code></td>
-                <td><span class="how builtin">1.29 · 2018-09</span></td>
-                <td>edition 마이그레이션의 엔진</td>
-              </tr>
-              <tr>
-                <td><code>cargo-vendor</code></td>
-                <td><code>cargo vendor</code></td>
-                <td><span class="how builtin">1.37 · 2019-08</span></td>
-                <td>오프라인 · 감사용 의존성 복사</td>
-              </tr>
-              <tr>
-                <td><code>cargo-tree</code></td>
-                <td><code>cargo tree</code></td>
-                <td><span class="how builtin">1.44 · 2020-06</span></td>
-                <td>의존성 그래프 출력</td>
-              </tr>
-              <tr>
-                <td><code>cargo-edit</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-cargo">
-                    <code>cargo add</code> · <code>cargo remove</code>
-                  </button>
-                </td>
-                <td><span class="how builtin">1.62 · 2022-06 / 1.66</span></td>
-                <td><code>cargo upgrade</code> 만 cargo-edit 에 잔존</td>
-              </tr>
-              <tr>
-                <td><code>cargo-cache</code></td>
-                <td>자동 캐시 청소</td>
-                <td><span class="how builtin">1.88 · 2025-06</span></td>
-                <td>3 개월 미사용 crate 자동 삭제</td>
-              </tr>
-              <tr>
-                <td><code>cargo-workspaces</code> · release-plz (일부)</td>
-                <td><code>cargo publish</code> 다중 패키지</td>
-                <td><span class="how builtin">1.90 · 2025-09</span></td>
-                <td>워크스페이스 동시 발행 · 버전 bump 는 여전히 외부</td>
-              </tr>
+        <div class="chart">
+          <h3>async 런타임 — 의도적으로 std 밖, 그래도 tokio 로 수렴</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 5 / 6"
+                popovertarget="rs-futures"
+              >
+                <span class="name">futures 0.1 (콜백 체인)</span>
+              </button>
+              <button
+                class="bar common end"
+                style="--lane: 2; grid-column: 6 / 9"
+                popovertarget="rs-futures"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 9 / 17"
+                popovertarget="rs-futures"
+              >
+                <span class="name">futures (0.3 · 유틸리티로 축소)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 5 / 6"
+                popovertarget="rs-tokio"
+              >
+                <span class="name">tokio</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 6 / 9"
+                popovertarget="rs-tokio"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 3; grid-column: 9 / 17"
+                popovertarget="rs-tokio"
+              ></button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 8 / 10"
+                popovertarget="rs-async-std"
+              >
+                <span class="name">async-std</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 10 / 14"
+                popovertarget="rs-async-std"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 4; grid-column: 14 / 15"
+                popovertarget="rs-async-std"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 5; grid-column: 9 / 17"
+                popovertarget="rs-async-std"
+              >
+                <span class="name">smol</span>
+              </button>
+            </div>
+          </div>
+        </div>
 
-              <tr>
-                <th colspan="4">서드파티 툴 → 공식 컴포넌트</th>
-              </tr>
-              <tr>
-                <td><code>multirust</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-rustup">rustup</button>
-                </td>
-                <td><span class="how builtin">2016-12 · 1.14</span></td>
-                <td>같은 저자 (brson) 가 재작성</td>
-              </tr>
-              <tr>
-                <td><code>rustfmt</code> · <code>clippy</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-rustfmt-clippy">
-                    rustup 컴포넌트
-                  </button>
-                </td>
-                <td><span class="how builtin">2018 · 1.24 / 1.29</span></td>
-                <td>1.31 (edition 2018) 과 함께 1.0</td>
-              </tr>
-              <tr>
-                <td><code>racer</code> · <code>RLS</code></td>
-                <td>
-                  <button class="link" popovertarget="rs-rust-analyzer">
-                    rust-analyzer
-                  </button>
-                </td>
-                <td>
-                  <span class="how builtin">2022-02 · 1.64 컴포넌트</span>
-                </td>
-                <td>
-                  RLS <span class="how arch">archived</span> 2022 · racer "not
-                  actively developed"
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="chart">
+          <h3>에러 처리 — 세 번 갈아엎고 anyhow + thiserror 로</h3>
+          <div class="lanes-wrap">
+            <div class="lanes" style="grid-template-rows: 0 repeat(4, 32px)">
+              <span class="yr" style="grid-column: 1">2012</span
+              ><span class="yr" style="grid-column: 3">2014</span
+              ><span class="yr" style="grid-column: 5">2016</span
+              ><span class="yr" style="grid-column: 7">2018</span
+              ><span class="yr" style="grid-column: 9">2020</span
+              ><span class="yr" style="grid-column: 11">2022</span
+              ><span class="yr" style="grid-column: 13">2024</span
+              ><span class="yr" style="grid-column: 15">2026</span>
+              <button
+                class="bar common"
+                style="--lane: 2; grid-column: 5 / 7"
+                popovertarget="rs-failure"
+              >
+                <span class="name">error-chain</span>
+              </button>
+              <button
+                class="bar niche end"
+                style="--lane: 2; grid-column: 7 / 9"
+                popovertarget="rs-failure"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 2; grid-column: 9 / 17"
+                popovertarget="rs-eyre"
+              >
+                <span class="name">eyre (anyhow 포크 · 리포트 커스텀)</span>
+              </button>
+              <button
+                class="bar niche"
+                style="--lane: 3; grid-column: 6 / 7"
+                popovertarget="rs-failure"
+              >
+                <span class="name">failure</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 3; grid-column: 7 / 9"
+                popovertarget="rs-failure"
+              ></button>
+              <button
+                class="bar niche end"
+                style="--lane: 3; grid-column: 9 / 10"
+                popovertarget="rs-failure"
+              ></button>
+              <button
+                class="bar niche"
+                style="--lane: 4; grid-column: 8 / 9"
+                popovertarget="rs-anyhow"
+              >
+                <span class="name">anyhow + thiserror</span>
+              </button>
+              <button
+                class="bar common"
+                style="--lane: 4; grid-column: 9 / 10"
+                popovertarget="rs-anyhow"
+              ></button>
+              <button
+                class="bar dominant"
+                style="--lane: 4; grid-column: 10 / 17"
+                popovertarget="rs-anyhow"
+              ></button>
+              <span class="bar niche" style="--lane: 5; grid-column: 8 / 17"
+                ><span class="name">snafu</span></span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h3>crate → std · cargo 흡수 — "서드파티에서 검증 → 표준으로"</h3>
+          <p>
+            Rust 는 std 를 작게 유지하는 대신, 생태계에서 사실상 표준이 된 crate
+            의 <em>핵심 API 만</em> 골라 들여옵니다. 다운로드는 crates.io 누적
+            (2026-10). 들여온 뒤에도 crate 다운로드가 줄지 않는 이유는 MSRV 가
+            낮은 라이브러리들이 계속 쓰기 때문이에요.
+          </p>
+          <div
+            class="scroll"
+            tabindex="0"
+            role="region"
+            aria-label="crate → std · cargo 흡수"
+          >
+            <table class="summary cleanup">
+              <thead>
+                <tr>
+                  <th>crate</th>
+                  <th>std · cargo 대체</th>
+                  <th>버전</th>
+                  <th>비고</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="rg">
+                  <th colspan="4" scope="rowgroup">crate → std</th>
+                </tr>
+                <tr>
+                  <td><code>matches</code></td>
+                  <td><code>matches!</code></td>
+                  <td><span class="how builtin">1.42 · 2020-03</span></td>
+                  <td>1.9 억 다운로드 · 2023 이후 업데이트 없음</td>
+                </tr>
+                <tr>
+                  <td><code>backtrace</code></td>
+                  <td><code>std::backtrace::Backtrace</code></td>
+                  <td><span class="how builtin">1.65 · 2022-11</span></td>
+                  <td>std 가 내부적으로 같은 crate 를 사용</td>
+                </tr>
+                <tr>
+                  <td><code>once_cell</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-oncelock">
+                      <code>OnceCell</code> · <code>OnceLock</code>
+                    </button>
+                  </td>
+                  <td><span class="how builtin">1.70 · 2023-06</span></td>
+                  <td>13.9 억 다운로드 · 2 단계로 흡수 (1.80 Lazy)</td>
+                </tr>
+                <tr>
+                  <td><code>atty</code></td>
+                  <td><code>std::io::IsTerminal</code></td>
+                  <td><span class="how builtin">1.70 · 2023-06</span></td>
+                  <td>
+                    3.6 억 다운로드 ·
+                    <span class="how dep">RUSTSEC-2021-0145</span>
+                    미수정 → 흡수가 사실상 보안 패치
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>async-trait</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-afit">
+                      trait 안의 <code>async fn</code>
+                    </button>
+                  </td>
+                  <td><span class="how builtin">1.75 · 2023-12</span></td>
+                  <td>
+                    7.3 억 다운로드 · <code>dyn Trait</code> 용도로는 잔존
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>lazy_static</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-lazylock">
+                      <code>LazyCell</code> · <code>LazyLock</code>
+                    </button>
+                  </td>
+                  <td><span class="how builtin">1.80 · 2024-07</span></td>
+                  <td>
+                    10.7 억 다운로드 ·
+                    <span class="how arch">archived</span> 2026
+                  </td>
+                </tr>
+                <tr>
+                  <td>no_std 용 Error 트레이트들</td>
+                  <td><code>core::error::Error</code></td>
+                  <td><span class="how builtin">1.81 · 2024-09</span></td>
+                  <td>임베디드 · 커널 crate 가 std 없이 <code>?</code> 체인</td>
+                </tr>
+                <tr>
+                  <td><code>os_pipe</code></td>
+                  <td><code>std::io::pipe</code></td>
+                  <td><span class="how builtin">1.87 · 2025-05</span></td>
+                  <td>익명 파이프</td>
+                </tr>
+                <tr>
+                  <td><code>fs2</code> · <code>fs4</code></td>
+                  <td><code>File::lock</code> · <code>try_lock</code></td>
+                  <td><span class="how builtin">1.89 · 2025-08</span></td>
+                  <td>파일 잠금 (advisory lock)</td>
+                </tr>
+                <tr>
+                  <td><code>cfg-if</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-cfg-select">
+                      <code>cfg_select!</code>
+                    </button>
+                  </td>
+                  <td><span class="how builtin">1.95 · 2026-04</span></td>
+                  <td>15.9 억 다운로드 — crates.io 전체 1 위권</td>
+                </tr>
+                <tr>
+                  <td><code>assert_matches</code></td>
+                  <td><code>assert_matches!</code></td>
+                  <td><span class="how builtin">1.96 · 2026-05</span></td>
+                  <td>0.8 억 다운로드 · prelude 에는 없음</td>
+                </tr>
+
+                <tr class="rg">
+                  <th colspan="4" scope="rowgroup">
+                    cargo 서브커맨드 → cargo 내장
+                  </th>
+                </tr>
+                <tr>
+                  <td><code>rustfix</code></td>
+                  <td><code>cargo fix</code></td>
+                  <td><span class="how builtin">1.29 · 2018-09</span></td>
+                  <td>edition 마이그레이션의 엔진</td>
+                </tr>
+                <tr>
+                  <td><code>cargo-vendor</code></td>
+                  <td><code>cargo vendor</code></td>
+                  <td><span class="how builtin">1.37 · 2019-08</span></td>
+                  <td>오프라인 · 감사용 의존성 복사</td>
+                </tr>
+                <tr>
+                  <td><code>cargo-tree</code></td>
+                  <td><code>cargo tree</code></td>
+                  <td><span class="how builtin">1.44 · 2020-06</span></td>
+                  <td>의존성 그래프 출력</td>
+                </tr>
+                <tr>
+                  <td><code>cargo-edit</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-cargo">
+                      <code>cargo add</code> · <code>cargo remove</code>
+                    </button>
+                  </td>
+                  <td>
+                    <span class="how builtin">1.62 · 2022-06 / 1.66</span>
+                  </td>
+                  <td><code>cargo upgrade</code> 만 cargo-edit 에 잔존</td>
+                </tr>
+                <tr>
+                  <td><code>cargo-cache</code></td>
+                  <td>자동 캐시 청소</td>
+                  <td><span class="how builtin">1.88 · 2025-06</span></td>
+                  <td>3 개월 미사용 crate 자동 삭제</td>
+                </tr>
+                <tr>
+                  <td><code>cargo-workspaces</code> · release-plz (일부)</td>
+                  <td><code>cargo publish</code> 다중 패키지</td>
+                  <td><span class="how builtin">1.90 · 2025-09</span></td>
+                  <td>워크스페이스 동시 발행 · 버전 bump 는 여전히 외부</td>
+                </tr>
+
+                <tr class="rg">
+                  <th colspan="4" scope="rowgroup">
+                    서드파티 툴 → 공식 컴포넌트
+                  </th>
+                </tr>
+                <tr>
+                  <td><code>multirust</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-rustup">
+                      rustup
+                    </button>
+                  </td>
+                  <td><span class="how builtin">2016-12 · 1.14</span></td>
+                  <td>같은 저자 (brson) 가 재작성</td>
+                </tr>
+                <tr>
+                  <td><code>rustfmt</code> · <code>clippy</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-rustfmt-clippy">
+                      rustup 컴포넌트
+                    </button>
+                  </td>
+                  <td><span class="how builtin">2018 · 1.24 / 1.29</span></td>
+                  <td>1.31 (edition 2018) 과 함께 1.0</td>
+                </tr>
+                <tr>
+                  <td><code>racer</code> · <code>RLS</code></td>
+                  <td>
+                    <button class="link" popovertarget="rs-rust-analyzer">
+                      rust-analyzer
+                    </button>
+                  </td>
+                  <td>
+                    <span class="how builtin">2022-02 · 1.64 컴포넌트</span>
+                  </td>
+                  <td>
+                    RLS <span class="how arch">archived</span> 2022 · racer "not
+                    actively developed"
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -2047,7 +2089,7 @@
               rustup
               <small>2016-05 공개 → 2016-12 1.0 · 공식 설치 방법</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-rustup">
+            <button class="sheet-close" popovertarget="rs-rustup">
               닫기 Esc
             </button>
           </header>
@@ -2128,7 +2170,9 @@
                 >2014-03 착수 → 2015-05 1.0 과 함께 · resolver 2 (1.51)</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="rs-cargo">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="rs-cargo">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2210,7 +2254,7 @@
             <h3>
               racer · RLS <small>2014 – 2022 · 공식이었는데 진 경우</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-rls">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="rs-rls">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2293,7 +2337,7 @@
                 컴포넌트</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="rs-rust-analyzer">
+            <button class="sheet-close" popovertarget="rs-rust-analyzer">
               닫기 Esc
             </button>
           </header>
@@ -2375,7 +2419,7 @@
                 >2014–2015 서드파티 → 2018 rustup 컴포넌트 → 1.31 1.0</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="rs-rustfmt-clippy">
+            <button class="sheet-close" popovertarget="rs-rustfmt-clippy">
               닫기 Esc
             </button>
           </header>
@@ -2459,7 +2503,9 @@
                 >futures 0.1 (2016) → tokio 0.2 (2019-11) → 1.0 (2020-12)</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="rs-tokio">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="rs-tokio">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -2542,7 +2588,7 @@
               async-std · smol
               <small>2019-08 → 2025 discontinued · smol 은 niche 로 생존</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-async-std">
+            <button class="sheet-close" popovertarget="rs-async-std">
               닫기 Esc
             </button>
           </header>
@@ -2611,7 +2657,7 @@
               error-chain · failure
               <small>2016 – 2020 · 두 번 실패한 "표준 에러 crate"</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-failure">
+            <button class="sheet-close" popovertarget="rs-failure">
               닫기 Esc
             </button>
           </header>
@@ -2690,7 +2736,7 @@
               anyhow + thiserror
               <small>2019-10 → · 역할 분리가 만든 수렴</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-anyhow">
+            <button class="sheet-close" popovertarget="rs-anyhow">
               닫기 Esc
             </button>
           </header>
@@ -2769,7 +2815,7 @@
         <div class="sheet-inner">
           <header>
             <h3>multirust <small>2014 – 2016 · rustup 의 전신</small></h3>
-            <button class="theme-btn" popovertarget="rs-multirust">
+            <button class="sheet-close" popovertarget="rs-multirust">
               닫기 Esc
             </button>
           </header>
@@ -2827,7 +2873,7 @@
         <div class="sheet-inner">
           <header>
             <h3>rustpkg <small>2013 – 2014-02 · 1.0 이전에 폐기</small></h3>
-            <button class="theme-btn" popovertarget="rs-rustpkg">
+            <button class="sheet-close" popovertarget="rs-rustpkg">
               닫기 Esc
             </button>
           </header>
@@ -2889,7 +2935,7 @@
               cargo-edit
               <small>2015 → 2022 핵심 기능 흡수 · upgrade 만 잔존</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-cargoedit">
+            <button class="sheet-close" popovertarget="rs-cargoedit">
               닫기 Esc
             </button>
           </header>
@@ -2956,7 +3002,7 @@
                 >2016-08 → 2019-11 · 런타임 후보에서 유틸리티 crate 로</small
               >
             </h3>
-            <button class="theme-btn" popovertarget="rs-futures">
+            <button class="sheet-close" popovertarget="rs-futures">
               닫기 Esc
             </button>
           </header>
@@ -3024,7 +3070,9 @@
             <h3>
               eyre <small>2020-02 → · anyhow 의 포크, niche 로 공존</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-eyre">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="rs-eyre">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3070,7 +3118,7 @@
         <div class="sheet-inner">
           <header>
             <h3>edition 2015 <small>1.0 (2015-05) · 기준선</small></h3>
-            <button class="theme-btn" popovertarget="rs-ed2015">
+            <button class="sheet-close" popovertarget="rs-ed2015">
               닫기 Esc
             </button>
           </header>
@@ -3128,7 +3176,7 @@
         <div class="sheet-inner">
           <header>
             <h3>edition 2018 · NLL <small>1.31 (2018-12)</small></h3>
-            <button class="theme-btn" popovertarget="rs-ed2018">
+            <button class="sheet-close" popovertarget="rs-ed2018">
               닫기 Esc
             </button>
           </header>
@@ -3207,7 +3255,7 @@
         <div class="sheet-inner">
           <header>
             <h3>edition 2021 <small>1.56 (2021-10)</small></h3>
-            <button class="theme-btn" popovertarget="rs-ed2021">
+            <button class="sheet-close" popovertarget="rs-ed2021">
               닫기 Esc
             </button>
           </header>
@@ -3274,7 +3322,7 @@
         <div class="sheet-inner">
           <header>
             <h3>edition 2024 <small>1.85 (2025-02) · 역대 최대 규모</small></h3>
-            <button class="theme-btn" popovertarget="rs-ed2024">
+            <button class="sheet-close" popovertarget="rs-ed2024">
               닫기 Esc
             </button>
           </header>
@@ -3348,7 +3396,7 @@
               Stability as a Deliverable
               <small>2014-10 선언 → 1.0 (2015-05-15)</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-stability">
+            <button class="sheet-close" popovertarget="rs-stability">
               닫기 Esc
             </button>
           </header>
@@ -3411,7 +3459,7 @@
         <div class="sheet-inner">
           <header>
             <h3>? 연산자 <small>1.13 (2016-11)</small></h3>
-            <button class="theme-btn" popovertarget="rs-question">
+            <button class="sheet-close" popovertarget="rs-question">
               닫기 Esc
             </button>
           </header>
@@ -3476,7 +3524,7 @@
         <div class="sheet-inner">
           <header>
             <h3>custom derive (Macros 1.1) <small>1.15 (2017-02)</small></h3>
-            <button class="theme-btn" popovertarget="rs-derive">
+            <button class="sheet-close" popovertarget="rs-derive">
               닫기 Esc
             </button>
           </header>
@@ -3540,7 +3588,7 @@
         <div class="sheet-inner">
           <header>
             <h3>async / .await <small>1.39 (2019-11)</small></h3>
-            <button class="theme-btn" popovertarget="rs-async-await">
+            <button class="sheet-close" popovertarget="rs-async-await">
               닫기 Esc
             </button>
           </header>
@@ -3605,7 +3653,9 @@
               GATs (generic associated types)
               <small>1.65 (2022-11) · RFC 1598 (2016) 이후 6.5 년</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-gats">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="rs-gats">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3673,7 +3723,7 @@
               OnceCell · OnceLock
               <small>1.70 (2023-06) · once_cell 흡수 1 단계</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-oncelock">
+            <button class="sheet-close" popovertarget="rs-oncelock">
               닫기 Esc
             </button>
           </header>
@@ -3748,7 +3798,9 @@
               async fn in trait · RPITIT
               <small>1.75 (2023-12) · async-trait 흡수</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-afit">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="rs-afit">
+              닫기 Esc
+            </button>
           </header>
           <dl>
             <dt>What</dt>
@@ -3818,7 +3870,7 @@
               LazyCell · LazyLock
               <small>1.80 (2024-07) · lazy_static 흡수</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-lazylock">
+            <button class="sheet-close" popovertarget="rs-lazylock">
               닫기 Esc
             </button>
           </header>
@@ -3890,7 +3942,7 @@
               let chains · if let guard
               <small>1.88 (2025-06) · 1.95 (2026-04) · RFC 2497 (2018)</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-let-chains">
+            <button class="sheet-close" popovertarget="rs-let-chains">
               닫기 Esc
             </button>
           </header>
@@ -3964,7 +4016,7 @@
         <div class="sheet-inner">
           <header>
             <h3>cfg_select! <small>1.95 (2026-04) · cfg-if 흡수</small></h3>
-            <button class="theme-btn" popovertarget="rs-cfg-select">
+            <button class="sheet-close" popovertarget="rs-cfg-select">
               닫기 Esc
             </button>
           </header>
@@ -4032,7 +4084,7 @@
               LLD 기본 링커
               <small>1.90 (2025-09) · x86_64-unknown-linux-gnu</small>
             </h3>
-            <button class="theme-btn" popovertarget="rs-lld">닫기 Esc</button>
+            <button class="sheet-close" popovertarget="rs-lld">닫기 Esc</button>
           </header>
           <dl>
             <dt>What</dt>
@@ -4088,29 +4140,28 @@
           </dl>
         </div>
       </aside>
+      <footer>
+        출처:
+        <a
+          href="https://github.com/rust-lang/rust/blob/master/RELEASES.md"
+          target="_blank"
+          rel="noopener"
+          >RELEASES.md</a
+        >
+        ·
+        <a
+          href="https://blog.rust-lang.org/releases/"
+          target="_blank"
+          rel="noopener"
+          >Rust release 블로그</a
+        >
+        · Edition Guide · 각 RFC. 최신 안정 버전 1.99.1 (2026-10-15) 기준. 막대
+        굵기(사용량) 는 crates.io 누적 · 최근 90 일 다운로드 (2026-10-19 조회) ·
+        GitHub 스타 · Rust Annual Survey 를 바탕으로 한 근사치이며 정확한
+        점유율이 아닙니다. "archived" 표기는 GitHub API 로 확인한 것만 적었고,
+        async-std · racer · multirust 는 archived 가 아니라 README 또는 설명에
+        중단 선언만 있는 상태입니다.
+      </footer>
     </main>
-
-    <footer class="container">
-      출처:
-      <a
-        href="https://github.com/rust-lang/rust/blob/master/RELEASES.md"
-        target="_blank"
-        rel="noopener"
-        >RELEASES.md</a
-      >
-      ·
-      <a
-        href="https://blog.rust-lang.org/releases/"
-        target="_blank"
-        rel="noopener"
-        >Rust release 블로그</a
-      >
-      · Edition Guide · 각 RFC. 최신 안정 버전 1.99.1 (2026-10-15) 기준. 막대
-      굵기(사용량) 는 crates.io 누적 · 최근 90 일 다운로드 (2026-10-19 조회) ·
-      GitHub 스타 · Rust Annual Survey 를 바탕으로 한 근사치이며 정확한 점유율이
-      아닙니다. "archived" 표기는 GitHub API 로 확인한 것만 적었고, async-std ·
-      racer · multirust 는 archived 가 아니라 README 또는 설명에 중단 선언만
-      있는 상태입니다.
-    </footer>
   </body>
 </html>

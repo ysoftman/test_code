@@ -142,6 +142,9 @@ jobs:
             cp -r "$SRC/ml-docs/.vitepress/dist/." "$OUT/ml-docs/"
           fi
 
+          # common: 비교·벤치마크 문서 공용 스타일시트 (doc.css)
+          cp -r "$SRC/common" "$OUT/"
+
           # lang-history: 정적 페이지 묶음 (index + 언어별 html + 공통 css/js)
           mkdir -p "$OUT/lang-history"
           cp -r "$SRC/lang-history/." "$OUT/lang-history/"

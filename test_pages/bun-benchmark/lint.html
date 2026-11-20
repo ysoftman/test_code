@@ -15,516 +15,22 @@
           saved || (os ? "dark" : "light");
       })();
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../common/doc.css" />
+    <link rel="stylesheet" href="./benchmark.css" />
     <style>
-      :root {
-        color-scheme: light;
-        --bg: #f8fafc;
-        --surface: #ffffff;
-        --surface-subtle: #f1f5f9;
-        --border: #e2e8f0;
-        --border-subtle: #edf2f7;
-        --text: #0f172a;
-        --text-muted: #64748b;
-        --text-faint: #94a3b8;
-        --accent: #2563eb;
-        --accent-subtle: #eff6ff;
-        --success: #16a34a;
-        --success-bg: #f0fdf4;
-        --warning: #d97706;
-        --warning-bg: #fffbeb;
-
-        --brand-bun: #d97706;
-        --brand-biome: #0284c7;
-        --brand-oxlint: #0d9488;
-        --brand-eslint: #4b32c3;
-        --brand-eslint-mt: #a855f7;
-
-        --font-sans:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Pretendard Variable", Pretendard, sans-serif;
-        --font-mono:
-          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-      }
-
-      :root[data-theme="dark"] {
-        color-scheme: dark;
-        --bg: #0d1117;
-        --surface: #161b22;
-        --surface-subtle: #1f242c;
-        --border: #30363d;
-        --border-subtle: #21262d;
-        --text: #e6edf3;
-        --text-muted: #8b949e;
-        --text-faint: #6e7681;
-        --accent: #58a6ff;
-        --accent-subtle: #121d2f;
-        --success: #3fb950;
-        --success-bg: #0d281e;
-        --warning: #f59e0b;
-        --warning-bg: #2d2206;
-
-        --brand-bun: #fbbf24;
-        --brand-biome: #38bdf8;
-        --brand-oxlint: #2dd4bf;
-        --brand-eslint: #818cf8;
-        --brand-eslint-mt: #c084fc;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: var(--font-sans);
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.55;
-        font-size: 14px;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      a {
-        color: var(--accent);
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-
-      code {
-        font-family: var(--font-mono);
-        font-size: 0.86em;
-        background: var(--surface-subtle);
-        border: 1px solid var(--border);
-        padding: 1px 5px;
-        border-radius: 4px;
-        color: inherit;
-      }
-
-      /* Layout */
-      .container {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 32px 20px 80px;
-      }
-
-      /* Page Header */
-      .page-header {
-        margin-bottom: 32px;
-      }
-      .title-row {
-        display: flex;
-        align-items: baseline;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-bottom: 8px;
-      }
-      h1 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        letter-spacing: -0.03em;
-        margin: 0;
-        line-height: 1.25;
-      }
-      .version-tag {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        background: var(--surface-subtle);
-        border: 1px solid var(--border);
-        color: var(--text-muted);
-        padding: 2px 7px;
-        border-radius: 4px;
-      }
-      .page-desc {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        margin: 0 0 16px;
-      }
-
-      /* Specs Bar */
-      .specs-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 12px 14px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-size: 0.8rem;
-        color: var(--text-muted);
-      }
-      .spec-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .spec-item + .spec-item::before {
-        content: "·";
-        color: var(--border);
-        margin-right: 2px;
-      }
-      .spec-item strong {
-        color: var(--text);
-        font-weight: 500;
-      }
-
-      /* Section Common */
-      .section {
-        margin-top: 36px;
-      }
-      .section-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 12px;
-        flex-wrap: wrap;
-      }
-      .section-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .section-desc {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        margin: 0 0 16px;
-      }
-
-      /* Summary Overview Table */
-      .summary-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      .table-responsive {
-        overflow-x: auto;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.85rem;
-        text-align: left;
-      }
-      th {
-        background: var(--surface-subtle);
-        border-bottom: 1px solid var(--border);
-        color: var(--text-muted);
-        font-weight: 600;
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        padding: 9px 14px;
-        white-space: nowrap;
-      }
-      td {
-        padding: 10px 14px;
-        border-bottom: 1px solid var(--border-subtle);
-        vertical-align: middle;
-      }
-      tbody tr:last-child td {
-        border-bottom: 0;
-      }
-      .td-mono {
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
-      }
-      .td-num {
-        text-align: right;
-      }
-
-      .tool-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-      }
-      .tool-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 2px;
-        flex-shrink: 0;
-      }
-      .tool-ver {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-        font-weight: 400;
-        font-family: var(--font-mono);
-      }
-      .badge-tag {
-        display: inline-block;
-        padding: 2px 7px;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 500;
-      }
-      .badge-success {
-        background: var(--success-bg);
-        color: var(--success);
-        border: 1px solid rgba(22, 163, 74, 0.2);
-      }
-      .badge-warning {
-        background: var(--warning-bg);
-        color: var(--warning);
-        border: 1px solid rgba(217, 119, 6, 0.2);
-      }
-      .badge-fastest {
-        background: var(--accent-subtle);
-        color: var(--accent);
-        font-weight: 600;
-        border: 1px solid var(--border);
-      }
-
-      /* Control Segmented Buttons */
-      .segment-control {
-        display: inline-flex;
-        background: var(--surface-subtle);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 2px;
-        gap: 2px;
-      }
-      .segment-btn {
-        background: none;
-        border: 0;
-        color: var(--text-muted);
-        padding: 4px 10px;
-        font-size: 0.8rem;
-        font-family: inherit;
-        border-radius: 4px;
-        cursor: pointer;
-        transition:
-          background-color 0.1s,
-          color 0.1s;
-      }
-      .segment-btn.active {
-        background: var(--surface);
-        color: var(--text);
-        font-weight: 500;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-      }
-
-      /* Benchmark Chart */
-      .chart-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-      .corpus-block {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 16px;
-      }
-      .corpus-header {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        margin-bottom: 12px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid var(--border-subtle);
-      }
-      .corpus-title {
-        font-size: 0.95rem;
-        font-weight: 600;
-        margin: 0;
-      }
-      .corpus-meta {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        font-family: var(--font-mono);
-      }
-      .chart-rows {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .chart-row {
-        display: grid;
-        grid-template-columns: 100px 1fr 140px;
-        align-items: center;
-        gap: 12px;
-        cursor: default;
-      }
-      .row-tool {
-        font-size: 0.82rem;
-        font-weight: 500;
-        white-space: nowrap;
-        text-align: right;
-        color: var(--text);
-      }
-      .row-track {
-        height: 24px;
-        background: var(--surface-subtle);
-        border-radius: 4px;
-        overflow: hidden;
-        position: relative;
-        display: flex;
-        align-items: center;
-        border: 1px solid var(--border-subtle);
-      }
-      .row-bar {
-        height: 100%;
-        min-width: 3px;
-        border-radius: 3px;
-        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .row-values {
-        display: flex;
-        align-items: baseline;
-        gap: 6px;
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
-        white-space: nowrap;
-      }
-      .row-time {
-        font-weight: 600;
-        color: var(--text);
-      }
-      .row-multiplier {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-      }
-      .row-multiplier.fastest {
-        color: var(--accent);
-        font-weight: 600;
-      }
-
-      /* Hover Tooltip */
-      #tooltip {
-        position: fixed;
-        z-index: 50;
-        pointer-events: none;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 8px 12px;
-        font-size: 0.78rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        display: none;
-        line-height: 1.5;
-        max-width: 280px;
-      }
-      #tooltip .tt-title {
-        font-weight: 600;
-        margin-bottom: 4px;
-        color: var(--text);
-        border-bottom: 1px solid var(--border-subtle);
-        padding-bottom: 2px;
-      }
-      #tooltip .tt-line {
-        color: var(--text-muted);
-        font-family: var(--font-mono);
-      }
-
-      /* Parity Table */
       .count-zero {
-        color: var(--text-faint);
-      }
-      .parity-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-
-      /* Methodology & Technical Notes (2-Column Grid) */
-      .notes-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-      .note-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 18px;
-      }
-      .note-card h3 {
-        font-size: 0.92rem;
-        font-weight: 600;
-        margin: 0 0 12px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .note-card ul {
-        margin: 0;
-        padding-left: 18px;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-      }
-      .note-card li {
-        margin-bottom: 8px;
-      }
-      .note-card li:last-child {
-        margin-bottom: 0;
-      }
-      .note-card strong {
-        color: var(--text);
-        font-weight: 600;
-      }
-
-      /* Raw Details */
-      details.raw-section {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 12px 16px;
-      }
-      details.raw-section summary {
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        user-select: none;
-      }
-      details.raw-section summary:hover {
-        color: var(--text);
-      }
-      details.raw-section[open] summary {
-        margin-bottom: 14px;
-      }
-
-      /* Error Banner */
-      .error-banner {
-        padding: 14px 16px;
-        background: #fee2e2;
-        border: 1px solid #f87171;
-        border-radius: 8px;
-        color: #991b1b;
-        font-size: 0.88rem;
-        margin-bottom: 20px;
-      }
-      :root[data-theme="dark"] .error-banner {
-        background: #381515;
-        border-color: #7f1d1d;
-        color: #fca5a5;
-      }
-
-      @media (max-width: 720px) {
-        .chart-row {
-          grid-template-columns: 84px 1fr 100px;
-          gap: 8px;
-        }
-        .notes-grid {
-          grid-template-columns: 1fr;
-        }
-        .row-values {
-          flex-direction: column;
-          gap: 0;
-        }
+        color: var(--muted);
       }
     </style>
-    <link rel="stylesheet" href="./benchmark.css" />
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
@@ -554,67 +60,58 @@
       </div>
     </header>
 
-    <main class="container">
-      <div id="error-container"></div>
-
-      <!-- Page Header & Specs -->
-      <section class="page-header">
-        <div class="title-row">
-          <h1>Bun Benchmark: Lint</h1>
-          <span class="version-tag" id="commit-tag">commit: loading...</span>
-        </div>
-        <p class="page-desc">
+    <main class="page" id="main">
+      <header>
+        <div id="error-container"></div>
+        <div class="eyebrow">ESLint · oxlint · Biome · bun lint</div>
+        <h1><span class="prompt">$</span>Bun Benchmark: Lint</h1>
+        <p class="lede">
           JavaScript / TypeScript 린터(ESLint · oxlint · Biome · bun lint)에
           같은 규칙 세트를 걸었을 때의 실행 속도와 ESLint 진단 일치율을
           비교합니다.
         </p>
-        <div class="specs-grid" id="specs-grid">
-          <span class="spec-item">환경 정보를 불러오는 중...</span>
+        <div class="meta">
+          <span id="specs-grid"
+            ><span class="spec-item">환경 정보를 불러오는 중...</span></span
+          >
+          <span class="version-tag" id="commit-tag">commit: loading...</span>
         </div>
-      </section>
+      </header>
 
       <!-- Executive Overview Table -->
-      <section class="section">
-        <div class="section-header">
-          <h2 class="section-title">종합 결과 요약 (Benchmark Overview)</h2>
-        </div>
-        <p class="section-desc" id="overview-desc"></p>
-        <div class="summary-card">
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>도구 (Tool)</th>
-                  <th>버전</th>
-                  <th>런타임 / 엔진</th>
-                  <th class="td-num">린트 시간 (mean)</th>
-                  <th class="td-num">ESLint 대비</th>
-                  <th class="td-num">ESLint 진단 일치</th>
-                </tr>
-              </thead>
-              <tbody id="overview-tbody">
-                <tr>
-                  <td
-                    colspan="6"
-                    style="
-                      text-align: center;
-                      color: var(--text-muted);
-                      padding: 20px;
-                    "
-                  >
-                    데이터를 불러오는 중...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <section id="overview">
+        <h2><small>01 · Benchmark Overview</small>종합 결과 요약</h2>
+        <p id="overview-desc"></p>
+        <div
+          class="scroll"
+          tabindex="0"
+          role="region"
+          aria-label="종합 결과 요약"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">도구 (Tool)</th>
+                <th scope="col">버전</th>
+                <th scope="col">런타임 / 엔진</th>
+                <th scope="col" class="num">린트 시간 (mean)</th>
+                <th scope="col" class="num">ESLint 대비</th>
+                <th scope="col" class="num">ESLint 진단 일치</th>
+              </tr>
+            </thead>
+            <tbody id="overview-tbody">
+              <tr>
+                <td colspan="6">데이터를 불러오는 중...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
       <!-- Performance Chart -->
-      <section class="section">
+      <section id="corpora">
         <div class="section-header">
-          <h2 class="section-title">코퍼스별 실행 시간 (Execution Time)</h2>
+          <h2><small>02 · Execution Time</small>코퍼스별 실행 시간</h2>
           <div class="segment-control" role="group" aria-label="도구 필터">
             <button class="segment-btn active" id="filter-all" type="button">
               전체 도구 비교
@@ -624,48 +121,45 @@
             </button>
           </div>
         </div>
-        <p class="section-desc">
+        <p>
           <code>hyperfine</code> 측정 기준 평균 실행 시간입니다. 바 길이가
           짧을수록 빠르며, 상대 배수는 해당 코퍼스의 최고 속도 기준입니다.
         </p>
-        <div class="chart-container" id="chart-container"></div>
+        <div class="cols-2" id="chart-container"></div>
       </section>
 
       <!-- Parity Table -->
-      <section class="section">
-        <div class="section-header">
-          <h2 class="section-title">
-            ESLint 진단 일치 검증 (Diagnostic Parity)
-          </h2>
-        </div>
-        <p class="section-desc" id="parity-desc"></p>
-        <div class="parity-card">
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>규칙 (ESLint)</th>
-                  <th class="td-num">ESLint</th>
-                  <th class="td-num">bun lint</th>
-                  <th class="td-num">oxlint</th>
-                  <th class="td-num">Biome</th>
-                </tr>
-              </thead>
-              <tbody id="parity-tbody"></tbody>
-            </table>
-          </div>
+      <section id="parity">
+        <h2><small>03 · Diagnostic Parity</small>ESLint 진단 일치 검증</h2>
+        <p id="parity-desc"></p>
+        <div
+          class="scroll"
+          tabindex="0"
+          role="region"
+          aria-label="ESLint 진단 일치 검증"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">규칙 (ESLint)</th>
+                <th scope="col" class="num">ESLint</th>
+                <th scope="col" class="num">bun lint</th>
+                <th scope="col" class="num">oxlint</th>
+                <th scope="col" class="num">Biome</th>
+              </tr>
+            </thead>
+            <tbody id="parity-tbody"></tbody>
+          </table>
         </div>
       </section>
 
       <!-- Methodology & Technical Analysis -->
-      <section class="section">
-        <div class="section-header">
-          <h2 class="section-title">측정 환경 및 기술적 분석</h2>
-        </div>
-        <div class="notes-grid">
-          <div class="note-card">
+      <section id="notes">
+        <h2><small>04</small>측정 환경 및 기술적 분석</h2>
+        <div class="cols-2">
+          <div class="card">
             <h3>측정 방식 및 재현 (Methodology)</h3>
-            <ul>
+            <ul class="facts">
               <li>
                 <strong>측정 도구:</strong> <code>hyperfine -N</code>, 워밍업
                 1회. 린트는 파일을 바꾸지 않으므로 원복 없이 같은 코퍼스를 반복
@@ -692,9 +186,9 @@
               </li>
             </ul>
           </div>
-          <div class="note-card">
+          <div class="card">
             <h3>성능 및 호환성 분석 (Engineering Notes)</h3>
-            <ul>
+            <ul class="facts">
               <li>
                 <strong>병렬 처리:</strong> ESLint 는 기본 싱글스레드이고
                 <code>--concurrency=auto</code> 로 worker thread 를 쓸 수
@@ -725,38 +219,39 @@
       </section>
 
       <!-- Rule Set Details -->
-      <section class="section">
+      <section id="raw">
         <details class="raw-section">
           <summary id="rules-summary">규칙 세트</summary>
-          <div class="table-responsive" style="margin-top: 14px">
+          <div class="scroll" tabindex="0" role="region" aria-label="규칙 세트">
             <table>
               <thead>
                 <tr>
-                  <th>ESLint · oxlint · bun lint</th>
-                  <th>Biome</th>
+                  <th scope="col">ESLint · oxlint · bun lint</th>
+                  <th scope="col">Biome</th>
                 </tr>
               </thead>
               <tbody id="rules-tbody"></tbody>
             </table>
           </div>
         </details>
-      </section>
-
-      <!-- Raw Benchmark Data Details -->
-      <section class="section">
         <details class="raw-section">
           <summary>전체 측정 데이터 테이블 (Raw Benchmark Data)</summary>
-          <div class="table-responsive" style="margin-top: 14px">
+          <div
+            class="scroll"
+            tabindex="0"
+            role="region"
+            aria-label="전체 측정 데이터 테이블"
+          >
             <table>
               <thead>
                 <tr>
-                  <th>코퍼스</th>
-                  <th>도구</th>
-                  <th class="td-num">평균 실행 시간 (Mean)</th>
-                  <th class="td-num">표준 편차 (StdDev)</th>
-                  <th class="td-num">최소 (Min)</th>
-                  <th class="td-num">최대 (Max)</th>
-                  <th class="td-num">상대 배수</th>
+                  <th scope="col">코퍼스</th>
+                  <th scope="col">도구</th>
+                  <th scope="col" class="num">평균 실행 시간 (Mean)</th>
+                  <th scope="col" class="num">표준 편차 (StdDev)</th>
+                  <th scope="col" class="num">최소 (Min)</th>
+                  <th scope="col" class="num">최대 (Max)</th>
+                  <th scope="col" class="num">상대 배수</th>
                 </tr>
               </thead>
               <tbody id="raw-tbody"></tbody>
@@ -764,6 +259,15 @@
           </div>
         </details>
       </section>
+      <footer>
+        Source:
+        <a
+          href="https://github.com/ysoftman/test_code/tree/main/test_pages/bun-benchmark"
+          target="_blank"
+          rel="noopener"
+          >github.com/ysoftman/test_code</a
+        >
+      </footer>
     </main>
 
     <!-- Hover Tooltip -->

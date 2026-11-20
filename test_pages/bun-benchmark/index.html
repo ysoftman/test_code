@@ -19,189 +19,17 @@
           saved || (os ? "dark" : "light");
       })();
     </script>
-    <style>
-      :root {
-        color-scheme: light;
-        --bg: #f8fafc;
-        --surface: #ffffff;
-        --surface-subtle: #f1f5f9;
-        --border: #e2e8f0;
-        --border-subtle: #edf2f7;
-        --text: #0f172a;
-        --text-muted: #64748b;
-        --text-faint: #94a3b8;
-        --accent: #2563eb;
-        --accent-subtle: #eff6ff;
-        --success: #16a34a;
-        --success-bg: #f0fdf4;
-        --warning: #d97706;
-        --warning-bg: #fffbeb;
-
-        --font-sans:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Pretendard Variable", Pretendard, sans-serif;
-        --font-mono:
-          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-      }
-
-      :root[data-theme="dark"] {
-        color-scheme: dark;
-        --bg: #0d1117;
-        --surface: #161b22;
-        --surface-subtle: #1f242c;
-        --border: #30363d;
-        --border-subtle: #21262d;
-        --text: #e6edf3;
-        --text-muted: #8b949e;
-        --text-faint: #6e7681;
-        --accent: #58a6ff;
-        --accent-subtle: #121d2f;
-        --success: #3fb950;
-        --success-bg: #0d281e;
-        --warning: #f59e0b;
-        --warning-bg: #2d2206;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: var(--font-sans);
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.55;
-        font-size: 14px;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      a {
-        color: var(--accent);
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-
-      /* Layout */
-      .container {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 32px 20px 80px;
-      }
-
-      /* Page Header */
-      .page-header {
-        margin-bottom: 32px;
-      }
-      h1 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        letter-spacing: -0.03em;
-        margin: 0;
-        line-height: 1.25;
-      }
-      .page-header .page-desc {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        margin: 8px 0 0;
-      }
-
-      /* Section Common */
-      .section {
-        margin-top: 36px;
-      }
-      .section-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 12px;
-        flex-wrap: wrap;
-      }
-      .section-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .section-desc {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        margin: 0 0 16px;
-      }
-
-      /* Summary Overview Table */
-      .summary-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      .table-responsive {
-        overflow-x: auto;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.85rem;
-        text-align: left;
-      }
-      th {
-        background: var(--surface-subtle);
-        border-bottom: 1px solid var(--border);
-        color: var(--text-muted);
-        font-weight: 600;
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        padding: 9px 14px;
-        white-space: nowrap;
-      }
-      td {
-        padding: 10px 14px;
-        border-bottom: 1px solid var(--border-subtle);
-        vertical-align: middle;
-      }
-      tbody tr:last-child td {
-        border-bottom: 0;
-      }
-      .td-num {
-        text-align: right;
-      }
-      td:not(:first-child) {
-        white-space: nowrap;
-      }
-      td.best {
-        color: var(--accent);
-        font-weight: 700;
-      }
-
-      .data-meta,
-      .table-note {
-        color: var(--text-faint);
-        font-size: 0.8rem;
-      }
-      .data-meta {
-        margin-top: 28px;
-      }
-      .table-note {
-        margin: 9px 0 0;
-      }
-
-      @media (max-width: 760px) {
-        .section {
-          margin-top: 28px;
-        }
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../common/doc.css" />
     <link rel="stylesheet" href="./benchmark.css" />
   </head>
   <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-brand">
@@ -231,175 +59,162 @@
       </div>
     </header>
 
-    <main class="container">
-      <section class="page-header">
-        <h1>Bun Benchmark Overview</h1>
-        <p class="page-desc">
+    <main class="page" id="main">
+      <header>
+        <div class="eyebrow">Formatter · Lint · Runtime · Test · Bundler</div>
+        <h1><span class="prompt">$</span>Bun Benchmark Overview</h1>
+        <p class="lede">
           각 벤치마크의 대표 결과를 한 화면에서 비교합니다. 표의 실행 시간은
           낮을수록, HTTP 처리량은 높을수록 빠릅니다.
         </p>
-      </section>
+        <div class="meta" id="data-meta">측정 환경 정보를 불러오는 중...</div>
+      </header>
 
-      <section class="section" id="formatter">
-        <div class="section-header">
-          <h2 class="section-title">Formatter</h2>
-        </div>
-        <p class="section-desc">
+      <section id="formatter">
+        <h2><small>01</small>Formatter</h2>
+        <p>
           저장소의 대규모 코퍼스를 포맷하는 데 걸린 시간과 Bun 출력
           일치율입니다.
         </p>
-        <div class="summary-card">
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>코퍼스</th>
-                  <th class="td-num">파일</th>
-                  <th class="td-num">Prettier</th>
-                  <th class="td-num">Biome</th>
-                  <th class="td-num">Bun</th>
-                  <th class="td-num">Bun 일치율</th>
-                </tr>
-              </thead>
-              <tbody id="formatter-overview">
-                <tr>
-                  <td colspan="6">결과를 불러오는 중...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="scroll" tabindex="0" role="region" aria-label="Formatter">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">코퍼스</th>
+                <th scope="col" class="num">파일</th>
+                <th scope="col" class="num">Prettier</th>
+                <th scope="col" class="num">Biome</th>
+                <th scope="col" class="num">Bun</th>
+                <th scope="col" class="num">Bun 일치율</th>
+              </tr>
+            </thead>
+            <tbody id="formatter-overview">
+              <tr>
+                <td colspan="6">결과를 불러오는 중...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <section class="section" id="lint">
-        <div class="section-header">
-          <h2 class="section-title">Lint</h2>
-        </div>
-        <p class="section-desc">
+      <section id="lint">
+        <h2><small>02</small>Lint</h2>
+        <p>
           대규모 JavaScript·TypeScript 코퍼스의 검사 시간과 비교한 린터입니다.
         </p>
-        <div class="summary-card">
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>코퍼스</th>
-                  <th class="td-num">파일</th>
-                  <th class="td-num">ESLint</th>
-                  <th class="td-num">ESLint MT</th>
-                  <th class="td-num">oxlint</th>
-                  <th class="td-num">Biome</th>
-                  <th class="td-num">Bun</th>
-                </tr>
-              </thead>
-              <tbody id="lint-overview">
-                <tr>
-                  <td colspan="7">결과를 불러오는 중...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="scroll" tabindex="0" role="region" aria-label="Lint">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">코퍼스</th>
+                <th scope="col" class="num">파일</th>
+                <th scope="col" class="num">ESLint</th>
+                <th scope="col" class="num">ESLint MT</th>
+                <th scope="col" class="num">oxlint</th>
+                <th scope="col" class="num">Biome</th>
+                <th scope="col" class="num">Bun</th>
+              </tr>
+            </thead>
+            <tbody id="lint-overview">
+              <tr>
+                <td colspan="7">결과를 불러오는 중...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <p class="table-note" id="lint-note"></p>
+        <p class="note" id="lint-note"></p>
       </section>
 
-      <section class="section" id="runtime">
-        <div class="section-header">
-          <h2 class="section-title">Runtime</h2>
-        </div>
-        <p class="section-desc">
+      <section id="runtime">
+        <h2><small>03</small>Runtime</h2>
+        <p>
           대표 시작 시간과 HTTP 서버 처리량으로 Node.js·Deno·Bun 런타임을
           비교합니다.
         </p>
-        <div class="summary-card">
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>작업</th>
-                  <th class="td-num">측정 횟수</th>
-                  <th class="td-num">Node.js</th>
-                  <th class="td-num">Deno</th>
-                  <th class="td-num">Bun</th>
-                  <th>가장 빠른 결과</th>
-                </tr>
-              </thead>
-              <tbody id="runtime-overview">
-                <tr>
-                  <td colspan="6">결과를 불러오는 중...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="scroll" tabindex="0" role="region" aria-label="Runtime">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">작업</th>
+                <th scope="col" class="num">측정 횟수</th>
+                <th scope="col" class="num">Node.js</th>
+                <th scope="col" class="num">Deno</th>
+                <th scope="col" class="num">Bun</th>
+                <th scope="col">가장 빠른 결과</th>
+              </tr>
+            </thead>
+            <tbody id="runtime-overview">
+              <tr>
+                <td colspan="6">결과를 불러오는 중...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <section class="section" id="test">
-        <div class="section-header">
-          <h2 class="section-title">Test</h2>
-        </div>
-        <p class="section-desc">
+      <section id="test">
+        <h2><small>04</small>Test</h2>
+        <p>
           같은 TypeScript 테스트를 각 테스트 러너 기본 설정으로 실행한
           시간입니다.
         </p>
-        <div class="summary-card">
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>코퍼스</th>
-                  <th class="td-num">파일</th>
-                  <th class="td-num">Jest</th>
-                  <th class="td-num">Vitest</th>
-                  <th class="td-num">node --test</th>
-                  <th class="td-num">Deno</th>
-                  <th class="td-num">Bun</th>
-                </tr>
-              </thead>
-              <tbody id="test-overview">
-                <tr>
-                  <td colspan="7">결과를 불러오는 중...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="scroll" tabindex="0" role="region" aria-label="Test">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">코퍼스</th>
+                <th scope="col" class="num">파일</th>
+                <th scope="col" class="num">Jest</th>
+                <th scope="col" class="num">Vitest</th>
+                <th scope="col" class="num">node --test</th>
+                <th scope="col" class="num">Deno</th>
+                <th scope="col" class="num">Bun</th>
+              </tr>
+            </thead>
+            <tbody id="test-overview">
+              <tr>
+                <td colspan="7">결과를 불러오는 중...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <p class="table-note" id="test-note"></p>
+        <p class="note" id="test-note"></p>
       </section>
 
-      <section class="section" id="bundler">
-        <div class="section-header">
-          <h2 class="section-title">Bundler</h2>
-        </div>
-        <p class="section-desc">
-          three.js r108 사본을 minify + sourcemap 으로 번들링한 시간입니다.
-        </p>
-        <div class="summary-card">
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>코퍼스</th>
-                  <th class="td-num">esbuild</th>
-                  <th class="td-num">Rolldown</th>
-                  <th class="td-num">Vite</th>
-                  <th class="td-num">Rspack</th>
-                  <th class="td-num">Rollup</th>
-                  <th class="td-num">webpack</th>
-                  <th class="td-num">Bun</th>
-                </tr>
-              </thead>
-              <tbody id="bundler-overview">
-                <tr>
-                  <td colspan="8">결과를 불러오는 중...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <section id="bundler">
+        <h2><small>05</small>Bundler</h2>
+        <p>three.js r108 사본을 minify + sourcemap 으로 번들링한 시간입니다.</p>
+        <div class="scroll" tabindex="0" role="region" aria-label="Bundler">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">코퍼스</th>
+                <th scope="col" class="num">esbuild</th>
+                <th scope="col" class="num">Rolldown</th>
+                <th scope="col" class="num">Vite</th>
+                <th scope="col" class="num">Rspack</th>
+                <th scope="col" class="num">Rollup</th>
+                <th scope="col" class="num">webpack</th>
+                <th scope="col" class="num">Bun</th>
+              </tr>
+            </thead>
+            <tbody id="bundler-overview">
+              <tr>
+                <td colspan="8">결과를 불러오는 중...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
-
-      <p class="data-meta" id="data-meta">측정 환경 정보를 불러오는 중...</p>
+      <footer>
+        Source:
+        <a
+          href="https://github.com/ysoftman/test_code/tree/main/test_pages/bun-benchmark"
+          target="_blank"
+          rel="noopener"
+          >github.com/ysoftman/test_code</a
+        >
+      </footer>
     </main>
 
     <script>
