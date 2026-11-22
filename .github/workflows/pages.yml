@@ -80,6 +80,37 @@ jobs:
         working-directory: test_pages/ml-docs
         run: bun run build
 
+      - name: Cache Godot
+        id: godot-cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-4.7.2-stable-web
+
+      # 템플릿 tpz(1.2GB) 중 web_nothreads_release.zip 만 남긴다 (캐시 히트 시 생략)
+      - name: Install Godot and web export template
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          URL=https://github.com/godotengine/godot/releases/download/4.7.2-stable
+          TPL=~/.local/share/godot/export_templates/4.7.2.stable
+          mkdir -p ~/godot "$TPL"
+          curl -sSL -o /tmp/godot.zip "$URL/Godot_v4.7.2-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d ~/godot
+          mv ~/godot/Godot_v4.7.2-stable_linux.x86_64 ~/godot/godot
+          curl -sSL -o /tmp/tpl.tpz "$URL/Godot_v4.7.2-stable_export_templates.tpz"
+          unzip -q -j /tmp/tpl.tpz templates/web_nothreads_release.zip -d "$TPL"
+          rm /tmp/godot.zip /tmp/tpl.tpz
+
+      - name: Export godot-game (Web)
+        working-directory: test_pages/godot-game
+        run: |
+          mkdir -p build
+          ~/godot/godot --headless --import
+          ~/godot/godot --headless --export-release Web build/index.html
+
       - name: Build design-skill-comparison apps
         run: |
           set -euo pipefail
@@ -140,6 +171,12 @@ jobs:
             echo "include built app: ml-docs"
             mkdir -p "$OUT/ml-docs"
             cp -r "$SRC/ml-docs/.vitepress/dist/." "$OUT/ml-docs/"
+          fi
+
+          if [ -f "$SRC/godot-game/build/index.html" ]; then
+            echo "include built app: godot-game"
+            mkdir -p "$OUT/godot-game"
+            cp -r "$SRC/godot-game/build/." "$OUT/godot-game/"
           fi
 
           # common: 비교·벤치마크 문서 공용 스타일시트 (doc.css)
