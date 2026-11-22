@@ -5,14 +5,25 @@
 # 1 - stdout
 # 2 - stderr
 
-# << 는 here-document(heredoc, https://en.wikipedia.org/wiki/Here_document)를 사용하겠다는 뜻
-# <<< 는 heredoc string(스트링 한줄 한번만 입력)를 사용하겠다는 뜻
+# << 는 here document(heredoc)를 사용하겠다는 뜻
 # cat << ysoftman
 # > aaa
 # > bbb
 # > ysoftman 입력하면 끝
-# cat <<< ysoftman
+
+# <<< 는 here string(스트링 한줄 한번만 입력)를 사용하겠다는 뜻
 # ysoftman 출력후 끝
+cat <<<hello
+
+# 변수 입력
+read -r name age <<<"ysoftman 20"
+echo $name
+echo $age
+
+# <<< $'' 을 사용하면 명령에 stdin 을 전달할 수 있다.
+# 다음 pipe 이용 방법과 같다.
+# echo -e 'bill\npassword123' | bash read_password_test.sh
+bash read_password.sh <<<$'bill\npassword123'
 
 # https://www.gnu.org/software/bash/manual/html_node/Redirections.html
 # [n]<> redirection 은 파일을 read, write 둘다 사용되도록 오픈한다.
@@ -63,8 +74,3 @@ banana
 123
 orange
 zzz
-
-# <<< $'' 을 사용하면 명령에 stdin 을 전달할 수 있다.
-# 다음 pipe 이용 방법과 같다.
-# echo -e 'bill\npassword123' | bash read_password_test.sh
-bash read_password_test.sh <<<$'bill\npassword123'
