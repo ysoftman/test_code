@@ -1,6 +1,6 @@
 // ysoftman
 // jwt(json web token) test
-// go get github.com/dgrijalva/jwt-go
+// go get github.com/golang-jwt/jwt/v5
 
 // jwt 인코딩/디코딩
 // https://jwt.io/
@@ -18,7 +18,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 const serverport = "55555"
@@ -26,8 +26,8 @@ const serverport = "55555"
 type userInfo struct {
 	Name string `json:"name"`
 	Age  int    `json:"age"`
-	// jwt.StandardClaims 가 포함되어 있어야 한다.
-	jwt.StandardClaims
+	// jwt.RegisteredClaims 가 포함되어 있어야 한다.
+	jwt.RegisteredClaims
 }
 
 func main() {
@@ -49,7 +49,7 @@ func main() {
 
 	// 요청 주소에 따른 핸들러 등록
 	http.HandleFunc("/auth", authPage)
-	http.ListenAndServe(":"+serverport, nil)
+	log.Fatal(http.ListenAndServe(":"+serverport, nil))
 }
 
 // authPage 처리 함수
@@ -63,7 +63,7 @@ func authPage(w http.ResponseWriter, r *http.Request) {
 	// 토큰 파싱
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte("byounghoon"), nil
-	})
+	}, jwt.WithValidMethods([]string{"HS256"}))
 	if err != nil {
 		fmt.Println("[error] ", err)
 		return
