@@ -5,9 +5,11 @@
   git 으로 관리하는 파일은 `values-ysoftman.yaml`, `README-ysoftman.md`, `.gitignore` 뿐이다.
 - argocd 배포는 upstream helm repo 의 chart 를 직접 쓴다(버전은 `argocd-apps/values-ysoftman.yaml` 의 `harbor.source.targetRevision`).
   버전 올릴 때는 그 값만 바꾸면 된다.
-- chart 1.19.x(harbor 2.15)부터 harbor-db 가 PostgreSQL 15 → 18 이다.
-  harbor-db 가 시작할 때 `pg_upgrade` 로 자동 마이그레이션하고, 성공하면 기존 pg15 데이터 디렉토리를 지운다.
-  이후에는 이전 버전으로 되돌릴 수 없으니 업그레이드 전에 백업한다.
+- chart 는 1.18.1(harbor 2.14.1)에 고정한다. harbor 이미지는 amd64 전용이라 colima(arm64, rosetta 끔)에서 qemu 7.0 으로 에뮬레이션되는데,
+  1.19.x(harbor 2.15, go1.26 빌드)는 jobservice 가 기동 중 runtime 교착이나 `fatal error: found bad pointer in Go heap` 으로 계속 죽는다.
+  go1.24 빌드인 2.14.1 은 정상이다(2026-11-25 확인).
+- chart 1.19.x 는 harbor-db 를 PostgreSQL 15 → 18 로 시작 시 `pg_upgrade` 하고 기존 pg15 데이터 디렉토리를 지워서 되돌릴 수 없다.
+  올리기 전에 백업하고, 되돌릴 때는 `database-data-harbor-database-0`, `data-harbor-redis-0`(valkey 9 rdb) PVC 를 지워 새로 초기화한 뒤 백업을 복원한다.
 
 ```bash
 kubectl -n harbor exec harbor-database-0 -c database -- pg_dumpall -U postgres > harbor-pg15-dumpall.sql

@@ -30,7 +30,8 @@ harbor:
   source:
     repoURL: https://helm.goharbor.io
     chart: harbor
-    targetRevision: 1.19.4
+    # 1.19.x(harbor 2.15) 는 colima qemu 에서 jobservice 가 죽어서 1.18.1 에 고정한다(helm/harbor/README-ysoftman.md 참고).
+    targetRevision: 1.18.1
   valueFiles:
     - $values/helm/harbor/values-ysoftman.yaml
   # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
