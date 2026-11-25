@@ -1,0 +1,5 @@
+# fluxcd-community/flux2 chart 용 커스텀 values
+# chart 는 argocd multi-source 로 upstream(https://fluxcd-community.github.io/helm-charts) 에서 받는다.
+# 테스트 클러스터라 chart 기본값(컨트롤러 6개 전부 설치)을 그대로 쓴다.
+# 컨트롤러 pod 에는 chart 기본값으로 prometheus.io/scrape annotation 이 붙어 있어 prometheus 앱이 별도 설정 없이 수집한다.
+{}

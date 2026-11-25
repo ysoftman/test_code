@@ -179,3 +179,22 @@ tekton-dashboard:
     # 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
     # tekton-dashboard.source.targetRevision 을 바꾼다.
     targetRevision: HEAD
+
+flux:
+  enabled: true
+  name: flux
+  # flux cli 와 문서가 flux-system namespace 를 기본으로 가정하므로 destination 을 맞춘다.
+  namespace: flux-system
+  # git 에는 vendored chart 원본이 없으므로 chart 는 upstream helm repo 에서 받고,
+  # values 파일만 git(common.valuesRepo) 에서 $values ref 로 읽는다.
+  # 공식 chart 가 아니라 fluxcd-community chart 다. chart 2.20.0 = flux v2.10.0 컨트롤러.
+  source:
+    repoURL: https://fluxcd-community.github.io/helm-charts
+    chart: flux2
+    targetRevision: 2.20.0
+  valueFiles:
+    - $values/helm/flux/values-ysoftman.yaml
+  # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
+  # flux.valuesRevision 을 바꾼다(argocd-apps 는 git 관리 대상이 아니라 override 가 유지된다).
+  valuesRevision: HEAD
+  values: {}

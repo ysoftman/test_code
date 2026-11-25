@@ -1,0 +1,36 @@
+# flux 동작 확인용 예제. argocd 가 아니라 kubectl apply 로 직접 넣는다(README-ysoftman.md 참고).
+# OCIRepository 가 chart 를 받고, HelmRelease 를 보고 helm-controller 가 실제 helm install 을 한다.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: podinfo
+  namespace: flux-system
+spec:
+  interval: 10m
+  url: oci://ghcr.io/stefanprodan/charts/podinfo
+  ref:
+    tag: 6.17.0
+  # OCI artifact 에서 helm chart layer 만 꺼낸다.
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: podinfo
+  namespace: flux-system
+spec:
+  interval: 10m
+  chartRef:
+    kind: OCIRepository
+    name: podinfo
+  # 리소스는 podinfo namespace 에 설치한다.
+  targetNamespace: podinfo
+  # targetNamespace 를 쓰면 release 이름 기본값이 <targetNamespace>-<name>(podinfo-podinfo) 이라 고정한다.
+  releaseName: podinfo
+  install:
+    createNamespace: true
+  values:
+    ui:
+      message: hello from flux
