@@ -5,7 +5,11 @@
 - git 으로 관리하는 파일은 `values-ysoftman.yaml`, `README-ysoftman.md`, `podinfo-helmrelease.yaml`, `.gitignore` 뿐이다.
 - argocd 배포는 upstream helm repo 의 chart 를 직접 쓴다(버전은 `argocd-apps/values-ysoftman.yaml` 의 `flux.source.targetRevision`).
   버전 올릴 때는 그 값만 바꾸면 된다.
-  - community chart 는 flux 패치 릴리스 반영이 늦다. chart 2.20.0 은 flux v2.10.0 컨트롤러다(2026-11-25 기준 flux 최신은 v2.10.1).
+  - community chart 는 flux 패치 릴리스 반영이 늦다(2026-11-25 기준 flux 최신 v2.10.1, chart 2.20.0 = v2.10.0).
+  - flux 는 최신 k8s 3개 minor 만 지원한다(v2.9: >= 1.34, v2.10: >= 1.35).
+    버전이 안 맞으면 chart 의 pre-install hook(`flux check --pre`) Job 이 실패해서 argocd sync 가 PreSync 단계에서 멈추고 컨트롤러가 설치되지 않는다.
+    colima k3s 를 v1.33 → v1.35 로 올려서 해결했다(업그레이드 절차는 `../README.md`).
+    argocd 는 실패한 revision 을 자동으로 다시 sync 하지 않으므로, k8s 를 올린 뒤 flux 앱을 수동 sync 한다.
 - flux 는 argocd 와 달리 공식 웹 UI 없이 컨트롤러만 동작해 가볍고, flux cli 와 kubectl 로 사용한다.
 - 컨트롤러는 `flux-system` namespace 에 설치한다(flux cli 기본 namespace).
 - 컨트롤러 pod 에 chart 기본값으로 `prometheus.io/scrape` annotation 이 있어 prometheus 앱이 별도 설정 없이 수집한다.
@@ -74,7 +78,7 @@ kubectl apply -f podinfo-helmrelease.yaml
 flux get sources oci -n flux-system
 flux get helmreleases -n flux-system
 # flux 가 만든 실제 helm release
-helm list -n flux-system
+helm list -n podinfo
 
 # 확인(values 로 넣은 ui.message 가 나온다)
 kubectl -n podinfo port-forward svc/podinfo 9898:9898
