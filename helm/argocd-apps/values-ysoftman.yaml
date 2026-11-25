@@ -8,12 +8,12 @@ common:
 nginx:
   enabled: true
   name: nginx
-  # chart 는 upstream(bitnami OCI registry) 에서 받고, values 파일만 git 에서 $values ref 로 읽는다.
+  # chart 는 upstream(CloudPirates OCI registry) 에서 받고, values 파일만 git 에서 $values ref 로 읽는다.
   # OCI 라도 repoURL 에 oci:// 를 붙이지 않는다(붙이면 argocd 가 manifest 조회시 401 로 실패).
   source:
-    repoURL: registry-1.docker.io/bitnamicharts
+    repoURL: registry-1.docker.io/cloudpirates
     chart: nginx
-    targetRevision: 25.2.5
+    targetRevision: 0.16.18
   valueFiles:
     - $values/helm/nginx/values-ysoftman.yaml
   # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서
