@@ -70,7 +70,9 @@ configs:
         color: #0f6bcb !important
     }
 
-    a {
+    /* argocd 3.6 부터 앱 타일/목록 행/sidebar 항목이 <a> 로 바뀌어(#28005, #28527) 이 규칙이 앱 글자색까지 덮으므로 제외한다.
+       :where() 로 감싸 specificity 를 a 와 같게 유지한다(.argo-button--base 같은 !important 규칙보다 높아지지 않게). */
+    a:where(:not(.applications-tiles__wrapper, .applications-list__table-row__overlay-link, .applications-list__table-row-name, .cell-link, .sidebar__nav-item)) {
         color: #0f6bcb !important
     }
 
