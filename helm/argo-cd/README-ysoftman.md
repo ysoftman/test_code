@@ -8,10 +8,14 @@
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
-helm fetch argo/argo-cd --version 10.10.5
-tar zxvf argo-cd-10.10.5.tgz
-rm argo-cd-10.10.5.tgz
+helm fetch argo/argo-cd --version 10.19.1
+tar zxvf argo-cd-10.19.1.tgz
+rm argo-cd-10.19.1.tgz
 ```
+
+- 버전을 올릴 때는 기존 `argo-cd/` 를 지우고 새 버전으로 위 절차를 반복한 뒤 아래 설치 명령을 실행한다.
+  helm-diff 플러그인(3.12.4)은 helm 4 에서 `--validate` flag 충돌로 실패하므로,
+  변경 확인은 `helm get manifest argocd` 와 `helm template` 결과를 직접 비교한다.
 
 - ⚠️ helm 명령은 반드시 중첩된 `argo-cd/` (chart 루트) 에서 실행한다.
   chart 디렉토리에 다른 chart 복사본이나 tgz 가 섞여 있으면 helm 이 릴리스 secret 에

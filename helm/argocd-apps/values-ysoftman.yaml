@@ -81,7 +81,7 @@ grafana:
   source:
     repoURL: https://grafana-community.github.io/helm-charts
     chart: grafana
-    targetRevision: 14.4.0
+    targetRevision: 14.5.1
   # 뒤쪽 파일이 앞쪽 파일에 deep-merge 된다. 대시보드는 파일별로 나눠 dashboards 키로 병합한다.
   valueFiles:
     - $values/helm/grafana/values-ysoftman.yaml
