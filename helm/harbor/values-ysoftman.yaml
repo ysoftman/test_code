@@ -106,6 +106,12 @@ core:
 jobservice:
   # key: JOBSERVICE_SECRET
   existingSecret: harbor-secrets
+  # harbor 이미지는 amd64 만 있어 colima(arm64, rosetta 끔)에서 qemu 로 에뮬레이션된다.
+  # 2.15.4 jobservice(go1.26.7)는 qemu 에서 시작 직후 DNS 조회 중 runtime timer lock 과 stop-the-world 가 교착돼 멈춘다
+  # (goroutine dump 로 확인, 2.14.1 의 go1.24.10 은 정상). signal 기반 async preemption 을 끄면 정상 기동한다.
+  extraEnvVars:
+    - name: GODEBUG
+      value: asyncpreemptoff=1
 
 registry:
   # key: REGISTRY_HTTP_SECRET
