@@ -30,7 +30,7 @@ harbor:
   source:
     repoURL: https://helm.goharbor.io
     chart: harbor
-    targetRevision: 1.18.1
+    targetRevision: 1.19.4
   valueFiles:
     - $values/helm/harbor/values-ysoftman.yaml
   # values 파일을 읽을 git 브랜치. 임시로 다른 브랜치를 보려면 argocd UI 의 argocd-apps > Details > Parameters 에서

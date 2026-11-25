@@ -5,6 +5,14 @@
   git 으로 관리하는 파일은 `values-ysoftman.yaml`, `README-ysoftman.md`, `.gitignore` 뿐이다.
 - argocd 배포는 upstream helm repo 의 chart 를 직접 쓴다(버전은 `argocd-apps/values-ysoftman.yaml` 의 `harbor.source.targetRevision`).
   버전 올릴 때는 그 값만 바꾸면 된다.
+- chart 1.19.x(harbor 2.15)부터 harbor-db 가 PostgreSQL 15 → 18 이다.
+  harbor-db 가 시작할 때 `pg_upgrade` 로 자동 마이그레이션하고, 성공하면 기존 pg15 데이터 디렉토리를 지운다.
+  이후에는 이전 버전으로 되돌릴 수 없으니 업그레이드 전에 백업한다.
+
+```bash
+kubectl -n harbor exec harbor-database-0 -c database -- pg_dumpall -U postgres > harbor-pg15-dumpall.sql
+```
+
 - 수동 배포할 때는 chart 원본이 없으므로 아래 절차로 받아서 압축을 풀어야 한다.
 - harbor 차트 새로 받을때(버전 업데이트시)
 
