@@ -23,6 +23,13 @@
     />
     <link rel="stylesheet" href="../common/doc.css" />
     <style>
+      a.card {
+        color: inherit;
+        text-decoration: none;
+      }
+      a.card:hover {
+        border-color: var(--link);
+      }
       .card h3 {
         font-family: var(--f-display);
         font-size: 15px;
@@ -81,36 +88,27 @@
       <section id="examples">
         <h2><small>01 · 예제</small>Mechanisms</h2>
         <div class="cols-3">
-          <article class="card">
+          <a class="card" href="./kit/?m=engine&layout=sheet">
             <h3>Car Engine</h3>
             <p class="note">
               직렬 4기통 4행정 엔진. 스로틀을 열면 타코미터가 오르고, P-V 선도와
               점화 순서 차트가 함께 움직인다.
             </p>
-            <ul class="jump">
-              <li><a href="./kit/?m=engine&layout=sheet">열기</a></li>
-            </ul>
-          </article>
-          <article class="card">
+          </a>
+          <a class="card" href="./kit/?m=pump&layout=sheet">
             <h3>Bike Pump</h3>
             <p class="note">
               자전거 플로어 펌프와 바퀴. 타이어가 찰수록 공기가 밀려 들어가는
               시점이 행정마다 늦어진다.
             </p>
-            <ul class="jump">
-              <li><a href="./kit/?m=pump&layout=sheet">열기</a></li>
-            </ul>
-          </article>
-          <article class="card">
+          </a>
+          <a class="card" href="./kit/?m=starter&layout=sheet">
             <h3>Slider-Crank</h3>
             <p class="note">
               회전을 직선 운동으로 바꾸는 크랭크. 모든 필드에 주석이 달린 가장
               작은 완성 예제(starter)다.
             </p>
-            <ul class="jump">
-              <li><a href="./kit/?m=starter&layout=sheet">열기</a></li>
-            </ul>
-          </article>
+          </a>
         </div>
       </section>
 
