@@ -283,11 +283,6 @@ h1 {
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
-h1 .prompt {
-  color: var(--muted);
-  font-weight: 400;
-  margin-right: 0.25em;
-}
 .lede {
   font-size: 19px;
   line-height: 1.65;
