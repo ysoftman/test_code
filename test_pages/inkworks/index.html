@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inkworks</title>
+    <script>
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const os = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (os ? "dark" : "light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&display=swap"
+    />
+    <link rel="stylesheet" href="../common/doc.css" />
+    <style>
+      .card h3 {
+        font-family: var(--f-display);
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
+    <header class="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <a class="nav-back" href="../">← test_pages</a>
+          <span class="nav-sep">/</span>
+          <span class="nav-title">inkworks</span>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-btn"
+            id="theme-btn"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <span id="theme-icon" aria-hidden="true"></span>
+            <span id="theme-text">Dark</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="page" id="main">
+      <header>
+        <div class="eyebrow">인터랙티브 3D 작동 원리 kit 예제</div>
+        <h1><span class="prompt">$</span>Inkworks</h1>
+        <p class="lede">
+          기계가 돌아가는 원리를 <strong>엔지니어링 도면</strong>처럼 그린 3D
+          페이지. 회색 부품에 잉크 외곽선, 번호 풍선, 천천히 도는 모델로
+          그려지고, 일시정지 · 단계 이동 · 슬로 모션 · 사이클 차트 스크럽 ·
+          카메라 회전을 해 볼 수 있다. 스킬이 새로 만든 페이지가 아니라 스킬에
+          들어 있는 kit 예제를 그대로 옮긴 것이다.
+        </p>
+        <div class="meta">
+          <span
+            ><b>출처</b>
+            <a
+              href="https://github.com/Moh4696/inkworks-skill"
+              target="_blank"
+              rel="noopener"
+              >Moh4696/inkworks-skill</a
+            ></span
+          >
+          <span><b>버전</b> 1.1.0 (8769b7d)</span>
+          <span><b>렌더링</b> three.js r169 vendored</span>
+          <span><b>빌드</b> 없음</span>
+        </div>
+      </header>
+
+      <section id="examples">
+        <h2><small>01 · 예제</small>Mechanisms</h2>
+        <div class="cols-3">
+          <article class="card">
+            <h3>Car Engine</h3>
+            <p class="note">
+              직렬 4기통 4행정 엔진. 스로틀을 열면 타코미터가 오르고, P-V 선도와
+              점화 순서 차트가 함께 움직인다.
+            </p>
+            <ul class="jump">
+              <li><a href="./kit/?m=engine&layout=sheet">열기</a></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Bike Pump</h3>
+            <p class="note">
+              자전거 플로어 펌프와 바퀴. 타이어가 찰수록 공기가 밀려 들어가는
+              시점이 행정마다 늦어진다.
+            </p>
+            <ul class="jump">
+              <li><a href="./kit/?m=pump&layout=sheet">열기</a></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Slider-Crank</h3>
+            <p class="note">
+              회전을 직선 운동으로 바꾸는 크랭크. 모든 필드에 주석이 달린 가장
+              작은 완성 예제(starter)다.
+            </p>
+            <ul class="jump">
+              <li><a href="./kit/?m=starter&layout=sheet">열기</a></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        Source:
+        <a
+          href="https://github.com/ysoftman/test_code/tree/main/test_pages/inkworks"
+          target="_blank"
+          rel="noopener"
+          >github.com/ysoftman/test_code</a
+        >
+        · kit: MIT License © 2026 exploraX · three.js 는 자체 MIT License
+      </footer>
+    </main>
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const icon = document.getElementById("theme-icon");
+        const text = document.getElementById("theme-text");
+        const apply = (theme) => {
+          root.dataset.theme = theme;
+          icon.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="${theme === "dark" ? "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" : "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"}"/></svg>`;
+          text.textContent = theme === "dark" ? "Light" : "Dark";
+        };
+        apply(root.dataset.theme);
+        document.getElementById("theme-btn").addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          apply(next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch {}
+        });
+      })();
+    </script>
+  </body>
+</html>
